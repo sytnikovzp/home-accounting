@@ -10,7 +10,7 @@ const env = process.env.NODE_ENV || 'development';
 const pathConfig = require(path.resolve('.sequelizerc')).config;
 const config = require(pathConfig)[env];
 
-const db = {};
+const dbPostgres = {};
 
 let sequelize;
 if (config.use_env_variable) {
@@ -38,16 +38,16 @@ fs.readdirSync(__dirname)
       sequelize,
       Sequelize.DataTypes
     );
-    db[model.name] = model;
+    dbPostgres[model.name] = model;
   });
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+Object.keys(dbPostgres).forEach((modelName) => {
+  if (dbPostgres[modelName].associate) {
+    dbPostgres[modelName].associate(dbPostgres);
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+dbPostgres.sequelize = sequelize;
+dbPostgres.Sequelize = Sequelize;
 
-module.exports = db;
+module.exports = dbPostgres;

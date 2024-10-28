@@ -3,7 +3,7 @@ const http = require('http');
 require('dotenv').config();
 // =====================================
 const app = require('./src/app');
-const db = require('./src/db/models');
+const dbPostgres = require('./src/db/dbPostgres/models');
 const dbMongo = require('./src/db/dbMongo/models');
 const { roles, users } = require('./src/constants/mongoData');
 const { User, Role } = dbMongo;
@@ -15,8 +15,10 @@ const server = http.createServer(app);
 
 const dbCheck = async () => {
   try {
-    await db.sequelize.authenticate();
-    console.log(`Connection to DB <<< ${process.env.DB_NAME} >>> has been done!`);
+    await dbPostgres.sequelize.authenticate();
+    console.log(
+      `Connection to DB <<< ${process.env.DB_NAME} >>> has been done!`
+    );
   } catch (error) {
     console.log(
       `Can not connect to DB ${process.env.DB_NAME}: `,

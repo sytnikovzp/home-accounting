@@ -1,6 +1,6 @@
 'use strict';
 
-const { currencies } = require('../../constants/seeders');
+const { currencies } = require('../../../constants/seeders');
 
 module.exports = {
   async up(queryInterface, Sequelize) {

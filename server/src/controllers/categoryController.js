@@ -1,12 +1,11 @@
 const createError = require('http-errors');
 // =====================================
-
-const { category, sequelize } = require('../db/models');
+const { Category, sequelize } = require('../db/dbPostgres/models');
 
 class categoryController {
   async getAllCategories(req, res, next) {
     try {
-      const allCategories = await category.findAll({
+      const allCategories = await Category.findAll({
         attributes: ['id', 'title'],
         raw: true,
         order: [['id', 'ASC']],
@@ -29,7 +28,7 @@ class categoryController {
     try {
       const body = req.body;
 
-      const newCategory = await category.create(body, {
+      const newCategory = await Category.create(body, {
         tranzaction: t,
         returning: ['id'],
       });

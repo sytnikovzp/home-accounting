@@ -1,36 +1,38 @@
 'use strict';
-const { Model } = require('sequelize');
+
+const { Model, Sequelize } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class item extends Model {
+  class Item extends Model {
     static associate(models) {
-      item.belongsTo(models.product, {
+      Item.belongsTo(models.Product, {
         foreignKey: 'product_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
 
-      item.belongsTo(models.shop, {
+      Item.belongsTo(models.Shop, {
         foreignKey: 'shop_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
 
-      item.belongsTo(models.measure, {
+      Item.belongsTo(models.Measure, {
         foreignKey: 'measure_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
 
-      item.belongsTo(models.currency, {
+      Item.belongsTo(models.Currency, {
         foreignKey: 'currency_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
     }
   }
-  item.init(
+  Item.init(
     {
-      product_id: {
+      productId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -40,14 +42,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
-      shop_id: DataTypes.INTEGER,
-      measure_id: DataTypes.INTEGER,
-      currency_id: DataTypes.INTEGER,
+      shopId: DataTypes.INTEGER,
+      measureId: DataTypes.INTEGER,
+      currencyId: DataTypes.INTEGER,
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
+      },
     },
     {
       sequelize,
-      modelName: 'item',
+      modelName: 'Item',
+      tableName: 'items',
+      underscored: true,
     }
   );
-  return item;
+  return Item;
 };

@@ -1,16 +1,18 @@
 'use strict';
-const { Model } = require('sequelize');
+
+const { Model, Sequelize } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class shop extends Model {
+  class Shop extends Model {
     static associate(models) {
-      shop.hasMany(models.item, {
+      Shop.hasMany(models.Item, {
         foreignKey: 'shop_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
     }
   }
-  shop.init(
+  Shop.init(
     {
       title: {
         type: DataTypes.STRING,
@@ -23,11 +25,23 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       image: DataTypes.STRING,
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('NOW()'),
+      },
     },
     {
       sequelize,
-      modelName: 'shop',
+      modelName: 'Shop',
+      tableName: 'shops',
+      underscored: true,
     }
   );
-  return shop;
+  return Shop;
 };
