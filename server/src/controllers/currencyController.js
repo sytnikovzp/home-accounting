@@ -1,9 +1,9 @@
 const createError = require('http-errors');
 const { format } = require('date-fns');
-// =====================================
+// ====================================================
 const { Currency, sequelize } = require('../db/dbPostgres/models');
 
-class currencyController {
+class CurrencyController {
   async getAllCurrencies(req, res, next) {
     try {
       const allCurrencies = await Currency.findAll({
@@ -171,4 +171,4 @@ class currencyController {
   }
 }
 
-module.exports = new currencyController();
+module.exports = new CurrencyController();

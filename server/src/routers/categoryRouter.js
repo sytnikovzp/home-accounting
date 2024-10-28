@@ -1,5 +1,5 @@
 const { Router } = require('express');
-// =====================================
+// ====================================================
 const {
   getAllCategories,
   createCategory,

@@ -1,9 +1,9 @@
 const createError = require('http-errors');
 const { format } = require('date-fns');
-// =====================================
+// ====================================================
 const { Shop, sequelize } = require('../db/dbPostgres/models');
 
-class shopController {
+class ShopController {
   async getAllShops(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
@@ -263,4 +263,4 @@ class shopController {
   }
 }
 
-module.exports = new shopController();
+module.exports = new ShopController();

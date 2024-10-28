@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-// =====================================
+// ====================================================
 const { User } = require('../db/dbMongo/models');
 const tokenService = require('./tokenService');
 

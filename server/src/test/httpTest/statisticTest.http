@@ -1,7 +1,49 @@
-### Get money by shop
-GET http://localhost:5000/api/stats/get-money-by-shop/1 HTTP/1.1
+### Get cost by category per period
+GET http://localhost:5000/api/statistics/category-per-period?category=Household devices&ago=week HTTP/1.1
 Content-Type: application/json
 
-### Get money by category
-GET http://localhost:5000/api/stats/get-money-by-category/3 HTTP/1.1
+### Get cost by category per all time
+GET http://localhost:5000/api/statistics/category-per-period?category=Household devices HTTP/1.1
+Content-Type: application/json
+
+### Get cost by category per all time ("result": 0)
+GET http://localhost:5000/api/statistics/category-per-period?category=Clothes HTTP/1.1
+Content-Type: application/json
+
+### Get cost by category (error)
+GET http://localhost:5000/api/statistics/category-per-period?category=Householde devices HTTP/1.1
+Content-Type: application/json
+
+// ====================================================
+
+### Get cost by shop per period
+GET http://localhost:5000/api/statistics/shop-per-period?shop=Comfy&ago=week HTTP/1.1
+Content-Type: application/json
+
+### Get cost by shop per all time
+GET http://localhost:5000/api/statistics/shop-per-period?shop=ATB HTTP/1.1
+Content-Type: application/json
+
+### Get cost by shop (error)
+GET http://localhost:5000/api/statistics/shop-per-period?shop=Auchan HTTP/1.1
+Content-Type: application/json
+
+// ====================================================
+
+### Get cost by categories per period
+GET http://localhost:5000/api/statistics/categories?ago=month HTTP/1.1
+Content-Type: application/json
+
+### Get cost by categories per all time
+GET http://localhost:5000/api/statistics/categories HTTP/1.1
+Content-Type: application/json
+
+// ====================================================
+
+### Get cost by shops per period
+GET http://localhost:5000/api/statistics/shops?ago=month HTTP/1.1
+Content-Type: application/json
+
+### Get cost by shops per all time
+GET http://localhost:5000/api/statistics/shops HTTP/1.1
 Content-Type: application/json

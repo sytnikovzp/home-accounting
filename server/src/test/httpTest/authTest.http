@@ -1,9 +1,40 @@
-### Registration
-POST http://localhost:5000/api/auth/registration HTTP/1.1
+POST http://localhost:5000/api/auth/registration HTTP/1/1
 Content-Type: application/json
 
 {
-  "fullName": "Test User",
-  "email": "test@gmail.com",
-  "password": "Qwerty12"
+  "fullName": "Will Smith",
+  "email": "will.smith@gmail.com",
+  "password": "zxcvbnm"
 }
+
+###
+
+POST http://localhost:5000/api/auth/login HTTP/1/1
+Content-Type: application/json
+
+{
+  "email": "will.smith@gmail.com",
+  "password": "zxcvbnm"
+}
+
+###
+
+GET http://localhost:5000/api/auth/logout HTTP/1/1
+Content-Type: application/json
+
+###
+
+GET http://localhost:5000/api/auth/refresh HTTP/1/1
+Content-Type: application/json
+
+###
+
+GET http://localhost:5000/api/auth/users HTTP/1/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZhcy5wdXBAZ21haWwuY29tIiwiaWF0IjoxNzI4MTk3Mzc0LCJleHAiOjE3MjgxOTczOTR9.s_1QYQpObIOSZ9VvI_8kPtw21tntMlxDE4VTya5JbtE
+
+###
+
+DELETE http://localhost:5000/api/auth/del HTTP/1/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndpbGwuc21pdGhAZ21haWwuY29tIiwiaWF0IjoxNzI4MTk5MDg0LCJleHAiOjE3MjgxOTkxMTR9.nL1t_RGbegfoJKJo7m_HFuupjVVDXsTcudoe45qSL4Y

@@ -1,9 +1,9 @@
 const createError = require('http-errors');
 const { format } = require('date-fns');
-// =====================================
+// ====================================================
 const { Measure, sequelize } = require('../db/dbPostgres/models');
 
-class measureController {
+class MeasureController {
   async getAllMeasures(req, res, next) {
     try {
       const allMeasures = await Measure.findAll({
@@ -171,4 +171,4 @@ class measureController {
   }
 }
 
-module.exports = new measureController();
+module.exports = new MeasureController();

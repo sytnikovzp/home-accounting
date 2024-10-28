@@ -1,7 +1,7 @@
 const path = require('path');
-// ============================
+// ====================================================
 const multer = require('multer');
-// ============================
+// ====================================================
 const { staticPath } = require('../config/staticConfig');
 
 const storageShopImage = multer.diskStorage({

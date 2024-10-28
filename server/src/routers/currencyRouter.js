@@ -1,5 +1,5 @@
 const { Router } = require('express');
-// =====================================
+// ====================================================
 const {
   getAllCurrencies,
   createCurrency,

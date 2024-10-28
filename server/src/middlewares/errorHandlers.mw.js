@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 const { ValidationError } = require('yup');
 const {
   Sequelize: { BaseError },
-} = require('../db/models');
-// =============
+} = require('../db/dbPostgres/models');
+// ====================================================
 const AuthError = require('../errors/authErrors');
 
 module.exports.authErrorHandler = (err, req, res, next) => {
@@ -13,6 +14,7 @@ module.exports.authErrorHandler = (err, req, res, next) => {
       ],
     });
   }
+
   next(err);
 };
 
@@ -22,6 +24,7 @@ module.exports.validationErrorHandler = (err, req, res, next) => {
       errors: [{ title: 'Validation Error', details: err.errors }],
     });
   }
+
   next(err);
 };
 
@@ -31,6 +34,7 @@ module.exports.sequelizeErrorHandler = (err, req, res, next) => {
       errors: [{ title: 'Sequelize Error', details: err.errors }],
     });
   }
+
   next(err);
 };
 
@@ -43,15 +47,3 @@ module.exports.errorHandler = (err, req, res, next) => {
     errors: [{ title: err?.message ?? 'Internal server error' }],
   });
 };
-
-// /* eslint-disable no-unused-vars */
-// module.exports.errorHandler = (err, req, res, next) => {
-//   if (res.headerSent) {
-//     return;
-//   }
-
-//   const statusCode = err.status || 500;
-//   const message = err.message || 'Server error';
-
-//   res.status(statusCode).send(message);
-// };

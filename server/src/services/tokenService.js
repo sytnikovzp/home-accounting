@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-// =====================================
+// ====================================================
 const { Token } = require('../db/dbMongo/models');
 
 class TokenService {

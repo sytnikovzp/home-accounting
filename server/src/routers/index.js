@@ -1,5 +1,5 @@
 const { Router } = require('express');
-// =====================================
+// ====================================================
 const authRouter = require('./authRouter');
 const categoryRouter = require('./categoryRouter');
 const currencyRouter = require('./currencyRouter');
@@ -18,6 +18,6 @@ router.use('/measures', measureRouter);
 router.use('/products', productRouter);
 router.use('/shops', shopRouter);
 router.use('/items', itemRouter);
-router.use('/stats', statisticRouter);
+router.use('/statistics', statisticRouter);
 
 module.exports = router;

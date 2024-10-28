@@ -1,9 +1,9 @@
 const createError = require('http-errors');
 const { format } = require('date-fns');
-// =====================================
+// ====================================================
 const { Product, Category, sequelize } = require('../db/dbPostgres/models');
 
-class productController {
+class ProductController {
   async getAllProducts(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
@@ -250,4 +250,4 @@ class productController {
   }
 }
 
-module.exports = new productController();
+module.exports = new ProductController();
