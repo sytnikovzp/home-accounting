@@ -1,0 +1,53 @@
+## Subjects
+
+## pg
+
+! items:
+  - product_id: integer, required
+  - amount: DECIMAL(10, 2)
+  - price: DECIMAL(10, 2)
+  - summ: DECIMAL(10, 2), required
+  - shop_id: integer
+  - measure_id: integer
+  - currency_id: integer
+! products:
+  - title: string, required
+  - description: text
+  - category_id: integer
+! categories:
+  - title: string, required, unique
+  - description: text
+! shops:
+  - title: string, required, unique
+  - description: text
+  - url: string, unique
+  - image: string
+! measures:
+  - title: string, required, unique
+  - description: text
+! currencies:
+  - title: string, required, unique
+  - description: text
+
+---
+
+## mongo
+
+users
+roles
+tokens
+
+---
+
+## Verbs
+
+CRUD
+statistic:
+
+getMoneyByCategoryPerWeek
+getMoneyByCategoryPerMonth
+getMoneyByCategoryPerYear
+
+getMoneyByShopPerWeek
+getMoneyByShopPerMonth
+getMoneyByShopPerYear
