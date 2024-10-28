@@ -9,7 +9,8 @@ const {
   validateRefreshToken,
   findToken,
 } = require('./tokenService');
-const { badRequest, unAuthorizedError } = require('../errors/authError');
+const { unAuthorizedError } = require('../errors/authErrors');
+const { badRequest, notFound } = require('../errors/customErrors');
 
 class AuthService {
   async registration(fullName, email, password) {
@@ -17,7 +18,7 @@ class AuthService {
     if (person) throw badRequest('This user already exists');
 
     const customerRole = await Role.findOne({ title: 'Customer' });
-    if (!customerRole) throw new Error('Customer role not found');
+    if (!customerRole) throw notFound('Customer role not found');
 
     const user = await User.create({
       fullName,
@@ -95,7 +96,7 @@ class AuthService {
     const adminRole = await Role.findOne({ title: 'Administrator' });
 
     if (!adminRole) {
-      throw new Error('Administrator role is not found');
+      throw notFound('Administrator role is not found');
     }
 
     if (String(user.roleId) === String(adminRole._id)) {
