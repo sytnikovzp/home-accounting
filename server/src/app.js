@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 // =====================================
 const router = require('./routers');
 const {
@@ -19,6 +20,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(getTime, showTime);
+
+app.use(morgan('dev'));
 
 app.use('/api', router);
 
