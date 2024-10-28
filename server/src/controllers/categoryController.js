@@ -23,9 +23,9 @@ class categoryController {
   }
 
   async getCategoryById(req, res, next) {
-    const { categoryId } = req.params;
-
     try {
+      const { categoryId } = req.params;
+
       const categoryById = await Category.findByPk(categoryId);
 
       if (categoryById) {
@@ -146,9 +146,9 @@ class categoryController {
   async deleteCategory(req, res, next) {
     const t = await sequelize.transaction();
 
-    const { categoryId } = req.params;
-
     try {
+      const { categoryId } = req.params;
+
       const deleteCategory = await Category.destroy({
         where: {
           id: categoryId,

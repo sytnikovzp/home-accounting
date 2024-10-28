@@ -6,6 +6,8 @@ const { Product, Category, sequelize } = require('../db/dbPostgres/models');
 class productController {
   async getAllProducts(req, res, next) {
     try {
+      const { limit, offset } = req.pagination;
+
       const allProducts = await Product.findAll({
         attributes: ['id', 'title'],
         include: [
@@ -15,7 +17,11 @@ class productController {
           },
         ],
         raw: true,
+        limit,
+        offset,
       });
+
+      const productsCount = await Product.count();
 
       const formattedProducts = allProducts.map((product) => {
         return {
@@ -26,7 +32,10 @@ class productController {
       });
 
       if (allProducts.length > 0) {
-        res.status(200).json(formattedProducts);
+        res
+          .status(200)
+          .set('X-Total-Count', productsCount)
+          .json(formattedProducts);
       } else {
         next(createError(404, 'Products not found'));
       }
@@ -37,9 +46,9 @@ class productController {
   }
 
   async getProductById(req, res, next) {
-    const { productId } = req.params;
-
     try {
+      const { productId } = req.params;
+
       const productById = await Product.findByPk(productId, {
         attributes: {
           exclude: ['categoryId', 'category_id'],
@@ -216,9 +225,9 @@ class productController {
   async deleteProduct(req, res, next) {
     const t = await sequelize.transaction();
 
-    const { productId } = req.params;
-
     try {
+      const { productId } = req.params;
+
       const deleteProduct = await Product.destroy({
         where: {
           id: productId,

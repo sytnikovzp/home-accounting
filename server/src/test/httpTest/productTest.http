@@ -1,5 +1,9 @@
-### Get all products
+### Get all products (default pagination)
 GET http://localhost:5000/api/products HTTP/1.1
+Content-Type: application/json
+
+### Get all products (custom pagination)
+GET http://localhost:5000/api/products?_page=1&_limit=10 HTTP/1.1
 Content-Type: application/json
 
 ### Get product by id

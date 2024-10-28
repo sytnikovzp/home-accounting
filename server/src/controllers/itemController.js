@@ -13,6 +13,8 @@ const {
 class itemController {
   async getAllItems(req, res, next) {
     try {
+      const { limit, offset } = req.pagination;
+
       const allItems = await Item.findAll({
         attributes: ['id', 'amount', 'price', 'summ'],
         include: [
@@ -35,7 +37,11 @@ class itemController {
           },
         ],
         raw: true,
+        limit,
+        offset,
       });
+
+      const itemsCount = await Item.count();
 
       const formattedItems = allItems.map((item) => {
         return {
@@ -51,7 +57,7 @@ class itemController {
       });
 
       if (allItems.length > 0) {
-        res.status(200).json(formattedItems);
+        res.status(200).set('X-Total-Count', itemsCount).json(formattedItems);
       } else {
         next(createError(404, 'Items not found'));
       }
@@ -62,9 +68,9 @@ class itemController {
   }
 
   async getItemById(req, res, next) {
-    const { itemId } = req.params;
-
     try {
+      const { itemId } = req.params;
+
       const itemById = await Item.findByPk(itemId, {
         attributes: {
           exclude: [
@@ -399,9 +405,9 @@ class itemController {
   async deleteItem(req, res, next) {
     const t = await sequelize.transaction();
 
-    const { itemId } = req.params;
-
     try {
+      const { itemId } = req.params;
+
       const deleteItem = await Item.destroy({
         where: {
           id: itemId,

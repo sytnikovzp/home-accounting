@@ -4,12 +4,15 @@ const itemController = require('../controllers/itemController');
 const {
   validate: { validateItem },
 } = require('../middlewares');
+const {
+  pagination: { paginateElements },
+} = require('../middlewares');
 
 const itemRouter = new Router();
 
 itemRouter
   .route('/')
-  .get(itemController.getAllItems)
+  .get(paginateElements, itemController.getAllItems)
   .post(validateItem, itemController.createItem)
   .put(validateItem, itemController.updateItem);
 

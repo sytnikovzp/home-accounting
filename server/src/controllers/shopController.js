@@ -6,13 +6,19 @@ const { Shop, sequelize } = require('../db/dbPostgres/models');
 class shopController {
   async getAllShops(req, res, next) {
     try {
+      const { limit, offset } = req.pagination;
+
       const allShops = await Shop.findAll({
         attributes: ['id', 'title', 'url'],
         raw: true,
+        limit,
+        offset,
       });
 
+      const shopsCount = await Shop.count();
+
       if (allShops.length > 0) {
-        res.status(200).json(allShops);
+        res.status(200).set('X-Total-Count', shopsCount).json(allShops);
       } else {
         next(createError(404, 'Shops not found'));
       }
@@ -23,9 +29,9 @@ class shopController {
   }
 
   async getShopById(req, res, next) {
-    const { shopId } = req.params;
-
     try {
+      const { shopId } = req.params;
+
       const shopById = await Shop.findByPk(shopId);
 
       if (shopById) {
@@ -167,9 +173,9 @@ class shopController {
   async deleteShop(req, res, next) {
     const t = await sequelize.transaction();
 
-    const { shopId } = req.params;
-
     try {
+      const { shopId } = req.params;
+
       const deleteShop = await Shop.destroy({
         where: {
           id: shopId,

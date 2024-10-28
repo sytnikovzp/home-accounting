@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 // =====================================
-
 const { User } = require('../db/dbMongo/models');
 
 class AuthService {

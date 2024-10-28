@@ -23,9 +23,9 @@ class measureController {
   }
 
   async getMeasureById(req, res, next) {
-    const { measureId } = req.params;
-
     try {
+      const { measureId } = req.params;
+
       const measureById = await Measure.findByPk(measureId);
 
       if (measureById) {
@@ -146,9 +146,9 @@ class measureController {
   async deleteMeasure(req, res, next) {
     const t = await sequelize.transaction();
 
-    const { measureId } = req.params;
-
     try {
+      const { measureId } = req.params;
+
       const deleteMeasure = await Measure.destroy({
         where: {
           id: measureId,

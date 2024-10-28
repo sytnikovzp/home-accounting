@@ -23,9 +23,9 @@ class currencyController {
   }
 
   async getCurrencyById(req, res, next) {
-    const { currencyId } = req.params;
-
     try {
+      const { currencyId } = req.params;
+
       const currencyById = await Currency.findByPk(currencyId);
 
       if (currencyById) {
@@ -146,9 +146,9 @@ class currencyController {
   async deleteCurrency(req, res, next) {
     const t = await sequelize.transaction();
 
-    const { currencyId } = req.params;
-
     try {
+      const { currencyId } = req.params;
+
       const deleteCurrency = await Currency.destroy({
         where: {
           id: currencyId,
