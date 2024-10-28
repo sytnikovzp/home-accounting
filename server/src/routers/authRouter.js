@@ -10,12 +10,13 @@ const {
 } = require('../controllers/authController');
 const {
   auth: { authHandler },
+  validation: { validateRegistration, validateAuth },
 } = require('../middlewares');
 
 const authRouter = new Router();
 
-authRouter.post('/registration', registration);
-authRouter.post('/login', login);
+authRouter.post('/registration', validateRegistration, registration);
+authRouter.post('/login', validateAuth, login);
 authRouter.get('/logout', logout);
 authRouter.get('/refresh', refresh);
 authRouter.get('/users', authHandler, getUsers);
