@@ -36,7 +36,7 @@ usersSchema.pre('save', async function (next) {
   const user = this;
 
   if (!user.isModified('password')) {
-    console.log('Not hashed');
+    console.log('Password is not hashed');
     return next();
   }
 
@@ -44,7 +44,6 @@ usersSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt(saltRounds);
     const hash = await bcrypt.hash(user.password, salt);
     user.password = hash;
-    console.log('Password is hashed');
     next();
   } catch (error) {
     next(error);

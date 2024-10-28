@@ -6,7 +6,7 @@ class AuthError extends Error {
   }
 
   static unAuthorizedError() {
-    return new AuthError(401, 'User is unautorized');
+    return new AuthError(401, 'User credentials error');
   }
 
   static badRequest(message, errors = []) {

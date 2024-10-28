@@ -101,7 +101,7 @@ class AuthController {
         console.log('User haven`t right for deleting');
       }
     } catch (error) {
-      console.log('Delete user error is: ', error.message);
+      console.log('Deleting user error is: ', error.message);
       next(error);
     }
   }
