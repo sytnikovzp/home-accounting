@@ -8,10 +8,12 @@ class productController {
     try {
       const allProducts = await Product.findAll({
         attributes: ['id', 'title'],
-        include: {
-          model: Category,
-          attributes: ['title'],
-        },
+        include: [
+          {
+            model: Category,
+            attributes: ['title'],
+          },
+        ],
         raw: true,
       });
 
@@ -119,6 +121,7 @@ class productController {
         const formattedNewProduct = {
           ...productData,
           description: productData.description || '',
+          categoryId: productData.categoryId || '',
           createdAt: format(
             new Date(productData.createdAt),
             'dd MMMM yyyy, HH:mm'
@@ -184,6 +187,7 @@ class productController {
         const formattedUpdProduct = {
           ...productData,
           description: productData.description || '',
+          categoryId: productData.category_id || '',
           createdAt: format(
             new Date(productData.createdAt),
             'dd MMMM yyyy, HH:mm'
@@ -193,6 +197,8 @@ class productController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
+
+        delete formattedUpdProduct.category_id;
 
         await t.commit();
         res.status(201).json(formattedUpdProduct);
