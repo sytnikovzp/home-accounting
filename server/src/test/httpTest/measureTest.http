@@ -1,0 +1,29 @@
+### Get all measures
+GET http://localhost:5000/api/measures HTTP/1.1
+Content-Type: application/json
+
+### Get measure by id
+GET http://localhost:5000/api/measures/9 HTTP/1.1
+Content-Type: application/json
+
+### Post measure
+POST http://localhost:5000/api/measures HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "test"
+}
+
+### Put measure
+PUT http://localhost:5000/api/measures HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 9,
+  "title": "test Put",
+  "description": ""
+}
+
+### Delete measure
+DELETE http://localhost:5000/api/measures/9 HTTP/1.1
+Content-Type: application/json
