@@ -5,7 +5,7 @@ class AuthError extends Error {
     this.errors = errors;
   }
 
-  static unautorizedError() {
+  static unAuthorizedError() {
     return new AuthError(401, 'User is unautorized');
   }
 

@@ -9,7 +9,12 @@ const {
   time: { getTime, showTime },
 } = require('./middlewares');
 const {
-  errorHandlers: { errorHandler },
+  errorHandlers: {
+    authErrorHandler,
+    validationErrorHandler,
+    sequelizeErrorHandler,
+    errorHandler,
+  },
 } = require('./middlewares');
 
 const app = express();
@@ -17,6 +22,8 @@ const app = express();
 app.use(
   cors({
     exposedHeaders: ['X-Total-Count'],
+    credentials: true,
+    origin: process.env.CLIENT_URL,
   })
 );
 
@@ -30,6 +37,11 @@ app.use(morgan('dev'));
 
 app.use('/api', router);
 
-app.use(errorHandler);
+app.use(
+  authErrorHandler,
+  validationErrorHandler,
+  sequelizeErrorHandler,
+  errorHandler
+);
 
 module.exports = app;

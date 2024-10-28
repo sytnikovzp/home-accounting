@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
+const { Schema, model } = require('mongoose');
 
 const saltRounds = 10;
 
@@ -44,7 +44,7 @@ usersSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt(saltRounds);
     const hash = await bcrypt.hash(user.password, salt);
     user.password = hash;
-    console.log('Is hashed');
+    console.log('Password is hashed');
     next();
   } catch (error) {
     next(error);

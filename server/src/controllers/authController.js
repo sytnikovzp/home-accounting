@@ -1,14 +1,26 @@
-const AuthService = require('../services/authService');
+const {
+  registration,
+  login,
+  logout,
+  refresh,
+  getAllUsers,
+  deleteUser,
+} = require('../services/authService');
+
+function setRefreshTokenCookie(res, refreshToken) {
+  res.cookie('refreshToken', refreshToken, {
+    maxAge: 60 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  });
+}
 
 class AuthController {
   async registration(req, res, next) {
     try {
       const { fullName, email, password } = req.body;
-      const authData = await AuthService.registration(
-        fullName,
-        email,
-        password
-      );
+
+      const authData = await registration(fullName, email, password);
+
       res.status(201).json(authData);
     } catch (error) {
       console.log('Registration error is: ', error.message);
@@ -19,11 +31,11 @@ class AuthController {
   async login(req, res, next) {
     try {
       const { email, password } = req.body;
-      const authData = await AuthService.login(email, password);
-      res.cookie('refreshToken', authData.refreshToken, {
-        maxAge: 60 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
+
+      const authData = await login(email, password);
+
+      setRefreshTokenCookie(res, authData.refreshToken);
+
       res.status(200).json(authData);
     } catch (error) {
       console.log('Login error is: ', error.message);
@@ -34,8 +46,11 @@ class AuthController {
   async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
-      const token = await AuthService.logout(refreshToken);
+
+      const token = await logout(refreshToken);
+
       res.clearCookie('refreshToken');
+
       res.status(200).json(token);
     } catch (error) {
       console.log('Logout error is: ', error.message);
@@ -46,11 +61,11 @@ class AuthController {
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
-      const authData = await AuthService.refresh(refreshToken);
-      res.cookie('refreshToken', authData.refreshToken, {
-        maxAge: 60 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
+
+      const authData = await refresh(refreshToken);
+
+      setRefreshTokenCookie(res, authData.refreshToken);
+
       res.status(200).json(authData);
     } catch (error) {
       console.log('Refresh error is: ', error.message);
@@ -60,7 +75,8 @@ class AuthController {
 
   async getUsers(req, res, next) {
     try {
-      const users = await AuthService.getAllUsers();
+      const users = await getAllUsers();
+
       if (users.length > 0) {
         res.status(200).json(users);
       } else {
@@ -74,14 +90,18 @@ class AuthController {
 
   async deleteUser(req, res, next) {
     const { email } = req.user;
+
     try {
-      const delUser = await AuthService.deleteUser(email);
+      const delUser = await deleteUser(email);
+
       if (delUser) {
         res.status(200);
       } else {
+        res.status(400).json('User haven`t right for deleting');
         console.log('User haven`t right for deleting');
       }
     } catch (error) {
+      console.log('Delete user error is: ', error.message);
       next(error);
     }
   }
