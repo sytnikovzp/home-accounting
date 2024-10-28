@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const { Token } = require('../db/mongo');
+const { Token } = require('../db/dbMongo/models');
 
 class TokenService {
   generateTokens(payload) {
@@ -17,3 +17,5 @@ class TokenService {
     };
   }
 }
+
+module.exports = TokenService;

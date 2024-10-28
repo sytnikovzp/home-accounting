@@ -1,13 +1,11 @@
-'use strict';
-
 const { shops } = require('../../../constants/seeders');
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert('shops', shops, {});
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('shops', null, {});
   },
 };

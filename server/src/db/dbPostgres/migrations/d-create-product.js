@@ -1,5 +1,4 @@
-'use strict';
-
+/* eslint-disable camelcase */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('products', {
@@ -35,7 +34,7 @@ module.exports = {
       },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('products');
   },
 };

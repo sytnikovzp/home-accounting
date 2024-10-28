@@ -34,7 +34,7 @@ const usersSchema = new Schema(
 
 usersSchema.pre('save', async function (next) {
   const user = this;
-  
+
   if (!user.isModified('password')) {
     console.log('Not hashed');
     return next();

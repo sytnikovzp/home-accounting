@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 // =====================================
 
-const { User } = require('../db/mongo');
+const { User } = require('../db/dbMongo/models');
 
 class AuthService {
   async registration(fullName, email, password) {
@@ -16,3 +16,5 @@ class AuthService {
     console.log(user);
   }
 }
+
+module.exports = AuthService;
