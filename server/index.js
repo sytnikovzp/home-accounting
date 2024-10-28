@@ -4,6 +4,10 @@ require('dotenv').config();
 // =====================================
 const app = require('./src/app');
 const db = require('./src/db/models');
+const dbMongo = require('./src/db/mongo');
+const { roles, users } = require('./src/constants/mongoData');
+
+const { User, Role } = dbMongo;
 
 const PORT = process.env.PORT || 5000;
 
@@ -24,6 +28,18 @@ const dbCheck = async () => {
 };
 
 dbCheck();
+
+const createRoles = async () => {
+  await Role.insertMany(roles);
+};
+
+// createRoles();
+
+const createUser = async () => {
+  await User.create(users);
+};
+
+// createUser();
 
 server.listen(PORT, HOST, () => {
   console.log(`Server is started on http://${HOST}:${PORT}`);

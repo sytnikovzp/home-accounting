@@ -14,8 +14,8 @@ const usersSchema = new Schema(
       required: true,
       unique: true,
       // validate: {
-      //   validator: (value) => Yup.schema.isValid(value),
-      // },
+      //   validator: (value) => Yup.schema.isValid(value)
+      // }
     },
     password: {
       type: String,
@@ -34,21 +34,19 @@ const usersSchema = new Schema(
 
 usersSchema.pre('save', async function (next) {
   const user = this;
-  if (user.isModified('password')) {
-    console.log('Not hashed!');
+  
+  if (!user.isModified('password')) {
+    console.log('Not hashed');
     return next();
   }
 
   try {
     const salt = await bcrypt.genSalt(saltRounds);
     const hash = await bcrypt.hash(user.password, salt);
-
     user.password = hash;
-
-    console.log('Is hashed!');
+    console.log('Is hashed');
     next();
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 });
