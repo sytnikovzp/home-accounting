@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 // =====================================
 const { User } = require('../db/dbMongo/models');
+const tokenService = require('./tokenService');
 
 class AuthService {
   async registration(fullName, email, password) {
@@ -12,8 +13,22 @@ class AuthService {
 
     const user = await User.create({ fullName, email, password });
 
-    console.log(user);
+    console.log('New user is: ------------------', user);
+
+    const tokens = tokenService.generateTokens({ email });
+
+    const userId = await User.findOne({ email }, { _id: 1 });
+
+    await tokenService.saveToken(userId, tokens.refreshToken);
+
+    return {
+      ...tokens,
+      user: {
+        id: userId,
+        email,
+      },
+    };
   }
 }
 
-module.exports = AuthService;
+module.exports = new AuthService();

@@ -1,8 +1,24 @@
+const authService = require('../services/authService');
+
 class AuthController {
   async registration(req, res, next) {
     try {
+      const { fullName, email, password } = req.body;
+
+      const authData = await authService.registration(
+        fullName,
+        email,
+        password
+      );
+
+      res.cookie('refreshToken', authData.refreshToken, {
+        maxAge: 60 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      });
+
+      res.status(200).json(authData);
     } catch (error) {
-      console.log('Error is:', error.message);
+      console.log('Registration error is:', error.message);
       next(error);
     }
   }
@@ -10,7 +26,7 @@ class AuthController {
   async login(req, res, next) {
     try {
     } catch (error) {
-      console.log('Error is:', error.message);
+      console.log('Login error is:', error.message);
       next(error);
     }
   }
@@ -18,7 +34,7 @@ class AuthController {
   async logout(req, res, next) {
     try {
     } catch (error) {
-      console.log('Error is:', error.message);
+      console.log('Logout error is:', error.message);
       next(error);
     }
   }
@@ -26,7 +42,15 @@ class AuthController {
   async refresh(req, res, next) {
     try {
     } catch (error) {
-      console.log('Error is:', error.message);
+      console.log('Refresh error is:', error.message);
+      next(error);
+    }
+  }
+
+  async getUsers(req, res, next) {
+    try {
+    } catch (error) {
+      console.log('Get users error is:', error.message);
       next(error);
     }
   }

@@ -16,6 +16,20 @@ class TokenService {
       refreshToken,
     };
   }
+
+  async saveToken(userId, refreshToken) {
+    const data = await Token.findOne({ userId });
+
+    if (data) {
+      data.refreshToken = refreshToken;
+
+      return data.save();
+    }
+
+    const token = await Token.create({ userId, refreshToken });
+
+    return token;
+  }
 }
 
-module.exports = TokenService;
+module.exports = new TokenService();
