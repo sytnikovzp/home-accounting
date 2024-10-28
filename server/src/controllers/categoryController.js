@@ -62,12 +62,27 @@ class categoryController {
 
       const newCategory = await Category.create(body, {
         transaction: t,
-        returning: ['id'],
+        returning: true,
       });
 
       if (newCategory) {
+        const categoryData = newCategory.toJSON();
+
+        const formattedNewCategory = {
+          ...categoryData,
+          description: categoryData.description || '',
+          createdAt: format(
+            new Date(categoryData.createdAt),
+            'dd MMMM yyyy, HH:mm'
+          ),
+          updatedAt: format(
+            new Date(categoryData.updatedAt),
+            'dd MMMM yyyy, HH:mm'
+          ),
+        };
+
         await t.commit();
-        res.status(201).json(newCategory);
+        res.status(201).json(formattedNewCategory);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));
@@ -83,7 +98,9 @@ class categoryController {
     const t = await sequelize.transaction();
 
     try {
-      const { id, title, description } = req.body;
+      const { id, title, description: descriptionValue } = req.body;
+
+      const description = descriptionValue === '' ? null : descriptionValue;
 
       const newBody = { title, description };
 
@@ -94,8 +111,23 @@ class categoryController {
       });
 
       if (affectedRows > 0) {
+        const categoryData = updatedCategory.toJSON();
+
+        const formattedUpdCategory = {
+          ...categoryData,
+          description: categoryData.description || '',
+          createdAt: format(
+            new Date(categoryData.createdAt),
+            'dd MMMM yyyy, HH:mm'
+          ),
+          updatedAt: format(
+            new Date(categoryData.updatedAt),
+            'dd MMMM yyyy, HH:mm'
+          ),
+        };
+
         await t.commit();
-        res.status(201).json(updatedCategory);
+        res.status(201).json(formattedUpdCategory);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));

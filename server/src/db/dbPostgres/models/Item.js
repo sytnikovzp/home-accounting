@@ -1,4 +1,4 @@
-const { Model, Sequelize } = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
@@ -43,16 +43,6 @@ module.exports = (sequelize, DataTypes) => {
       shopId: DataTypes.INTEGER,
       measureId: DataTypes.INTEGER,
       currencyId: DataTypes.INTEGER,
-      createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('NOW()'),
-      },
-      updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('NOW()'),
-      },
     },
     {
       sequelize,

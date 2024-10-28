@@ -1,4 +1,4 @@
-const { Model, Sequelize } = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Shop extends Model {
@@ -23,16 +23,6 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       image: DataTypes.STRING,
-      createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('NOW()'),
-      },
-      updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('NOW()'),
-      },
     },
     {
       sequelize,

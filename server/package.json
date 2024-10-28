@@ -10,7 +10,8 @@
     "miguna": "npx sequelize db:migrate:undo:all",
     "seedall": "npx sequelize db:seed:all",
     "seeduna": "npx sequelize db:seed:undo:all",
-    "dbinit": "npm run seeduna && npm run miguna && npm run dbdrop && npm run dbcreate && npm run mig && npm run seedall",
+    "dbinit": "npm run cljson && npm run dbdrop && npm run dbcreate && npm run mig && npm run seedall",
+    "cljson": "node ./src/utils/clearSequelizeJson.js",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
