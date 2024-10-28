@@ -58,9 +58,13 @@ class currencyController {
     const t = await sequelize.transaction();
 
     try {
-      const body = req.body;
+      const { title, description: descriptionValue } = req.body;
 
-      const newCurrency = await Currency.create(body, {
+      const description = descriptionValue === '' ? null : descriptionValue;
+
+      const newBody = { title, description };
+
+      const newCurrency = await Currency.create(newBody, {
         transaction: t,
         returning: true,
       });

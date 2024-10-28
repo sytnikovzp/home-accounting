@@ -60,9 +60,20 @@ class shopController {
     const t = await sequelize.transaction();
 
     try {
-      const body = req.body;
+      const {
+        title,
+        description: descriptionValue,
+        url: urlValue,
+        image: imageValue,
+      } = req.body;
 
-      const newShop = await Shop.create(body, {
+      const description = descriptionValue === '' ? null : descriptionValue;
+      const url = urlValue === '' ? null : urlValue;
+      const image = imageValue === '' ? null : imageValue;
+
+      const newBody = { title, description, url, image };
+
+      const newShop = await Shop.create(newBody, {
         transaction: t,
         returning: true,
       });
@@ -102,11 +113,19 @@ class shopController {
     const t = await sequelize.transaction();
 
     try {
-      const { id, title, description: descriptionValue } = req.body;
+      const {
+        id,
+        title,
+        description: descriptionValue,
+        url: urlValue,
+        image: imageValue,
+      } = req.body;
 
       const description = descriptionValue === '' ? null : descriptionValue;
+      const url = urlValue === '' ? null : urlValue;
+      const image = imageValue === '' ? null : imageValue;
 
-      const newBody = { title, description };
+      const newBody = { title, description, url, image };
 
       const [affectedRows, [updatedShop]] = await Shop.update(newBody, {
         where: { id },

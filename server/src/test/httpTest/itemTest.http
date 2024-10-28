@@ -12,8 +12,8 @@ Content-Type: application/json
 
 {
   "product": "Tomato",
-  "amount": "2",
-  "price": "80",
+  "amount": "",
+  "price": "",
   "shop": "",
   "measure": "",
   "currency": ""

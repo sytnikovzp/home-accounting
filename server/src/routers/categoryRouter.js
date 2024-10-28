@@ -1,14 +1,17 @@
 const { Router } = require('express');
 // =====================================
 const categoryController = require('../controllers/categoryController');
+const {
+  validate: { validateCategory },
+} = require('../middlewares');
 
 const categoryRouter = new Router();
 
 categoryRouter
   .route('/')
   .get(categoryController.getAllCategories)
-  .post(categoryController.createCategory)
-  .put(categoryController.updateCategory);
+  .post(validateCategory, categoryController.createCategory)
+  .put(validateCategory, categoryController.updateCategory);
 
 categoryRouter
   .route('/:categoryId')

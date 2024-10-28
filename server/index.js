@@ -16,9 +16,7 @@ const server = http.createServer(app);
 const dbCheck = async () => {
   try {
     await dbPostgres.sequelize.authenticate();
-    console.log(
-      `Connection to DB <<< ${process.env.DB_NAME} >>> has been done!`
-    );
+    console.log(`Connection to DB <<< ${process.env.DB_NAME} >>> is done!`);
   } catch (error) {
     console.log(
       `Can not connect to DB ${process.env.DB_NAME}: `,

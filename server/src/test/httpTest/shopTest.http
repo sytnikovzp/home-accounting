@@ -11,7 +11,10 @@ POST http://localhost:5000/api/shops HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "test"
+  "title": "Test post",
+  "description": "",
+  "url": "",
+  "image": ""
 }
 
 ### Put shop
@@ -20,9 +23,9 @@ Content-Type: application/json
 
 {
   "id": 4,
-  "title": "test Put",
-  "description": "",
-  "url": "",
+  "title": "Test put",
+  "description": "test description",
+  "url": "http://domain.loc",
   "image": ""
 }
 

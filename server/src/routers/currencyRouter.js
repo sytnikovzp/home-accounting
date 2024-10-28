@@ -1,14 +1,17 @@
 const { Router } = require('express');
 // =====================================
 const currencyController = require('../controllers/currencyController');
+const {
+  validate: { validateCurrency },
+} = require('../middlewares');
 
 const currencyRouter = new Router();
 
 currencyRouter
   .route('/')
   .get(currencyController.getAllCurrencies)
-  .post(currencyController.createCurrency)
-  .put(currencyController.updateCurrency);
+  .post(validateCurrency, currencyController.createCurrency)
+  .put(validateCurrency, currencyController.updateCurrency);
 
 currencyRouter
   .route('/:currencyId')

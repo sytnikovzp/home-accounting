@@ -58,9 +58,13 @@ class measureController {
     const t = await sequelize.transaction();
 
     try {
-      const body = req.body;
+      const { title, description: descriptionValue } = req.body;
 
-      const newMeasure = await Measure.create(body, {
+      const description = descriptionValue === '' ? null : descriptionValue;
+
+      const newBody = { title, description };
+
+      const newMeasure = await Measure.create(newBody, {
         transaction: t,
         returning: true,
       });

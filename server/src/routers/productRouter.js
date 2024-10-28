@@ -1,14 +1,17 @@
 const { Router } = require('express');
 // =====================================
 const productController = require('../controllers/productController');
+const {
+  validate: { validateProduct },
+} = require('../middlewares');
 
 const productRouter = new Router();
 
 productRouter
   .route('/')
   .get(productController.getAllProducts)
-  .post(productController.createProduct)
-  .put(productController.updateProduct);
+  .post(validateProduct, productController.createProduct)
+  .put(validateProduct, productController.updateProduct);
 
 productRouter
   .route('/:productId')

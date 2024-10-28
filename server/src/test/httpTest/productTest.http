@@ -11,9 +11,9 @@ POST http://localhost:5000/api/products HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "test Product",
+  "title": "Test Post",
   "description": "",
-  "category": "Electronics"
+  "category": ""
 }
 
 ### Put product
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
   "id": 22,
-  "title": "test Put",
+  "title": "Test Put",
   "description": "test put description",
   "category": "Devices"
 }

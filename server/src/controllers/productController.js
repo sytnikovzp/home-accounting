@@ -58,7 +58,7 @@ class productController {
         const formattedProduct = {
           ...productData,
           description: productData.description || '',
-          category: productData.Category.title,
+          category: productData.Category?.title || '',
           createdAt: format(
             new Date(productData.createdAt),
             'dd MMMM yyyy, HH:mm'
