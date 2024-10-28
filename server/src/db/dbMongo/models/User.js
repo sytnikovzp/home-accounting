@@ -1,11 +1,4 @@
-// const bcrypt = require('bcrypt');
 const { Schema, model } = require('mongoose');
-// ==============================================================
-// const {
-//   configs: {
-//     HASH: { SALT_ROUNDS },
-//   },
-// } = require('../../../constants');
 
 const usersSchema = new Schema(
   {
@@ -17,9 +10,6 @@ const usersSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      // validate: {
-      //   validator: (value) => Yup.schema.isValid(value)
-      // }
     },
     password: {
       type: String,
@@ -35,22 +25,6 @@ const usersSchema = new Schema(
     versionKey: false,
   }
 );
-
-// usersSchema.pre('save', async function (next) {
-//   const user = this;
-//   if (!user.isModified('password')) {
-//     console.log('Password is not hashed');
-//     return next();
-//   }
-//   try {
-//     const salt = await bcrypt.genSalt(SALT_ROUNDS);
-//     const hash = await bcrypt.hash(user.password, salt);
-//     user.password = hash;
-//     next();
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 const User = model('User', usersSchema);
 

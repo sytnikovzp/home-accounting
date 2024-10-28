@@ -1,3 +1,11 @@
+const bcrypt = require('bcrypt');
+// ==============================================================
+const {
+  configs: {
+    HASH: { SALT_ROUNDS },
+  },
+} = require('../constants');
+
 module.exports.roles = [
   {
     title: 'Administrator',
@@ -17,13 +25,13 @@ module.exports.users = async (roleIds) => [
   {
     fullName: 'John Doe',
     email: 'john.doe@gmail.com',
-    password: 'Qwerty12',
+    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['Administrator'],
   },
   {
     fullName: 'Jane Smith',
     email: 'jane.smith@gmail.com',
-    password: 'Qwerty12',
+    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['Customer'],
   },
 ];

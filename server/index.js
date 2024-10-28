@@ -11,7 +11,6 @@ const {
 const app = require('./src/app');
 const dbPostgres = require('./src/db/dbPostgres/models');
 const { syncModel, syncAllModels } = require('./src/utils/syncModels');
-const { seedMongoDB } = require('./src/utils/seedDatabase');
 
 // ==================== POSTGRES DB CHECK =======================
 
@@ -25,14 +24,10 @@ const postgresConnect = async () => {
 };
 postgresConnect();
 
-// =================== Sync`s db model(s) ========================
+// ================== Sync`s sequelize model(s) ==================
 
-// syncModel(model_name);
+// syncModel(*model_name*);
 // syncAllModels();
-
-// ====================== Seed database ==========================
-
-// seedMongoDB();
 
 // ================ Create server with HTTP module ===============
 

@@ -1,5 +1,5 @@
 const {
-  seeders: { measures },
+  postgresData: { measures },
 } = require('../../../constants');
 
 module.exports = {
