@@ -1,6 +1,12 @@
 const { Router } = require('express');
 // =====================================
-const productController = require('../controllers/productController');
+const {
+  getAllProducts,
+  createProduct,
+  updateProduct,
+  getProductById,
+  deleteProduct,
+} = require('../controllers/productController');
 const {
   validation: { validateProduct },
   pagination: { paginateElements },
@@ -10,13 +16,13 @@ const productRouter = new Router();
 
 productRouter
   .route('/')
-  .get(paginateElements, productController.getAllProducts)
-  .post(validateProduct, productController.createProduct)
-  .put(validateProduct, productController.updateProduct);
+  .get(paginateElements, getAllProducts)
+  .post(validateProduct, createProduct)
+  .put(validateProduct, updateProduct);
 
 productRouter
   .route('/:productId')
-  .get(productController.getProductById)
-  .delete(productController.deleteProduct);
+  .get(getProductById)
+  .delete(deleteProduct);
 
 module.exports = productRouter;

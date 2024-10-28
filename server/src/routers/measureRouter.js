@@ -1,6 +1,12 @@
 const { Router } = require('express');
 // =====================================
-const measureController = require('../controllers/measureController');
+const {
+  getAllMeasures,
+  createMeasure,
+  updateMeasure,
+  getMeasureById,
+  deleteMeasure,
+} = require('../controllers/measureController');
 const {
   validation: { validateMeasure },
 } = require('../middlewares');
@@ -9,13 +15,13 @@ const measureRouter = new Router();
 
 measureRouter
   .route('/')
-  .get(measureController.getAllMeasures)
-  .post(validateMeasure, measureController.createMeasure)
-  .put(validateMeasure, measureController.updateMeasure);
+  .get(getAllMeasures)
+  .post(validateMeasure, createMeasure)
+  .put(validateMeasure, updateMeasure);
 
 measureRouter
   .route('/:measureId')
-  .get(measureController.getMeasureById)
-  .delete(measureController.deleteMeasure);
+  .get(getMeasureById)
+  .delete(deleteMeasure);
 
 module.exports = measureRouter;

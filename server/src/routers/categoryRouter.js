@@ -1,6 +1,12 @@
 const { Router } = require('express');
 // =====================================
-const categoryController = require('../controllers/categoryController');
+const {
+  getAllCategories,
+  createCategory,
+  updateCategory,
+  getCategoryById,
+  deleteCategory,
+} = require('../controllers/categoryController');
 const {
   validation: { validateCategory },
 } = require('../middlewares');
@@ -9,13 +15,13 @@ const categoryRouter = new Router();
 
 categoryRouter
   .route('/')
-  .get(categoryController.getAllCategories)
-  .post(validateCategory, categoryController.createCategory)
-  .put(validateCategory, categoryController.updateCategory);
+  .get(getAllCategories)
+  .post(validateCategory, createCategory)
+  .put(validateCategory, updateCategory);
 
 categoryRouter
   .route('/:categoryId')
-  .get(categoryController.getCategoryById)
-  .delete(categoryController.deleteCategory);
+  .get(getCategoryById)
+  .delete(deleteCategory);
 
 module.exports = categoryRouter;

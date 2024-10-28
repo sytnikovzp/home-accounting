@@ -1,0 +1,7 @@
+### Get money by shop
+GET http://localhost:5000/api/stats/get-money-by-shop/1 HTTP/1.1
+Content-Type: application/json
+
+### Get money by category
+GET http://localhost:5000/api/stats/get-money-by-category/3 HTTP/1.1
+Content-Type: application/json

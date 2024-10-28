@@ -7,6 +7,7 @@ const measureRouter = require('./measureRouter');
 const productRouter = require('./productRouter');
 const shopRouter = require('./shopRouter');
 const itemRouter = require('./itemRouter');
+const statisticRouter = require('./statisticRouter');
 
 const router = new Router();
 
@@ -17,5 +18,6 @@ router.use('/measures', measureRouter);
 router.use('/products', productRouter);
 router.use('/shops', shopRouter);
 router.use('/items', itemRouter);
+router.use('/stats', statisticRouter);
 
 module.exports = router;

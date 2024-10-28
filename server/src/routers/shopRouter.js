@@ -1,6 +1,13 @@
 const { Router } = require('express');
 // =====================================
-const shopController = require('../controllers/shopController');
+const {
+  getAllShops,
+  createShop,
+  updateShop,
+  getShopById,
+  deleteShop,
+  changeImage,
+} = require('../controllers/shopController');
 const {
   validation: { validateShop },
   pagination: { paginateElements },
@@ -11,17 +18,17 @@ const shopRouter = new Router();
 
 shopRouter
   .route('/')
-  .get(paginateElements, shopController.getAllShops)
-  .post(validateShop, shopController.createShop)
-  .put(validateShop, shopController.updateShop);
+  .get(paginateElements, getAllShops)
+  .post(validateShop, createShop)
+  .put(validateShop, updateShop);
 
 shopRouter
   .route('/:shopId')
-  .get(shopController.getShopById)
-  .delete(shopController.deleteShop);
+  .get(getShopById)
+  .delete(deleteShop);
 
 shopRouter
   .route('/:shopId/image')
-  .patch(uploadImages.single('shopImage'), shopController.changeImage);
+  .patch(uploadImages.single('shopImage'), changeImage);
 
 module.exports = shopRouter;
