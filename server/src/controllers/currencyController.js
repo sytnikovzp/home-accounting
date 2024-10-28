@@ -131,7 +131,7 @@ class currencyController {
         };
 
         await t.commit();
-        res.status(201).json(formattedUpdCurrency);
+        res.status(200).json(formattedUpdCurrency);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));

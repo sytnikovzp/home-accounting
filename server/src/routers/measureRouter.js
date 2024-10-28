@@ -2,7 +2,7 @@ const { Router } = require('express');
 // =====================================
 const measureController = require('../controllers/measureController');
 const {
-  validate: { validateMeasure },
+  validation: { validateMeasure },
 } = require('../middlewares');
 
 const measureRouter = new Router();

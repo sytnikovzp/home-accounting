@@ -2,9 +2,7 @@ const { Router } = require('express');
 // =====================================
 const productController = require('../controllers/productController');
 const {
-  validate: { validateProduct },
-} = require('../middlewares');
-const {
+  validation: { validateProduct },
   pagination: { paginateElements },
 } = require('../middlewares');
 

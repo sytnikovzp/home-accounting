@@ -131,7 +131,7 @@ class categoryController {
         };
 
         await t.commit();
-        res.status(201).json(formattedUpdCategory);
+        res.status(200).json(formattedUpdCategory);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));

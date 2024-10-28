@@ -2,7 +2,7 @@ const { Router } = require('express');
 // =====================================
 const categoryController = require('../controllers/categoryController');
 const {
-  validate: { validateCategory },
+  validation: { validateCategory },
 } = require('../middlewares');
 
 const categoryRouter = new Router();

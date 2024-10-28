@@ -390,7 +390,7 @@ class itemController {
         delete formattedUpdItem.currency_id;
 
         await t.commit();
-        res.status(201).json(formattedUpdItem);
+        res.status(200).json(formattedUpdItem);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));

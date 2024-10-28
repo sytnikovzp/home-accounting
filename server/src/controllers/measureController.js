@@ -131,7 +131,7 @@ class measureController {
         };
 
         await t.commit();
-        res.status(201).json(formattedUpdMeasure);
+        res.status(200).json(formattedUpdMeasure);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));

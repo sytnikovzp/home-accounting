@@ -2,10 +2,9 @@ const { Router } = require('express');
 // =====================================
 const shopController = require('../controllers/shopController');
 const {
-  validate: { validateShop },
-} = require('../middlewares');
-const {
+  validation: { validateShop },
   pagination: { paginateElements },
+  upload: { uploadImages },
 } = require('../middlewares');
 
 const shopRouter = new Router();
@@ -20,5 +19,9 @@ shopRouter
   .route('/:shopId')
   .get(shopController.getShopById)
   .delete(shopController.deleteShop);
+
+shopRouter
+  .route('/:shopId/image')
+  .patch(uploadImages.single('shopImage'), shopController.changeImage);
 
 module.exports = shopRouter;

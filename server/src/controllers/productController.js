@@ -210,7 +210,7 @@ class productController {
         delete formattedUpdProduct.category_id;
 
         await t.commit();
-        res.status(201).json(formattedUpdProduct);
+        res.status(200).json(formattedUpdProduct);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));

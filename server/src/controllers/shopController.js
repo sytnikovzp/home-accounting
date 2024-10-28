@@ -9,7 +9,7 @@ class shopController {
       const { limit, offset } = req.pagination;
 
       const allShops = await Shop.findAll({
-        attributes: ['id', 'title', 'url'],
+        attributes: ['id', 'title', 'url', 'image'],
         raw: true,
         limit,
         offset,
@@ -18,7 +18,19 @@ class shopController {
       const shopsCount = await Shop.count();
 
       if (allShops.length > 0) {
-        res.status(200).set('X-Total-Count', shopsCount).json(allShops);
+        const formattedAllShops = allShops.map((shop) => {
+          return {
+            id: shop.id,
+            title: shop.title,
+            url: shop['url'] || '',
+            image: shop['image'] || '',
+          };
+        });
+
+        res
+          .status(200)
+          .set('X-Total-Count', shopsCount)
+          .json(formattedAllShops);
       } else {
         next(createError(404, 'Shops not found'));
       }
@@ -158,7 +170,7 @@ class shopController {
         };
 
         await t.commit();
-        res.status(201).json(formattedUpdShop);
+        res.status(200).json(formattedUpdShop);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));
@@ -186,6 +198,59 @@ class shopController {
       if (deleteShop) {
         await t.commit();
         res.sendStatus(res.statusCode);
+      } else {
+        await t.rollback();
+        next(createError(400, 'Bad request'));
+      }
+    } catch (error) {
+      console.log(error.message);
+      await t.rollback();
+      next(error);
+    }
+  }
+
+  async changeImage(req, res, next) {
+    const t = await sequelize.transaction();
+
+    try {
+      const {
+        file: { filename },
+        params: { shopId },
+      } = req;
+
+      const [affectedRows, [updatedImageShop]] = await Shop.update(
+        {
+          image: filename,
+        },
+        {
+          where: {
+            id: shopId,
+          },
+          returning: true,
+          raw: true,
+          fields: ['image'],
+          transaction: t,
+        }
+      );
+
+      if (affectedRows > 0) {
+        const formattedUpdImageShop = {
+          ...updatedImageShop,
+          description: updatedImageShop.description || '',
+          url: updatedImageShop.url || '',
+          image: updatedImageShop.image || '',
+          createdAt: format(
+            new Date(updatedImageShop.createdAt),
+            'dd MMMM yyyy, HH:mm'
+          ),
+          updatedAt: format(
+            new Date(updatedImageShop.updatedAt),
+            'dd MMMM yyyy, HH:mm'
+          ),
+        };
+
+        await t.commit();
+        res.status(200).json(formattedUpdImageShop);
       } else {
         await t.rollback();
         next(createError(400, 'Bad request'));
