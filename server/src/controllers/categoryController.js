@@ -1,4 +1,5 @@
 const createError = require('http-errors');
+const { format } = require('date-fns');
 // =====================================
 const { Category, sequelize } = require('../db/dbPostgres/models');
 
@@ -28,7 +29,22 @@ class categoryController {
       const categoryById = await Category.findByPk(categoryId);
 
       if (categoryById) {
-        res.status(200).json(categoryById);
+        const categoryData = categoryById.toJSON();
+
+        const formattedCategory = {
+          ...categoryData,
+          description: categoryData.description || '',
+          createdAt: format(
+            new Date(categoryData.createdAt),
+            'dd MMMM yyyy, HH:mm'
+          ),
+          updatedAt: format(
+            new Date(categoryData.updatedAt),
+            'dd MMMM yyyy, HH:mm'
+          ),
+        };
+
+        res.status(200).json(formattedCategory);
       } else {
         next(createError(404, 'Category not found'));
       }
