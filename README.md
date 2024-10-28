@@ -25,5 +25,5 @@ DB_PASS=root
 DB_NAME=home_accounting
 DB_DIALECT=postgres
 MONGO_PORT=27017
-MONGO_DB_NAME=ha_users
+MONGO_DB_NAME=home_acc_users
 ```

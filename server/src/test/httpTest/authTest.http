@@ -4,33 +4,24 @@ Content-Type: application/json
 
 {
   "fullName": "Will Smith",
-  "email": "wiLL.smiTH@gmaiL.coM",
+  "email": "Will.Smith@Gmail.com",
   "password": "Qwerty12"
 }
 
-### Login user (as custom user)
+### Login user
 POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "Will.Wmith@Gmail.Com",
-  "password": "Qwerty12"
+  # "email": "WILL.smith@GMAIL.com",
+  # "password": "Qwerty12",
+  "email": "Updated.User@GMAIL.com",
+  "password": "Qwerty1234567"
 }
 
-### Logout user
-GET http://localhost:5000/api/auth/logout HTTP/1.1
-Content-Type: application/json
+// ==============================================================
 
-### Get new Access token by Refresh token
-GET http://localhost:5000/api/auth/refresh HTTP/1.1
-Content-Type: application/json
-
-### Get list all users
-GET http://localhost:5000/api/auth/users HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQGdtYWlsLmNvbSIsImlhdCI6MTcyODY2MDg1MiwiZXhwIjoxNzI4NjYyMDUyfQ.LkIyfmuMAz7-KQGuY26smpHihAHkNvinop5fUiAPyBM
-
-### Login user (as customer)
+### Login exists customer user
 POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
@@ -39,7 +30,7 @@ Content-Type: application/json
   "password": "Qwerty12"
 }
 
-### Login user (as admin)
+### Login exists admin user
 POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
@@ -48,7 +39,49 @@ Content-Type: application/json
   "password": "Qwerty12"
 }
 
-### Delete current logged user
-DELETE http://localhost:5000/api/auth/delete HTTP/1.1
+// ==============================================================
+
+### Logout user
+GET http://localhost:5000/api/auth/logout HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQGdtYWlsLmNvbSIsImlhdCI6MTcyODY3Mjg3NywiZXhwIjoxNzI4Njc0MDc3fQ.ntXKb3r5PDI0BY3wxTbTIYvN-ezxmJVM7w0tMoQD3Bc
+
+### Regenerate Tokens
+GET http://localhost:5000/api/auth/refresh HTTP/1.1
+Content-Type: application/json
+
+// ==============================================================
+
+### Get list all users
+GET http://localhost:5000/api/auth/users HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwMTM3NzQ4LCJleHAiOjE3MzAxMzg2NDh9.XegtDA67G4SLu21SP4HZowYaeLR7Pcf4nHxPTgK5f1M
+
+### Get current user profile
+GET http://localhost:5000/api/auth/profile HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwMTM3NzQ4LCJleHAiOjE3MzAxMzg2NDh9.XegtDA67G4SLu21SP4HZowYaeLR7Pcf4nHxPTgK5f1M
+
+### Get user by id
+GET http://localhost:5000/api/auth/users/671fce38d0802faaa7c36b6d HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwMTM3NzQ4LCJleHAiOjE3MzAxMzg2NDh9.XegtDA67G4SLu21SP4HZowYaeLR7Pcf4nHxPTgK5f1M
+
+// ==============================================================
+
+### Update user data
+PUT http://localhost:5000/api/auth/users HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwMTM3NzQ4LCJleHAiOjE3MzAxMzg2NDh9.XegtDA67G4SLu21SP4HZowYaeLR7Pcf4nHxPTgK5f1M
+
+{
+  "id": "671fce38d0802faaa7c36b6d",
+  "fullName": "Updated User",
+  "email": "Updated.User@GMAIL.com",
+  "password": "Qwerty1234567",
+  "role": "Administrator"
+}
+
+### Delete user by id
+DELETE http://localhost:5000/api/auth/delete/671fce38d0802faaa7c36b6c HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IlVwZGF0ZWQuVXNlckBHTUFJTC5jb20iLCJpYXQiOjE3MzAxNTMxNTgsImV4cCI6MTczMDE1NDA1OH0.GlNjmZnfO7Sar5YibvPnbDZMPaU0KxoQcCAAXbFTodQ

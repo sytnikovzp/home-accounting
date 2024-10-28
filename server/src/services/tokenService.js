@@ -10,8 +10,6 @@ const {
     },
   },
 } = require('../constants');
-// ==============================================================
-const { Token } = require('../db/dbMongo/models');
 
 class TokenService {
   generateTokens(payload) {
@@ -29,34 +27,12 @@ class TokenService {
     };
   }
 
-  async saveToken(userId, refreshToken) {
-    const data = await Token.findOne({ userId });
-
-    if (data) {
-      data.refreshToken = refreshToken;
-      return data.save();
-    }
-
-    const token = await Token.create({ userId, refreshToken });
-    return token;
-  }
-
-  async deleteToken(refreshToken) {
-    const data = await Token.deleteOne({ refreshToken });
-    return data;
-  }
-
-  async findToken(refreshToken) {
-    const data = await Token.findOne({ refreshToken });
-    return data;
-  }
-
   validateAccessToken(token) {
     try {
       const data = jwt.verify(token, ACCESS_SECRET);
       return data;
     } catch (error) {
-      console.log(error);
+      console.log('Access token validation error:', error.message);
       return null;
     }
   }
@@ -66,7 +42,7 @@ class TokenService {
       const data = jwt.verify(token, REFRESH_SECRET);
       return data;
     } catch (error) {
-      console.log(error);
+      console.log('Refresh token validation error:', error.message);
       return null;
     }
   }

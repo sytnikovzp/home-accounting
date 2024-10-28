@@ -5,7 +5,10 @@ const {
   login,
   logout,
   refresh,
-  getUsers,
+  getAllUsers,
+  getUserById,
+  getCurrentUserProfile,
+  updateUser,
   deleteUser,
 } = require('../controllers/authController');
 const {
@@ -19,7 +22,10 @@ authRouter.post('/registration', validateRegistration, registration);
 authRouter.post('/login', validateAuth, login);
 authRouter.get('/logout', logout);
 authRouter.get('/refresh', refresh);
-authRouter.get('/users', authHandler, getUsers);
-authRouter.delete('/delete', authHandler, deleteUser);
+authRouter.get('/users', authHandler, getAllUsers);
+authRouter.get('/profile', authHandler, getCurrentUserProfile);
+authRouter.get('/users/:id', authHandler, getUserById);
+authRouter.put('/users', authHandler, validateRegistration, updateUser);
+authRouter.delete('/delete/:id', authHandler, deleteUser);
 
 module.exports = authRouter;

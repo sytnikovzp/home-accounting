@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const { format } = require('date-fns');
 // ==============================================================
+const { notFound } = require('../errors/customErrors');
 const { Product, Category, sequelize } = require('../db/dbPostgres/models');
 
 class ProductController {
@@ -112,7 +113,7 @@ class ProductController {
         : null;
 
       if (category && !categoryRecord) {
-        throw new Error('Category not found');
+        throw notFound('Category not found');
       }
 
       const categoryId = categoryRecord ? categoryRecord.id : null;
@@ -177,7 +178,7 @@ class ProductController {
         : null;
 
       if (category && !categoryRecord) {
-        throw new Error('Category not found');
+        throw notFound('Category not found');
       }
 
       const categoryId = categoryRecord ? categoryRecord.id : null;

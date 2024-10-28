@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const { format } = require('date-fns');
 // ==============================================================
+const { notFound } = require('../errors/customErrors');
 const {
   Item,
   Product,
@@ -170,7 +171,7 @@ class ItemController {
         : null;
 
       if (product && !productRecord) {
-        throw new Error('Product not found');
+        throw notFound('Product not found');
       }
 
       const productId = productRecord ? productRecord.id : null;
@@ -184,7 +185,7 @@ class ItemController {
         : null;
 
       if (shop && !shopRecord) {
-        throw new Error('Shop not found');
+        throw notFound('Shop not found');
       }
 
       const shopId = shopRecord ? shopRecord.id : null;
@@ -198,7 +199,7 @@ class ItemController {
         : null;
 
       if (measure && !measureRecord) {
-        throw new Error('Measure not found');
+        throw notFound('Measure not found');
       }
 
       const measureId = measureRecord ? measureRecord.id : null;
@@ -212,7 +213,7 @@ class ItemController {
         : null;
 
       if (currency && !currencyRecord) {
-        throw new Error('Currency not found');
+        throw notFound('Currency not found');
       }
 
       const currencyId = currencyRecord ? currencyRecord.id : null;
@@ -297,7 +298,7 @@ class ItemController {
         : null;
 
       if (product && !productRecord) {
-        throw new Error('Product not found');
+        throw notFound('Product not found');
       }
 
       const productId = productRecord ? productRecord.id : null;
@@ -311,7 +312,7 @@ class ItemController {
         : null;
 
       if (shop && !shopRecord) {
-        throw new Error('Shop not found');
+        throw notFound('Shop not found');
       }
 
       const shopId = shopRecord ? shopRecord.id : null;
@@ -325,7 +326,7 @@ class ItemController {
         : null;
 
       if (measure && !measureRecord) {
-        throw new Error('Measure not found');
+        throw notFound('Measure not found');
       }
 
       const measureId = measureRecord ? measureRecord.id : null;
@@ -339,7 +340,7 @@ class ItemController {
         : null;
 
       if (currency && !currencyRecord) {
-        throw new Error('Currency not found');
+        throw notFound('Currency not found');
       }
 
       const currencyId = currencyRecord ? currencyRecord.id : null;
