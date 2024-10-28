@@ -1,58 +1,47 @@
 /* eslint-disable no-unused-vars */
-const http = require('http');
-// ====================================================
-require('dotenv').config();
-// ====================================================
+const { createServer } = require('http');
+// ==============================================================
+const {
+  configs: {
+    SERVER_CONFIG: { HOST, PORT },
+    DATABASE: { DB_NAME },
+  },
+} = require('./src/constants');
+// ==============================================================
 const app = require('./src/app');
 const dbPostgres = require('./src/db/dbPostgres/models');
-const dbMongo = require('./src/db/dbMongo/models');
-const { roles, users } = require('./src/constants/mongoData');
-const { User, Role } = dbMongo;
+const { syncModel, syncAllModels } = require('./src/utils/syncModels');
+const { seedMongoDB } = require('./src/utils/seedDatabase');
 
-const PORT = process.env.PORT || 5000;
-const HOST = process.env.HOST;
+// ==================== POSTGRES DB CHECK =======================
 
-const server = http.createServer(app);
-
-const dbCheck = async () => {
+const postgresConnect = async () => {
   try {
     await dbPostgres.sequelize.authenticate();
-    console.log(`Connection to DB <<< ${process.env.DB_NAME} >>> is done!`);
+    console.log(`Connection to DB <<< ${DB_NAME} >>> is done!`);
   } catch (error) {
-    console.log(`Can not connect to DB ${process.env.DB_NAME}!`, error.message);
+    console.log(`Can not connect to DB ${DB_NAME}!`, error.message);
   }
 };
+postgresConnect();
 
-dbCheck();
+// =================== Sync`s db model(s) ========================
 
-const createRoles = async () => {
-  const createdRoles = await Role.insertMany(roles);
-  const roleIds = {};
-  createdRoles.forEach((role) => {
-    roleIds[role.title] = role._id;
-  });
-  return roleIds;
-};
+// syncModel(model_name);
+// syncAllModels();
 
-const createUsers = async (roleIds) => {
-  const usersToInsert = await users(roleIds);
-  await User.create(usersToInsert);
-};
-
-const seedMongoDB = async () => {
-  try {
-    const roleIds = await createRoles();
-    await createUsers(roleIds);
-    console.log('MongoDB seeded successfully!');
-  } catch (err) {
-    console.error('Error seeding MongoDB:', err);
-  }
-};
+// ====================== Seed database ==========================
 
 // seedMongoDB();
 
-server.listen(PORT, HOST, () => {
-  console.log(`Server running on http://${HOST}:${PORT}`);
-});
+// ================ Create server with HTTP module ===============
 
-console.log('Server is started!');
+const server = createServer(app);
+
+// ================ Start server with HTTP module ================
+
+server.listen(PORT, HOST, () =>
+  console.log(`Server running at http://${HOST}:${PORT}/api`)
+);
+
+console.log('===== Server is started successfully! =====');

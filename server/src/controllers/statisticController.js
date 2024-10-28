@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const { Op } = require('sequelize');
-// ====================================================
+// ==============================================================
 const {
   Category,
   Product,

@@ -34,7 +34,7 @@ const PAGINATION_SCHEMA = yup.object().shape({
   offset: yup.number().min(0).required(),
 });
 
-// ====================================================
+// ==============================================================
 
 const REGISTRATION_VALIDATION_SCHEMA = yup.object().shape({
   fullName: TITLE_NAME_SCHEMA,

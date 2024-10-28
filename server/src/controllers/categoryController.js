@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const { format } = require('date-fns');
-// ====================================================
+// ==============================================================
 const { Category, sequelize } = require('../db/dbPostgres/models');
 
 class CategoryController {

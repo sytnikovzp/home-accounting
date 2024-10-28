@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "fullName": "Will Smith",
-  "email": "will.smith@gmail.com",
+  "email": "wiLL.smiTH@gmaiL.coM",
   "password": "Qwerty12"
 }
 
@@ -13,7 +13,7 @@ POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "will.smith@gmail.com",
+  "email": "Will.Wmith@Gmail.Com",
   "password": "Qwerty12"
 }
 
@@ -35,7 +35,7 @@ POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "jane.smith@gmail.com",
+  "email": "Jane.Smith@Gmail.com",
   "password": "Qwerty12"
 }
 
@@ -44,7 +44,7 @@ POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "john.doe@gmail.com",
+  "email": "John.Doe@Gmail.com",
   "password": "Qwerty12"
 }
 

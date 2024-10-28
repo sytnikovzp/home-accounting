@@ -1,9 +1,14 @@
-require('dotenv').config();
+const {
+  configs: {
+    DATABASE: { MONGO_PORT, MONGO_DB_NAME },
+    SERVER_CONFIG: { HOST },
+  },
+} = require('../constants');
 
 module.exports = {
   development: {
-    host: process.env.HOST,
-    port: process.env.MONGO_PORT,
-    dbName: process.env.MONGO_DB_NAME,
+    host: HOST,
+    port: MONGO_PORT,
+    dbName: MONGO_DB_NAME,
   },
 };

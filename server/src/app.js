@@ -2,9 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-// ====================================================
+// ==============================================================
 const router = require('./routers');
-// ====================================================
+// ==============================================================
+const {
+  configs: {
+    CLIENT: { URL },
+  },
+} = require('./constants');
+// ==============================================================
 const {
   time: { getTime, showTime },
 } = require('./middlewares');
@@ -23,7 +29,7 @@ app.use(
   cors({
     exposedHeaders: ['X-Total-Count'],
     credentials: true,
-    origin: process.env.CLIENT_URL,
+    origin: URL,
   })
 );
 

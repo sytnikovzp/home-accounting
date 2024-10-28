@@ -1,4 +1,6 @@
-const { categories } = require('../../../constants/seeders');
+const {
+  seeders: { categories },
+} = require('../../../constants');
 
 module.exports = {
   async up(queryInterface) {

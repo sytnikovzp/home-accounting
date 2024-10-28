@@ -1,4 +1,6 @@
-const { currencies } = require('../../../constants/seeders');
+const {
+  seeders: { currencies },
+} = require('../../../constants');
 
 module.exports = {
   async up(queryInterface) {

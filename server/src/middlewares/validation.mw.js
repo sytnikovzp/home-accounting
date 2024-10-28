@@ -8,7 +8,7 @@ const {
   MEASURE_VALIDATION_SCHEMA,
   CURRENCY_VALIDATION_SCHEMA,
   CATEGORY_CURRENCY_MEASURE_SCHEMA,
-} = require('../utils/validationSchemas');
+} = require('../utils/validationSchemes');
 
 const validateSchema = (schema) => async (req, res, next) => {
   const { body } = req;

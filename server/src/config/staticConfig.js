@@ -1,5 +1,9 @@
-const path = require('path');
+const {
+  configs: {
+    STATIC: { PATH },
+  },
+} = require('../constants');
 
 module.exports = {
-  staticPath: path.resolve(process.env.STATIC_PATH),
+  staticPath: PATH,
 };

@@ -3,7 +3,7 @@ const { ValidationError } = require('yup');
 const {
   Sequelize: { BaseError },
 } = require('../db/dbPostgres/models');
-// ====================================================
+// ==============================================================
 const AuthError = require('../errors/authError');
 
 module.exports.authErrorHandler = (err, req, res, next) => {

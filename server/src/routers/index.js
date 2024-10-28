@@ -1,5 +1,5 @@
 const { Router } = require('express');
-// ====================================================
+
 const authRouter = require('./authRouter');
 const categoryRouter = require('./categoryRouter');
 const currencyRouter = require('./currencyRouter');
