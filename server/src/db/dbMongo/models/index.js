@@ -11,7 +11,7 @@ const config = require(configPath)[env];
 
 mongoose
   .connect(`mongodb://${config.host}:${config.port}/${config.dbName}`)
-  .then(() => console.log(`Connect to DB <<<${config.dbName}>>> is done!`))
+  .then(() => console.log(`Connect to DB <<< ${config.dbName} >>> is done!`))
   .catch((error) => console.log(error.message));
 
 const dbMongo = {};

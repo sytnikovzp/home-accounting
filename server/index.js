@@ -4,13 +4,11 @@ require('dotenv').config();
 // =====================================
 const app = require('./src/app');
 const db = require('./src/db/models');
-const dbMongo = require('./src/db/mongo');
+const dbMongo = require('./src/db/dbMongo/models');
 const { roles, users } = require('./src/constants/mongoData');
-
 const { User, Role } = dbMongo;
 
 const PORT = process.env.PORT || 5000;
-
 const HOST = process.env.HOST;
 
 const server = http.createServer(app);
@@ -18,7 +16,7 @@ const server = http.createServer(app);
 const dbCheck = async () => {
   try {
     await db.sequelize.authenticate();
-    console.log(`Connection to DB <<<${process.env.DB_NAME}>>> has been done!`);
+    console.log(`Connection to DB <<< ${process.env.DB_NAME} >>> has been done!`);
   } catch (error) {
     console.log(
       `Can not connect to DB ${process.env.DB_NAME}: `,
