@@ -92,10 +92,16 @@ class AuthController {
     const { email } = req.user;
 
     try {
+      const { refreshToken } = req.cookies;
+
+      const token = await logout(refreshToken);
+
+      res.clearCookie('refreshToken');
+
       const delUser = await deleteUser(email);
 
       if (delUser) {
-        res.status(200);
+        res.status(200).json(token);
       } else {
         res.status(400).json('User haven`t right for deleting');
         console.log('User haven`t right for deleting');
