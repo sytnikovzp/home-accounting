@@ -17,7 +17,7 @@ class AuthService {
 
     const tokens = tokenService.generateTokens({ email });
 
-    const userId = await User.findOne({ email }, { _id: 1 });
+    const userId = user._id;
 
     await tokenService.saveToken(userId, tokens.refreshToken);
 

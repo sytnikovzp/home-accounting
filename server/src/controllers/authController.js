@@ -16,7 +16,7 @@ class AuthController {
         httpOnly: true,
       });
 
-      res.status(200).json(authData);
+      res.status(201).json(authData);
     } catch (error) {
       console.log('Registration error is:', error.message);
       next(error);
@@ -25,6 +25,8 @@ class AuthController {
 
   async login(req, res, next) {
     try {
+
+      
     } catch (error) {
       console.log('Login error is:', error.message);
       next(error);
