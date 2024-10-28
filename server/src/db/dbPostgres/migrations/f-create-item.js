@@ -15,6 +15,8 @@ module.exports = {
           model: 'products',
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       amount: {
         type: Sequelize.DECIMAL(10, 2),
@@ -32,6 +34,8 @@ module.exports = {
           model: 'shops',
           key: 'id',
         },
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE',
       },
       measure_id: {
         type: Sequelize.INTEGER,
@@ -39,6 +43,8 @@ module.exports = {
           model: 'measures',
           key: 'id',
         },
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE',
       },
       currency_id: {
         type: Sequelize.INTEGER,
@@ -46,6 +52,8 @@ module.exports = {
           model: 'currencies',
           key: 'id',
         },
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE',
       },
       created_at: {
         allowNull: false,
