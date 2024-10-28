@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Measure.hasMany(models.Item, {
         foreignKey: 'measure_id',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       });
     }

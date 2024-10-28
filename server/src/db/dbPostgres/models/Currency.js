@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Currency.hasMany(models.Item, {
         foreignKey: 'currency_id',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       });
     }

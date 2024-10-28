@@ -11,19 +11,19 @@ module.exports = (sequelize, DataTypes) => {
 
       Item.belongsTo(models.Shop, {
         foreignKey: 'shop_id',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       });
 
       Item.belongsTo(models.Measure, {
         foreignKey: 'measure_id',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       });
 
       Item.belongsTo(models.Currency, {
         foreignKey: 'currency_id',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       });
     }
