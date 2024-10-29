@@ -16,11 +16,11 @@ Content-Type: application/json
 
 {
   "product": "Tomato",
-  "amount": "",
-  "price": "",
-  "shop": "",
-  "measure": "",
-  "currency": ""
+  "amount": "1",
+  "price": "80.00",
+  "shop": "ATB",
+  "measure": "kg",
+  "currency": "UAH"
 }
 
 ### Put item

@@ -15,7 +15,6 @@ class ItemController {
   async getAllItems(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-
       const allItems = await Item.findAll({
         attributes: ['id', 'amount', 'price', 'summ'],
         include: [
@@ -23,7 +22,6 @@ class ItemController {
             model: Product,
             attributes: ['title'],
           },
-
           {
             model: Shop,
             attributes: ['title'],
@@ -41,9 +39,7 @@ class ItemController {
         limit,
         offset,
       });
-
       const itemsCount = await Item.count();
-
       const formattedItems = allItems.map((item) => {
         return {
           id: item.id,
@@ -56,7 +52,6 @@ class ItemController {
           currency: item['Currency.title'] || '',
         };
       });
-
       if (allItems.length > 0) {
         res.status(200).set('X-Total-Count', itemsCount).json(formattedItems);
       } else {
@@ -71,7 +66,6 @@ class ItemController {
   async getItemById(req, res, next) {
     try {
       const { itemId } = req.params;
-
       const itemById = await Item.findByPk(itemId, {
         attributes: {
           exclude: [
@@ -90,7 +84,6 @@ class ItemController {
             model: Product,
             attributes: ['title'],
           },
-
           {
             model: Shop,
             attributes: ['title'],
@@ -105,10 +98,8 @@ class ItemController {
           },
         ],
       });
-
       if (itemById) {
         const itemData = itemById.toJSON();
-
         const formattedItem = {
           ...itemData,
           product: itemData.Product.title,
@@ -127,12 +118,10 @@ class ItemController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         delete formattedItem.Product;
         delete formattedItem.Shop;
         delete formattedItem.Measure;
         delete formattedItem.Currency;
-
         res.status(200).json(formattedItem);
       } else {
         next(createError(404, 'Item not found'));
@@ -145,7 +134,6 @@ class ItemController {
 
   async createItem(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const {
         product,
@@ -155,97 +143,47 @@ class ItemController {
         measure: measureValue,
         currency: currencyValue,
       } = req.body;
-
       const amount = amountValue === '' ? 0 : amountValue;
       const price = priceValue === '' ? 0 : priceValue;
-      const shop = shopValue === '' ? null : shopValue;
-      const measure = measureValue === '' ? null : measureValue;
-      const currency = currencyValue === '' ? null : currencyValue;
-
-      const productRecord = product
-        ? await Product.findOne({
-            where: { title: product },
-            attributes: ['id'],
-            raw: true,
-          })
-        : null;
-
-      if (product && !productRecord) {
-        throw notFound('Product not found');
+      async function getRecordByTitle(Model, title) {
+        if (!title) return null;
+        const record = await Model.findOne({
+          where: { title },
+          attributes: ['id', 'title'],
+          raw: true,
+        });
+        if (!record) throw notFound(`${Model.name} not found`);
+        return record;
       }
-
-      const productId = productRecord ? productRecord.id : null;
-
-      const shopRecord = shop
-        ? await Shop.findOne({
-            where: { title: shop },
-            attributes: ['id'],
-            raw: true,
-          })
-        : null;
-
-      if (shop && !shopRecord) {
-        throw notFound('Shop not found');
-      }
-
-      const shopId = shopRecord ? shopRecord.id : null;
-
-      const measureRecord = measure
-        ? await Measure.findOne({
-            where: { title: measure },
-            attributes: ['id'],
-            raw: true,
-          })
-        : null;
-
-      if (measure && !measureRecord) {
-        throw notFound('Measure not found');
-      }
-
-      const measureId = measureRecord ? measureRecord.id : null;
-
-      const currencyRecord = currency
-        ? await Currency.findOne({
-            where: { title: currency },
-            attributes: ['id'],
-            raw: true,
-          })
-        : null;
-
-      if (currency && !currencyRecord) {
-        throw notFound('Currency not found');
-      }
-
-      const currencyId = currencyRecord ? currencyRecord.id : null;
-
-      const summ =
-        amount != null && price != null
-          ? parseFloat(amount) * parseFloat(price)
-          : 0;
-
+      const productRecord = await getRecordByTitle(Product, product);
+      const shopRecord = await getRecordByTitle(Shop, shopValue);
+      const measureRecord = await getRecordByTitle(Measure, measureValue);
+      const currencyRecord = await getRecordByTitle(Currency, currencyValue);
+      const summ = parseFloat(amount) * parseFloat(price) || 0;
       const newBody = {
-        productId,
+        productId: productRecord ? productRecord.id : null,
         amount,
         price,
         summ,
-        shopId,
-        measureId,
-        currencyId,
+        shopId: shopRecord ? shopRecord.id : null,
+        measureId: measureRecord ? measureRecord.id : null,
+        currencyId: currencyRecord ? currencyRecord.id : null,
       };
-
       const newItem = await Item.create(newBody, {
         transaction: t,
         returning: true,
       });
-
       if (newItem) {
         const itemData = newItem.toJSON();
-
         const formattedNewItem = {
-          ...itemData,
-          shopId: itemData.shopId || '',
-          measureId: itemData.measureId || '',
-          currencyId: itemData.currencyId || '',
+          id: itemData.id,
+          productId: itemData.productId,
+          amount: itemData.amount,
+          price: itemData.price,
+          summ: itemData.summ,
+          shop: shopRecord ? shopRecord.title : '',
+          measure: measureRecord ? measureRecord.title : '',
+          currency: currencyRecord ? currencyRecord.title : '',
           createdAt: format(
             new Date(itemData.createdAt),
             'dd MMMM yyyy, HH:mm'
@@ -255,7 +193,6 @@ class ItemController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(201).json(formattedNewItem);
       } else {
@@ -271,7 +208,6 @@ class ItemController {
 
   async updateItem(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const {
         id,
@@ -282,99 +218,50 @@ class ItemController {
         measure: measureValue,
         currency: currencyValue,
       } = req.body;
-
       const amount = amountValue === '' ? 0 : amountValue;
       const price = priceValue === '' ? 0 : priceValue;
-      const shop = shopValue === '' ? null : shopValue;
-      const measure = measureValue === '' ? null : measureValue;
-      const currency = currencyValue === '' ? null : currencyValue;
-
+      async function getRecordByTitle(Model, title) {
+        if (!title) return null;
+        const record = await Model.findOne({
+          where: { title },
+          attributes: ['id', 'title'],
+          raw: true,
+        });
+        if (!record) throw notFound(`${Model.name} not found`);
+        return record;
+      }
       const productRecord = product
-        ? await Product.findOne({
-            where: { title: product },
-            attributes: ['id'],
-            raw: true,
-          })
+        ? await getRecordByTitle(Product, product)
         : null;
-
-      if (product && !productRecord) {
-        throw notFound('Product not found');
-      }
-
-      const productId = productRecord ? productRecord.id : null;
-
-      const shopRecord = shop
-        ? await Shop.findOne({
-            where: { title: shop },
-            attributes: ['id'],
-            raw: true,
-          })
-        : null;
-
-      if (shop && !shopRecord) {
-        throw notFound('Shop not found');
-      }
-
-      const shopId = shopRecord ? shopRecord.id : null;
-
-      const measureRecord = measure
-        ? await Measure.findOne({
-            where: { title: measure },
-            attributes: ['id'],
-            raw: true,
-          })
-        : null;
-
-      if (measure && !measureRecord) {
-        throw notFound('Measure not found');
-      }
-
-      const measureId = measureRecord ? measureRecord.id : null;
-
-      const currencyRecord = currency
-        ? await Currency.findOne({
-            where: { title: currency },
-            attributes: ['id'],
-            raw: true,
-          })
-        : null;
-
-      if (currency && !currencyRecord) {
-        throw notFound('Currency not found');
-      }
-
-      const currencyId = currencyRecord ? currencyRecord.id : null;
-
-      const summ =
-        amount != null && price != null
-          ? parseFloat(amount) * parseFloat(price)
-          : 0;
-
+      const shopRecord = await getRecordByTitle(Shop, shopValue);
+      const measureRecord = await getRecordByTitle(Measure, measureValue);
+      const currencyRecord = await getRecordByTitle(Currency, currencyValue);
+      const summ = parseFloat(amount) * parseFloat(price) || 0;
       const newBody = {
-        productId,
+        productId: productRecord ? productRecord.id : null,
         amount,
         price,
         summ,
-        shopId,
-        measureId,
-        currencyId,
+        shopId: shopRecord ? shopRecord.id : null,
+        measureId: measureRecord ? measureRecord.id : null,
+        currencyId: currencyRecord ? currencyRecord.id : null,
       };
-
       const [affectedRows, [updatedItem]] = await Item.update(newBody, {
         where: { id },
         returning: true,
         transaction: t,
       });
-
       if (affectedRows > 0) {
         const itemData = updatedItem.toJSON();
-
         const formattedUpdItem = {
-          ...itemData,
-          productId: itemData.product_id || '',
-          shopId: itemData.shop_id || '',
-          measureId: itemData.measure_id || '',
-          currencyId: itemData.currency_id || '',
+          id: itemData.id,
+          productId: itemData.productId,
+          amount: itemData.amount,
+          price: itemData.price,
+          summ: itemData.summ,
+          shop: shopRecord ? shopRecord.title : '',
+          measure: measureRecord ? measureRecord.title : '',
+          currency: currencyRecord ? currencyRecord.title : '',
           createdAt: format(
             new Date(itemData.createdAt),
             'dd MMMM yyyy, HH:mm'
@@ -384,12 +271,6 @@ class ItemController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
-        delete formattedUpdItem.product_id;
-        delete formattedUpdItem.shop_id;
-        delete formattedUpdItem.measure_id;
-        delete formattedUpdItem.currency_id;
-
         await t.commit();
         res.status(200).json(formattedUpdItem);
       } else {
@@ -405,17 +286,14 @@ class ItemController {
 
   async deleteItem(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { itemId } = req.params;
-
       const deleteItem = await Item.destroy({
         where: {
           id: itemId,
         },
         transaction: t,
       });
-
       if (deleteItem) {
         await t.commit();
         res.sendStatus(res.statusCode);
