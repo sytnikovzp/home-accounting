@@ -1,6 +1,6 @@
-const createError = require('http-errors');
 const { format } = require('date-fns');
 // ==============================================================
+const { notFound, badRequest } = require('../errors/customErrors');
 const { Measure, sequelize } = require('../db/dbPostgres/models');
 
 class MeasureController {
@@ -13,7 +13,7 @@ class MeasureController {
       if (allMeasures.length > 0) {
         res.status(200).json(allMeasures);
       } else {
-        next(createError(404, 'Measures not found'));
+        throw notFound('Measures not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -41,7 +41,7 @@ class MeasureController {
         };
         res.status(200).json(formattedMeasure);
       } else {
-        next(createError(404, 'Measure not found'));
+        throw notFound('Measure not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -77,7 +77,7 @@ class MeasureController {
         res.status(201).json(formattedNewMeasure);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Measure is not created');
       }
     } catch (error) {
       console.log(error.message);
@@ -115,7 +115,7 @@ class MeasureController {
         res.status(200).json(formattedUpdMeasure);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Measure is not updated');
       }
     } catch (error) {
       console.log(error.message);
@@ -139,7 +139,7 @@ class MeasureController {
         res.sendStatus(res.statusCode);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Measure is not deleted');
       }
     } catch (error) {
       console.log(error.message);

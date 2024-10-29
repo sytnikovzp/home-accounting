@@ -1,22 +1,18 @@
-const createError = require('http-errors');
-const { format } = require('date-fns');
-// ==============================================================
-const { Category, sequelize } = require('../db/dbPostgres/models');
+const {
+  getAllCategories,
+  getCategoryById,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} = require('../services/categoryService');
 
 class CategoryController {
   async getAllCategories(req, res, next) {
     try {
-      const allCategories = await Category.findAll({
-        attributes: ['id', 'title'],
-        raw: true,
-      });
-      if (allCategories.length > 0) {
-        res.status(200).json(allCategories);
-      } else {
-        next(createError(404, 'Categories not found'));
-      }
+      const allCategories = await getAllCategories();
+      res.status(200).json(allCategories);
     } catch (error) {
-      console.log(error.message);
+      console.log('Get all categories error is: ', error.message);
       next(error);
     }
   }
@@ -24,126 +20,43 @@ class CategoryController {
   async getCategoryById(req, res, next) {
     try {
       const { categoryId } = req.params;
-      const categoryById = await Category.findByPk(categoryId);
-      if (categoryById) {
-        const categoryData = categoryById.toJSON();
-        const formattedCategory = {
-          ...categoryData,
-          description: categoryData.description || '',
-          createdAt: format(
-            new Date(categoryData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(categoryData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-        };
-        res.status(200).json(formattedCategory);
-      } else {
-        next(createError(404, 'Category not found'));
-      }
+      const category = await getCategoryById(categoryId);
+      res.status(200).json(category);
     } catch (error) {
-      console.log(error.message);
+      console.log('Get category by id error is: ', error.message);
       next(error);
     }
   }
 
   async createCategory(req, res, next) {
-    const t = await sequelize.transaction();
     try {
-      const { title, description: descriptionValue } = req.body;
-      const description = descriptionValue === '' ? null : descriptionValue;
-      const newBody = { title, description };
-      const newCategory = await Category.create(newBody, {
-        transaction: t,
-        returning: true,
-      });
-      if (newCategory) {
-        const categoryData = newCategory.toJSON();
-        const formattedNewCategory = {
-          ...categoryData,
-          description: categoryData.description || '',
-          createdAt: format(
-            new Date(categoryData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(categoryData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-        };
-        await t.commit();
-        res.status(201).json(formattedNewCategory);
-      } else {
-        await t.rollback();
-        next(createError(400, 'Bad request'));
-      }
+      const { title, description } = req.body;
+      const newCategory = await createCategory(title, description);
+      res.status(201).json(newCategory);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      console.log('Creation category error is: ', error.message);
       next(error);
     }
   }
 
   async updateCategory(req, res, next) {
-    const t = await sequelize.transaction();
     try {
-      const { id, title, description: descriptionValue } = req.body;
-      const description = descriptionValue === '' ? null : descriptionValue;
-      const newBody = { title, description };
-      const [affectedRows, [updatedCategory]] = await Category.update(newBody, {
-        where: { id },
-        returning: true,
-        transaction: t,
-      });
-      if (affectedRows > 0) {
-        const categoryData = updatedCategory.toJSON();
-        const formattedUpdCategory = {
-          ...categoryData,
-          description: categoryData.description || '',
-          createdAt: format(
-            new Date(categoryData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(categoryData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-        };
-        await t.commit();
-        res.status(200).json(formattedUpdCategory);
-      } else {
-        await t.rollback();
-        next(createError(400, 'Bad request'));
-      }
+      const { id, title, description } = req.body;
+      const updatedCategory = await updateCategory(id, title, description);
+      res.status(201).json(updatedCategory);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      console.log('Update category error is: ', error.message);
       next(error);
     }
   }
 
   async deleteCategory(req, res, next) {
-    const t = await sequelize.transaction();
     try {
       const { categoryId } = req.params;
-      const deleteCategory = await Category.destroy({
-        where: {
-          id: categoryId,
-        },
-        transaction: t,
-      });
-      if (deleteCategory) {
-        await t.commit();
-        res.sendStatus(res.statusCode);
-      } else {
-        await t.rollback();
-        next(createError(400, 'Bad request'));
-      }
+      await deleteCategory(categoryId);
+      res.sendStatus(res.statusCode);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      console.log('Deleting category error is: ', error.message);
       next(error);
     }
   }

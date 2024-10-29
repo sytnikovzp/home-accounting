@@ -30,7 +30,7 @@ Content-Type: application/json
   "password": "Qwerty12"
 }
 
-### Login exists admin user
+### Login exists administrator user
 POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
@@ -54,27 +54,27 @@ Content-Type: application/json
 ### Get list all users
 GET http://localhost:5000/api/auth/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMTk2MDU4LCJleHAiOjE3MzAxOTY5NTh9.-qMiXPbTZsHR3bPxAakWGwI7fiXzJ7J1enwjQqC1Vxo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMjEwMzk3LCJleHAiOjE3MzAyMTEyOTd9.g1jxqw3olobR8beczcXAuJfMLVl07nJ_O-4WvZsDNDQ
 
 ### Get current user profile
 GET http://localhost:5000/api/auth/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwMTk2NjQ0LCJleHAiOjE3MzAxOTc1NDR9.BPtlUzfmcMHHXvjoXtve9rzofcqZpea8Uy4AlP1oSpA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMjEwMzk3LCJleHAiOjE3MzAyMTEyOTd9.g1jxqw3olobR8beczcXAuJfMLVl07nJ_O-4WvZsDNDQ
 
 ### Get user by id
-GET http://localhost:5000/api/auth/users/6720b1a0ef37237ee372601d HTTP/1.1
+GET http://localhost:5000/api/auth/users/6720e8b4e66d0b35c03fdf0a HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMTk2MDU4LCJleHAiOjE3MzAxOTY5NTh9.-qMiXPbTZsHR3bPxAakWGwI7fiXzJ7J1enwjQqC1Vxo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMjEwMzk3LCJleHAiOjE3MzAyMTEyOTd9.g1jxqw3olobR8beczcXAuJfMLVl07nJ_O-4WvZsDNDQ
 
 // ==============================================================
 
 ### Update user data
 PUT http://localhost:5000/api/auth/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMTk2MDU4LCJleHAiOjE3MzAxOTY5NTh9.-qMiXPbTZsHR3bPxAakWGwI7fiXzJ7J1enwjQqC1Vxo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMjEwMzk3LCJleHAiOjE3MzAyMTEyOTd9.g1jxqw3olobR8beczcXAuJfMLVl07nJ_O-4WvZsDNDQ
 
 {
-  "id": "6720b1a0ef37237ee372601d",
+  "id": "6720e8b4e66d0b35c03fdf0a",
   "fullName": "Updated User",
   "email": "Updated.User@GMAIL.com",
   "password": "Qwerty1234567",
@@ -84,4 +84,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU
 ### Delete user by id
 DELETE http://localhost:5000/api/auth/delete/67201be61909d2ca1a339bad HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwMTk2NjQ0LCJleHAiOjE3MzAxOTc1NDR9.BPtlUzfmcMHHXvjoXtve9rzofcqZpea8Uy4AlP1oSpA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMjEwMzk3LCJleHAiOjE3MzAyMTEyOTd9.g1jxqw3olobR8beczcXAuJfMLVl07nJ_O-4WvZsDNDQ

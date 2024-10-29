@@ -1,6 +1,6 @@
-const createError = require('http-errors');
 const { format } = require('date-fns');
 // ==============================================================
+const { notFound, badRequest } = require('../errors/customErrors');
 const { Shop, sequelize } = require('../db/dbPostgres/models');
 
 class ShopController {
@@ -28,7 +28,7 @@ class ShopController {
           .set('X-Total-Count', shopsCount)
           .json(formattedAllShops);
       } else {
-        next(createError(404, 'Shops not found'));
+        throw notFound('Shops not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -58,7 +58,7 @@ class ShopController {
         };
         res.status(200).json(formattedShop);
       } else {
-        next(createError(404, 'Shop not found'));
+        throw notFound('Shop not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -103,7 +103,7 @@ class ShopController {
         res.status(201).json(formattedNewShop);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Shop is not created');
       }
     } catch (error) {
       console.log(error.message);
@@ -151,7 +151,7 @@ class ShopController {
         res.status(200).json(formattedUpdShop);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Shop is not updated');
       }
     } catch (error) {
       console.log(error.message);
@@ -175,7 +175,7 @@ class ShopController {
         res.sendStatus(res.statusCode);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Shop is not deleted');
       }
     } catch (error) {
       console.log(error.message);
@@ -224,7 +224,7 @@ class ShopController {
         res.status(200).json(formattedUpdImageShop);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Shop image is not changed');
       }
     } catch (error) {
       console.log(error.message);

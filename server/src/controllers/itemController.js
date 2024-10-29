@@ -1,7 +1,6 @@
-const createError = require('http-errors');
 const { format } = require('date-fns');
 // ==============================================================
-const { notFound } = require('../errors/customErrors');
+const { notFound, badRequest } = require('../errors/customErrors');
 const {
   Item,
   Product,
@@ -55,7 +54,7 @@ class ItemController {
       if (allItems.length > 0) {
         res.status(200).set('X-Total-Count', itemsCount).json(formattedItems);
       } else {
-        next(createError(404, 'Items not found'));
+        throw notFound('Items not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -124,7 +123,7 @@ class ItemController {
         delete formattedItem.Currency;
         res.status(200).json(formattedItem);
       } else {
-        next(createError(404, 'Item not found'));
+        throw notFound('Item not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -197,7 +196,7 @@ class ItemController {
         res.status(201).json(formattedNewItem);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Item is not created');
       }
     } catch (error) {
       console.log(error.message);
@@ -275,7 +274,7 @@ class ItemController {
         res.status(200).json(formattedUpdItem);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Item is not updated');
       }
     } catch (error) {
       console.log(error.message);
@@ -299,7 +298,7 @@ class ItemController {
         res.sendStatus(res.statusCode);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Item is not deleted');
       }
     } catch (error) {
       console.log(error.message);

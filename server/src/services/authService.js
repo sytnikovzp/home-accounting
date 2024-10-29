@@ -40,7 +40,7 @@ class AuthService {
         id: user._id,
         fullName: user.fullName,
         email: emailToLower,
-        role: customerRole.title,
+        role: customerRole.title || '',
       },
     };
   }
@@ -60,7 +60,7 @@ class AuthService {
         id: user._id,
         fullName: user.fullName,
         email: emailToLower,
-        role: userRole.title,
+        role: userRole.title || '',
       },
     };
   }
@@ -82,7 +82,7 @@ class AuthService {
         id: user._id,
         fullName: user.fullName,
         email: emailToLower,
-        role: userRole.title,
+        role: userRole.title || '',
       },
     };
   }
@@ -99,9 +99,7 @@ class AuthService {
           id: user._id,
           fullName: user.fullName,
           email: user.email,
-          role: role ? role.title : null,
-          createdAt: format(new Date(user.createdAt), 'dd MMMM yyyy, HH:mm'),
-          updatedAt: format(new Date(user.updatedAt), 'dd MMMM yyyy, HH:mm'),
+          role: role.title || '',
         };
       })
     );
@@ -118,7 +116,7 @@ class AuthService {
       id: user._id,
       fullName: user.fullName,
       email: user.email,
-      role: role ? role.title : null,
+      role: role.title || '',
       createdAt: format(new Date(user.createdAt), 'dd MMMM yyyy, HH:mm'),
       updatedAt: format(new Date(user.updatedAt), 'dd MMMM yyyy, HH:mm'),
     };
@@ -135,7 +133,7 @@ class AuthService {
       id: user._id,
       fullName: user.fullName,
       email: user.email,
-      role: role ? role.title : null,
+      role: role.title || '',
       createdAt: format(new Date(user.createdAt), 'dd MMMM yyyy, HH:mm'),
       updatedAt: format(new Date(user.updatedAt), 'dd MMMM yyyy, HH:mm'),
     };
@@ -175,7 +173,7 @@ class AuthService {
         id: updatedUser._id,
         fullName: updatedUser.fullName,
         email: updatedUser.email,
-        role: updatedUserRole.title,
+        role: updatedUserRole.title || '',
       },
     };
   }

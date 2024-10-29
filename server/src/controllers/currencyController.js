@@ -1,6 +1,6 @@
-const createError = require('http-errors');
 const { format } = require('date-fns');
 // ==============================================================
+const { notFound, badRequest } = require('../errors/customErrors');
 const { Currency, sequelize } = require('../db/dbPostgres/models');
 
 class CurrencyController {
@@ -13,7 +13,7 @@ class CurrencyController {
       if (allCurrencies.length > 0) {
         res.status(200).json(allCurrencies);
       } else {
-        next(createError(404, 'Currencies not found'));
+        throw notFound('Currencies not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -41,7 +41,7 @@ class CurrencyController {
         };
         res.status(200).json(formattedCurrency);
       } else {
-        next(createError(404, 'Currency not found'));
+        throw notFound('Currency not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -77,7 +77,7 @@ class CurrencyController {
         res.status(201).json(formattedNewCurrency);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Currency is not created');
       }
     } catch (error) {
       console.log(error.message);
@@ -115,7 +115,7 @@ class CurrencyController {
         res.status(200).json(formattedUpdCurrency);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Currency is not updated');
       }
     } catch (error) {
       console.log(error.message);
@@ -139,7 +139,7 @@ class CurrencyController {
         res.sendStatus(res.statusCode);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Currency is not deleted');
       }
     } catch (error) {
       console.log(error.message);

@@ -1,7 +1,6 @@
-const createError = require('http-errors');
 const { format } = require('date-fns');
 // ==============================================================
-const { notFound } = require('../errors/customErrors');
+const { notFound, badRequest } = require('../errors/customErrors');
 const { Product, Category, sequelize } = require('../db/dbPostgres/models');
 
 class ProductController {
@@ -34,7 +33,7 @@ class ProductController {
           .set('X-Total-Count', productsCount)
           .json(formattedProducts);
       } else {
-        next(createError(404, 'Products not found'));
+        throw notFound('Products not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -74,7 +73,7 @@ class ProductController {
         delete formattedProduct.Category;
         res.status(200).json(formattedProduct);
       } else {
-        next(createError(404, 'Product not found'));
+        throw notFound('Product not found');
       }
     } catch (error) {
       console.log(error.message);
@@ -130,7 +129,7 @@ class ProductController {
         res.status(201).json(formattedNewProduct);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Product is not created');
       }
     } catch (error) {
       console.log(error.message);
@@ -189,7 +188,7 @@ class ProductController {
         res.status(200).json(formattedUpdProduct);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Product is not updated');
       }
     } catch (error) {
       console.log(error.message);
@@ -213,7 +212,7 @@ class ProductController {
         res.sendStatus(res.statusCode);
       } else {
         await t.rollback();
-        next(createError(400, 'Bad request'));
+        throw badRequest('Product is not deleted');
       }
     } catch (error) {
       console.log(error.message);

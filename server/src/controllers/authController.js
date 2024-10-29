@@ -58,7 +58,7 @@ class AuthController {
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(200).json(authData);
     } catch (error) {
-      console.log('Refreshing error is: ', error.message);
+      console.log('Refresh error is: ', error.message);
       next(error);
     }
   }
@@ -87,14 +87,14 @@ class AuthController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Getting user profile error is: ', error.message);
+      console.log('Get user profile error is: ', error.message);
       next(error);
     }
   }
 
   async getUserById(req, res, next) {
-    const { id } = req.params;
     try {
+      const { id } = req.params;
       const user = await getUserById(id);
       if (user) {
         res.status(200).json(user);
@@ -102,7 +102,7 @@ class AuthController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Geting user error is: ', error.message);
+      console.log('Get user profile error is: ', error.message);
       next(error);
     }
   }
@@ -113,16 +113,16 @@ class AuthController {
       const userData = await updateUser(id, fullName, email, password, role);
       res.status(201).json(userData);
     } catch (error) {
-      console.log('Updating user error is: ', error.message);
+      console.log('Update user error is: ', error.message);
       next(error);
     }
   }
 
   async deleteUser(req, res, next) {
-    const { id } = req.params;
-    const userEmail = req.user.email;
-    const currentUser = await getUserByEmail(userEmail);
     try {
+      const { id } = req.params;
+      const userEmail = req.user.email;
+      const currentUser = await getUserByEmail(userEmail);
       await deleteUser(id, currentUser);
       res.sendStatus(res.statusCode);
     } catch (error) {

@@ -1,6 +1,6 @@
-const createError = require('http-errors');
 const { Op } = require('sequelize');
 // ==============================================================
+const { notFound, badRequest } = require('../errors/customErrors');
 const {
   Category,
   Product,
@@ -17,7 +17,6 @@ const getTime = (ago = 'allTime') => {
     year: () => timeAgo.setFullYear(timeAgo.getFullYear() - 1),
     allTime: () => new Date(0),
   };
-
   const timeAgo = new Date();
   return (intervals[ago] || intervals.allTime)();
 };
@@ -26,9 +25,7 @@ class StatisticController {
   async getCostByCategoryPerPeriod(req, res, next) {
     try {
       const { category, ago } = req.query;
-
       const time = getTime(ago);
-
       const categoryRecord = await Category.findOne({
         attributes: ['id'],
         where: {
@@ -36,13 +33,10 @@ class StatisticController {
         },
         raw: true,
       });
-
       if (!categoryRecord) {
-        return next(createError(404, 'Category not found'));
+        throw notFound('Category not found');
       }
-
       const categoryId = categoryRecord.id;
-
       const productIds = await Product.findAll({
         where: {
           categoryId,
@@ -50,13 +44,10 @@ class StatisticController {
         attributes: ['id'],
         raw: true,
       });
-
       const prodIds = productIds.map((item) => item.id);
-
       if (prodIds.length === 0) {
         return res.status(200).json([{ result: 0 }]);
       }
-
       const costByCategoryPerPeriod = await Item.findAll({
         attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
         where: {
@@ -70,11 +61,9 @@ class StatisticController {
         group: ['currency_id'],
         raw: true,
       });
-
       if (costByCategoryPerPeriod.length === 0) {
         return res.status(200).json([{ result: 0 }]);
       }
-
       res.status(200).json(costByCategoryPerPeriod);
     } catch (error) {
       console.log(error.message);
@@ -85,9 +74,7 @@ class StatisticController {
   async getCostByShopPerPeriod(req, res, next) {
     try {
       const { shop, ago } = req.query;
-
       const time = getTime(ago);
-
       const shopRecord = await Shop.findOne({
         attributes: ['id'],
         where: {
@@ -95,13 +82,10 @@ class StatisticController {
         },
         raw: true,
       });
-
       if (!shopRecord) {
-        return next(createError(404, 'Shop not found'));
+        throw notFound('Shop not found');
       }
-
       const shopId = shopRecord.id;
-
       const costByShopPerPeriod = await Item.findAll({
         attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
         where: {
@@ -113,11 +97,9 @@ class StatisticController {
         group: ['currency_id'],
         raw: true,
       });
-
       if (costByShopPerPeriod.length === 0) {
         return res.status(200).json([{ result: 0 }]);
       }
-
       res.status(200).json(costByShopPerPeriod);
     } catch (error) {
       console.error(error.message);
@@ -128,9 +110,7 @@ class StatisticController {
   async getCostByCategories(req, res, next) {
     try {
       const { ago } = req.query;
-
       const time = getTime(ago);
-
       const costByCategories = await Item.findAll({
         attributes: [
           'Product->Category.title',
@@ -156,11 +136,10 @@ class StatisticController {
         group: ['Product->Category.id'],
         raw: true,
       });
-
       if (costByCategories) {
         res.status(200).json(costByCategories);
       } else {
-        next(createError(404, 'Bad request'));
+        throw badRequest('Bad request');
       }
     } catch (error) {
       console.log(error.message);
@@ -171,9 +150,7 @@ class StatisticController {
   async getCostByShops(req, res, next) {
     try {
       const { ago } = req.query;
-
       const time = getTime(ago);
-
       const costByShop = await Item.findAll({
         attributes: [
           'Shop.title',
@@ -194,11 +171,10 @@ class StatisticController {
         group: ['Shop.title', 'Shop.url'],
         raw: true,
       });
-
       if (costByShop) {
         res.status(200).json(costByShop);
       } else {
-        next(createError(404, 'Bad request'));
+        throw badRequest('Bad request');
       }
     } catch (error) {
       console.log(error.message);
