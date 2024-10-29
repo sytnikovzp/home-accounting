@@ -13,7 +13,7 @@ class CategoryController {
       const allCategories = await getAllCategories();
       res.status(200).json(allCategories);
     } catch (error) {
-      console.log('Get all categories error is: ', error.message);
+      console.log('Get all categories error: ', error.message);
       next(error);
     }
   }
@@ -24,7 +24,7 @@ class CategoryController {
       const category = await getCategoryById(categoryId);
       res.status(200).json(category);
     } catch (error) {
-      console.log('Get category by id error is: ', error.message);
+      console.log('Get category by id error: ', error.message);
       next(error);
     }
   }
@@ -38,7 +38,7 @@ class CategoryController {
       res.status(201).json(newCategory);
     } catch (error) {
       await transaction.rollback();
-      console.log('Creation category error is: ', error.message);
+      console.log('Creation category error: ', error.message);
       next(error);
     }
   }
@@ -57,7 +57,7 @@ class CategoryController {
       res.status(201).json(updatedCategory);
     } catch (error) {
       await transaction.rollback();
-      console.log('Update category error is: ', error.message);
+      console.log('Update category error: ', error.message);
       next(error);
     }
   }
@@ -71,7 +71,7 @@ class CategoryController {
       res.sendStatus(res.statusCode);
     } catch (error) {
       await transaction.rollback();
-      console.log('Deleting category error is: ', error.message);
+      console.log('Deleting category error: ', error.message);
       next(error);
     }
   }

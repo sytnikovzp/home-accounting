@@ -24,7 +24,7 @@ class AuthController {
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(201).json(authData);
     } catch (error) {
-      console.log('Registration error is: ', error.message);
+      console.log('Registration error: ', error.message);
       next(error);
     }
   }
@@ -36,7 +36,7 @@ class AuthController {
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(200).json(authData);
     } catch (error) {
-      console.log('Login error is: ', error.message);
+      console.log('Login error: ', error.message);
       next(error);
     }
   }
@@ -46,7 +46,7 @@ class AuthController {
       res.clearCookie('refreshToken');
       res.sendStatus(res.statusCode);
     } catch (error) {
-      console.log('Logout error is: ', error.message);
+      console.log('Logout error: ', error.message);
       next(error);
     }
   }
@@ -58,7 +58,7 @@ class AuthController {
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(200).json(authData);
     } catch (error) {
-      console.log('Refresh error is: ', error.message);
+      console.log('Refresh error: ', error.message);
       next(error);
     }
   }
@@ -72,7 +72,7 @@ class AuthController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get users error is: ', error.message);
+      console.log('Get users error: ', error.message);
       next(error);
     }
   }
@@ -87,7 +87,7 @@ class AuthController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get user profile error is: ', error.message);
+      console.log('Get user profile error: ', error.message);
       next(error);
     }
   }
@@ -102,7 +102,7 @@ class AuthController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get user profile error is: ', error.message);
+      console.log('Get user profile error: ', error.message);
       next(error);
     }
   }
@@ -113,7 +113,7 @@ class AuthController {
       const userData = await updateUser(id, fullName, email, password, role);
       res.status(201).json(userData);
     } catch (error) {
-      console.log('Update user error is: ', error.message);
+      console.log('Update user error: ', error.message);
       next(error);
     }
   }
@@ -126,7 +126,7 @@ class AuthController {
       await deleteUser(id, currentUser);
       res.sendStatus(res.statusCode);
     } catch (error) {
-      console.log('Deleting user error is: ', error.message);
+      console.log('Deleting user error: ', error.message);
       next(error);
     }
   }

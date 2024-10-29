@@ -5,10 +5,6 @@ const TITLE_NAME_SCHEMA = yup
   .trim('Input cannot contain leading or trailing spaces')
   .min(2, 'Input must be at least 2 characters')
   .max(100, 'Input cannot exceed 100 characters')
-  .matches(
-    /^[A-Z][a-zA-Z0-9\s'–:.-]+(?:\s[A-Z][a-zA-Z0-9\s'–:.-]+)*$/,
-    'Input must start with an uppercase letter [A-Z] and can contain letters [A-z], digits, spaces, apostrophes, and dashes.'
-  )
   .required();
 
 const STRING_NULLABLE_SCHEMA = yup.string().nullable();

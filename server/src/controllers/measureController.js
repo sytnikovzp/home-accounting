@@ -1,21 +1,19 @@
-const { notFound, badRequest } = require('../errors/customErrors');
-const { Measure, sequelize } = require('../db/dbPostgres/models');
-const { formatDate } = require('../utils/sharedFunctions');
+const { sequelize } = require('../db/dbPostgres/models');
+const {
+  getAllMeasures,
+  getMeasureById,
+  createMeasure,
+  updateMeasure,
+  deleteMeasure,
+} = require('../services/measureService');
 
 class MeasureController {
   async getAllMeasures(req, res, next) {
     try {
-      const allMeasures = await Measure.findAll({
-        attributes: ['id', 'title'],
-        raw: true,
-      });
-      if (allMeasures.length > 0) {
-        res.status(200).json(allMeasures);
-      } else {
-        throw notFound('Measures not found');
-      }
+      const allMeasures = await getAllMeasures();
+      res.status(200).json(allMeasures);
     } catch (error) {
-      console.log(error.message);
+      console.log('Get all measures error: ', error.message);
       next(error);
     }
   }
@@ -23,104 +21,57 @@ class MeasureController {
   async getMeasureById(req, res, next) {
     try {
       const { measureId } = req.params;
-      const measureById = await Measure.findByPk(measureId);
-      if (measureById) {
-        const measureData = measureById.toJSON();
-        const formattedMeasure = {
-          ...measureData,
-          description: measureData.description || '',
-          createdAt: formatDate(measureData.createdAt),
-          updatedAt: formatDate(measureData.updatedAt),
-        };
-        res.status(200).json(formattedMeasure);
-      } else {
-        throw notFound('Measure not found');
-      }
+      const measure = await getMeasureById(measureId);
+      res.status(200).json(measure);
     } catch (error) {
-      console.log(error.message);
+      console.log('Get measure by id error: ', error.message);
       next(error);
     }
   }
 
   async createMeasure(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
-      const { title, description: descriptionValue } = req.body;
-      const description = descriptionValue === '' ? null : descriptionValue;
-      const newBody = { title, description };
-      const newMeasure = await Measure.create(newBody, {
-        transaction: t,
-        returning: true,
-      });
-      if (newMeasure) {
-        const measureData = newMeasure.toJSON();
-        const formattedNewMeasure = {
-          ...measureData,
-          description: measureData.description || '',
-        };
-        await t.commit();
-        res.status(201).json(formattedNewMeasure);
-      } else {
-        await t.rollback();
-        throw badRequest('Measure is not created');
-      }
+      const { title, description } = req.body;
+      const newMeasure = await createMeasure(title, description, transaction);
+      await transaction.commit();
+      res.status(201).json(newMeasure);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
+      console.log('Creation measure error: ', error.message);
       next(error);
     }
   }
 
   async updateMeasure(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
-      const { id, title, description: descriptionValue } = req.body;
-      const description = descriptionValue === '' ? null : descriptionValue;
-      const newBody = { title, description };
-      const [affectedRows, [updatedMeasure]] = await Measure.update(newBody, {
-        where: { id },
-        returning: true,
-        transaction: t,
-      });
-      if (affectedRows > 0) {
-        const measureData = updatedMeasure.toJSON();
-        const formattedUpdMeasure = {
-          ...measureData,
-          description: measureData.description || '',
-        };
-        await t.commit();
-        res.status(200).json(formattedUpdMeasure);
-      } else {
-        await t.rollback();
-        throw badRequest('Measure is not updated');
-      }
+      const { id, title, description } = req.body;
+      const updatedMeasure = await updateMeasure(
+        id,
+        title,
+        description,
+        transaction
+      );
+      await transaction.commit();
+      res.status(201).json(updatedMeasure);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
+      console.log('Update measure error: ', error.message);
       next(error);
     }
   }
 
   async deleteMeasure(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const { measureId } = req.params;
-      const deleteMeasure = await Measure.destroy({
-        where: {
-          id: measureId,
-        },
-        transaction: t,
-      });
-      if (deleteMeasure) {
-        await t.commit();
-        res.sendStatus(res.statusCode);
-      } else {
-        await t.rollback();
-        throw badRequest('Measure is not deleted');
-      }
+      await deleteMeasure(measureId, transaction);
+      await transaction.commit();
+      res.sendStatus(res.statusCode);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
+      console.log('Deleting measure error: ', error.message);
       next(error);
     }
   }

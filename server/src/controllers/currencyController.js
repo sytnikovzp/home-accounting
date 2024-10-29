@@ -13,7 +13,7 @@ class CurrencyController {
       const allCurrencies = await getAllCurrencies();
       res.status(200).json(allCurrencies);
     } catch (error) {
-      console.log('Get all currencies error is: ', error.message);
+      console.log('Get all currencies error: ', error.message);
       next(error);
     }
   }
@@ -24,7 +24,7 @@ class CurrencyController {
       const currency = await getCurrencyById(currencyId);
       res.status(200).json(currency);
     } catch (error) {
-      console.log('Get currency by id error is: ', error.message);
+      console.log('Get currency by id error: ', error.message);
       next(error);
     }
   }
@@ -38,7 +38,7 @@ class CurrencyController {
       res.status(201).json(newCurrency);
     } catch (error) {
       await transaction.rollback();
-      console.log('Creation currency error is: ', error.message);
+      console.log('Creation currency error: ', error.message);
       next(error);
     }
   }
@@ -57,7 +57,7 @@ class CurrencyController {
       res.status(201).json(updatedCurrency);
     } catch (error) {
       await transaction.rollback();
-      console.log('Update currency error is: ', error.message);
+      console.log('Update currency error: ', error.message);
       next(error);
     }
   }
@@ -71,7 +71,7 @@ class CurrencyController {
       res.sendStatus(res.statusCode);
     } catch (error) {
       await transaction.rollback();
-      console.log('Deleting currency error is: ', error.message);
+      console.log('Deleting currency error: ', error.message);
       next(error);
     }
   }
