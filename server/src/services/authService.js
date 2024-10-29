@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { format } = require('date-fns');
 // ==============================================================
 const { User, Role } = require('../db/dbMongo/models');
 // ==============================================================
@@ -39,7 +40,7 @@ class AuthService {
         id: user._id,
         fullName: user.fullName,
         email: emailToLower,
-        roleId: user.roleId,
+        role: customerRole.title,
       },
     };
   }
@@ -47,10 +48,11 @@ class AuthService {
   async login(email, password) {
     const emailToLower = emailToLowerCase(email);
     const user = await User.findOne({ email: emailToLower });
-
     if (!user) throw unAuthorizedError();
     const isPassRight = await bcrypt.compare(password, user.password);
     if (!isPassRight) throw unAuthorizedError();
+    const userRole = await Role.findById(user.roleId);
+    if (!userRole) throw notFound('User role not found');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
@@ -58,7 +60,7 @@ class AuthService {
         id: user._id,
         fullName: user.fullName,
         email: emailToLower,
-        roleId: user.roleId,
+        role: userRole.title,
       },
     };
   }
@@ -71,6 +73,8 @@ class AuthService {
     const emailToLower = emailToLowerCase(email);
     const user = await User.findOne({ email: emailToLower });
     if (!user) throw notFound('User not found');
+    const userRole = await Role.findById(user.roleId);
+    if (!userRole) throw notFound('User role not found');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
@@ -78,7 +82,7 @@ class AuthService {
         id: user._id,
         fullName: user.fullName,
         email: emailToLower,
-        roleId: user.roleId,
+        role: userRole.title,
       },
     };
   }
@@ -88,7 +92,20 @@ class AuthService {
     if (users.length === 0) {
       throw notFound('Users not found');
     }
-    return users;
+    const usersWithRoles = await Promise.all(
+      users.map(async (user) => {
+        const role = await Role.findById(user.roleId);
+        return {
+          id: user._id,
+          fullName: user.fullName,
+          email: user.email,
+          role: role ? role.title : null,
+          createdAt: format(new Date(user.createdAt), 'dd MMMM yyyy, HH:mm'),
+          updatedAt: format(new Date(user.updatedAt), 'dd MMMM yyyy, HH:mm'),
+        };
+      })
+    );
+    return usersWithRoles;
   }
 
   async getUserById(id) {
@@ -96,7 +113,15 @@ class AuthService {
     if (!user) {
       throw notFound('User not found');
     }
-    return user;
+    const role = await Role.findById(user.roleId);
+    return {
+      id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      role: role ? role.title : null,
+      createdAt: format(new Date(user.createdAt), 'dd MMMM yyyy, HH:mm'),
+      updatedAt: format(new Date(user.updatedAt), 'dd MMMM yyyy, HH:mm'),
+    };
   }
 
   async getUserByEmail(email) {
@@ -105,7 +130,15 @@ class AuthService {
     if (!user) {
       throw notFound('User not found');
     }
-    return user;
+    const role = await Role.findById(user.roleId);
+    return {
+      id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      role: role ? role.title : null,
+      createdAt: format(new Date(user.createdAt), 'dd MMMM yyyy, HH:mm'),
+      updatedAt: format(new Date(user.updatedAt), 'dd MMMM yyyy, HH:mm'),
+    };
   }
 
   async updateUser(id, fullName, email, password, role) {
@@ -125,9 +158,9 @@ class AuthService {
       updateData.password = hashedPassword;
     }
     if (role) {
-      const roleDocument = await Role.findOne({ title: role });
-      if (!roleDocument) throw notFound('Role not found');
-      updateData.roleId = roleDocument._id;
+      const userRole = await Role.findOne({ title: role });
+      if (!userRole) throw notFound('Role not found');
+      updateData.roleId = userRole._id;
     }
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
@@ -135,12 +168,14 @@ class AuthService {
     if (!updatedUser) {
       throw notFound('User not found');
     }
+    const updatedUserRole = await Role.findById(updatedUser.roleId);
+    if (!updatedUserRole) throw notFound('User role not found');
     return {
       user: {
         id: updatedUser._id,
         fullName: updatedUser.fullName,
         email: updatedUser.email,
-        roleId: updatedUser.roleId,
+        role: updatedUserRole.title,
       },
     };
   }
