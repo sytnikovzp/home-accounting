@@ -7,16 +7,13 @@ class ShopController {
   async getAllShops(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-
       const allShops = await Shop.findAll({
         attributes: ['id', 'title', 'url', 'image'],
         raw: true,
         limit,
         offset,
       });
-
       const shopsCount = await Shop.count();
-
       if (allShops.length > 0) {
         const formattedAllShops = allShops.map((shop) => {
           return {
@@ -26,7 +23,6 @@ class ShopController {
             image: shop['image'] || '',
           };
         });
-
         res
           .status(200)
           .set('X-Total-Count', shopsCount)
@@ -43,12 +39,9 @@ class ShopController {
   async getShopById(req, res, next) {
     try {
       const { shopId } = req.params;
-
       const shopById = await Shop.findByPk(shopId);
-
       if (shopById) {
         const shopData = shopById.toJSON();
-
         const formattedShop = {
           ...shopData,
           description: shopData.description || '',
@@ -63,7 +56,6 @@ class ShopController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         res.status(200).json(formattedShop);
       } else {
         next(createError(404, 'Shop not found'));
@@ -76,7 +68,6 @@ class ShopController {
 
   async createShop(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const {
         title,
@@ -84,21 +75,16 @@ class ShopController {
         url: urlValue,
         image: imageValue,
       } = req.body;
-
       const description = descriptionValue === '' ? null : descriptionValue;
       const url = urlValue === '' ? null : urlValue;
       const image = imageValue === '' ? null : imageValue;
-
       const newBody = { title, description, url, image };
-
       const newShop = await Shop.create(newBody, {
         transaction: t,
         returning: true,
       });
-
       if (newShop) {
         const shopData = newShop.toJSON();
-
         const formattedNewShop = {
           ...shopData,
           description: shopData.description || '',
@@ -113,7 +99,6 @@ class ShopController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(201).json(formattedNewShop);
       } else {
@@ -129,7 +114,6 @@ class ShopController {
 
   async updateShop(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const {
         id,
@@ -138,22 +122,17 @@ class ShopController {
         url: urlValue,
         image: imageValue,
       } = req.body;
-
       const description = descriptionValue === '' ? null : descriptionValue;
       const url = urlValue === '' ? null : urlValue;
       const image = imageValue === '' ? null : imageValue;
-
       const newBody = { title, description, url, image };
-
       const [affectedRows, [updatedShop]] = await Shop.update(newBody, {
         where: { id },
         returning: true,
         transaction: t,
       });
-
       if (affectedRows > 0) {
         const shopData = updatedShop.toJSON();
-
         const formattedUpdShop = {
           ...shopData,
           description: shopData.description || '',
@@ -168,7 +147,6 @@ class ShopController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(200).json(formattedUpdShop);
       } else {
@@ -184,17 +162,14 @@ class ShopController {
 
   async deleteShop(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { shopId } = req.params;
-
       const deleteShop = await Shop.destroy({
         where: {
           id: shopId,
         },
         transaction: t,
       });
-
       if (deleteShop) {
         await t.commit();
         res.sendStatus(res.statusCode);
@@ -211,13 +186,11 @@ class ShopController {
 
   async changeImage(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const {
         file: { filename },
         params: { shopId },
       } = req;
-
       const [affectedRows, [updatedImageShop]] = await Shop.update(
         {
           image: filename,
@@ -232,7 +205,6 @@ class ShopController {
           transaction: t,
         }
       );
-
       if (affectedRows > 0) {
         const formattedUpdImageShop = {
           ...updatedImageShop,
@@ -248,7 +220,6 @@ class ShopController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(200).json(formattedUpdImageShop);
       } else {

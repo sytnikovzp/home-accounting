@@ -10,7 +10,6 @@ class CurrencyController {
         attributes: ['id', 'title'],
         raw: true,
       });
-
       if (allCurrencies.length > 0) {
         res.status(200).json(allCurrencies);
       } else {
@@ -25,12 +24,9 @@ class CurrencyController {
   async getCurrencyById(req, res, next) {
     try {
       const { currencyId } = req.params;
-
       const currencyById = await Currency.findByPk(currencyId);
-
       if (currencyById) {
         const currencyData = currencyById.toJSON();
-
         const formattedCurrency = {
           ...currencyData,
           description: currencyData.description || '',
@@ -43,7 +39,6 @@ class CurrencyController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         res.status(200).json(formattedCurrency);
       } else {
         next(createError(404, 'Currency not found'));
@@ -56,22 +51,16 @@ class CurrencyController {
 
   async createCurrency(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { title, description: descriptionValue } = req.body;
-
       const description = descriptionValue === '' ? null : descriptionValue;
-
       const newBody = { title, description };
-
       const newCurrency = await Currency.create(newBody, {
         transaction: t,
         returning: true,
       });
-
       if (newCurrency) {
         const currencyData = newCurrency.toJSON();
-
         const formattedNewCurrency = {
           ...currencyData,
           description: currencyData.description || '',
@@ -84,7 +73,6 @@ class CurrencyController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(201).json(formattedNewCurrency);
       } else {
@@ -100,23 +88,17 @@ class CurrencyController {
 
   async updateCurrency(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { id, title, description: descriptionValue } = req.body;
-
       const description = descriptionValue === '' ? null : descriptionValue;
-
       const newBody = { title, description };
-
       const [affectedRows, [updatedCurrency]] = await Currency.update(newBody, {
         where: { id },
         returning: true,
         transaction: t,
       });
-
       if (affectedRows > 0) {
         const currencyData = updatedCurrency.toJSON();
-
         const formattedUpdCurrency = {
           ...currencyData,
           description: currencyData.description || '',
@@ -129,7 +111,6 @@ class CurrencyController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(200).json(formattedUpdCurrency);
       } else {
@@ -145,17 +126,14 @@ class CurrencyController {
 
   async deleteCurrency(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { currencyId } = req.params;
-
       const deleteCurrency = await Currency.destroy({
         where: {
           id: currencyId,
         },
         transaction: t,
       });
-
       if (deleteCurrency) {
         await t.commit();
         res.sendStatus(res.statusCode);

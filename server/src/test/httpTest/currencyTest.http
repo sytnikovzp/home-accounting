@@ -6,7 +6,7 @@ Content-Type: application/json
 GET http://localhost:5000/api/currencies/5 HTTP/1.1
 Content-Type: application/json
 
-### Post currency
+### Create currency
 POST http://localhost:5000/api/currencies HTTP/1.1
 Content-Type: application/json
 
@@ -15,7 +15,7 @@ Content-Type: application/json
   "description": ""
 }
 
-### Put currency
+### Update currency
 PUT http://localhost:5000/api/currencies HTTP/1.1
 Content-Type: application/json
 

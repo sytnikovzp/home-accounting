@@ -8,7 +8,6 @@ class ProductController {
   async getAllProducts(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-
       const allProducts = await Product.findAll({
         attributes: ['id', 'title'],
         include: [
@@ -21,9 +20,7 @@ class ProductController {
         limit,
         offset,
       });
-
       const productsCount = await Product.count();
-
       const formattedProducts = allProducts.map((product) => {
         return {
           id: product.id,
@@ -31,7 +28,6 @@ class ProductController {
           category: product['Category.title'] || '',
         };
       });
-
       if (allProducts.length > 0) {
         res
           .status(200)
@@ -49,7 +45,6 @@ class ProductController {
   async getProductById(req, res, next) {
     try {
       const { productId } = req.params;
-
       const productById = await Product.findByPk(productId, {
         attributes: {
           exclude: ['categoryId', 'category_id'],
@@ -61,10 +56,8 @@ class ProductController {
           },
         ],
       });
-
       if (productById) {
         const productData = productById.toJSON();
-
         const formattedProduct = {
           ...productData,
           description: productData.description || '',
@@ -78,9 +71,7 @@ class ProductController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         delete formattedProduct.Category;
-
         res.status(200).json(formattedProduct);
       } else {
         next(createError(404, 'Product not found'));
@@ -93,45 +84,39 @@ class ProductController {
 
   async createProduct(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const {
         title,
         description: descriptionValue,
         category: categoryValue,
       } = req.body;
-
       const description = descriptionValue === '' ? null : descriptionValue;
-      const category = categoryValue === '' ? null : categoryValue;
-
-      const categoryRecord = category
+      const categoryRecord = categoryValue
         ? await Category.findOne({
-            where: { title: category },
-            attributes: ['id'],
+            where: { title: categoryValue },
+            attributes: ['id', 'title'],
             raw: true,
           })
         : null;
-
-      if (category && !categoryRecord) {
+      if (categoryValue && !categoryRecord) {
         throw notFound('Category not found');
       }
-
-      const categoryId = categoryRecord ? categoryRecord.id : null;
-
-      const newBody = { title, description, categoryId };
-
+      const newBody = {
+        title,
+        description,
+        categoryId: categoryRecord ? categoryRecord.id : null,
+      };
       const newProduct = await Product.create(newBody, {
         transaction: t,
         returning: true,
       });
-
       if (newProduct) {
         const productData = newProduct.toJSON();
-
         const formattedNewProduct = {
-          ...productData,
+          id: productData.id,
+          title: productData.title,
           description: productData.description || '',
-          categoryId: productData.categoryId || '',
+          category: categoryRecord ? categoryRecord.title : '',
           createdAt: format(
             new Date(productData.createdAt),
             'dd MMMM yyyy, HH:mm'
@@ -141,7 +126,6 @@ class ProductController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(201).json(formattedNewProduct);
       } else {
@@ -157,7 +141,6 @@ class ProductController {
 
   async updateProduct(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const {
         id,
@@ -165,39 +148,34 @@ class ProductController {
         description: descriptionValue,
         category: categoryValue,
       } = req.body;
-
       const description = descriptionValue === '' ? null : descriptionValue;
-      const category = categoryValue === '' ? null : categoryValue;
-
-      const categoryRecord = category
+      const categoryRecord = categoryValue
         ? await Category.findOne({
-            where: { title: category },
-            attributes: ['id'],
+            where: { title: categoryValue },
+            attributes: ['id', 'title'],
             raw: true,
           })
         : null;
-
-      if (category && !categoryRecord) {
+      if (categoryValue && !categoryRecord) {
         throw notFound('Category not found');
       }
-
-      const categoryId = categoryRecord ? categoryRecord.id : null;
-
-      const newBody = { title, description, categoryId };
-
+      const newBody = {
+        title,
+        description,
+        categoryId: categoryRecord ? categoryRecord.id : null,
+      };
       const [affectedRows, [updatedProduct]] = await Product.update(newBody, {
         where: { id },
         returning: true,
         transaction: t,
       });
-
       if (affectedRows > 0) {
         const productData = updatedProduct.toJSON();
-
         const formattedUpdProduct = {
-          ...productData,
+          id: productData.id,
+          title: productData.title,
           description: productData.description || '',
-          categoryId: productData.category_id || '',
+          category: categoryRecord ? categoryRecord.title : '',
           createdAt: format(
             new Date(productData.createdAt),
             'dd MMMM yyyy, HH:mm'
@@ -207,9 +185,6 @@ class ProductController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
-        delete formattedUpdProduct.category_id;
-
         await t.commit();
         res.status(200).json(formattedUpdProduct);
       } else {
@@ -225,17 +200,14 @@ class ProductController {
 
   async deleteProduct(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { productId } = req.params;
-
       const deleteProduct = await Product.destroy({
         where: {
           id: productId,
         },
         transaction: t,
       });
-
       if (deleteProduct) {
         await t.commit();
         res.sendStatus(res.statusCode);

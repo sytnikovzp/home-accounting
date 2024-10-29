@@ -10,7 +10,6 @@ class CategoryController {
         attributes: ['id', 'title'],
         raw: true,
       });
-
       if (allCategories.length > 0) {
         res.status(200).json(allCategories);
       } else {
@@ -25,12 +24,9 @@ class CategoryController {
   async getCategoryById(req, res, next) {
     try {
       const { categoryId } = req.params;
-
       const categoryById = await Category.findByPk(categoryId);
-
       if (categoryById) {
         const categoryData = categoryById.toJSON();
-
         const formattedCategory = {
           ...categoryData,
           description: categoryData.description || '',
@@ -43,7 +39,6 @@ class CategoryController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         res.status(200).json(formattedCategory);
       } else {
         next(createError(404, 'Category not found'));
@@ -56,22 +51,16 @@ class CategoryController {
 
   async createCategory(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { title, description: descriptionValue } = req.body;
-
       const description = descriptionValue === '' ? null : descriptionValue;
-
       const newBody = { title, description };
-
       const newCategory = await Category.create(newBody, {
         transaction: t,
         returning: true,
       });
-
       if (newCategory) {
         const categoryData = newCategory.toJSON();
-
         const formattedNewCategory = {
           ...categoryData,
           description: categoryData.description || '',
@@ -84,7 +73,6 @@ class CategoryController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(201).json(formattedNewCategory);
       } else {
@@ -100,23 +88,17 @@ class CategoryController {
 
   async updateCategory(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { id, title, description: descriptionValue } = req.body;
-
       const description = descriptionValue === '' ? null : descriptionValue;
-
       const newBody = { title, description };
-
       const [affectedRows, [updatedCategory]] = await Category.update(newBody, {
         where: { id },
         returning: true,
         transaction: t,
       });
-
       if (affectedRows > 0) {
         const categoryData = updatedCategory.toJSON();
-
         const formattedUpdCategory = {
           ...categoryData,
           description: categoryData.description || '',
@@ -129,7 +111,6 @@ class CategoryController {
             'dd MMMM yyyy, HH:mm'
           ),
         };
-
         await t.commit();
         res.status(200).json(formattedUpdCategory);
       } else {
@@ -145,17 +126,14 @@ class CategoryController {
 
   async deleteCategory(req, res, next) {
     const t = await sequelize.transaction();
-
     try {
       const { categoryId } = req.params;
-
       const deleteCategory = await Category.destroy({
         where: {
           id: categoryId,
         },
         transaction: t,
       });
-
       if (deleteCategory) {
         await t.commit();
         res.sendStatus(res.statusCode);
