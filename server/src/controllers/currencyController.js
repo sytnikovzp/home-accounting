@@ -1,7 +1,6 @@
-const { format } = require('date-fns');
-// ==============================================================
 const { notFound, badRequest } = require('../errors/customErrors');
 const { Currency, sequelize } = require('../db/dbPostgres/models');
+const { formatDate } = require('../utils/sharedFunctions');
 
 class CurrencyController {
   async getAllCurrencies(req, res, next) {
@@ -30,14 +29,8 @@ class CurrencyController {
         const formattedCurrency = {
           ...currencyData,
           description: currencyData.description || '',
-          createdAt: format(
-            new Date(currencyData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(currencyData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
+          createdAt: formatDate(currencyData.createdAt),
+          updatedAt: formatDate(currencyData.updatedAt),
         };
         res.status(200).json(formattedCurrency);
       } else {
@@ -64,14 +57,6 @@ class CurrencyController {
         const formattedNewCurrency = {
           ...currencyData,
           description: currencyData.description || '',
-          createdAt: format(
-            new Date(currencyData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(currencyData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(201).json(formattedNewCurrency);
@@ -102,14 +87,6 @@ class CurrencyController {
         const formattedUpdCurrency = {
           ...currencyData,
           description: currencyData.description || '',
-          createdAt: format(
-            new Date(currencyData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(currencyData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(200).json(formattedUpdCurrency);

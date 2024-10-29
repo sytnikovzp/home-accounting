@@ -1,7 +1,6 @@
-const { format } = require('date-fns');
-// ==============================================================
 const { notFound, badRequest } = require('../errors/customErrors');
 const { Measure, sequelize } = require('../db/dbPostgres/models');
+const { formatDate } = require('../utils/sharedFunctions');
 
 class MeasureController {
   async getAllMeasures(req, res, next) {
@@ -30,14 +29,8 @@ class MeasureController {
         const formattedMeasure = {
           ...measureData,
           description: measureData.description || '',
-          createdAt: format(
-            new Date(measureData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(measureData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
+          createdAt: formatDate(measureData.createdAt),
+          updatedAt: formatDate(measureData.updatedAt),
         };
         res.status(200).json(formattedMeasure);
       } else {
@@ -64,14 +57,6 @@ class MeasureController {
         const formattedNewMeasure = {
           ...measureData,
           description: measureData.description || '',
-          createdAt: format(
-            new Date(measureData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(measureData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(201).json(formattedNewMeasure);
@@ -102,14 +87,6 @@ class MeasureController {
         const formattedUpdMeasure = {
           ...measureData,
           description: measureData.description || '',
-          createdAt: format(
-            new Date(measureData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(measureData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(200).json(formattedUpdMeasure);

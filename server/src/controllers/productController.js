@@ -1,7 +1,6 @@
-const { format } = require('date-fns');
-// ==============================================================
 const { notFound, badRequest } = require('../errors/customErrors');
 const { Product, Category, sequelize } = require('../db/dbPostgres/models');
+const { formatDate } = require('../utils/sharedFunctions');
 
 class ProductController {
   async getAllProducts(req, res, next) {
@@ -61,14 +60,8 @@ class ProductController {
           ...productData,
           description: productData.description || '',
           category: productData.Category?.title || '',
-          createdAt: format(
-            new Date(productData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(productData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
+          createdAt: formatDate(productData.createdAt),
+          updatedAt: formatDate(productData.updatedAt),
         };
         delete formattedProduct.Category;
         res.status(200).json(formattedProduct);
@@ -116,14 +109,6 @@ class ProductController {
           title: productData.title,
           description: productData.description || '',
           category: categoryRecord ? categoryRecord.title : '',
-          createdAt: format(
-            new Date(productData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(productData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(201).json(formattedNewProduct);
@@ -175,14 +160,6 @@ class ProductController {
           title: productData.title,
           description: productData.description || '',
           category: categoryRecord ? categoryRecord.title : '',
-          createdAt: format(
-            new Date(productData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(productData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(200).json(formattedUpdProduct);

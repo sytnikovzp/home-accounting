@@ -1,5 +1,3 @@
-const { format } = require('date-fns');
-// ==============================================================
 const { notFound, badRequest } = require('../errors/customErrors');
 const {
   Item,
@@ -9,6 +7,7 @@ const {
   Currency,
   sequelize,
 } = require('../db/dbPostgres/models');
+const { formatDate } = require('../utils/sharedFunctions');
 
 class ItemController {
   async getAllItems(req, res, next) {
@@ -108,14 +107,8 @@ class ItemController {
           shop: itemData.Shop?.title || '',
           measure: itemData.Measure?.title || '',
           currency: itemData.Currency?.title || '',
-          createdAt: format(
-            new Date(itemData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(itemData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
+          createdAt: formatDate(itemData.createdAt),
+          updatedAt: formatDate(itemData.updatedAt),
         };
         delete formattedItem.Product;
         delete formattedItem.Shop;
@@ -183,14 +176,6 @@ class ItemController {
           shop: shopRecord ? shopRecord.title : '',
           measure: measureRecord ? measureRecord.title : '',
           currency: currencyRecord ? currencyRecord.title : '',
-          createdAt: format(
-            new Date(itemData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(itemData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(201).json(formattedNewItem);
@@ -261,14 +246,6 @@ class ItemController {
           shop: shopRecord ? shopRecord.title : '',
           measure: measureRecord ? measureRecord.title : '',
           currency: currencyRecord ? currencyRecord.title : '',
-          createdAt: format(
-            new Date(itemData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(itemData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(200).json(formattedUpdItem);

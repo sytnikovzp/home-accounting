@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const { format } = require('date-fns');
 // ==============================================================
 const { User, Role } = require('../db/dbMongo/models');
 // ==============================================================
@@ -8,7 +7,7 @@ const {
     HASH: { SALT_ROUNDS },
   },
 } = require('../constants');
-const { emailToLowerCase } = require('../utils/sharedFunctions');
+const { emailToLowerCase, formatDate } = require('../utils/sharedFunctions');
 // ==============================================================
 const { generateTokens, validateRefreshToken } = require('./tokenService');
 // ==============================================================
@@ -117,8 +116,8 @@ class AuthService {
       fullName: user.fullName,
       email: user.email,
       role: role.title || '',
-      createdAt: format(new Date(user.createdAt), 'dd MMMM yyyy, HH:mm'),
-      updatedAt: format(new Date(user.updatedAt), 'dd MMMM yyyy, HH:mm'),
+      createdAt: formatDate(user.createdAt),
+      updatedAt: formatDate(user.updatedAt),
     };
   }
 
@@ -134,8 +133,8 @@ class AuthService {
       fullName: user.fullName,
       email: user.email,
       role: role.title || '',
-      createdAt: format(new Date(user.createdAt), 'dd MMMM yyyy, HH:mm'),
-      updatedAt: format(new Date(user.updatedAt), 'dd MMMM yyyy, HH:mm'),
+      createdAt: formatDate(user.createdAt),
+      updatedAt: formatDate(user.updatedAt),
     };
   }
 

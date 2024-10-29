@@ -1,7 +1,6 @@
-const { format } = require('date-fns');
-// ==============================================================
 const { Category } = require('../db/dbPostgres/models');
 const { notFound, badRequest } = require('../errors/customErrors');
+const { formatDate } = require('../utils/sharedFunctions');
 
 class CategoryService {
   async getAllCategories() {
@@ -24,14 +23,8 @@ class CategoryService {
     return {
       ...categoryData,
       description: categoryData.description || '',
-      createdAt: format(
-        new Date(categoryData.createdAt),
-        'dd MMMM yyyy, HH:mm'
-      ),
-      updatedAt: format(
-        new Date(categoryData.updatedAt),
-        'dd MMMM yyyy, HH:mm'
-      ),
+      createdAt: formatDate(categoryData.createdAt),
+      updatedAt: formatDate(categoryData.updatedAt),
     };
   }
 
@@ -49,8 +42,6 @@ class CategoryService {
       id: newCategory.id,
       title: newCategory.title,
       description: newCategory.description || '',
-      createdAt: format(new Date(newCategory.createdAt), 'dd MMMM yyyy, HH:mm'),
-      updatedAt: format(new Date(newCategory.updatedAt), 'dd MMMM yyyy, HH:mm'),
     };
   }
 
@@ -75,14 +66,6 @@ class CategoryService {
       id: updatedCategory.id,
       title: updatedCategory.title,
       description: updatedCategory.description || '',
-      createdAt: format(
-        new Date(updatedCategory.createdAt),
-        'dd MMMM yyyy, HH:mm'
-      ),
-      updatedAt: format(
-        new Date(updatedCategory.updatedAt),
-        'dd MMMM yyyy, HH:mm'
-      ),
     };
   }
 

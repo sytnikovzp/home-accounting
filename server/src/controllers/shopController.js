@@ -1,7 +1,6 @@
-const { format } = require('date-fns');
-// ==============================================================
 const { notFound, badRequest } = require('../errors/customErrors');
 const { Shop, sequelize } = require('../db/dbPostgres/models');
+const { formatDate } = require('../utils/sharedFunctions');
 
 class ShopController {
   async getAllShops(req, res, next) {
@@ -47,14 +46,8 @@ class ShopController {
           description: shopData.description || '',
           url: shopData.url || '',
           image: shopData.image || '',
-          createdAt: format(
-            new Date(shopData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(shopData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
+          createdAt: formatDate(shopData.createdAt),
+          updatedAt: formatDate(shopData.updatedAt),
         };
         res.status(200).json(formattedShop);
       } else {
@@ -90,14 +83,6 @@ class ShopController {
           description: shopData.description || '',
           url: shopData.url || '',
           image: shopData.image || '',
-          createdAt: format(
-            new Date(shopData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(shopData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(201).json(formattedNewShop);
@@ -138,14 +123,6 @@ class ShopController {
           description: shopData.description || '',
           url: shopData.url || '',
           image: shopData.image || '',
-          createdAt: format(
-            new Date(shopData.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(shopData.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(200).json(formattedUpdShop);
@@ -211,14 +188,6 @@ class ShopController {
           description: updatedImageShop.description || '',
           url: updatedImageShop.url || '',
           image: updatedImageShop.image || '',
-          createdAt: format(
-            new Date(updatedImageShop.createdAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
-          updatedAt: format(
-            new Date(updatedImageShop.updatedAt),
-            'dd MMMM yyyy, HH:mm'
-          ),
         };
         await t.commit();
         res.status(200).json(formattedUpdImageShop);
