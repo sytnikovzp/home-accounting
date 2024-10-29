@@ -50,6 +50,15 @@ class CategoryService {
     if (!categoryById) {
       throw notFound('Category not found');
     }
+    const currentTitle = categoryById.title;
+    if (title !== currentTitle) {
+      const existingCategory = await Category.findOne({ where: { title } });
+      if (existingCategory) {
+        throw badRequest('This category already exists');
+      }
+    } else {
+      title = currentTitle;
+    }
     const updateData = { title };
     if (descriptionValue !== undefined) {
       const description = descriptionValue === '' ? null : descriptionValue;

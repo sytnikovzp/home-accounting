@@ -22,7 +22,7 @@ Content-Type: application/json
 {
   "id": 16,
   "title": "Updated Category",
-  "description": ""
+  "description": "test description"
 }
 
 ### Delete category

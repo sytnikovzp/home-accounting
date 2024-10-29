@@ -1,21 +1,19 @@
-const { notFound, badRequest } = require('../errors/customErrors');
-const { Currency, sequelize } = require('../db/dbPostgres/models');
-const { formatDate } = require('../utils/sharedFunctions');
+const { sequelize } = require('../db/dbPostgres/models');
+const {
+  getAllCurrencies,
+  getCurrencyById,
+  createCurrency,
+  updateCurrency,
+  deleteCurrency,
+} = require('../services/currencyService');
 
 class CurrencyController {
   async getAllCurrencies(req, res, next) {
     try {
-      const allCurrencies = await Currency.findAll({
-        attributes: ['id', 'title'],
-        raw: true,
-      });
-      if (allCurrencies.length > 0) {
-        res.status(200).json(allCurrencies);
-      } else {
-        throw notFound('Currencies not found');
-      }
+      const allCurrencies = await getAllCurrencies();
+      res.status(200).json(allCurrencies);
     } catch (error) {
-      console.log(error.message);
+      console.log('Get all currencies error is: ', error.message);
       next(error);
     }
   }
@@ -23,104 +21,57 @@ class CurrencyController {
   async getCurrencyById(req, res, next) {
     try {
       const { currencyId } = req.params;
-      const currencyById = await Currency.findByPk(currencyId);
-      if (currencyById) {
-        const currencyData = currencyById.toJSON();
-        const formattedCurrency = {
-          ...currencyData,
-          description: currencyData.description || '',
-          createdAt: formatDate(currencyData.createdAt),
-          updatedAt: formatDate(currencyData.updatedAt),
-        };
-        res.status(200).json(formattedCurrency);
-      } else {
-        throw notFound('Currency not found');
-      }
+      const currency = await getCurrencyById(currencyId);
+      res.status(200).json(currency);
     } catch (error) {
-      console.log(error.message);
+      console.log('Get currency by id error is: ', error.message);
       next(error);
     }
   }
 
   async createCurrency(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
-      const { title, description: descriptionValue } = req.body;
-      const description = descriptionValue === '' ? null : descriptionValue;
-      const newBody = { title, description };
-      const newCurrency = await Currency.create(newBody, {
-        transaction: t,
-        returning: true,
-      });
-      if (newCurrency) {
-        const currencyData = newCurrency.toJSON();
-        const formattedNewCurrency = {
-          ...currencyData,
-          description: currencyData.description || '',
-        };
-        await t.commit();
-        res.status(201).json(formattedNewCurrency);
-      } else {
-        await t.rollback();
-        throw badRequest('Currency is not created');
-      }
+      const { title, description } = req.body;
+      const newCurrency = await createCurrency(title, description, transaction);
+      await transaction.commit();
+      res.status(201).json(newCurrency);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
+      console.log('Creation currency error is: ', error.message);
       next(error);
     }
   }
 
   async updateCurrency(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
-      const { id, title, description: descriptionValue } = req.body;
-      const description = descriptionValue === '' ? null : descriptionValue;
-      const newBody = { title, description };
-      const [affectedRows, [updatedCurrency]] = await Currency.update(newBody, {
-        where: { id },
-        returning: true,
-        transaction: t,
-      });
-      if (affectedRows > 0) {
-        const currencyData = updatedCurrency.toJSON();
-        const formattedUpdCurrency = {
-          ...currencyData,
-          description: currencyData.description || '',
-        };
-        await t.commit();
-        res.status(200).json(formattedUpdCurrency);
-      } else {
-        await t.rollback();
-        throw badRequest('Currency is not updated');
-      }
+      const { id, title, description } = req.body;
+      const updatedCurrency = await updateCurrency(
+        id,
+        title,
+        description,
+        transaction
+      );
+      await transaction.commit();
+      res.status(201).json(updatedCurrency);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
+      console.log('Update currency error is: ', error.message);
       next(error);
     }
   }
 
   async deleteCurrency(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const { currencyId } = req.params;
-      const deleteCurrency = await Currency.destroy({
-        where: {
-          id: currencyId,
-        },
-        transaction: t,
-      });
-      if (deleteCurrency) {
-        await t.commit();
-        res.sendStatus(res.statusCode);
-      } else {
-        await t.rollback();
-        throw badRequest('Currency is not deleted');
-      }
+      await deleteCurrency(currencyId, transaction);
+      await transaction.commit();
+      res.sendStatus(res.statusCode);
     } catch (error) {
-      console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
+      console.log('Deleting currency error is: ', error.message);
       next(error);
     }
   }
