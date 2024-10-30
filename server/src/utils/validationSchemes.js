@@ -47,9 +47,9 @@ const ITEM_VALIDATION_SCHEMA = yup.object().shape({
   product: TITLE_NAME_SCHEMA,
   amount: DECIMAL_SCHEMA,
   price: DECIMAL_SCHEMA,
-  shop: STRING_NULLABLE_SCHEMA,
-  measure: STRING_NULLABLE_SCHEMA,
-  currency: STRING_NULLABLE_SCHEMA,
+  shop: TITLE_NAME_SCHEMA,
+  measure: TITLE_NAME_SCHEMA,
+  currency: TITLE_NAME_SCHEMA,
 });
 
 const PRODUCT_VALIDATION_SCHEMA = yup.object().shape({

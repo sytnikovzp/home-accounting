@@ -120,7 +120,7 @@ class AuthController {
       await deleteUser(id, currentUser);
       res.sendStatus(res.statusCode);
     } catch (error) {
-      console.log('Deleting user error: ', error.message);
+      console.log('Delete user error: ', error.message);
       next(error);
     }
   }

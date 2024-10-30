@@ -38,7 +38,7 @@ class CategoryController {
       res.status(201).json(newCategory);
     } catch (error) {
       await transaction.rollback();
-      console.log('Creation category error: ', error.message);
+      console.log('Create category error: ', error.message);
       next(error);
     }
   }
@@ -71,7 +71,7 @@ class CategoryController {
       res.sendStatus(res.statusCode);
     } catch (error) {
       await transaction.rollback();
-      console.log('Deleting category error: ', error.message);
+      console.log('Delete category error: ', error.message);
       next(error);
     }
   }

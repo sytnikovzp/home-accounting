@@ -6,6 +6,7 @@ const {
     HASH: { SALT_ROUNDS },
   },
 } = require('../constants');
+const { notFound } = require('../errors/customErrors');
 
 module.exports.hashPassword = async function (password) {
   return await bcrypt.hash(password, SALT_ROUNDS);
@@ -36,4 +37,15 @@ module.exports.getTime = function (ago = 'allTime') {
 
 module.exports.emailToLowerCase = function (email) {
   return email.toLowerCase();
+};
+
+module.exports.getRecordByTitle = async function (Model, title) {
+  if (!title) return null;
+  const record = await Model.findOne({
+    where: { title },
+    attributes: ['id', 'title'],
+    raw: true,
+  });
+  if (!record) throw notFound(`${Model.name} not found`);
+  return record;
 };

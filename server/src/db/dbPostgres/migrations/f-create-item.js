@@ -20,39 +20,47 @@ module.exports = {
       },
       amount: {
         type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.0,
       },
       price: {
         type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.0,
       },
       summ: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
+        defaultValue: 0.0,
       },
       shop_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'shops',
           key: 'id',
         },
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
       measure_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'measures',
           key: 'id',
         },
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
       currency_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'currencies',
           key: 'id',
         },
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
       created_at: {

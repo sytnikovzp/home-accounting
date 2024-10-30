@@ -38,7 +38,7 @@ class MeasureController {
       res.status(201).json(newMeasure);
     } catch (error) {
       await transaction.rollback();
-      console.log('Creation measure error: ', error.message);
+      console.log('Create measure error: ', error.message);
       next(error);
     }
   }
@@ -71,7 +71,7 @@ class MeasureController {
       res.sendStatus(res.statusCode);
     } catch (error) {
       await transaction.rollback();
-      console.log('Deleting measure error: ', error.message);
+      console.log('Delete measure error: ', error.message);
       next(error);
     }
   }

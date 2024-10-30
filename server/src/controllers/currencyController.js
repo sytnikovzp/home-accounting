@@ -38,7 +38,7 @@ class CurrencyController {
       res.status(201).json(newCurrency);
     } catch (error) {
       await transaction.rollback();
-      console.log('Creation currency error: ', error.message);
+      console.log('Create currency error: ', error.message);
       next(error);
     }
   }
@@ -71,7 +71,7 @@ class CurrencyController {
       res.sendStatus(res.statusCode);
     } catch (error) {
       await transaction.rollback();
-      console.log('Deleting currency error: ', error.message);
+      console.log('Delete currency error: ', error.message);
       next(error);
     }
   }

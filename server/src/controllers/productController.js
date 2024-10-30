@@ -46,7 +46,7 @@ class ProductController {
       res.status(201).json(newProduct);
     } catch (error) {
       await transaction.rollback();
-      console.error('Creation product error: ', error.message);
+      console.error('Create product error: ', error.message);
       next(error);
     }
   }
@@ -80,7 +80,7 @@ class ProductController {
       res.sendStatus(res.statusCode);
     } catch (error) {
       await transaction.rollback();
-      console.error('Deleting product error: ', error.message);
+      console.error('Delete product error: ', error.message);
       next(error);
     }
   }

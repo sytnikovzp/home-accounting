@@ -10,17 +10,17 @@ module.exports = (sequelize, DataTypes) => {
       });
       Item.belongsTo(models.Shop, {
         foreignKey: 'shop_id',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
       Item.belongsTo(models.Measure, {
         foreignKey: 'measure_id',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
       Item.belongsTo(models.Currency, {
         foreignKey: 'currency_id',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
     }
@@ -31,15 +31,33 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      amount: DataTypes.DECIMAL(10, 2),
-      price: DataTypes.DECIMAL(10, 2),
+      amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.0,
+      },
+      price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.0,
+      },
       summ: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
+        defaultValue: 0.0,
       },
-      shopId: DataTypes.INTEGER,
-      measureId: DataTypes.INTEGER,
-      currencyId: DataTypes.INTEGER,
+      shopId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      measureId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      currencyId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       sequelize,

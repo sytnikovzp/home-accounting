@@ -1,17 +1,12 @@
 const { Product, Category } = require('../db/dbPostgres/models');
 const { notFound, badRequest } = require('../errors/customErrors');
-const { formatDate } = require('../utils/sharedFunctions');
+const { formatDate, getRecordByTitle } = require('../utils/sharedFunctions');
 
 class ProductService {
   async getAllProducts(limit, offset) {
     const allProducts = await Product.findAll({
       attributes: ['id', 'title'],
-      include: [
-        {
-          model: Category,
-          attributes: ['title'],
-        },
-      ],
+      include: [{ model: Category, attributes: ['title'] }],
       raw: true,
       limit,
       offset,
@@ -27,7 +22,7 @@ class ProductService {
 
   async getProductById(productId) {
     const productById = await Product.findByPk(productId, {
-      attributes: { exclude: ['categoryId', 'category_id'] },
+      attributes: { exclude: ['categoryId'] },
       include: [{ model: Category, attributes: ['title'] }],
     });
     if (!productById) throw notFound('Product not found');
@@ -46,24 +41,25 @@ class ProductService {
     const existingProduct = await Product.findOne({ where: { title } });
     if (existingProduct) throw badRequest('This product already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
-    const categoryRecord = category
-      ? await Category.findOne({
-          where: { title: category },
-          attributes: ['id', 'title'],
-          raw: true,
-        })
-      : null;
-    if (category && !categoryRecord) throw notFound('Category not found');
-    const newProduct = await Product.create(
-      { title, description, categoryId: categoryRecord?.id || null },
-      { transaction, returning: true }
-    );
+    let categoryRecord = null;
+    if (category !== undefined) {
+      categoryRecord = await getRecordByTitle(Category, category);
+    }
+    const newProductData = {
+      title,
+      description,
+      categoryId: categoryRecord?.id || null,
+    };
+    const newProduct = await Product.create(newProductData, {
+      transaction,
+      returning: true,
+    });
     if (!newProduct) throw badRequest('Product is not created');
     return {
       id: newProduct.id,
       title: newProduct.title,
       description: newProduct.description || '',
-      category: categoryRecord ? categoryRecord.title : '',
+      category: categoryRecord?.title || '',
     };
   }
 
@@ -84,13 +80,7 @@ class ProductService {
     }
     let categoryRecord = null;
     if (category !== undefined) {
-      categoryRecord = category
-        ? await Category.findOne({
-            where: { title: category },
-            attributes: ['id', 'title'],
-            raw: true,
-          })
-        : null;
+      categoryRecord = await getRecordByTitle(Category, category);
       if (category && !categoryRecord) throw notFound('Category not found');
       updateData.categoryId = categoryRecord?.id || null;
     }
@@ -104,7 +94,7 @@ class ProductService {
       id: updatedProduct.id,
       title: updatedProduct.title,
       description: updatedProduct.description || '',
-      category: categoryRecord ? categoryRecord.title : '',
+      category: categoryRecord?.title || '',
     };
   }
 

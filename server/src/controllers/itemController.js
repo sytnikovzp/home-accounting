@@ -1,60 +1,22 @@
-const { notFound, badRequest } = require('../errors/customErrors');
+const { sequelize } = require('../db/dbPostgres/models');
+const { Item } = require('../db/dbPostgres/models');
 const {
-  Item,
-  Product,
-  Shop,
-  Measure,
-  Currency,
-  sequelize,
-} = require('../db/dbPostgres/models');
-const { formatDate } = require('../utils/sharedFunctions');
+  getAllItems,
+  getItemById,
+  createItem,
+  updateItem,
+  deleteItem,
+} = require('../services/itemService');
 
 class ItemController {
   async getAllItems(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const allItems = await Item.findAll({
-        attributes: ['id', 'amount', 'price', 'summ'],
-        include: [
-          {
-            model: Product,
-            attributes: ['title'],
-          },
-          {
-            model: Shop,
-            attributes: ['title'],
-          },
-          {
-            model: Measure,
-            attributes: ['title'],
-          },
-          {
-            model: Currency,
-            attributes: ['title'],
-          },
-        ],
-        raw: true,
-        limit,
-        offset,
-      });
-      const itemsCount = await Item.count();
-      const formattedItems = allItems.map((item) => {
-        return {
-          id: item.id,
-          product: item['Product.title'] || '',
-          amount: item.amount,
-          price: item.price,
-          summ: item.summ,
-          shop: item['Shop.title'] || '',
-          measure: item['Measure.title'] || '',
-          currency: item['Currency.title'] || '',
-        };
-      });
-      if (allItems.length > 0) {
-        res.status(200).set('X-Total-Count', itemsCount).json(formattedItems);
-      } else throw notFound('Items not found');
+      const allItems = await getAllItems(limit, offset);
+      const itemCount = await Item.count();
+      res.status(200).set('X-Total-Count', itemCount).json(allItems);
     } catch (error) {
-      console.log(error.message);
+      console.error('Get all items error:', error.message);
       next(error);
     }
   }
@@ -62,60 +24,10 @@ class ItemController {
   async getItemById(req, res, next) {
     try {
       const { itemId } = req.params;
-      const itemById = await Item.findByPk(itemId, {
-        attributes: {
-          exclude: [
-            'productId',
-            'product_id',
-            'shopId',
-            'shop_id',
-            'measureId',
-            'measure_id',
-            'currencyId',
-            'currency_id',
-          ],
-        },
-        include: [
-          {
-            model: Product,
-            attributes: ['title'],
-          },
-          {
-            model: Shop,
-            attributes: ['title'],
-          },
-          {
-            model: Measure,
-            attributes: ['title'],
-          },
-          {
-            model: Currency,
-            attributes: ['title'],
-          },
-        ],
-      });
-      if (itemById) {
-        const itemData = itemById.toJSON();
-        const formattedItem = {
-          ...itemData,
-          product: itemData.Product.title,
-          amount: itemData.amount || '',
-          price: itemData.price || '',
-          summ: itemData.summ || '',
-          shop: itemData.Shop?.title || '',
-          measure: itemData.Measure?.title || '',
-          currency: itemData.Currency?.title || '',
-          createdAt: formatDate(itemData.createdAt),
-          updatedAt: formatDate(itemData.updatedAt),
-        };
-        delete formattedItem.Product;
-        delete formattedItem.Shop;
-        delete formattedItem.Measure;
-        delete formattedItem.Currency;
-        res.status(200).json(formattedItem);
-      } else throw notFound('Item not found');
+      const item = await getItemById(itemId);
+      res.status(200).json(item);
     } catch (error) {
-      console.log(error.message);
+      console.error('Get item by id error:', error.message);
       next(error);
     }
   }
@@ -123,65 +35,21 @@ class ItemController {
   async createItem(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const {
+      const { product, amount, price, shop, measure, currency } = req.body;
+      const newItem = await createItem(
         product,
-        amount: amountValue,
-        price: priceValue,
-        shop: shopValue,
-        measure: measureValue,
-        currency: currencyValue,
-      } = req.body;
-      const amount = amountValue === '' ? 0 : amountValue;
-      const price = priceValue === '' ? 0 : priceValue;
-      async function getRecordByTitle(Model, title) {
-        if (!title) return null;
-        const record = await Model.findOne({
-          where: { title },
-          attributes: ['id', 'title'],
-          raw: true,
-        });
-        if (!record) throw notFound(`${Model.name} not found`);
-        return record;
-      }
-      const productRecord = await getRecordByTitle(Product, product);
-      const shopRecord = await getRecordByTitle(Shop, shopValue);
-      const measureRecord = await getRecordByTitle(Measure, measureValue);
-      const currencyRecord = await getRecordByTitle(Currency, currencyValue);
-      const summ = parseFloat(amount) * parseFloat(price) || 0;
-      const newBody = {
-        productId: productRecord ? productRecord.id : null,
         amount,
         price,
-        summ,
-        shopId: shopRecord ? shopRecord.id : null,
-        measureId: measureRecord ? measureRecord.id : null,
-        currencyId: currencyRecord ? currencyRecord.id : null,
-      };
-      const newItem = await Item.create(newBody, {
-        transaction,
-        returning: true,
-      });
-      if (newItem) {
-        const itemData = newItem.toJSON();
-        const formattedNewItem = {
-          id: itemData.id,
-          productId: itemData.productId,
-          amount: itemData.amount,
-          price: itemData.price,
-          summ: itemData.summ,
-          shop: shopRecord ? shopRecord.title : '',
-          measure: measureRecord ? measureRecord.title : '',
-          currency: currencyRecord ? currencyRecord.title : '',
-        };
-        await transaction.commit();
-        res.status(201).json(formattedNewItem);
-      } else {
-        await transaction.rollback();
-        throw badRequest('Item is not created');
-      }
+        shop,
+        measure,
+        currency,
+        transaction
+      );
+      await transaction.commit();
+      res.status(201).json(newItem);
     } catch (error) {
-      console.log(error.message);
       await transaction.rollback();
+      console.error('Create item error:', error.message);
       next(error);
     }
   }
@@ -189,69 +57,22 @@ class ItemController {
   async updateItem(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const {
+      const { id, product, amount, price, shop, measure, currency } = req.body;
+      const updatedItem = await updateItem(
         id,
         product,
-        amount: amountValue,
-        price: priceValue,
-        shop: shopValue,
-        measure: measureValue,
-        currency: currencyValue,
-      } = req.body;
-      const amount = amountValue === '' ? 0 : amountValue;
-      const price = priceValue === '' ? 0 : priceValue;
-      async function getRecordByTitle(Model, title) {
-        if (!title) return null;
-        const record = await Model.findOne({
-          where: { title },
-          attributes: ['id', 'title'],
-          raw: true,
-        });
-        if (!record) throw notFound(`${Model.name} not found`);
-        return record;
-      }
-      const productRecord = product
-        ? await getRecordByTitle(Product, product)
-        : null;
-      const shopRecord = await getRecordByTitle(Shop, shopValue);
-      const measureRecord = await getRecordByTitle(Measure, measureValue);
-      const currencyRecord = await getRecordByTitle(Currency, currencyValue);
-      const summ = parseFloat(amount) * parseFloat(price) || 0;
-      const newBody = {
-        productId: productRecord ? productRecord.id : null,
         amount,
         price,
-        summ,
-        shopId: shopRecord ? shopRecord.id : null,
-        measureId: measureRecord ? measureRecord.id : null,
-        currencyId: currencyRecord ? currencyRecord.id : null,
-      };
-      const [affectedRows, [updatedItem]] = await Item.update(newBody, {
-        where: { id },
-        returning: true,
-        transaction,
-      });
-      if (affectedRows > 0) {
-        const itemData = updatedItem.toJSON();
-        const formattedUpdItem = {
-          id: itemData.id,
-          productId: itemData.productId,
-          amount: itemData.amount,
-          price: itemData.price,
-          summ: itemData.summ,
-          shop: shopRecord ? shopRecord.title : '',
-          measure: measureRecord ? measureRecord.title : '',
-          currency: currencyRecord ? currencyRecord.title : '',
-        };
-        await transaction.commit();
-        res.status(200).json(formattedUpdItem);
-      } else {
-        await transaction.rollback();
-        throw badRequest('Item is not updated');
-      }
+        shop,
+        measure,
+        currency,
+        transaction
+      );
+      await transaction.commit();
+      res.status(201).json(updatedItem);
     } catch (error) {
-      console.log(error.message);
       await transaction.rollback();
+      console.error('Update item error:', error.message);
       next(error);
     }
   }
@@ -260,22 +81,12 @@ class ItemController {
     const transaction = await sequelize.transaction();
     try {
       const { itemId } = req.params;
-      const deleteItem = await Item.destroy({
-        where: {
-          id: itemId,
-        },
-        transaction,
-      });
-      if (deleteItem) {
-        await transaction.commit();
-        res.sendStatus(res.statusCode);
-      } else {
-        await transaction.rollback();
-        throw badRequest('Item is not deleted');
-      }
+      await deleteItem(itemId, transaction);
+      await transaction.commit();
+      res.sendStatus(res.statusCode);
     } catch (error) {
-      console.log(error.message);
       await transaction.rollback();
+      console.error('Delete item error:', error.message);
       next(error);
     }
   }
