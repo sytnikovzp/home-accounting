@@ -8,17 +8,13 @@ class CategoryService {
       attributes: ['id', 'title'],
       raw: true,
     });
-    if (allCategories.length === 0) {
-      throw notFound('Categories not found');
-    }
+    if (allCategories.length === 0) throw notFound('Categories not found');
     return allCategories;
   }
 
   async getCategoryById(categoryId) {
     const categoryById = await Category.findByPk(categoryId);
-    if (!categoryById) {
-      throw notFound('Category not found');
-    }
+    if (!categoryById) throw notFound('Category not found');
     const categoryData = categoryById.toJSON();
     return {
       ...categoryData,
@@ -30,14 +26,13 @@ class CategoryService {
 
   async createCategory(title, descriptionValue, transaction) {
     const existingCategory = await Category.findOne({ where: { title } });
-    if (existingCategory) {
-      throw badRequest('This category already exists');
-    }
+    if (existingCategory) throw badRequest('This category already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
     const newCategory = await Category.create(
       { title, description },
-      { transaction }
+      { transaction, returning: true }
     );
+    if (!newCategory) throw badRequest('Category is not created');
     return {
       id: newCategory.id,
       title: newCategory.title,
@@ -47,15 +42,11 @@ class CategoryService {
 
   async updateCategory(id, title, descriptionValue, transaction) {
     const categoryById = await Category.findByPk(id);
-    if (!categoryById) {
-      throw notFound('Category not found');
-    }
+    if (!categoryById) throw notFound('Category not found');
     const currentTitle = categoryById.title;
     if (title !== currentTitle) {
       const existingCategory = await Category.findOne({ where: { title } });
-      if (existingCategory) {
-        throw badRequest('This category already exists');
-      }
+      if (existingCategory) throw badRequest('This category already exists');
     } else {
       title = currentTitle;
     }
@@ -68,9 +59,7 @@ class CategoryService {
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0) {
-      throw badRequest('Category not updated');
-    }
+    if (affectedRows === 0) throw badRequest('Category is not updated');
     return {
       id: updatedCategory.id,
       title: updatedCategory.title,
@@ -80,16 +69,12 @@ class CategoryService {
 
   async deleteCategory(categoryId, transaction) {
     const categoryById = await Category.findByPk(categoryId);
-    if (!categoryById) {
-      throw notFound('Category not found');
-    }
+    if (!categoryById) throw notFound('Category not found');
     const deleteCategory = await Category.destroy({
       where: { id: categoryId },
       transaction,
     });
-    if (!deleteCategory) {
-      throw badRequest('Category not deleted');
-    }
+    if (!deleteCategory) throw badRequest('Category is not deleted');
     return deleteCategory;
   }
 }

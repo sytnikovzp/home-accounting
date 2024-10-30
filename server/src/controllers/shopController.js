@@ -26,9 +26,7 @@ class ShopController {
           .status(200)
           .set('X-Total-Count', shopsCount)
           .json(formattedAllShops);
-      } else {
-        throw notFound('Shops not found');
-      }
+      } else throw notFound('Shops not found');
     } catch (error) {
       console.log(error.message);
       next(error);
@@ -50,9 +48,7 @@ class ShopController {
           updatedAt: formatDate(shopData.updatedAt),
         };
         res.status(200).json(formattedShop);
-      } else {
-        throw notFound('Shop not found');
-      }
+      } else throw notFound('Shop not found');
     } catch (error) {
       console.log(error.message);
       next(error);

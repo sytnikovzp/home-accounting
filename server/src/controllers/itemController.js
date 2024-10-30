@@ -52,9 +52,7 @@ class ItemController {
       });
       if (allItems.length > 0) {
         res.status(200).set('X-Total-Count', itemsCount).json(formattedItems);
-      } else {
-        throw notFound('Items not found');
-      }
+      } else throw notFound('Items not found');
     } catch (error) {
       console.log(error.message);
       next(error);
@@ -115,9 +113,7 @@ class ItemController {
         delete formattedItem.Measure;
         delete formattedItem.Currency;
         res.status(200).json(formattedItem);
-      } else {
-        throw notFound('Item not found');
-      }
+      } else throw notFound('Item not found');
     } catch (error) {
       console.log(error.message);
       next(error);

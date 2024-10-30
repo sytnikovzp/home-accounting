@@ -8,18 +8,7 @@ const {
   Item,
   sequelize,
 } = require('../db/dbPostgres/models');
-
-const getTime = (ago = 'allTime') => {
-  const intervals = {
-    day: () => timeAgo.setDate(timeAgo.getDate() - 1),
-    week: () => timeAgo.setDate(timeAgo.getDate() - 7),
-    month: () => timeAgo.setMonth(timeAgo.getMonth() - 1),
-    year: () => timeAgo.setFullYear(timeAgo.getFullYear() - 1),
-    allTime: () => new Date(0),
-  };
-  const timeAgo = new Date();
-  return (intervals[ago] || intervals.allTime)();
-};
+const { getTime } = require('../utils/sharedFunctions');
 
 class StatisticController {
   async getCostByCategoryPerPeriod(req, res, next) {
@@ -33,9 +22,7 @@ class StatisticController {
         },
         raw: true,
       });
-      if (!categoryRecord) {
-        throw notFound('Category not found');
-      }
+      if (!categoryRecord) throw notFound('Category not found');
       const categoryId = categoryRecord.id;
       const productIds = await Product.findAll({
         where: {
@@ -82,9 +69,7 @@ class StatisticController {
         },
         raw: true,
       });
-      if (!shopRecord) {
-        throw notFound('Shop not found');
-      }
+      if (!shopRecord) throw notFound('Shop not found');
       const shopId = shopRecord.id;
       const costByShopPerPeriod = await Item.findAll({
         attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
@@ -138,9 +123,7 @@ class StatisticController {
       });
       if (costByCategories) {
         res.status(200).json(costByCategories);
-      } else {
-        throw badRequest('Bad request');
-      }
+      } else throw badRequest('Bad request');
     } catch (error) {
       console.log(error.message);
       next(error);
@@ -173,9 +156,7 @@ class StatisticController {
       });
       if (costByShop) {
         res.status(200).json(costByShop);
-      } else {
-        throw badRequest('Bad request');
-      }
+      } else throw badRequest('Bad request');
     } catch (error) {
       console.log(error.message);
       next(error);

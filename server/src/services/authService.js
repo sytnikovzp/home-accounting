@@ -88,9 +88,7 @@ class AuthService {
 
   async getAllUsers() {
     const users = await User.find();
-    if (users.length === 0) {
-      throw notFound('Users not found');
-    }
+    if (users.length === 0) throw notFound('Users not found');
     const usersWithRoles = await Promise.all(
       users.map(async (user) => {
         const role = await Role.findById(user.roleId);
@@ -107,9 +105,7 @@ class AuthService {
 
   async getUserById(id) {
     const user = await User.findById(id);
-    if (!user) {
-      throw notFound('User not found');
-    }
+    if (!user) throw notFound('User not found');
     const role = await Role.findById(user.roleId);
     return {
       id: user._id,
@@ -124,9 +120,7 @@ class AuthService {
   async getUserByEmail(email) {
     const emailToLower = emailToLowerCase(email);
     const user = await User.findOne({ email: emailToLower });
-    if (!user) {
-      throw notFound('User not found');
-    }
+    if (!user) throw notFound('User not found');
     const role = await Role.findById(user.roleId);
     return {
       id: user._id,
@@ -140,9 +134,7 @@ class AuthService {
 
   async updateUser(id, fullName, email, password, role) {
     const user = await User.findById(id);
-    if (!user) {
-      throw notFound('User not found');
-    }
+    if (!user) throw notFound('User not found');
     const updateData = { fullName };
     if (email && email.toLowerCase() !== user.email.toLowerCase()) {
       const newEmail = emailToLowerCase(email);
@@ -162,9 +154,7 @@ class AuthService {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
     });
-    if (!updatedUser) {
-      throw notFound('User not found');
-    }
+    if (!updatedUser) throw notFound('User not found');
     const updatedUserRole = await Role.findById(updatedUser.roleId);
     if (!updatedUserRole) throw notFound('User role not found');
     return {
@@ -179,16 +169,11 @@ class AuthService {
 
   async deleteUser(id, currentUser) {
     const adminRole = await Role.findOne({ title: 'Administrator' });
-    if (!adminRole) {
-      throw notFound('Administrator role is not found');
-    }
-    if (String(currentUser.roleId) !== String(adminRole._id)) {
+    if (!adminRole) throw notFound('Administrator role is not found');
+    if (String(currentUser.roleId) !== String(adminRole._id))
       throw badRequest('You don`t have permission to delete users');
-    }
     const user = await User.findByIdAndDelete(id);
-    if (!user) {
-      throw notFound('User not found');
-    }
+    if (!user) throw notFound('User not found');
     return user;
   }
 }
