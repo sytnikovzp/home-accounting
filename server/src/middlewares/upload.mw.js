@@ -21,7 +21,29 @@ const filterShopImage = (req, file, cb) => {
   cb(null, false);
 };
 
-module.exports.uploadImages = multer({
+module.exports.uploadShopImages = multer({
   storage: storageShopImage,
   fileFilter: filterShopImage,
+});
+
+const storageAvatarImage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.resolve(staticPath, 'images', 'avatars'));
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const filterAvatarImage = (req, file, cb) => {
+  const MIMETYPE_REGEXP = /^image\/(jpeg|png|gif)$/;
+  if (MIMETYPE_REGEXP.test(file.mimetype)) {
+    return cb(null, true);
+  }
+  cb(null, false);
+};
+
+module.exports.uploadAvatarImages = multer({
+  storage: storageAvatarImage,
+  fileFilter: filterAvatarImage,
 });

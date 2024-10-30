@@ -11,7 +11,7 @@ const {
 const {
   validation: { validateShop },
   pagination: { paginateElements },
-  upload: { uploadImages },
+  upload: { uploadShopImages },
 } = require('../middlewares');
 
 const shopRouter = new Router();
@@ -29,6 +29,6 @@ shopRouter
 
 shopRouter
   .route('/:shopId/image')
-  .patch(uploadImages.single('shopImage'), changeImage);
+  .patch(uploadShopImages.single('shopImage'), changeImage);
 
 module.exports = shopRouter;

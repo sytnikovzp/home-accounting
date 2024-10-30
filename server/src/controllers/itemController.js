@@ -1,5 +1,4 @@
-const { sequelize } = require('../db/dbPostgres/models');
-const { Item } = require('../db/dbPostgres/models');
+const { Item, sequelize } = require('../db/dbPostgres/models');
 const {
   getAllItems,
   getItemById,
