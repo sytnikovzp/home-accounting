@@ -3,20 +3,15 @@ const bcrypt = require('bcrypt');
 const { User, Role } = require('../db/dbMongo/models');
 // ==============================================================
 const {
-  configs: {
-    HASH: { SALT_ROUNDS },
-  },
-} = require('../constants');
-const { emailToLowerCase, formatDate } = require('../utils/sharedFunctions');
+  hashPassword,
+  emailToLowerCase,
+  formatDate,
+} = require('../utils/sharedFunctions');
 // ==============================================================
 const { generateTokens, validateRefreshToken } = require('./tokenService');
 // ==============================================================
 const { unAuthorizedError } = require('../errors/authErrors');
 const { badRequest, notFound } = require('../errors/customErrors');
-
-async function hashPassword(password) {
-  return await bcrypt.hash(password, SALT_ROUNDS);
-}
 
 class AuthService {
   async registration(fullName, email, password) {
@@ -32,6 +27,7 @@ class AuthService {
       password: hashedPassword,
       roleId: customerRole._id,
     });
+    if (!user) throw badRequest('User is not registered');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
@@ -154,15 +150,13 @@ class AuthService {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
     });
-    if (!updatedUser) throw notFound('User not found');
-    const updatedUserRole = await Role.findById(updatedUser.roleId);
-    if (!updatedUserRole) throw notFound('User role not found');
+    if (!updatedUser) throw badRequest('User is not updated');
     return {
       user: {
         id: updatedUser._id,
         fullName: updatedUser.fullName,
         email: updatedUser.email,
-        role: updatedUserRole.title || '',
+        role,
       },
     };
   }
@@ -173,7 +167,7 @@ class AuthService {
     if (String(currentUser.roleId) !== String(adminRole._id))
       throw badRequest('You don`t have permission to delete users');
     const user = await User.findByIdAndDelete(id);
-    if (!user) throw notFound('User not found');
+    if (!user) throw badRequest('User is not deleted');
     return user;
   }
 }

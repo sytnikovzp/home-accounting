@@ -56,7 +56,7 @@ class ShopController {
   }
 
   async createShop(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const {
         title,
@@ -69,7 +69,7 @@ class ShopController {
       const image = imageValue === '' ? null : imageValue;
       const newBody = { title, description, url, image };
       const newShop = await Shop.create(newBody, {
-        transaction: t,
+        transaction,
         returning: true,
       });
       if (newShop) {
@@ -80,21 +80,21 @@ class ShopController {
           url: shopData.url || '',
           image: shopData.image || '',
         };
-        await t.commit();
+        await transaction.commit();
         res.status(201).json(formattedNewShop);
       } else {
-        await t.rollback();
+        await transaction.rollback();
         throw badRequest('Shop is not created');
       }
     } catch (error) {
       console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
       next(error);
     }
   }
 
   async updateShop(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const {
         id,
@@ -110,7 +110,7 @@ class ShopController {
       const [affectedRows, [updatedShop]] = await Shop.update(newBody, {
         where: { id },
         returning: true,
-        transaction: t,
+        transaction,
       });
       if (affectedRows > 0) {
         const shopData = updatedShop.toJSON();
@@ -120,45 +120,45 @@ class ShopController {
           url: shopData.url || '',
           image: shopData.image || '',
         };
-        await t.commit();
+        await transaction.commit();
         res.status(200).json(formattedUpdShop);
       } else {
-        await t.rollback();
+        await transaction.rollback();
         throw badRequest('Shop is not updated');
       }
     } catch (error) {
       console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
       next(error);
     }
   }
 
   async deleteShop(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const { shopId } = req.params;
       const deleteShop = await Shop.destroy({
         where: {
           id: shopId,
         },
-        transaction: t,
+        transaction,
       });
       if (deleteShop) {
-        await t.commit();
+        await transaction.commit();
         res.sendStatus(res.statusCode);
       } else {
-        await t.rollback();
+        await transaction.rollback();
         throw badRequest('Shop is not deleted');
       }
     } catch (error) {
       console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
       next(error);
     }
   }
 
   async changeImage(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const {
         file: { filename },
@@ -175,7 +175,7 @@ class ShopController {
           returning: true,
           raw: true,
           fields: ['image'],
-          transaction: t,
+          transaction,
         }
       );
       if (affectedRows > 0) {
@@ -185,15 +185,15 @@ class ShopController {
           url: updatedImageShop.url || '',
           image: updatedImageShop.image || '',
         };
-        await t.commit();
+        await transaction.commit();
         res.status(200).json(formattedUpdImageShop);
       } else {
-        await t.rollback();
+        await transaction.rollback();
         throw badRequest('Shop image is not changed');
       }
     } catch (error) {
       console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
       next(error);
     }
   }

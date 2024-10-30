@@ -121,7 +121,7 @@ class ItemController {
   }
 
   async createItem(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const {
         product,
@@ -158,7 +158,7 @@ class ItemController {
         currencyId: currencyRecord ? currencyRecord.id : null,
       };
       const newItem = await Item.create(newBody, {
-        transaction: t,
+        transaction,
         returning: true,
       });
       if (newItem) {
@@ -173,21 +173,21 @@ class ItemController {
           measure: measureRecord ? measureRecord.title : '',
           currency: currencyRecord ? currencyRecord.title : '',
         };
-        await t.commit();
+        await transaction.commit();
         res.status(201).json(formattedNewItem);
       } else {
-        await t.rollback();
+        await transaction.rollback();
         throw badRequest('Item is not created');
       }
     } catch (error) {
       console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
       next(error);
     }
   }
 
   async updateItem(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const {
         id,
@@ -229,7 +229,7 @@ class ItemController {
       const [affectedRows, [updatedItem]] = await Item.update(newBody, {
         where: { id },
         returning: true,
-        transaction: t,
+        transaction,
       });
       if (affectedRows > 0) {
         const itemData = updatedItem.toJSON();
@@ -243,39 +243,39 @@ class ItemController {
           measure: measureRecord ? measureRecord.title : '',
           currency: currencyRecord ? currencyRecord.title : '',
         };
-        await t.commit();
+        await transaction.commit();
         res.status(200).json(formattedUpdItem);
       } else {
-        await t.rollback();
+        await transaction.rollback();
         throw badRequest('Item is not updated');
       }
     } catch (error) {
       console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
       next(error);
     }
   }
 
   async deleteItem(req, res, next) {
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
     try {
       const { itemId } = req.params;
       const deleteItem = await Item.destroy({
         where: {
           id: itemId,
         },
-        transaction: t,
+        transaction,
       });
       if (deleteItem) {
-        await t.commit();
+        await transaction.commit();
         res.sendStatus(res.statusCode);
       } else {
-        await t.rollback();
+        await transaction.rollback();
         throw badRequest('Item is not deleted');
       }
     } catch (error) {
       console.log(error.message);
-      await t.rollback();
+      await transaction.rollback();
       next(error);
     }
   }

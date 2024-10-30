@@ -14,7 +14,6 @@ const rolesSchema = new Schema(
     versionKey: false,
   }
 );
-
 const Role = model('Role', rolesSchema);
 
 module.exports = Role;

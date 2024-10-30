@@ -54,7 +54,7 @@ Content-Type: application/json
 ### Get list all users
 GET http://localhost:5000/api/auth/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMjEwMzk3LCJleHAiOjE3MzAyMTEyOTd9.g1jxqw3olobR8beczcXAuJfMLVl07nJ_O-4WvZsDNDQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwMjk0NjI5LCJleHAiOjE3MzAyOTU1Mjl9.DDq8uOfLkQR1C5afCItplpTGIPJ17U-csllTzqCudgo
 
 ### Get current user profile
 GET http://localhost:5000/api/auth/profile HTTP/1.1
@@ -71,10 +71,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU
 ### Update user data
 PUT http://localhost:5000/api/auth/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwMjEwMzk3LCJleHAiOjE3MzAyMTEyOTd9.g1jxqw3olobR8beczcXAuJfMLVl07nJ_O-4WvZsDNDQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwMjk0NjI5LCJleHAiOjE3MzAyOTU1Mjl9.DDq8uOfLkQR1C5afCItplpTGIPJ17U-csllTzqCudgo
 
 {
-  "id": "6720e8b4e66d0b35c03fdf0a",
+  "id": "67223356726f856f24d0d83e",
   "fullName": "Updated User",
   "email": "Updated.User@GMAIL.com",
   "password": "Qwerty1234567",

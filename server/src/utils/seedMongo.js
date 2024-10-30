@@ -10,7 +10,6 @@ const { User, Role } = require('../db/dbMongo/models');
 
 const env = process.env.NODE_ENV || 'development';
 const configPath = path.resolve('src', 'config', 'mongoConfig.js');
-
 const config = require(configPath)[env];
 
 mongoose

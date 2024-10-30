@@ -11,8 +11,8 @@ const {
 } = require('../utils/validationSchemes');
 
 const validateSchema = (schema) => async (req, res, next) => {
-  const { body } = req;
   try {
+    const { body } = req;
     await schema.validate(body, {
       abortEarly: false,
     });
