@@ -1,4 +1,4 @@
-const { PAGINATION_SCHEMA } = require('../utils/validationSchemes');
+const { PAGINATION_SCHEME } = require('../utils/validationSchemes');
 
 module.exports.paginateElements = async (req, res, next) => {
   const { _page, _limit } = req.query;
@@ -11,7 +11,7 @@ module.exports.paginateElements = async (req, res, next) => {
     offset: (_page - 1) * _limit || 0,
   };
   try {
-    if (await PAGINATION_SCHEMA.isValid(pagination)) {
+    if (await PAGINATION_SCHEME.isValid(pagination)) {
       req.pagination = pagination;
     } else {
       req.pagination = defaultPagination;

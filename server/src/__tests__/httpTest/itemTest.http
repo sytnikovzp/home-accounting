@@ -15,11 +15,11 @@ POST http://localhost:5000/api/items HTTP/1.1
 Content-Type: application/json
 
 {
-  "product": "Tomato",
-  "amount": "0.25",
-  "price": "80.00",
-  "shop": "ATB",
-  "measure": "kg",
+  "product": "Headphones",
+  "amount": 2,
+  "price": 500,
+  "shop": "Comfy",
+  "measure": "unit",
   "currency": "UAH"
 }
 
@@ -30,8 +30,8 @@ Content-Type: application/json
 {
   "id": 5,
   "product": "Laptop",
-  "amount": "1",
-  "price": "850.00",
+  "amount": 1,
+  "price": 850.00,
   "shop": "Comfy",
   "measure": "unit",
   "currency": "USD"
