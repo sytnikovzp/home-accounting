@@ -73,14 +73,14 @@ class ItemService {
     currency,
     transaction
   ) {
-    if (!product) throw notFound('Product not found');
     const productRecord = await getRecordByTitle(Product, product);
-    if (!shop) throw notFound('Shop not found');
+    if (!productRecord) throw notFound('Product not found');
     const shopRecord = await getRecordByTitle(Shop, shop);
-    if (!measure) throw notFound('Measure not found');
+    if (!shopRecord) throw notFound('Shop not found');
     const measureRecord = await getRecordByTitle(Measure, measure);
-    if (!currency) throw notFound('Currency not found');
+    if (!measureRecord) throw notFound('Measure not found');
     const currencyRecord = await getRecordByTitle(Currency, currency);
+    if (!currencyRecord) throw notFound('Currency not found');
     const amount = parseFloat(amountValue) || 0;
     const price = parseFloat(priceValue) || 0;
     const summ = parseFloat(amountValue) * parseFloat(priceValue) || 0;
@@ -122,14 +122,14 @@ class ItemService {
   ) {
     const itemById = await Item.findByPk(id);
     if (!itemById) throw notFound('Item not found');
-    if (!product) throw notFound('Product not found');
     const productRecord = await getRecordByTitle(Product, product);
-    if (!shop) throw notFound('Shop not found');
+    if (!productRecord) throw notFound('Product not found');
     const shopRecord = await getRecordByTitle(Shop, shop);
-    if (!measure) throw notFound('Measure not found');
+    if (!shopRecord) throw notFound('Shop not found');
     const measureRecord = await getRecordByTitle(Measure, measure);
-    if (!currency) throw notFound('Currency not found');
+    if (!measureRecord) throw notFound('Measure not found');
     const currencyRecord = await getRecordByTitle(Currency, currency);
+    if (!currencyRecord) throw notFound('Currency not found');
     let amount = itemById.amount;
     if (amountValue) {
       amount = parseFloat(amountValue) || 0;
