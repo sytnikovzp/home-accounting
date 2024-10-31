@@ -1,6 +1,6 @@
 const {
   configs: {
-    DATABASE: { MONGO_PORT, MONGO_DB_NAME },
+    DATABASE: { MONGO_PORT, MONGO_DB_NAME, MONGO_DB_NAME_TEST },
     SERVER_CONFIG: { HOST },
   },
 } = require('../constants');
@@ -10,5 +10,10 @@ module.exports = {
     host: HOST,
     port: MONGO_PORT,
     dbName: MONGO_DB_NAME,
+  },
+  test: {
+    host: HOST,
+    port: MONGO_PORT,
+    dbName: MONGO_DB_NAME_TEST,
   },
 };

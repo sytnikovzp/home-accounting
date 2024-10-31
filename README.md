@@ -23,7 +23,9 @@ CLIENT_URL=http://localhost:3000
 DB_USER=postgres
 DB_PASS=root
 DB_NAME=home_accounting
+DB_NAME_TEST=home_accounting_test
 DB_DIALECT=postgres
 MONGO_PORT=27017
 MONGO_DB_NAME=home_acc_users
+MONGO_DB_NAME_TEST=home_acc_users_test
 ```
