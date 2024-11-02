@@ -73,8 +73,8 @@ class AuthController {
 
   async getCurrentUserProfile(req, res, next) {
     try {
-      const userEmail = req.user.email;
-      const user = await getUserByEmail(userEmail);
+      const currentUserEmail = req.user.email;
+      const user = await getUserByEmail(currentUserEmail);
       if (user) {
         res.status(200).json(user);
       } else {
@@ -103,8 +103,18 @@ class AuthController {
 
   async updateUser(req, res, next) {
     try {
-      const { id, fullName, email, password, role } = req.body;
-      const userData = await updateUser(id, fullName, email, password, role);
+      const { id } = req.params;
+      const { fullName, email, password, role } = req.body;
+      const currentUserEmail = req.user.email;
+      const currentUser = await getUserByEmail(currentUserEmail);
+      const userData = await updateUser(
+        id,
+        fullName,
+        email,
+        password,
+        role,
+        currentUser
+      );
       res.status(201).json(userData);
     } catch (error) {
       console.log('Update user error: ', error.message);
@@ -115,8 +125,8 @@ class AuthController {
   async deleteUser(req, res, next) {
     try {
       const { id } = req.params;
-      const userEmail = req.user.email;
-      const currentUser = await getUserByEmail(userEmail);
+      const currentUserEmail = req.user.email;
+      const currentUser = await getUserByEmail(currentUserEmail);
       await deleteUser(id, currentUser);
       res.sendStatus(res.statusCode);
     } catch (error) {

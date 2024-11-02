@@ -7,6 +7,12 @@ const TITLE_NAME_SCHEME = yup
   .max(100, 'Input cannot exceed 100 characters')
   .required();
 
+const PASSWORD_SCHEME = yup
+  .string()
+  .trim('Input cannot contain leading or trailing spaces')
+  .min(8, 'Input must be at least 8 characters')
+  .max(20, 'Input cannot exceed 20 characters');
+
 const STRING_NULLABLE_SCHEME = yup
   .string('This field must be a string!')
   .nullable();
@@ -20,7 +26,7 @@ const ID_SCHEME = yup
 
 const URL_RESOURCE_SCHEME = yup.string().url().nullable();
 
-const EMAIL_VALIDATION_SCHEME = yup.string().email().required();
+const EMAIL_VALIDATION_SCHEME = yup.string().email();
 
 const PAGINATION_SCHEME = yup.object().shape({
   limit: yup.number().min(1).max(500).required(),
@@ -31,13 +37,20 @@ const PAGINATION_SCHEME = yup.object().shape({
 
 const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
   fullName: TITLE_NAME_SCHEME,
-  email: EMAIL_VALIDATION_SCHEME,
-  password: yup.string(),
+  email: EMAIL_VALIDATION_SCHEME.required(),
+  password: PASSWORD_SCHEME.required(),
+});
+
+const UPDATE_USER_VALIDATION_SCHEME = yup.object().shape({
+  fullName: STRING_NULLABLE_SCHEME,
+  email: EMAIL_VALIDATION_SCHEME.nullable(),
+  password: PASSWORD_SCHEME.nullable(),
+  role: STRING_NULLABLE_SCHEME,
 });
 
 const AUTH_VALIDATION_SCHEME = yup.object().shape({
-  email: EMAIL_VALIDATION_SCHEME,
-  password: yup.string(),
+  email: EMAIL_VALIDATION_SCHEME.required(),
+  password: PASSWORD_SCHEME.required(),
 });
 
 const ITEM_VALIDATION_SCHEME = yup.object().shape({
@@ -83,6 +96,7 @@ const CATEGORY_CURRENCY_MEASURE_SCHEME = yup.object().shape({
 
 module.exports = {
   REGISTRATION_VALIDATION_SCHEME,
+  UPDATE_USER_VALIDATION_SCHEME,
   AUTH_VALIDATION_SCHEME,
   ITEM_VALIDATION_SCHEME,
   PRODUCT_VALIDATION_SCHEME,

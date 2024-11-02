@@ -13,7 +13,7 @@ const {
 } = require('../controllers/authController');
 const {
   auth: { authHandler },
-  validation: { validateRegistration, validateAuth },
+  validation: { validateRegistration, validateUpdateUser, validateAuth },
 } = require('../middlewares');
 
 const authRouter = new Router();
@@ -25,7 +25,7 @@ authRouter.get('/refresh', refresh);
 authRouter.get('/users', authHandler, getAllUsers);
 authRouter.get('/profile', authHandler, getCurrentUserProfile);
 authRouter.get('/users/:id', authHandler, getUserById);
-authRouter.put('/users', authHandler, validateRegistration, updateUser);
+authRouter.patch('/users/:id', authHandler, validateUpdateUser, updateUser);
 authRouter.delete('/delete/:id', authHandler, deleteUser);
 
 module.exports = authRouter;

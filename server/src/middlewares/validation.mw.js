@@ -1,5 +1,6 @@
 const {
   REGISTRATION_VALIDATION_SCHEME,
+  UPDATE_USER_VALIDATION_SCHEME,
   AUTH_VALIDATION_SCHEME,
   ITEM_VALIDATION_SCHEME,
   PRODUCT_VALIDATION_SCHEME,
@@ -25,6 +26,7 @@ const validateSchema = (schema) => async (req, res, next) => {
 
 module.exports = {
   validateRegistration: validateSchema(REGISTRATION_VALIDATION_SCHEME),
+  validateUpdateUser: validateSchema(UPDATE_USER_VALIDATION_SCHEME),
   validateAuth: validateSchema(AUTH_VALIDATION_SCHEME),
   validateItem: validateSchema(ITEM_VALIDATION_SCHEME),
   validateProduct: validateSchema(PRODUCT_VALIDATION_SCHEME),
