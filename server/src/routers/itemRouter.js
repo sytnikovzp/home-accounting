@@ -17,12 +17,12 @@ const itemRouter = new Router();
 itemRouter
   .route('/')
   .get(paginateElements, getAllItems)
-  .post(validateItem, createItem)
-  .put(validateItem, updateItem);
+  .post(validateItem, createItem);
 
 itemRouter
   .route('/:itemId')
   .get(getItemById)
+  .patch(validateItem, updateItem)
   .delete(deleteItem);
 
 module.exports = itemRouter;

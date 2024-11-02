@@ -16,11 +16,10 @@ Content-Type: application/json
 }
 
 ### Update measure
-PUT http://localhost:5000/api/measures HTTP/1.1
+PATCH http://localhost:5000/api/measures/9 HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": 9,
   "title": "Updated Measure",
   "description": "test description"
 }

@@ -46,9 +46,10 @@ class CategoryController {
   async updateCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { id, title, description } = req.body;
+      const { categoryId } = req.params;
+      const { title, description } = req.body;
       const updatedCategory = await updateCategory(
-        id,
+        categoryId,
         title,
         description,
         transaction

@@ -19,11 +19,6 @@ const NUMBER_SCHEME = yup
   .number('Це поле має бути числом')
   .required('Це поле є обовʼязкове');
 
-const ID_SCHEME = yup
-  .number('Це поле має бути числом')
-  .integer('Це поле має бути цілим числом')
-  .positive('Це поле має бути більше 0');
-
 const URL_RESOURCE_SCHEME = yup
   .string('Це поле має бути рядком')
   .url('Введіть коректний URL')
@@ -67,31 +62,59 @@ const ITEM_VALIDATION_SCHEME = yup.object().shape({
   currency: TITLE_NAME_SCHEME,
 });
 
-const PRODUCT_VALIDATION_SCHEME = yup.object().shape({
+const NEW_PRODUCT_VALIDATION_SCHEME = yup.object().shape({
   title: TITLE_NAME_SCHEME,
   description: STRING_NULLABLE_SCHEME,
-  categoryId: ID_SCHEME,
+  category: STRING_NULLABLE_SCHEME,
 });
 
-const CATEGORY_VALIDATION_SCHEME = yup.object().shape({
+const UPDATE_PRODUCT_VALIDATION_SCHEME = yup.object().shape({
+  title: STRING_NULLABLE_SCHEME,
+  description: STRING_NULLABLE_SCHEME,
+  category: STRING_NULLABLE_SCHEME,
+});
+
+const NEW_CATEGORY_VALIDATION_SCHEME = yup.object().shape({
   title: TITLE_NAME_SCHEME,
   description: STRING_NULLABLE_SCHEME,
 });
 
-const SHOP_VALIDATION_SCHEME = yup.object().shape({
+const UPDATE_CATEGORY_VALIDATION_SCHEME = yup.object().shape({
+  title: STRING_NULLABLE_SCHEME,
+  description: STRING_NULLABLE_SCHEME,
+});
+
+const NEW_SHOP_VALIDATION_SCHEME = yup.object().shape({
   title: TITLE_NAME_SCHEME,
   description: STRING_NULLABLE_SCHEME,
   url: URL_RESOURCE_SCHEME,
   image: STRING_NULLABLE_SCHEME,
 });
 
-const MEASURE_VALIDATION_SCHEME = yup.object().shape({
+const UPDATE_SHOP_VALIDATION_SCHEME = yup.object().shape({
+  title: STRING_NULLABLE_SCHEME,
+  description: STRING_NULLABLE_SCHEME,
+  url: URL_RESOURCE_SCHEME,
+  image: STRING_NULLABLE_SCHEME,
+});
+
+const NEW_MEASURE_VALIDATION_SCHEME = yup.object().shape({
   title: TITLE_NAME_SCHEME,
   description: STRING_NULLABLE_SCHEME,
 });
 
-const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
+const UPDATE_MEASURE_VALIDATION_SCHEME = yup.object().shape({
+  title: STRING_NULLABLE_SCHEME,
+  description: STRING_NULLABLE_SCHEME,
+});
+
+const NEW_CURRENCY_VALIDATION_SCHEME = yup.object().shape({
   title: TITLE_NAME_SCHEME,
+  description: STRING_NULLABLE_SCHEME,
+});
+
+const UPDATE_CURRENCY_VALIDATION_SCHEME = yup.object().shape({
+  title: STRING_NULLABLE_SCHEME,
   description: STRING_NULLABLE_SCHEME,
 });
 
@@ -104,11 +127,16 @@ module.exports = {
   UPDATE_USER_VALIDATION_SCHEME,
   AUTH_VALIDATION_SCHEME,
   ITEM_VALIDATION_SCHEME,
-  PRODUCT_VALIDATION_SCHEME,
-  CATEGORY_VALIDATION_SCHEME,
-  SHOP_VALIDATION_SCHEME,
-  MEASURE_VALIDATION_SCHEME,
-  CURRENCY_VALIDATION_SCHEME,
+  NEW_PRODUCT_VALIDATION_SCHEME,
+  UPDATE_PRODUCT_VALIDATION_SCHEME,
+  NEW_CATEGORY_VALIDATION_SCHEME,
+  UPDATE_CATEGORY_VALIDATION_SCHEME,
+  NEW_SHOP_VALIDATION_SCHEME,
+  UPDATE_SHOP_VALIDATION_SCHEME,
+  NEW_MEASURE_VALIDATION_SCHEME,
+  UPDATE_MEASURE_VALIDATION_SCHEME,
+  NEW_CURRENCY_VALIDATION_SCHEME,
+  UPDATE_CURRENCY_VALIDATION_SCHEME,
   CATEGORY_CURRENCY_MEASURE_SCHEME,
   PAGINATION_SCHEME,
 };

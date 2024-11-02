@@ -36,14 +36,13 @@ describe('Measure Controller', () => {
     createdMeasureId = response.body.id;
   });
 
-  test('PUT /api/measures - should update an existing measure', async () => {
+  test('PATCH /api/measures - should update an existing measure', async () => {
     const updatedMeasure = {
-      id: createdMeasureId,
       title: 'Updated Measure',
       description: 'Updated Description',
     };
     const response = await request(app)
-      .put('/api/measures')
+      .patch(`/api/measures/${createdMeasureId}`)
       .send(updatedMeasure);
     expect(response.status).toBe(201);
     expect(response.body.title).toBe(updatedMeasure.title);

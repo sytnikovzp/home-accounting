@@ -8,7 +8,7 @@ const {
   deleteMeasure,
 } = require('../controllers/measureController');
 const {
-  validation: { validateMeasure },
+  validation: { validateNewMeasure, validateUpdMeasure },
 } = require('../middlewares');
 
 const measureRouter = new Router();
@@ -16,12 +16,12 @@ const measureRouter = new Router();
 measureRouter
   .route('/')
   .get(getAllMeasures)
-  .post(validateMeasure, createMeasure)
-  .put(validateMeasure, updateMeasure);
+  .post(validateNewMeasure, createMeasure);
 
 measureRouter
   .route('/:measureId')
   .get(getMeasureById)
+  .patch(validateUpdMeasure, updateMeasure)
   .delete(deleteMeasure);
 
 module.exports = measureRouter;

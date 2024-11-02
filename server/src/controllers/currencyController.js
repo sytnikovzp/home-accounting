@@ -46,9 +46,10 @@ class CurrencyController {
   async updateCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { id, title, description } = req.body;
+      const { currencyId } = req.params;
+      const { title, description } = req.body;
       const updatedCurrency = await updateCurrency(
-        id,
+        currencyId,
         title,
         description,
         transaction

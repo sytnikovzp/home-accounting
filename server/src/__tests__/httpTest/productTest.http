@@ -21,11 +21,10 @@ Content-Type: application/json
 }
 
 ### Update product
-PUT http://localhost:5000/api/products HTTP/1.1
+PATCH http://localhost:5000/api/products/22 HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": 22,
   "title": "Updated Product",
   "description": "test description",
   "category": "Devices"

@@ -38,14 +38,13 @@ describe('Currency Controller', () => {
     createdCurrencyId = response.body.id;
   });
 
-  test('PUT /api/currencies - should update an existing currency', async () => {
+  test('PATCH /api/currencies - should update an existing currency', async () => {
     const updatedCurrency = {
-      id: createdCurrencyId,
       title: 'Updated Currency',
       description: 'Updated Description',
     };
     const response = await request(app)
-      .put('/api/currencies')
+      .patch(`/api/currencies/${createdCurrencyId}`)
       .send(updatedCurrency);
     expect(response.status).toBe(201);
     expect(response.body.title).toBe(updatedCurrency.title);

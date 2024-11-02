@@ -38,14 +38,13 @@ describe('Category Controller', () => {
     createdCategoryId = response.body.id;
   });
 
-  test('PUT /api/categories - should update an existing category', async () => {
+  test('PATCH /api/categories - should update an existing category', async () => {
     const updatedCategory = {
-      id: createdCategoryId,
       title: 'Updated Category',
       description: 'Updated Description',
     };
     const response = await request(app)
-      .put('/api/categories')
+      .patch(`/api/categories/${createdCategoryId}`)
       .send(updatedCategory);
     expect(response.status).toBe(201);
     expect(response.body.title).toBe(updatedCategory.title);

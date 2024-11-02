@@ -56,9 +56,10 @@ class ItemController {
   async updateItem(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { id, product, amount, price, shop, measure, currency } = req.body;
+      const { itemId } = req.params;
+      const { product, amount, price, shop, measure, currency } = req.body;
       const updatedItem = await updateItem(
-        id,
+        itemId,
         product,
         amount,
         price,

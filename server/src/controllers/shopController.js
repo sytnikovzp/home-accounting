@@ -96,8 +96,8 @@ class ShopController {
   async updateShop(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
+      const { shopId } = req.params;
       const {
-        id,
         title,
         description: descriptionValue,
         url: urlValue,
@@ -108,7 +108,7 @@ class ShopController {
       const image = imageValue === '' ? null : imageValue;
       const newBody = { title, description, url, image };
       const [affectedRows, [updatedShop]] = await Shop.update(newBody, {
-        where: { id },
+        where: { shopId },
         returning: true,
         transaction,
       });

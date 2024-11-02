@@ -9,7 +9,7 @@ const {
   changeImage,
 } = require('../controllers/shopController');
 const {
-  validation: { validateShop },
+  validation: { validateNewShop, validateUpdShop },
   pagination: { paginateElements },
   upload: { uploadShopImages },
 } = require('../middlewares');
@@ -19,12 +19,12 @@ const shopRouter = new Router();
 shopRouter
   .route('/')
   .get(paginateElements, getAllShops)
-  .post(validateShop, createShop)
-  .put(validateShop, updateShop);
+  .post(validateNewShop, createShop);
 
 shopRouter
   .route('/:shopId')
   .get(getShopById)
+  .patch(validateUpdShop, updateShop)
   .delete(deleteShop);
 
 shopRouter

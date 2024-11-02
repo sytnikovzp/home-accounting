@@ -53,9 +53,10 @@ class ProductController {
   async updateProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { id, title, description, category } = req.body;
+      const { productId } = req.params;
+      const { title, description, category } = req.body;
       const updatedProduct = await updateProduct(
-        id,
+        productId,
         title,
         description,
         category,

@@ -46,9 +46,10 @@ class MeasureController {
   async updateMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { id, title, description } = req.body;
+      const { measureId } = req.params;
+      const { title, description } = req.body;
       const updatedMeasure = await updateMeasure(
-        id,
+        measureId,
         title,
         description,
         transaction

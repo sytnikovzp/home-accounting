@@ -8,7 +8,7 @@ const {
   deleteProduct,
 } = require('../controllers/productController');
 const {
-  validation: { validateProduct },
+  validation: { validateNewProduct, validateUpdProduct },
   pagination: { paginateElements },
 } = require('../middlewares');
 
@@ -17,12 +17,12 @@ const productRouter = new Router();
 productRouter
   .route('/')
   .get(paginateElements, getAllProducts)
-  .post(validateProduct, createProduct)
-  .put(validateProduct, updateProduct);
+  .post(validateNewProduct, createProduct);
 
 productRouter
   .route('/:productId')
   .get(getProductById)
+  .patch(validateUpdProduct, updateProduct)
   .delete(deleteProduct);
 
 module.exports = productRouter;

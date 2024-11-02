@@ -49,9 +49,8 @@ describe('Item Controller', () => {
     createdItemId = response.body.id;
   });
 
-  test('PUT /api/items - should update an existing item', async () => {
+  test('PATCH /api/items - should update an existing item', async () => {
     const updatedItem = {
-      id: createdItemId,
       product: 'Eggs',
       amount: 10,
       price: 70,
@@ -59,7 +58,9 @@ describe('Item Controller', () => {
       measure: 'unit',
       currency: 'UAH',
     };
-    const response = await request(app).put('/api/items').send(updatedItem);
+    const response = await request(app)
+      .patch(`/api/items/${createdItemId}`)
+      .send(updatedItem);
     expect(response.status).toBe(201);
     expect(response.body.product).toBe(updatedItem.product);
   });

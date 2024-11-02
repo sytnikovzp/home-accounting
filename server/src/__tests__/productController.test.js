@@ -46,15 +46,14 @@ describe('Product Controller', () => {
     createdProductId = response.body.id;
   });
 
-  test('PUT /api/products - should update an existing product', async () => {
+  test('PATCH /api/products - should update an existing product', async () => {
     const updatedProduct = {
-      id: createdProductId,
       title: 'Updated Product',
       description: 'Updated Description',
       category: 'Computing',
     };
     const response = await request(app)
-      .put('/api/products')
+      .patch(`/api/products/${createdProductId}`)
       .send(updatedProduct);
     expect(response.status).toBe(201);
     expect(response.body.title).toBe(updatedProduct.title);
