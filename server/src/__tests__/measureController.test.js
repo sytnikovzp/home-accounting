@@ -1,6 +1,11 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
+const mongoose = require('mongoose');
 const app = require('../app');
+
+afterAll(async () => {
+  await mongoose.connection.close();
+});
 
 describe('Measure Controller', () => {
   let createdMeasureId;

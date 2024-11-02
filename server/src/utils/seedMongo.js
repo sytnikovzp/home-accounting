@@ -1,21 +1,24 @@
 const path = require('path');
-// ==============================================================
 const mongoose = require('mongoose');
-// ==============================================================
 const {
   mongoData: { roles, users },
 } = require('../constants');
-// ==============================================================
 const { User, Role } = require('../db/dbMongo/models');
 
 const env = process.env.NODE_ENV || 'development';
 const configPath = path.resolve('src', 'config', 'mongoConfig.js');
 const config = require(configPath)[env];
 
-mongoose
-  .connect(`mongodb://${config.host}:${config.port}/${config.dbName}`)
-  .then(() => console.log(`Connection to DB <<< ${config.dbName} >>> is done!`))
-  .catch((error) => console.log(error.message));
+const connectDatabase = async () => {
+  try {
+    await mongoose.connect(
+      `mongodb://${config.host}:${config.port}/${config.dbName}`
+    );
+  } catch (error) {
+    console.error('Database connection error:', error.message);
+    throw error;
+  }
+};
 
 const createRoles = async () => {
   const createdRoles = await Role.insertMany(roles);
@@ -31,18 +34,38 @@ const createUsers = async (roleIds) => {
   await User.create(usersToInsert);
 };
 
-const seedMongoDB = async () => {
+const seedDatabase = async () => {
   try {
     await Role.deleteMany({});
     await User.deleteMany({});
     const roleIds = await createRoles();
     await createUsers(roleIds);
-    console.log('MongoDB seeded successfully!');
+    console.log('Database seeded successfully');
   } catch (error) {
-    console.log('Error seeding MongoDB:', error);
-  } finally {
-    mongoose.connection.close();
+    console.error('Error seeding database:', error);
+    throw error;
   }
 };
 
-seedMongoDB();
+const closeDatabase = async () => {
+  try {
+    await mongoose.connection.close();
+    console.log('Database connection closed');
+  } catch (error) {
+    console.error('Error closing database connection:', error);
+  }
+};
+
+const initializeDatabase = async (closeConnection = false) => {
+  await connectDatabase();
+  await seedDatabase();
+  if (closeConnection) {
+    await closeDatabase();
+  }
+};
+
+if (require.main === module) {
+  initializeDatabase(true);
+}
+
+module.exports = { initializeDatabase, closeDatabase };

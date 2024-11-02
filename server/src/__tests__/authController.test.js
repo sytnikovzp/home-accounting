@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
 const app = require('../app');
-const { setupDatabase, teardownDatabase } = require('../utils/setupDbForTest');
+const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
 
-beforeAll(setupDatabase);
-afterAll(teardownDatabase);
+beforeAll(initializeDatabase);
+afterAll(closeDatabase);
 
 describe('AuthController', () => {
   let id;
