@@ -92,12 +92,13 @@ class StatisticService {
     const result = await Item.findAll({
       attributes: [
         'Shop.title',
-        'Shop.url',
+        [sequelize.fn('COALESCE', sequelize.col('Shop.url'), ''), 'url'],
+        [sequelize.fn('COALESCE', sequelize.col('Shop.logo'), ''), 'logo'],
         [sequelize.fn('SUM', sequelize.col('summ')), 'result'],
       ],
       include: [{ model: Shop, attributes: [] }],
       where: { createdAt: { [Op.gte]: time } },
-      group: ['Shop.title', 'Shop.url'],
+      group: ['Shop.title', 'Shop.url', 'Shop.logo'],
       raw: true,
     });
     const totalCost = result.length
