@@ -22,6 +22,14 @@ describe('Category Controller', () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('id');
     expect(response.body).toHaveProperty('title');
+    expect(response.body).toHaveProperty('description');
+    expect(response.body).toHaveProperty('createdAt');
+    expect(response.body).toHaveProperty('updatedAt');
+  });
+
+  test('GET /api/categories/:id - should return 404 for non-existing category', async () => {
+    const response = await request(app).get('/api/categories/9999');
+    expect(response.status).toBe(404);
   });
 
   test('POST /api/categories - should create a new category', async () => {
@@ -55,10 +63,5 @@ describe('Category Controller', () => {
       `/api/categories/${createdCategoryId}`
     );
     expect(response.status).toBe(200);
-  });
-
-  test('GET /api/categories/:id - should return 404 for non-existing category', async () => {
-    const response = await request(app).get('/api/categories/9999');
-    expect(response.status).toBe(404);
   });
 });

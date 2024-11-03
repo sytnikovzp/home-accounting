@@ -22,6 +22,14 @@ describe('Currency Controller', () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('id');
     expect(response.body).toHaveProperty('title');
+    expect(response.body).toHaveProperty('description');
+    expect(response.body).toHaveProperty('createdAt');
+    expect(response.body).toHaveProperty('updatedAt');
+  });
+
+  test('GET /api/currencies/:currencyId - should return 404 for non-existing currency', async () => {
+    const response = await request(app).get('/api/currencies/9999');
+    expect(response.status).toBe(404);
   });
 
   test('POST /api/currencies - should create a new currency', async () => {
@@ -55,10 +63,5 @@ describe('Currency Controller', () => {
       `/api/currencies/${createdCurrencyId}`
     );
     expect(response.status).toBe(200);
-  });
-
-  test('GET /api/currencies/:currencyId - should return 404 for non-existing currency', async () => {
-    const response = await request(app).get('/api/currencies/9999');
-    expect(response.status).toBe(404);
   });
 });

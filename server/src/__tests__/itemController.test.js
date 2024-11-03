@@ -31,6 +31,19 @@ describe('Item Controller', () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('id');
     expect(response.body).toHaveProperty('product');
+    expect(response.body).toHaveProperty('amount');
+    expect(response.body).toHaveProperty('price');
+    expect(response.body).toHaveProperty('summ');
+    expect(response.body).toHaveProperty('shop');
+    expect(response.body).toHaveProperty('measure');
+    expect(response.body).toHaveProperty('currency');
+    expect(response.body).toHaveProperty('createdAt');
+    expect(response.body).toHaveProperty('updatedAt');
+  });
+
+  test('GET /api/items/:itemId - should return 404 for non-existing item', async () => {
+    const response = await request(app).get('/api/items/9999');
+    expect(response.status).toBe(404);
   });
 
   test('POST /api/items - should create a new item', async () => {
@@ -68,10 +81,5 @@ describe('Item Controller', () => {
   test('DELETE /api/items/:itemId - should delete an item', async () => {
     const response = await request(app).delete(`/api/items/${createdItemId}`);
     expect(response.status).toBe(200);
-  });
-
-  test('GET /api/items/:itemId - should return 404 for non-existing item', async () => {
-    const response = await request(app).get('/api/items/9999');
-    expect(response.status).toBe(404);
   });
 });
