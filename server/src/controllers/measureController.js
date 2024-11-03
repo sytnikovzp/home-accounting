@@ -55,7 +55,7 @@ class MeasureController {
         transaction
       );
       await transaction.commit();
-      res.status(201).json(updatedMeasure);
+      res.status(200).json(updatedMeasure);
     } catch (error) {
       await transaction.rollback();
       console.log('Update measure error: ', error.message);

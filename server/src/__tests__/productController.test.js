@@ -55,7 +55,7 @@ describe('Product Controller', () => {
     const response = await request(app)
       .patch(`/api/products/${createdProductId}`)
       .send(updatedProduct);
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedProduct.title);
   });
 

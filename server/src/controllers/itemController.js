@@ -69,7 +69,7 @@ class ItemController {
         transaction
       );
       await transaction.commit();
-      res.status(201).json(updatedItem);
+      res.status(200).json(updatedItem);
     } catch (error) {
       await transaction.rollback();
       console.error('Update item error:', error.message);

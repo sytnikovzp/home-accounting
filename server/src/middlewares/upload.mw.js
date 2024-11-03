@@ -4,7 +4,7 @@ const multer = require('multer');
 // ==============================================================
 const { staticPath } = require('../config/staticConfig');
 
-const storageShopImage = multer.diskStorage({
+const storageShopLogo = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.resolve(staticPath, 'images', 'shops'));
   },
@@ -13,7 +13,7 @@ const storageShopImage = multer.diskStorage({
   },
 });
 
-const filterShopImage = (req, file, cb) => {
+const filterShopLogo = (req, file, cb) => {
   const MIMETYPE_REGEXP = /^image\/(jpeg|png|gif)$/;
   if (MIMETYPE_REGEXP.test(file.mimetype)) {
     return cb(null, true);
@@ -21,21 +21,21 @@ const filterShopImage = (req, file, cb) => {
   cb(null, false);
 };
 
-module.exports.uploadShopImages = multer({
-  storage: storageShopImage,
-  fileFilter: filterShopImage,
+module.exports.uploadShopLogos = multer({
+  storage: storageShopLogo,
+  fileFilter: filterShopLogo,
 });
 
-const storageAvatarImage = multer.diskStorage({
+const storageUserImage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve(staticPath, 'images', 'avatars'));
+    cb(null, path.resolve(staticPath, 'images', 'users'));
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
   },
 });
 
-const filterAvatarImage = (req, file, cb) => {
+const filterUserImage = (req, file, cb) => {
   const MIMETYPE_REGEXP = /^image\/(jpeg|png|gif)$/;
   if (MIMETYPE_REGEXP.test(file.mimetype)) {
     return cb(null, true);
@@ -43,7 +43,7 @@ const filterAvatarImage = (req, file, cb) => {
   cb(null, false);
 };
 
-module.exports.uploadAvatarImages = multer({
-  storage: storageAvatarImage,
-  fileFilter: filterAvatarImage,
+module.exports.uploadUserImages = multer({
+  storage: storageUserImage,
+  fileFilter: filterUserImage,
 });

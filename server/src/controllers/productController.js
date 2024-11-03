@@ -63,7 +63,7 @@ class ProductController {
         transaction
       );
       await transaction.commit();
-      res.status(201).json(updatedProduct);
+      res.status(200).json(updatedProduct);
     } catch (error) {
       await transaction.rollback();
       console.error('Update product error: ', error.message);

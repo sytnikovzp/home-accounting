@@ -8,7 +8,7 @@ const {
   deleteCategory,
 } = require('../controllers/categoryController');
 const {
-  validation: { validateNewCategory, validateUpdCategory },
+  validation: { validateCategory },
 } = require('../middlewares');
 
 const categoryRouter = new Router();
@@ -16,12 +16,12 @@ const categoryRouter = new Router();
 categoryRouter
   .route('/')
   .get(getAllCategories)
-  .post(validateNewCategory, createCategory);
+  .post(validateCategory, createCategory);
 
 categoryRouter
   .route('/:categoryId')
   .get(getCategoryById)
-  .patch(validateUpdCategory, updateCategory)
+  .patch(validateCategory, updateCategory)
   .delete(deleteCategory);
 
 module.exports = categoryRouter;

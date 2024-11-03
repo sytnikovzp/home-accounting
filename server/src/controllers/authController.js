@@ -115,7 +115,7 @@ class AuthController {
         role,
         currentUser
       );
-      res.status(201).json(userData);
+      res.status(200).json(userData);
     } catch (error) {
       console.log('Update user error: ', error.message);
       next(error);

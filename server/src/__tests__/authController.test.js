@@ -143,7 +143,7 @@ describe('AuthController', () => {
           email: 'Charlie.Updated@Gmail.com',
           role: 'Customer',
         });
-      expect(response.status).toBe(201);
+      expect(response.status).toBe(200);
       expect(response.body.user.fullName).toBe('Charlie Updated');
       expect(response.body.user.email).toBe('charlie.updated@gmail.com');
       expect(response.body.user.role).toBe('Customer');
@@ -188,7 +188,7 @@ describe('AuthController', () => {
       accessToken = response.body.accessToken;
     });
 
-    it('should return 201 for current user having permission to change user roles', async () => {
+    it('should return 200 for current user having permission to change user roles', async () => {
       const response = await request(app)
         .patch(`/api/auth/users/${id}`)
         .set('Authorization', `Bearer ${accessToken}`)
@@ -197,7 +197,7 @@ describe('AuthController', () => {
           email: 'Charlie.Updated@Gmail.com',
           role: 'Moderator',
         });
-      expect(response.status).toBe(201);
+      expect(response.status).toBe(200);
       expect(response.body.user.fullName).toBe('Charlie Updated');
       expect(response.body.user.email).toBe('charlie.updated@gmail.com');
       expect(response.body.user.role).toBe('Moderator');

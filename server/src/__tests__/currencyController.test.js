@@ -46,7 +46,7 @@ describe('Currency Controller', () => {
     const response = await request(app)
       .patch(`/api/currencies/${createdCurrencyId}`)
       .send(updatedCurrency);
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedCurrency.title);
   });
 

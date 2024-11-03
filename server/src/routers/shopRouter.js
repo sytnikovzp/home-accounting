@@ -6,12 +6,13 @@ const {
   updateShop,
   getShopById,
   deleteShop,
-  changeImage,
+  updateShopLogo,
+  removeShopLogo,
 } = require('../controllers/shopController');
 const {
-  validation: { validateNewShop, validateUpdShop },
+  validation: { validateShop },
   pagination: { paginateElements },
-  upload: { uploadShopImages },
+  upload: { uploadShopLogos },
 } = require('../middlewares');
 
 const shopRouter = new Router();
@@ -19,16 +20,18 @@ const shopRouter = new Router();
 shopRouter
   .route('/')
   .get(paginateElements, getAllShops)
-  .post(validateNewShop, createShop);
+  .post(validateShop, createShop);
 
 shopRouter
   .route('/:shopId')
   .get(getShopById)
-  .patch(validateUpdShop, updateShop)
+  .patch(validateShop, updateShop)
   .delete(deleteShop);
 
 shopRouter
-  .route('/:shopId/image')
-  .patch(uploadShopImages.single('shopImage'), changeImage);
+  .route('/:shopId/logo')
+  .patch(uploadShopLogos.single('shopLogo'), updateShopLogo);
+
+shopRouter.route('/:shopId/remlogo').patch(removeShopLogo);
 
 module.exports = shopRouter;

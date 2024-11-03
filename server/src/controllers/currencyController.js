@@ -55,7 +55,7 @@ class CurrencyController {
         transaction
       );
       await transaction.commit();
-      res.status(201).json(updatedCurrency);
+      res.status(200).json(updatedCurrency);
     } catch (error) {
       await transaction.rollback();
       console.log('Update currency error: ', error.message);

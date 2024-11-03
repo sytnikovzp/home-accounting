@@ -44,7 +44,7 @@ describe('Measure Controller', () => {
     const response = await request(app)
       .patch(`/api/measures/${createdMeasureId}`)
       .send(updatedMeasure);
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedMeasure.title);
   });
 

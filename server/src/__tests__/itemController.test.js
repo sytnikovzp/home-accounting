@@ -61,7 +61,7 @@ describe('Item Controller', () => {
     const response = await request(app)
       .patch(`/api/items/${createdItemId}`)
       .send(updatedItem);
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body.product).toBe(updatedItem.product);
   });
 

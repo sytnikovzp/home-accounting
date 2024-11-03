@@ -46,7 +46,7 @@ describe('Category Controller', () => {
     const response = await request(app)
       .patch(`/api/categories/${createdCategoryId}`)
       .send(updatedCategory);
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedCategory.title);
   });
 

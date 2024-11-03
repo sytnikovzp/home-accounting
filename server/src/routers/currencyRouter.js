@@ -8,7 +8,7 @@ const {
   deleteCurrency,
 } = require('../controllers/currencyController');
 const {
-  validation: { validateNewCurrency, validateUpdCurrency },
+  validation: { validateCurrency },
 } = require('../middlewares');
 
 const currencyRouter = new Router();
@@ -16,12 +16,12 @@ const currencyRouter = new Router();
 currencyRouter
   .route('/')
   .get(getAllCurrencies)
-  .post(validateNewCurrency, createCurrency);
+  .post(validateCurrency, createCurrency);
 
 currencyRouter
   .route('/:currencyId')
   .get(getCurrencyById)
-  .patch(validateUpdCurrency, updateCurrency)
+  .patch(validateCurrency, updateCurrency)
   .delete(deleteCurrency);
 
 module.exports = currencyRouter;

@@ -20,7 +20,7 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true,
       },
-      image: {
+      logo: {
         type: Sequelize.STRING,
       },
       created_at: {

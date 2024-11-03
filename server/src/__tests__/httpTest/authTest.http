@@ -67,9 +67,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc
 // ==============================================================
 
 ### Update user data
-PATCH http://localhost:5000/api/auth/users/6726404398e307c86a8c4657 HTTP/1.1
+PATCH http://localhost:5000/api/auth/users/6727af538bb375da674e1a19 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDU2MDM1MywiZXhwIjoxNzMwNTYxMjUzfQ.fQlxRx3OkP48Y0AuKvC0uSy2lsckhoM1ZoEAg-AOoQc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldpbGwuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwNjU0MDM1LCJleHAiOjE3MzA2NTQ5MzV9.EB2GPVJ0ecJ-ZVOIDI4RpHr88otbfrAv7XIofEX5CRs
 
 {
   "fullName": "Updated User",

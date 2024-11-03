@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true,
       },
-      image: DataTypes.STRING,
+      logo: DataTypes.STRING,
     },
     {
       sequelize,

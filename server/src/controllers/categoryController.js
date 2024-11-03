@@ -55,7 +55,7 @@ class CategoryController {
         transaction
       );
       await transaction.commit();
-      res.status(201).json(updatedCategory);
+      res.status(200).json(updatedCategory);
     } catch (error) {
       await transaction.rollback();
       console.log('Update category error: ', error.message);
