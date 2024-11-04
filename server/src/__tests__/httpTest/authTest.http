@@ -52,17 +52,17 @@ Content-Type: application/json
 ### Get list all users
 GET http://localhost:5000/api/auth/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldpbGwuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwNzIxMzI4LCJleHAiOjE3MzA3MjIyMjh9.PxqmLLTCUT9yoKi3Of8Ul9zsBd02gVk0UxGlH0Iw2IM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwNzU0OTI2LCJleHAiOjE3MzA3NTU4MjZ9.Q2mGC44KSkU_QnLgoj8tSJqTSQ5FLu5EjjCwKK4vJsc
 
 ### Get current user profile
 GET http://localhost:5000/api/auth/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldpbGwuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwNzIxMzI4LCJleHAiOjE3MzA3MjIyMjh9.PxqmLLTCUT9yoKi3Of8Ul9zsBd02gVk0UxGlH0Iw2IM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwNzU0OTI2LCJleHAiOjE3MzA3NTU4MjZ9.Q2mGC44KSkU_QnLgoj8tSJqTSQ5FLu5EjjCwKK4vJsc
 
 ### Get user by id
-GET http://localhost:5000/api/auth/users/67282666b30cd66c53141dcf HTTP/1.1
+GET http://localhost:5000/api/auth/users/6729395848c610baa50663ee HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldpbGwuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwNzIxMzI4LCJleHAiOjE3MzA3MjIyMjh9.PxqmLLTCUT9yoKi3Of8Ul9zsBd02gVk0UxGlH0Iw2IM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDc1NTM2NywiZXhwIjoxNzMwNzU2MjY3fQ.akGtVbLnr1b3HDPhaDs-mmJyQ_xsGr32gmB2QtyAyT8
 
 // ==============================================================
 

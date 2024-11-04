@@ -10,7 +10,7 @@ const permissionsSchema = new Schema(
     description: String,
   },
   {
-    timestamps: true,
+    timestamps: false,
     versionKey: false,
   }
 );

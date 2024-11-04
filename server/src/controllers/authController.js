@@ -91,7 +91,9 @@ class AuthController {
   async getUserById(req, res, next) {
     try {
       const { userId } = req.params;
-      const user = await getUserById(userId);
+      const currentUserEmail = req.user.email;
+      const currentUser = await getUserByEmail(currentUserEmail);
+      const user = await getUserById(userId, currentUser);
       if (user) {
         res.status(200).json(user);
       } else {

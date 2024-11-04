@@ -12,6 +12,10 @@ class CustomError extends Error {
   static notFound(message, errors = []) {
     return new CustomError(404, message, errors);
   }
+
+  static forbidden(message, errors = []) {
+    return new CustomError(403, message, errors);
+  }
 }
 
 module.exports = CustomError;

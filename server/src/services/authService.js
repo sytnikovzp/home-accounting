@@ -6,12 +6,13 @@ const {
   hashPassword,
   emailToLowerCase,
   formatDate,
+  checkPermission,
 } = require('../utils/sharedFunctions');
 // ==============================================================
 const { generateTokens, validateRefreshToken } = require('./tokenService');
 // ==============================================================
 const { unAuthorizedError } = require('../errors/authErrors');
-const { badRequest, notFound } = require('../errors/customErrors');
+const { badRequest, notFound, forbidden } = require('../errors/customErrors');
 
 class AuthService {
   async registration(fullName, email, password) {
@@ -34,9 +35,9 @@ class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
-        email: emailToLower,
         role: userRole.title || '',
         photo: user.photo || '',
+        email: emailToLower,
       },
     };
   }
@@ -55,9 +56,9 @@ class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
-        email: emailToLower,
         role: userRole.title || '',
         photo: user.photo || '',
+        email: emailToLower,
       },
     };
   }
@@ -78,9 +79,9 @@ class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
-        email: emailToLower,
         role: userRole.title || '',
         photo: user.photo || '',
+        email: emailToLower,
       },
     };
   }
@@ -94,7 +95,6 @@ class AuthService {
         return {
           id: user._id,
           fullName: user.fullName,
-          email: user.email,
           role: role.title || '',
           photo: user.photo || '',
         };
@@ -103,19 +103,37 @@ class AuthService {
     return usersWithRoles;
   }
 
-  async getUserById(id) {
+  async getUserById(id, currentUser) {
     const user = await User.findById(id);
     if (!user) throw notFound('User not found');
     const role = await Role.findById(user.roleId);
-    return {
+    const limitUserData = {
       id: user._id,
       fullName: user.fullName,
-      email: user.email,
       role: role.title || '',
       photo: user.photo || '',
+    };
+    const fullUserData = {
+      ...limitUserData,
+      email: user.email,
       createdAt: formatDate(user.createdAt),
       updatedAt: formatDate(user.updatedAt),
     };
+    const permissions = {
+      fullView: 'full_view_of_other_users_profiles',
+      limitedView: 'limited_viewing_of_other_user_profiles',
+    };
+
+    if (currentUser.id.toString() === id.toString()) {
+      return fullUserData;
+    }
+    if (await checkPermission(currentUser, permissions.fullView)) {
+      return fullUserData;
+    }
+    if (await checkPermission(currentUser, permissions.limitedView)) {
+      return limitUserData;
+    }
+    throw forbidden('Access denied');
   }
 
   async getUserByEmail(email) {
@@ -126,9 +144,9 @@ class AuthService {
     return {
       id: user._id,
       fullName: user.fullName,
-      email: user.email,
       role: role.title || '',
       photo: user.photo || '',
+      email: user.email,
       createdAt: formatDate(user.createdAt),
       updatedAt: formatDate(user.updatedAt),
     };
@@ -164,8 +182,8 @@ class AuthService {
       user: {
         id: updatedUser._id,
         fullName: updatedUser.fullName,
-        email: updateData.email || user.email,
         role: role || (await Role.findById(user.roleId)).title,
+        email: updateData.email || user.email,
       },
     };
   }

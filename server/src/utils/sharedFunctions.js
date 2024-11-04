@@ -6,10 +6,18 @@ const {
     HASH: { SALT_ROUNDS },
   },
 } = require('../constants');
+const { Role } = require('../db/dbMongo/models');
 const { notFound } = require('../errors/customErrors');
 
 module.exports.hashPassword = async function (password) {
   return await bcrypt.hash(password, SALT_ROUNDS);
+};
+
+module.exports.checkPermission = async function (user, requiredPermission) {
+  const role = await Role.findOne({ title: user.role }).populate('permissions');
+  if (!role) throw notFound('Role not found');
+  const permissions = role.permissions.map((p) => p.title);
+  return permissions.includes(requiredPermission);
 };
 
 module.exports.setRefreshTokenCookie = function (res, refreshToken) {
