@@ -22,7 +22,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(201);
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('john@gmail.com');
-      expect(response.body.user.role).toBe('Customer');
+      expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
       userId = response.body.user.id;
       accessToken = response.body.accessToken;
@@ -49,7 +49,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('john@gmail.com');
-      expect(response.body.user.role).toBe('Customer');
+      expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
       userId = response.body.user.id;
       accessToken = response.body.accessToken;
@@ -73,7 +73,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('john@gmail.com');
-      expect(response.body.user.role).toBe('Customer');
+      expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
     });
 
@@ -106,7 +106,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id');
       expect(response.body.email).toBe('john@gmail.com');
-      expect(response.body.role).toBe('Customer');
+      expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
     });
 
@@ -131,7 +131,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id');
       expect(response.body.email).toBe('john@gmail.com');
-      expect(response.body.role).toBe('Customer');
+      expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
     });
 
@@ -149,12 +149,12 @@ describe('AuthController', () => {
         .send({
           fullName: 'Charlie Updated',
           email: 'Charlie.Updated@Gmail.com',
-          role: 'Customer',
+          role: 'User',
         });
       expect(response.status).toBe(200);
       expect(response.body.user.fullName).toBe('Charlie Updated');
       expect(response.body.user.email).toBe('charlie.updated@gmail.com');
-      expect(response.body.user.role).toBe('Customer');
+      expect(response.body.user.role).toBe('User');
       accessToken = response.body.accessToken;
       refreshToken = response.body.refreshToken;
     });
@@ -218,7 +218,7 @@ describe('AuthController', () => {
         .send({
           fullName: 'Charlie Updated',
           email: 'Charlie.Updated@Gmail.com',
-          role: 'Customer',
+          role: 'User',
         });
       expect(response.status).toBe(401);
     });
@@ -254,7 +254,7 @@ describe('AuthController', () => {
   });
 
   describe('DELETE /api/auth/users/:userId', () => {
-    it('should login an existing user with Customer right', async () => {
+    it('should login an existing user with User right', async () => {
       const response = await request(app).post('/api/auth/login').send({
         email: 'Jane.Smith@Gmail.com',
         password: 'Qwerty12',
@@ -262,7 +262,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('jane.smith@gmail.com');
-      expect(response.body.user.role).toBe('Customer');
+      expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
       accessToken = response.body.accessToken;
     });

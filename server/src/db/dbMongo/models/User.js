@@ -16,10 +16,7 @@ const usersSchema = new Schema(
       required: true,
     },
     photo: String,
-    roleId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Role',
-    },
+    roleId: { type: Schema.Types.ObjectId, ref: 'Role' },
   },
   {
     timestamps: true,

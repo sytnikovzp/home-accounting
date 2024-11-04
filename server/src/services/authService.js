@@ -18,14 +18,14 @@ class AuthService {
     const emailToLower = emailToLowerCase(email);
     const person = await User.findOne({ email: emailToLower });
     if (person) throw badRequest('This user already exists');
-    const customerRole = await Role.findOne({ title: 'Customer' });
-    if (!customerRole) throw notFound('Customer role not found');
+    const userRole = await Role.findOne({ title: 'User' });
+    if (!userRole) throw notFound('User role not found');
     const hashedPassword = await hashPassword(password);
     const user = await User.create({
       fullName,
       email: emailToLower,
       password: hashedPassword,
-      roleId: customerRole._id,
+      roleId: userRole._id,
     });
     if (!user) throw badRequest('User is not registered');
     const tokens = generateTokens({ email });
@@ -35,7 +35,7 @@ class AuthService {
         id: user._id,
         fullName: user.fullName,
         email: emailToLower,
-        role: customerRole.title || '',
+        role: userRole.title || '',
         photo: user.photo || '',
       },
     };

@@ -6,18 +6,81 @@ const {
   },
 } = require('../constants');
 
-module.exports.roles = [
+module.exports.permissions = [
+  {
+    title: 'Edit users',
+    description:
+      'Edit and delete users (users are created during registration)',
+  },
+  {
+    title: 'View analytics',
+    description: 'Access to all statistics and analytics on the site',
+  },
+  {
+    title: 'Change roles',
+    description: 'Change user roles',
+  },
+  {
+    title: 'Publish content',
+    description: 'Approve or reject content publication (all types of content)',
+  },
+  {
+    title: 'Edit content',
+    description: 'Edit existing content',
+  },
+  {
+    title: 'Delete content',
+    description: 'Delete existing content',
+  },
+  {
+    title: 'Create purchase',
+    description:
+      'Create purchase records based on existing entities without moderation',
+  },
+  {
+    title: 'Add shops',
+    description: 'Add new shops, which need to be moderated',
+  },
+  {
+    title: 'Edit own records',
+    description: 'Edit own records',
+  },
+  {
+    title: 'Delete own records',
+    description: 'Delete own records',
+  },
+];
+
+module.exports.roles = async (permissionIds) => [
   {
     title: 'Administrator',
     description: 'He can do everything',
+    permissions: [
+      permissionIds['Edit users'],
+      permissionIds['View analytics'],
+      permissionIds['Change roles'],
+    ],
   },
   {
     title: 'Moderator',
-    description: 'He keep order',
+    description: 'He keeps order',
+    permissions: [
+      permissionIds['Publish content'],
+      permissionIds['Edit content'],
+      permissionIds['Delete content'],
+      permissionIds['View analytics'],
+    ],
   },
   {
-    title: 'Customer',
-    description: 'He use application',
+    title: 'User',
+    description: 'He uses application',
+    permissions: [
+      permissionIds['Create purchase'],
+      permissionIds['Add shops'],
+      permissionIds['View analytics'],
+      permissionIds['Edit own records'],
+      permissionIds['Delete own records'],
+    ],
   },
 ];
 
@@ -34,6 +97,6 @@ module.exports.users = async (roleIds) => [
     email: 'jane.smith@gmail.com',
     photo: null,
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
-    roleId: roleIds['Customer'],
+    roleId: roleIds['User'],
   },
 ];

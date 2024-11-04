@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const rolesSchema = new Schema(
+const permissionsSchema = new Schema(
   {
     title: {
       type: String,
@@ -8,13 +8,12 @@ const rolesSchema = new Schema(
       unique: true,
     },
     description: String,
-    permissions: [{ type: Schema.Types.ObjectId, ref: 'Permission' }],
   },
   {
     timestamps: true,
     versionKey: false,
   }
 );
-const Role = model('Role', rolesSchema);
+const Permission = model('Permission', permissionsSchema);
 
-module.exports = Role;
+module.exports = Permission;

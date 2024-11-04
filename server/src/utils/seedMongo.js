@@ -1,9 +1,9 @@
 const path = require('path');
 const mongoose = require('mongoose');
 const {
-  mongoData: { roles, users },
+  mongoData: { roles, users, permissions },
 } = require('../constants');
-const { User, Role } = require('../db/dbMongo/models');
+const { User, Role, Permission } = require('../db/dbMongo/models');
 
 const env = process.env.NODE_ENV || 'development';
 const configPath = path.resolve('src', 'config', 'mongoConfig.js');
@@ -20,8 +20,18 @@ const connectDatabase = async () => {
   }
 };
 
-const createRoles = async () => {
-  const createdRoles = await Role.insertMany(roles);
+const createPermissions = async () => {
+  const createdPermissions = await Permission.insertMany(permissions);
+  const permissionIds = {};
+  createdPermissions.forEach((permission) => {
+    permissionIds[permission.title] = permission._id;
+  });
+  return permissionIds;
+};
+
+const createRoles = async (permissionIds) => {
+  const rolesWithPermissions = await roles(permissionIds);
+  const createdRoles = await Role.insertMany(rolesWithPermissions);
   const roleIds = {};
   createdRoles.forEach((role) => {
     roleIds[role.title] = role._id;
@@ -38,7 +48,9 @@ const seedDatabase = async () => {
   try {
     await Role.deleteMany({});
     await User.deleteMany({});
-    const roleIds = await createRoles();
+    await Permission.deleteMany({});
+    const permissionIds = await createPermissions();
+    const roleIds = await createRoles(permissionIds);
     await createUsers(roleIds);
     console.log('Database seeded successfully');
   } catch (error) {
