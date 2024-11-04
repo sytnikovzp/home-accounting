@@ -41,6 +41,7 @@ describe('Measure Controller', () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
     expect(response.body.title).toBe(newMeasure.title);
+    expect(response.body.description).toBe(newMeasure.description);
     createdMeasureId = response.body.id;
   });
 
@@ -54,6 +55,7 @@ describe('Measure Controller', () => {
       .send(updatedMeasure);
     expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedMeasure.title);
+    expect(response.body.description).toBe(updatedMeasure.description);
   });
 
   test('DELETE /api/measures/:measureId - should delete a measure', async () => {

@@ -12,7 +12,9 @@ describe('Shop Controller', () => {
   let createdShopId;
 
   test('GET /api/shops - should return all shops with pagination', async () => {
-    const response = await request(app).get('/api/shops?limit=10&offset=0');
+    const response = await request(app)
+      .get('/api/shops')
+      .query({ _page: 1, _limit: 10 });
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBeGreaterThan(0);
@@ -55,6 +57,9 @@ describe('Shop Controller', () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
     expect(response.body.title).toBe(newShop.title);
+    expect(response.body.description).toBe(newShop.description);
+    expect(response.body.url).toBe(newShop.url);
+    expect(response.body.logo).toBe(newShop.logo);
     createdShopId = response.body.id;
   });
 
@@ -69,6 +74,8 @@ describe('Shop Controller', () => {
       .send(updatedShop);
     expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedShop.title);
+    expect(response.body.description).toBe(updatedShop.description);
+    expect(response.body.url).toBe(updatedShop.url);
   });
 
   test('PATCH /api/shops/:shopId/logo - should update shop logo', async () => {
@@ -90,6 +97,7 @@ describe('Shop Controller', () => {
       .send(updatedShop);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('id');
+    expect(response.body).toHaveProperty('logo');
     expect(response.body.logo).toBe('');
   });
 

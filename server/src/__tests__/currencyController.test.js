@@ -43,6 +43,7 @@ describe('Currency Controller', () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
     expect(response.body.title).toBe(newCurrency.title);
+    expect(response.body.description).toBe(newCurrency.description);
     createdCurrencyId = response.body.id;
   });
 
@@ -56,6 +57,7 @@ describe('Currency Controller', () => {
       .send(updatedCurrency);
     expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedCurrency.title);
+    expect(response.body.description).toBe(updatedCurrency.description);
   });
 
   test('DELETE /api/currencies/:currencyId - should delete a currency', async () => {

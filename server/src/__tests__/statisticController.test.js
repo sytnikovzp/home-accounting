@@ -2,7 +2,7 @@
 const request = require('supertest');
 const app = require('../app');
 
-describe('StatisticController', () => {
+describe('GET /api/statistics/category-per-period', () => {
   it('should return cost for category with time filter (month)', async () => {
     const response = await request(app)
       .get('/api/statistics/category-per-period')
@@ -36,7 +36,9 @@ describe('StatisticController', () => {
       errors: [{ title: 'Category not found' }],
     });
   });
+});
 
+describe('GET /api/statistics/shop-per-period', () => {
   it('should return total cost for shop "Comfy" with time filter (week)', async () => {
     const response = await request(app)
       .get('/api/statistics/shop-per-period')
@@ -62,7 +64,9 @@ describe('StatisticController', () => {
       errors: [{ title: 'Shop not found' }],
     });
   });
+});
 
+describe('GET /api/statistics/categories', () => {
   it('should return category statistics with time filter (month)', async () => {
     const response = await request(app)
       .get('/api/statistics/categories')
@@ -87,7 +91,9 @@ describe('StatisticController', () => {
       expect(item).toHaveProperty('result');
     });
   });
+});
 
+describe('GET /statistics/shops', () => {
   it('should return shop statistics with time filter (month)', async () => {
     const response = await request(app)
       .get('/api/statistics/shops')

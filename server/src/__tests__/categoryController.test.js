@@ -43,6 +43,7 @@ describe('Category Controller', () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
     expect(response.body.title).toBe(newCategory.title);
+    expect(response.body.description).toBe(newCategory.description);
     createdCategoryId = response.body.id;
   });
 
@@ -56,6 +57,7 @@ describe('Category Controller', () => {
       .send(updatedCategory);
     expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedCategory.title);
+    expect(response.body.description).toBe(updatedCategory.description);
   });
 
   test('DELETE /api/categories/:id - should delete a category', async () => {

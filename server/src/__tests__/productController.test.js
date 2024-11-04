@@ -11,7 +11,9 @@ describe('Product Controller', () => {
   let createdProductId;
 
   test('GET /api/products - should return all products with pagination', async () => {
-    const response = await request(app).get('/api/products?limit=10&offset=0');
+    const response = await request(app)
+      .get('/api/products')
+      .query({ _page: 1, _limit: 10 });
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBeGreaterThan(0);
@@ -52,6 +54,8 @@ describe('Product Controller', () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
     expect(response.body.title).toBe(newProduct.title);
+    expect(response.body.description).toBe(newProduct.description);
+    expect(response.body.category).toBe(newProduct.category);
     createdProductId = response.body.id;
   });
 
@@ -66,6 +70,8 @@ describe('Product Controller', () => {
       .send(updatedProduct);
     expect(response.status).toBe(200);
     expect(response.body.title).toBe(updatedProduct.title);
+    expect(response.body.description).toBe(updatedProduct.description);
+    expect(response.body.category).toBe(updatedProduct.category);
   });
 
   test('DELETE /api/products/:productId - should delete a product', async () => {

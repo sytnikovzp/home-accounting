@@ -11,7 +11,9 @@ describe('Item Controller', () => {
   let createdItemId;
 
   test('GET /api/items - should return all items with pagination', async () => {
-    const response = await request(app).get('/api/items?limit=10&offset=0');
+    const response = await request(app)
+      .get('/api/items')
+      .query({ _page: 1, _limit: 10 });
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBeGreaterThan(0);
@@ -59,6 +61,12 @@ describe('Item Controller', () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
     expect(response.body.product).toBe(newItem.product);
+    expect(response.body).toHaveProperty('amount');
+    expect(response.body).toHaveProperty('price');
+    expect(response.body).toHaveProperty('summ');
+    expect(response.body.shop).toBe(newItem.shop);
+    expect(response.body.measure).toBe(newItem.measure);
+    expect(response.body.currency).toBe(newItem.currency);
     createdItemId = response.body.id;
   });
 
@@ -76,6 +84,12 @@ describe('Item Controller', () => {
       .send(updatedItem);
     expect(response.status).toBe(200);
     expect(response.body.product).toBe(updatedItem.product);
+    expect(response.body).toHaveProperty('amount');
+    expect(response.body).toHaveProperty('price');
+    expect(response.body).toHaveProperty('summ');
+    expect(response.body.shop).toBe(updatedItem.shop);
+    expect(response.body.measure).toBe(updatedItem.measure);
+    expect(response.body.currency).toBe(updatedItem.currency);
   });
 
   test('DELETE /api/items/:itemId - should delete an item', async () => {
