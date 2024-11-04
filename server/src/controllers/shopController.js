@@ -36,14 +36,8 @@ class ShopController {
   async createShop(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title, description, url, logo } = req.body;
-      const newShop = await createShop(
-        title,
-        description,
-        url,
-        logo,
-        transaction
-      );
+      const { title, description, url } = req.body;
+      const newShop = await createShop(title, description, url, transaction);
       await transaction.commit();
       res.status(201).json(newShop);
     } catch (error) {
@@ -70,20 +64,6 @@ class ShopController {
     } catch (error) {
       await transaction.rollback();
       console.error('Update shop error: ', error.message);
-      next(error);
-    }
-  }
-
-  async deleteShop(req, res, next) {
-    const transaction = await sequelize.transaction();
-    try {
-      const { shopId } = req.params;
-      await deleteShop(shopId, transaction);
-      await transaction.commit();
-      res.sendStatus(res.statusCode);
-    } catch (error) {
-      await transaction.rollback();
-      console.error('Delete shop error: ', error.message);
       next(error);
     }
   }
@@ -119,6 +99,20 @@ class ShopController {
     } catch (error) {
       await transaction.rollback();
       console.error('Remove shop logo error: ', error.message);
+      next(error);
+    }
+  }
+
+  async deleteShop(req, res, next) {
+    const transaction = await sequelize.transaction();
+    try {
+      const { shopId } = req.params;
+      await deleteShop(shopId, transaction);
+      await transaction.commit();
+      res.sendStatus(res.statusCode);
+    } catch (error) {
+      await transaction.rollback();
+      console.error('Delete shop error: ', error.message);
       next(error);
     }
   }

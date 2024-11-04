@@ -7,6 +7,8 @@ const {
   getUserById,
   getUserByEmail,
   updateUser,
+  updateUserPhoto,
+  removeUserPhoto,
   deleteUser,
 } = require('../services/authService');
 
@@ -88,8 +90,8 @@ class AuthController {
 
   async getUserById(req, res, next) {
     try {
-      const { id } = req.params;
-      const user = await getUserById(id);
+      const { userId } = req.params;
+      const user = await getUserById(userId);
       if (user) {
         res.status(200).json(user);
       } else {
@@ -103,12 +105,12 @@ class AuthController {
 
   async updateUser(req, res, next) {
     try {
-      const { id } = req.params;
+      const { userId } = req.params;
       const { fullName, email, password, role } = req.body;
       const currentUserEmail = req.user.email;
       const currentUser = await getUserByEmail(currentUserEmail);
       const userData = await updateUser(
-        id,
+        userId,
         fullName,
         email,
         password,
@@ -122,12 +124,37 @@ class AuthController {
     }
   }
 
+  async updateUserPhoto(req, res, next) {
+    try {
+      const {
+        params: { userId },
+        file: { filename },
+      } = req;
+      const updatedUserPhoto = await updateUserPhoto(userId, filename);
+      res.status(200).json(updatedUserPhoto);
+    } catch (error) {
+      console.error('Update user photo error: ', error.message);
+      next(error);
+    }
+  }
+
+  async removeUserPhoto(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const updatedUser = await removeUserPhoto(userId);
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('Remove user photo error: ', error.message);
+      next(error);
+    }
+  }
+
   async deleteUser(req, res, next) {
     try {
-      const { id } = req.params;
+      const { userId } = req.params;
       const currentUserEmail = req.user.email;
       const currentUser = await getUserByEmail(currentUserEmail);
-      await deleteUser(id, currentUser);
+      await deleteUser(userId, currentUser);
       res.sendStatus(res.statusCode);
     } catch (error) {
       console.log('Delete user error: ', error.message);

@@ -1,6 +1,11 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
+const mongoose = require('mongoose');
 const app = require('../app');
+
+afterAll(async () => {
+  await mongoose.connection.close();
+});
 
 describe('GET /api/statistics/category-per-period', () => {
   it('should return cost for category with time filter (month)', async () => {
@@ -32,9 +37,7 @@ describe('GET /api/statistics/category-per-period', () => {
       .get('/api/statistics/category-per-period')
       .query({ category: 'Test' })
       .expect(404);
-    expect(response.body).toEqual({
-      errors: [{ title: 'Category not found' }],
-    });
+    expect(response.body.errors[0].title).toBe('Category not found');
   });
 });
 
@@ -60,9 +63,7 @@ describe('GET /api/statistics/shop-per-period', () => {
       .get('/api/statistics/shop-per-period')
       .query({ shop: 'Auchan' })
       .expect(404);
-    expect(response.body).toEqual({
-      errors: [{ title: 'Shop not found' }],
-    });
+    expect(response.body.errors[0].title).toBe('Shop not found');
   });
 });
 

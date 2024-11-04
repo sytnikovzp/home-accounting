@@ -26,7 +26,7 @@ module.exports.uploadShopLogos = multer({
   fileFilter: filterShopLogo,
 });
 
-const storageUserImage = multer.diskStorage({
+const storageUserPhoto = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.resolve(staticPath, 'images', 'users'));
   },
@@ -35,7 +35,7 @@ const storageUserImage = multer.diskStorage({
   },
 });
 
-const filterUserImage = (req, file, cb) => {
+const filterUserPhoto = (req, file, cb) => {
   const MIMETYPE_REGEXP = /^image\/(jpeg|png|gif)$/;
   if (MIMETYPE_REGEXP.test(file.mimetype)) {
     return cb(null, true);
@@ -43,7 +43,7 @@ const filterUserImage = (req, file, cb) => {
   cb(null, false);
 };
 
-module.exports.uploadUserImages = multer({
-  storage: storageUserImage,
-  fileFilter: filterUserImage,
+module.exports.uploadUserPhotos = multer({
+  storage: storageUserPhoto,
+  fileFilter: filterUserPhoto,
 });

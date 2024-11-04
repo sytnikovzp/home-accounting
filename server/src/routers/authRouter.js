@@ -9,11 +9,14 @@ const {
   getUserById,
   getCurrentUserProfile,
   updateUser,
+  updateUserPhoto,
+  removeUserPhoto,
   deleteUser,
 } = require('../controllers/authController');
 const {
   auth: { authHandler },
   validation: { validateRegistration, validateUpdateUser, validateAuth },
+  upload: { uploadUserPhotos },
 } = require('../middlewares');
 
 const authRouter = new Router();
@@ -24,8 +27,15 @@ authRouter.get('/logout', logout);
 authRouter.get('/refresh', refresh);
 authRouter.get('/users', authHandler, getAllUsers);
 authRouter.get('/profile', authHandler, getCurrentUserProfile);
-authRouter.get('/users/:id', authHandler, getUserById);
-authRouter.patch('/users/:id', authHandler, validateUpdateUser, updateUser);
-authRouter.delete('/delete/:id', authHandler, deleteUser);
+authRouter.get('/users/:userId', authHandler, getUserById);
+authRouter.patch('/users/:userId', authHandler, validateUpdateUser, updateUser);
+authRouter.patch(
+  '/users/:userId/photo',
+  authHandler,
+  uploadUserPhotos.single('userPhoto'),
+  updateUserPhoto
+);
+authRouter.patch('/users/:userId/remphoto', authHandler, removeUserPhoto);
+authRouter.delete('/users/:userId', authHandler, deleteUser);
 
 module.exports = authRouter;

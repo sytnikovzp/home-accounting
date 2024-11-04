@@ -15,6 +15,7 @@ const usersSchema = new Schema(
       type: String,
       required: true,
     },
+    photo: String,
     roleId: {
       type: Schema.Types.ObjectId,
       ref: 'Role',

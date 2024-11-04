@@ -25,12 +25,14 @@ module.exports.users = async (roleIds) => [
   {
     fullName: 'John Doe',
     email: 'john.doe@gmail.com',
+    photo: null,
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['Administrator'],
   },
   {
     fullName: 'Jane Smith',
     email: 'jane.smith@gmail.com',
+    photo: null,
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['Customer'],
   },

@@ -35,17 +35,15 @@ class ShopService {
     };
   }
 
-  async createShop(title, descriptionValue, urlValue, logoValue, transaction) {
+  async createShop(title, descriptionValue, urlValue, transaction) {
     const existingShop = await Shop.findOne({ where: { title } });
     if (existingShop) throw badRequest('This shop already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
     const url = urlValue === '' ? null : urlValue;
-    const logo = logoValue === '' ? null : logoValue;
     const newProductData = {
       title,
       description,
       url,
-      logo,
     };
     const newShop = await Shop.create(newProductData, {
       transaction,
@@ -57,7 +55,6 @@ class ShopService {
       title: newShop.title,
       description: newShop.description || '',
       url: newShop.url || '',
-      logo: newShop.logo || '',
     };
   }
 
@@ -92,17 +89,6 @@ class ShopService {
       description: updatedShop.description || '',
       url: updatedShop.url || '',
     };
-  }
-
-  async deleteShop(shopId, transaction) {
-    const shopById = await Shop.findByPk(shopId);
-    if (!shopById) throw notFound('Shop not found');
-    const deleteShop = await Shop.destroy({
-      where: { id: shopId },
-      transaction,
-    });
-    if (!deleteShop) throw badRequest('Shop is not deleted');
-    return deleteShop;
   }
 
   async updateShopLogo(id, filename, transaction) {
@@ -144,6 +130,17 @@ class ShopService {
       id: removedShopLogo.id,
       logo: removedShopLogo.logo || '',
     };
+  }
+
+  async deleteShop(shopId, transaction) {
+    const shopById = await Shop.findByPk(shopId);
+    if (!shopById) throw notFound('Shop not found');
+    const deleteShop = await Shop.destroy({
+      where: { id: shopId },
+      transaction,
+    });
+    if (!deleteShop) throw badRequest('Shop is not deleted');
+    return deleteShop;
   }
 }
 

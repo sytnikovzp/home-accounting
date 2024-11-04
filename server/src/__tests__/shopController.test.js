@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
+const path = require('path');
 const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app');
-const path = require('path');
 
 afterAll(async () => {
   await mongoose.connection.close();
@@ -51,7 +51,6 @@ describe('Shop Controller', () => {
       title: 'New Shop',
       description: 'Shop Description',
       url: 'https://newshop.com',
-      logo: '',
     };
     const response = await request(app).post('/api/shops').send(newShop);
     expect(response.status).toBe(201);
@@ -59,7 +58,6 @@ describe('Shop Controller', () => {
     expect(response.body.title).toBe(newShop.title);
     expect(response.body.description).toBe(newShop.description);
     expect(response.body.url).toBe(newShop.url);
-    expect(response.body.logo).toBe(newShop.logo);
     createdShopId = response.body.id;
   });
 

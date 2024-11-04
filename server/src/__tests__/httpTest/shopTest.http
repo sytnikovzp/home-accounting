@@ -17,8 +17,7 @@ Content-Type: application/json
 {
   "title": "New Shop",
   "description": "",
-  "url": "",
-  "logo": ""
+  "url": ""
 }
 
 ### Update shop

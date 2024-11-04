@@ -36,6 +36,7 @@ class AuthService {
         fullName: user.fullName,
         email: emailToLower,
         role: customerRole.title || '',
+        photo: user.photo || '',
       },
     };
   }
@@ -56,6 +57,7 @@ class AuthService {
         fullName: user.fullName,
         email: emailToLower,
         role: userRole.title || '',
+        photo: user.photo || '',
       },
     };
   }
@@ -78,6 +80,7 @@ class AuthService {
         fullName: user.fullName,
         email: emailToLower,
         role: userRole.title || '',
+        photo: user.photo || '',
       },
     };
   }
@@ -93,6 +96,7 @@ class AuthService {
           fullName: user.fullName,
           email: user.email,
           role: role.title || '',
+          photo: user.photo || '',
         };
       })
     );
@@ -108,6 +112,7 @@ class AuthService {
       fullName: user.fullName,
       email: user.email,
       role: role.title || '',
+      photo: user.photo || '',
       createdAt: formatDate(user.createdAt),
       updatedAt: formatDate(user.updatedAt),
     };
@@ -123,6 +128,7 @@ class AuthService {
       fullName: user.fullName,
       email: user.email,
       role: role.title || '',
+      photo: user.photo || '',
       createdAt: formatDate(user.createdAt),
       updatedAt: formatDate(user.updatedAt),
     };
@@ -161,6 +167,29 @@ class AuthService {
         email: updateData.email || user.email,
         role: role || (await Role.findById(user.roleId)).title,
       },
+    };
+  }
+
+  async updateUserPhoto(id, filename) {
+    const user = await User.findById(id);
+    if (!user) throw notFound('User not found');
+    if (!filename) throw badRequest('No file uploaded');
+    user.photo = filename;
+    const updatedUser = await user.save();
+    return {
+      id: updatedUser._id,
+      photo: updatedUser.photo || '',
+    };
+  }
+
+  async removeUserPhoto(id) {
+    const user = await User.findById(id);
+    if (!user) throw notFound('User not found');
+    user.photo = null;
+    const updatedUser = await user.save();
+    return {
+      id: updatedUser._id,
+      photo: updatedUser.photo || '',
     };
   }
 

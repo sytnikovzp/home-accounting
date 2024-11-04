@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const path = require('path');
 const request = require('supertest');
 const app = require('../app');
 const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
@@ -7,7 +8,7 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 describe('AuthController', () => {
-  let id;
+  let userId;
   let accessToken;
   let refreshToken;
 
@@ -22,7 +23,8 @@ describe('AuthController', () => {
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('john@gmail.com');
       expect(response.body.user.role).toBe('Customer');
-      id = response.body.user.id;
+      expect(response.body.user).toHaveProperty('photo');
+      userId = response.body.user.id;
       accessToken = response.body.accessToken;
       refreshToken = response.body.refreshToken;
     });
@@ -48,7 +50,8 @@ describe('AuthController', () => {
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('john@gmail.com');
       expect(response.body.user.role).toBe('Customer');
-      id = response.body.user.id;
+      expect(response.body.user).toHaveProperty('photo');
+      userId = response.body.user.id;
       accessToken = response.body.accessToken;
       refreshToken = response.body.refreshToken;
     });
@@ -71,6 +74,7 @@ describe('AuthController', () => {
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('john@gmail.com');
       expect(response.body.user.role).toBe('Customer');
+      expect(response.body.user).toHaveProperty('photo');
     });
 
     it('should return 401 if refresh token is missing', async () => {
@@ -94,14 +98,16 @@ describe('AuthController', () => {
     });
   });
 
-  describe('GET /api/auth/users/:id', () => {
+  describe('GET /api/auth/users/:userId', () => {
     it('should get user by id', async () => {
       const response = await request(app)
-        .get(`/api/auth/users/${id}`)
+        .get(`/api/auth/users/${userId}`)
         .set('Authorization', `Bearer ${accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('id');
       expect(response.body.email).toBe('john@gmail.com');
       expect(response.body.role).toBe('Customer');
+      expect(response.body).toHaveProperty('photo');
     });
 
     it('should return 404 for non-existing user', async () => {
@@ -112,7 +118,7 @@ describe('AuthController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/auth/users/${id}`);
+      const response = await request(app).get(`/api/auth/users/${userId}`);
       expect(response.status).toBe(401);
     });
   });
@@ -123,8 +129,10 @@ describe('AuthController', () => {
         .get('/api/auth/profile')
         .set('Authorization', `Bearer ${accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('id');
       expect(response.body.email).toBe('john@gmail.com');
       expect(response.body.role).toBe('Customer');
+      expect(response.body).toHaveProperty('photo');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -133,10 +141,10 @@ describe('AuthController', () => {
     });
   });
 
-  describe('PATCH /api/auth/users/:id', () => {
+  describe('PATCH /api/auth/users/:userId', () => {
     it('should update user data', async () => {
       const response = await request(app)
-        .patch(`/api/auth/users/${id}`)
+        .patch(`/api/auth/users/${userId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send({
           fullName: 'Charlie Updated',
@@ -163,7 +171,7 @@ describe('AuthController', () => {
 
     it('should return 400 for current user not having permission to change user roles', async () => {
       const response = await request(app)
-        .patch(`/api/auth/users/${id}`)
+        .patch(`/api/auth/users/${userId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send({
           fullName: 'Charlie Updated',
@@ -185,12 +193,13 @@ describe('AuthController', () => {
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('john.doe@gmail.com');
       expect(response.body.user.role).toBe('Administrator');
+      expect(response.body.user).toHaveProperty('photo');
       accessToken = response.body.accessToken;
     });
 
     it('should return 200 for current user having permission to change user roles', async () => {
       const response = await request(app)
-        .patch(`/api/auth/users/${id}`)
+        .patch(`/api/auth/users/${userId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send({
           fullName: 'Charlie Updated',
@@ -204,16 +213,47 @@ describe('AuthController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).patch(`/api/auth/users/${id}`).send({
-        fullName: 'Charlie Updated',
-        email: 'Charlie.Updated@Gmail.com',
-        role: 'Customer',
-      });
+      const response = await request(app)
+        .patch(`/api/auth/users/${userId}`)
+        .send({
+          fullName: 'Charlie Updated',
+          email: 'Charlie.Updated@Gmail.com',
+          role: 'Customer',
+        });
       expect(response.status).toBe(401);
     });
   });
 
-  describe('DELETE /api/auth/users/:id', () => {
+  describe('PATCH /api/auth/users/:userId/photo', () => {
+    it('should update user photo', async () => {
+      const response = await request(app)
+        .patch(`/api/auth/users/${userId}/photo`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .attach('userPhoto', path.resolve('/Users/nadia/Downloads/user.png'));
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('id', userId);
+      expect(response.body).toHaveProperty('photo');
+      expect(response.body.photo).toBeDefined();
+    });
+  });
+
+  describe('PATCH /api/auth/users/:userId/remphoto', () => {
+    it('should remove user photo', async () => {
+      const updatedUser = {
+        photo: null,
+      };
+      const response = await request(app)
+        .patch(`/api/auth/users/${userId}/remphoto`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send(updatedUser);
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('photo');
+      expect(response.body.photo).toBe('');
+    });
+  });
+
+  describe('DELETE /api/auth/users/:userId', () => {
     it('should login an existing user with Customer right', async () => {
       const response = await request(app).post('/api/auth/login').send({
         email: 'Jane.Smith@Gmail.com',
@@ -223,12 +263,13 @@ describe('AuthController', () => {
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('jane.smith@gmail.com');
       expect(response.body.user.role).toBe('Customer');
+      expect(response.body.user).toHaveProperty('photo');
       accessToken = response.body.accessToken;
     });
 
     it('should return 400 for current user not having permission to delete user', async () => {
       const response = await request(app)
-        .delete(`/api/auth/delete/${id}`)
+        .delete(`/api/auth/users/${userId}`)
         .set('Authorization', `Bearer ${accessToken}`);
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe(
@@ -245,26 +286,27 @@ describe('AuthController', () => {
       expect(response.body.user).toHaveProperty('id');
       expect(response.body.user.email).toBe('john.doe@gmail.com');
       expect(response.body.user.role).toBe('Administrator');
+      expect(response.body.user).toHaveProperty('photo');
       accessToken = response.body.accessToken;
     });
 
     it('should return 200 for current user having permission to delete user', async () => {
       const response = await request(app)
-        .delete(`/api/auth/delete/${id}`)
+        .delete(`/api/auth/users/${userId}`)
         .set('Authorization', `Bearer ${accessToken}`);
       expect(response.status).toBe(200);
     });
 
     it('should return 404 for non-existing user deletion', async () => {
       const response = await request(app)
-        .delete('/api/auth/delete/6725684760b29fc86d0683bd')
+        .delete('/api/auth/users/6725684760b29fc86d0683bd')
         .set('Authorization', `Bearer ${accessToken}`);
       expect(response.status).toBe(404);
     });
   });
 
   describe('GET /api/auth/logout', () => {
-    it('should log out the user', async () => {
+    it('should logout the user', async () => {
       const response = await request(app).get('/api/auth/logout');
       expect(response.status).toBe(200);
     });
