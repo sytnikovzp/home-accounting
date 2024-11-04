@@ -12,11 +12,11 @@ module.exports.permissions = [
     description: 'Change roles for users',
   },
   {
-    title: 'Change permission',
+    title: 'Change permissions',
     description: 'Change permissions for roles',
   },
   {
-    title: 'Full view of user profiles',
+    title: 'Full view of other users profiles',
     description: 'View full information about other user profiles',
   },
   {
@@ -67,8 +67,8 @@ module.exports.permissions = [
     description: 'Add new categories, which need to be moderated',
   },
   {
-    title: 'Delete own records',
-    description: 'Delete own records',
+    title: 'Delete own content',
+    description: 'Delete own content records',
   },
   {
     title: 'View analytics',
@@ -79,18 +79,44 @@ module.exports.permissions = [
 module.exports.roles = async (permissionIds) => [
   {
     title: 'Administrator',
-    description: 'He can do everything',
-    permissions: [permissionIds['View analytics']],
+    description: 'Manages all aspects of the application',
+    permissions: [
+      permissionIds['Change roles'],
+      permissionIds['Change permissions'],
+      permissionIds['Full view of other users profiles'],
+      permissionIds['Edit or delete other users profiles'],
+      permissionIds['Full view of own profile'],
+      permissionIds['Edit or delete own profile'],
+      permissionIds['View analytics'],
+    ],
   },
   {
     title: 'Moderator',
-    description: 'He keeps order',
-    permissions: [permissionIds['View analytics']],
+    description: 'Monitoring and tracking publications and content',
+    permissions: [
+      permissionIds['Publish content'],
+      permissionIds['Edit content'],
+      permissionIds['Delete content'],
+      permissionIds['Limited viewing of user profiles'],
+      permissionIds['Full view of own profile'],
+      permissionIds['Edit or delete own profile'],
+      permissionIds['View analytics'],
+    ],
   },
   {
     title: 'User',
-    description: 'He uses application',
-    permissions: [permissionIds['View analytics']],
+    description: 'Uses an app to track purchases',
+    permissions: [
+      permissionIds['Create or update purchase'],
+      permissionIds['Add shops'],
+      permissionIds['Add products'],
+      permissionIds['Add categories'],
+      permissionIds['Limited viewing of user profiles'],
+      permissionIds['Full view of own profile'],
+      permissionIds['Edit or delete own profile'],
+      permissionIds['Delete own content'],
+      permissionIds['View analytics'],
+    ],
   },
 ];
 
@@ -98,14 +124,21 @@ module.exports.users = async (roleIds) => [
   {
     fullName: 'John Doe',
     email: 'john.doe@gmail.com',
-    photo: null,
+    photo: '1730686056955-john.doe.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['Administrator'],
   },
   {
+    fullName: 'Alex Johnson',
+    email: 'alex.johnson@gmail.com',
+    photo: '1730686066968-alex.johnson.jpg',
+    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
+    roleId: roleIds['Moderator'],
+  },
+  {
     fullName: 'Jane Smith',
     email: 'jane.smith@gmail.com',
-    photo: null,
+    photo: '1730713464386-jane.smith.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['User'],
   },
