@@ -1,31 +1,31 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Item extends Model {
+  class Purchase extends Model {
     static associate(models) {
-      Item.belongsTo(models.Product, {
+      Purchase.belongsTo(models.Product, {
         foreignKey: 'product_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
-      Item.belongsTo(models.Shop, {
+      Purchase.belongsTo(models.Shop, {
         foreignKey: 'shop_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
-      Item.belongsTo(models.Measure, {
+      Purchase.belongsTo(models.Measure, {
         foreignKey: 'measure_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
-      Item.belongsTo(models.Currency, {
+      Purchase.belongsTo(models.Currency, {
         foreignKey: 'currency_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
     }
   }
-  Item.init(
+  Purchase.init(
     {
       productId: {
         type: DataTypes.INTEGER,
@@ -61,10 +61,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Item',
-      tableName: 'items',
+      modelName: 'Purchase',
+      tableName: 'purchases',
       underscored: true,
     }
   );
-  return Item;
+  return Purchase;
 };

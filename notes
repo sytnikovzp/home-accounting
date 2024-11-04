@@ -2,7 +2,7 @@
 
 ## pg
 
-! items:
+! purchases:
   - product_id: integer, required
   - amount: DECIMAL(10, 2)
   - price: DECIMAL(10, 2)

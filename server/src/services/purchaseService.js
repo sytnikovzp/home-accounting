@@ -1,5 +1,5 @@
 const {
-  Item,
+  Purchase,
   Product,
   Shop,
   Measure,
@@ -8,9 +8,9 @@ const {
 const { notFound, badRequest } = require('../errors/customErrors');
 const { formatDate, getRecordByTitle } = require('../utils/sharedFunctions');
 
-class ItemService {
-  async getAllItems(limit, offset) {
-    const allItems = await Item.findAll({
+class PurchaseService {
+  async getAllPurchases(limit, offset) {
+    const allPurchases = await Purchase.findAll({
       attributes: ['id', 'amount', 'price', 'summ'],
       include: [
         { model: Product, attributes: ['title'] },
@@ -22,22 +22,22 @@ class ItemService {
       limit,
       offset,
     });
-    if (allItems.length === 0) throw notFound('Items not found');
-    const formattedItems = allItems.map((item) => ({
-      id: item.id,
-      product: item['Product.title'] || '',
-      amount: item.amount,
-      price: item.price,
-      summ: item.summ,
-      shop: item['Shop.title'] || '',
-      measure: item['Measure.title'] || '',
-      currency: item['Currency.title'] || '',
+    if (allPurchases.length === 0) throw notFound('Purchases not found');
+    const formattedPurchases = allPurchases.map((purchase) => ({
+      id: purchase.id,
+      product: purchase['Product.title'] || '',
+      amount: purchase.amount,
+      price: purchase.price,
+      summ: purchase.summ,
+      shop: purchase['Shop.title'] || '',
+      measure: purchase['Measure.title'] || '',
+      currency: purchase['Currency.title'] || '',
     }));
-    return formattedItems;
+    return formattedPurchases;
   }
 
-  async getItemById(itemId) {
-    const itemById = await Item.findByPk(itemId, {
+  async getPurchaseById(purchaseId) {
+    const purchaseById = await Purchase.findByPk(purchaseId, {
       attributes: {
         exclude: ['productId', 'shopId', 'measureId', 'currencyId'],
       },
@@ -48,23 +48,23 @@ class ItemService {
         { model: Currency, attributes: ['title'] },
       ],
     });
-    if (!itemById) throw notFound('Item not found');
-    const itemData = itemById.toJSON();
+    if (!purchaseById) throw notFound('Purchase not found');
+    const purchaseData = purchaseById.toJSON();
     return {
-      id: itemData.id,
-      product: itemData.Product.title,
-      amount: itemData.amount,
-      price: itemData.price,
-      summ: itemData.summ,
-      shop: itemData.Shop.title,
-      measure: itemData.Measure.title,
-      currency: itemData.Currency.title,
-      createdAt: formatDate(itemData.createdAt),
-      updatedAt: formatDate(itemData.updatedAt),
+      id: purchaseData.id,
+      product: purchaseData.Product.title,
+      amount: purchaseData.amount,
+      price: purchaseData.price,
+      summ: purchaseData.summ,
+      shop: purchaseData.Shop.title,
+      measure: purchaseData.Measure.title,
+      currency: purchaseData.Currency.title,
+      createdAt: formatDate(purchaseData.createdAt),
+      updatedAt: formatDate(purchaseData.updatedAt),
     };
   }
 
-  async createItem(
+  async createPurchase(
     product,
     amountValue,
     priceValue,
@@ -84,7 +84,7 @@ class ItemService {
     const amount = parseFloat(amountValue) || 0;
     const price = parseFloat(priceValue) || 0;
     const summ = parseFloat(amountValue) * parseFloat(priceValue) || 0;
-    const newItemData = {
+    const newPurchaseData = {
       productId: productRecord.id,
       amount,
       price,
@@ -93,24 +93,24 @@ class ItemService {
       measureId: measureRecord.id,
       currencyId: currencyRecord.id,
     };
-    const newItem = await Item.create(newItemData, {
+    const newPurchase = await Purchase.create(newPurchaseData, {
       transaction,
       returning: true,
     });
-    if (!newItem) throw badRequest('Item is not created');
+    if (!newPurchase) throw badRequest('Purchase is not created');
     return {
-      id: newItem.id,
+      id: newPurchase.id,
       product: productRecord.title,
-      amount: newItem.amount,
-      price: newItem.price,
-      summ: newItem.summ,
+      amount: newPurchase.amount,
+      price: newPurchase.price,
+      summ: newPurchase.summ,
       shop: shopRecord.title,
       measure: measureRecord.title,
       currency: currencyRecord.title,
     };
   }
 
-  async updateItem(
+  async updatePurchase(
     id,
     product,
     amountValue,
@@ -120,8 +120,8 @@ class ItemService {
     currency,
     transaction
   ) {
-    const itemById = await Item.findByPk(id);
-    if (!itemById) throw notFound('Item not found');
+    const purchaseById = await Purchase.findByPk(id);
+    if (!purchaseById) throw notFound('Purchase not found');
     const productRecord = await getRecordByTitle(Product, product);
     if (!productRecord) throw notFound('Product not found');
     const shopRecord = await getRecordByTitle(Shop, shop);
@@ -130,11 +130,11 @@ class ItemService {
     if (!measureRecord) throw notFound('Measure not found');
     const currencyRecord = await getRecordByTitle(Currency, currency);
     if (!currencyRecord) throw notFound('Currency not found');
-    let amount = itemById.amount;
+    let amount = purchaseById.amount;
     if (amountValue) {
       amount = parseFloat(amountValue) || 0;
     }
-    let price = itemById.price;
+    let price = purchaseById.price;
     if (priceValue) {
       price = parseFloat(priceValue) || 0;
     }
@@ -148,34 +148,37 @@ class ItemService {
       measureId: measureRecord.id,
       currencyId: currencyRecord.id,
     };
-    const [affectedRows, [updatedItem]] = await Item.update(updateData, {
-      where: { id },
-      returning: true,
-      transaction,
-    });
-    if (affectedRows === 0) throw badRequest('Item is not updated');
+    const [affectedRows, [updatedPurchase]] = await Purchase.update(
+      updateData,
+      {
+        where: { id },
+        returning: true,
+        transaction,
+      }
+    );
+    if (affectedRows === 0) throw badRequest('Purchase is not updated');
     return {
-      id: updatedItem.id,
+      id: updatedPurchase.id,
       product: productRecord.title,
-      amount: updatedItem.amount,
-      price: updatedItem.price,
-      summ: updatedItem.summ,
+      amount: updatedPurchase.amount,
+      price: updatedPurchase.price,
+      summ: updatedPurchase.summ,
       shop: shopRecord.title,
       measure: measureRecord.title,
       currency: currencyRecord.title,
     };
   }
 
-  async deleteItem(itemId, transaction) {
-    const itemById = await Item.findByPk(itemId);
-    if (!itemById) throw notFound('Item not found');
-    const deletedItem = await Item.destroy({
-      where: { id: itemId },
+  async deletePurchase(purchaseId, transaction) {
+    const purchaseById = await Purchase.findByPk(purchaseId);
+    if (!purchaseById) throw notFound('Purchase not found');
+    const deletedPurchase = await Purchase.destroy({
+      where: { id: purchaseId },
       transaction,
     });
-    if (!deletedItem) throw badRequest('Item is not deleted');
-    return deletedItem;
+    if (!deletedPurchase) throw badRequest('Purchase is not deleted');
+    return deletedPurchase;
   }
 }
 
-module.exports = new ItemService();
+module.exports = new PurchaseService();

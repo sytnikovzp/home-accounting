@@ -7,12 +7,12 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-describe('Item Controller', () => {
-  let createdItemId;
+describe('Purchase Controller', () => {
+  let createdPurchaseId;
 
-  test('GET /api/items - should return all items with pagination', async () => {
+  test('GET /api/purchases - should return all purchases with pagination', async () => {
     const response = await request(app)
-      .get('/api/items')
+      .get('/api/purchases')
       .query({ _page: 1, _limit: 10 });
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
@@ -20,16 +20,16 @@ describe('Item Controller', () => {
     expect(response.headers['x-total-count']).toBeDefined();
   });
 
-  test('GET /api/items - should return all items without pagination', async () => {
-    const response = await request(app).get('/api/items');
+  test('GET /api/purchases - should return all purchases without pagination', async () => {
+    const response = await request(app).get('/api/purchases');
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBeGreaterThan(0);
     expect(response.headers['x-total-count']).toBeDefined();
   });
 
-  test('GET /api/items/:itemId - should return item by id', async () => {
-    const response = await request(app).get('/api/items/1');
+  test('GET /api/purchases/:purchaseId - should return purchase by id', async () => {
+    const response = await request(app).get('/api/purchases/1');
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('id');
     expect(response.body).toHaveProperty('product');
@@ -43,13 +43,13 @@ describe('Item Controller', () => {
     expect(response.body).toHaveProperty('updatedAt');
   });
 
-  test('GET /api/items/:itemId - should return 404 for non-existing item', async () => {
-    const response = await request(app).get('/api/items/9999');
+  test('GET /api/purchases/:purchaseId - should return 404 for non-existing purchase', async () => {
+    const response = await request(app).get('/api/purchases/9999');
     expect(response.status).toBe(404);
   });
 
-  test('POST /api/items - should create a new item', async () => {
-    const newItem = {
+  test('POST /api/purchases - should create a new purchase', async () => {
+    const newPurchase = {
       product: 'Headphones',
       amount: 2,
       price: 500,
@@ -57,21 +57,23 @@ describe('Item Controller', () => {
       measure: 'unit',
       currency: 'UAH',
     };
-    const response = await request(app).post('/api/items').send(newItem);
+    const response = await request(app)
+      .post('/api/purchases')
+      .send(newPurchase);
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
-    expect(response.body.product).toBe(newItem.product);
+    expect(response.body.product).toBe(newPurchase.product);
     expect(response.body).toHaveProperty('amount');
     expect(response.body).toHaveProperty('price');
     expect(response.body).toHaveProperty('summ');
-    expect(response.body.shop).toBe(newItem.shop);
-    expect(response.body.measure).toBe(newItem.measure);
-    expect(response.body.currency).toBe(newItem.currency);
-    createdItemId = response.body.id;
+    expect(response.body.shop).toBe(newPurchase.shop);
+    expect(response.body.measure).toBe(newPurchase.measure);
+    expect(response.body.currency).toBe(newPurchase.currency);
+    createdPurchaseId = response.body.id;
   });
 
-  test('PATCH /api/items - should update an existing item', async () => {
-    const updatedItem = {
+  test('PATCH /api/purchases - should update an existing purchase', async () => {
+    const updatedPurchase = {
       product: 'Eggs',
       amount: 10,
       price: 70,
@@ -80,20 +82,22 @@ describe('Item Controller', () => {
       currency: 'UAH',
     };
     const response = await request(app)
-      .patch(`/api/items/${createdItemId}`)
-      .send(updatedItem);
+      .patch(`/api/purchases/${createdPurchaseId}`)
+      .send(updatedPurchase);
     expect(response.status).toBe(200);
-    expect(response.body.product).toBe(updatedItem.product);
+    expect(response.body.product).toBe(updatedPurchase.product);
     expect(response.body).toHaveProperty('amount');
     expect(response.body).toHaveProperty('price');
     expect(response.body).toHaveProperty('summ');
-    expect(response.body.shop).toBe(updatedItem.shop);
-    expect(response.body.measure).toBe(updatedItem.measure);
-    expect(response.body.currency).toBe(updatedItem.currency);
+    expect(response.body.shop).toBe(updatedPurchase.shop);
+    expect(response.body.measure).toBe(updatedPurchase.measure);
+    expect(response.body.currency).toBe(updatedPurchase.currency);
   });
 
-  test('DELETE /api/items/:itemId - should delete an item', async () => {
-    const response = await request(app).delete(`/api/items/${createdItemId}`);
+  test('DELETE /api/purchases/:purchaseId - should delete an purchase', async () => {
+    const response = await request(app).delete(
+      `/api/purchases/${createdPurchaseId}`
+    );
     expect(response.status).toBe(200);
   });
 });

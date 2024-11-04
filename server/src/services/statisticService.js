@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 // ==============================================================
 const {
-  Item,
+  Purchase,
   Product,
   Shop,
   Category,
@@ -20,11 +20,11 @@ class StatisticService {
       attributes: ['id'],
       raw: true,
     });
-    const prodIds = productIds.map((item) => item.id);
+    const prodIds = productIds.map((purchase) => purchase.id);
     if (prodIds.length === 0) {
       return [{ result: 0 }];
     }
-    const costByCategoryPerPeriod = await Item.findAll({
+    const costByCategoryPerPeriod = await Purchase.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {
         productId: { [Op.in]: prodIds },
@@ -44,7 +44,7 @@ class StatisticService {
     const time = getTime(ago);
     const shopRecord = await getRecordByTitle(Shop, shop);
     if (!shopRecord) throw notFound('Shop not found');
-    const costByShopPerPeriod = await Item.findAll({
+    const costByShopPerPeriod = await Purchase.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {
         shopId: shopRecord.id,
@@ -60,7 +60,7 @@ class StatisticService {
 
   async getCostByCategories(ago) {
     const time = getTime(ago);
-    const result = await Item.findAll({
+    const result = await Purchase.findAll({
       attributes: [
         'Product->Category.title',
         [sequelize.fn('SUM', sequelize.col('summ')), 'result'],
@@ -89,7 +89,7 @@ class StatisticService {
 
   async getCostByShops(ago) {
     const time = getTime(ago);
-    const result = await Item.findAll({
+    const result = await Purchase.findAll({
       attributes: [
         'Shop.title',
         [sequelize.fn('COALESCE', sequelize.col('Shop.url'), ''), 'url'],

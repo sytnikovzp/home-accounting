@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Measure extends Model {
     static associate(models) {
-      Measure.hasMany(models.Item, {
+      Measure.hasMany(models.Purchase, {
         foreignKey: 'measure_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',

@@ -301,7 +301,7 @@ module.exports = {
       updated_at: new Date(),
     },
   ],
-  items: [
+  purchases: [
     {
       product_id: 6,
       amount: 0.5,

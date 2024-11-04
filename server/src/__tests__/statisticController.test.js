@@ -74,10 +74,10 @@ describe('GET /api/statistics/categories', () => {
       .query({ ago: 'month' })
       .expect(200);
     expect(Array.isArray(response.body)).toBe(true);
-    response.body.forEach((item) => {
-      expect(typeof item).toBe('object');
-      expect(item).toHaveProperty('title');
-      expect(item).toHaveProperty('result');
+    response.body.forEach((purchase) => {
+      expect(typeof purchase).toBe('object');
+      expect(purchase).toHaveProperty('title');
+      expect(purchase).toHaveProperty('result');
     });
   });
 
@@ -86,10 +86,10 @@ describe('GET /api/statistics/categories', () => {
       .get('/api/statistics/categories')
       .expect(200);
     expect(Array.isArray(response.body)).toBe(true);
-    response.body.forEach((item) => {
-      expect(typeof item).toBe('object');
-      expect(item).toHaveProperty('title');
-      expect(item).toHaveProperty('result');
+    response.body.forEach((purchase) => {
+      expect(typeof purchase).toBe('object');
+      expect(purchase).toHaveProperty('title');
+      expect(purchase).toHaveProperty('result');
     });
   });
 });
@@ -101,12 +101,12 @@ describe('GET /statistics/shops', () => {
       .query({ ago: 'month' })
       .expect(200);
     expect(Array.isArray(response.body)).toBe(true);
-    response.body.forEach((item) => {
-      expect(typeof item).toBe('object');
-      expect(item).toHaveProperty('title');
-      expect(item).toHaveProperty('url');
-      expect(item).toHaveProperty('logo');
-      expect(item).toHaveProperty('result');
+    response.body.forEach((purchase) => {
+      expect(typeof purchase).toBe('object');
+      expect(purchase).toHaveProperty('title');
+      expect(purchase).toHaveProperty('url');
+      expect(purchase).toHaveProperty('logo');
+      expect(purchase).toHaveProperty('result');
     });
   });
 
@@ -115,12 +115,12 @@ describe('GET /statistics/shops', () => {
       .get('/api/statistics/shops')
       .expect(200);
     expect(Array.isArray(response.body)).toBe(true);
-    response.body.forEach((item) => {
-      expect(typeof item).toBe('object');
-      expect(item).toHaveProperty('title');
-      expect(item).toHaveProperty('url');
-      expect(item).toHaveProperty('logo');
-      expect(item).toHaveProperty('result');
+    response.body.forEach((purchase) => {
+      expect(typeof purchase).toBe('object');
+      expect(purchase).toHaveProperty('title');
+      expect(purchase).toHaveProperty('url');
+      expect(purchase).toHaveProperty('logo');
+      expect(purchase).toHaveProperty('result');
     });
   });
 });

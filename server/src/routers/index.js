@@ -6,7 +6,7 @@ const currencyRouter = require('./currencyRouter');
 const measureRouter = require('./measureRouter');
 const productRouter = require('./productRouter');
 const shopRouter = require('./shopRouter');
-const itemRouter = require('./itemRouter');
+const purchaseRouter = require('./purchaseRouter');
 const statisticRouter = require('./statisticRouter');
 
 const router = new Router();
@@ -17,7 +17,7 @@ router.use('/currencies', currencyRouter);
 router.use('/measures', measureRouter);
 router.use('/products', productRouter);
 router.use('/shops', shopRouter);
-router.use('/items', itemRouter);
+router.use('/purchases', purchaseRouter);
 router.use('/statistics', statisticRouter);
 
 module.exports = router;
