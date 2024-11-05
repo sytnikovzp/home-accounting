@@ -17,7 +17,11 @@ class ProductService {
       title: product.title,
       category: product['Category.title'] || '',
     }));
-    return formattedProducts;
+    const productsCount = await Product.count();
+    return {
+      allProducts: formattedProducts,
+      total: productsCount,
+    };
   }
 
   async getProductById(productId) {

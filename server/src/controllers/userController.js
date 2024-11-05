@@ -11,9 +11,10 @@ const {
 class UserController {
   async getAllUsers(req, res, next) {
     try {
-      const users = await getAllUsers();
-      if (users.length > 0) {
-        res.status(200).json(users);
+      const { limit, offset } = req.pagination;
+      const { allUsers, total } = await getAllUsers(limit, offset);
+      if (allUsers.length > 0) {
+        res.status(200).set('X-Total-Count', total).json(allUsers);
       } else {
         res.status(401);
       }

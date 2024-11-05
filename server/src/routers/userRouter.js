@@ -12,6 +12,7 @@ const {
 const {
   auth: { authHandler },
   validation: { validateUpdateUser },
+  pagination: { paginateElements },
   upload: { uploadUserPhotos },
 } = require('../middlewares');
 
@@ -19,7 +20,7 @@ const userRouter = new Router();
 
 userRouter
   .route('/')
-  .get(authHandler, getAllUsers);
+  .get(authHandler, paginateElements, getAllUsers);
 
 userRouter
   .route('/profile')

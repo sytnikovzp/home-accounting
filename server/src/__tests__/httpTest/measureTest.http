@@ -1,4 +1,4 @@
-### Get all measures
+### Get list all measures
 GET http://localhost:5000/api/measures HTTP/1.1
 Content-Type: application/json
 

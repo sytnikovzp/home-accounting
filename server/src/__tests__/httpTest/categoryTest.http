@@ -1,4 +1,4 @@
-### Get all categories
+### Get list all categories
 GET http://localhost:5000/api/categories HTTP/1.1
 Content-Type: application/json
 

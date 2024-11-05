@@ -12,11 +12,11 @@ const { generateTokens } = require('./tokenService');
 const { badRequest, notFound, forbidden } = require('../errors/customErrors');
 
 class UserService {
-  async getAllUsers() {
-    const users = await User.find();
-    if (users.length === 0) throw notFound('Users not found');
+  async getAllUsers(limit, offset) {
+    const allUsers = await User.find().limit(limit).skip(offset);
+    if (allUsers.length === 0) throw notFound('Users not found');
     const usersWithRoles = await Promise.all(
-      users.map(async (user) => {
+      allUsers.map(async (user) => {
         const role = await Role.findById(user.roleId);
         return {
           id: user._id,
@@ -26,7 +26,11 @@ class UserService {
         };
       })
     );
-    return usersWithRoles;
+    const usersCount = await User.countDocuments();
+    return {
+      allUsers: usersWithRoles,
+      total: usersCount,
+    };
   }
 
   async getUserById(id, currentUser) {
@@ -88,6 +92,8 @@ class UserService {
       ));
     if (!hasPermission)
       throw forbidden('You don`t have permission to update this user data');
+    const userRole = await Role.findById(user.roleId);
+    if (!userRole) throw badRequest('User role not found');
     const updateData = {};
     if (fullName) updateData.fullName = fullName;
     if (email && email.toLowerCase() !== user.email.toLowerCase()) {
@@ -97,10 +103,16 @@ class UserService {
       updateData.email = newEmail;
     }
     if (password) updateData.password = await hashPassword(password);
-    if (role && role !== (await Role.findById(user.roleId)).title) {
+    if (role && role !== userRole.title) {
       const hasPermission = await checkPermission(currentUser, 'change_roles');
       if (!hasPermission)
         throw forbidden('You don`t have permission to change this user role');
+      if (userRole.title === 'Administrator') {
+        const adminCount = await User.countDocuments({ roleId: user.roleId });
+        if (adminCount <= 1) {
+          throw forbidden('Cannot delete the last administrator');
+        }
+      }
       const newRole = await Role.findOne({ title: role });
       if (!newRole) throw notFound('Role not found');
       updateData.roleId = newRole._id;
@@ -170,6 +182,14 @@ class UserService {
       ));
     if (!hasPermission)
       throw forbidden('You don`t have permission to delete this user profile');
+    const userRole = await Role.findById(user.roleId);
+    if (!userRole) throw badRequest('User role not found');
+    if (userRole.title === 'Administrator') {
+      const adminCount = await User.countDocuments({ roleId: user.roleId });
+      if (adminCount <= 1) {
+        throw forbidden('Cannot delete the last administrator');
+      }
+    }
     const delUser = await User.findByIdAndDelete(id);
     if (!delUser) throw badRequest('User is not deleted');
     return user;

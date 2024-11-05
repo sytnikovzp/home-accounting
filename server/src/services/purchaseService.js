@@ -33,7 +33,11 @@ class PurchaseService {
       measure: purchase['Measure.title'] || '',
       currency: purchase['Currency.title'] || '',
     }));
-    return formattedPurchases;
+    const purchasesCount = await Purchase.count();
+    return {
+      allPurchases: formattedPurchases,
+      total: purchasesCount,
+    };
   }
 
   async getPurchaseById(purchaseId) {

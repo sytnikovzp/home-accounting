@@ -1,4 +1,4 @@
-const { Product, sequelize } = require('../db/dbPostgres/models');
+const { sequelize } = require('../db/dbPostgres/models');
 const {
   getAllProducts,
   getProductById,
@@ -11,9 +11,8 @@ class ProductController {
   async getAllProducts(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const allProducts = await getAllProducts(limit, offset);
-      const productsCount = await Product.count();
-      res.status(200).set('X-Total-Count', productsCount).json(allProducts);
+      const { allProducts, total } = await getAllProducts(limit, offset);
+      res.status(200).set('X-Total-Count', total).json(allProducts);
     } catch (error) {
       console.error('Get all products error: ', error.message);
       next(error);

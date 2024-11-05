@@ -17,7 +17,11 @@ class ShopService {
       url: shop.url || '',
       logo: shop.logo || '',
     }));
-    return formattedShops;
+    const shopsCount = await Shop.count();
+    return {
+      allShops: formattedShops,
+      total: shopsCount,
+    };
   }
 
   async getShopById(shopId) {
