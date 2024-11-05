@@ -75,10 +75,9 @@ class AuthController {
 
   async getCurrentUserProfile(req, res, next) {
     try {
-      const currentUserEmail = req.user.email;
-      const user = await getUserByEmail(currentUserEmail);
-      if (user) {
-        res.status(200).json(user);
+      const currentUser = await getUserByEmail(req.user.email);
+      if (currentUser) {
+        res.status(200).json(currentUser);
       } else {
         res.status(401);
       }
@@ -91,8 +90,7 @@ class AuthController {
   async getUserById(req, res, next) {
     try {
       const { userId } = req.params;
-      const currentUserEmail = req.user.email;
-      const currentUser = await getUserByEmail(currentUserEmail);
+      const currentUser = await getUserByEmail(req.user.email);
       const user = await getUserById(userId, currentUser);
       if (user) {
         res.status(200).json(user);
@@ -109,8 +107,7 @@ class AuthController {
     try {
       const { userId } = req.params;
       const { fullName, email, password, role } = req.body;
-      const currentUserEmail = req.user.email;
-      const currentUser = await getUserByEmail(currentUserEmail);
+      const currentUser = await getUserByEmail(req.user.email);
       const userData = await updateUser(
         userId,
         fullName,
@@ -132,7 +129,12 @@ class AuthController {
         params: { userId },
         file: { filename },
       } = req;
-      const updatedUserPhoto = await updateUserPhoto(userId, filename);
+      const currentUser = await getUserByEmail(req.user.email);
+      const updatedUserPhoto = await updateUserPhoto(
+        userId,
+        filename,
+        currentUser
+      );
       res.status(200).json(updatedUserPhoto);
     } catch (error) {
       console.error('Update user photo error: ', error.message);
@@ -143,7 +145,8 @@ class AuthController {
   async removeUserPhoto(req, res, next) {
     try {
       const { userId } = req.params;
-      const updatedUser = await removeUserPhoto(userId);
+      const currentUser = await getUserByEmail(req.user.email);
+      const updatedUser = await removeUserPhoto(userId, currentUser);
       res.status(200).json(updatedUser);
     } catch (error) {
       console.error('Remove user photo error: ', error.message);
@@ -154,8 +157,7 @@ class AuthController {
   async deleteUser(req, res, next) {
     try {
       const { userId } = req.params;
-      const currentUserEmail = req.user.email;
-      const currentUser = await getUserByEmail(currentUserEmail);
+      const currentUser = await getUserByEmail(req.user.email);
       await deleteUser(userId, currentUser);
       res.sendStatus(res.statusCode);
     } catch (error) {

@@ -35,7 +35,7 @@ authRouter.patch(
   uploadUserPhotos.single('userPhoto'),
   updateUserPhoto
 );
-authRouter.patch('/users/:userId/remphoto', authHandler, removeUserPhoto);
+authRouter.patch('/users/:userId/delphoto', authHandler, removeUserPhoto);
 authRouter.delete('/users/:userId', authHandler, deleteUser);
 
 module.exports = authRouter;

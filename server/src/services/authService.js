@@ -37,7 +37,6 @@ class AuthService {
         fullName: user.fullName,
         role: userRole.title || '',
         photo: user.photo || '',
-        email: emailToLower,
       },
     };
   }
@@ -58,7 +57,6 @@ class AuthService {
         fullName: user.fullName,
         role: userRole.title || '',
         photo: user.photo || '',
-        email: emailToLower,
       },
     };
   }
@@ -81,7 +79,6 @@ class AuthService {
         fullName: user.fullName,
         role: userRole.title || '',
         photo: user.photo || '',
-        email: emailToLower,
       },
     };
   }
@@ -123,7 +120,6 @@ class AuthService {
       fullView: 'full_view_of_other_users_profiles',
       limitedView: 'limited_viewing_of_other_user_profiles',
     };
-
     if (currentUser.id.toString() === id.toString()) {
       return fullUserData;
     }
@@ -133,7 +129,7 @@ class AuthService {
     if (await checkPermission(currentUser, permissions.limitedView)) {
       return limitUserData;
     }
-    throw forbidden('Access denied');
+    throw forbidden('You don`t have permission to get user data');
   }
 
   async getUserByEmail(email) {
@@ -155,6 +151,13 @@ class AuthService {
   async updateUser(id, fullName, email, password, role, currentUser) {
     const user = await User.findById(id);
     if (!user) throw notFound('User not found');
+    const hasPermission =
+      currentUser.id.toString() === id.toString() ||
+      (await checkPermission(
+        currentUser,
+        'edit_or_delete_other_users_profiles'
+      ));
+    if (!hasPermission) throw forbidden('You don`t have permission to update user data');
     const updateData = {};
     if (fullName) updateData.fullName = fullName;
     if (email && email.toLowerCase() !== user.email.toLowerCase()) {
@@ -165,9 +168,8 @@ class AuthService {
     }
     if (password) updateData.password = await hashPassword(password);
     if (role && role !== (await Role.findById(user.roleId)).title) {
-      if (currentUser.role !== 'Administrator') {
-        throw badRequest('You don`t have permission to change user roles');
-      }
+      const hasPermission = await checkPermission(currentUser, 'change_roles');
+      if (!hasPermission) throw forbidden('You don`t have permission to change user role');
       const newRole = await Role.findOne({ title: role });
       if (!newRole) throw notFound('Role not found');
       updateData.roleId = newRole._id;
@@ -183,15 +185,21 @@ class AuthService {
         id: updatedUser._id,
         fullName: updatedUser.fullName,
         role: role || (await Role.findById(user.roleId)).title,
-        email: updateData.email || user.email,
       },
     };
   }
 
-  async updateUserPhoto(id, filename) {
+  async updateUserPhoto(id, filename, currentUser) {
     const user = await User.findById(id);
     if (!user) throw notFound('User not found');
     if (!filename) throw badRequest('No file uploaded');
+    const hasPermission =
+      currentUser.id.toString() === id.toString() ||
+      (await checkPermission(
+        currentUser,
+        'edit_or_delete_other_users_profiles'
+      ));
+    if (!hasPermission) throw forbidden('You don`t have permission to update user photo');
     user.photo = filename;
     const updatedUser = await user.save();
     return {
@@ -200,9 +208,16 @@ class AuthService {
     };
   }
 
-  async removeUserPhoto(id) {
+  async removeUserPhoto(id, currentUser) {
     const user = await User.findById(id);
     if (!user) throw notFound('User not found');
+    const hasPermission =
+      currentUser.id.toString() === id.toString() ||
+      (await checkPermission(
+        currentUser,
+        'edit_or_delete_other_users_profiles'
+      ));
+    if (!hasPermission) throw forbidden('You don`t have permission to remome user photo');
     user.photo = null;
     const updatedUser = await user.save();
     return {
@@ -214,8 +229,13 @@ class AuthService {
   async deleteUser(id, currentUser) {
     const user = await User.findById(id);
     if (!user) throw notFound('User not found');
-    if (String(currentUser.role) !== String('Administrator'))
-      throw badRequest('You don`t have permission to delete users');
+    const hasPermission =
+      currentUser.id.toString() === id.toString() ||
+      (await checkPermission(
+        currentUser,
+        'edit_or_delete_other_users_profiles'
+      ));
+    if (!hasPermission) throw forbidden('You don`t have permission to delete user profile');
     const delUser = await User.findByIdAndDelete(id);
     if (!delUser) throw badRequest('User is not deleted');
     return user;

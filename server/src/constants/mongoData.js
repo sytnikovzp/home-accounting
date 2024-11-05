@@ -30,10 +30,6 @@ module.exports.permissions = [
       'Edit or delete information about other users (users are created during registration)',
   },
   {
-    title: 'edit_or_delete_own_profile',
-    description: 'Edit or delete own profile information',
-  },
-  {
     title: 'publish_content',
     description: 'Approve or reject content publication',
   },
@@ -66,10 +62,6 @@ module.exports.permissions = [
     title: 'delete_own_content',
     description: 'Delete own content records',
   },
-  {
-    title: 'view_analytics',
-    description: 'Access to all statistics and analytics on the site',
-  },
 ];
 
 module.exports.roles = async (permissionIds) => [
@@ -81,8 +73,6 @@ module.exports.roles = async (permissionIds) => [
       permissionIds['change_permissions'],
       permissionIds['full_view_of_other_users_profiles'],
       permissionIds['edit_or_delete_other_users_profiles'],
-      permissionIds['edit_or_delete_own_profile'],
-      permissionIds['view_analytics'],
     ],
   },
   {
@@ -93,8 +83,6 @@ module.exports.roles = async (permissionIds) => [
       permissionIds['edit_content'],
       permissionIds['delete_content'],
       permissionIds['limited_viewing_of_other_user_profiles'],
-      permissionIds['edit_or_delete_own_profile'],
-      permissionIds['view_analytics'],
     ],
   },
   {
@@ -106,9 +94,7 @@ module.exports.roles = async (permissionIds) => [
       permissionIds['add_products'],
       permissionIds['add_categories'],
       permissionIds['limited_viewing_of_other_user_profiles'],
-      permissionIds['edit_or_delete_own_profile'],
       permissionIds['delete_own_content'],
-      permissionIds['view_analytics'],
     ],
   },
 ];
