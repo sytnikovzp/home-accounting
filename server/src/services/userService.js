@@ -51,19 +51,11 @@ class UserService {
     };
     if (
       currentUser.id.toString() === id.toString() ||
-      (await checkPermission(
-        currentUser,
-        'UNLIMITED_VIEW_OF_OTHER_USERS_PROFILES'
-      ))
+      (await checkPermission(currentUser, 'FULL_PROFILE_VIEWER'))
     ) {
       return fullUserData;
     }
-    if (
-      await checkPermission(
-        currentUser,
-        'LIMITED_VIEWING_OF_OTHER_USER_PROFILES'
-      )
-    ) {
+    if (await checkPermission(currentUser, 'LIMITED_PROFILE_VIEWER')) {
       return limitUserData;
     }
   }
@@ -87,7 +79,7 @@ class UserService {
   async updateUser(id, fullName, email, password, role, currentUser) {
     const hasPermission =
       currentUser.id.toString() === id.toString() ||
-      (await checkPermission(currentUser, 'EDIT_OTHER_USERS_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden('You don`t have permission to update this user data');
     const findUser = await User.findById(id);
@@ -104,8 +96,11 @@ class UserService {
     }
     if (password) updateData.password = await hashPassword(password);
     if (role && role !== findRole.title) {
-      const hasPermission = await checkPermission(currentUser, 'CHANGE_ROLES');
-      if (!hasPermission)
+      const hasPermissionToChangeRole = await checkPermission(
+        currentUser,
+        'CHANGE_ROLES'
+      );
+      if (!hasPermissionToChangeRole)
         throw forbidden('You don`t have permission to change this user role');
       if (findRole.title === 'Administrator') {
         const adminCount = await User.countDocuments({
@@ -114,9 +109,9 @@ class UserService {
         if (adminCount === 1)
           throw forbidden('Cannot delete the last administrator');
       }
-      const findRole = await Role.findOne({ title: role });
-      if (!findRole) throw notFound('Role not found');
-      updateData.roleId = findRole._id;
+      const newRole = await Role.findOne({ title: role });
+      if (!newRole) throw notFound('Role not found');
+      updateData.roleId = newRole._id;
     }
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
@@ -138,7 +133,7 @@ class UserService {
   async updateUserPhoto(id, filename, currentUser) {
     const hasPermission =
       currentUser.id.toString() === id.toString() ||
-      (await checkPermission(currentUser, 'EDIT_OTHER_USERS_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden('You don`t have permission to update this user photo');
     if (!filename) throw badRequest('No file uploaded');
@@ -155,9 +150,9 @@ class UserService {
   async removeUserPhoto(id, currentUser) {
     const hasPermission =
       currentUser.id.toString() === id.toString() ||
-      (await checkPermission(currentUser, 'EDIT_OTHER_USERS_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
-      throw forbidden('You don`t have permission to remome this user photo');
+      throw forbidden('You don`t have permission to remove this user photo');
     const findUser = await User.findById(id);
     if (!findUser) throw notFound('User not found');
     findUser.photo = null;
@@ -171,7 +166,7 @@ class UserService {
   async deleteUser(id, currentUser) {
     const hasPermission =
       currentUser.id.toString() === id.toString() ||
-      (await checkPermission(currentUser, 'DELETE_OTHER_USERS_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden('You don`t have permission to delete this user profile');
     const findUser = await User.findById(id);

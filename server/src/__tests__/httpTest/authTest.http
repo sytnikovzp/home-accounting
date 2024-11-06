@@ -48,10 +48,10 @@ Content-Type: application/json
 
 // ==============================================================
 
-### Logout user
-GET http://localhost:5000/api/auth/logout HTTP/1.1
-Content-Type: application/json
-
 ### Regenerate Tokens
 GET http://localhost:5000/api/auth/refresh HTTP/1.1
+Content-Type: application/json
+
+### Logout user
+GET http://localhost:5000/api/auth/logout HTTP/1.1
 Content-Type: application/json

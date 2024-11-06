@@ -54,7 +54,7 @@ class RoleService {
   }
 
   async createRole(title, descriptionValue, permissions, currentUser) {
-    const hasPermission = await checkPermission(currentUser, 'CREATE_ROLES');
+    const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
       throw forbidden('You don`t have permission to create roles for users');
     const duplicateRole = await Role.findOne({ title });
@@ -90,44 +90,56 @@ class RoleService {
   }
 
   async updateRole(id, title, descriptionValue, permissions, currentUser) {
-    const hasPermission = await checkPermission(currentUser, 'EDIT_ROLES');
+    const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
       throw forbidden('You don`t have permission to edit roles for users');
     const findRole = await Role.findById(id);
     if (!findRole) throw notFound('Role not found');
+    const updateData = {};
     if (title && title !== findRole.title) {
       const duplicateRole = await Role.findOne({ title });
       if (duplicateRole) throw badRequest('This role already exists');
+      updateData.title = title;
     }
-    let foundPermissions = findRole.permissions;
-    if (permissions && permissions.length > 0) {
-      foundPermissions = await Permission.find({
-        title: { $in: permissions.filter((p) => p !== '') },
-      });
-      if (
-        foundPermissions.length !== permissions.filter((p) => p !== '').length
-      ) {
-        const missingPermissions = permissions.filter(
-          (permission) =>
-            !foundPermissions.some((fp) => fp.title === permission)
-        );
-        throw notFound(
-          `Some permissions were not found: ${missingPermissions.join(', ')}`
+    if (descriptionValue !== undefined) {
+      updateData.description =
+        descriptionValue === '' ? null : descriptionValue;
+    }
+    if (permissions) {
+      if (permissions.length === 0) {
+        updateData.permissions = [];
+      } else {
+        const foundPermissions = await Permission.find({
+          title: { $in: permissions.filter((p) => p !== '') },
+        });
+        if (
+          foundPermissions.length !== permissions.filter((p) => p !== '').length
+        ) {
+          const missingPermissions = permissions.filter(
+            (permission) =>
+              !foundPermissions.some((fp) => fp.title === permission)
+          );
+          throw notFound(
+            `Some permissions were not found: ${missingPermissions.join(', ')}`
+          );
+        }
+        updateData.permissions = foundPermissions.map(
+          (permission) => permission._id
         );
       }
     }
-    const description = descriptionValue === '' ? null : descriptionValue;
-    findRole.title = title || findRole.title;
-    findRole.description =
-      description !== undefined ? description : findRole.description;
-    findRole.permissions = foundPermissions.map((permission) => permission._id);
-    const updatedRole = await findRole.save();
+    const updatedRole = await Role.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
     if (!updatedRole) throw badRequest('Role is not updated');
+    const updatedPermissions = await Permission.find({
+      _id: { $in: updatedRole.permissions },
+    });
     return {
       id: updatedRole._id,
       title: updatedRole.title,
       description: updatedRole.description || '',
-      permissions: foundPermissions.map((permission) => ({
+      permissions: updatedPermissions.map((permission) => ({
         id: permission._id,
         title: permission.title,
         description: permission.description,
@@ -136,9 +148,9 @@ class RoleService {
   }
 
   async deleteRole(id, currentUser) {
-    const hasPermission = await checkPermission(currentUser, 'DELETE_ROLES');
+    const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete roles');
+      throw forbidden('You don`t have permission to delete roles for users');
     const findRole = await Role.findById(id);
     if (!findRole) throw notFound('Role not found');
     const usersWithRole = await User.countDocuments({ roleId: id });

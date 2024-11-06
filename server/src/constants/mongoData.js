@@ -8,16 +8,8 @@ const {
 
 module.exports.permissions = [
   {
-    title: 'CREATE_ROLES',
-    description: 'Create roles for users',
-  },
-  {
-    title: 'EDIT_ROLES',
-    description: 'Edit roles for users',
-  },
-  {
-    title: 'DELETE_ROLES',
-    description: 'Delete roles for users',
+    title: 'MANAGE_ROLES',
+    description: 'Full CRUD for user roles',
   },
   {
     title: 'CHANGE_ROLES',
@@ -28,48 +20,30 @@ module.exports.permissions = [
     description: 'Change permissions for roles',
   },
   {
-    title: 'UNLIMITED_VIEW_OF_OTHER_USERS_PROFILES',
+    title: 'FULL_PROFILE_VIEWER',
     description: 'View full information about other user profiles',
   },
   {
-    title: 'LIMITED_VIEWING_OF_OTHER_USER_PROFILES',
+    title: 'LIMITED_PROFILE_VIEWER',
     description:
       'View limited information about other user profiles (id, name, role, photo)',
   },
   {
-    title: 'EDIT_OTHER_USERS_PROFILES',
-    description: 'Edit information about other users',
-  },
-  {
-    title: 'DELETE_OTHER_USERS_PROFILES',
-    description: 'Delete information about other users',
+    title: 'MANAGE_USER_PROFILES',
+    description: 'Edit or delete information about other users',
   },
   {
     title: 'PUBLISH_CONTENT',
     description: 'Approve or reject content publication',
   },
   {
-    title: 'EDIT_CONTENT',
-    description: 'Edit existing content',
+    title: 'MANAGE_CONTENT',
+    description: 'Only edit or delete existing content on site',
   },
   {
-    title: 'DELETE_CONTENT',
-    description: 'Delete existing content',
-  },
-  {
-    title: 'CREATE_PURCHASE',
+    title: 'MANAGE_PURCHASE',
     description:
-      'Create your own purchase records based on existing entities without moderation',
-  },
-  {
-    title: 'EDIT_PURCHASE',
-    description:
-      'Edit your own purchase records based on existing entities without moderation',
-  },
-  {
-    title: 'DELETE_PURCHASE',
-    description:
-      'Delete your own purchase records based on existing entities without moderation',
+      'Full CRUD for your own purchase records based on existing entities without moderation',
   },
   {
     title: 'ADD_SHOPS',
@@ -90,14 +64,11 @@ module.exports.roles = async (permissionIds) => [
     title: 'Administrator',
     description: 'Manages all aspects of the application',
     permissions: [
-      permissionIds['CREATE_ROLES'],
-      permissionIds['EDIT_ROLES'],
-      permissionIds['DELETE_ROLES'],
+      permissionIds['MANAGE_ROLES'],
       permissionIds['CHANGE_ROLES'],
       permissionIds['CHANGE_PERMISSIONS'],
-      permissionIds['UNLIMITED_VIEW_OF_OTHER_USERS_PROFILES'],
-      permissionIds['EDIT_OTHER_USERS_PROFILES'],
-      permissionIds['DELETE_OTHER_USERS_PROFILES'],
+      permissionIds['FULL_PROFILE_VIEWER'],
+      permissionIds['MANAGE_USER_PROFILES'],
     ],
   },
   {
@@ -105,22 +76,19 @@ module.exports.roles = async (permissionIds) => [
     description: 'Monitoring and tracking publications and content',
     permissions: [
       permissionIds['PUBLISH_CONTENT'],
-      permissionIds['EDIT_CONTENT'],
-      permissionIds['DELETE_CONTENT'],
-      permissionIds['LIMITED_VIEWING_OF_OTHER_USER_PROFILES'],
+      permissionIds['MANAGE_CONTENT'],
+      permissionIds['LIMITED_PROFILE_VIEWER'],
     ],
   },
   {
     title: 'User',
     description: 'Uses an app to track purchases',
     permissions: [
-      permissionIds['CREATE_PURCHASE'],
-      permissionIds['EDIT_PURCHASE'],
-      permissionIds['DELETE_PURCHASE'],
+      permissionIds['MANAGE_PURCHASE'],
       permissionIds['ADD_SHOPS'],
       permissionIds['ADD_PRODUCTS'],
       permissionIds['ADD_CATEGORIES'],
-      permissionIds['LIMITED_VIEWING_OF_OTHER_USER_PROFILES'],
+      permissionIds['LIMITED_PROFILE_VIEWER'],
     ],
   },
 ];
