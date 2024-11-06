@@ -4,18 +4,18 @@ const { formatDate } = require('../utils/sharedFunctions');
 
 class CurrencyService {
   async getAllCurrencies() {
-    const allCurrencies = await Currency.findAll({
+    const findCurrencies = await Currency.findAll({
       attributes: ['id', 'title'],
       raw: true,
     });
-    if (allCurrencies.length === 0) throw notFound('Currencies not found');
-    return allCurrencies;
+    if (findCurrencies.length === 0) throw notFound('Currencies not found');
+    return findCurrencies;
   }
 
   async getCurrencyById(currencyId) {
-    const currencyById = await Currency.findByPk(currencyId);
-    if (!currencyById) throw notFound('Currency not found');
-    const currencyData = currencyById.toJSON();
+    const findCurrency = await Currency.findByPk(currencyId);
+    if (!findCurrency) throw notFound('Currency not found');
+    const currencyData = findCurrency.toJSON();
     return {
       ...currencyData,
       description: currencyData.description || '',
@@ -25,8 +25,8 @@ class CurrencyService {
   }
 
   async createCurrency(title, descriptionValue, transaction) {
-    const existingCurrency = await Currency.findOne({ where: { title } });
-    if (existingCurrency) throw badRequest('This currency already exists');
+    const duplicateCurrency = await Currency.findOne({ where: { title } });
+    if (duplicateCurrency) throw badRequest('This currency already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
     const newCurrency = await Currency.create(
       { title, description },
@@ -41,12 +41,12 @@ class CurrencyService {
   }
 
   async updateCurrency(id, title, descriptionValue, transaction) {
-    const currencyById = await Currency.findByPk(id);
-    if (!currencyById) throw notFound('Currency not found');
-    const currentTitle = currencyById.title;
+    const findCurrency = await Currency.findByPk(id);
+    if (!findCurrency) throw notFound('Currency not found');
+    const currentTitle = findCurrency.title;
     if (title !== currentTitle) {
-      const existingCurrency = await Currency.findOne({ where: { title } });
-      if (existingCurrency) throw badRequest('This currency already exists');
+      const duplicateCurrency = await Currency.findOne({ where: { title } });
+      if (duplicateCurrency) throw badRequest('This currency already exists');
     } else {
       title = currentTitle;
     }
@@ -68,14 +68,14 @@ class CurrencyService {
   }
 
   async deleteCurrency(currencyId, transaction) {
-    const currencyById = await Currency.findByPk(currencyId);
-    if (!currencyById) throw notFound('Currency not found');
-    const deleteCurrency = await Currency.destroy({
+    const findCurrency = await Currency.findByPk(currencyId);
+    if (!findCurrency) throw notFound('Currency not found');
+    const deletedCurrency = await Currency.destroy({
       where: { id: currencyId },
       transaction,
     });
-    if (!deleteCurrency) throw badRequest('Currency is not deleted');
-    return deleteCurrency;
+    if (!deletedCurrency) throw badRequest('Currency is not deleted');
+    return deletedCurrency;
   }
 }
 

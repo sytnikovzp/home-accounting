@@ -4,30 +4,30 @@ const { formatDate } = require('../utils/sharedFunctions');
 
 class ShopService {
   async getAllShops(limit, offset) {
-    const allShops = await Shop.findAll({
+    const findShops = await Shop.findAll({
       attributes: ['id', 'title', 'url', 'logo'],
       raw: true,
       limit,
       offset,
     });
-    if (allShops.length === 0) throw notFound('Shops not found');
-    const formattedShops = allShops.map((shop) => ({
+    if (findShops.length === 0) throw notFound('Shops not found');
+    const allShops = findShops.map((shop) => ({
       id: shop.id,
       title: shop.title,
       url: shop.url || '',
       logo: shop.logo || '',
     }));
-    const shopsCount = await Shop.count();
+    const total = await Shop.count();
     return {
-      allShops: formattedShops,
-      total: shopsCount,
+      allShops,
+      total,
     };
   }
 
   async getShopById(shopId) {
-    const shopById = await Shop.findByPk(shopId);
-    if (!shopById) throw notFound('Shop not found');
-    const shopData = shopById.toJSON();
+    const findShop = await Shop.findByPk(shopId);
+    if (!findShop) throw notFound('Shop not found');
+    const shopData = findShop.toJSON();
     return {
       id: shopData.id,
       title: shopData.title,
@@ -40,8 +40,8 @@ class ShopService {
   }
 
   async createShop(title, descriptionValue, urlValue, transaction) {
-    const existingShop = await Shop.findOne({ where: { title } });
-    if (existingShop) throw badRequest('This shop already exists');
+    const duplicateShop = await Shop.findOne({ where: { title } });
+    if (duplicateShop) throw badRequest('This shop already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
     const url = urlValue === '' ? null : urlValue;
     const newProductData = {
@@ -63,12 +63,12 @@ class ShopService {
   }
 
   async updateShop(id, title, descriptionValue, urlValue, transaction) {
-    const shopById = await Shop.findByPk(id);
-    if (!shopById) throw notFound('Shop not found');
-    const currentTitle = shopById.title;
+    const findShop = await Shop.findByPk(id);
+    if (!findShop) throw notFound('Shop not found');
+    const currentTitle = findShop.title;
     if (title !== currentTitle) {
-      const existingShop = await Shop.findOne({ where: { title } });
-      if (existingShop) throw badRequest('This shop already exists');
+      const duplicateShop = await Shop.findOne({ where: { title } });
+      if (duplicateShop) throw badRequest('This shop already exists');
     } else {
       title = currentTitle;
     }
@@ -96,9 +96,9 @@ class ShopService {
   }
 
   async updateShopLogo(id, filename, transaction) {
-    const shopById = await Shop.findByPk(id);
-    if (!shopById) throw notFound('Shop not found');
     if (!filename) throw badRequest('No file uploaded');
+    const findShop = await Shop.findByPk(id);
+    if (!findShop) throw notFound('Shop not found');
     const [affectedRows, [updatedShopLogo]] = await Shop.update(
       { logo: filename },
       {
@@ -117,8 +117,8 @@ class ShopService {
   }
 
   async removeShopLogo(id, transaction) {
-    const shopById = await Shop.findByPk(id);
-    if (!shopById) throw notFound('Shop not found');
+    const findShop = await Shop.findByPk(id);
+    if (!findShop) throw notFound('Shop not found');
     const [affectedRows, [removedShopLogo]] = await Shop.update(
       { logo: null },
       {
@@ -137,14 +137,14 @@ class ShopService {
   }
 
   async deleteShop(shopId, transaction) {
-    const shopById = await Shop.findByPk(shopId);
-    if (!shopById) throw notFound('Shop not found');
-    const deleteShop = await Shop.destroy({
+    const findShop = await Shop.findByPk(shopId);
+    if (!findShop) throw notFound('Shop not found');
+    const deletedShop = await Shop.destroy({
       where: { id: shopId },
       transaction,
     });
-    if (!deleteShop) throw badRequest('Shop is not deleted');
-    return deleteShop;
+    if (!deletedShop) throw badRequest('Shop is not deleted');
+    return deletedShop;
   }
 }
 

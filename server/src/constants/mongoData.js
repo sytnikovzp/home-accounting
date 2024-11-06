@@ -8,59 +8,80 @@ const {
 
 module.exports.permissions = [
   {
-    title: 'change_roles',
+    title: 'CREATE_ROLES',
+    description: 'Create roles for users',
+  },
+  {
+    title: 'EDIT_ROLES',
+    description: 'Edit roles for users',
+  },
+  {
+    title: 'DELETE_ROLES',
+    description: 'Delete roles for users',
+  },
+  {
+    title: 'CHANGE_ROLES',
     description: 'Change roles for users',
   },
   {
-    title: 'change_permissions',
+    title: 'CHANGE_PERMISSIONS',
     description: 'Change permissions for roles',
   },
   {
-    title: 'full_view_of_other_users_profiles',
+    title: 'UNLIMITED_VIEW_OF_OTHER_USERS_PROFILES',
     description: 'View full information about other user profiles',
   },
   {
-    title: 'limited_viewing_of_other_user_profiles',
+    title: 'LIMITED_VIEWING_OF_OTHER_USER_PROFILES',
     description:
       'View limited information about other user profiles (id, name, role, photo)',
   },
   {
-    title: 'edit_or_delete_other_users_profiles',
-    description:
-      'Edit or delete information about other users (users are created during registration)',
+    title: 'EDIT_OTHER_USERS_PROFILES',
+    description: 'Edit information about other users',
   },
   {
-    title: 'publish_content',
+    title: 'DELETE_OTHER_USERS_PROFILES',
+    description: 'Delete information about other users',
+  },
+  {
+    title: 'PUBLISH_CONTENT',
     description: 'Approve or reject content publication',
   },
   {
-    title: 'edit_content',
+    title: 'EDIT_CONTENT',
     description: 'Edit existing content',
   },
   {
-    title: 'delete_content',
+    title: 'DELETE_CONTENT',
     description: 'Delete existing content',
   },
   {
-    title: 'create_or_update_purchase',
+    title: 'CREATE_PURCHASE',
     description:
-      'Create or update purchase records based on existing entities without moderation',
+      'Create your own purchase records based on existing entities without moderation',
   },
   {
-    title: 'add_shops',
+    title: 'EDIT_PURCHASE',
+    description:
+      'Edit your own purchase records based on existing entities without moderation',
+  },
+  {
+    title: 'DELETE_PURCHASE',
+    description:
+      'Delete your own purchase records based on existing entities without moderation',
+  },
+  {
+    title: 'ADD_SHOPS',
     description: 'Add new shops, which need to be moderated',
   },
   {
-    title: 'add_products',
+    title: 'ADD_PRODUCTS',
     description: 'Add new products, which need to be moderated',
   },
   {
-    title: 'add_categories',
+    title: 'ADD_CATEGORIES',
     description: 'Add new categories, which need to be moderated',
-  },
-  {
-    title: 'delete_own_content',
-    description: 'Delete own content records',
   },
 ];
 
@@ -69,32 +90,37 @@ module.exports.roles = async (permissionIds) => [
     title: 'Administrator',
     description: 'Manages all aspects of the application',
     permissions: [
-      permissionIds['change_roles'],
-      permissionIds['change_permissions'],
-      permissionIds['full_view_of_other_users_profiles'],
-      permissionIds['edit_or_delete_other_users_profiles'],
+      permissionIds['CREATE_ROLES'],
+      permissionIds['EDIT_ROLES'],
+      permissionIds['DELETE_ROLES'],
+      permissionIds['CHANGE_ROLES'],
+      permissionIds['CHANGE_PERMISSIONS'],
+      permissionIds['UNLIMITED_VIEW_OF_OTHER_USERS_PROFILES'],
+      permissionIds['EDIT_OTHER_USERS_PROFILES'],
+      permissionIds['DELETE_OTHER_USERS_PROFILES'],
     ],
   },
   {
     title: 'Moderator',
     description: 'Monitoring and tracking publications and content',
     permissions: [
-      permissionIds['publish_content'],
-      permissionIds['edit_content'],
-      permissionIds['delete_content'],
-      permissionIds['limited_viewing_of_other_user_profiles'],
+      permissionIds['PUBLISH_CONTENT'],
+      permissionIds['EDIT_CONTENT'],
+      permissionIds['DELETE_CONTENT'],
+      permissionIds['LIMITED_VIEWING_OF_OTHER_USER_PROFILES'],
     ],
   },
   {
     title: 'User',
     description: 'Uses an app to track purchases',
     permissions: [
-      permissionIds['create_or_update_purchase'],
-      permissionIds['add_shops'],
-      permissionIds['add_products'],
-      permissionIds['add_categories'],
-      permissionIds['limited_viewing_of_other_user_profiles'],
-      permissionIds['delete_own_content'],
+      permissionIds['CREATE_PURCHASE'],
+      permissionIds['EDIT_PURCHASE'],
+      permissionIds['DELETE_PURCHASE'],
+      permissionIds['ADD_SHOPS'],
+      permissionIds['ADD_PRODUCTS'],
+      permissionIds['ADD_CATEGORIES'],
+      permissionIds['LIMITED_VIEWING_OF_OTHER_USER_PROFILES'],
     ],
   },
 ];

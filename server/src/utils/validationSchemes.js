@@ -1,6 +1,6 @@
 const yup = require('yup');
 
-const TITLE_NAME_SCHEME = yup
+const TITLE_NAME_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
   .trim('Введені дані не можуть містити пробіли на початку або в кінці')
   .min(2, 'Введені дані мають бути не менше 2 символів')
@@ -15,11 +15,15 @@ const PASSWORD_SCHEME = yup
 
 const STRING_NULLABLE_SCHEME = yup.string('Це поле має бути рядком').nullable();
 
-const NUMBER_SCHEME = yup
+const NUMBER_REQUIRED_SCHEME = yup
   .number('Це поле має бути числом')
   .required('Це поле є обовʼязкове');
 
-const URL_RESOURCE_SCHEME = yup
+const ARRAY_OF_STRING_NULLABLE_SCHEME = yup
+  .array('Це поле має бути масивом')
+  .of(yup.string('Це поле має бути рядком').nullable());
+
+const URL_RESOURCE_NULLABLE_SCHEME = yup
   .string('Це поле має бути рядком')
   .url('Введіть коректний URL')
   .nullable();
@@ -36,7 +40,7 @@ const PAGINATION_SCHEME = yup.object().shape({
 // ==============================================================
 
 const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
-  fullName: TITLE_NAME_SCHEME,
+  fullName: TITLE_NAME_REQUIRED_SCHEME,
   email: EMAIL_VALIDATION_SCHEME.required('E-mail є обовʼязковим полем'),
   password: PASSWORD_SCHEME.required('Пароль є обовʼязковим полем'),
 });
@@ -53,57 +57,59 @@ const AUTH_VALIDATION_SCHEME = yup.object().shape({
   password: PASSWORD_SCHEME.required('Пароль є обовʼязковим полем'),
 });
 
+const ROLE_VALIDATION_SCHEME = yup.object().shape({
+  title: TITLE_NAME_REQUIRED_SCHEME,
+  description: STRING_NULLABLE_SCHEME,
+  permissions: ARRAY_OF_STRING_NULLABLE_SCHEME,
+});
+
 const PURCHASE_VALIDATION_SCHEME = yup.object().shape({
-  product: TITLE_NAME_SCHEME,
-  amount: NUMBER_SCHEME,
-  price: NUMBER_SCHEME,
-  shop: TITLE_NAME_SCHEME,
-  measure: TITLE_NAME_SCHEME,
-  currency: TITLE_NAME_SCHEME,
+  product: TITLE_NAME_REQUIRED_SCHEME,
+  amount: NUMBER_REQUIRED_SCHEME,
+  price: NUMBER_REQUIRED_SCHEME,
+  shop: TITLE_NAME_REQUIRED_SCHEME,
+  measure: TITLE_NAME_REQUIRED_SCHEME,
+  currency: TITLE_NAME_REQUIRED_SCHEME,
 });
 
 const PRODUCT_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_SCHEME,
+  title: TITLE_NAME_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
   category: STRING_NULLABLE_SCHEME,
 });
 
 const CATEGORY_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_SCHEME,
+  title: TITLE_NAME_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
 });
 
 const SHOP_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_SCHEME,
+  title: TITLE_NAME_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
-  url: URL_RESOURCE_SCHEME,
+  url: URL_RESOURCE_NULLABLE_SCHEME,
   image: STRING_NULLABLE_SCHEME,
 });
 
 const MEASURE_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_SCHEME,
+  title: TITLE_NAME_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
 });
 
 const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_SCHEME,
+  title: TITLE_NAME_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
-});
-
-const CATEGORY_CURRENCY_MEASURE_SCHEME = yup.object().shape({
-  title: TITLE_NAME_SCHEME,
 });
 
 module.exports = {
   REGISTRATION_VALIDATION_SCHEME,
   UPDATE_USER_VALIDATION_SCHEME,
   AUTH_VALIDATION_SCHEME,
+  ROLE_VALIDATION_SCHEME,
   PURCHASE_VALIDATION_SCHEME,
   PRODUCT_VALIDATION_SCHEME,
   CATEGORY_VALIDATION_SCHEME,
   SHOP_VALIDATION_SCHEME,
   MEASURE_VALIDATION_SCHEME,
   CURRENCY_VALIDATION_SCHEME,
-  CATEGORY_CURRENCY_MEASURE_SCHEME,
   PAGINATION_SCHEME,
 };

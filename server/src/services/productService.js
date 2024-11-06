@@ -4,33 +4,33 @@ const { formatDate, getRecordByTitle } = require('../utils/sharedFunctions');
 
 class ProductService {
   async getAllProducts(limit, offset) {
-    const allProducts = await Product.findAll({
+    const findProducts = await Product.findAll({
       attributes: ['id', 'title'],
       include: [{ model: Category, attributes: ['title'] }],
       raw: true,
       limit,
       offset,
     });
-    if (allProducts.length === 0) throw notFound('Products not found');
-    const formattedProducts = allProducts.map((product) => ({
+    if (findProducts.length === 0) throw notFound('Products not found');
+    const allProducts = findProducts.map((product) => ({
       id: product.id,
       title: product.title,
       category: product['Category.title'] || '',
     }));
-    const productsCount = await Product.count();
+    const total = await Product.count();
     return {
-      allProducts: formattedProducts,
-      total: productsCount,
+      allProducts,
+      total,
     };
   }
 
   async getProductById(productId) {
-    const productById = await Product.findByPk(productId, {
+    const findProduct = await Product.findByPk(productId, {
       attributes: { exclude: ['categoryId'] },
       include: [{ model: Category, attributes: ['title'] }],
     });
-    if (!productById) throw notFound('Product not found');
-    const productData = productById.toJSON();
+    if (!findProduct) throw notFound('Product not found');
+    const productData = findProduct.toJSON();
     return {
       id: productData.id,
       title: productData.title,
@@ -42,8 +42,8 @@ class ProductService {
   }
 
   async createProduct(title, descriptionValue, category, transaction) {
-    const existingProduct = await Product.findOne({ where: { title } });
-    if (existingProduct) throw badRequest('This product already exists');
+    const duplicateProduct = await Product.findOne({ where: { title } });
+    if (duplicateProduct) throw badRequest('This product already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
     let categoryRecord = null;
     if (category !== undefined) {
@@ -68,12 +68,12 @@ class ProductService {
   }
 
   async updateProduct(id, title, descriptionValue, category, transaction) {
-    const productById = await Product.findByPk(id);
-    if (!productById) throw notFound('Product not found');
-    const currentTitle = productById.title;
+    const findProduct = await Product.findByPk(id);
+    if (!findProduct) throw notFound('Product not found');
+    const currentTitle = findProduct.title;
     if (title !== currentTitle) {
-      const existingProduct = await Product.findOne({ where: { title } });
-      if (existingProduct) throw badRequest('This product already exists');
+      const duplicateProduct = await Product.findOne({ where: { title } });
+      if (duplicateProduct) throw badRequest('This product already exists');
     } else {
       title = currentTitle;
     }
@@ -103,8 +103,8 @@ class ProductService {
   }
 
   async deleteProduct(productId, transaction) {
-    const productById = await Product.findByPk(productId);
-    if (!productById) throw notFound('Product not found');
+    const findProduct = await Product.findByPk(productId);
+    if (!findProduct) throw notFound('Product not found');
     const deletedProduct = await Product.destroy({
       where: { id: productId },
       transaction,

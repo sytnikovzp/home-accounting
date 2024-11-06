@@ -4,18 +4,18 @@ const { formatDate } = require('../utils/sharedFunctions');
 
 class CategoryService {
   async getAllCategories() {
-    const allCategories = await Category.findAll({
+    const findCategories = await Category.findAll({
       attributes: ['id', 'title'],
       raw: true,
     });
-    if (allCategories.length === 0) throw notFound('Categories not found');
-    return allCategories;
+    if (findCategories.length === 0) throw notFound('Categories not found');
+    return findCategories;
   }
 
   async getCategoryById(categoryId) {
-    const categoryById = await Category.findByPk(categoryId);
-    if (!categoryById) throw notFound('Category not found');
-    const categoryData = categoryById.toJSON();
+    const findCategory = await Category.findByPk(categoryId);
+    if (!findCategory) throw notFound('Category not found');
+    const categoryData = findCategory.toJSON();
     return {
       ...categoryData,
       description: categoryData.description || '',
@@ -25,8 +25,8 @@ class CategoryService {
   }
 
   async createCategory(title, descriptionValue, transaction) {
-    const existingCategory = await Category.findOne({ where: { title } });
-    if (existingCategory) throw badRequest('This category already exists');
+    const duplicateCategory = await Category.findOne({ where: { title } });
+    if (duplicateCategory) throw badRequest('This category already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
     const newCategory = await Category.create(
       { title, description },
@@ -41,12 +41,12 @@ class CategoryService {
   }
 
   async updateCategory(id, title, descriptionValue, transaction) {
-    const categoryById = await Category.findByPk(id);
-    if (!categoryById) throw notFound('Category not found');
-    const currentTitle = categoryById.title;
+    const findCategory = await Category.findByPk(id);
+    if (!findCategory) throw notFound('Category not found');
+    const currentTitle = findCategory.title;
     if (title !== currentTitle) {
-      const existingCategory = await Category.findOne({ where: { title } });
-      if (existingCategory) throw badRequest('This category already exists');
+      const duplicateCategory = await Category.findOne({ where: { title } });
+      if (duplicateCategory) throw badRequest('This category already exists');
     } else {
       title = currentTitle;
     }
@@ -68,14 +68,14 @@ class CategoryService {
   }
 
   async deleteCategory(categoryId, transaction) {
-    const categoryById = await Category.findByPk(categoryId);
-    if (!categoryById) throw notFound('Category not found');
-    const deleteCategory = await Category.destroy({
+    const findCategory = await Category.findByPk(categoryId);
+    if (!findCategory) throw notFound('Category not found');
+    const deletedCategory = await Category.destroy({
       where: { id: categoryId },
       transaction,
     });
-    if (!deleteCategory) throw badRequest('Category is not deleted');
-    return deleteCategory;
+    if (!deletedCategory) throw badRequest('Category is not deleted');
+    return deletedCategory;
   }
 }
 

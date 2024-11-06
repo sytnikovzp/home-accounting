@@ -12,16 +12,16 @@ const { badRequest, notFound } = require('../errors/customErrors');
 class AuthService {
   async registration(fullName, email, password) {
     const emailToLower = emailToLowerCase(email);
-    const person = await User.findOne({ email: emailToLower });
-    if (person) throw badRequest('This user already exists');
-    const userRole = await Role.findOne({ title: 'User' });
-    if (!userRole) throw notFound('User role not found');
+    const duplicateUser = await User.findOne({ email: emailToLower });
+    if (duplicateUser) throw badRequest('This user already exists');
+    const findRole = await Role.findOne({ title: 'User' });
+    if (!findRole) throw notFound('Role not found');
     const hashedPassword = await hashPassword(password);
     const user = await User.create({
       fullName,
       email: emailToLower,
       password: hashedPassword,
-      roleId: userRole._id,
+      roleId: findRole._id,
     });
     if (!user) throw badRequest('User is not registered');
     const tokens = generateTokens({ email });
@@ -30,7 +30,7 @@ class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
-        role: userRole.title || '',
+        role: findRole.title || '',
         photo: user.photo || '',
       },
     };
@@ -42,15 +42,15 @@ class AuthService {
     if (!user) throw unAuthorizedError();
     const isPassRight = await bcrypt.compare(password, user.password);
     if (!isPassRight) throw unAuthorizedError();
-    const userRole = await Role.findById(user.roleId);
-    if (!userRole) throw notFound('User role not found');
+    const findRole = await Role.findById(user.roleId);
+    if (!findRole) throw notFound('Role not found');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
       user: {
         id: user._id,
         fullName: user.fullName,
-        role: userRole.title || '',
+        role: findRole.title || '',
         photo: user.photo || '',
       },
     };
@@ -62,18 +62,18 @@ class AuthService {
     if (!data) throw unAuthorizedError();
     const { email } = data;
     const emailToLower = emailToLowerCase(email);
-    const user = await User.findOne({ email: emailToLower });
-    if (!user) throw notFound('User not found');
-    const userRole = await Role.findById(user.roleId);
-    if (!userRole) throw notFound('User role not found');
+    const findUser = await User.findOne({ email: emailToLower });
+    if (!findUser) throw notFound('User not found');
+    const findRole = await Role.findById(findUser.roleId);
+    if (!findRole) throw notFound('Role not found');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
       user: {
-        id: user._id,
-        fullName: user.fullName,
-        role: userRole.title || '',
-        photo: user.photo || '',
+        id: findUser._id,
+        fullName: findUser.fullName,
+        role: findRole.title || '',
+        photo: findUser.photo || '',
       },
     };
   }

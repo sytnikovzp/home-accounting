@@ -1,41 +1,41 @@
 ### Get list all users (default pagination)
 GET http://localhost:5000/api/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzA4MDY4ODQsImV4cCI6MTczMDgwNzc4NH0.rWpa86RyWsK-tPn6DUC42iLo1vHMxgaJ2y--eUtrSGs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MzM2OCwiZXhwIjoxNzMwODY2OTY4fQ.VYW6QRlDyYPtl9VxcIZptbnlRyjFGdgYrB9v6HIawhs
 
 ### Get list all users (custom pagination)
 GET http://localhost:5000/api/users?_page=1&_limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwODA0ODg5LCJleHAiOjE3MzA4MDU3ODl9.8ZG3o6Y2xc_EoodjKf3Qm-_40bCVTqxOXUyWE6HTCTE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MzM2OCwiZXhwIjoxNzMwODY2OTY4fQ.VYW6QRlDyYPtl9VxcIZptbnlRyjFGdgYrB9v6HIawhs
 
 ### Get current user profile
 GET http://localhost:5000/api/users/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwODAyMzI1LCJleHAiOjE3MzA4MDMyMjV9.bVIuvg1oYGhhQaKg4iQKAS-6jzUAx6l42JClkwQty2w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MzM2OCwiZXhwIjoxNzMwODY2OTY4fQ.VYW6QRlDyYPtl9VxcIZptbnlRyjFGdgYrB9v6HIawhs
 
 ### Get user by id
-GET http://localhost:5000/api/users/6729f17c1060a4437ad0c31d HTTP/1.1
+GET http://localhost:5000/api/users/672ae0bfaf5b226d170eb932 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IldJTEwuc21pdGhAR01BSUwuY29tIiwiaWF0IjoxNzMwODAyMzI1LCJleHAiOjE3MzA4MDMyMjV9.bVIuvg1oYGhhQaKg4iQKAS-6jzUAx6l42JClkwQty2w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MzM2OCwiZXhwIjoxNzMwODY2OTY4fQ.VYW6QRlDyYPtl9VxcIZptbnlRyjFGdgYrB9v6HIawhs
 
 // ==============================================================
 
 ### Update user data
-PATCH http://localhost:5000/api/users/672a04db11dc1e508e0c6610 HTTP/1.1
+PATCH http://localhost:5000/api/users/672ae0bfaf5b226d170eb932 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDgwNzAyNCwiZXhwIjoxNzMwODA3OTI0fQ.bMHvKbXpN1ay2TUNvLIIdWqoYmXYcIZrfJ6lrKg-33g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MzM2OCwiZXhwIjoxNzMwODY2OTY4fQ.VYW6QRlDyYPtl9VxcIZptbnlRyjFGdgYrB9v6HIawhs
 
 {
   "fullName": "Updated User",
   # "email": "Updated.User@GMAIL.com",
   "password": "Qwerty1234567",
-  "role": "User"
+  "role": "Moderator"
 }
 
 ### Update user photo
-PATCH http://localhost:5000/api/users/6729f224ca43c7346ccc02d6/photo HTTP/1.1
+PATCH http://localhost:5000/api/users/672ae0bfaf5b226d170eb932/photo HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVwZGF0ZWQudXNlckBnbWFpbC5jb20iLCJpYXQiOjE3MzA4MDI0NjAsImV4cCI6MTczMDgwMzM2MH0.jRBX4KhsmhNScWYT_Gzxbh-CdzwnLz6ruOLNuBcxSjE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MDY1OSwiZXhwIjoxNzMwODY0MjU5fQ.KlRPcAFF8xG_Ny5sGDs7BHbwQpzJFWkdO40XjA9SkZw
 
 --boundary
 Content-Disposition: form-data; name="userPhoto"; filename="user.png"
@@ -50,9 +50,9 @@ Content-Type: image/png
 --boundary--
 
 ### Remove user photo
-PATCH http://localhost:5000/api/users/6729f224ca43c7346ccc02d6/delphoto HTTP/1.1
+PATCH http://localhost:5000/api/users/672ae0bfaf5b226d170eb932/delphoto HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVwZGF0ZWQudXNlckBnbWFpbC5jb20iLCJpYXQiOjE3MzA4MDI0NjAsImV4cCI6MTczMDgwMzM2MH0.jRBX4KhsmhNScWYT_Gzxbh-CdzwnLz6ruOLNuBcxSjE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MDc1MCwiZXhwIjoxNzMwODY0MzUwfQ.sOs0wOotoL1gDvTYtPpGDbU9-SXkqNT-5EAmkUQat7E
 
 {
   "photo": null
@@ -61,6 +61,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVwZGF0Z
 // ==============================================================
 
 ### Delete user by id
-DELETE http://localhost:5000/api/users/6729f17c1060a4437ad0c31b HTTP/1.1
+DELETE http://localhost:5000/api/users/672ae0bfaf5b226d170eb932 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDgwNjQ1NSwiZXhwIjoxNzMwODA3MzU1fQ.jnFN96kgm27jKv7_Vkh8A98aYDdzGq1NAcfGfSeBzpA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MDg0MSwiZXhwIjoxNzMwODY0NDQxfQ.8LWEfSEk2Wg-GuUtVIZBDoqvEf6IqCIQDTtmNTyQwXs

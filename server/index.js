@@ -39,4 +39,4 @@ server.listen(PORT, HOST, () =>
   console.log(`Server running at http://${HOST}:${PORT}/api`)
 );
 
-console.log('===== Server is started successfully! =====');
+console.log('======== Server is started successfully! ========');

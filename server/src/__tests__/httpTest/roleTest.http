@@ -1,0 +1,46 @@
+### Get list all permissions (default pagination)
+GET http://localhost:5000/api/roles/permissions HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg1Njc3NSwiZXhwIjoxNzMwODYwMzc1fQ.J-TnTxrPR2-4WWexluQ_PkSCldhbXXmVLsEig_WyigE
+
+### Get list all permissions (custom pagination)
+GET http://localhost:5000/api/roles/permissions?_page=1&_limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg1Njc3NSwiZXhwIjoxNzMwODYwMzc1fQ.J-TnTxrPR2-4WWexluQ_PkSCldhbXXmVLsEig_WyigE
+
+### Get list all roles
+GET http://localhost:5000/api/roles HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg1Njc3NSwiZXhwIjoxNzMwODYwMzc1fQ.J-TnTxrPR2-4WWexluQ_PkSCldhbXXmVLsEig_WyigE
+
+### Get role by id
+GET http://localhost:5000/api/roles/672ac7c687b7d526ba5b3c5d HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg1Njc3NSwiZXhwIjoxNzMwODYwMzc1fQ.J-TnTxrPR2-4WWexluQ_PkSCldhbXXmVLsEig_WyigE
+
+### Create role
+POST http://localhost:5000/api/roles HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MjA5NSwiZXhwIjoxNzMwODY1Njk1fQ.B1n8g1MWvcUlDfHiNA6JhUx2rwz7Zrl0j4tQ_MZs7DM
+
+{
+  "title": "New role",
+  "description": "",
+  "permissions": ["ADD_CATEGORIES", "ADD_SHOPS", "ADD_PRODUCTS"]
+}
+
+### Update role data
+PATCH http://localhost:5000/api/roles/672adc23db97458867b621b5 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg2MjA5NSwiZXhwIjoxNzMwODY1Njk1fQ.B1n8g1MWvcUlDfHiNA6JhUx2rwz7Zrl0j4tQ_MZs7DM
+
+{
+  "title": "Updated role",
+  "description": "Updated description",
+  "permissions": []
+}
+
+### Delete role by id
+DELETE http://localhost:5000/api/roles/672ac7c687b7d526ba5b3c5d HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMwODU4NzMxLCJleHAiOjE3MzA4NjIzMzF9.iKahUQUF2vUGwq3xb1BhkDdHbBz5NG1WilHIxg-vMdA

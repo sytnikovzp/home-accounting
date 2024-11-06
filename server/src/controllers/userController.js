@@ -1,7 +1,7 @@
 const {
   getAllUsers,
   getUserById,
-  getUserByEmail,
+  getCurrentUser,
   updateUser,
   updateUserPhoto,
   removeUserPhoto,
@@ -24,11 +24,13 @@ class UserController {
     }
   }
 
-  async getCurrentUserProfile(req, res, next) {
+  async getUserById(req, res, next) {
     try {
-      const currentUser = await getUserByEmail(req.user.email);
-      if (currentUser) {
-        res.status(200).json(currentUser);
+      const { userId } = req.params;
+      const currentUser = await getCurrentUser(req.user.email);
+      const user = await getUserById(userId, currentUser);
+      if (user) {
+        res.status(200).json(user);
       } else {
         res.status(401);
       }
@@ -38,13 +40,11 @@ class UserController {
     }
   }
 
-  async getUserById(req, res, next) {
+  async getCurrentUserProfile(req, res, next) {
     try {
-      const { userId } = req.params;
-      const currentUser = await getUserByEmail(req.user.email);
-      const user = await getUserById(userId, currentUser);
-      if (user) {
-        res.status(200).json(user);
+      const currentUser = await getCurrentUser(req.user.email);
+      if (currentUser) {
+        res.status(200).json(currentUser);
       } else {
         res.status(401);
       }
@@ -58,8 +58,8 @@ class UserController {
     try {
       const { userId } = req.params;
       const { fullName, email, password, role } = req.body;
-      const currentUser = await getUserByEmail(req.user.email);
-      const userData = await updateUser(
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedUser = await updateUser(
         userId,
         fullName,
         email,
@@ -67,7 +67,11 @@ class UserController {
         role,
         currentUser
       );
-      res.status(200).json(userData);
+      if (updatedUser) {
+        res.status(200).json(updatedUser);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.log('Update user error: ', error.message);
       next(error);
@@ -80,13 +84,13 @@ class UserController {
         params: { userId },
         file: { filename },
       } = req;
-      const currentUser = await getUserByEmail(req.user.email);
-      const updatedUserPhoto = await updateUserPhoto(
-        userId,
-        filename,
-        currentUser
-      );
-      res.status(200).json(updatedUserPhoto);
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedUser = await updateUserPhoto(userId, filename, currentUser);
+      if (updatedUser) {
+        res.status(200).json(updatedUser);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.error('Update user photo error: ', error.message);
       next(error);
@@ -96,9 +100,13 @@ class UserController {
   async removeUserPhoto(req, res, next) {
     try {
       const { userId } = req.params;
-      const currentUser = await getUserByEmail(req.user.email);
+      const currentUser = await getCurrentUser(req.user.email);
       const updatedUser = await removeUserPhoto(userId, currentUser);
-      res.status(200).json(updatedUser);
+      if (updatedUser) {
+        res.status(200).json(updatedUser);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.error('Remove user photo error: ', error.message);
       next(error);
@@ -108,9 +116,13 @@ class UserController {
   async deleteUser(req, res, next) {
     try {
       const { userId } = req.params;
-      const currentUser = await getUserByEmail(req.user.email);
-      await deleteUser(userId, currentUser);
-      res.sendStatus(res.statusCode);
+      const currentUser = await getCurrentUser(req.user.email);
+      const deletedUser = await deleteUser(userId, currentUser);
+      if (deletedUser) {
+        res.sendStatus(res.statusCode);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.log('Delete user error: ', error.message);
       next(error);
