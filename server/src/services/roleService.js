@@ -6,12 +6,12 @@ const { badRequest, notFound, forbidden } = require('../errors/customErrors');
 
 class RoleService {
   async getAllPermissions(limit, offset) {
-    const findPermissions = await Permission.find()
+    const foundPermissions = await Permission.find()
       .limit(limit)
       .skip(offset)
       .lean();
-    if (findPermissions.length === 0) throw notFound('Permissions not found');
-    const allPermissions = findPermissions.map(({ _id, ...permission }) => ({
+    if (foundPermissions.length === 0) throw notFound('Permissions not found');
+    const allPermissions = foundPermissions.map(({ _id, ...permission }) => ({
       id: _id,
       ...permission,
     }));
@@ -23,9 +23,9 @@ class RoleService {
   }
 
   async getAllRoles() {
-    const findRoles = await Role.find().populate('permissions').lean();
-    if (findRoles.length === 0) throw notFound('Roles not found');
-    return findRoles.map(({ _id, title, description, permissions }) => ({
+    const foundRoles = await Role.find().populate('permissions').lean();
+    if (foundRoles.length === 0) throw notFound('Roles not found');
+    return foundRoles.map(({ _id, title, description, permissions }) => ({
       id: _id,
       title,
       description: description || '',
@@ -37,19 +37,19 @@ class RoleService {
   }
 
   async getRoleById(id) {
-    const findRole = await Role.findById(id).populate('permissions');
-    if (!findRole) throw notFound('Role not found');
+    const foundRole = await Role.findById(id).populate('permissions');
+    if (!foundRole) throw notFound('Role not found');
     return {
-      id: findRole._id,
-      title: findRole.title,
-      description: findRole.description || '',
-      permissions: findRole.permissions.map(({ _id, title, description }) => ({
+      id: foundRole._id,
+      title: foundRole.title,
+      description: foundRole.description || '',
+      permissions: foundRole.permissions.map(({ _id, title, description }) => ({
         id: _id,
         title,
         description,
       })),
-      createdAt: formatDate(findRole.createdAt),
-      updatedAt: formatDate(findRole.updatedAt),
+      createdAt: formatDate(foundRole.createdAt),
+      updatedAt: formatDate(foundRole.updatedAt),
     };
   }
 
@@ -93,10 +93,10 @@ class RoleService {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
       throw forbidden('You don`t have permission to edit roles for users');
-    const findRole = await Role.findById(id);
-    if (!findRole) throw notFound('Role not found');
+    const foundRole = await Role.findById(id);
+    if (!foundRole) throw notFound('Role not found');
     const updateData = {};
-    if (title && title !== findRole.title) {
+    if (title && title !== foundRole.title) {
       const duplicateRole = await Role.findOne({ title });
       if (duplicateRole) throw badRequest('This role already exists');
       updateData.title = title;
@@ -151,8 +151,8 @@ class RoleService {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
       throw forbidden('You don`t have permission to delete roles for users');
-    const findRole = await Role.findById(id);
-    if (!findRole) throw notFound('Role not found');
+    const foundRole = await Role.findById(id);
+    if (!foundRole) throw notFound('Role not found');
     const usersWithRole = await User.countDocuments({ roleId: id });
     if (usersWithRole > 0)
       throw badRequest(

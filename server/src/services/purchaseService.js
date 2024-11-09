@@ -10,7 +10,7 @@ const { formatDate, getRecordByTitle } = require('../utils/sharedFunctions');
 
 class PurchaseService {
   async getAllPurchases(limit, offset) {
-    const findPurchases = await Purchase.findAll({
+    const foundPurchases = await Purchase.findAll({
       attributes: ['id', 'amount', 'price', 'summ'],
       include: [
         { model: Product, attributes: ['title'] },
@@ -22,8 +22,8 @@ class PurchaseService {
       limit,
       offset,
     });
-    if (findPurchases.length === 0) throw notFound('Purchases not found');
-    const allPurchases = findPurchases.map((purchase) => ({
+    if (foundPurchases.length === 0) throw notFound('Purchases not found');
+    const allPurchases = foundPurchases.map((purchase) => ({
       id: purchase.id,
       product: purchase['Product.title'] || '',
       amount: purchase.amount,
@@ -41,7 +41,7 @@ class PurchaseService {
   }
 
   async getPurchaseById(purchaseId) {
-    const findPurchase = await Purchase.findByPk(purchaseId, {
+    const foundPurchase = await Purchase.findByPk(purchaseId, {
       attributes: {
         exclude: ['productId', 'shopId', 'measureId', 'currencyId'],
       },
@@ -52,8 +52,8 @@ class PurchaseService {
         { model: Currency, attributes: ['title'] },
       ],
     });
-    if (!findPurchase) throw notFound('Purchase not found');
-    const purchaseData = findPurchase.toJSON();
+    if (!foundPurchase) throw notFound('Purchase not found');
+    const purchaseData = foundPurchase.toJSON();
     return {
       id: purchaseData.id,
       product: purchaseData.Product.title,
@@ -77,25 +77,25 @@ class PurchaseService {
     currency,
     transaction
   ) {
-    const findProduct = await getRecordByTitle(Product, product);
-    if (!findProduct) throw notFound('Product not found');
-    const findShop = await getRecordByTitle(Shop, shop);
-    if (!findShop) throw notFound('Shop not found');
-    const findMeasure = await getRecordByTitle(Measure, measure);
-    if (!findMeasure) throw notFound('Measure not found');
-    const findCurrency = await getRecordByTitle(Currency, currency);
-    if (!findCurrency) throw notFound('Currency not found');
+    const foundProduct = await getRecordByTitle(Product, product);
+    if (!foundProduct) throw notFound('Product not found');
+    const foundShop = await getRecordByTitle(Shop, shop);
+    if (!foundShop) throw notFound('Shop not found');
+    const foundMeasure = await getRecordByTitle(Measure, measure);
+    if (!foundMeasure) throw notFound('Measure not found');
+    const foundCurrency = await getRecordByTitle(Currency, currency);
+    if (!foundCurrency) throw notFound('Currency not found');
     const amount = parseFloat(amountValue) || 0;
     const price = parseFloat(priceValue) || 0;
     const summ = parseFloat(amountValue) * parseFloat(priceValue) || 0;
     const newPurchaseData = {
-      productId: findProduct.id,
+      productId: foundProduct.id,
       amount,
       price,
       summ,
-      shopId: findShop.id,
-      measureId: findMeasure.id,
-      currencyId: findCurrency.id,
+      shopId: foundShop.id,
+      measureId: foundMeasure.id,
+      currencyId: foundCurrency.id,
     };
     const newPurchase = await Purchase.create(newPurchaseData, {
       transaction,
@@ -104,13 +104,13 @@ class PurchaseService {
     if (!newPurchase) throw badRequest('Purchase is not created');
     return {
       id: newPurchase.id,
-      product: findProduct.title,
+      product: foundProduct.title,
       amount: newPurchase.amount,
       price: newPurchase.price,
       summ: newPurchase.summ,
-      shop: findShop.title,
-      measure: findMeasure.title,
-      currency: findCurrency.title,
+      shop: foundShop.title,
+      measure: foundMeasure.title,
+      currency: foundCurrency.title,
     };
   }
 
@@ -124,33 +124,33 @@ class PurchaseService {
     currency,
     transaction
   ) {
-    const findPurchase = await Purchase.findByPk(id);
-    if (!findPurchase) throw notFound('Purchase not found');
-    const findProduct = await getRecordByTitle(Product, product);
-    if (!findProduct) throw notFound('Product not found');
-    const findShop = await getRecordByTitle(Shop, shop);
-    if (!findShop) throw notFound('Shop not found');
-    const findMeasure = await getRecordByTitle(Measure, measure);
-    if (!findMeasure) throw notFound('Measure not found');
-    const findCurrency = await getRecordByTitle(Currency, currency);
-    if (!findCurrency) throw notFound('Currency not found');
-    let amount = findPurchase.amount;
+    const foundPurchase = await Purchase.findByPk(id);
+    if (!foundPurchase) throw notFound('Purchase not found');
+    const foundProduct = await getRecordByTitle(Product, product);
+    if (!foundProduct) throw notFound('Product not found');
+    const foundShop = await getRecordByTitle(Shop, shop);
+    if (!foundShop) throw notFound('Shop not found');
+    const foundMeasure = await getRecordByTitle(Measure, measure);
+    if (!foundMeasure) throw notFound('Measure not found');
+    const foundCurrency = await getRecordByTitle(Currency, currency);
+    if (!foundCurrency) throw notFound('Currency not found');
+    let amount = foundPurchase.amount;
     if (amountValue) {
       amount = parseFloat(amountValue) || 0;
     }
-    let price = findPurchase.price;
+    let price = foundPurchase.price;
     if (priceValue) {
       price = parseFloat(priceValue) || 0;
     }
     const summ = parseFloat(amount) * parseFloat(price) || 0;
     const updateData = {
-      productId: findProduct.id,
+      productId: foundProduct.id,
       amount,
       price,
       summ,
-      shopId: findShop.id,
-      measureId: findMeasure.id,
-      currencyId: findCurrency.id,
+      shopId: foundShop.id,
+      measureId: foundMeasure.id,
+      currencyId: foundCurrency.id,
     };
     const [affectedRows, [updatedPurchase]] = await Purchase.update(
       updateData,
@@ -163,19 +163,19 @@ class PurchaseService {
     if (affectedRows === 0) throw badRequest('Purchase is not updated');
     return {
       id: updatedPurchase.id,
-      product: findProduct.title,
+      product: foundProduct.title,
       amount: updatedPurchase.amount,
       price: updatedPurchase.price,
       summ: updatedPurchase.summ,
-      shop: findShop.title,
-      measure: findMeasure.title,
-      currency: findCurrency.title,
+      shop: foundShop.title,
+      measure: foundMeasure.title,
+      currency: foundCurrency.title,
     };
   }
 
   async deletePurchase(purchaseId, transaction) {
-    const findPurchase = await Purchase.findByPk(purchaseId);
-    if (!findPurchase) throw notFound('Purchase not found');
+    const foundPurchase = await Purchase.findByPk(purchaseId);
+    if (!foundPurchase) throw notFound('Purchase not found');
     const deletedPurchase = await Purchase.destroy({
       where: { id: purchaseId },
       transaction,

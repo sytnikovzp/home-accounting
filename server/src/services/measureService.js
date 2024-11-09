@@ -4,18 +4,18 @@ const { formatDate } = require('../utils/sharedFunctions');
 
 class MeasureService {
   async getAllMeasures() {
-    const findMeasures = await Measure.findAll({
+    const foundMeasures = await Measure.findAll({
       attributes: ['id', 'title'],
       raw: true,
     });
-    if (findMeasures.length === 0) throw notFound('Measures not found');
-    return findMeasures;
+    if (foundMeasures.length === 0) throw notFound('Measures not found');
+    return foundMeasures;
   }
 
   async getMeasureById(measureId) {
-    const findMeasure = await Measure.findByPk(measureId);
-    if (!findMeasure) throw notFound('Measure not found');
-    const measureData = findMeasure.toJSON();
+    const foundMeasure = await Measure.findByPk(measureId);
+    if (!foundMeasure) throw notFound('Measure not found');
+    const measureData = foundMeasure.toJSON();
     return {
       ...measureData,
       description: measureData.description || '',
@@ -41,9 +41,9 @@ class MeasureService {
   }
 
   async updateMeasure(id, title, descriptionValue, transaction) {
-    const findMeasure = await Measure.findByPk(id);
-    if (!findMeasure) throw notFound('Measure not found');
-    const currentTitle = findMeasure.title;
+    const foundMeasure = await Measure.findByPk(id);
+    if (!foundMeasure) throw notFound('Measure not found');
+    const currentTitle = foundMeasure.title;
     if (title !== currentTitle) {
       const duplicateMeasure = await Measure.findOne({ where: { title } });
       if (duplicateMeasure) throw badRequest('This measure already exists');
@@ -69,8 +69,8 @@ class MeasureService {
   }
 
   async deleteMeasure(measureId, transaction) {
-    const findMeasure = await Measure.findByPk(measureId);
-    if (!findMeasure) throw notFound('Measure not found');
+    const foundMeasure = await Measure.findByPk(measureId);
+    if (!foundMeasure) throw notFound('Measure not found');
     const deletedMeasure = await Measure.destroy({
       where: { id: measureId },
       transaction,

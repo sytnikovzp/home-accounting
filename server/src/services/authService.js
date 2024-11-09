@@ -14,14 +14,14 @@ class AuthService {
     const emailToLower = emailToLowerCase(email);
     const duplicateUser = await User.findOne({ email: emailToLower });
     if (duplicateUser) throw badRequest('This user already exists');
-    const findRole = await Role.findOne({ title: 'User' });
-    if (!findRole) throw notFound('Role not found');
+    const foundRole = await Role.findOne({ title: 'User' });
+    if (!foundRole) throw notFound('Role not found');
     const hashedPassword = await hashPassword(password);
     const user = await User.create({
       fullName,
       email: emailToLower,
       password: hashedPassword,
-      roleId: findRole._id,
+      roleId: foundRole._id,
     });
     if (!user) throw badRequest('User is not registered');
     const tokens = generateTokens({ email });
@@ -30,7 +30,7 @@ class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
-        role: findRole.title || '',
+        role: foundRole.title || '',
         photo: user.photo || '',
       },
     };
@@ -42,15 +42,15 @@ class AuthService {
     if (!user) throw unAuthorizedError();
     const isPassRight = await bcrypt.compare(password, user.password);
     if (!isPassRight) throw unAuthorizedError();
-    const findRole = await Role.findById(user.roleId);
-    if (!findRole) throw notFound('Role not found');
+    const foundRole = await Role.findById(user.roleId);
+    if (!foundRole) throw notFound('Role not found');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
       user: {
         id: user._id,
         fullName: user.fullName,
-        role: findRole.title || '',
+        role: foundRole.title || '',
         photo: user.photo || '',
       },
     };
@@ -62,18 +62,18 @@ class AuthService {
     if (!data) throw unAuthorizedError();
     const { email } = data;
     const emailToLower = emailToLowerCase(email);
-    const findUser = await User.findOne({ email: emailToLower });
-    if (!findUser) throw notFound('User not found');
-    const findRole = await Role.findById(findUser.roleId);
-    if (!findRole) throw notFound('Role not found');
+    const foundUser = await User.findOne({ email: emailToLower });
+    if (!foundUser) throw notFound('User not found');
+    const foundRole = await Role.findById(foundUser.roleId);
+    if (!foundRole) throw notFound('Role not found');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
       user: {
-        id: findUser._id,
-        fullName: findUser.fullName,
-        role: findRole.title || '',
-        photo: findUser.photo || '',
+        id: foundUser._id,
+        fullName: foundUser.fullName,
+        role: foundRole.title || '',
+        photo: foundUser.photo || '',
       },
     };
   }

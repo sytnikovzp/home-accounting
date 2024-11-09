@@ -4,18 +4,18 @@ const { formatDate } = require('../utils/sharedFunctions');
 
 class CurrencyService {
   async getAllCurrencies() {
-    const findCurrencies = await Currency.findAll({
+    const foundCurrencies = await Currency.findAll({
       attributes: ['id', 'title'],
       raw: true,
     });
-    if (findCurrencies.length === 0) throw notFound('Currencies not found');
-    return findCurrencies;
+    if (foundCurrencies.length === 0) throw notFound('Currencies not found');
+    return foundCurrencies;
   }
 
   async getCurrencyById(currencyId) {
-    const findCurrency = await Currency.findByPk(currencyId);
-    if (!findCurrency) throw notFound('Currency not found');
-    const currencyData = findCurrency.toJSON();
+    const foundCurrency = await Currency.findByPk(currencyId);
+    if (!foundCurrency) throw notFound('Currency not found');
+    const currencyData = foundCurrency.toJSON();
     return {
       ...currencyData,
       description: currencyData.description || '',
@@ -41,9 +41,9 @@ class CurrencyService {
   }
 
   async updateCurrency(id, title, descriptionValue, transaction) {
-    const findCurrency = await Currency.findByPk(id);
-    if (!findCurrency) throw notFound('Currency not found');
-    const currentTitle = findCurrency.title;
+    const foundCurrency = await Currency.findByPk(id);
+    if (!foundCurrency) throw notFound('Currency not found');
+    const currentTitle = foundCurrency.title;
     if (title !== currentTitle) {
       const duplicateCurrency = await Currency.findOne({ where: { title } });
       if (duplicateCurrency) throw badRequest('This currency already exists');
@@ -68,8 +68,8 @@ class CurrencyService {
   }
 
   async deleteCurrency(currencyId, transaction) {
-    const findCurrency = await Currency.findByPk(currencyId);
-    if (!findCurrency) throw notFound('Currency not found');
+    const foundCurrency = await Currency.findByPk(currencyId);
+    if (!foundCurrency) throw notFound('Currency not found');
     const deletedCurrency = await Currency.destroy({
       where: { id: currencyId },
       transaction,

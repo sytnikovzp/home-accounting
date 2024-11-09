@@ -4,15 +4,15 @@ const { formatDate, getRecordByTitle } = require('../utils/sharedFunctions');
 
 class ProductService {
   async getAllProducts(limit, offset) {
-    const findProducts = await Product.findAll({
+    const foundProducts = await Product.findAll({
       attributes: ['id', 'title'],
       include: [{ model: Category, attributes: ['title'] }],
       raw: true,
       limit,
       offset,
     });
-    if (findProducts.length === 0) throw notFound('Products not found');
-    const allProducts = findProducts.map((product) => ({
+    if (foundProducts.length === 0) throw notFound('Products not found');
+    const allProducts = foundProducts.map((product) => ({
       id: product.id,
       title: product.title,
       category: product['Category.title'] || '',
@@ -25,12 +25,12 @@ class ProductService {
   }
 
   async getProductById(productId) {
-    const findProduct = await Product.findByPk(productId, {
+    const foundProduct = await Product.findByPk(productId, {
       attributes: { exclude: ['categoryId'] },
       include: [{ model: Category, attributes: ['title'] }],
     });
-    if (!findProduct) throw notFound('Product not found');
-    const productData = findProduct.toJSON();
+    if (!foundProduct) throw notFound('Product not found');
+    const productData = foundProduct.toJSON();
     return {
       id: productData.id,
       title: productData.title,
@@ -68,9 +68,9 @@ class ProductService {
   }
 
   async updateProduct(id, title, descriptionValue, category, transaction) {
-    const findProduct = await Product.findByPk(id);
-    if (!findProduct) throw notFound('Product not found');
-    const currentTitle = findProduct.title;
+    const foundProduct = await Product.findByPk(id);
+    if (!foundProduct) throw notFound('Product not found');
+    const currentTitle = foundProduct.title;
     if (title !== currentTitle) {
       const duplicateProduct = await Product.findOne({ where: { title } });
       if (duplicateProduct) throw badRequest('This product already exists');
@@ -103,8 +103,8 @@ class ProductService {
   }
 
   async deleteProduct(productId, transaction) {
-    const findProduct = await Product.findByPk(productId);
-    if (!findProduct) throw notFound('Product not found');
+    const foundProduct = await Product.findByPk(productId);
+    if (!foundProduct) throw notFound('Product not found');
     const deletedProduct = await Product.destroy({
       where: { id: productId },
       transaction,

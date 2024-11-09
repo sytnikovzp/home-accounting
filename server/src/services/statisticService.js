@@ -13,10 +13,10 @@ const { getTime, getRecordByTitle } = require('../utils/sharedFunctions');
 class StatisticService {
   async getCostByCategoryPerPeriod(category, ago) {
     const time = getTime(ago);
-    const findCategory = await getRecordByTitle(Category, category);
-    if (!findCategory) throw notFound('Category not found');
+    const foundCategory = await getRecordByTitle(Category, category);
+    if (!foundCategory) throw notFound('Category not found');
     const productIds = await Product.findAll({
-      where: { categoryId: findCategory.id },
+      where: { categoryId: foundCategory.id },
       attributes: ['id'],
       raw: true,
     });
@@ -42,12 +42,12 @@ class StatisticService {
 
   async getCostByShopPerPeriod(shop, ago) {
     const time = getTime(ago);
-    const findShop = await getRecordByTitle(Shop, shop);
-    if (!findShop) throw notFound('Shop not found');
+    const foundShop = await getRecordByTitle(Shop, shop);
+    if (!foundShop) throw notFound('Shop not found');
     const costByShopPerPeriod = await Purchase.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {
-        shopId: findShop.id,
+        shopId: foundShop.id,
         createdAt: { [Op.gte]: time },
       },
       group: ['currency_id'],

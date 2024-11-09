@@ -13,10 +13,10 @@ const { badRequest, notFound, forbidden } = require('../errors/customErrors');
 
 class UserService {
   async getAllUsers(limit, offset) {
-    const findUsers = await User.find().limit(limit).skip(offset);
-    if (findUsers.length === 0) throw notFound('Users not found');
+    const foundUsers = await User.find().limit(limit).skip(offset);
+    if (foundUsers.length === 0) throw notFound('Users not found');
     const allUsers = await Promise.all(
-      findUsers.map(async (user) => {
+      foundUsers.map(async (user) => {
         const role = await Role.findById(user.roleId);
         return {
           id: user._id,
@@ -34,20 +34,20 @@ class UserService {
   }
 
   async getUserById(id, currentUser) {
-    const findUser = await User.findById(id);
-    if (!findUser) throw notFound('User not found');
-    const role = await Role.findById(findUser.roleId);
+    const foundUser = await User.findById(id);
+    if (!foundUser) throw notFound('User not found');
+    const role = await Role.findById(foundUser.roleId);
     const limitUserData = {
-      id: findUser._id,
-      fullName: findUser.fullName,
+      id: foundUser._id,
+      fullName: foundUser.fullName,
       role: role.title || '',
-      photo: findUser.photo || '',
+      photo: foundUser.photo || '',
     };
     const fullUserData = {
       ...limitUserData,
-      email: findUser.email,
-      createdAt: formatDate(findUser.createdAt),
-      updatedAt: formatDate(findUser.updatedAt),
+      email: foundUser.email,
+      createdAt: formatDate(foundUser.createdAt),
+      updatedAt: formatDate(foundUser.updatedAt),
     };
     if (
       currentUser.id.toString() === id.toString() ||
@@ -62,17 +62,17 @@ class UserService {
 
   async getCurrentUser(email) {
     const emailToLower = emailToLowerCase(email);
-    const findUser = await User.findOne({ email: emailToLower });
-    if (!findUser) throw notFound('User not found');
-    const role = await Role.findById(findUser.roleId);
+    const foundUser = await User.findOne({ email: emailToLower });
+    if (!foundUser) throw notFound('User not found');
+    const role = await Role.findById(foundUser.roleId);
     return {
-      id: findUser._id,
-      fullName: findUser.fullName,
+      id: foundUser._id,
+      fullName: foundUser.fullName,
       role: role.title || '',
-      photo: findUser.photo || '',
-      email: findUser.email,
-      createdAt: formatDate(findUser.createdAt),
-      updatedAt: formatDate(findUser.updatedAt),
+      photo: foundUser.photo || '',
+      email: foundUser.email,
+      createdAt: formatDate(foundUser.createdAt),
+      updatedAt: formatDate(foundUser.updatedAt),
     };
   }
 
@@ -82,29 +82,29 @@ class UserService {
       (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden('You don`t have permission to update this user data');
-    const findUser = await User.findById(id);
-    if (!findUser) throw notFound('User not found');
-    const findRole = await Role.findById(findUser.roleId);
-    if (!findRole) throw badRequest('Role not found');
+    const foundUser = await User.findById(id);
+    if (!foundUser) throw notFound('User not found');
+    const foundRole = await Role.findById(foundUser.roleId);
+    if (!foundRole) throw badRequest('Role not found');
     const updateData = {};
     if (fullName) updateData.fullName = fullName;
-    if (email && email.toLowerCase() !== findUser.email.toLowerCase()) {
+    if (email && email.toLowerCase() !== foundUser.email.toLowerCase()) {
       const newEmail = email.toLowerCase();
       const existingEmail = await User.findOne({ email: newEmail });
       if (existingEmail) throw badRequest('This email is already used');
       updateData.email = newEmail;
     }
     if (password) updateData.password = await hashPassword(password);
-    if (role && role !== findRole.title) {
+    if (role && role !== foundRole.title) {
       const hasPermissionToChangeRole = await checkPermission(
         currentUser,
         'CHANGE_ROLES'
       );
       if (!hasPermissionToChangeRole)
         throw forbidden('You don`t have permission to change this user role');
-      if (findRole.title === 'Administrator') {
+      if (foundRole.title === 'Administrator') {
         const adminCount = await User.countDocuments({
-          roleId: findUser.roleId,
+          roleId: foundUser.roleId,
         });
         if (adminCount === 1)
           throw forbidden('Cannot delete the last administrator');
@@ -118,14 +118,14 @@ class UserService {
     });
     if (!updatedUser) throw badRequest('User is not updated');
     const tokens = generateTokens({
-      email: updateData.email || findUser.email,
+      email: updateData.email || foundUser.email,
     });
     return {
       ...tokens,
       user: {
         id: updatedUser._id,
         fullName: updatedUser.fullName,
-        role: role || (await Role.findById(findUser.roleId)).title,
+        role: role || (await Role.findById(foundUser.roleId)).title,
       },
     };
   }
@@ -137,10 +137,10 @@ class UserService {
     if (!hasPermission)
       throw forbidden('You don`t have permission to update this user photo');
     if (!filename) throw badRequest('No file uploaded');
-    const findUser = await User.findById(id);
-    if (!findUser) throw notFound('User not found');
-    findUser.photo = filename;
-    const updatedUser = await findUser.save();
+    const foundUser = await User.findById(id);
+    if (!foundUser) throw notFound('User not found');
+    foundUser.photo = filename;
+    const updatedUser = await foundUser.save();
     return {
       id: updatedUser._id,
       photo: updatedUser.photo || '',
@@ -153,10 +153,10 @@ class UserService {
       (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden('You don`t have permission to remove this user photo');
-    const findUser = await User.findById(id);
-    if (!findUser) throw notFound('User not found');
-    findUser.photo = null;
-    const updatedUser = await findUser.save();
+    const foundUser = await User.findById(id);
+    if (!foundUser) throw notFound('User not found');
+    foundUser.photo = null;
+    const updatedUser = await foundUser.save();
     return {
       id: updatedUser._id,
       photo: updatedUser.photo || '',
@@ -169,13 +169,13 @@ class UserService {
       (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden('You don`t have permission to delete this user profile');
-    const findUser = await User.findById(id);
-    if (!findUser) throw notFound('User not found');
-    const findRole = await Role.findById(findUser.roleId);
-    if (!findRole) throw badRequest('Role not found');
-    if (findRole.title === 'Administrator') {
+    const foundUser = await User.findById(id);
+    if (!foundUser) throw notFound('User not found');
+    const foundRole = await Role.findById(foundUser.roleId);
+    if (!foundRole) throw badRequest('Role not found');
+    if (foundRole.title === 'Administrator') {
       const adminCount = await User.countDocuments({
-        roleId: findUser.roleId,
+        roleId: foundUser.roleId,
       });
       if (adminCount === 1)
         throw forbidden('Can`t delete the last administrator');

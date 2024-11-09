@@ -4,14 +4,14 @@ const { formatDate } = require('../utils/sharedFunctions');
 
 class ShopService {
   async getAllShops(limit, offset) {
-    const findShops = await Shop.findAll({
+    const foundShops = await Shop.findAll({
       attributes: ['id', 'title', 'url', 'logo'],
       raw: true,
       limit,
       offset,
     });
-    if (findShops.length === 0) throw notFound('Shops not found');
-    const allShops = findShops.map((shop) => ({
+    if (foundShops.length === 0) throw notFound('Shops not found');
+    const allShops = foundShops.map((shop) => ({
       id: shop.id,
       title: shop.title,
       url: shop.url || '',
@@ -25,9 +25,9 @@ class ShopService {
   }
 
   async getShopById(shopId) {
-    const findShop = await Shop.findByPk(shopId);
-    if (!findShop) throw notFound('Shop not found');
-    const shopData = findShop.toJSON();
+    const foundShop = await Shop.findByPk(shopId);
+    if (!foundShop) throw notFound('Shop not found');
+    const shopData = foundShop.toJSON();
     return {
       id: shopData.id,
       title: shopData.title,
@@ -63,9 +63,9 @@ class ShopService {
   }
 
   async updateShop(id, title, descriptionValue, urlValue, transaction) {
-    const findShop = await Shop.findByPk(id);
-    if (!findShop) throw notFound('Shop not found');
-    const currentTitle = findShop.title;
+    const foundShop = await Shop.findByPk(id);
+    if (!foundShop) throw notFound('Shop not found');
+    const currentTitle = foundShop.title;
     if (title !== currentTitle) {
       const duplicateShop = await Shop.findOne({ where: { title } });
       if (duplicateShop) throw badRequest('This shop already exists');
@@ -97,8 +97,8 @@ class ShopService {
 
   async updateShopLogo(id, filename, transaction) {
     if (!filename) throw badRequest('No file uploaded');
-    const findShop = await Shop.findByPk(id);
-    if (!findShop) throw notFound('Shop not found');
+    const foundShop = await Shop.findByPk(id);
+    if (!foundShop) throw notFound('Shop not found');
     const [affectedRows, [updatedShopLogo]] = await Shop.update(
       { logo: filename },
       {
@@ -117,8 +117,8 @@ class ShopService {
   }
 
   async removeShopLogo(id, transaction) {
-    const findShop = await Shop.findByPk(id);
-    if (!findShop) throw notFound('Shop not found');
+    const foundShop = await Shop.findByPk(id);
+    if (!foundShop) throw notFound('Shop not found');
     const [affectedRows, [removedShopLogo]] = await Shop.update(
       { logo: null },
       {
@@ -137,8 +137,8 @@ class ShopService {
   }
 
   async deleteShop(shopId, transaction) {
-    const findShop = await Shop.findByPk(shopId);
-    if (!findShop) throw notFound('Shop not found');
+    const foundShop = await Shop.findByPk(shopId);
+    if (!foundShop) throw notFound('Shop not found');
     const deletedShop = await Shop.destroy({
       where: { id: shopId },
       transaction,

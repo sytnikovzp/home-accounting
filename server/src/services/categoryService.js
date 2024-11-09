@@ -4,18 +4,18 @@ const { formatDate } = require('../utils/sharedFunctions');
 
 class CategoryService {
   async getAllCategories() {
-    const findCategories = await Category.findAll({
+    const foundCategories = await Category.findAll({
       attributes: ['id', 'title'],
       raw: true,
     });
-    if (findCategories.length === 0) throw notFound('Categories not found');
-    return findCategories;
+    if (foundCategories.length === 0) throw notFound('Categories not found');
+    return foundCategories;
   }
 
   async getCategoryById(categoryId) {
-    const findCategory = await Category.findByPk(categoryId);
-    if (!findCategory) throw notFound('Category not found');
-    const categoryData = findCategory.toJSON();
+    const foundCategory = await Category.findByPk(categoryId);
+    if (!foundCategory) throw notFound('Category not found');
+    const categoryData = foundCategory.toJSON();
     return {
       ...categoryData,
       description: categoryData.description || '',
@@ -41,9 +41,9 @@ class CategoryService {
   }
 
   async updateCategory(id, title, descriptionValue, transaction) {
-    const findCategory = await Category.findByPk(id);
-    if (!findCategory) throw notFound('Category not found');
-    const currentTitle = findCategory.title;
+    const foundCategory = await Category.findByPk(id);
+    if (!foundCategory) throw notFound('Category not found');
+    const currentTitle = foundCategory.title;
     if (title !== currentTitle) {
       const duplicateCategory = await Category.findOne({ where: { title } });
       if (duplicateCategory) throw badRequest('This category already exists');
@@ -68,8 +68,8 @@ class CategoryService {
   }
 
   async deleteCategory(categoryId, transaction) {
-    const findCategory = await Category.findByPk(categoryId);
-    if (!findCategory) throw notFound('Category not found');
+    const foundCategory = await Category.findByPk(categoryId);
+    if (!foundCategory) throw notFound('Category not found');
     const deletedCategory = await Category.destroy({
       where: { id: categoryId },
       transaction,

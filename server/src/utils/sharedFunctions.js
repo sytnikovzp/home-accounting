@@ -41,11 +41,11 @@ const emailToLowerCase = function (email) {
 };
 
 const checkPermission = async function (user, requiredPermission) {
-  const findRole = await Role.findOne({ title: user.role }).populate(
+  const foundRole = await Role.findOne({ title: user.role }).populate(
     'permissions'
   );
-  if (!findRole) throw notFound('Role not found');
-  const permissions = findRole.permissions.map((p) => p.title);
+  if (!foundRole) throw notFound('Role not found');
+  const permissions = foundRole.permissions.map((p) => p.title);
   return permissions.includes(requiredPermission);
 };
 
