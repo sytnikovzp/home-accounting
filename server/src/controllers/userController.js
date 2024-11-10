@@ -19,7 +19,7 @@ class UserController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get users error: ', error.message);
+      console.log('Get all users error: ', error.message);
       next(error);
     }
   }

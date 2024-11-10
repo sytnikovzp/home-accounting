@@ -1,7 +1,5 @@
 const { Role, User, Permission } = require('../db/dbMongo/models');
-// ==============================================================
 const { formatDate, checkPermission } = require('../utils/sharedFunctions');
-// ==============================================================
 const { badRequest, notFound, forbidden } = require('../errors/customErrors');
 
 class RoleService {

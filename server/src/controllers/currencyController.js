@@ -1,4 +1,5 @@
 const { sequelize } = require('../db/dbPostgres/models');
+const { getCurrentUser } = require('../services/userService');
 const {
   getAllCurrencies,
   getCurrencyById,
@@ -11,7 +12,11 @@ class CurrencyController {
   async getAllCurrencies(req, res, next) {
     try {
       const allCurrencies = await getAllCurrencies();
-      res.status(200).json(allCurrencies);
+      if (allCurrencies.length > 0) {
+        res.status(200).json(allCurrencies);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.log('Get all currencies error: ', error.message);
       next(error);
@@ -22,7 +27,11 @@ class CurrencyController {
     try {
       const { currencyId } = req.params;
       const currency = await getCurrencyById(currencyId);
-      res.status(200).json(currency);
+      if (currency) {
+        res.status(200).json(currency);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.log('Get currency by id error: ', error.message);
       next(error);
@@ -33,9 +42,20 @@ class CurrencyController {
     const transaction = await sequelize.transaction();
     try {
       const { title, description } = req.body;
-      const newCurrency = await createCurrency(title, description, transaction);
-      await transaction.commit();
-      res.status(201).json(newCurrency);
+      const currentUser = await getCurrentUser(req.user.email);
+      const newCurrency = await createCurrency(
+        title,
+        description,
+        currentUser,
+        transaction
+      );
+      if (newCurrency) {
+        await transaction.commit();
+        res.status(201).json(newCurrency);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.log('Create currency error: ', error.message);
@@ -48,14 +68,21 @@ class CurrencyController {
     try {
       const { currencyId } = req.params;
       const { title, description } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
       const updatedCurrency = await updateCurrency(
         currencyId,
         title,
         description,
+        currentUser,
         transaction
       );
-      await transaction.commit();
-      res.status(200).json(updatedCurrency);
+      if (updatedCurrency) {
+        await transaction.commit();
+        res.status(200).json(updatedCurrency);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.log('Update currency error: ', error.message);
@@ -67,9 +94,19 @@ class CurrencyController {
     const transaction = await sequelize.transaction();
     try {
       const { currencyId } = req.params;
-      await deleteCurrency(currencyId, transaction);
-      await transaction.commit();
-      res.sendStatus(res.statusCode);
+      const currentUser = await getCurrentUser(req.user.email);
+      const deletedCurrency = await deleteCurrency(
+        currencyId,
+        currentUser,
+        transaction
+      );
+      if (deletedCurrency) {
+        await transaction.commit();
+        res.sendStatus(res.statusCode);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.log('Delete currency error: ', error.message);

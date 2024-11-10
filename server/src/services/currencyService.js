@@ -1,6 +1,6 @@
 const { Currency } = require('../db/dbPostgres/models');
-const { notFound, badRequest } = require('../errors/customErrors');
-const { formatDate } = require('../utils/sharedFunctions');
+const { formatDate, checkPermission } = require('../utils/sharedFunctions');
+const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class CurrencyService {
   async getAllCurrencies() {
@@ -24,7 +24,13 @@ class CurrencyService {
     };
   }
 
-  async createCurrency(title, descriptionValue, transaction) {
+  async createCurrency(title, descriptionValue, currentUser, transaction) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_CURRENCIES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to create currencies');
     const duplicateCurrency = await Currency.findOne({ where: { title } });
     if (duplicateCurrency) throw badRequest('This currency already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
@@ -40,7 +46,13 @@ class CurrencyService {
     };
   }
 
-  async updateCurrency(id, title, descriptionValue, transaction) {
+  async updateCurrency(id, title, descriptionValue, currentUser, transaction) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_CURRENCIES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to edit currencies');
     const foundCurrency = await Currency.findByPk(id);
     if (!foundCurrency) throw notFound('Currency not found');
     const currentTitle = foundCurrency.title;
@@ -67,7 +79,13 @@ class CurrencyService {
     };
   }
 
-  async deleteCurrency(currencyId, transaction) {
+  async deleteCurrency(currencyId, currentUser, transaction) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_CURRENCIES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to delete currencies');
     const foundCurrency = await Currency.findByPk(currencyId);
     if (!foundCurrency) throw notFound('Currency not found');
     const deletedCurrency = await Currency.destroy({
