@@ -5,8 +5,12 @@ const {
   Measure,
   Currency,
 } = require('../db/dbPostgres/models');
-const { notFound, badRequest } = require('../errors/customErrors');
-const { formatDate, getRecordByTitle } = require('../utils/sharedFunctions');
+const {
+  formatDate,
+  getRecordByTitle,
+  checkPermission,
+} = require('../utils/sharedFunctions');
+const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class PurchaseService {
   async getAllPurchases(limit, offset) {
@@ -75,8 +79,15 @@ class PurchaseService {
     shop,
     measure,
     currency,
+    currentUser,
     transaction
   ) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_PURCHASES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to create purchases');
     const foundProduct = await getRecordByTitle(Product, product);
     if (!foundProduct) throw notFound('Product not found');
     const foundShop = await getRecordByTitle(Shop, shop);
@@ -122,8 +133,15 @@ class PurchaseService {
     shop,
     measure,
     currency,
+    currentUser,
     transaction
   ) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_PURCHASES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to edit purchases');
     const foundPurchase = await Purchase.findByPk(id);
     if (!foundPurchase) throw notFound('Purchase not found');
     const foundProduct = await getRecordByTitle(Product, product);
@@ -173,7 +191,13 @@ class PurchaseService {
     };
   }
 
-  async deletePurchase(purchaseId, transaction) {
+  async deletePurchase(purchaseId, currentUser, transaction) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_PURCHASES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to delete purchases');
     const foundPurchase = await Purchase.findByPk(purchaseId);
     if (!foundPurchase) throw notFound('Purchase not found');
     const deletedPurchase = await Purchase.destroy({

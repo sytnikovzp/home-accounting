@@ -8,6 +8,7 @@ const {
   deletePurchase,
 } = require('../controllers/purchaseController');
 const {
+  auth: { authHandler },
   validation: { validatePurchase },
   pagination: { paginateElements },
 } = require('../middlewares');
@@ -16,13 +17,13 @@ const purchaseRouter = new Router();
 
 purchaseRouter
   .route('/')
-  .get(paginateElements, getAllPurchases)
-  .post(validatePurchase, createPurchase);
+  .get(authHandler, paginateElements, getAllPurchases)
+  .post(authHandler, validatePurchase, createPurchase);
 
 purchaseRouter
   .route('/:purchaseId')
-  .get(getPurchaseById)
-  .patch(validatePurchase, updatePurchase)
-  .delete(deletePurchase);
+  .get(authHandler, getPurchaseById)
+  .patch(authHandler, validatePurchase, updatePurchase)
+  .delete(authHandler, deletePurchase);
 
 module.exports = purchaseRouter;
