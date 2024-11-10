@@ -37,9 +37,16 @@ module.exports.permissions = [
     description: 'Approve or reject content publication',
   },
   {
-    title: 'MANAGE_PURCHASES',
-    description:
-      'Full CRUD for your own purchase records based on existing entities without moderation',
+    title: 'MANAGE_CATEGORIES',
+    description: 'Full CRUD operations on category entities without moderation',
+  },
+  {
+    title: 'MANAGE_PRODUCTS',
+    description: 'Full CRUD operations on product entities without moderation',
+  },
+  {
+    title: 'MANAGE_SHOPS',
+    description: 'Full CRUD operations on shop entities without moderation',
   },
   {
     title: 'MANAGE_CURRENCIES',
@@ -48,6 +55,11 @@ module.exports.permissions = [
   {
     title: 'MANAGE_MEASURES',
     description: 'Full CRUD operations on measure entities without moderation',
+  },
+  {
+    title: 'MANAGE_PURCHASES',
+    description:
+      'Full CRUD for your own purchase records based on existing entities without moderation',
   },
   {
     title: 'ADD_SHOPS',
@@ -83,8 +95,8 @@ module.exports.roles = async (permissionIds) => [
       permissionIds['MANAGE_ROLES'],
       permissionIds['CHANGE_ROLES'],
       permissionIds['CHANGE_PERMISSIONS'],
-      permissionIds['FULL_PROFILE_VIEWER'],
       permissionIds['MANAGE_USER_PROFILES'],
+      permissionIds['FULL_PROFILE_VIEWER'],
     ],
   },
   {
@@ -92,12 +104,15 @@ module.exports.roles = async (permissionIds) => [
     description: 'Monitoring and tracking publications and content',
     permissions: [
       permissionIds['PUBLISH_CONTENT'],
+      permissionIds['MANAGE_CATEGORIES'],
+      permissionIds['MANAGE_PRODUCTS'],
+      permissionIds['MANAGE_SHOPS'],
       permissionIds['MANAGE_CURRENCIES'],
       permissionIds['MANAGE_MEASURES'],
-      permissionIds['LIMITED_PROFILE_VIEWER'],
       permissionIds['MODERATE_SHOPS'],
       permissionIds['MODERATE_PRODUCTS'],
       permissionIds['MODERATE_CATEGORIES'],
+      permissionIds['LIMITED_PROFILE_VIEWER'],
     ],
   },
   {

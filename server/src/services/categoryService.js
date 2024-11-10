@@ -1,11 +1,12 @@
 const { Category } = require('../db/dbPostgres/models');
-const { notFound, badRequest } = require('../errors/customErrors');
-const { formatDate } = require('../utils/sharedFunctions');
+const { formatDate, checkPermission } = require('../utils/sharedFunctions');
+const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class CategoryService {
-  async getAllCategories() {
+  async getAllCategories(status) {
     const foundCategories = await Category.findAll({
       attributes: ['id', 'title'],
+      where: { status },
       raw: true,
     });
     if (foundCategories.length === 0) throw notFound('Categories not found');
@@ -24,7 +25,39 @@ class CategoryService {
     };
   }
 
-  async createCategory(title, descriptionValue, transaction) {
+  async updateCategoryStatus(id, status, currentUser, transaction) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MODERATE_CATEGORIES'
+    );
+    if (!hasPermission) {
+      throw forbidden('You don`t have permission to moderate categories');
+    }
+    const foundCategory = await Category.findByPk(id);
+    if (!foundCategory) throw notFound('Category not found');
+    if (!['approved', 'rejected', 'pending'].includes(status)) {
+      throw notFound('Status not found');
+    }
+    const updateData = { status };
+    const [affectedRows, [moderatedCategory]] = await Category.update(
+      updateData,
+      { where: { id }, returning: true, transaction }
+    );
+    if (affectedRows === 0) throw badRequest('Category is not moderated');
+    return {
+      id: moderatedCategory.id,
+      title: moderatedCategory.title,
+      status: moderatedCategory.status,
+    };
+  }
+
+  async createCategory(title, descriptionValue, currentUser, transaction) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_CATEGORIES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to create categories');
     const duplicateCategory = await Category.findOne({ where: { title } });
     if (duplicateCategory) throw badRequest('This category already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
@@ -40,7 +73,13 @@ class CategoryService {
     };
   }
 
-  async updateCategory(id, title, descriptionValue, transaction) {
+  async updateCategory(id, title, descriptionValue, currentUser, transaction) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_CATEGORIES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to edit categories');
     const foundCategory = await Category.findByPk(id);
     if (!foundCategory) throw notFound('Category not found');
     const currentTitle = foundCategory.title;
@@ -67,7 +106,13 @@ class CategoryService {
     };
   }
 
-  async deleteCategory(categoryId, transaction) {
+  async deleteCategory(categoryId, currentUser, transaction) {
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MANAGE_CATEGORIES'
+    );
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to delete categories');
     const foundCategory = await Category.findByPk(categoryId);
     if (!foundCategory) throw notFound('Category not found');
     const deletedCategory = await Category.destroy({

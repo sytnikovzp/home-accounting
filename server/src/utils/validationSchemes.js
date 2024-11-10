@@ -32,6 +32,14 @@ const EMAIL_VALIDATION_SCHEME = yup
   .string('Це поле має бути рядком')
   .email('Введіть коректний e-mail');
 
+const STATUS_REQUIRED_SCHEME = yup
+  .string('Це поле має бути рядком')
+  .oneOf(
+    ['approved', 'rejected', 'pending'],
+    'Неприпустиме значення для статусу'
+  )
+  .required('Це поле є обовʼязкове');
+
 const PAGINATION_SCHEME = yup.object().shape({
   limit: yup.number().min(1).max(500).required(),
   offset: yup.number().min(0).required(),
@@ -61,6 +69,10 @@ const ROLE_VALIDATION_SCHEME = yup.object().shape({
   title: TITLE_NAME_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
   permissions: ARRAY_OF_STRING_NULLABLE_SCHEME,
+});
+
+const MODERATION_VALIDATION_SCHEME = yup.object().shape({
+  status: STATUS_REQUIRED_SCHEME,
 });
 
 const PURCHASE_VALIDATION_SCHEME = yup.object().shape({
@@ -105,6 +117,7 @@ module.exports = {
   UPDATE_USER_VALIDATION_SCHEME,
   AUTH_VALIDATION_SCHEME,
   ROLE_VALIDATION_SCHEME,
+  MODERATION_VALIDATION_SCHEME,
   PURCHASE_VALIDATION_SCHEME,
   PRODUCT_VALIDATION_SCHEME,
   CATEGORY_VALIDATION_SCHEME,

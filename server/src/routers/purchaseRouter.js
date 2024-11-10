@@ -2,9 +2,9 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllPurchases,
+  getPurchaseById,
   createPurchase,
   updatePurchase,
-  getPurchaseById,
   deletePurchase,
 } = require('../controllers/purchaseController');
 const {

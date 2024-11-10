@@ -2,9 +2,9 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllMeasures,
+  getMeasureById,
   createMeasure,
   updateMeasure,
-  getMeasureById,
   deleteMeasure,
 } = require('../controllers/measureController');
 const {

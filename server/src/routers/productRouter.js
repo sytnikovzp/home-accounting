@@ -2,9 +2,9 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllProducts,
+  getProductById,
   createProduct,
   updateProduct,
-  getProductById,
   deleteProduct,
 } = require('../controllers/productController');
 const {

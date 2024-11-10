@@ -3,8 +3,8 @@ const { Router } = require('express');
 const {
   getAllPermissions,
   getAllRoles,
-  createRole,
   getRoleById,
+  createRole,
   updateRole,
   deleteRole,
 } = require('../controllers/roleController');

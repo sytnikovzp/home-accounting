@@ -2,9 +2,9 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllCurrencies,
+  getCurrencyById,
   createCurrency,
   updateCurrency,
-  getCurrencyById,
   deleteCurrency,
 } = require('../controllers/currencyController');
 const {

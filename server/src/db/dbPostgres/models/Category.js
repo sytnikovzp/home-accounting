@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       description: DataTypes.TEXT,
-      published: {
+      status: {
         type: DataTypes.ENUM('approved', 'rejected', 'pending'),
         defaultValue: 'pending',
       },
@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       reviewedAt: {
         type: DataTypes.DATE,
+        allowNull: true,
+      },
+      createdBy: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
     },

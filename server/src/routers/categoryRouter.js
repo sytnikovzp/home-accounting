@@ -2,26 +2,32 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllCategories,
+  getCategoryById,
+  reviewCategory,
   createCategory,
   updateCategory,
-  getCategoryById,
   deleteCategory,
 } = require('../controllers/categoryController');
 const {
-  validation: { validateCategory },
+  auth: { authHandler },
+  validation: { validateCategory, validateModeration },
 } = require('../middlewares');
 
 const categoryRouter = new Router();
 
 categoryRouter
   .route('/')
-  .get(getAllCategories)
-  .post(validateCategory, createCategory);
+  .get(authHandler, getAllCategories)
+  .post(authHandler, validateCategory, createCategory);
 
 categoryRouter
   .route('/:categoryId')
-  .get(getCategoryById)
-  .patch(validateCategory, updateCategory)
-  .delete(deleteCategory);
+  .get(authHandler, getCategoryById)
+  .patch(authHandler, validateCategory, updateCategory)
+  .delete(authHandler, deleteCategory);
+
+categoryRouter
+  .route('/:categoryId/moderate')
+  .patch(authHandler, validateModeration, reviewCategory);
 
 module.exports = categoryRouter;

@@ -2,12 +2,12 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllShops,
+  getShopById,
   createShop,
   updateShop,
-  getShopById,
-  deleteShop,
   updateShopLogo,
   removeShopLogo,
+  deleteShop,
 } = require('../controllers/shopController');
 const {
   validation: { validateShop },

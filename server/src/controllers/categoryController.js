@@ -1,7 +1,9 @@
 const { sequelize } = require('../db/dbPostgres/models');
+const { getCurrentUser } = require('../services/userService');
 const {
   getAllCategories,
   getCategoryById,
+  updateCategoryStatus,
   createCategory,
   updateCategory,
   deleteCategory,
@@ -10,8 +12,13 @@ const {
 class CategoryController {
   async getAllCategories(req, res, next) {
     try {
-      const allCategories = await getAllCategories();
-      res.status(200).json(allCategories);
+      const { status = 'approved' } = req.query;
+      const allCategories = await getAllCategories(status);
+      if (allCategories.length > 0) {
+        res.status(200).json(allCategories);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.log('Get all categories error: ', error.message);
       next(error);
@@ -22,9 +29,39 @@ class CategoryController {
     try {
       const { categoryId } = req.params;
       const category = await getCategoryById(categoryId);
-      res.status(200).json(category);
+      if (category) {
+        res.status(200).json(category);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.log('Get category by id error: ', error.message);
+      next(error);
+    }
+  }
+
+  async reviewCategory(req, res, next) {
+    const transaction = await sequelize.transaction();
+    try {
+      const { categoryId } = req.params;
+      const { status } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedCategory = await updateCategoryStatus(
+        categoryId,
+        status,
+        currentUser,
+        transaction
+      );
+      if (updatedCategory) {
+        await transaction.commit();
+        res.status(200).json(updatedCategory);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
+    } catch (error) {
+      await transaction.rollback();
+      console.log('Update category error: ', error.message);
       next(error);
     }
   }
@@ -33,9 +70,20 @@ class CategoryController {
     const transaction = await sequelize.transaction();
     try {
       const { title, description } = req.body;
-      const newCategory = await createCategory(title, description, transaction);
-      await transaction.commit();
-      res.status(201).json(newCategory);
+      const currentUser = await getCurrentUser(req.user.email);
+      const newCategory = await createCategory(
+        title,
+        description,
+        currentUser,
+        transaction
+      );
+      if (newCategory) {
+        await transaction.commit();
+        res.status(201).json(newCategory);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.log('Create category error: ', error.message);
@@ -48,14 +96,21 @@ class CategoryController {
     try {
       const { categoryId } = req.params;
       const { title, description } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
       const updatedCategory = await updateCategory(
         categoryId,
         title,
         description,
+        currentUser,
         transaction
       );
-      await transaction.commit();
-      res.status(200).json(updatedCategory);
+      if (updatedCategory) {
+        await transaction.commit();
+        res.status(200).json(updatedCategory);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.log('Update category error: ', error.message);
@@ -67,9 +122,19 @@ class CategoryController {
     const transaction = await sequelize.transaction();
     try {
       const { categoryId } = req.params;
-      await deleteCategory(categoryId, transaction);
-      await transaction.commit();
-      res.sendStatus(res.statusCode);
+      const currentUser = await getCurrentUser(req.user.email);
+      const deletedCategory = await deleteCategory(
+        categoryId,
+        currentUser,
+        transaction
+      );
+      if (deletedCategory) {
+        await transaction.commit();
+        res.sendStatus(res.statusCode);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.log('Delete category error: ', error.message);
