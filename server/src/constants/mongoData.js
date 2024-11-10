@@ -37,25 +37,41 @@ module.exports.permissions = [
     description: 'Approve or reject content publication',
   },
   {
-    title: 'MANAGE_CONTENT',
-    description: 'Only edit or delete existing content on site',
-  },
-  {
-    title: 'MANAGE_PURCHASE',
+    title: 'MANAGE_PURCHASES',
     description:
       'Full CRUD for your own purchase records based on existing entities without moderation',
+  },
+  {
+    title: 'MANAGE_CURRENCIES',
+    description: 'Full CRUD operations on currency entities without moderation',
+  },
+  {
+    title: 'MANAGE_MEASURES',
+    description: 'Full CRUD operations on measure entities without moderation',
   },
   {
     title: 'ADD_SHOPS',
     description: 'Add new shops, which need to be moderated',
   },
   {
+    title: 'MODERATE_SHOPS',
+    description: 'Review and change publication status for shops',
+  },
+  {
     title: 'ADD_PRODUCTS',
     description: 'Add new products, which need to be moderated',
   },
   {
+    title: 'MODERATE_PRODUCTS',
+    description: 'Review and change publication status for products',
+  },
+  {
     title: 'ADD_CATEGORIES',
     description: 'Add new categories, which need to be moderated',
+  },
+  {
+    title: 'MODERATE_CATEGORIES',
+    description: 'Review and change publication status for categories',
   },
 ];
 
@@ -76,15 +92,19 @@ module.exports.roles = async (permissionIds) => [
     description: 'Monitoring and tracking publications and content',
     permissions: [
       permissionIds['PUBLISH_CONTENT'],
-      permissionIds['MANAGE_CONTENT'],
+      permissionIds['MANAGE_CURRENCIES'],
+      permissionIds['MANAGE_MEASURES'],
       permissionIds['LIMITED_PROFILE_VIEWER'],
+      permissionIds['MODERATE_SHOPS'],
+      permissionIds['MODERATE_PRODUCTS'],
+      permissionIds['MODERATE_CATEGORIES'],
     ],
   },
   {
     title: 'User',
     description: 'Uses an app to track purchases',
     permissions: [
-      permissionIds['MANAGE_PURCHASE'],
+      permissionIds['MANAGE_PURCHASES'],
       permissionIds['ADD_SHOPS'],
       permissionIds['ADD_PRODUCTS'],
       permissionIds['ADD_CATEGORIES'],
