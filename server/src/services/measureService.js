@@ -1,6 +1,6 @@
 const { Measure } = require('../db/dbPostgres/models');
-const { notFound, badRequest } = require('../errors/customErrors');
-const { formatDate } = require('../utils/sharedFunctions');
+const { formatDate, checkPermission } = require('../utils/sharedFunctions');
+const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class MeasureService {
   async getAllMeasures() {
@@ -24,7 +24,10 @@ class MeasureService {
     };
   }
 
-  async createMeasure(title, descriptionValue, transaction) {
+  async createMeasure(title, descriptionValue, currentUser, transaction) {
+    const hasPermission = await checkPermission(currentUser, 'MANAGE_MEASURES');
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to create measures');
     const duplicateMeasure = await Measure.findOne({ where: { title } });
     if (duplicateMeasure) throw badRequest('This measure already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
@@ -40,7 +43,10 @@ class MeasureService {
     };
   }
 
-  async updateMeasure(id, title, descriptionValue, transaction) {
+  async updateMeasure(id, title, descriptionValue, currentUser, transaction) {
+    const hasPermission = await checkPermission(currentUser, 'MANAGE_MEASURES');
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to edit measures');
     const foundMeasure = await Measure.findByPk(id);
     if (!foundMeasure) throw notFound('Measure not found');
     const currentTitle = foundMeasure.title;
@@ -68,7 +74,10 @@ class MeasureService {
     };
   }
 
-  async deleteMeasure(measureId, transaction) {
+  async deleteMeasure(measureId, currentUser, transaction) {
+    const hasPermission = await checkPermission(currentUser, 'MANAGE_MEASURES');
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to delete measures');
     const foundMeasure = await Measure.findByPk(measureId);
     if (!foundMeasure) throw notFound('Measure not found');
     const deletedMeasure = await Measure.destroy({
