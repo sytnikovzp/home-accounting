@@ -34,10 +34,7 @@ const EMAIL_VALIDATION_SCHEME = yup
 
 const STATUS_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
-  .oneOf(
-    ['approved', 'rejected', 'pending'],
-    'Неприпустиме значення для статусу'
-  )
+  .oneOf(['approved', 'rejected'], 'Неприпустиме значення для статусу')
   .required('Це поле є обовʼязкове');
 
 const PAGINATION_SCHEME = yup.object().shape({

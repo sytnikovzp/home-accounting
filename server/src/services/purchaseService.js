@@ -141,7 +141,7 @@ class PurchaseService {
       'MANAGE_PURCHASES'
     );
     if (!hasPermission)
-      throw forbidden('You don`t have permission to edit purchases');
+      throw forbidden('You don`t have permission to edit this purchase');
     const foundPurchase = await Purchase.findByPk(id);
     if (!foundPurchase) throw notFound('Purchase not found');
     const foundProduct = await getRecordByTitle(Product, product);
@@ -197,7 +197,7 @@ class PurchaseService {
       'MANAGE_PURCHASES'
     );
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete purchases');
+      throw forbidden('You don`t have permission to delete this purchase');
     const foundPurchase = await Purchase.findByPk(purchaseId);
     if (!foundPurchase) throw notFound('Purchase not found');
     const deletedPurchase = await Purchase.destroy({

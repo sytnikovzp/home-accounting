@@ -18,10 +18,15 @@ class CategoryService {
     if (!foundCategory) throw notFound('Category not found');
     const categoryData = foundCategory.toJSON();
     return {
-      ...categoryData,
+      id: categoryData.id,
+      title: categoryData.title,
       description: categoryData.description || '',
-      createdAt: formatDate(categoryData.createdAt),
-      updatedAt: formatDate(categoryData.updatedAt),
+      status: categoryData.status,
+      reviewedBy: categoryData.reviewedBy || '',
+      reviewedAt: categoryData.reviewedAt
+        ? formatDate(categoryData.reviewedAt)
+        : '',
+      createdBy: categoryData.createdBy || '',
     };
   }
 
@@ -35,7 +40,7 @@ class CategoryService {
     }
     const foundCategory = await Category.findByPk(id);
     if (!foundCategory) throw notFound('Category not found');
-    if (!['approved', 'rejected', 'pending'].includes(status)) {
+    if (!['approved', 'rejected'].includes(status)) {
       throw notFound('Status not found');
     }
     const updateData = { status };
@@ -52,17 +57,34 @@ class CategoryService {
   }
 
   async createCategory(title, descriptionValue, currentUser, transaction) {
-    const hasPermission = await checkPermission(
+    const canAddCategories = await checkPermission(
+      currentUser,
+      'ADD_CATEGORIES'
+    );
+    const canManageCategories = await checkPermission(
       currentUser,
       'MANAGE_CATEGORIES'
     );
-    if (!hasPermission)
+    if (!canAddCategories && !canManageCategories) {
       throw forbidden('You don`t have permission to create categories');
+    }
     const duplicateCategory = await Category.findOne({ where: { title } });
     if (duplicateCategory) throw badRequest('This category already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
+    const currentUserId = currentUser.id.toString();
+    const status = canManageCategories ? 'approved' : 'pending';
+    const reviewedBy = canManageCategories ? currentUserId : null;
+    const reviewedAt = canManageCategories ? new Date() : null;
+    const createdBy = currentUserId;
     const newCategory = await Category.create(
-      { title, description },
+      {
+        title,
+        description,
+        status,
+        reviewedBy,
+        reviewedAt,
+        createdBy,
+      },
       { transaction, returning: true }
     );
     if (!newCategory) throw badRequest('Category is not created');
@@ -70,18 +92,27 @@ class CategoryService {
       id: newCategory.id,
       title: newCategory.title,
       description: newCategory.description || '',
+      status: newCategory.status,
+      reviewedBy: newCategory.reviewedBy || '',
+      reviewedAt: newCategory.reviewedAt
+        ? formatDate(newCategory.reviewedAt)
+        : '',
+      createdBy: newCategory.createdBy || '',
     };
   }
 
   async updateCategory(id, title, descriptionValue, currentUser, transaction) {
-    const hasPermission = await checkPermission(
+    const foundCategory = await Category.findByPk(id);
+    if (!foundCategory) throw notFound('Category not found');
+    const isCategoryOwner =
+      currentUser.id.toString() === foundCategory.createdBy;
+    const canManageCategories = await checkPermission(
       currentUser,
       'MANAGE_CATEGORIES'
     );
-    if (!hasPermission)
-      throw forbidden('You don`t have permission to edit categories');
-    const foundCategory = await Category.findByPk(id);
-    if (!foundCategory) throw notFound('Category not found');
+    if (!isCategoryOwner && !canManageCategories) {
+      throw forbidden('You don`t have permission to edit this category');
+    }
     const currentTitle = foundCategory.title;
     if (title !== currentTitle) {
       const duplicateCategory = await Category.findOne({ where: { title } });
@@ -94,6 +125,10 @@ class CategoryService {
       const description = descriptionValue === '' ? null : descriptionValue;
       updateData.description = description;
     }
+    const currentUserId = currentUser.id.toString();
+    updateData.status = canManageCategories ? 'approved' : 'pending';
+    updateData.reviewedBy = canManageCategories ? currentUserId : null;
+    updateData.reviewedAt = canManageCategories ? new Date() : null;
     const [affectedRows, [updatedCategory]] = await Category.update(
       updateData,
       { where: { id }, returning: true, transaction }
@@ -103,6 +138,12 @@ class CategoryService {
       id: updatedCategory.id,
       title: updatedCategory.title,
       description: updatedCategory.description || '',
+      status: updatedCategory.status,
+      reviewedBy: updatedCategory.reviewedBy || '',
+      reviewedAt: updatedCategory.reviewedAt
+        ? formatDate(updatedCategory.reviewedAt)
+        : '',
+      createdBy: updatedCategory.createdBy || '',
     };
   }
 
@@ -112,7 +153,7 @@ class CategoryService {
       'MANAGE_CATEGORIES'
     );
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete categories');
+      throw forbidden('You don`t have permission to delete this category');
     const foundCategory = await Category.findByPk(categoryId);
     if (!foundCategory) throw notFound('Category not found');
     const deletedCategory = await Category.destroy({

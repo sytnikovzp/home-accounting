@@ -52,7 +52,7 @@ class CurrencyService {
       'MANAGE_CURRENCIES'
     );
     if (!hasPermission)
-      throw forbidden('You don`t have permission to edit currencies');
+      throw forbidden('You don`t have permission to edit this currency');
     const foundCurrency = await Currency.findByPk(id);
     if (!foundCurrency) throw notFound('Currency not found');
     const currentTitle = foundCurrency.title;
@@ -85,7 +85,7 @@ class CurrencyService {
       'MANAGE_CURRENCIES'
     );
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete currencies');
+      throw forbidden('You don`t have permission to delete this currency');
     const foundCurrency = await Currency.findByPk(currencyId);
     if (!foundCurrency) throw notFound('Currency not found');
     const deletedCurrency = await Currency.destroy({

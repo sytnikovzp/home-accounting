@@ -18,6 +18,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM('approved', 'rejected', 'pending'),
+        allowNull: false,
         defaultValue: 'pending',
       },
       reviewed_by: {

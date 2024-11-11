@@ -46,7 +46,7 @@ class MeasureService {
   async updateMeasure(id, title, descriptionValue, currentUser, transaction) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_MEASURES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to edit measures');
+      throw forbidden('You don`t have permission to edit this measure');
     const foundMeasure = await Measure.findByPk(id);
     if (!foundMeasure) throw notFound('Measure not found');
     const currentTitle = foundMeasure.title;
@@ -77,7 +77,7 @@ class MeasureService {
   async deleteMeasure(measureId, currentUser, transaction) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_MEASURES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete measures');
+      throw forbidden('You don`t have permission to delete this measure');
     const foundMeasure = await Measure.findByPk(measureId);
     if (!foundMeasure) throw notFound('Measure not found');
     const deletedMeasure = await Measure.destroy({

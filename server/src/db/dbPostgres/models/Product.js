@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       categoryId: DataTypes.INTEGER,
       status: {
         type: DataTypes.ENUM('approved', 'rejected', 'pending'),
+        allowNull: false,
         defaultValue: 'pending',
       },
       reviewedBy: {
