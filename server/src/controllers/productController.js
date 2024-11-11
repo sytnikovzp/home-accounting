@@ -66,7 +66,7 @@ class ProductController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Update product error: ', error.message);
+      console.log('Moderate product error: ', error.message);
       next(error);
     }
   }

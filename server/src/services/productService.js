@@ -102,15 +102,15 @@ class ProductService {
     const duplicateProduct = await Product.findOne({ where: { title } });
     if (duplicateProduct) throw badRequest('This product already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
+    let categoryRecord = null;
+    if (category !== undefined) {
+      categoryRecord = await getRecordByTitle(Category, category);
+    }
     const currentUserId = currentUser.id.toString();
     const status = canManageProducts ? 'approved' : 'pending';
     const reviewedBy = canManageProducts ? currentUserId : null;
     const reviewedAt = canManageProducts ? new Date() : null;
     const createdBy = currentUserId;
-    let categoryRecord = null;
-    if (category !== undefined) {
-      categoryRecord = await getRecordByTitle(Category, category);
-    }
     const newProduct = await Product.create(
       {
         title,
@@ -168,16 +168,16 @@ class ProductService {
       const description = descriptionValue === '' ? null : descriptionValue;
       updateData.description = description;
     }
-    const currentUserId = currentUser.id.toString();
-    updateData.status = canManageProducts ? 'approved' : 'pending';
-    updateData.reviewedBy = canManageProducts ? currentUserId : null;
-    updateData.reviewedAt = canManageProducts ? new Date() : null;
     let categoryRecord = null;
     if (category !== undefined) {
       categoryRecord = await getRecordByTitle(Category, category);
       if (category && !categoryRecord) throw notFound('Category not found');
       updateData.categoryId = categoryRecord?.id || null;
     }
+    const currentUserId = currentUser.id.toString();
+    updateData.status = canManageProducts ? 'approved' : 'pending';
+    updateData.reviewedBy = canManageProducts ? currentUserId : null;
+    updateData.reviewedAt = canManageProducts ? new Date() : null;
     const [affectedRows, [updatedProduct]] = await Product.update(updateData, {
       where: { id },
       returning: true,

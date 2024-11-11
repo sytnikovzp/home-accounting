@@ -1,7 +1,9 @@
 const { sequelize } = require('../db/dbPostgres/models');
+const { getCurrentUser } = require('../services/userService');
 const {
   getAllShops,
   getShopById,
+  updateShopStatus,
   createShop,
   updateShop,
   deleteShop,
@@ -13,8 +15,13 @@ class ShopController {
   async getAllShops(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { allShops, total } = await getAllShops(limit, offset);
-      res.status(200).set('X-Total-Count', total).json(allShops);
+      const { status = 'approved' } = req.query;
+      const { allShops, total } = await getAllShops(limit, offset, status);
+      if (allShops.length > 0) {
+        res.status(200).set('X-Total-Count', total).json(allShops);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.error('Get all shops error: ', error.message);
       next(error);
@@ -25,9 +32,39 @@ class ShopController {
     try {
       const { shopId } = req.params;
       const shop = await getShopById(shopId);
-      res.status(200).json(shop);
+      if (shop) {
+        res.status(200).json(shop);
+      } else {
+        res.status(401);
+      }
     } catch (error) {
       console.error('Get shop by id error: ', error.message);
+      next(error);
+    }
+  }
+
+  async reviewShop(req, res, next) {
+    const transaction = await sequelize.transaction();
+    try {
+      const { shopId } = req.params;
+      const { status } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedShop = await updateShopStatus(
+        shopId,
+        status,
+        currentUser,
+        transaction
+      );
+      if (updatedShop) {
+        await transaction.commit();
+        res.status(200).json(updatedShop);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
+    } catch (error) {
+      await transaction.rollback();
+      console.log('Moderate shop error: ', error.message);
       next(error);
     }
   }
@@ -36,9 +73,21 @@ class ShopController {
     const transaction = await sequelize.transaction();
     try {
       const { title, description, url } = req.body;
-      const newShop = await createShop(title, description, url, transaction);
-      await transaction.commit();
-      res.status(201).json(newShop);
+      const currentUser = await getCurrentUser(req.user.email);
+      const newShop = await createShop(
+        title,
+        description,
+        url,
+        currentUser,
+        transaction
+      );
+      if (newShop) {
+        await transaction.commit();
+        res.status(201).json(newShop);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.error('Create shop error: ', error.message);
@@ -51,15 +100,22 @@ class ShopController {
     try {
       const { shopId } = req.params;
       const { title, description, url } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
       const updatedShop = await updateShop(
         shopId,
         title,
         description,
         url,
+        currentUser,
         transaction
       );
-      await transaction.commit();
-      res.status(200).json(updatedShop);
+      if (updatedShop) {
+        await transaction.commit();
+        res.status(200).json(updatedShop);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.error('Update shop error: ', error.message);
@@ -74,16 +130,23 @@ class ShopController {
         params: { shopId },
         file: { filename },
       } = req;
+      const currentUser = await getCurrentUser(req.user.email);
       const updatedLogoShop = await updateShopLogo(
         shopId,
         filename,
+        currentUser,
         transaction
       );
-      await transaction.commit();
-      res.status(200).json(updatedLogoShop);
+      if (updatedLogoShop) {
+        await transaction.commit();
+        res.status(200).json(updatedLogoShop);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
-      console.error('Update shop logo error: ', error.message);
+      console.error('Update logo shop error: ', error.message);
       next(error);
     }
   }
@@ -92,12 +155,22 @@ class ShopController {
     const transaction = await sequelize.transaction();
     try {
       const { shopId } = req.params;
-      const updatedShop = await removeShopLogo(shopId, transaction);
-      await transaction.commit();
-      res.status(200).json(updatedShop);
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedShop = await removeShopLogo(
+        shopId,
+        currentUser,
+        transaction
+      );
+      if (updatedShop) {
+        await transaction.commit();
+        res.status(200).json(updatedShop);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
-      console.error('Remove shop logo error: ', error.message);
+      console.error('Remove logo shop error: ', error.message);
       next(error);
     }
   }
@@ -106,9 +179,15 @@ class ShopController {
     const transaction = await sequelize.transaction();
     try {
       const { shopId } = req.params;
-      await deleteShop(shopId, transaction);
-      await transaction.commit();
-      res.sendStatus(res.statusCode);
+      const currentUser = await getCurrentUser(req.user.email);
+      const deletedShop = await deleteShop(shopId, currentUser, transaction);
+      if (deletedShop) {
+        await transaction.commit();
+        res.sendStatus(res.statusCode);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
     } catch (error) {
       await transaction.rollback();
       console.error('Delete shop error: ', error.message);

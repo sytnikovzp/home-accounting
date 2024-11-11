@@ -3,6 +3,7 @@ const { Router } = require('express');
 const {
   getAllShops,
   getShopById,
+  reviewShop,
   createShop,
   updateShop,
   updateShopLogo,
@@ -10,7 +11,8 @@ const {
   deleteShop,
 } = require('../controllers/shopController');
 const {
-  validation: { validateShop },
+  auth: { authHandler },
+  validation: { validateShop, validateModeration },
   pagination: { paginateElements },
   upload: { uploadShopLogos },
 } = require('../middlewares');
@@ -19,19 +21,25 @@ const shopRouter = new Router();
 
 shopRouter
   .route('/')
-  .get(paginateElements, getAllShops)
-  .post(validateShop, createShop);
+  .get(authHandler, paginateElements, getAllShops)
+  .post(authHandler, validateShop, createShop);
 
 shopRouter
   .route('/:shopId')
-  .get(getShopById)
-  .patch(validateShop, updateShop)
-  .delete(deleteShop);
+  .get(authHandler, getShopById)
+  .patch(authHandler, validateShop, updateShop)
+  .delete(authHandler, deleteShop);
 
 shopRouter
   .route('/:shopId/logo')
-  .patch(uploadShopLogos.single('shopLogo'), updateShopLogo);
+  .patch(authHandler, uploadShopLogos.single('shopLogo'), updateShopLogo);
 
-shopRouter.route('/:shopId/remlogo').patch(removeShopLogo);
+shopRouter
+  .route('/:shopId/remlogo')
+  .patch(authHandler, removeShopLogo);
+
+shopRouter
+  .route('/:shopId/moderate')
+  .patch(authHandler, validateModeration, reviewShop);
 
 module.exports = shopRouter;

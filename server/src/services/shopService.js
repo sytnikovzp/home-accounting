@@ -1,11 +1,12 @@
 const { Shop } = require('../db/dbPostgres/models');
-const { notFound, badRequest } = require('../errors/customErrors');
-const { formatDate } = require('../utils/sharedFunctions');
+const { formatDate, checkPermission } = require('../utils/sharedFunctions');
+const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class ShopService {
-  async getAllShops(limit, offset) {
+  async getAllShops(limit, offset, status) {
     const foundShops = await Shop.findAll({
       attributes: ['id', 'title', 'url', 'logo'],
+      where: { status },
       raw: true,
       limit,
       offset,
@@ -34,37 +35,106 @@ class ShopService {
       description: shopData.description || '',
       url: shopData.url || '',
       logo: shopData.logo || '',
+      status: shopData.status,
+      reviewedBy: shopData.reviewedBy || '',
+      reviewedAt: shopData.reviewedAt ? formatDate(shopData.reviewedAt) : '',
+      createdBy: shopData.createdBy || '',
       createdAt: formatDate(shopData.createdAt),
       updatedAt: formatDate(shopData.updatedAt),
     };
   }
 
-  async createShop(title, descriptionValue, urlValue, transaction) {
+  async updateShopStatus(id, status, currentUser, transaction) {
+    const hasPermission = await checkPermission(currentUser, 'MODERATE_SHOPS');
+    if (!hasPermission) {
+      throw forbidden('You don`t have permission to moderate shops');
+    }
+    const foundShop = await Shop.findByPk(id);
+    if (!foundShop) throw notFound('Shop not found');
+    if (!['approved', 'rejected'].includes(status)) {
+      throw notFound('Status not found');
+    }
+    const currentUserId = currentUser.id.toString();
+    const updateData = { status };
+    updateData.reviewedBy = currentUserId;
+    updateData.reviewedAt = new Date();
+    const [affectedRows, [moderatedShop]] = await Shop.update(updateData, {
+      where: { id },
+      returning: true,
+      transaction,
+    });
+    if (affectedRows === 0) throw badRequest('Shop is not moderated');
+    return {
+      id: moderatedShop.id,
+      title: moderatedShop.title,
+      status: moderatedShop.status,
+      reviewedBy: moderatedShop.reviewedBy,
+      reviewedAt: formatDate(moderatedShop.reviewedAt),
+      createdBy: moderatedShop.createdBy || '',
+    };
+  }
+
+  async createShop(
+    title,
+    descriptionValue,
+    urlValue,
+    currentUser,
+    transaction
+  ) {
+    const canAddShops = await checkPermission(currentUser, 'ADD_SHOPS');
+    const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
+    if (!canAddShops && !canManageShops) {
+      throw forbidden('You don`t have permission to create shops');
+    }
     const duplicateShop = await Shop.findOne({ where: { title } });
     if (duplicateShop) throw badRequest('This shop already exists');
     const description = descriptionValue === '' ? null : descriptionValue;
     const url = urlValue === '' ? null : urlValue;
-    const newProductData = {
-      title,
-      description,
-      url,
-    };
-    const newShop = await Shop.create(newProductData, {
-      transaction,
-      returning: true,
-    });
+    const currentUserId = currentUser.id.toString();
+    const status = canManageShops ? 'approved' : 'pending';
+    const reviewedBy = canManageShops ? currentUserId : null;
+    const reviewedAt = canManageShops ? new Date() : null;
+    const createdBy = currentUserId;
+    const newShop = await Shop.create(
+      {
+        title,
+        description,
+        url,
+        status,
+        reviewedBy,
+        reviewedAt,
+        createdBy,
+      },
+      { transaction, returning: true }
+    );
     if (!newShop) throw badRequest('Shop is not created');
     return {
       id: newShop.id,
       title: newShop.title,
       description: newShop.description || '',
       url: newShop.url || '',
+      status: newShop.status,
+      reviewedBy: newShop.reviewedBy || '',
+      reviewedAt: newShop.reviewedAt ? formatDate(newShop.reviewedAt) : '',
+      createdBy: newShop.createdBy || '',
     };
   }
 
-  async updateShop(id, title, descriptionValue, urlValue, transaction) {
+  async updateShop(
+    id,
+    title,
+    descriptionValue,
+    urlValue,
+    currentUser,
+    transaction
+  ) {
     const foundShop = await Shop.findByPk(id);
     if (!foundShop) throw notFound('Shop not found');
+    const isShopOwner = currentUser.id.toString() === foundShop.createdBy;
+    const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
+    if (!isShopOwner && !canManageShops) {
+      throw forbidden('You don`t have permission to edit this shop');
+    }
     const currentTitle = foundShop.title;
     if (title !== currentTitle) {
       const duplicateShop = await Shop.findOne({ where: { title } });
@@ -81,6 +151,10 @@ class ShopService {
       const url = urlValue === '' ? null : urlValue;
       updateData.url = url;
     }
+    const currentUserId = currentUser.id.toString();
+    updateData.status = canManageShops ? 'approved' : 'pending';
+    updateData.reviewedBy = canManageShops ? currentUserId : null;
+    updateData.reviewedAt = canManageShops ? new Date() : null;
     const [affectedRows, [updatedShop]] = await Shop.update(updateData, {
       where: { id },
       returning: true,
@@ -92,51 +166,86 @@ class ShopService {
       title: updatedShop.title,
       description: updatedShop.description || '',
       url: updatedShop.url || '',
+      status: updatedShop.status,
+      reviewedBy: updatedShop.reviewedBy || '',
+      reviewedAt: updatedShop.reviewedAt
+        ? formatDate(updatedShop.reviewedAt)
+        : '',
+      createdBy: updatedShop.createdBy || '',
     };
   }
 
-  async updateShopLogo(id, filename, transaction) {
+  async updateShopLogo(id, filename, currentUser, transaction) {
     if (!filename) throw badRequest('No file uploaded');
     const foundShop = await Shop.findByPk(id);
     if (!foundShop) throw notFound('Shop not found');
-    const [affectedRows, [updatedShopLogo]] = await Shop.update(
-      { logo: filename },
-      {
-        where: { id },
-        returning: true,
-        raw: true,
-        fields: ['logo'],
-        transaction,
-      }
-    );
+    const isShopOwner = currentUser.id.toString() === foundShop.createdBy;
+    const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
+    if (!isShopOwner && !canManageShops) {
+      throw forbidden('You don`t have permission to edit this shop');
+    }
+    const updateData = { logo: filename };
+    const currentUserId = currentUser.id.toString();
+    updateData.status = canManageShops ? 'approved' : 'pending';
+    updateData.reviewedBy = canManageShops ? currentUserId : null;
+    updateData.reviewedAt = canManageShops ? new Date() : null;
+    const [affectedRows, [updatedShopLogo]] = await Shop.update(updateData, {
+      where: { id },
+      returning: true,
+      raw: true,
+      fields: ['logo', 'status', 'reviewedBy', 'reviewedAt'],
+      transaction,
+    });
     if (affectedRows === 0) throw badRequest('Shop logo is not updated');
     return {
       id: updatedShopLogo.id,
       logo: updatedShopLogo.logo || '',
+      status: updatedShopLogo.status,
+      reviewedBy: updatedShopLogo.reviewedBy || '',
+      reviewedAt: updatedShopLogo.reviewedAt
+        ? formatDate(updatedShopLogo.reviewedAt)
+        : '',
+      createdBy: updatedShopLogo.createdBy || '',
     };
   }
 
-  async removeShopLogo(id, transaction) {
+  async removeShopLogo(id, currentUser, transaction) {
     const foundShop = await Shop.findByPk(id);
     if (!foundShop) throw notFound('Shop not found');
-    const [affectedRows, [removedShopLogo]] = await Shop.update(
-      { logo: null },
-      {
-        where: { id },
-        returning: true,
-        raw: true,
-        fields: ['logo'],
-        transaction,
-      }
-    );
+    const isShopOwner = currentUser.id.toString() === foundShop.createdBy;
+    const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
+    if (!isShopOwner && !canManageShops) {
+      throw forbidden('You don`t have permission to edit this shop');
+    }
+    const updateData = { logo: null };
+    const currentUserId = currentUser.id.toString();
+    updateData.status = canManageShops ? 'approved' : 'pending';
+    updateData.reviewedBy = canManageShops ? currentUserId : null;
+    updateData.reviewedAt = canManageShops ? new Date() : null;
+    const [affectedRows, [removedShopLogo]] = await Shop.update(updateData, {
+      where: { id },
+      returning: true,
+      raw: true,
+      fields: ['logo', 'status', 'reviewedBy', 'reviewedAt'],
+      transaction,
+    });
     if (affectedRows === 0) throw badRequest('Shop logo is not removed');
     return {
       id: removedShopLogo.id,
       logo: removedShopLogo.logo || '',
+      status: removedShopLogo.status,
+      reviewedBy: removedShopLogo.reviewedBy || '',
+      reviewedAt: removedShopLogo.reviewedAt
+        ? formatDate(removedShopLogo.reviewedAt)
+        : '',
+      createdBy: removedShopLogo.createdBy || '',
     };
   }
 
-  async deleteShop(shopId, transaction) {
+  async deleteShop(shopId, currentUser, transaction) {
+    const hasPermission = await checkPermission(currentUser, 'MANAGE_SHOPS');
+    if (!hasPermission)
+      throw forbidden('You don`t have permission to delete this shop');
     const foundShop = await Shop.findByPk(shopId);
     if (!foundShop) throw notFound('Shop not found');
     const deletedShop = await Shop.destroy({

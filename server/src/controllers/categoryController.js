@@ -61,7 +61,7 @@ class CategoryController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Update category error: ', error.message);
+      console.log('Moderate category error: ', error.message);
       next(error);
     }
   }
