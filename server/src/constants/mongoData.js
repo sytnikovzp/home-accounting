@@ -57,9 +57,9 @@ module.exports.permissions = [
     description: 'Full CRUD operations on measure entities without moderation',
   },
   {
-    title: 'MANAGE_PURCHASES',
+    title: 'ADD_PURCHASES',
     description:
-      'Full CRUD for your own purchase records based on existing entities without moderation',
+      'Add new purchase records based on existing entities without moderation',
   },
   {
     title: 'ADD_SHOPS',
@@ -119,7 +119,7 @@ module.exports.roles = async (permissionIds) => [
     title: 'User',
     description: 'Uses an app to track purchases',
     permissions: [
-      permissionIds['MANAGE_PURCHASES'],
+      permissionIds['ADD_PURCHASES'],
       permissionIds['ADD_SHOPS'],
       permissionIds['ADD_PRODUCTS'],
       permissionIds['ADD_CATEGORIES'],

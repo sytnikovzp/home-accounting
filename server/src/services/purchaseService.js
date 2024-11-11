@@ -67,6 +67,7 @@ class PurchaseService {
       shop: purchaseData.Shop.title,
       measure: purchaseData.Measure.title,
       currency: purchaseData.Currency.title,
+      createdBy: purchaseData.createdBy || '',
       createdAt: formatDate(purchaseData.createdAt),
       updatedAt: formatDate(purchaseData.updatedAt),
     };
@@ -82,10 +83,7 @@ class PurchaseService {
     currentUser,
     transaction
   ) {
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MANAGE_PURCHASES'
-    );
+    const hasPermission = await checkPermission(currentUser, 'ADD_PURCHASES');
     if (!hasPermission)
       throw forbidden('You don`t have permission to create purchases');
     const foundProduct = await getRecordByTitle(Product, product);
@@ -99,6 +97,7 @@ class PurchaseService {
     const amount = parseFloat(amountValue) || 0;
     const price = parseFloat(priceValue) || 0;
     const summ = parseFloat(amountValue) * parseFloat(priceValue) || 0;
+    const createdBy = currentUser.id.toString();
     const newPurchaseData = {
       productId: foundProduct.id,
       amount,
@@ -107,6 +106,7 @@ class PurchaseService {
       shopId: foundShop.id,
       measureId: foundMeasure.id,
       currencyId: foundCurrency.id,
+      createdBy,
     };
     const newPurchase = await Purchase.create(newPurchaseData, {
       transaction,
@@ -122,6 +122,7 @@ class PurchaseService {
       shop: foundShop.title,
       measure: foundMeasure.title,
       currency: foundCurrency.title,
+      createdBy: newPurchase.createdBy || '',
     };
   }
 
@@ -136,14 +137,12 @@ class PurchaseService {
     currentUser,
     transaction
   ) {
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MANAGE_PURCHASES'
-    );
-    if (!hasPermission)
-      throw forbidden('You don`t have permission to edit this purchase');
     const foundPurchase = await Purchase.findByPk(id);
     if (!foundPurchase) throw notFound('Purchase not found');
+    const isPurchaseOwner =
+      currentUser.id.toString() === foundPurchase.createdBy;
+    if (!isPurchaseOwner)
+      throw forbidden('You don`t have permission to edit this purchase');
     const foundProduct = await getRecordByTitle(Product, product);
     if (!foundProduct) throw notFound('Product not found');
     const foundShop = await getRecordByTitle(Shop, shop);
@@ -188,18 +187,17 @@ class PurchaseService {
       shop: foundShop.title,
       measure: foundMeasure.title,
       currency: foundCurrency.title,
+      createdBy: updatedPurchase.createdBy || '',
     };
   }
 
   async deletePurchase(purchaseId, currentUser, transaction) {
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MANAGE_PURCHASES'
-    );
-    if (!hasPermission)
-      throw forbidden('You don`t have permission to delete this purchase');
     const foundPurchase = await Purchase.findByPk(purchaseId);
     if (!foundPurchase) throw notFound('Purchase not found');
+    const isPurchaseOwner =
+      currentUser.id.toString() === foundPurchase.createdBy;
+    if (!isPurchaseOwner)
+      throw forbidden('You don`t have permission to delete this purchase');
     const deletedPurchase = await Purchase.destroy({
       where: { id: purchaseId },
       transaction,
