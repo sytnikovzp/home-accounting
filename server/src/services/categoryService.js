@@ -27,6 +27,8 @@ class CategoryService {
         ? formatDate(categoryData.reviewedAt)
         : '',
       createdBy: categoryData.createdBy || '',
+      createdAt: formatDate(categoryData.createdAt),
+      updatedAt: formatDate(categoryData.updatedAt),
     };
   }
 
@@ -43,7 +45,10 @@ class CategoryService {
     if (!['approved', 'rejected'].includes(status)) {
       throw notFound('Status not found');
     }
+    const currentUserId = currentUser.id.toString();
     const updateData = { status };
+    updateData.reviewedBy = currentUserId;
+    updateData.reviewedAt = new Date();
     const [affectedRows, [moderatedCategory]] = await Category.update(
       updateData,
       { where: { id }, returning: true, transaction }
@@ -53,6 +58,9 @@ class CategoryService {
       id: moderatedCategory.id,
       title: moderatedCategory.title,
       status: moderatedCategory.status,
+      reviewedBy: moderatedCategory.reviewedBy,
+      reviewedAt: formatDate(moderatedCategory.reviewedAt),
+      createdBy: moderatedCategory.createdBy || '',
     };
   }
 

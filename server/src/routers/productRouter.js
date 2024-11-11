@@ -3,12 +3,14 @@ const { Router } = require('express');
 const {
   getAllProducts,
   getProductById,
+  reviewProduct,
   createProduct,
   updateProduct,
   deleteProduct,
 } = require('../controllers/productController');
 const {
-  validation: { validateProduct },
+  auth: { authHandler },
+  validation: { validateProduct, validateModeration },
   pagination: { paginateElements },
 } = require('../middlewares');
 
@@ -16,13 +18,17 @@ const productRouter = new Router();
 
 productRouter
   .route('/')
-  .get(paginateElements, getAllProducts)
-  .post(validateProduct, createProduct);
+  .get(authHandler, paginateElements, getAllProducts)
+  .post(authHandler, validateProduct, createProduct);
 
 productRouter
   .route('/:productId')
-  .get(getProductById)
-  .patch(validateProduct, updateProduct)
-  .delete(deleteProduct);
+  .get(authHandler, getProductById)
+  .patch(authHandler, validateProduct, updateProduct)
+  .delete(authHandler, deleteProduct);
+
+productRouter
+  .route('/:productId/moderate')
+  .patch(authHandler, validateModeration, reviewProduct);
 
 module.exports = productRouter;
