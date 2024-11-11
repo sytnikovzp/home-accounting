@@ -7,8 +7,8 @@ const {
   Category,
   sequelize,
 } = require('../db/dbPostgres/models');
-const { notFound } = require('../errors/customErrors');
 const { getTime, getRecordByTitle } = require('../utils/sharedFunctions');
+const { notFound } = require('../errors/customErrors');
 
 class StatisticService {
   async getCostByCategoryPerPeriod(category, ago) {

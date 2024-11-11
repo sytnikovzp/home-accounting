@@ -12,12 +12,8 @@ module.exports.permissions = [
     description: 'Full CRUD for user roles',
   },
   {
-    title: 'CHANGE_ROLES',
+    title: 'ASSIGN_ROLES',
     description: 'Change roles for users',
-  },
-  {
-    title: 'CHANGE_PERMISSIONS',
-    description: 'Change permissions for roles',
   },
   {
     title: 'FULL_PROFILE_VIEWER',
@@ -31,10 +27,6 @@ module.exports.permissions = [
   {
     title: 'MANAGE_USER_PROFILES',
     description: 'Edit or delete information about other users',
-  },
-  {
-    title: 'PUBLISH_CONTENT',
-    description: 'Approve or reject content publication',
   },
   {
     title: 'MANAGE_CATEGORIES',
@@ -93,8 +85,7 @@ module.exports.roles = async (permissionIds) => [
     description: 'Manages all aspects of the application',
     permissions: [
       permissionIds['MANAGE_ROLES'],
-      permissionIds['CHANGE_ROLES'],
-      permissionIds['CHANGE_PERMISSIONS'],
+      permissionIds['ASSIGN_ROLES'],
       permissionIds['MANAGE_USER_PROFILES'],
       permissionIds['FULL_PROFILE_VIEWER'],
     ],
@@ -103,15 +94,14 @@ module.exports.roles = async (permissionIds) => [
     title: 'Moderator',
     description: 'Monitoring and tracking publications and content',
     permissions: [
-      permissionIds['PUBLISH_CONTENT'],
       permissionIds['MANAGE_CATEGORIES'],
       permissionIds['MANAGE_PRODUCTS'],
       permissionIds['MANAGE_SHOPS'],
       permissionIds['MANAGE_CURRENCIES'],
       permissionIds['MANAGE_MEASURES'],
-      permissionIds['MODERATE_SHOPS'],
-      permissionIds['MODERATE_PRODUCTS'],
       permissionIds['MODERATE_CATEGORIES'],
+      permissionIds['MODERATE_PRODUCTS'],
+      permissionIds['MODERATE_SHOPS'],
       permissionIds['LIMITED_PROFILE_VIEWER'],
     ],
   },

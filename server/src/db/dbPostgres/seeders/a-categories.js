@@ -1,9 +1,8 @@
-const {
-  postgresData: { categories },
-} = require('../../../constants');
+const { postgresData } = require('../../../constants');
 
 module.exports = {
   async up(queryInterface) {
+    const { categories } = await postgresData();
     await queryInterface.bulkInsert('categories', categories, {});
   },
   async down(queryInterface) {

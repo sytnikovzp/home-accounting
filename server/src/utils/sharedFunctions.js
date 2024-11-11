@@ -6,7 +6,7 @@ const {
     HASH: { SALT_ROUNDS },
   },
 } = require('../constants');
-const { Role } = require('../db/dbMongo/models');
+const { User, Role } = require('../db/dbMongo/models');
 const { notFound } = require('../errors/customErrors');
 
 const hashPassword = async function (password) {
@@ -60,6 +60,11 @@ const getRecordByTitle = async function (Model, title) {
   return record;
 };
 
+const getUserIdByEmail = async function (email) {
+  const user = await User.findOne({ email });
+  return user ? user._id.toString() : null;
+};
+
 module.exports = {
   hashPassword,
   setRefreshTokenCookie,
@@ -68,4 +73,5 @@ module.exports = {
   emailToLowerCase,
   checkPermission,
   getRecordByTitle,
+  getUserIdByEmail,
 };

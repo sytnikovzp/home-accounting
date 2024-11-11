@@ -95,7 +95,7 @@ class UserService {
     if (role && role !== foundRole.title) {
       const hasPermissionToChangeRole = await checkPermission(
         currentUser,
-        'CHANGE_ROLES'
+        'ASSIGN_ROLES'
       );
       if (!hasPermissionToChangeRole)
         throw forbidden('You don`t have permission to change this user role');
