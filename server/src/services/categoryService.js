@@ -20,7 +20,6 @@ class CategoryService {
     return {
       id: categoryData.id,
       title: categoryData.title,
-      description: categoryData.description || '',
       status: categoryData.status,
       reviewedBy: categoryData.reviewedBy || '',
       reviewedAt: categoryData.reviewedAt
@@ -64,7 +63,7 @@ class CategoryService {
     };
   }
 
-  async createCategory(title, descriptionValue, currentUser, transaction) {
+  async createCategory(title, currentUser, transaction) {
     const canAddCategories = await checkPermission(
       currentUser,
       'ADD_CATEGORIES'
@@ -78,7 +77,6 @@ class CategoryService {
     }
     const duplicateCategory = await Category.findOne({ where: { title } });
     if (duplicateCategory) throw badRequest('This category already exists');
-    const description = descriptionValue === '' ? null : descriptionValue;
     const currentUserId = currentUser.id.toString();
     const status = canManageCategories ? 'approved' : 'pending';
     const reviewedBy = canManageCategories ? currentUserId : null;
@@ -87,7 +85,6 @@ class CategoryService {
     const newCategory = await Category.create(
       {
         title,
-        description,
         status,
         reviewedBy,
         reviewedAt,
@@ -99,7 +96,6 @@ class CategoryService {
     return {
       id: newCategory.id,
       title: newCategory.title,
-      description: newCategory.description || '',
       status: newCategory.status,
       reviewedBy: newCategory.reviewedBy || '',
       reviewedAt: newCategory.reviewedAt
@@ -109,7 +105,7 @@ class CategoryService {
     };
   }
 
-  async updateCategory(id, title, descriptionValue, currentUser, transaction) {
+  async updateCategory(id, title, currentUser, transaction) {
     const foundCategory = await Category.findByPk(id);
     if (!foundCategory) throw notFound('Category not found');
     const isCategoryOwner =
@@ -129,10 +125,6 @@ class CategoryService {
       title = currentTitle;
     }
     const updateData = { title };
-    if (descriptionValue !== undefined) {
-      const description = descriptionValue === '' ? null : descriptionValue;
-      updateData.description = description;
-    }
     const currentUserId = currentUser.id.toString();
     updateData.status = canManageCategories ? 'approved' : 'pending';
     updateData.reviewedBy = canManageCategories ? currentUserId : null;
@@ -145,7 +137,6 @@ class CategoryService {
     return {
       id: updatedCategory.id,
       title: updatedCategory.title,
-      description: updatedCategory.description || '',
       status: updatedCategory.status,
       reviewedBy: updatedCategory.reviewedBy || '',
       reviewedAt: updatedCategory.reviewedAt

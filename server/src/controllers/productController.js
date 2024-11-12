@@ -74,11 +74,10 @@ class ProductController {
   async createProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title, description, category } = req.body;
+      const { title, category } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const newProduct = await createProduct(
         title,
-        description,
         category,
         currentUser,
         transaction
@@ -101,12 +100,11 @@ class ProductController {
     const transaction = await sequelize.transaction();
     try {
       const { productId } = req.params;
-      const { title, description, category } = req.body;
+      const { title, category } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedProduct = await updateProduct(
         productId,
         title,
-        description,
         category,
         currentUser,
         transaction

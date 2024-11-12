@@ -13,9 +13,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      description: {
-        type: Sequelize.TEXT,
-      },
       status: {
         type: Sequelize.ENUM('approved', 'rejected', 'pending'),
         allowNull: false,

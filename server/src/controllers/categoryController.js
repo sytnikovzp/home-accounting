@@ -69,14 +69,9 @@ class CategoryController {
   async createCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title, description } = req.body;
+      const { title } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
-      const newCategory = await createCategory(
-        title,
-        description,
-        currentUser,
-        transaction
-      );
+      const newCategory = await createCategory(title, currentUser, transaction);
       if (newCategory) {
         await transaction.commit();
         res.status(201).json(newCategory);
@@ -95,12 +90,11 @@ class CategoryController {
     const transaction = await sequelize.transaction();
     try {
       const { categoryId } = req.params;
-      const { title, description } = req.body;
+      const { title } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedCategory = await updateCategory(
         categoryId,
         title,
-        description,
         currentUser,
         transaction
       );

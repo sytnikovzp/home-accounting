@@ -39,7 +39,6 @@ class ProductService {
     return {
       id: productData.id,
       title: productData.title,
-      description: productData.description || '',
       category: productData.Category?.title || '',
       status: productData.status,
       reviewedBy: productData.reviewedBy || '',
@@ -84,13 +83,7 @@ class ProductService {
     };
   }
 
-  async createProduct(
-    title,
-    descriptionValue,
-    category,
-    currentUser,
-    transaction
-  ) {
+  async createProduct(title, category, currentUser, transaction) {
     const canAddProducts = await checkPermission(currentUser, 'ADD_PRODUCTS');
     const canManageProducts = await checkPermission(
       currentUser,
@@ -101,7 +94,6 @@ class ProductService {
     }
     const duplicateProduct = await Product.findOne({ where: { title } });
     if (duplicateProduct) throw badRequest('This product already exists');
-    const description = descriptionValue === '' ? null : descriptionValue;
     let categoryRecord = null;
     if (category !== undefined) {
       categoryRecord = await getRecordByTitle(Category, category);
@@ -114,7 +106,6 @@ class ProductService {
     const newProduct = await Product.create(
       {
         title,
-        description,
         categoryId: categoryRecord?.id || null,
         status,
         reviewedBy,
@@ -127,7 +118,6 @@ class ProductService {
     return {
       id: newProduct.id,
       title: newProduct.title,
-      description: newProduct.description || '',
       category: categoryRecord?.title || '',
       status: newProduct.status,
       reviewedBy: newProduct.reviewedBy || '',
@@ -138,14 +128,7 @@ class ProductService {
     };
   }
 
-  async updateProduct(
-    id,
-    title,
-    descriptionValue,
-    category,
-    currentUser,
-    transaction
-  ) {
+  async updateProduct(id, title, category, currentUser, transaction) {
     const foundProduct = await Product.findByPk(id);
     if (!foundProduct) throw notFound('Product not found');
     const isProductOwner = currentUser.id.toString() === foundProduct.createdBy;
@@ -164,10 +147,6 @@ class ProductService {
       title = currentTitle;
     }
     const updateData = { title };
-    if (descriptionValue !== undefined) {
-      const description = descriptionValue === '' ? null : descriptionValue;
-      updateData.description = description;
-    }
     let categoryRecord = null;
     if (category !== undefined) {
       categoryRecord = await getRecordByTitle(Category, category);
@@ -187,7 +166,6 @@ class ProductService {
     return {
       id: updatedProduct.id,
       title: updatedProduct.title,
-      description: updatedProduct.description || '',
       category: categoryRecord?.title || '',
       status: updatedProduct.status,
       reviewedBy: updatedProduct.reviewedBy || '',
