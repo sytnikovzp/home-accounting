@@ -90,7 +90,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('GET /api/users/:authData.user.id', () => {
+  describe('GET /api/users/:userId', () => {
     it('should get user by id', async () => {
       const response = await request(app)
         .get(`/api/users/${authData.user.id}`)
@@ -144,7 +144,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/:authData.user.id as User', () => {
+  describe('PATCH /api/users/:userId', () => {
     it('should update myself user data without change role', async () => {
       const response = await request(app)
         .patch(`/api/users/${authData.user.id}`)
@@ -161,7 +161,7 @@ describe('UserController', () => {
       authData.user.accessToken = response.body.accessToken;
     });
 
-    it('should update other user data without change role', async () => {
+    it('should update other user data with change role', async () => {
       const response = await request(app)
         .patch(`/api/users/${authData.moderator.id}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
@@ -229,7 +229,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/:authData.user.id/photo', () => {
+  describe('PATCH /api/users/:userId/photo', () => {
     it('should update user photo', async () => {
       const response = await request(app)
         .patch(`/api/users/${authData.user.id}/photo`)
@@ -242,7 +242,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/:authData.user.id/delphoto', () => {
+  describe('PATCH /api/users/:userId/delphoto', () => {
     it('should remove user photo', async () => {
       const updatedUser = {
         photo: null,
@@ -258,7 +258,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('DELETE /api/users/:authData.user.id', () => {
+  describe('DELETE /api/users/:userId', () => {
     it('should return 403 for current user not having permission to delete user', async () => {
       const response = await request(app)
         .delete(`/api/users/${authData.user.id}`)
