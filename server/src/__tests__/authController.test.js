@@ -21,8 +21,6 @@ describe('AuthController', () => {
       expect(response.body.user.fullName).toBe('John Doe');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
-      userId = response.body.user.id;
-      accessToken = response.body.accessToken;
       refreshToken = response.body.refreshToken;
     });
 
@@ -48,8 +46,6 @@ describe('AuthController', () => {
       expect(response.body.user.fullName).toBe('John Doe');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
-      userId = response.body.user.id;
-      accessToken = response.body.accessToken;
       refreshToken = response.body.refreshToken;
     });
 

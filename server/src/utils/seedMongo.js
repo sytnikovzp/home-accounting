@@ -46,8 +46,8 @@ const createUsers = async (roleIds) => {
 
 const seedDatabase = async () => {
   try {
-    await Role.deleteMany({});
     await User.deleteMany({});
+    await Role.deleteMany({});
     await Permission.deleteMany({});
     const permissionIds = await createPermissions();
     const roleIds = await createRoles(permissionIds);
