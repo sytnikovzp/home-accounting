@@ -156,7 +156,7 @@ describe('ProductController', () => {
       productId = response.body.id;
     });
 
-    it('should return 404 if you specify permissions that don`t exist', async () => {
+    it('should return 404 if you specify category that don`t exist', async () => {
       const response = await request(app)
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
