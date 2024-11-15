@@ -101,9 +101,7 @@ describe('UserController', () => {
       expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
       expect(response.body.email).toBe('jane.smith@gmail.com');
-      expect(response.body).toHaveProperty('createdAt');
       expect(response.body.createdAt).toBeDefined();
-      expect(response.body).toHaveProperty('updatedAt');
       expect(response.body.updatedAt).toBeDefined();
     });
 
@@ -132,9 +130,7 @@ describe('UserController', () => {
       expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
       expect(response.body.email).toBe('jane.smith@gmail.com');
-      expect(response.body).toHaveProperty('createdAt');
       expect(response.body.createdAt).toBeDefined();
-      expect(response.body).toHaveProperty('updatedAt');
       expect(response.body.updatedAt).toBeDefined();
     });
 

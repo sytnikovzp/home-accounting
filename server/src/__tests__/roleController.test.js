@@ -10,10 +10,11 @@ const authData = {
   user: { id: null, accessToken: null },
   moderator: { id: null, accessToken: null },
   admin: { id: null, accessToken: null },
-  role: { id: null },
 };
 
 describe('RoleController', () => {
+  let roleId;
+
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
@@ -56,7 +57,7 @@ describe('RoleController', () => {
   });
 
   describe('GET /api/roles/permissions', () => {
-    it('should get all permissions (default pagination)', async () => {
+    it('should return list of permissions (default pagination)', async () => {
       const response = await request(app)
         .get('/api/roles/permissions')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
@@ -80,7 +81,7 @@ describe('RoleController', () => {
   });
 
   describe('GET /api/roles', () => {
-    it('should get all roles', async () => {
+    it('should return list of roles', async () => {
       const response = await request(app)
         .get('/api/roles')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
@@ -125,7 +126,7 @@ describe('RoleController', () => {
           }),
         ])
       );
-      authData.role.id = response.body.id;
+      roleId = response.body.id;
     });
 
     it('should return 404 if you specify permissions that don`t exist', async () => {
@@ -172,7 +173,7 @@ describe('RoleController', () => {
   describe('GET /api/roles/:roleId', () => {
     it('should get role by id', async () => {
       const response = await request(app)
-        .get(`/api/roles/${authData.role.id}`)
+        .get(`/api/roles/${roleId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id');
@@ -206,7 +207,7 @@ describe('RoleController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/roles/${authData.role.id}`);
+      const response = await request(app).get(`/api/roles/${roleId}`);
       expect(response.status).toBe(401);
     });
   });
@@ -214,7 +215,7 @@ describe('RoleController', () => {
   describe('PATCH /api/roles/:roleId', () => {
     it('should return 200 for current user having permission to edit user roles', async () => {
       const response = await request(app)
-        .patch(`/api/roles/${authData.role.id}`)
+        .patch(`/api/roles/${roleId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           title: 'Updated Role Title',
@@ -230,7 +231,7 @@ describe('RoleController', () => {
 
     it('should return 403 for current user not having permission to edit user roles', async () => {
       const response = await request(app)
-        .patch(`/api/roles/${authData.role.id}`)
+        .patch(`/api/roles/${roleId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Updated Role Title',
@@ -258,7 +259,7 @@ describe('RoleController', () => {
   describe('DELETE /api/roles/:roleId', () => {
     it('should return 403 for current user not having permission to delete user roles', async () => {
       const response = await request(app)
-        .delete(`/api/roles/${authData.role.id}`)
+        .delete(`/api/roles/${roleId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -268,7 +269,7 @@ describe('RoleController', () => {
 
     it('should return 200 for current user having permission to delete user roles', async () => {
       const response = await request(app)
-        .delete(`/api/roles/${authData.role.id}`)
+        .delete(`/api/roles/${roleId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(200);
     });
