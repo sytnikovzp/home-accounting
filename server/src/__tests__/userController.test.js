@@ -172,6 +172,17 @@ describe('UserController', () => {
       );
     });
 
+    it('should return 400 if an element with that email already exists', async () => {
+      const response = await request(app)
+        .patch(`/api/users/${authData.user.id}`)
+        .set('Authorization', `Bearer ${authData.user.accessToken}`)
+        .send({
+          email: 'alex.johnson@gmail.com',
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.errors[0].title).toBe('This email is already used');
+    });
+
     it('should return 403 for current user not having permission to change user roles', async () => {
       const response = await request(app)
         .patch(`/api/users/${authData.user.id}`)

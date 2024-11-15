@@ -87,6 +87,19 @@ describe('CurrencyController', () => {
       currencyId = response.body.id;
     });
 
+    it('should return 400 if an element with that title already exists', async () => {
+      const response = await request(app)
+        .post('/api/currencies')
+        .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
+        .send({
+          title: 'New currency',
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.errors[0].title).toBe(
+        'This currency already exists'
+      );
+    });
+
     it('should return 403 for current user not having permission to create currencies', async () => {
       const response = await request(app)
         .post('/api/currencies')
@@ -154,6 +167,19 @@ describe('CurrencyController', () => {
       expect(response.body.title).toBe('Updated Currency Title');
       expect(response.body.description).toBe(
         'Updated description of the currency'
+      );
+    });
+
+    it('should return 400 if an element with that title already exists', async () => {
+      const response = await request(app)
+        .patch(`/api/currencies/${currencyId}`)
+        .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
+        .send({
+          title: 'USD',
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.errors[0].title).toBe(
+        'This currency already exists'
       );
     });
 

@@ -144,6 +144,17 @@ describe('RoleController', () => {
       );
     });
 
+    it('should return 400 if an element with that title already exists', async () => {
+      const response = await request(app)
+        .post('/api/roles')
+        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .send({
+          title: 'New role',
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.errors[0].title).toBe('This role already exists');
+    });
+
     it('should return 403 for current user not having permission to create user roles', async () => {
       const response = await request(app)
         .post('/api/roles')
@@ -227,6 +238,17 @@ describe('RoleController', () => {
       expect(response.body.title).toBe('Updated Role Title');
       expect(response.body.description).toBe('Updated description of the role');
       expect(response.body.permissions).toHaveLength(0);
+    });
+
+    it('should return 400 if an element with that title already exists', async () => {
+      const response = await request(app)
+        .patch(`/api/roles/${roleId}`)
+        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .send({
+          title: 'Administrator',
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.errors[0].title).toBe('This role already exists');
     });
 
     it('should return 403 for current user not having permission to edit user roles', async () => {

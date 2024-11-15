@@ -87,6 +87,17 @@ describe('MeasureController', () => {
       measureId = response.body.id;
     });
 
+    it('should return 400 if an element with that title already exists', async () => {
+      const response = await request(app)
+        .post('/api/measures')
+        .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
+        .send({
+          title: 'New measure',
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.errors[0].title).toBe('This measure already exists');
+    });
+
     it('should return 403 for current user not having permission to create measures', async () => {
       const response = await request(app)
         .post('/api/measures')
@@ -155,6 +166,17 @@ describe('MeasureController', () => {
       expect(response.body.description).toBe(
         'Updated description of the measure'
       );
+    });
+
+    it('should return 400 if an element with that title already exists', async () => {
+      const response = await request(app)
+        .patch(`/api/measures/${measureId}`)
+        .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
+        .send({
+          title: 'kg',
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.errors[0].title).toBe('This measure already exists');
     });
 
     it('should return 403 for current user not having permission to edit measures', async () => {

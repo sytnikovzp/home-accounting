@@ -254,9 +254,9 @@ async function postgresData() {
       {
         title: 'T-shirt',
         category_id: 1,
-        status: 'approved',
-        reviewed_by: moderatorId,
-        reviewed_at: new Date(),
+        status: 'pending',
+        reviewed_by: null,
+        reviewed_at: null,
         created_by: userId,
         created_at: new Date(),
         updated_at: new Date(),
@@ -314,7 +314,7 @@ async function postgresData() {
       {
         title: 'Beer',
         category_id: 4,
-        status: 'approved',
+        status: 'rejected',
         reviewed_by: moderatorId,
         reviewed_at: new Date(),
         created_by: userId,
@@ -324,9 +324,9 @@ async function postgresData() {
       {
         title: 'Juice',
         category_id: 4,
-        status: 'approved',
-        reviewed_by: moderatorId,
-        reviewed_at: new Date(),
+        status: 'pending',
+        reviewed_by: null,
+        reviewed_at: null,
         created_by: userId,
         created_at: new Date(),
         updated_at: new Date(),
@@ -444,7 +444,7 @@ async function postgresData() {
       {
         title: 'Pellet',
         category_id: 14,
-        status: 'approved',
+        status: 'rejected',
         reviewed_by: moderatorId,
         reviewed_at: new Date(),
         created_by: userId,
@@ -454,7 +454,7 @@ async function postgresData() {
       {
         title: 'Internet',
         category_id: 15,
-        status: 'approved',
+        status: 'rejected',
         reviewed_by: moderatorId,
         reviewed_at: new Date(),
         created_by: userId,
