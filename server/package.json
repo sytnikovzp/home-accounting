@@ -41,7 +41,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.14.0",
+    "@eslint/js": "^9.15.0",
     "eslint": "^9.14.0",
     "eslint-plugin-promise": "^7.1.0",
     "eslint-plugin-security": "^3.0.1",
