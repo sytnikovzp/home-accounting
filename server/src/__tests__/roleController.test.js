@@ -187,7 +187,7 @@ describe('RoleController', () => {
         .get(`/api/roles/${roleId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', roleId);
       expect(response.body.title).toBe('New role');
       expect(response.body.description).toBe('');
       expect(response.body.permissions).toHaveLength(3);
@@ -234,7 +234,7 @@ describe('RoleController', () => {
           permissions: [],
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', roleId);
       expect(response.body.title).toBe('Updated Role Title');
       expect(response.body.description).toBe('Updated description of the role');
       expect(response.body.permissions).toHaveLength(0);

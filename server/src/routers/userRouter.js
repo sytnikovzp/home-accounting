@@ -37,7 +37,7 @@ userRouter
   .patch(authHandler, uploadUserPhotos.single('userPhoto'), updateUserPhoto);
 
 userRouter
-  .route('/:userId/delphoto')
+  .route('/:userId/delete-photo')
   .patch(authHandler, removeUserPhoto);
 
 module.exports = userRouter;

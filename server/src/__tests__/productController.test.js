@@ -199,7 +199,7 @@ describe('ProductController', () => {
         .get(`/api/products/${productId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', productId);
       expect(response.body.title).toBe('New product by user');
       expect(response.body.category).toBe('Electronics');
       expect(response.body.status).toBe('pending');
@@ -264,7 +264,7 @@ describe('ProductController', () => {
           category: 'Computing',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', productId);
       expect(response.body.title).toBe('Updated Product Title');
       expect(response.body.category).toBe('Computing');
       expect(response.body.status).toBe('pending');
@@ -282,7 +282,7 @@ describe('ProductController', () => {
           category: 'Computing',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', productId);
       expect(response.body.title).toBe('Updated Product Title');
       expect(response.body.category).toBe('Computing');
       expect(response.body.status).toBe('approved');

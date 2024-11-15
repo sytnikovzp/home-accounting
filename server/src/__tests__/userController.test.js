@@ -96,7 +96,7 @@ describe('UserController', () => {
         .get(`/api/users/${authData.user.id}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', authData.user.id);
       expect(response.body.fullName).toBe('Jane Smith');
       expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
@@ -125,7 +125,7 @@ describe('UserController', () => {
         .get('/api/users/profile')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', authData.user.id);
       expect(response.body.fullName).toBe('Jane Smith');
       expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
@@ -249,17 +249,17 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/:userId/delphoto', () => {
+  describe('PATCH /api/users/:userId/delete-photo', () => {
     it('should remove user photo', async () => {
       const updatedUser = {
         photo: null,
       };
       const response = await request(app)
-        .patch(`/api/users/${authData.user.id}/delphoto`)
+        .patch(`/api/users/${authData.user.id}/delete-photo`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send(updatedUser);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', authData.user.id);
       expect(response.body).toHaveProperty('photo');
       expect(response.body.photo).toBe('');
     });

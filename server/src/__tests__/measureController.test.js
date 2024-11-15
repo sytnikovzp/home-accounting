@@ -130,7 +130,7 @@ describe('MeasureController', () => {
         .get(`/api/measures/${measureId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', measureId);
       expect(response.body.title).toBe('New measure');
       expect(response.body.description).toBe('');
       expect(response.body.createdAt).toBeDefined();
@@ -161,7 +161,7 @@ describe('MeasureController', () => {
           description: 'Updated description of the measure',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('id', measureId);
       expect(response.body.title).toBe('Updated Measure Title');
       expect(response.body.description).toBe(
         'Updated description of the measure'

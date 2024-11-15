@@ -35,7 +35,7 @@ shopRouter
   .patch(authHandler, uploadShopLogos.single('shopLogo'), updateShopLogo);
 
 shopRouter
-  .route('/:shopId/remlogo')
+  .route('/:shopId/delete-logo')
   .patch(authHandler, removeShopLogo);
 
 shopRouter

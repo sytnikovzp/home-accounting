@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const path = require('path');
 const request = require('supertest');
 const app = require('../app');
 const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
@@ -12,8 +13,8 @@ const authData = {
   admin: { id: null, accessToken: null },
 };
 
-describe('CategoryController', () => {
-  let categoryId;
+describe('ShopController', () => {
+  let shopId;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
@@ -56,27 +57,56 @@ describe('CategoryController', () => {
     });
   });
 
-  describe('GET /api/categories', () => {
-    it('should return list of categories (status approoved)', async () => {
+  describe('GET /api/shops', () => {
+    it('should return list of shops (status approoved, default pagination)', async () => {
       const response = await request(app)
-        .get('/api/categories')
+        .get('/api/shops')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
     });
 
-    it('should return list of categories (status pending)', async () => {
+    it('should return list of shops (status approoved, custom pagination)', async () => {
       const response = await request(app)
-        .get('/api/categories')
+        .get('/api/shops')
+        .query({ _page: 1, _limit: 10 })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('should return list of shops (status pending, default pagination)', async () => {
+      const response = await request(app)
+        .get('/api/shops')
         .query({ status: 'pending' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
     });
 
-    it('should return list of categories (status rejected)', async () => {
+    it('should return list of shops (status pending, custom pagination)', async () => {
       const response = await request(app)
-        .get('/api/categories')
+        .get('/api/shops')
+        .query({ _page: 1, _limit: 10 })
+        .query({ status: 'pending' })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('should return list of shops (status rejected, default pagination)', async () => {
+      const response = await request(app)
+        .get('/api/shops')
+        .query({ status: 'rejected' })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('should return list of shops (status rejected, custom pagination)', async () => {
+      const response = await request(app)
+        .get('/api/shops')
+        .query({ _page: 1, _limit: 10 })
         .query({ status: 'rejected' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
@@ -84,80 +114,89 @@ describe('CategoryController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get('/api/categories');
+      const response = await request(app).get('/api/shops');
       expect(response.status).toBe(401);
     });
   });
 
-  describe('POST /api/categories', () => {
-    it('should return 201 for current user having permission to create categories (as moderator)', async () => {
+  describe('POST /api/shops', () => {
+    it('should return 201 for current user having permission to create shops (as moderator)', async () => {
       const response = await request(app)
-        .post('/api/categories')
+        .post('/api/shops')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New category by moderator',
+          title: 'New shop by moderator',
+          description: 'Test description',
+          url: 'https://www.moderator.com',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New category by moderator');
+      expect(response.body.title).toBe('New shop by moderator');
+      expect(response.body.description).toBe('Test description');
+      expect(response.body.url).toBe('https://www.moderator.com');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
       expect(response.body.createdBy).toBeDefined();
     });
 
-    it('should return 201 for current user having permission to create categories (as user)', async () => {
+    it('should return 201 for current user having permission to create shops (as user)', async () => {
       const response = await request(app)
-        .post('/api/categories')
+        .post('/api/shops')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'New category by user',
+          title: 'New shop by user',
+          description: 'Test description',
+          url: 'https://www.user.com',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New category by user');
+      expect(response.body.title).toBe('New shop by user');
+      expect(response.body.description).toBe('Test description');
+      expect(response.body.url).toBe('https://www.user.com');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
       expect(response.body.createdBy).toBeDefined();
-      categoryId = response.body.id;
+      shopId = response.body.id;
     });
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .post('/api/categories')
+        .post('/api/shops')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New category by moderator',
+          title: 'New shop by moderator',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'This category already exists'
-      );
+      expect(response.body.errors[0].title).toBe('This shop already exists');
     });
 
-    it('should return 403 for current user not having permission to create categories', async () => {
+    it('should return 403 for current user not having permission to create shops', async () => {
       const response = await request(app)
-        .post('/api/categories')
+        .post('/api/shops')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'New category',
+          title: 'New shop',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to create categories'
+        'You don`t have permission to create shops'
       );
     });
   });
 
-  describe('GET /api/categories/:categoryId', () => {
-    it('should get category by id', async () => {
+  describe('GET /api/shops/:shopId', () => {
+    it('should get shop by id', async () => {
       const response = await request(app)
-        .get(`/api/categories/${categoryId}`)
+        .get(`/api/shops/${shopId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', categoryId);
-      expect(response.body.title).toBe('New category by user');
+      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body.title).toBe('New shop by user');
+      expect(response.body.description).toBe('Test description');
+      expect(response.body.url).toBe('https://www.user.com');
+      expect(response.body).toHaveProperty('logo');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
@@ -166,43 +205,43 @@ describe('CategoryController', () => {
       expect(response.body.updatedAt).toBeDefined();
     });
 
-    it('should return 404 for non-existing category', async () => {
+    it('should return 404 for non-existing shop', async () => {
       const response = await request(app)
-        .get('/api/categories/999')
+        .get('/api/shops/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Category not found');
+      expect(response.body.errors[0].title).toBe('Shop not found');
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/categories/${categoryId}`);
+      const response = await request(app).get(`/api/shops/${shopId}`);
       expect(response.status).toBe(401);
     });
   });
 
-  describe('PATCH /api/categories/:categoryId/moderate', () => {
-    it('should return 403 for current user not having permission to moderate categories', async () => {
+  describe('PATCH /api/shops/:shopId/moderate', () => {
+    it('should return 403 for current user not having permission to moderate shops', async () => {
       const response = await request(app)
-        .patch(`/api/categories/${categoryId}/moderate`)
+        .patch(`/api/shops/${shopId}/moderate`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to moderate categories'
+        'You don`t have permission to moderate shops'
       );
     });
 
-    it('should return 200 for current user having permission to moderate categories', async () => {
+    it('should return 200 for current user having permission to moderate shops', async () => {
       const response = await request(app)
-        .patch(`/api/categories/${categoryId}/moderate`)
+        .patch(`/api/shops/${shopId}/moderate`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',
         });
       expect(response.status).toBe(200);
-      expect(response.body.title).toBe('New category by user');
+      expect(response.body.title).toBe('New shop by user');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
@@ -210,33 +249,41 @@ describe('CategoryController', () => {
     });
   });
 
-  describe('PATCH /api/categories/:categoryId', () => {
-    it('should return 200 for current user having permission to edit categories (as user)', async () => {
+  describe('PATCH /api/shops/:shopId', () => {
+    it('should return 200 for current user having permission to edit shops (as user)', async () => {
       const response = await request(app)
-        .patch(`/api/categories/${categoryId}`)
+        .patch(`/api/shops/${shopId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Updated Category Title',
+          title: 'Updated Shop Title',
+          description: 'Updated description',
+          url: 'https://www.updated.com',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', categoryId);
-      expect(response.body.title).toBe('Updated Category Title');
+      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body.title).toBe('Updated Shop Title');
+      expect(response.body.description).toBe('Updated description');
+      expect(response.body.url).toBe('https://www.updated.com');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
       expect(response.body.createdBy).toBeDefined();
     });
 
-    it('should return 200 for current user having permission to edit categories (as moderator)', async () => {
+    it('should return 200 for current user having permission to edit shops (as moderator)', async () => {
       const response = await request(app)
-        .patch(`/api/categories/${categoryId}`)
+        .patch(`/api/shops/${shopId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Category Title',
+          title: 'Updated Shop Title',
+          description: 'Updated description',
+          url: 'https://www.updated.com',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', categoryId);
-      expect(response.body.title).toBe('Updated Category Title');
+      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body.title).toBe('Updated Shop Title');
+      expect(response.body.description).toBe('Updated description');
+      expect(response.body.url).toBe('https://www.updated.com');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
@@ -245,66 +292,101 @@ describe('CategoryController', () => {
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .patch(`/api/categories/${categoryId}`)
+        .patch(`/api/shops/${shopId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Devices',
+          title: 'Varus',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'This category already exists'
-      );
+      expect(response.body.errors[0].title).toBe('This shop already exists');
     });
 
-    it('should return 403 for current user not having permission to edit categories', async () => {
+    it('should return 403 for current user not having permission to edit shops', async () => {
       const response = await request(app)
-        .patch(`/api/categories/${categoryId}`)
+        .patch(`/api/shops/${shopId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Updated Category Title',
+          title: 'Updated Shop Title',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to edit this category'
+        'You don`t have permission to edit this shop'
       );
     });
 
-    it('should return 404 for non-existing category update', async () => {
+    it('should return 404 for non-existing shop update', async () => {
       const response = await request(app)
-        .patch('/api/categories/999')
+        .patch('/api/shops/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Category Title',
+          title: 'Updated Shop Title',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Category not found');
+      expect(response.body.errors[0].title).toBe('Shop not found');
     });
   });
 
-  describe('DELETE /api/categories/:categoryId', () => {
-    it('should return 403 for current user not having permission to delete categories', async () => {
+  describe('PATCH /api/shops/:shopId/logo', () => {
+    it('should update shop logo', async () => {
       const response = await request(app)
-        .delete(`/api/categories/${categoryId}`)
+        .patch(`/api/shops/${shopId}/logo`)
+        .set('Authorization', `Bearer ${authData.user.accessToken}`)
+        .attach('shopLogo', path.resolve('/Users/nadia/Downloads/atb.png'));
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body).toHaveProperty('logo');
+      expect(response.body.logo).toBeDefined();
+      expect(response.body.status).toBe('pending');
+      expect(response.body.reviewedBy).toBe('');
+      expect(response.body.reviewedAt).toBe('');
+      expect(response.body.createdBy).toBeDefined();
+    });
+  });
+
+  describe('PATCH /api/shops/:shopId/delete-logo', () => {
+    it('should remove shop logo', async () => {
+      const updatedShop = {
+        logo: null,
+      };
+      const response = await request(app)
+        .patch(`/api/shops/${shopId}/delete-logo`)
+        .set('Authorization', `Bearer ${authData.user.accessToken}`)
+        .send(updatedShop);
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body).toHaveProperty('logo');
+      expect(response.body.logo).toBe('');
+      expect(response.body.status).toBe('pending');
+      expect(response.body.reviewedBy).toBe('');
+      expect(response.body.reviewedAt).toBe('');
+      expect(response.body.createdBy).toBeDefined();
+    });
+  });
+
+  describe('DELETE /api/shops/:shopId', () => {
+    it('should return 403 for current user not having permission to delete shops', async () => {
+      const response = await request(app)
+        .delete(`/api/shops/${shopId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to delete this category'
+        'You don`t have permission to delete this shop'
       );
     });
 
-    it('should return 200 for current user having permission to delete categories', async () => {
+    it('should return 200 for current user having permission to delete shops', async () => {
       const response = await request(app)
-        .delete(`/api/categories/${categoryId}`)
+        .delete(`/api/shops/${shopId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(200);
     });
 
-    it('should return 404 for non-existing category deletion', async () => {
+    it('should return 404 for non-existing shop deletion', async () => {
       const response = await request(app)
-        .delete('/api/categories/999')
+        .delete('/api/shops/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Category not found');
+      expect(response.body.errors[0].title).toBe('Shop not found');
     });
   });
 });
