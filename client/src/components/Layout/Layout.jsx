@@ -5,19 +5,13 @@ import Box from '@mui/material/Box';
 import { Outlet } from 'react-router-dom';
 // ==============================================================
 import Header from '../Header/Header';
-import DrawerMenu from '../Navigation/DrawerMenu';
+import NavBar from '../Navigation/NavBar';
 import ServiceBlock from '../ServiceBlock/ServiceBlock';
 import Footer from '../Footer/Footer';
 
 function Layout() {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-      }}
-    >
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Grid2
         container
         direction='column'
@@ -34,13 +28,13 @@ function Layout() {
         <Grid2 container sx={{ flex: 1 }}>
           <Container maxWidth='xl'>
             <Grid2 container columnSpacing={2} alignItems='flex-start'>
-              <Grid2 sx={{ width: '250px', flexShrink: 0 }}>
-                <DrawerMenu />
+              <Grid2 sx={{ width: '190px', flexShrink: 0 }}>
+                <NavBar />
               </Grid2>
               <Grid2 sx={{ flexGrow: 1 }}>
                 <Outlet />
               </Grid2>
-              <Grid2 sx={{ width: '250px', flexShrink: 0 }}>
+              <Grid2 sx={{ width: '300px', flexShrink: 0 }}>
                 <ServiceBlock />
               </Grid2>
             </Grid2>
