@@ -1,7 +1,4 @@
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import { Box, Container, Link, Typography } from '@mui/material';
 import { GitHub, LinkedIn } from '@mui/icons-material';
 
 const Footer = () => {

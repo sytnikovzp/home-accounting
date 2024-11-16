@@ -73,4 +73,15 @@ export const logout = async () => {
   }
 };
 
+export const getNBURates = async () => {
+  try {
+    const response = await axios.get(
+      'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json'
+    );
+    return response.data;
+  } catch (error) {
+    return handleError(error, 'Error fetching currency exchange');
+  }
+};
+
 export default api;

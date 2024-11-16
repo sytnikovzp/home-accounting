@@ -1,10 +1,13 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
+import {
+  AppBar,
+  Box,
+  Container,
+  Toolbar,
+  Avatar,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+// ==============================================================
 import accountingIcon from '../../assets/accounting.png';
 
 function Header() {

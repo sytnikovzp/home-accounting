@@ -1,6 +1,4 @@
-import Container from '@mui/material/Container';
-import Grid2 from '@mui/material/Grid2';
-import Box from '@mui/material/Box';
+import { Box, Grid2, Container } from '@mui/material';
 // ==============================================================
 import { Outlet } from 'react-router-dom';
 // ==============================================================

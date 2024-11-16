@@ -1,41 +1,46 @@
 import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import UserIcon from '@mui/icons-material/People';
-import CategoryIcon from '@mui/icons-material/Category';
-import ProductIcon from '@mui/icons-material/Storefront';
-import ShopIcon from '@mui/icons-material/Store';
-import PurchaseIcon from '@mui/icons-material/ShoppingCart';
-import RoleIcon from '@mui/icons-material/ManageAccounts';
+// ==============================================================
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
+import * as Icons from '@mui/icons-material';
 // ==============================================================
 import { navItemTextStyle } from '../../services/styleService';
 
 const navItems = [
-  { to: '/', icon: <HomeIcon />, label: 'Головна' },
-  { to: '/purchases', icon: <PurchaseIcon />, label: 'Покупки' },
-  { to: '/shops', icon: <ShopIcon />, label: 'Магазини' },
-  { to: '/products', icon: <ProductIcon />, label: 'Продукти' },
-  { to: '/categories', icon: <CategoryIcon />, label: 'Категорії' },
-  { to: '/users', icon: <UserIcon />, label: 'Користувачі' },
-  { to: '/roles', icon: <RoleIcon />, label: 'Ролі' },
+  { to: '/', icon: 'Home', label: 'Головна' },
+  { to: '/purchases', icon: 'ShoppingCart', label: 'Покупки' },
+  { to: '/shops', icon: 'Store', label: 'Магазини' },
+  { to: '/products', icon: 'Storefront', label: 'Продукти' },
+  { to: '/categories', icon: 'Category', label: 'Категорії' },
+  { to: '/currencies', icon: 'AttachMoney', label: 'Валюти' },
+  { to: '/measures', icon: 'SquareFoot', label: 'Одиниці' },
+  { to: '/moderation', icon: 'Gavel', label: 'Модерація' },
+  { to: '/users', icon: 'People', label: 'Користувачі' },
+  { to: '/roles', icon: 'ManageAccounts', label: 'Ролі' },
 ];
 
 function NavBar() {
   const renderNavItems = (items) => (
     <List>
-      {items.map(({ to, icon, label }) => (
-        <ListItem disablePadding key={label} component={Link} to={to}>
-          <ListItemButton>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText sx={navItemTextStyle} primary={label} />
-          </ListItemButton>
-        </ListItem>
-      ))}
+      {items.map(({ to, icon, label }) => {
+        const IconComponent = Icons[icon];
+        return (
+          <ListItem disablePadding key={label} component={Link} to={to}>
+            <ListItemButton>
+              <ListItemIcon>
+                <IconComponent />
+              </ListItemIcon>
+              <ListItemText sx={navItemTextStyle} primary={label} />
+            </ListItemButton>
+          </ListItem>
+        );
+      })}
     </List>
   );
 
@@ -44,7 +49,7 @@ function NavBar() {
       sx={{
         position: 'sticky',
         top: 0,
-        height: '70vh',
+        minHeight: '70vh',
         backgroundColor: 'transparent',
         display: 'flex',
         flexDirection: 'column',

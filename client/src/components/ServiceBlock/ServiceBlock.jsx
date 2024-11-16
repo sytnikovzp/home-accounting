@@ -1,4 +1,6 @@
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
+// ==============================================================
+import CurrencyExchange from '../CurrencyExchange/CurrencyExchange';
 import Calendar from '../Calendar/Calendar';
 
 function ServiceBlock() {
@@ -7,7 +9,7 @@ function ServiceBlock() {
       sx={{
         position: 'sticky',
         top: 0,
-        height: '70vh',
+        minHeight: '70vh',
         backgroundColor: 'transparent',
         display: 'flex',
         flexDirection: 'column',
@@ -16,6 +18,7 @@ function ServiceBlock() {
         borderLeft: '1px solid rgba(0, 0, 0, 0.1)',
       }}
     >
+      <CurrencyExchange />
       <Calendar />
     </Box>
   );
