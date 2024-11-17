@@ -25,13 +25,25 @@ const navItems = [
   { to: '/roles', icon: 'ManageAccounts', label: 'Ролі' },
 ];
 
-function NavBar() {
+function NavBar({ onClose }) {
+  const handleItemClick = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   const renderNavItems = (items) => (
     <List>
       {items.map(({ to, icon, label }) => {
         const IconComponent = Icons[icon];
         return (
-          <ListItem disablePadding key={label} component={Link} to={to}>
+          <ListItem
+            disablePadding
+            key={label}
+            component={Link}
+            to={to}
+            onClick={handleItemClick}
+          >
             <ListItemButton>
               <ListItemIcon>
                 <IconComponent />

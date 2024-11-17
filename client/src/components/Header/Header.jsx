@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+// ==============================================================
 import {
   AppBar,
   Box,
@@ -8,9 +11,20 @@ import {
   Typography,
 } from '@mui/material';
 // ==============================================================
+import NavBar from '../Navigation/NavBar';
 import accountingIcon from '../../assets/accounting.png';
 
 function Header() {
+  const [navBarOpen, setNavBarOpen] = useState(false);
+
+  const handleToggleNavBar = () => {
+    setNavBarOpen(!navBarOpen);
+  };
+
+  const handleCloseNavBar = () => {
+    setNavBarOpen(false);
+  };
+
   return (
     <AppBar
       position='sticky'
@@ -24,7 +38,16 @@ function Header() {
           disableGutters
           sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5 }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            component={Link}
+            to='/'
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              alignItems: 'center',
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+          >
             <img
               src={accountingIcon}
               alt='Home Accounting'
@@ -38,11 +61,8 @@ function Header() {
             <Typography
               variant='h6'
               noWrap
-              component='a'
-              href='/'
               sx={{
                 mr: 2,
-                display: { xs: 'none', md: 'flex' },
                 fontFamily: 'Roboto, sans-serif',
                 fontWeight: 600,
                 letterSpacing: '.3rem',
@@ -53,16 +73,39 @@ function Header() {
               Home Accounting
             </Typography>
           </Box>
+
           <Box
             sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}
           >
+            <img
+              src={accountingIcon}
+              alt='Home Accounting'
+              style={{
+                width: '36px',
+                height: '36px',
+                marginRight: '16px',
+                display: 'flex',
+              }}
+              onClick={handleToggleNavBar}
+            />
             <Typography
               variant='h6'
-              sx={{ color: 'white', display: { xs: 'flex', md: 'none' } }}
+              noWrap
+              onClick={handleToggleNavBar}
+              sx={{
+                fontFamily: 'Roboto, sans-serif',
+                fontWeight: 600,
+                letterSpacing: '.3rem',
+                color: 'white',
+                textAlign: 'center', 
+                alignSelf: 'center', 
+                display: { xs: 'flex', md: 'none' },
+              }}
             >
               Home Accounting
             </Typography>
           </Box>
+
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Tooltip title='Open settings'>
               <Avatar
@@ -79,6 +122,7 @@ function Header() {
           </Box>
         </Toolbar>
       </Container>
+      {navBarOpen && <NavBar onClose={handleCloseNavBar} />}
     </AppBar>
   );
 }
