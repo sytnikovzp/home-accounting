@@ -33,15 +33,20 @@ const App = () => {
       }}
     >
       <Routes>
-        <Route path='/' element={<Layout />}>
+        <Route
+          path='/'
+          element={
+            <Layout
+              isAuthenticated={isAuthenticated}
+              setIsAuthenticated={setIsAuthenticated}
+            />
+          }
+        >
           <Route
             index
             element={
               <PrivateRoute isAuthenticated={isAuthenticated}>
-                <HomePage
-                  setIsAuthenticated={setIsAuthenticated}
-                  isAuthenticated={isAuthenticated}
-                />
+                <HomePage />
               </PrivateRoute>
             }
           />
