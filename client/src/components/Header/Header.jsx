@@ -14,13 +14,12 @@ import {
   Menu,
   IconButton,
   MenuItem,
-  Divider,
   ListItemIcon,
   Button,
   Modal,
   Fade,
 } from '@mui/material';
-import { Logout, PersonAdd, Settings } from '@mui/icons-material';
+import { Logout, Settings } from '@mui/icons-material';
 // ==============================================================
 import NavBar from '../Navigation/NavBar';
 import AuthForm from '../AuthForm/AuthForm';
@@ -36,7 +35,7 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
   };
 
   const handleClose = () => {
-    setOpenUserAccount(null);
+    setOpenUserAccount(false);
   };
 
   const handleLogout = async () => {
@@ -57,7 +56,7 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
   };
 
   const handleOpenAuthModal = () => {
-    setOpenAuthModal(true);
+    setOpenAuthModal(!openAuthModal);
   };
 
   const handleCloseAuthModal = () => {
@@ -156,8 +155,8 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
                     aria-expanded={openUserAccount ? 'true' : undefined}
                   >
                     <Avatar
-                      alt='Олександр Ситніков'
-                      src='https://avatars.githubusercontent.com/u/154733849?v=4'
+                      // alt='Олександр Ситніков'
+                      // src='https://avatars.githubusercontent.com/u/154733849?v=4'
                       sx={{
                         cursor: 'pointer',
                         border: '2px solid rgba(56, 142, 60, 0.3)',
@@ -170,10 +169,9 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
                 <Menu
                   anchorEl={openUserAccount}
                   id='account-menu'
-                  open={openUserAccount}
-                  onClose={handleClose}
+                  open={Boolean(openUserAccount)}
                   onClick={handleClose}
-                  componentsProps={{
+                  slotProps={{
                     paper: {
                       elevation: 0,
                       sx: {
@@ -204,19 +202,6 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
                   transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                  <MenuItem onClick={handleClose}>
-                    <Avatar /> Профіль
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Avatar /> Мій аккаунт
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <PersonAdd fontSize='small' />
-                    </ListItemIcon>
-                    Додати інший аккаунт
-                  </MenuItem>
                   <MenuItem onClick={handleClose}>
                     <ListItemIcon>
                       <Settings fontSize='small' />
@@ -254,7 +239,11 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: 400,
+                        width: {
+                          xs: '90%',
+                          sm: 400,
+                          md: 400,
+                        },
                         bgcolor: 'background.paper',
                         boxShadow: 24,
                         p: 4,

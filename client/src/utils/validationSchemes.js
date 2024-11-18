@@ -57,7 +57,7 @@ const UPDATE_USER_VALIDATION_SCHEME = yup.object().shape({
   role: STRING_NULLABLE_SCHEME,
 });
 
-const AUTH_VALIDATION_SCHEME = yup.object().shape({
+const LOGIN_VALIDATION_SCHEME = yup.object().shape({
   email: EMAIL_VALIDATION_SCHEME.required('E-mail є обовʼязковим полем'),
   password: PASSWORD_SCHEME.required('Пароль є обовʼязковим полем'),
 });
@@ -112,7 +112,7 @@ const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
 export {
   REGISTRATION_VALIDATION_SCHEME,
   UPDATE_USER_VALIDATION_SCHEME,
-  AUTH_VALIDATION_SCHEME,
+  LOGIN_VALIDATION_SCHEME,
   ROLE_VALIDATION_SCHEME,
   MODERATION_VALIDATION_SCHEME,
   PURCHASE_VALIDATION_SCHEME,

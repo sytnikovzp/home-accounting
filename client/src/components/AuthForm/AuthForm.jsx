@@ -1,197 +1,156 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-// ==============================================================
-import api from '../../api';
-import {
-  Avatar,
-  Box,
-  TextField,
-  Typography,
-  Button,
-  Grid2,
-} from '@mui/material';
+import { Formik, Form, Field } from 'formik';
+// =============================================
+import { Box, TextField, Avatar, Button, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+// =============================================
+import api from '../../api';
+import { AUTH_FORM_INITIAL } from '../../constants';
+import {
+  LOGIN_VALIDATION_SCHEME,
+  REGISTRATION_VALIDATION_SCHEME,
+} from '../../utils/validationSchemes';
 
-const AuthForm = ({ setIsAuthenticated }) => {
-  const handleSubmit = () => console.log('login');
-
+function AuthForm({ setIsAuthenticated }) {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const navigate = useNavigate();
+  const validationSchema = isLoginMode
+    ? LOGIN_VALIDATION_SCHEME
+    : REGISTRATION_VALIDATION_SCHEME;
 
-  const loginHandle = async (email, password) => {
+  const onFormSubmit = async (values) => {
+    const { email, password, fullName } = values;
+    const endpoint = isLoginMode ? '/auth/login' : '/auth/registration';
+    const payload = isLoginMode
+      ? { email, password }
+      : { fullName, email, password };
     try {
       setErrorMessage('');
-      const { data } = await api.post('/auth/login', { email, password });
+      const { data } = await api.post(endpoint, payload);
       localStorage.setItem('accessToken', data.accessToken);
       setIsAuthenticated(true);
-      navigate('/');
     } catch (error) {
-      console.log('Авторизація неуспішна: ', error.message);
-      setErrorMessage('Авторизація неуспішна. Перевірте свої облікові данні.');
+      console.error(
+        `${isLoginMode ? 'Авторизація' : 'Реєстрація'} неуспішна: `,
+        error.message
+      );
+      setErrorMessage(
+        isLoginMode
+          ? 'Авторизація неуспішна. Перевірте облікові данні.'
+          : 'Реєстрація неуспішна. Спробуйте знову.'
+      );
     }
   };
 
-  const registrationHandle = async (fullName, email, password) => {
-    try {
-      setErrorMessage('');
-      const { data } = await api.post('/auth/registration', {
-        fullName,
-        email,
-        password,
-      });
-      localStorage.setItem('accessToken', data.accessToken);
-      setIsAuthenticated(true);
-      navigate('/');
-    } catch (error) {
-      console.log('Реєстрація неуспішна: ', error.message);
-      setErrorMessage('Реєстрація неуспішна. Спробуйте знову.');
-    }
+  const renderForm = ({ resetForm, errors, touched }) => {
+    return (
+      <Form id='auth-form'>
+        <Box noValidate sx={{ mt: 3 }}>
+          {!isLoginMode && (
+            <Field
+              name='fullName'
+              as={TextField}
+              label='Повне імʼя'
+              placeholder='Іван Іванов'
+              fullWidth
+              required
+              autoFocus={!isLoginMode}
+              sx={{ mb: 2 }}
+              error={touched.fullName && Boolean(errors.fullName)}
+              helperText={touched.fullName && errors.fullName}
+            />
+          )}
+          <Field
+            name='email'
+            as={TextField}
+            label='E-mail'
+            placeholder='example@gmail.com'
+            fullWidth
+            required
+            autoFocus={isLoginMode}
+            sx={{ mb: 2 }}
+            error={touched.email && Boolean(errors.email)}
+            helperText={touched.email && errors.email}
+          />
+          <Field
+            name='password'
+            as={TextField}
+            label='Пароль'
+            placeholder='Qwerty12'
+            fullWidth
+            required
+            type='password'
+            sx={{ mb: 2 }}
+            error={touched.password && Boolean(errors.password)}
+            helperText={touched.password && errors.password}
+          />
+        </Box>
+        <Button
+          type='submit'
+          variant='contained'
+          color='success'
+          size='large'
+          fullWidth
+          sx={{ mt: 2, mb: 2 }}
+        >
+          {isLoginMode ? 'Увійти' : ' Зареєструватися та увійти'}
+        </Button>
+        {errorMessage && (
+          <Typography color='error' align='center' sx={{ mb: 2 }}>
+            {errorMessage}
+          </Typography>
+        )}
+        <Button
+          type='button'
+          onClick={() => {
+            setErrorMessage('');
+            resetForm();
+            setIsLoginMode(!isLoginMode);
+          }}
+          variant='text'
+          color='secondary'
+          fullWidth
+          sx={{ mt: 2 }}
+        >
+          {isLoginMode ? 'Перейти до реєстрації' : 'Перейти до авторизації'}
+        </Button>
+      </Form>
+    );
   };
 
   return (
     <>
-      {errorMessage && <div className='error'>{errorMessage}</div>}
-
-      {isLoginMode ? (
-        <>
-          <Avatar
-            sx={{
-              mx: 'auto',
-              bgcolor: 'success.light',
-              textAlign: 'center',
-              width: 50,
-              height: 50,
-              mb: 2,
-            }}
-          >
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography
-            component='h1'
-            variant='h5'
-            sx={{ textAlign: 'center', fontWeight: 600 }}
-          >
-            Авторизація
-          </Typography>
-          <Box
-            component='form'
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 3 }}
-          >
-            <TextField
-              placeholder='example@gmail.com'
-              label='E-mail'
-              fullWidth
-              required
-              autoFocus
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              placeholder='Qwerty12'
-              label='Password'
-              fullWidth
-              required
-              type='password'
-              sx={{ mb: 2 }}
-            />
-            <Button
-              type='submit'
-              variant='contained'
-              color='success'
-              size='large'
-              fullWidth
-              sx={{ mt: 2, mb: 2 }}
-              onClick={loginHandle}
-            >
-              Увійти
-            </Button>
-          </Box>
-        </>
-      ) : (
-        <>
-          <Avatar
-            sx={{
-              mx: 'auto',
-              bgcolor: 'success.light',
-              textAlign: 'center',
-              width: 50,
-              height: 50,
-              mb: 2,
-            }}
-          >
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography
-            component='h1'
-            variant='h5'
-            sx={{ textAlign: 'center', fontWeight: 600 }}
-          >
-            Реєстрація
-          </Typography>
-          <Box
-            component='form'
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 3 }}
-          >
-            <TextField
-              placeholder='John Doe'
-              label='Імʼя користувача'
-              fullWidth
-              required
-              autoFocus
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              placeholder='example@gmail.com'
-              label='E-mail'
-              fullWidth
-              required
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              placeholder='Qwerty12'
-              label='Password'
-              fullWidth
-              required
-              type='password'
-              sx={{ mb: 2 }}
-            />
-            <Button
-              type='submit'
-              variant='contained'
-              color='success'
-              size='large'
-              fullWidth
-              sx={{ mt: 2, mb: 2 }}
-              onClick={registrationHandle}
-            >
-              Зареєструватися та увійти
-            </Button>
-          </Box>
-        </>
-      )}
-
-      <Grid2 container justifyContent='center' sx={{ m: 1 }}>
-        <Grid2>
-          <Button
-            onClick={() => {
-              setIsLoginMode(!isLoginMode);
-              setErrorMessage('');
-            }}
-          >
-            Перейти до
-            {isLoginMode
-              ? ' реєстрації користувача'
-              : ' авторизації користувача'}
-          </Button>
-        </Grid2>
-      </Grid2>
+      <Avatar
+        sx={{
+          mx: 'auto',
+          bgcolor: isLoginMode ? 'success.light' : 'success.main',
+          textAlign: 'center',
+          width: 50,
+          height: 50,
+          mb: 2,
+        }}
+      >
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography
+        component='h1'
+        variant='h5'
+        sx={{ textAlign: 'center', fontWeight: 600 }}
+      >
+        {isLoginMode ? 'Авторизація' : 'Реєстрація'}
+      </Typography>
+      <Formik
+        initialValues={AUTH_FORM_INITIAL}
+        onSubmit={onFormSubmit}
+        validationSchema={validationSchema}
+        validateOnMount={true}
+        enableReinitialize
+      >
+        {renderForm}
+      </Formik>
     </>
   );
-};
+}
 
 export default AuthForm;

@@ -1,7 +1,7 @@
 const {
   REGISTRATION_VALIDATION_SCHEME,
   UPDATE_USER_VALIDATION_SCHEME,
-  AUTH_VALIDATION_SCHEME,
+  LOGIN_VALIDATION_SCHEME,
   ROLE_VALIDATION_SCHEME,
   MODERATION_VALIDATION_SCHEME,
   PURCHASE_VALIDATION_SCHEME,
@@ -28,7 +28,7 @@ const validateSchema = (schema) => async (req, res, next) => {
 module.exports = {
   validateRegistration: validateSchema(REGISTRATION_VALIDATION_SCHEME),
   validateUpdateUser: validateSchema(UPDATE_USER_VALIDATION_SCHEME),
-  validateAuth: validateSchema(AUTH_VALIDATION_SCHEME),
+  validateAuth: validateSchema(LOGIN_VALIDATION_SCHEME),
   validateRole: validateSchema(ROLE_VALIDATION_SCHEME),
   validateModeration: validateSchema(MODERATION_VALIDATION_SCHEME),
   validatePurchase: validateSchema(PURCHASE_VALIDATION_SCHEME),

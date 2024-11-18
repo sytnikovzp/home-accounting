@@ -6,18 +6,9 @@ const SERVER_CONFIG = {
 const BASE_URL = `http://${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}/api/`;
 
 const AUTH_FORM_INITIAL = {
-  email: '',
-  password: '',
-};
-
-const REGISTRATION_FORM_INITIAL = {
   fullName: '',
   email: '',
   password: '',
 };
 
-export {
-  BASE_URL,
-  AUTH_FORM_INITIAL,
-  REGISTRATION_FORM_INITIAL,
-};
+export { BASE_URL, AUTH_FORM_INITIAL };
