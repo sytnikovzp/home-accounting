@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 // ==============================================================
 import {
   Box,
@@ -40,7 +40,7 @@ function NavBar({ onClose }) {
           <ListItem
             disablePadding
             key={label}
-            component={Link}
+            component={RouterLink}
             to={to}
             onClick={handleItemClick}
           >

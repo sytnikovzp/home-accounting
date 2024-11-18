@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 // ==============================================================
 import {
   AppBar,
@@ -56,7 +56,7 @@ function Header() {
           sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5 }}
         >
           <Box
-            component={Link}
+            component={RouterLink}
             to='/'
             sx={{
               display: { xs: 'none', md: 'flex' },
