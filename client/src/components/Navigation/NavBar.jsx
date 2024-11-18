@@ -58,19 +58,21 @@ function NavBar({ onClose }) {
 
   return (
     <Box
+      component='nav'
+      aria-label='main menu items'
       sx={{
-        position: 'sticky',
+        position: { md: 'sticky', xs: 'static' },
         top: 0,
-        minHeight: '70vh',
+        minHeight: { md: '70vh', xs: 'auto' },
         backgroundColor: 'transparent',
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        borderRight: '1px solid rgba(0, 0, 0, 0.1)',
+        flexDirection: { md: 'column', xs: 'row' },
+        alignItems: { md: 'center', xs: 'flex-start' },
+        justifyContent: { md: 'flex-start', xs: 'space-between' },
+        borderRight: { md: '1px solid rgba(0, 0, 0, 0.1)', xs: 'none' },
       }}
     >
-      <nav aria-label='main menu items'>{renderNavItems(navItems)}</nav>
+      {renderNavItems(navItems)}
     </Box>
   );
 }

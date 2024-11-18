@@ -48,7 +48,7 @@ const CurrencyExchange = () => {
       <Typography variant='h6' gutterBottom>
         Курси валют НБУ
       </Typography>
-      <TableContainer style={{ maxWidth: '300px', margin: '0 auto' }}>
+      <TableContainer style={{ margin: '0 auto' }}>
         <Table>
           <TableHead>
             <TableRow>

@@ -52,7 +52,7 @@ function Layout() {
               <Grid2 sx={{ flexGrow: 1 }}>
                 <Outlet />
               </Grid2>
-              <Grid2 sx={{ width: '300px', flexShrink: 0 }}>
+              <Grid2 sx={{ flexShrink: 0 }}>
                 <ServiceBlock />
               </Grid2>
             </Grid2>
