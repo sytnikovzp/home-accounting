@@ -4,22 +4,16 @@ import { Box, TextField, Avatar, Button, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // ==============================================================
 import { REGISTRATION_FORM_INITIAL } from '../../constants';
-// ==============================================================
 import { REGISTRATION_VALIDATION_SCHEME } from '../../utils/validationSchemes';
 
-function RegistrationForm({ onRegister }) {
-  const onFormSubmit = ({ fullName, email, password }) => {
-    onRegister(fullName, email, password);
-  };
-
+function RegistrationForm({ onSubmit }) {
   const renderForm = ({ errors, touched, isValid }) => {
     return (
-      <Form id='registration-form'>
+      <Form>
         <Avatar
           sx={{
             mx: 'auto',
             bgcolor: 'success.main',
-            textAlign: 'center',
             width: 50,
             height: 50,
             mb: 2,
@@ -34,7 +28,7 @@ function RegistrationForm({ onRegister }) {
         >
           Реєстрація
         </Typography>
-        <Box noValidate sx={{ mt: 3 }}>
+        <Box sx={{ mt: 3 }}>
           <Field
             name='fullName'
             as={TextField}
@@ -78,7 +72,7 @@ function RegistrationForm({ onRegister }) {
           size='large'
           fullWidth
           disabled={!isValid}
-          sx={{ mt: 2, mb: 2 }}
+          sx={{ mt: 2 }}
         >
           Зареєструватися та увійти
         </Button>
@@ -89,10 +83,9 @@ function RegistrationForm({ onRegister }) {
   return (
     <Formik
       initialValues={REGISTRATION_FORM_INITIAL}
-      onSubmit={onFormSubmit}
       validationSchema={REGISTRATION_VALIDATION_SCHEME}
-      validateOnMount={true}
-      enableReinitialize
+      onSubmit={onSubmit}
+      validateOnMount
     >
       {renderForm}
     </Formik>

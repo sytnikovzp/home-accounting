@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Modal, Fade, Box, Typography, Button } from '@mui/material';
 // ==============================================================
 import api from '../../api';
-// ==============================================================
 import LoginForm from '../../components/LoginForm/LoginForm';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
 
@@ -13,48 +12,23 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
 
   const navigate = useNavigate();
 
-  const loginHandle = async (email, password) => {
+  const handleAuth = async (endpoint, payload) => {
     try {
       setErrorMessage('');
-      const { data } = await api.post('/auth/login', { email, password });
+      const { data } = await api.post(endpoint, payload);
       localStorage.setItem('accessToken', data.accessToken);
       checkAuthentication();
       onClose();
       navigate('/');
     } catch (error) {
-      console.log('Авторизація неуспішна: ', error.message);
-      setErrorMessage('Авторизація неуспішна. Перевірте облікові дані.');
+      console.error('Помилка аутентифікації:', error.message);
+      setErrorMessage('Помилка! Перевірте облікові дані.');
     }
-  };
-
-  const registrationHandle = async (fullName, email, password) => {
-    try {
-      setErrorMessage('');
-      const { data } = await api.post('/auth/registration', {
-        fullName,
-        email,
-        password,
-      });
-      localStorage.setItem('accessToken', data.accessToken);
-      checkAuthentication();
-      onClose();
-      navigate('/');
-    } catch (error) {
-      console.log('Реєстрація неуспішна: ', error.message);
-      setErrorMessage('Реєстрація неуспішна. Спробуйте знову.');
-    }
-  };
-
-  const handleClose = () => {
-    onClose();
-    navigate('/');
   };
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
+    return () => (document.body.style.overflow = 'auto');
   }, [isOpen]);
 
   return (
@@ -63,7 +37,10 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
       closeAfterTransition
       aria-labelledby='auth-modal-title'
       aria-describedby='auth-modal-description'
-      onClose={handleClose}
+      onClose={() => {
+        onClose();
+        navigate('/');
+      }}
     >
       <Fade in={isOpen}>
         <Box
@@ -72,11 +49,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: {
-              xs: '90%',
-              sm: 400,
-              md: 400,
-            },
+            width: { xs: '90%', sm: 400 },
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
@@ -84,20 +57,27 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
           }}
         >
           {isLoginMode ? (
-            <LoginForm onLogin={loginHandle} />
+            <LoginForm
+              onSubmit={({ email, password }) =>
+                handleAuth('/auth/login', { email, password })
+              }
+            />
           ) : (
-            <RegistrationForm onRegister={registrationHandle} />
+            <RegistrationForm
+              onSubmit={({ fullName, email, password }) =>
+                handleAuth('/auth/registration', { fullName, email, password })
+              }
+            />
           )}
           {errorMessage && (
-            <Typography color='error' align='center' sx={{ mb: 2 }}>
+            <Typography color='error' align='center' sx={{ mt: 2 }}>
               {errorMessage}
             </Typography>
           )}
           <Button
-            type='button'
             onClick={() => {
               setErrorMessage('');
-              setIsLoginMode(!isLoginMode);
+              setIsLoginMode((prev) => !prev);
             }}
             variant='text'
             color='secondary'

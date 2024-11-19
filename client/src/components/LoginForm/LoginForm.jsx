@@ -4,22 +4,16 @@ import { Box, TextField, Avatar, Button, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // ==============================================================
 import { LOGIN_FORM_INITIAL } from '../../constants';
-// ==============================================================
 import { LOGIN_VALIDATION_SCHEME } from '../../utils/validationSchemes';
 
-function LoginForm({ onLogin }) {
-  const onFormSubmit = ({ email, password }) => {
-    onLogin(email, password);
-  };
-
+function LoginForm({ onSubmit }) {
   const renderForm = ({ errors, touched, isValid }) => {
     return (
-      <Form id='login-form'>
+      <Form>
         <Avatar
           sx={{
             mx: 'auto',
             bgcolor: 'success.light',
-            textAlign: 'center',
             width: 50,
             height: 50,
             mb: 2,
@@ -32,10 +26,9 @@ function LoginForm({ onLogin }) {
           variant='h5'
           sx={{ textAlign: 'center', fontWeight: 600 }}
         >
-          Авторизація
+          Авторизация
         </Typography>
-
-        <Box noValidate sx={{ mt: 3 }}>
+        <Box sx={{ mt: 3 }}>
           <Field
             name='email'
             as={TextField}
@@ -68,7 +61,7 @@ function LoginForm({ onLogin }) {
           size='large'
           fullWidth
           disabled={!isValid}
-          sx={{ mt: 2, mb: 2 }}
+          sx={{ mt: 2 }}
         >
           Увійти
         </Button>
@@ -79,10 +72,9 @@ function LoginForm({ onLogin }) {
   return (
     <Formik
       initialValues={LOGIN_FORM_INITIAL}
-      onSubmit={onFormSubmit}
       validationSchema={LOGIN_VALIDATION_SCHEME}
-      validateOnMount={true}
-      enableReinitialize
+      onSubmit={onSubmit}
+      validateOnMount
     >
       {renderForm}
     </Formik>
