@@ -8,13 +8,26 @@ import {
 } from 'react-router-dom';
 // ==============================================================
 import Layout from './components/Layout/Layout';
-import HomePage from './pages/HomePage/HomePage';
-import AuthPage from './pages/AuthPage/AuthPage';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import './App.css';
+import AuthPage from './pages/AuthPage/AuthPage';
+import HomePage from './pages/HomePage/HomePage';
+import PurchasesPage from './pages/PurchasesPage/PurchasesPage';
+import ShopsPage from './pages/ShopsPage/ShopsPage';
+import ProductsPage from './pages/ProductsPage/ProductsPage';
+import CategoriesPage from './pages/CategoriesPage/CategoriesPage';
+import CurrenciesPage from './pages/CurrenciesPage/CurrenciesPage';
+import MeasuresPage from './pages/MeasuresPage/MeasuresPage';
+import ModerationPage from './pages/ModerationPage/ModerationPage';
+import UsersPage from './pages/UsersPage/UsersPage';
+import RolesPage from './pages/RolesPage/RolesPage';
 
 const App = () => {
+  const [isAuthModalOpen, setAuthModalOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleCloseAuthModal = () => {
+    setAuthModalOpen(false);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -39,25 +52,117 @@ const App = () => {
             <Layout
               isAuthenticated={isAuthenticated}
               setIsAuthenticated={setIsAuthenticated}
+              setAuthModalOpen={setAuthModalOpen}
             />
           }
         >
+          <Route index element={<HomePage />} />
           <Route
-            index
+            path='purchases/*'
             element={
-              <PrivateRoute isAuthenticated={isAuthenticated}>
-                <HomePage />
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <PurchasesPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='shops/*'
+            element={
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <ShopsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='products/*'
+            element={
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <ProductsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='categories/*'
+            element={
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <CategoriesPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='currencies/*'
+            element={
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <CurrenciesPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='measures/*'
+            element={
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <MeasuresPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='moderation/*'
+            element={
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <ModerationPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='users/*'
+            element={
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <UsersPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='roles/*'
+            element={
+              <PrivateRoute
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
+              >
+                <RolesPage />
               </PrivateRoute>
             }
           />
           <Route
             path='auth/*'
             element={
-              isAuthenticated ? (
-                <Navigate to='/' replace />
-              ) : (
-                <AuthPage setIsAuthenticated={setIsAuthenticated} />
-              )
+              <AuthPage
+                isOpen={isAuthModalOpen}
+                onClose={handleCloseAuthModal}
+              />
             }
           />
           <Route path='*' element={<Navigate to='/' replace />} />

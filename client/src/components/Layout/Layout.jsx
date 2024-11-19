@@ -8,7 +8,7 @@ import NavBar from '../Navigation/NavBar';
 import ServiceBlock from '../ServiceBlock/ServiceBlock';
 import Footer from '../Footer/Footer';
 
-function Layout({ isAuthenticated, setIsAuthenticated }) {
+function Layout({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
 
   const handleToggleNavBar = () => {
@@ -36,6 +36,7 @@ function Layout({ isAuthenticated, setIsAuthenticated }) {
             onToggleNavBar={handleToggleNavBar}
             isAuthenticated={isAuthenticated}
             setIsAuthenticated={setIsAuthenticated}
+            setAuthModalOpen={setAuthModalOpen}
           />
         </Grid2>
         <Grid2 container sx={{ flex: 1 }}>

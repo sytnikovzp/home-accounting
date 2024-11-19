@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
+import { useNavigate } from 'react-router-dom';
 // =============================================
 import { Box, TextField, Avatar, Button, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -11,25 +12,28 @@ import {
   REGISTRATION_VALIDATION_SCHEME,
 } from '../../utils/validationSchemes';
 
-function AuthForm({ setIsAuthenticated }) {
+function AuthForm({ onClose }) {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate();
 
   const validationSchema = isLoginMode
     ? LOGIN_VALIDATION_SCHEME
     : REGISTRATION_VALIDATION_SCHEME;
 
   const onFormSubmit = async (values) => {
+    setErrorMessage('');
     const { email, password, fullName } = values;
     const endpoint = isLoginMode ? '/auth/login' : '/auth/registration';
     const payload = isLoginMode
       ? { email, password }
       : { fullName, email, password };
     try {
-      setErrorMessage('');
       const { data } = await api.post(endpoint, payload);
       localStorage.setItem('accessToken', data.accessToken);
-      setIsAuthenticated(true);
+      onClose();
+      navigate('/');
     } catch (error) {
       console.error(
         `${isLoginMode ? 'Авторизація' : 'Реєстрація'} неуспішна: `,
@@ -37,7 +41,7 @@ function AuthForm({ setIsAuthenticated }) {
       );
       setErrorMessage(
         isLoginMode
-          ? 'Авторизація неуспішна. Перевірте облікові данні.'
+          ? 'Авторизація неуспішна. Перевірте облікові дані.'
           : 'Реєстрація неуспішна. Спробуйте знову.'
       );
     }

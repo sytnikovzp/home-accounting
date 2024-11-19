@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // ==============================================================
 import { logout } from '../../api';
 // ==============================================================
@@ -16,26 +16,35 @@ import {
   MenuItem,
   ListItemIcon,
   Button,
-  Modal,
-  Fade,
 } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
 // ==============================================================
 import NavBar from '../Navigation/NavBar';
-import AuthForm from '../AuthForm/AuthForm';
 import accountingIcon from '../../assets/accounting.png';
 
-function Header({ isAuthenticated, setIsAuthenticated }) {
-  const [openNavBar, setOpenNavBar] = useState(false);
-  const [openUserAccount, setOpenUserAccount] = useState(false);
-  const [openAuthModal, setOpenAuthModal] = useState(false);
+function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
+  const [openState, setOpenState] = useState({
+    navBar: false,
+    userAccount: false,
+  });
+
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
-    setOpenUserAccount(event.currentTarget);
+    setOpenState({ ...openState, userAccount: event.currentTarget });
   };
 
   const handleClose = () => {
-    setOpenUserAccount(false);
+    setOpenState({ ...openState, userAccount: false });
+  };
+
+  const handleLogin = async () => {
+    try {
+      navigate('/auth');
+      setAuthModalOpen(true);
+    } catch (error) {
+      console.log('Login error:', error);
+    }
   };
 
   const handleLogout = async () => {
@@ -48,19 +57,7 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
   };
 
   const handleToggleNavBar = () => {
-    setOpenNavBar(!openNavBar);
-  };
-
-  const handleCloseNavBar = () => {
-    setOpenNavBar(false);
-  };
-
-  const handleOpenAuthModal = () => {
-    setOpenAuthModal(!openAuthModal);
-  };
-
-  const handleCloseAuthModal = () => {
-    setOpenAuthModal(false);
+    setOpenState({ ...openState, navBar: !openState.navBar });
   };
 
   return (
@@ -150,9 +147,11 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
                     onClick={handleClick}
                     size='small'
                     sx={{ ml: 2 }}
-                    aria-controls={openUserAccount ? 'account-menu' : undefined}
+                    aria-controls={
+                      openState.userAccount ? 'account-menu' : undefined
+                    }
                     aria-haspopup='true'
-                    aria-expanded={openUserAccount ? 'true' : undefined}
+                    aria-expanded={openState.userAccount ? 'true' : undefined}
                   >
                     <Avatar
                       // alt='Олександр Ситніков'
@@ -167,9 +166,9 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
                   </IconButton>
                 </Tooltip>
                 <Menu
-                  anchorEl={openUserAccount}
+                  anchorEl={openState.userAccount}
                   id='account-menu'
-                  open={Boolean(openUserAccount)}
+                  open={Boolean(openState.userAccount)}
                   onClick={handleClose}
                   slotProps={{
                     paper: {
@@ -178,29 +177,9 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
                         overflow: 'visible',
                         filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                         mt: 1.5,
-                        '& .MuiAvatar-root': {
-                          width: 32,
-                          height: 32,
-                          ml: -0.5,
-                          mr: 1,
-                        },
-                        '&::before': {
-                          content: '""',
-                          display: 'block',
-                          position: 'absolute',
-                          top: 0,
-                          right: 24,
-                          width: 10,
-                          height: 10,
-                          bgcolor: 'background.paper',
-                          transform: 'translateY(-50%) rotate(45deg)',
-                          zIndex: 0,
-                        },
                       },
                     },
                   }}
-                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
                   <MenuItem onClick={handleClose}>
                     <ListItemIcon>
@@ -217,49 +196,14 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
                 </Menu>
               </>
             ) : (
-              <>
-                <Button
-                  variant='contained'
-                  color='success'
-                  onClick={handleOpenAuthModal}
-                >
-                  Увійти
-                </Button>
-                <Modal
-                  open={openAuthModal}
-                  onClose={handleCloseAuthModal}
-                  closeAfterTransition
-                  aria-labelledby='login-modal-title'
-                  aria-describedby='login-modal-description'
-                >
-                  <Fade in={openAuthModal}>
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: {
-                          xs: '90%',
-                          sm: 400,
-                          md: 400,
-                        },
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: 2,
-                      }}
-                    >
-                      <AuthForm setIsAuthenticated={setIsAuthenticated} />
-                    </Box>
-                  </Fade>
-                </Modal>
-              </>
+              <Button variant='contained' color='success' onClick={handleLogin}>
+                Увійти
+              </Button>
             )}
           </Box>
         </Toolbar>
       </Container>
-      {openNavBar && <NavBar onClose={handleCloseNavBar} />}
+      {openState.navBar && <NavBar onClose={handleToggleNavBar} />}
     </AppBar>
   );
 }
