@@ -1,11 +1,49 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal, Fade, Box } from '@mui/material';
+import { Modal, Fade, Box, Typography, Button } from '@mui/material';
 // ==============================================================
-import AuthForm from '../../components/AuthForm/AuthForm';
+import api from '../../api';
+// ==============================================================
+import LoginForm from '../../components/LoginForm/LoginForm';
+import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
 
 function AuthPage({ isOpen, onClose, checkAuthentication }) {
+  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
+
+  const loginHandle = async (email, password) => {
+    try {
+      setErrorMessage('');
+      const { data } = await api.post('/auth/login', { email, password });
+      localStorage.setItem('accessToken', data.accessToken);
+      checkAuthentication();
+      onClose();
+      navigate('/');
+    } catch (error) {
+      console.log('Авторизація неуспішна: ', error.message);
+      setErrorMessage('Авторизація неуспішна. Перевірте облікові дані.');
+    }
+  };
+
+  const registrationHandle = async (fullName, email, password) => {
+    try {
+      setErrorMessage('');
+      const { data } = await api.post('/auth/registration', {
+        fullName,
+        email,
+        password,
+      });
+      localStorage.setItem('accessToken', data.accessToken);
+      checkAuthentication();
+      onClose();
+      navigate('/');
+    } catch (error) {
+      console.log('Реєстрація неуспішна: ', error.message);
+      setErrorMessage('Реєстрація неуспішна. Спробуйте знову.');
+    }
+  };
 
   const handleClose = () => {
     onClose();
@@ -45,7 +83,29 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
             borderRadius: 2,
           }}
         >
-          <AuthForm onClose={onClose} checkAuthentication={checkAuthentication} />
+          {isLoginMode ? (
+            <LoginForm onLogin={loginHandle} />
+          ) : (
+            <RegistrationForm onRegister={registrationHandle} />
+          )}
+          {errorMessage && (
+            <Typography color='error' align='center' sx={{ mb: 2 }}>
+              {errorMessage}
+            </Typography>
+          )}
+          <Button
+            type='button'
+            onClick={() => {
+              setErrorMessage('');
+              setIsLoginMode(!isLoginMode);
+            }}
+            variant='text'
+            color='secondary'
+            fullWidth
+            sx={{ mt: 2 }}
+          >
+            {isLoginMode ? 'Перейти до реєстрації' : 'Перейти до авторизації'}
+          </Button>
         </Box>
       </Fade>
     </Modal>
