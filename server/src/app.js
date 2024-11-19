@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -8,6 +9,7 @@ const router = require('./routers');
 const {
   configs: {
     CLIENT: { URL },
+    STATIC: { PATH },
   },
 } = require('./constants');
 // ==============================================================
@@ -24,6 +26,9 @@ const {
 } = require('./middlewares');
 
 const app = express();
+const publicPath = path.resolve(__dirname, '..', '..', PATH, 'images');
+
+app.use('/images', express.static(publicPath));
 
 app.use(
   cors({

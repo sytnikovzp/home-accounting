@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
-// =============================================
+// ==============================================================
 import { Box, TextField, Avatar, Button, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-// =============================================
+// ==============================================================
 import api from '../../api';
+// ==============================================================
 import { AUTH_FORM_INITIAL } from '../../constants';
+// ==============================================================
 import {
   LOGIN_VALIDATION_SCHEME,
   REGISTRATION_VALIDATION_SCHEME,
 } from '../../utils/validationSchemes';
 
-function AuthForm({ onClose }) {
+function AuthForm({ onClose, checkAuthentication }) {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -32,6 +34,7 @@ function AuthForm({ onClose }) {
     try {
       const { data } = await api.post(endpoint, payload);
       localStorage.setItem('accessToken', data.accessToken);
+      checkAuthentication();
       onClose();
       navigate('/');
     } catch (error) {

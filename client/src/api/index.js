@@ -57,7 +57,7 @@ api.interceptors.response.use(
 
 export const fetchUserProfile = async () => {
   try {
-    const response = await api.get('/auth/profile');
+    const response = await api.get('/users/profile');
     return response.data;
   } catch (error) {
     return handleError(error, 'Error fetching user profile');

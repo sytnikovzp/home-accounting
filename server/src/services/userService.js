@@ -1,12 +1,15 @@
 const { User, Role } = require('../db/dbMongo/models');
+// ==============================================================
 const {
   hashPassword,
   emailToLowerCase,
   formatDate,
   checkPermission,
 } = require('../utils/sharedFunctions');
-const { badRequest, notFound, forbidden } = require('../errors/customErrors');
+// ==============================================================
 const { generateTokens } = require('./tokenService');
+// ==============================================================
+const { badRequest, notFound, forbidden } = require('../errors/customErrors');
 
 class UserService {
   async getAllUsers(limit, offset) {

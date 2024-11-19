@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { getNBURates } from '../../api';
 // ==============================================================
 import {
   Table,
@@ -10,6 +9,8 @@ import {
   TableContainer,
   Typography,
 } from '@mui/material';
+// ==============================================================
+import { getNBURates } from '../../api';
 // ==============================================================
 import Preloader from '../Preloader/Preloader';
 import Error from '../Error/Error';

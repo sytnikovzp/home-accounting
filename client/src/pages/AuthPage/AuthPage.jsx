@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Fade, Box } from '@mui/material';
+// ==============================================================
 import AuthForm from '../../components/AuthForm/AuthForm';
 
-function AuthPage({ isOpen, onClose }) {
+function AuthPage({ isOpen, onClose, checkAuthentication }) {
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -44,7 +45,7 @@ function AuthPage({ isOpen, onClose }) {
             borderRadius: 2,
           }}
         >
-          <AuthForm onClose={onClose} />
+          <AuthForm onClose={onClose} checkAuthentication={checkAuthentication} />
         </Box>
       </Fade>
     </Modal>

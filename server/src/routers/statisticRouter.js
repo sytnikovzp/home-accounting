@@ -6,26 +6,23 @@ const {
   getCostByCategories,
   getCostByShops,
 } = require('../controllers/statisticController');
-const {
-  auth: { authHandler },
-} = require('../middlewares');
 
 const statisticRouter = new Router();
 
 statisticRouter
   .route('/category-per-period')
-  .get(authHandler, getCostByCategoryPerPeriod);
+  .get(getCostByCategoryPerPeriod);
 
 statisticRouter
   .route('/shop-per-period')
-  .get(authHandler, getCostByShopPerPeriod);
+  .get(getCostByShopPerPeriod);
 
 statisticRouter
   .route('/categories')
-  .get(authHandler, getCostByCategories);
+  .get(getCostByCategories);
 
 statisticRouter
   .route('/shops')
-  .get(authHandler, getCostByShops);
+  .get(getCostByShops);
 
 module.exports = statisticRouter;

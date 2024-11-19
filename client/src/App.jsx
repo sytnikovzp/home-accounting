@@ -7,6 +7,8 @@ import {
   Navigate,
 } from 'react-router-dom';
 // ==============================================================
+import { fetchUserProfile } from './api';
+// ==============================================================
 import Layout from './components/Layout/Layout';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import AuthPage from './pages/AuthPage/AuthPage';
@@ -24,18 +26,30 @@ import RolesPage from './pages/RolesPage/RolesPage';
 const App = () => {
   const [isAuthModalOpen, setAuthModalOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
 
   const handleCloseAuthModal = () => {
     setAuthModalOpen(false);
   };
 
-  useEffect(() => {
+  const checkAuthentication = async () => {
     const token = localStorage.getItem('accessToken');
     if (token) {
-      setIsAuthenticated(true);
+      try {
+        const profileData = await fetchUserProfile();
+        setUserProfile(profileData);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+        setIsAuthenticated(false);
+      }
     } else {
       setIsAuthenticated(false);
     }
+  };
+
+  useEffect(() => {
+    checkAuthentication();
   }, []);
 
   return (
@@ -51,6 +65,7 @@ const App = () => {
           element={
             <Layout
               isAuthenticated={isAuthenticated}
+              userProfile={userProfile}
               setIsAuthenticated={setIsAuthenticated}
               setAuthModalOpen={setAuthModalOpen}
             />
@@ -159,10 +174,15 @@ const App = () => {
           <Route
             path='auth/*'
             element={
-              <AuthPage
-                isOpen={isAuthModalOpen}
-                onClose={handleCloseAuthModal}
-              />
+              isAuthenticated ? (
+                <Navigate to='/' replace />
+              ) : (
+                <AuthPage
+                  isOpen={isAuthModalOpen}
+                  onClose={handleCloseAuthModal}
+                  checkAuthentication={checkAuthentication}
+                />
+              )
             }
           />
           <Route path='*' element={<Navigate to='/' replace />} />

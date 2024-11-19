@@ -2,11 +2,18 @@ const path = require('path');
 // ==============================================================
 const multer = require('multer');
 // ==============================================================
-const { staticPath } = require('../config/staticConfig');
+const {
+  configs: {
+    STATIC: { PATH },
+  },
+} = require('../constants');
 
 const storageShopLogo = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve(staticPath, 'images', 'shops'));
+    cb(
+      null,
+      path.resolve(__dirname, '..', '..', '..', PATH, 'images', 'shops')
+    );
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
@@ -28,7 +35,10 @@ module.exports.uploadShopLogos = multer({
 
 const storageUserPhoto = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve(staticPath, 'images', 'users'));
+    cb(
+      null,
+      path.resolve(__dirname, '..', '..', '..', PATH, 'images', 'users')
+    );
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);

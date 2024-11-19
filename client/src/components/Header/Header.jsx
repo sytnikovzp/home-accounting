@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // ==============================================================
-import { logout } from '../../api';
-// ==============================================================
 import {
   AppBar,
   Box,
@@ -19,10 +17,18 @@ import {
 } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
 // ==============================================================
+import { logout } from '../../api';
+import { BASE_URL } from '../../constants';
+// ==============================================================
 import NavBar from '../Navigation/NavBar';
 import accountingIcon from '../../assets/accounting.png';
 
-function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
+function Header({
+  isAuthenticated,
+  userProfile,
+  setIsAuthenticated,
+  setAuthModalOpen,
+}) {
   const [openState, setOpenState] = useState({
     navBar: false,
     userAccount: false,
@@ -30,11 +36,15 @@ function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
 
   const navigate = useNavigate();
 
-  const handleClick = (event) => {
+  const handleToggleNavBar = () => {
+    setOpenState({ ...openState, navBar: !openState.navBar });
+  };
+
+  const toggleMenu = (event) => {
     setOpenState({ ...openState, userAccount: event.currentTarget });
   };
 
-  const handleClose = () => {
+  const closeMenu = () => {
     setOpenState({ ...openState, userAccount: false });
   };
 
@@ -54,10 +64,6 @@ function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
     } catch (error) {
       console.log('Logout error:', error);
     }
-  };
-
-  const handleToggleNavBar = () => {
-    setOpenState({ ...openState, navBar: !openState.navBar });
   };
 
   return (
@@ -114,13 +120,13 @@ function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
             <img
               src={accountingIcon}
               alt='Home Accounting'
+              onClick={handleToggleNavBar}
               style={{
                 width: '36px',
                 height: '36px',
                 marginRight: '16px',
                 display: 'flex',
               }}
-              onClick={handleToggleNavBar}
             />
             <Typography
               variant='h6'
@@ -144,8 +150,8 @@ function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
               <>
                 <Tooltip title='Обліковий запис'>
                   <IconButton
-                    onClick={handleClick}
                     size='small'
+                    onClick={toggleMenu}
                     sx={{ ml: 2 }}
                     aria-controls={
                       openState.userAccount ? 'account-menu' : undefined
@@ -154,13 +160,19 @@ function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
                     aria-expanded={openState.userAccount ? 'true' : undefined}
                   >
                     <Avatar
-                      // alt='Олександр Ситніков'
-                      // src='https://avatars.githubusercontent.com/u/154733849?v=4'
+                      alt={userProfile?.fullName || 'Користувач'}
+                      src={
+                        userProfile?.photo
+                          ? `${BASE_URL.replace('/api/', '')}/images/users/${
+                              userProfile.photo
+                            }`
+                          : undefined
+                      }
                       sx={{
                         cursor: 'pointer',
                         border: '2px solid rgba(56, 142, 60, 0.3)',
-                        width: 45,
-                        height: 45,
+                        width: { xs: 40, sm: 45 },
+                        height: { xs: 40, sm: 45 },
                       }}
                     />
                   </IconButton>
@@ -169,7 +181,7 @@ function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
                   anchorEl={openState.userAccount}
                   id='account-menu'
                   open={Boolean(openState.userAccount)}
-                  onClick={handleClose}
+                  onClick={closeMenu}
                   slotProps={{
                     paper: {
                       elevation: 0,
@@ -177,11 +189,31 @@ function Header({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
                         overflow: 'visible',
                         filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                         mt: 1.5,
+                        '&:before': {
+                          content: '""',
+                          display: 'block',
+                          position: 'absolute',
+                          top: 0,
+                          right: { xs: 22, sm: 25 },
+                          width: 10,
+                          height: 10,
+                          bgcolor: 'background.paper',
+                          transform: 'translateY(-50%) rotate(45deg)',
+                          zIndex: 0,
+                        },
                       },
                     },
                   }}
+                  transformOrigin={{
+                    horizontal: 'right',
+                    vertical: 'top',
+                  }}
+                  anchorOrigin={{
+                    horizontal: 'right',
+                    vertical: 'bottom',
+                  }}
                 >
-                  <MenuItem onClick={handleClose}>
+                  <MenuItem onClick={closeMenu}>
                     <ListItemIcon>
                       <Settings fontSize='small' />
                     </ListItemIcon>

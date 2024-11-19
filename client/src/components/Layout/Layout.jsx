@@ -8,12 +8,13 @@ import NavBar from '../Navigation/NavBar';
 import ServiceBlock from '../ServiceBlock/ServiceBlock';
 import Footer from '../Footer/Footer';
 
-function Layout({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
+function Layout({
+  isAuthenticated,
+  userProfile,
+  setIsAuthenticated,
+  setAuthModalOpen,
+}) {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
-
-  const handleToggleNavBar = () => {
-    setIsNavBarOpen((prev) => !prev);
-  };
 
   const handleCloseNavBar = () => {
     setIsNavBarOpen(false);
@@ -33,8 +34,8 @@ function Layout({ isAuthenticated, setIsAuthenticated, setAuthModalOpen }) {
       >
         <Grid2>
           <Header
-            onToggleNavBar={handleToggleNavBar}
             isAuthenticated={isAuthenticated}
+            userProfile={userProfile}
             setIsAuthenticated={setIsAuthenticated}
             setAuthModalOpen={setAuthModalOpen}
           />
