@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 // ==============================================================
 import { Box, Grid2, Container } from '@mui/material';
+// ==============================================================
+import {
+  stylesBoxLayout,
+  stylesGridContainer,
+  stylesNavBarDesktop,
+  stylesNavBarMobile,
+  stylesServiceBlock,
+} from '../../services/styleService';
 // ==============================================================
 import Header from '../Header/Header';
 import NavBar from '../Navigation/NavBar';
@@ -20,17 +28,27 @@ function Layout({
     setIsNavBarOpen(false);
   };
 
+  const handleResize = () => {
+    if (window.innerWidth <= 600) {
+      setIsNavBarOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={stylesBoxLayout}>
       <Grid2
         container
         direction='column'
         rowSpacing={2}
-        sx={{
-          flexGrow: 1,
-          color: 'text.primary',
-          backgroundImage: 'linear-gradient(to bottom, #e8f5e9, #c8e6c9)',
-        }}
+        sx={stylesGridContainer}
       >
         <Grid2>
           <Header
@@ -40,33 +58,25 @@ function Layout({
             setAuthModalOpen={setAuthModalOpen}
           />
         </Grid2>
-        <Grid2 container sx={{ flex: 1 }}>
-          <Container maxWidth='xl'>
-            <Grid2 container columnSpacing={2} alignItems='flex-start'>
-              <Grid2
-                sx={{
-                  width: '190px',
-                  flexShrink: 0,
-                  display: { xs: 'none', md: 'block' },
-                }}
-              >
-                <NavBar />
-              </Grid2>
-              <Grid2 sx={{ display: { xs: 'block', md: 'none' } }}>
-                {isNavBarOpen && <NavBar onClose={handleCloseNavBar} />}
-              </Grid2>
-              <Grid2 sx={{ flexGrow: 1 }}>
-                <Outlet />
-              </Grid2>
-              <Grid2 sx={{ flexShrink: 0 }}>
-                <ServiceBlock />
-              </Grid2>
+        <Container maxWidth='xl'>
+          <Grid2 container columnSpacing={2} sx={{ flexGrow: 1 }}>
+            <Grid2 xs={12} md={2} sx={stylesNavBarDesktop}>
+              <NavBar />
             </Grid2>
-          </Container>
-        </Grid2>
-        <Grid2>
-          <Footer />
-        </Grid2>
+            <Grid2 sx={stylesNavBarMobile}>
+              {isNavBarOpen && <NavBar onClose={handleCloseNavBar} />}
+            </Grid2>
+            <Grid2 sx={{ flexGrow: 1 }}>
+              <Outlet />
+            </Grid2>
+            <Grid2 xs={12} sx={stylesServiceBlock}>
+              <ServiceBlock />
+            </Grid2>
+          </Grid2>
+        </Container>
+      </Grid2>
+      <Grid2 sx={{ flexShrink: 0 }}>
+        <Footer />
       </Grid2>
     </Box>
   );

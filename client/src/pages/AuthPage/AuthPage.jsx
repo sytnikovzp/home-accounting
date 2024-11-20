@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Fade, Box, Typography, Button } from '@mui/material';
 // ==============================================================
+import { stylesFadeBox } from '../../services/styleService';
+// ==============================================================
 import api from '../../api';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
@@ -43,19 +45,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
       }}
     >
       <Fade in={isOpen}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: { xs: '90%', sm: 400 },
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
-          }}
-        >
+        <Box sx={stylesFadeBox}>
           {isLoginMode ? (
             <LoginForm
               onSubmit={({ email, password }) =>

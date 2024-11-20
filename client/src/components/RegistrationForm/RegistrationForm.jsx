@@ -5,27 +5,19 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // ==============================================================
 import { REGISTRATION_FORM_INITIAL } from '../../constants';
 import { REGISTRATION_VALIDATION_SCHEME } from '../../utils/validationSchemes';
+import {
+  stylesAuthTitle,
+  stylesRegistrationAvatar,
+} from '../../services/styleService';
 
 function RegistrationForm({ onSubmit }) {
   const renderForm = ({ errors, touched, isValid }) => {
     return (
       <Form>
-        <Avatar
-          sx={{
-            mx: 'auto',
-            bgcolor: 'success.main',
-            width: 50,
-            height: 50,
-            mb: 2,
-          }}
-        >
+        <Avatar sx={stylesRegistrationAvatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography
-          component='h1'
-          variant='h5'
-          sx={{ textAlign: 'center', fontWeight: 600 }}
-        >
+        <Typography component='h1' variant='h5' sx={stylesAuthTitle}>
           Реєстрація
         </Typography>
         <Box sx={{ mt: 3 }}>

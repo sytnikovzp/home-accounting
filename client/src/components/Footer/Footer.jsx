@@ -1,21 +1,11 @@
 import { Box, Container, Link, Typography } from '@mui/material';
 import { GitHub, LinkedIn } from '@mui/icons-material';
+// ==============================================================
+import { stylesFooterBox, stylesFooterIcon } from '../../services/styleService';
 
 const Footer = () => {
   return (
-    <Box
-      component='footer'
-      sx={{
-        py: 1.5,
-        backgroundImage:
-          'linear-gradient(to top, #c8e6c9, rgba(200, 230, 201, 0.5))',
-        color: '#333',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        borderTop: '1px solid rgba(0, 0, 0, 0.1)',
-      }}
-    >
+    <Box component='footer' sx={stylesFooterBox}>
       <Container maxWidth='xl' sx={{ textAlign: 'center' }}>
         <Typography variant='body1' sx={{ color: '#555' }}>
           Designed by Alexandr Sytnikov © {new Date().getFullYear()}
@@ -24,24 +14,14 @@ const Footer = () => {
           <Link
             href='https://github.com/sytnikovzp'
             target='_blank'
-            sx={{
-              mx: 1,
-              color: '#555',
-              transition: 'color 0.3s ease',
-              '&:hover': { color: '#2E7D32' },
-            }}
+            sx={stylesFooterIcon}
           >
             <GitHub />
           </Link>
           <Link
             href='https://www.linkedin.com/in/sytnikovzp'
             target='_blank'
-            sx={{
-              mx: 1,
-              color: '#555',
-              transition: 'color 0.3s ease',
-              '&:hover': { color: '#2E7D32' },
-            }}
+            sx={stylesFooterIcon}
           >
             <LinkedIn />
           </Link>

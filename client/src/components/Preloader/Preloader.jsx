@@ -1,4 +1,6 @@
 import { Box, LinearProgress, Typography } from '@mui/material';
+// ==============================================================
+import { stylesPreloaderTitle } from '../../services/styleService';
 
 const Preloader = ({ message = 'Завантаження...' }) => {
   return (
@@ -10,10 +12,7 @@ const Preloader = ({ message = 'Завантаження...' }) => {
       width='100%'
       padding='0 20px'
     >
-      <Typography
-        variant='h6'
-        style={{ marginBottom: '20px', textAlign: 'center' }}
-      >
+      <Typography variant='h6' style={stylesPreloaderTitle}>
         {message}
       </Typography>
       <Box width='100%'>

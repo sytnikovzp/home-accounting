@@ -28,9 +28,7 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
 
-  const handleCloseAuthModal = () => {
-    setAuthModalOpen(false);
-  };
+  const handleCloseAuthModal = () => setAuthModalOpen(false);
 
   const checkAuthentication = async () => {
     const token = localStorage.getItem('accessToken');
@@ -51,6 +49,15 @@ const App = () => {
   useEffect(() => {
     checkAuthentication();
   }, []);
+
+  const renderPrivateRoute = (Component) => (
+    <PrivateRoute
+      isAuthenticated={isAuthenticated}
+      setAuthModalOpen={setAuthModalOpen}
+    >
+      {Component}
+    </PrivateRoute>
+  );
 
   return (
     <Router
@@ -74,102 +81,39 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route
             path='purchases/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <PurchasesPage />
-              </PrivateRoute>
-            }
+            element={renderPrivateRoute(<PurchasesPage />)}
           />
-          <Route
-            path='shops/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <ShopsPage />
-              </PrivateRoute>
-            }
+          <Route 
+            path='shops/*' 
+            element={renderPrivateRoute(<ShopsPage />)} 
           />
           <Route
             path='products/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <ProductsPage />
-              </PrivateRoute>
-            }
+            element={renderPrivateRoute(<ProductsPage />)}
           />
           <Route
             path='categories/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <CategoriesPage />
-              </PrivateRoute>
-            }
+            element={renderPrivateRoute(<CategoriesPage />)}
           />
           <Route
             path='currencies/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <CurrenciesPage />
-              </PrivateRoute>
-            }
+            element={renderPrivateRoute(<CurrenciesPage />)}
           />
           <Route
             path='measures/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <MeasuresPage />
-              </PrivateRoute>
-            }
+            element={renderPrivateRoute(<MeasuresPage />)}
           />
           <Route
             path='moderation/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <ModerationPage />
-              </PrivateRoute>
-            }
+            element={renderPrivateRoute(<ModerationPage />)}
           />
-          <Route
-            path='users/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <UsersPage />
-              </PrivateRoute>
-            }
+          <Route 
+            path='users/*' 
+            element={renderPrivateRoute(<UsersPage />)} 
           />
-          <Route
-            path='roles/*'
-            element={
-              <PrivateRoute
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              >
-                <RolesPage />
-              </PrivateRoute>
-            }
+          <Route 
+            path='roles/*' 
+            element={renderPrivateRoute(<RolesPage />)} 
           />
           <Route
             path='auth/*'

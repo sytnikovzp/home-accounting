@@ -3,6 +3,11 @@ import { Formik, Form, Field } from 'formik';
 import { Box, TextField, Avatar, Button, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // ==============================================================
+import {
+  stylesLoginAvatar,
+  stylesAuthTitle,
+} from '../../services/styleService';
+// ==============================================================
 import { LOGIN_FORM_INITIAL } from '../../constants';
 import { LOGIN_VALIDATION_SCHEME } from '../../utils/validationSchemes';
 
@@ -10,22 +15,10 @@ function LoginForm({ onSubmit }) {
   const renderForm = ({ errors, touched, isValid }) => {
     return (
       <Form>
-        <Avatar
-          sx={{
-            mx: 'auto',
-            bgcolor: 'success.light',
-            width: 50,
-            height: 50,
-            mb: 2,
-          }}
-        >
+        <Avatar sx={stylesLoginAvatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography
-          component='h1'
-          variant='h5'
-          sx={{ textAlign: 'center', fontWeight: 600 }}
-        >
+        <Typography component='h1' variant='h5' sx={stylesAuthTitle}>
           Авторизация
         </Typography>
         <Box sx={{ mt: 3 }}>

@@ -17,6 +17,18 @@ import {
 } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
 // ==============================================================
+import {
+  stylesAppBar,
+  stylesHeaderIcon,
+  stylesHeaderTitleDesktop,
+  stylesBoxLogoDesktop,
+  stylesToolbar,
+  stylesBoxLogoMobile,
+  stylesHeaderTitleMobile,
+  stylesHeaderUserAvatar,
+  stylesUserMenu,
+} from '../../services/styleService';
+// ==============================================================
 import { logout } from '../../api';
 import { BASE_URL } from '../../constants';
 // ==============================================================
@@ -67,80 +79,31 @@ function Header({
   };
 
   return (
-    <AppBar
-      position='sticky'
-      sx={{
-        boxShadow: 3,
-        backgroundImage: 'linear-gradient(to top, #9e9d24, #388e3c)',
-      }}
-    >
+    <AppBar position='sticky' sx={stylesAppBar}>
       <Container maxWidth='xl'>
-        <Toolbar
-          disableGutters
-          sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5 }}
-        >
-          <Box
-            component={RouterLink}
-            to='/'
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              alignItems: 'center',
-              textDecoration: 'none',
-              color: 'inherit',
-            }}
-          >
+        <Toolbar disableGutters sx={stylesToolbar}>
+          <Box component={RouterLink} to='/' sx={stylesBoxLogoDesktop}>
             <img
               src={accountingIcon}
               alt='Home Accounting'
-              style={{
-                width: '36px',
-                height: '36px',
-                marginRight: '16px',
-                display: 'flex',
-              }}
+              style={stylesHeaderIcon}
             />
-            <Typography
-              variant='h6'
-              noWrap
-              sx={{
-                mr: 2,
-                fontFamily: 'Roboto, sans-serif',
-                fontWeight: 600,
-                letterSpacing: '.3rem',
-                color: 'white',
-                textDecoration: 'none',
-              }}
-            >
+            <Typography variant='h6' noWrap sx={stylesHeaderTitleDesktop}>
               Home Accounting
             </Typography>
           </Box>
-          <Box
-            sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}
-          >
+          <Box sx={stylesBoxLogoMobile}>
             <img
               src={accountingIcon}
               alt='Home Accounting'
               onClick={handleToggleNavBar}
-              style={{
-                width: '36px',
-                height: '36px',
-                marginRight: '16px',
-                display: 'flex',
-              }}
+              style={stylesHeaderIcon}
             />
             <Typography
               variant='h6'
               noWrap
               onClick={handleToggleNavBar}
-              sx={{
-                fontFamily: 'Roboto, sans-serif',
-                fontWeight: 600,
-                letterSpacing: '.05rem',
-                color: 'white',
-                textAlign: 'center',
-                alignSelf: 'center',
-                display: { xs: 'flex', md: 'none' },
-              }}
+              sx={stylesHeaderTitleMobile}
             >
               Home Accounting
             </Typography>
@@ -168,12 +131,7 @@ function Header({
                             }`
                           : undefined
                       }
-                      sx={{
-                        cursor: 'pointer',
-                        border: '2px solid rgba(56, 142, 60, 0.3)',
-                        width: { xs: 40, sm: 45 },
-                        height: { xs: 40, sm: 45 },
-                      }}
+                      sx={stylesHeaderUserAvatar}
                     />
                   </IconButton>
                 </Tooltip>
@@ -185,23 +143,7 @@ function Header({
                   slotProps={{
                     paper: {
                       elevation: 0,
-                      sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                        mt: 1.5,
-                        '&:before': {
-                          content: '""',
-                          display: 'block',
-                          position: 'absolute',
-                          top: 0,
-                          right: { xs: 22, sm: 25 },
-                          width: 10,
-                          height: 10,
-                          bgcolor: 'background.paper',
-                          transform: 'translateY(-50%) rotate(45deg)',
-                          zIndex: 0,
-                        },
-                      },
+                      sx: stylesUserMenu,
                     },
                   }}
                   transformOrigin={{
