@@ -1,7 +1,7 @@
 ### Get list all users (default pagination)
 GET http://localhost:5000/api/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uRG9lQEdtYWlsLmNvbSIsImlhdCI6MTczMDg3NTk3MywiZXhwIjoxNzMwODc5NTczfQ.9bSEtUSpWu2dVyns_qXcErxBrAloATo9bLxMn20dHM4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDU3MzU1LCJleHAiOjE3MzIwNTgyNTV9.AaHXfriLtCeYpet_6QrNkXzaLsQPrx09rU6baX1ke5Q
 
 ### Get list all users (custom pagination)
 GET http://localhost:5000/api/users?_page=1&_limit=10 HTTP/1.1
@@ -11,12 +11,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkpvaG4uR
 ### Get current user profile
 GET http://localhost:5000/api/users/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNDE5NTI5LCJleHAiOjE3MzE0MjMxMjl9.WJVa4tenS-z0NR4Y8BH0Sv0wMKLbTmRqkNJEQMuVgJ8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDU3MzU1LCJleHAiOjE3MzIwNTgyNTV9.AaHXfriLtCeYpet_6QrNkXzaLsQPrx09rU6baX1ke5Q
 
 ### Get user by id
-GET http://localhost:5000/api/users/6736bea9921621788f29d9df HTTP/1.1
+GET http://localhost:5000/api/users/673bbd5b666cbc2fabf413a3 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDIwMjM2LCJleHAiOjE3MzIwMjExMzZ9.Ymi0Y3BSb5gVJY9s5iMF4udl9aKWOgLZrqOncxsa42c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDU3MzU1LCJleHAiOjE3MzIwNTgyNTV9.AaHXfriLtCeYpet_6QrNkXzaLsQPrx09rU6baX1ke5Q
 
 // ==============================================================
 

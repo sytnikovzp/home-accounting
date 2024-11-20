@@ -103,6 +103,11 @@ describe('UserController', () => {
       expect(response.body.email).toBe('jane.smith@gmail.com');
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
+      expect(response.body).toHaveProperty('permissions');
+      expect(Array.isArray(response.body.permissions)).toBe(true);
+      expect(response.body.permissions[0]).toHaveProperty('id');
+      expect(response.body.permissions[0]).toHaveProperty('title');
+      expect(response.body.permissions[0]).toHaveProperty('description');
     });
 
     it('should return 404 for non-existing user', async () => {
@@ -132,6 +137,11 @@ describe('UserController', () => {
       expect(response.body.email).toBe('jane.smith@gmail.com');
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
+      expect(response.body).toHaveProperty('permissions');
+      expect(Array.isArray(response.body.permissions)).toBe(true);
+      expect(response.body.permissions[0]).toHaveProperty('id');
+      expect(response.body.permissions[0]).toHaveProperty('title');
+      expect(response.body.permissions[0]).toHaveProperty('description');
     });
 
     it('should return 401 if access token is missing', async () => {

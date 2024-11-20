@@ -87,6 +87,17 @@ describe('RoleController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
+      response.body.forEach((role) => {
+        expect(role).toHaveProperty('id');
+        expect(role).toHaveProperty('title');
+        expect(role).toHaveProperty('description');
+        expect(role).toHaveProperty('permissions');
+        expect(Array.isArray(role.permissions)).toBe(true);
+        role.permissions.forEach((permission) => {
+          expect(permission).toHaveProperty('id');
+          expect(permission).toHaveProperty('title');
+        });
+      });
     });
 
     it('should return 401 if access token is missing', async () => {

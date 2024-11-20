@@ -1,4 +1,4 @@
-const { User, Role } = require('../db/dbMongo/models');
+const { User, Role, Permission } = require('../db/dbMongo/models');
 // ==============================================================
 const {
   hashPassword,
@@ -37,6 +37,10 @@ class UserService {
     const foundUser = await User.findById(id);
     if (!foundUser) throw notFound('User not found');
     const role = await Role.findById(foundUser.roleId);
+    if (!role) throw notFound('Role not found');
+    const permissions = await Permission.find({
+      _id: { $in: role.permissions },
+    });
     const limitUserData = {
       id: foundUser._id,
       fullName: foundUser.fullName,
@@ -48,6 +52,11 @@ class UserService {
       email: foundUser.email,
       createdAt: formatDate(foundUser.createdAt),
       updatedAt: formatDate(foundUser.updatedAt),
+      permissions: permissions.map((permission) => ({
+        id: permission._id,
+        title: permission.title,
+        description: permission.description,
+      })),
     };
     if (
       currentUser.id.toString() === id.toString() ||
@@ -65,6 +74,10 @@ class UserService {
     const foundUser = await User.findOne({ email: emailToLower });
     if (!foundUser) throw notFound('User not found');
     const role = await Role.findById(foundUser.roleId);
+    if (!role) throw notFound('Role not found');
+    const permissions = await Permission.find({
+      _id: { $in: role.permissions },
+    });
     return {
       id: foundUser._id,
       fullName: foundUser.fullName,
@@ -73,6 +86,11 @@ class UserService {
       email: foundUser.email,
       createdAt: formatDate(foundUser.createdAt),
       updatedAt: formatDate(foundUser.updatedAt),
+      permissions: permissions.map((permission) => ({
+        id: permission._id,
+        title: permission.title,
+        description: permission.description,
+      })),
     };
   }
 
