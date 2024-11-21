@@ -3,7 +3,7 @@ import { GitHub, LinkedIn } from '@mui/icons-material';
 // ==============================================================
 import { stylesFooterBox, stylesFooterIcon } from '../../services/styleService';
 
-const Footer = () => {
+function Footer() {
   return (
     <Box component='footer' sx={stylesFooterBox}>
       <Container maxWidth='xl' sx={{ textAlign: 'center' }}>
@@ -29,6 +29,6 @@ const Footer = () => {
       </Container>
     </Box>
   );
-};
+}
 
 export default Footer;

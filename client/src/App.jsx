@@ -7,7 +7,8 @@ import {
   Navigate,
 } from 'react-router-dom';
 // ==============================================================
-import { fetchUserProfile } from './api';
+import { users } from './api/rest';
+import { getAccessToken } from './utils/sharedFunctions';
 // ==============================================================
 import Layout from './components/Layout/Layout';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
@@ -31,14 +32,14 @@ const App = () => {
   const handleCloseAuthModal = () => setAuthModalOpen(false);
 
   const checkAuthentication = async () => {
-    const token = localStorage.getItem('accessToken');
+    const token = getAccessToken();
     if (token) {
       try {
-        const profileData = await fetchUserProfile();
-        setUserProfile(profileData);
+        const userProfile = await users.fetchUserProfile();
+        setUserProfile(userProfile);
         setIsAuthenticated(true);
       } catch (error) {
-        console.error('Error fetching user profile:', error);
+        console.error('Не вдалося завантажити дані користувача:', error.message);
         setIsAuthenticated(false);
       }
     } else {

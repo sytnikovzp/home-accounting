@@ -29,7 +29,7 @@ import {
   stylesUserMenu,
 } from '../../services/styleService';
 // ==============================================================
-import { logout } from '../../api';
+import { auth } from '../../api/rest';
 import { BASE_URL } from '../../constants';
 // ==============================================================
 import NavBar from '../Navigation/NavBar';
@@ -60,21 +60,17 @@ function Header({
     setOpenState({ ...openState, userAccount: false });
   };
 
-  const handleLogin = async () => {
-    try {
-      navigate('/auth');
-      setAuthModalOpen(true);
-    } catch (error) {
-      console.log('Login error:', error);
-    }
+  const openAuthModal = () => {
+    navigate('/auth');
+    setAuthModalOpen(true);
   };
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await auth.logout();
       setIsAuthenticated(false);
     } catch (error) {
-      console.log('Logout error:', error);
+      console.error('Помилка виходу із системи:', error.message);
     }
   };
 
@@ -170,7 +166,11 @@ function Header({
                 </Menu>
               </>
             ) : (
-              <Button variant='contained' color='success' onClick={handleLogin}>
+              <Button
+                variant='contained'
+                color='success'
+                onClick={openAuthModal}
+              >
                 Увійти
               </Button>
             )}

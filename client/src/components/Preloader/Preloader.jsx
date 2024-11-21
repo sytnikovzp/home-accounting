@@ -2,7 +2,7 @@ import { Box, LinearProgress, Typography } from '@mui/material';
 // ==============================================================
 import { stylesPreloaderTitle } from '../../services/styleService';
 
-const Preloader = ({ message = 'Завантаження...' }) => {
+function Preloader({ message = 'Завантаження...' }) {
   return (
     <Box
       display='flex'
@@ -20,6 +20,6 @@ const Preloader = ({ message = 'Завантаження...' }) => {
       </Box>
     </Box>
   );
-};
+}
 
 export default Preloader;

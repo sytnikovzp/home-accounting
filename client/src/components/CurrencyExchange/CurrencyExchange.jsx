@@ -10,27 +10,27 @@ import {
   Typography,
 } from '@mui/material';
 // ==============================================================
-import { getNBURates } from '../../api';
+import { currencies } from '../../api/rest';
 // ==============================================================
 import Preloader from '../Preloader/Preloader';
 import Error from '../Error/Error';
 
 const CURRENCY_CODES = ['USD', 'EUR', 'GBP'];
 
-const CurrencyExchange = () => {
+function CurrencyExchange() {
   const [rates, setRates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchRates = async () => {
     try {
-      const allRates = await getNBURates();
+      const allRates = await currencies.getNBURates();
       const filteredRates = allRates.filter(({ cc }) =>
         CURRENCY_CODES.includes(cc)
       );
       setRates(filteredRates);
     } catch (err) {
-      console.error('Не вдалося завантажити дані: ', err);
+      console.error('Не вдалося завантажити курс валют: ', err.message);
       setError('Не вдалося завантажити дані');
     } finally {
       setLoading(false);
@@ -73,6 +73,6 @@ const CurrencyExchange = () => {
       </TableContainer>
     </div>
   );
-};
+}
 
 export default CurrencyExchange;

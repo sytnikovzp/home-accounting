@@ -4,7 +4,8 @@ import { Modal, Fade, Box, Typography, Button } from '@mui/material';
 // ==============================================================
 import { stylesFadeBox } from '../../services/styleService';
 // ==============================================================
-import api from '../../api';
+import { auth } from '../../api/rest';
+// ==============================================================
 import LoginForm from '../../components/LoginForm/LoginForm';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
 
@@ -14,17 +15,29 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
 
   const navigate = useNavigate();
 
-  const handleAuth = async (endpoint, payload) => {
+  const handleLogin = async (email, password) => {
     try {
       setErrorMessage('');
-      const { data } = await api.post(endpoint, payload);
-      localStorage.setItem('accessToken', data.accessToken);
+      await auth.login(email, password);
       checkAuthentication();
       onClose();
       navigate('/');
     } catch (error) {
-      console.error('Помилка аутентифікації:', error.message);
-      setErrorMessage('Помилка! Перевірте облікові дані.');
+      console.error('Авторизація неуспішна:', error.message);
+      setErrorMessage('Авторизація неуспішна. Перевірте облікові дані.');
+    }
+  };
+
+  const handleRegistration = async (fullName, email, password) => {
+    try {
+      setErrorMessage('');
+      await auth.registration(fullName, email, password);
+      checkAuthentication();
+      onClose();
+      navigate('/');
+    } catch (error) {
+      console.error('Реєстрація неуспішна:', error.message);
+      setErrorMessage('Реєстрація неуспішна. Спробуйте знову.');
     }
   };
 
@@ -48,14 +61,13 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
         <Box sx={stylesFadeBox}>
           {isLoginMode ? (
             <LoginForm
-              onSubmit={({ email, password }) =>
-                handleAuth('/auth/login', { email, password })
-              }
+              onSubmit={({ email, password }) => 
+                handleLogin(email, password)}
             />
           ) : (
             <RegistrationForm
               onSubmit={({ fullName, email, password }) =>
-                handleAuth('/auth/registration', { fullName, email, password })
+                handleRegistration(fullName, email, password)
               }
             />
           )}
