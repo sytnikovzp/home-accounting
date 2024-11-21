@@ -2,7 +2,7 @@
 import axios from 'axios';
 // ==============================================================
 import { BASE_URL } from '../constants';
-import { auth } from './rest';
+import restController from './rest/restController';
 import { getAccessToken } from '../utils/sharedFunctions';
 
 const api = axios.create({
@@ -31,7 +31,7 @@ api.interceptors.response.use(
     }
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      auth.refreshAccessToken(originalRequest);
+      restController.refreshAccessToken(originalRequest);
     }
     return Promise.reject(error);
   }

@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import { Box, Avatar, Button, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // ==============================================================
-import { stylesAuthAvatar, stylesAuthTitle } from '../../services/styleService';
+import { stylesAuthAvatar, stylesAuthTitle } from '../../styles/theme';
 // ==============================================================
 import { REGISTRATION_FORM_INITIAL } from '../../constants';
 import { REGISTRATION_VALIDATION_SCHEME } from '../../utils/validationSchemes';

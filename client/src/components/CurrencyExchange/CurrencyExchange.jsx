@@ -10,12 +10,10 @@ import {
   Typography,
 } from '@mui/material';
 // ==============================================================
-import { currencies } from '../../api/rest';
+import restController from '../../api/rest/restController';
 // ==============================================================
 import Preloader from '../Preloader/Preloader';
 import Error from '../Error/Error';
-
-const CURRENCY_CODES = ['USD', 'EUR', 'GBP'];
 
 function CurrencyExchange() {
   const [rates, setRates] = useState([]);
@@ -24,14 +22,11 @@ function CurrencyExchange() {
 
   const fetchRates = async () => {
     try {
-      const allRates = await currencies.getNBURates();
-      const filteredRates = allRates.filter(({ cc }) =>
-        CURRENCY_CODES.includes(cc)
-      );
+      const filteredRates = await restController.fetchFilteredRates();
       setRates(filteredRates);
     } catch (err) {
-      console.error('Не вдалося завантажити курс валют: ', err.message);
-      setError('Не вдалося завантажити дані');
+      console.error('Не вдалося завантажити курси валют:', err.message);
+      setError('Помилка завантаження курсів');
     } finally {
       setLoading(false);
     }

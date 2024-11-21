@@ -10,10 +10,7 @@ import {
 } from '@mui/material';
 import * as Icons from '@mui/icons-material';
 // ==============================================================
-import {
-  stylesListItemText,
-  stylesNavMenuItems,
-} from '../../services/styleService';
+import { stylesListItemText, stylesNavMenuItems } from '../../styles/theme';
 
 const navItems = [
   { to: '/', icon: 'Home', label: 'Головна' },

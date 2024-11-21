@@ -9,7 +9,7 @@ import {
   stylesNavBarDesktop,
   stylesNavBarMobile,
   stylesServiceBlock,
-} from '../../services/styleService';
+} from '../../styles/theme';
 // ==============================================================
 import Header from '../Header/Header';
 import NavBar from '../Navigation/NavBar';

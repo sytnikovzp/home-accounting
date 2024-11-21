@@ -27,10 +27,10 @@ import {
   stylesHeaderTitleMobile,
   stylesHeaderUserAvatar,
   stylesUserMenu,
-} from '../../services/styleService';
+} from '../../styles/theme';
 // ==============================================================
-import { auth } from '../../api/rest';
 import { BASE_URL } from '../../constants';
+import restController from '../../api/rest/restController';
 // ==============================================================
 import NavBar from '../Navigation/NavBar';
 import accountingIcon from '../../assets/accounting.png';
@@ -67,7 +67,7 @@ function Header({
 
   const handleLogout = async () => {
     try {
-      await auth.logout();
+      await restController.logout();
       setIsAuthenticated(false);
     } catch (error) {
       console.error('Помилка виходу із системи:', error.message);

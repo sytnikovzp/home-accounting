@@ -2,12 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Fade, Box, Typography, Button } from '@mui/material';
 // ==============================================================
+import restController from '../../api/rest/restController';
 import {
   stylesFadeBox,
   stylesFormBox,
   stylesErrorMessage,
-} from '../../services/styleService';
-import { auth } from '../../api/rest';
+} from '../../styles/theme';
 // ==============================================================
 import LoginForm from '../../components/LoginForm/LoginForm';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
@@ -23,9 +23,9 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
       try {
         setErrorMessage('');
         if (action === 'login') {
-          await auth.login(...args);
+          await restController.login(...args);
         } else {
-          await auth.registration(...args);
+          await restController.registration(...args);
         }
         checkAuthentication();
         onClose();

@@ -1,6 +1,6 @@
 import { Box, LinearProgress, Typography } from '@mui/material';
 // ==============================================================
-import { stylesPreloaderTitle } from '../../services/styleService';
+import { stylesPreloaderTitle } from '../../styles/theme';
 
 function Preloader({ message = 'Завантаження...' }) {
   return (

@@ -7,7 +7,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 // ==============================================================
-import { users } from './api/rest';
+import restController from './api/rest/restController';
 import { getAccessToken } from './utils/sharedFunctions';
 // ==============================================================
 import Layout from './components/Layout/Layout';
@@ -35,7 +35,7 @@ const App = () => {
     const token = getAccessToken();
     if (token) {
       try {
-        const userProfile = await users.fetchUserProfile();
+        const userProfile = await restController.fetchUserProfile();
         setUserProfile(userProfile);
         setIsAuthenticated(true);
       } catch (error) {

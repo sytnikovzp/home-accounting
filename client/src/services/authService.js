@@ -1,6 +1,6 @@
-import api from '../interceptor';
+import api from '../api/interceptor';
 // ==============================================================
-import { setAccessToken, clearAccessToken } from '../../utils/sharedFunctions';
+import { setAccessToken, clearAccessToken } from '../utils/sharedFunctions';
 
 const registration = async (fullName, email, password) => {
   const { data } = await api.post('/auth/registration', {

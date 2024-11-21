@@ -1,4 +1,4 @@
-import api from '../interceptor';
+import api from '../api/interceptor';
 
 const fetchUserProfile = async () => {
   const response = await api.get('/users/profile');
