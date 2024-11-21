@@ -162,17 +162,8 @@ export const stylesFooterIcon = {
 // ==============================================================
 // LoginForm & RegistrationForm components
 
-export const stylesLoginAvatar = {
+export const stylesAuthAvatar = {
   mx: 'auto',
-  bgcolor: 'success.light',
-  width: 50,
-  height: 50,
-  mb: 2,
-};
-
-export const stylesRegistrationAvatar = {
-  mx: 'auto',
-  bgcolor: 'success.main',
   width: 50,
   height: 50,
   mb: 2,
@@ -181,6 +172,7 @@ export const stylesRegistrationAvatar = {
 export const stylesAuthTitle = {
   textAlign: 'center',
   fontWeight: 600,
+  mb: 1,
 };
 
 // ==============================================================
@@ -197,6 +189,9 @@ export const stylesPreloaderTitle = {
 // Auth page
 
 export const stylesFadeBox = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -204,6 +199,22 @@ export const stylesFadeBox = {
   width: { xs: '90%', sm: 400 },
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4,
+  p: 3,
   borderRadius: 2,
+  minHeight: 'auto',
+};
+
+export const stylesFormBox = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+  minHeight: 200,
+};
+
+export const stylesErrorMessage = {
+  mt: 1,
+  minHeight: '24px',
+  display: 'flex',
+  justifyContent: 'center',
 };

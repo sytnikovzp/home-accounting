@@ -1,50 +1,41 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 // ==============================================================
-import { Box, TextField, Avatar, Button, Typography } from '@mui/material';
+import { Box, Avatar, Button, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // ==============================================================
-import {
-  stylesLoginAvatar,
-  stylesAuthTitle,
-} from '../../services/styleService';
+import { stylesAuthAvatar, stylesAuthTitle } from '../../services/styleService';
 // ==============================================================
 import { LOGIN_FORM_INITIAL } from '../../constants';
 import { LOGIN_VALIDATION_SCHEME } from '../../utils/validationSchemes';
+// ==============================================================
+import FormField from '../FormField/FormField';
 
 function LoginForm({ onSubmit }) {
   const renderForm = ({ errors, touched, isValid }) => {
     return (
       <Form>
-        <Avatar sx={stylesLoginAvatar}>
+        <Avatar sx={{ ...stylesAuthAvatar, bgcolor: 'success.light' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component='h1' variant='h5' sx={stylesAuthTitle}>
-          Авторизация
+        <Typography component='h1' variant='h6' sx={stylesAuthTitle}>
+          Авторизація
         </Typography>
-        <Box sx={{ mt: 3 }}>
-          <Field
+        <Box sx={{ mt: 2 }}>
+          <FormField
             name='email'
-            as={TextField}
             label='E-mail'
             placeholder='example@gmail.com'
-            fullWidth
-            required
-            autoFocus
-            sx={{ mb: 2 }}
-            error={touched.email && Boolean(errors.email)}
-            helperText={touched.email && errors.email}
+            autoFocus={true}
+            error={errors.email}
+            touched={touched.email}
           />
-          <Field
+          <FormField
             name='password'
-            as={TextField}
             label='Пароль'
             placeholder='Qwerty12'
-            fullWidth
-            required
             type='password'
-            sx={{ mb: 2 }}
-            error={touched.password && Boolean(errors.password)}
-            helperText={touched.password && errors.password}
+            error={errors.password}
+            touched={touched.password}
           />
         </Box>
         <Button
@@ -54,7 +45,6 @@ function LoginForm({ onSubmit }) {
           size='large'
           fullWidth
           disabled={!isValid}
-          sx={{ mt: 2 }}
         >
           Увійти
         </Button>

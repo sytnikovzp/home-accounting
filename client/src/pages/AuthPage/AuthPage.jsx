@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Fade, Box, Typography, Button } from '@mui/material';
 // ==============================================================
-import { stylesFadeBox } from '../../services/styleService';
-// ==============================================================
+import {
+  stylesFadeBox,
+  stylesFormBox,
+  stylesErrorMessage,
+} from '../../services/styleService';
 import { auth } from '../../api/rest';
 // ==============================================================
 import LoginForm from '../../components/LoginForm/LoginForm';
@@ -15,31 +18,32 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (email, password) => {
-    try {
-      setErrorMessage('');
-      await auth.login(email, password);
-      checkAuthentication();
-      onClose();
-      navigate('/');
-    } catch (error) {
-      console.error('Авторизація неуспішна:', error.message);
-      setErrorMessage('Авторизація неуспішна. Перевірте облікові дані.');
-    }
-  };
-
-  const handleRegistration = async (fullName, email, password) => {
-    try {
-      setErrorMessage('');
-      await auth.registration(fullName, email, password);
-      checkAuthentication();
-      onClose();
-      navigate('/');
-    } catch (error) {
-      console.error('Реєстрація неуспішна:', error.message);
-      setErrorMessage('Реєстрація неуспішна. Спробуйте знову.');
-    }
-  };
+  const handleAuth = useCallback(
+    async (action, ...args) => {
+      try {
+        setErrorMessage('');
+        if (action === 'login') {
+          await auth.login(...args);
+        } else {
+          await auth.registration(...args);
+        }
+        checkAuthentication();
+        onClose();
+        navigate('/');
+      } catch (error) {
+        console.error(
+          `${action === 'login' ? 'Авторизація' : 'Реєстрація'} неуспішна:`,
+          error.message
+        );
+        setErrorMessage(
+          action === 'login'
+            ? 'Авторизація неуспішна. Перевірте облікові дані.'
+            : 'Реєстрація неуспішна. Спробуйте знову.'
+        );
+      }
+    },
+    [checkAuthentication, navigate, onClose]
+  );
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
@@ -59,22 +63,25 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
     >
       <Fade in={isOpen}>
         <Box sx={stylesFadeBox}>
-          {isLoginMode ? (
-            <LoginForm
-              onSubmit={({ email, password }) => 
-                handleLogin(email, password)}
-            />
-          ) : (
-            <RegistrationForm
-              onSubmit={({ fullName, email, password }) =>
-                handleRegistration(fullName, email, password)
-              }
-            />
-          )}
+          <Box sx={stylesFormBox}>
+            {isLoginMode ? (
+              <LoginForm
+                onSubmit={({ email, password }) =>
+                  handleAuth('login', email, password)
+                }
+              />
+            ) : (
+              <RegistrationForm
+                onSubmit={({ fullName, email, password }) =>
+                  handleAuth('registration', fullName, email, password)
+                }
+              />
+            )}
+          </Box>
           {errorMessage && (
-            <Typography color='error' align='center' sx={{ mt: 2 }}>
-              {errorMessage}
-            </Typography>
+            <Box sx={stylesErrorMessage}>
+              <Typography color='error'>{errorMessage}</Typography>
+            </Box>
           )}
           <Button
             onClick={() => {
