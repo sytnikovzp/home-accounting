@@ -1,6 +1,6 @@
 import api from '../api/interceptor';
 // ==============================================================
-import { setAccessToken, clearAccessToken } from '../utils/sharedFunctions';
+import { saveAccessToken, removeAccessToken } from '../utils/sharedFunctions';
 
 const registration = async (fullName, email, password) => {
   const { data } = await api.post('/auth/registration', {
@@ -8,31 +8,31 @@ const registration = async (fullName, email, password) => {
     email,
     password,
   });
-  setAccessToken(data.accessToken);
+  saveAccessToken(data.accessToken);
   return data;
 };
 
 const login = async (email, password) => {
   const { data } = await api.post('/auth/login', { email, password });
-  setAccessToken(data.accessToken);
+  saveAccessToken(data.accessToken);
   return data;
 };
 
 const logout = async () => {
   await api.get('/auth/logout');
-  clearAccessToken();
+  removeAccessToken();
 };
 
 const refreshAccessToken = async (originalRequest) => {
   try {
     const { data } = await api.get('/auth/refresh');
-    setAccessToken(data.accessToken);
+    saveAccessToken(data.accessToken);
     originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
     return api.request(originalRequest);
   } catch (err) {
     if (err.response?.status === 401) {
       console.warn('Access token expired and refresh failed.');
-      clearAccessToken();
+      removeAccessToken();
     }
     return Promise.reject(err);
   }

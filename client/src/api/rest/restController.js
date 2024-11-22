@@ -11,7 +11,7 @@ const restController = {
     authService.refreshAccessToken(originalRequest),
 
   // User management
-  fetchUserProfile: () => userService.fetchUserProfile(),
+  fetchUserProfile: () => userService.getUserProfile(),
 
   // Currency rates
   fetchFilteredRates: async () => {
@@ -20,11 +20,12 @@ const restController = {
   },
 
   // Currency management
-  getAllCurrencies: () => currencyService.getAllCurrencies(),
-  getCurrencyById: (currencyId) => currencyService.getCurrencyById(currencyId),
+  fetchAllCurrencies: () => currencyService.getAllCurrencies(),
+  fetchCurrencyById: (currencyId) =>
+    currencyService.getCurrencyById(currencyId),
   addCurrency: (title, description) =>
     currencyService.createCurrency(title, description),
-  updateCurrency: (currencyId, title, description) =>
+  editCurrency: (currencyId, title, description) =>
     currencyService.updateCurrency(currencyId, title, description),
   removeCurrency: (currencyId) => currencyService.deleteCurrency(currencyId),
 };

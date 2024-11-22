@@ -87,8 +87,8 @@ describe('ShopController', () => {
     it('should return list of shops (status pending, custom pagination)', async () => {
       const response = await request(app)
         .get('/api/shops')
-        .query({ _page: 1, _limit: 10 })
         .query({ status: 'pending' })
+        .query({ _page: 1, _limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
@@ -106,8 +106,8 @@ describe('ShopController', () => {
     it('should return list of shops (status rejected, custom pagination)', async () => {
       const response = await request(app)
         .get('/api/shops')
-        .query({ _page: 1, _limit: 10 })
         .query({ status: 'rejected' })
+        .query({ _page: 1, _limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);

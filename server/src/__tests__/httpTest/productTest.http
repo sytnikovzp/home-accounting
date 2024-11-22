@@ -14,7 +14,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjM3MDE2LCJleHAiOjE3MzE2NDA2MTZ9.OpruhAnpbIwlL3W-2DMGRqR59M1VdwFCQeyqH3s5Vt0
 
 ### Get list all products (status pending, custom pagination)
-GET http://localhost:5000/api/products?_page=1&_limit=10&status=pending HTTP/1.1
+GET http://localhost:5000/api/products?status=pending&_page=1&_limit=10 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjM3MDE2LCJleHAiOjE3MzE2NDA2MTZ9.OpruhAnpbIwlL3W-2DMGRqR59M1VdwFCQeyqH3s5Vt0
 
@@ -24,7 +24,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjM3MDE2LCJleHAiOjE3MzE2NDA2MTZ9.OpruhAnpbIwlL3W-2DMGRqR59M1VdwFCQeyqH3s5Vt0
 
 ### Get list all products (status rejected, custom pagination)
-GET http://localhost:5000/api/products?_page=1&_limit=10&status=rejected HTTP/1.1
+GET http://localhost:5000/api/products?status=rejected&_page=1&_limit=10 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjM3MDE2LCJleHAiOjE3MzE2NDA2MTZ9.OpruhAnpbIwlL3W-2DMGRqR59M1VdwFCQeyqH3s5Vt0
 
