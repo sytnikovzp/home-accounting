@@ -184,9 +184,7 @@ export const stylesPreloaderTitle = {
 };
 
 // ==============================================================
-// ==============================================================
-// ==============================================================
-// Auth page
+// CustomModal component
 
 export const stylesFadeBox = {
   display: 'flex',
@@ -212,9 +210,19 @@ export const stylesFormBox = {
   minHeight: 200,
 };
 
+// ==============================================================
+// ==============================================================
+// ==============================================================
+// Auth page
+
+export const stylesAuthBox = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 2,
+};
+
 export const stylesErrorMessage = {
   mt: 1,
   minHeight: '24px',
-  display: 'flex',
-  justifyContent: 'center',
+  textAlign: 'center',
 };
