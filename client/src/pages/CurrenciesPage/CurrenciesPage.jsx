@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
+import { Typography } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
 // ==============================================================
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
+import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
 
 const CurrenciesPage = () => {
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [currencyToDelete, setCurrencyToDelete] = useState(null);
 
   useEffect(() => {
     const fetchCurrencies = async () => {
@@ -33,7 +37,24 @@ const CurrenciesPage = () => {
   };
 
   const handleDelete = (currency) => {
-    console.log('Delete:', currency);
+    setCurrencyToDelete(currency);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (currencyToDelete) {
+      try {
+        await restController.removeCurrency(currencyToDelete.id);
+        console.log('Валюта успішно видалена:', currencyToDelete);
+        setDeleteModalOpen(false);
+        setCurrencyToDelete(null);
+        setCurrencies(
+          currencies.filter((currency) => currency.id !== currencyToDelete.id)
+        );
+      } catch (error) {
+        console.error('Помилка при видаленні валюти:', error);
+      }
+    }
   };
 
   if (loading) return <Preloader />;
@@ -41,13 +62,17 @@ const CurrenciesPage = () => {
 
   return (
     <div style={{ padding: '20px' }}>
+      <Typography variant='h6'>Валюти</Typography>
       <ListTable
-        columns={[
-          { field: 'title', headerName: 'Назва', align: 'center' },
-        ]}
+        columns={[{ field: 'title', headerName: 'Назва', align: 'center' }]}
         rows={currencies}
         onEdit={handleEdit}
         onDelete={handleDelete}
+      />
+      <DeleteConfirmation
+        isOpen={isDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );

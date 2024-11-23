@@ -181,17 +181,17 @@ export const stylesFadeBox = {
   width: { xs: '90%', sm: 400 },
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 3,
+  p: 2,
   borderRadius: 2,
-  minHeight: 'auto',
+  maxWidth: 600,
 };
 
-export const stylesFormBox = {
+export const stylesContentBox = {
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   width: '100%',
-  minHeight: 200,
 };
 
 // ==============================================================
@@ -205,10 +205,8 @@ export const stylesAuthBox = {
   gap: 2,
 };
 
-export const stylesErrorMessage = {
-  mt: 1,
-  minHeight: '24px',
-  textAlign: 'center',
+export const stylesAuthTitle = {
+  fontWeight: 600,
 };
 
 export const stylesAuthAvatar = {
@@ -218,6 +216,8 @@ export const stylesAuthAvatar = {
   mb: 2,
 };
 
-export const stylesAuthTitle = {
-  fontWeight: 600,
+export const stylesErrorMessage = {
+  mt: 1,
+  minHeight: '24px',
+  textAlign: 'center',
 };
