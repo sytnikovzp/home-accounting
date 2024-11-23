@@ -78,7 +78,7 @@ describe('UserController', () => {
     it('should get all users (custom pagination)', async () => {
       const response = await request(app)
         .get('/api/users')
-        .query({ _page: 1, _limit: 10 })
+        .query({ page: 1, limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);

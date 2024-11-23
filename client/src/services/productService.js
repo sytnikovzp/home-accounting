@@ -5,11 +5,7 @@ const getAllProducts = async ({
   page = 1,
   limit = 10,
 } = {}) => {
-  const params = new URLSearchParams({
-    status,
-    _page: page,
-    _limit: limit,
-  }).toString();
+  const params = new URLSearchParams({ status, page, limit }).toString();
   const response = await api.get(`/products?${params}`);
   return {
     data: response.data,

@@ -4,9 +4,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDYwNDEzLCJleHAiOjE3MzIwNjEzMTN9.vihR0EaaZFyDFQbyAOe4bfGjKg2Mkidg1hzc7TutJL4
 
 ### Get list all permissions (custom pagination)
-GET http://localhost:5000/api/roles/permissions?_page=1&_limit=10 HTTP/1.1
+GET http://localhost:5000/api/roles/permissions?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDYwNDEzLCJleHAiOjE3MzIwNjEzMTN9.vihR0EaaZFyDFQbyAOe4bfGjKg2Mkidg1hzc7TutJL4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMzY2ODIyLCJleHAiOjE3MzIzNjc3MjJ9.nmJQSQ-GgqGEG2e6X3AGXrk4nIxKCZlipBpy4SmJjz0
 
 ### Get list all roles
 GET http://localhost:5000/api/roles HTTP/1.1

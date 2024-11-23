@@ -1,11 +1,7 @@
 import api from '../api/interceptor';
 
 const getAllUsers = async ({ page = 1, limit = 10 } = {}) => {
-  const params = new URLSearchParams({
-    _page: page,
-    _limit: limit,
-  }).toString();
-
+  const params = new URLSearchParams({ page, limit }).toString();
   const response = await api.get(`/users?${params}`);
   return {
     data: response.data,
@@ -35,7 +31,6 @@ const updateUser = async (userId, { fullName, password, role }) => {
 const updateUserPhoto = async (userId, userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
-
   const response = await api.patch(`/users/${userId}/photo`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });

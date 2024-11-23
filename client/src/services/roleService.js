@@ -1,11 +1,7 @@
 import api from '../api/interceptor';
 
 const getAllPermissions = async ({ page = 1, limit = 10 } = {}) => {
-  const params = new URLSearchParams({
-    _page: page,
-    _limit: limit,
-  }).toString();
-
+  const params = new URLSearchParams({ page, limit }).toString();
   const response = await api.get(`/roles/permissions?${params}`);
   return {
     data: response.data,
