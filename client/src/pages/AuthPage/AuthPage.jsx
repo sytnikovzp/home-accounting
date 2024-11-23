@@ -1,9 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Button } from '@mui/material';
+// ==============================================================
+import { Box, Typography, Button, Avatar } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // ==============================================================
 import restController from '../../api/rest/restController';
-import { stylesAuthBox, stylesErrorMessage } from '../../styles/theme';
+// ==============================================================
+import {
+  stylesAuthBox,
+  stylesAuthTitle,
+  stylesAuthAvatar,
+  stylesErrorMessage,
+} from '../../styles/theme';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import LoginForm from '../../components/LoginForm/LoginForm';
@@ -18,11 +26,6 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
   const errorMessages = {
     login: 'Авторизація неуспішна. Перевірте облікові дані.',
     registration: 'Реєстрація неуспішна. Спробуйте знову.',
-  };
-
-  const toggleAuthMode = () => {
-    setErrorMessage('');
-    setIsLoginMode((prev) => !prev);
   };
 
   const handleAuth = useCallback(
@@ -54,6 +57,27 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
       navigate,
       onClose,
     ]
+  );
+
+  const toggleAuthMode = () => {
+    setErrorMessage('');
+    setIsLoginMode((prev) => !prev);
+  };
+
+  const renderTitle = (isLoginMode) => (
+    <Box display='flex' flexDirection='column' alignItems='center'>
+      <Avatar
+        sx={{
+          ...stylesAuthAvatar,
+          bgcolor: isLoginMode ? 'success.light' : 'success.main',
+        }}
+      >
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography variant='h6' sx={stylesAuthTitle}>
+        {isLoginMode ? 'Авторизація' : 'Реєстрація'}
+      </Typography>
+    </Box>
   );
 
   const content = isLoginMode ? (
@@ -100,6 +124,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
         onClose();
         navigate('/');
       }}
+      title={renderTitle(isLoginMode)}
       content={content}
       actions={actions}
     />

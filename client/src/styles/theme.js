@@ -160,22 +160,6 @@ export const stylesFooterIcon = {
 };
 
 // ==============================================================
-// LoginForm & RegistrationForm components
-
-export const stylesAuthAvatar = {
-  mx: 'auto',
-  width: 50,
-  height: 50,
-  mb: 2,
-};
-
-export const stylesAuthTitle = {
-  textAlign: 'center',
-  fontWeight: 600,
-  mb: 1,
-};
-
-// ==============================================================
 // Preloader component
 
 export const stylesPreloaderTitle = {
@@ -225,4 +209,15 @@ export const stylesErrorMessage = {
   mt: 1,
   minHeight: '24px',
   textAlign: 'center',
+};
+
+export const stylesAuthAvatar = {
+  mx: 'auto',
+  width: 50,
+  height: 50,
+  mb: 2,
+};
+
+export const stylesAuthTitle = {
+  fontWeight: 600,
 };

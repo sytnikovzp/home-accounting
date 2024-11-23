@@ -21,9 +21,15 @@ function CustomModal({
       <Fade in={isOpen}>
         <Box sx={{ ...stylesFadeBox, ...styles.fadeBox }}>
           {title && (
-            <Typography id='custom-modal-title' variant='h6' mb={2}>
-              {title}
-            </Typography>
+            <Box id='custom-modal-title' mb={2}>
+              {typeof title === 'string' ? (
+                <Typography component='h1' variant='h6'>
+                  {title}
+                </Typography>
+              ) : (
+                title
+              )}
+            </Box>
           )}
           <Box sx={{ ...stylesFormBox, ...styles.formBox }}>{content}</Box>
           {actions && (

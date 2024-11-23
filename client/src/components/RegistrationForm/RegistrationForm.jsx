@@ -1,9 +1,6 @@
 import { Formik, Form } from 'formik';
 // ==============================================================
-import { Box, Avatar, Button, Typography } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-// ==============================================================
-import { stylesAuthAvatar, stylesAuthTitle } from '../../styles/theme';
+import { Box, Button } from '@mui/material';
 // ==============================================================
 import { REGISTRATION_FORM_INITIAL } from '../../constants';
 import { REGISTRATION_VALIDATION_SCHEME } from '../../utils/validationSchemes';
@@ -14,12 +11,6 @@ function RegistrationForm({ onSubmit }) {
   const renderForm = ({ errors, touched, isValid }) => {
     return (
       <Form>
-        <Avatar sx={{ ...stylesAuthAvatar, bgcolor: 'success.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h6' sx={stylesAuthTitle}>
-          Реєстрація
-        </Typography>
         <Box sx={{ mt: 2 }}>
           <FormField
             name='fullName'
