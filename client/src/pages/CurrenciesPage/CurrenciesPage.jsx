@@ -7,13 +7,16 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
+import useItemsPerPage from '../../hooks/useItemsPerPage';
 
 function CurrenciesPage() {
+  const itemsPerPage = useItemsPerPage();
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currencies, setCurrencies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(itemsPerPage);
   const [totalCount, setTotalCount] = useState(0);
   const [currencyToDelete, setCurrencyToDelete] = useState(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -70,7 +73,7 @@ function CurrenciesPage() {
 
   const handleRowsPerPageChange = (newPageSize) => {
     setPageSize(newPageSize);
-    setCurrentPage(1); // Сброс на первую страницу
+    setCurrentPage(1);
   };
 
   if (isLoading) return <Preloader message='Завантаження валют...' />;
@@ -93,7 +96,7 @@ function CurrenciesPage() {
           pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
-          rowsPerPageOptions: [5, 10, 25, 50],
+          rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
         }}
       />
       <DeleteConfirmation
