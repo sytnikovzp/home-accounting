@@ -11,17 +11,29 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const ListTable = ({ columns, rows, onEdit, onDelete, pagination }) => {
+const ListTable = ({
+  columns,
+  rows,
+  onEdit,
+  onDelete,
+  pagination: {
+    totalCount,
+    currentPage,
+    pageSize,
+    onPageChange,
+    onRowsPerPageChange,
+    rowsPerPageOptions = [5, 10, 25, 50],
+  },
+}) => {
   return (
     <TableContainer style={{ width: '100%' }}>
-      <Table sx={{ 
-        width: '100%' }}>
+      <Table sx={{ width: '100%' }}>
         <TableHead>
           <TableRow>
             {columns.map((col) => (
               <TableCell
                 key={col.field}
-                align={col.align || ''}
+                align={col.align || 'center'}
                 sx={{ textAlign: col.align || 'center' }}
               >
                 {col.headerName}
@@ -50,15 +62,17 @@ const ListTable = ({ columns, rows, onEdit, onDelete, pagination }) => {
           ))}
         </TableBody>
       </Table>
-      {pagination && (
-        <TablePagination
-          component='div'
-          count={pagination.totalCount}
-          page={pagination.currentPage - 1}
-          rowsPerPage={pagination.pageSize}
-          onPageChange={(event, page) => pagination.onPageChange(page + 1)}
-        />
-      )}
+      <TablePagination
+        component='div'
+        count={totalCount}
+        page={currentPage - 1}
+        rowsPerPage={pageSize}
+        rowsPerPageOptions={rowsPerPageOptions}
+        onPageChange={(event, page) => onPageChange(page + 1)}
+        onRowsPerPageChange={(event) =>
+          onRowsPerPageChange(parseInt(event.target.value))
+        }
+      />
     </TableContainer>
   );
 };

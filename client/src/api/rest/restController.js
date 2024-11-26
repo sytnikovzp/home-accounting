@@ -79,7 +79,16 @@ const restController = {
   },
 
   // Currency management
-  fetchAllCurrencies: () => currencyService.getAllCurrencies(),
+  fetchAllCurrencies: async ({ page = 1, limit = 10 } = {}) => {
+    const { data, totalCount } = await currencyService.getAllCurrencies({
+      page,
+      limit,
+    });
+    return {
+      data,
+      totalCount,
+    };
+  },
   fetchCurrencyById: (currencyId) =>
     currencyService.getCurrencyById(currencyId),
   addCurrency: (title, description) =>

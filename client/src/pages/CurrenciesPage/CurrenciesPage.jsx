@@ -8,18 +8,26 @@ import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
 
-const CurrenciesPage = () => {
+function CurrenciesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currencies, setCurrencies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [totalCount, setTotalCount] = useState(0);
   const [currencyToDelete, setCurrencyToDelete] = useState(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
-        const data = await restController.fetchAllCurrencies();
+        setIsLoading(true);
+        const { data, totalCount } = await restController.fetchAllCurrencies({
+          page: currentPage,
+          limit: pageSize,
+        });
         setCurrencies(data);
+        setTotalCount(totalCount);
       } catch (error) {
         console.error('Не вдалося отримати валюти:', error);
         setError('Не вдалося отримати валюти');
@@ -29,7 +37,7 @@ const CurrenciesPage = () => {
     };
 
     fetchCurrencies();
-  }, []);
+  }, [currentPage, pageSize]);
 
   const handleEdit = (currency) => {
     console.log('Edit:', currency);
@@ -56,6 +64,15 @@ const CurrenciesPage = () => {
     }
   };
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (newPageSize) => {
+    setPageSize(newPageSize);
+    setCurrentPage(1); // Сброс на первую страницу
+  };
+
   if (isLoading) return <Preloader message='Завантаження валют...' />;
   if (error) return <Error error={error} />;
 
@@ -70,6 +87,14 @@ const CurrenciesPage = () => {
         rows={currencies}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        pagination={{
+          totalCount,
+          currentPage,
+          pageSize,
+          onPageChange: handlePageChange,
+          onRowsPerPageChange: handleRowsPerPageChange,
+          rowsPerPageOptions: [5, 10, 25, 50],
+        }}
       />
       <DeleteConfirmation
         isOpen={isDeleteModalOpen}
@@ -78,6 +103,6 @@ const CurrenciesPage = () => {
       />
     </div>
   );
-};
+}
 
 export default CurrenciesPage;
