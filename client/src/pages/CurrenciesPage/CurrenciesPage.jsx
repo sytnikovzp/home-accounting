@@ -3,20 +3,21 @@ import { Typography } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePagination from '../../hooks/usePagination';
 // ==============================================================
-import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
+import ListTable from '../../components/ListTable/ListTable';
 import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
 
 function CurrenciesPage() {
   const itemsPerPage = useItemsPerPage();
+  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
+    usePagination(itemsPerPage);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currencies, setCurrencies] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(itemsPerPage);
   const [totalCount, setTotalCount] = useState(0);
   const [currencyToDelete, setCurrencyToDelete] = useState(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -65,15 +66,6 @@ function CurrenciesPage() {
         setDeleteError('Не вдалося видалити валюту. Недостатньо прав.');
       }
     }
-  };
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
-  const handleRowsPerPageChange = (newPageSize) => {
-    setPageSize(newPageSize);
-    setCurrentPage(1);
   };
 
   if (isLoading) return <Preloader message='Завантаження валют...' />;

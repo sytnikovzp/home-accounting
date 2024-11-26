@@ -491,30 +491,6 @@ async function postgresData() {
         created_at: new Date(),
         updated_at: new Date(),
       },
-      {
-        title: 'XAU',
-        description: 'Золото',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        title: 'XAG',
-        description: 'Срібло',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        title: 'XPT',
-        description: 'Платина',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        title: 'XPD',
-        description: 'Паладій',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
     ],
     measures: [
       {

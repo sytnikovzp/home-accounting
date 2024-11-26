@@ -39,7 +39,7 @@ const ListTable = ({
                 {col.headerName}
               </TableCell>
             ))}
-            <TableCell align='center'>Редагування/Видалення</TableCell>
+            <TableCell align='right'>Редагування/Видалення</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,7 +50,7 @@ const ListTable = ({
                   {row[col.field]}
                 </TableCell>
               ))}
-              <TableCell align='center'>
+              <TableCell align='right'>
                 <IconButton onClick={() => onEdit(row)}>
                   <EditIcon />
                 </IconButton>
