@@ -12,10 +12,15 @@ const {
 class CategoryController {
   async getAllCategories(req, res, next) {
     try {
+      const { limit, offset } = req.pagination;
       const { status = 'approved' } = req.query;
-      const allCategories = await getAllCategories(status);
+      const { allCategories, total } = await getAllCategories(
+        status,
+        limit,
+        offset
+      );
       if (allCategories.length > 0) {
-        res.status(200).json(allCategories);
+        res.status(200).set('X-Total-Count', total).json(allCategories);
       } else {
         res.status(401);
       }

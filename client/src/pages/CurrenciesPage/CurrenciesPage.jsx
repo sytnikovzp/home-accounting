@@ -60,11 +60,12 @@ const CurrenciesPage = () => {
   if (error) return <Error error={error} />;
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div>
       <Typography variant='h6'>Валюти</Typography>
       <ListTable
         columns={[
-          { field: 'title', headerName: 'Назва валюти', align: 'center' },
+          { field: 'title', headerName: 'Назва валюти', align: 'left' },
+          { field: 'description', headerName: 'Опис валюти', align: 'left' },
         ]}
         rows={currencies}
         onEdit={handleEdit}

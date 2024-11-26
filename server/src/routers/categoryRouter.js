@@ -11,13 +11,14 @@ const {
 const {
   auth: { authHandler },
   validation: { validateCategory, validateModeration },
+  pagination: { paginateElements },
 } = require('../middlewares');
 
 const categoryRouter = new Router();
 
 categoryRouter
   .route('/')
-  .get(authHandler, getAllCategories)
+  .get(authHandler, paginateElements, getAllCategories)
   .post(authHandler, validateCategory, createCategory);
 
 categoryRouter

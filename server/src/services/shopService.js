@@ -3,7 +3,7 @@ const { formatDate, checkPermission } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class ShopService {
-  async getAllShops(limit, offset, status) {
+  async getAllShops(status, limit, offset) {
     const foundShops = await Shop.findAll({
       attributes: ['id', 'title', 'url', 'logo'],
       where: { status },

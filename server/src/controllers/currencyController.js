@@ -11,9 +11,10 @@ const {
 class CurrencyController {
   async getAllCurrencies(req, res, next) {
     try {
-      const allCurrencies = await getAllCurrencies();
+      const { limit, offset } = req.pagination;
+      const { allCurrencies, total } = await getAllCurrencies(limit, offset);
       if (allCurrencies.length > 0) {
-        res.status(200).json(allCurrencies);
+        res.status(200).set('X-Total-Count', total).json(allCurrencies);
       } else {
         res.status(401);
       }

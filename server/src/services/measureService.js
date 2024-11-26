@@ -3,13 +3,24 @@ const { formatDate, checkPermission } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class MeasureService {
-  async getAllMeasures() {
+  async getAllMeasures(limit, offset) {
     const foundMeasures = await Measure.findAll({
-      attributes: ['id', 'title'],
+      attributes: ['id', 'title', 'description'],
       raw: true,
+      limit,
+      offset,
     });
     if (foundMeasures.length === 0) throw notFound('Measures not found');
-    return foundMeasures;
+    const allMeasures = foundMeasures.map((measure) => ({
+      id: measure.id,
+      title: measure.title,
+      description: measure.description || '',
+    }));
+    const total = await Measure.count();
+    return {
+      allMeasures,
+      total,
+    };
   }
 
   async getMeasureById(measureId) {

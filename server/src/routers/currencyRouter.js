@@ -10,13 +10,14 @@ const {
 const {
   auth: { authHandler },
   validation: { validateCurrency },
+  pagination: { paginateElements },
 } = require('../middlewares');
 
 const currencyRouter = new Router();
 
 currencyRouter
   .route('/')
-  .get(authHandler, getAllCurrencies)
+  .get(authHandler, paginateElements, getAllCurrencies)
   .post(authHandler, validateCurrency, createCurrency);
 
 currencyRouter

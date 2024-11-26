@@ -3,14 +3,24 @@ const { formatDate, checkPermission } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class CategoryService {
-  async getAllCategories(status) {
+  async getAllCategories(status, limit, offset) {
     const foundCategories = await Category.findAll({
       attributes: ['id', 'title'],
       where: { status },
       raw: true,
+      limit,
+      offset,
     });
     if (foundCategories.length === 0) throw notFound('Categories not found');
-    return foundCategories;
+    const allCategories = foundCategories.map((category) => ({
+      id: category.id,
+      title: category.title,
+    }));
+    const total = await Category.count();
+    return {
+      allCategories,
+      total,
+    };
   }
 
   async getCategoryById(categoryId) {

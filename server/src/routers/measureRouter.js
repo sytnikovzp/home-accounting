@@ -10,13 +10,14 @@ const {
 const {
   auth: { authHandler },
   validation: { validateMeasure },
+  pagination: { paginateElements },
 } = require('../middlewares');
 
 const measureRouter = new Router();
 
 measureRouter
   .route('/')
-  .get(authHandler, getAllMeasures)
+  .get(authHandler, paginateElements, getAllMeasures)
   .post(authHandler, validateMeasure, createMeasure);
 
 measureRouter

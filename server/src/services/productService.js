@@ -7,7 +7,7 @@ const {
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class ProductService {
-  async getAllProducts(limit, offset, status) {
+  async getAllProducts(status, limit, offset) {
     const foundProducts = await Product.findAll({
       attributes: ['id', 'title'],
       where: { status },

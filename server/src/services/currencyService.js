@@ -3,13 +3,24 @@ const { formatDate, checkPermission } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class CurrencyService {
-  async getAllCurrencies() {
+  async getAllCurrencies(limit, offset) {
     const foundCurrencies = await Currency.findAll({
-      attributes: ['id', 'title'],
+      attributes: ['id', 'title', 'description'],
       raw: true,
+      limit,
+      offset,
     });
     if (foundCurrencies.length === 0) throw notFound('Currencies not found');
-    return foundCurrencies;
+    const allCurrencies = foundCurrencies.map((currency) => ({
+      id: currency.id,
+      title: currency.title,
+      description: currency.description || '',
+    }));
+    const total = await Currency.count();
+    return {
+      allCurrencies,
+      total,
+    };
   }
 
   async getCurrencyById(currencyId) {

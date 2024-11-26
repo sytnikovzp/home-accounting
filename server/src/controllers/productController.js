@@ -15,9 +15,9 @@ class ProductController {
       const { limit, offset } = req.pagination;
       const { status = 'approved' } = req.query;
       const { allProducts, total } = await getAllProducts(
+        status,
         limit,
-        offset,
-        status
+        offset
       );
       if (allProducts.length > 0) {
         res.status(200).set('X-Total-Count', total).json(allProducts);

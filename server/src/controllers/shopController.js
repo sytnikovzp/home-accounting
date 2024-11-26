@@ -16,7 +16,7 @@ class ShopController {
     try {
       const { limit, offset } = req.pagination;
       const { status = 'approved' } = req.query;
-      const { allShops, total } = await getAllShops(limit, offset, status);
+      const { allShops, total } = await getAllShops(status, limit, offset);
       if (allShops.length > 0) {
         res.status(200).set('X-Total-Count', total).json(allShops);
       } else {
