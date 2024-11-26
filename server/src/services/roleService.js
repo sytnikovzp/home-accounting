@@ -20,18 +20,29 @@ class RoleService {
     };
   }
 
-  async getAllRoles() {
-    const foundRoles = await Role.find().populate('permissions').lean();
+  async getAllRoles(limit, offset) {
+    const foundRoles = await Role.find()
+      .populate('permissions')
+      .limit(limit)
+      .skip(offset)
+      .lean();
     if (foundRoles.length === 0) throw notFound('Roles not found');
-    return foundRoles.map(({ _id, title, description, permissions }) => ({
-      id: _id,
-      title,
-      description: description || '',
-      permissions: permissions.map(({ _id, title }) => ({
+    const allRoles = foundRoles.map(
+      ({ _id, title, description, permissions }) => ({
         id: _id,
         title,
-      })),
-    }));
+        description: description || '',
+        permissions: permissions.map(({ _id, title }) => ({
+          id: _id,
+          title,
+        })),
+      })
+    );
+    const total = await Role.countDocuments();
+    return {
+      allRoles,
+      total,
+    };
   }
 
   async getRoleById(id) {

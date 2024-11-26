@@ -578,13 +578,13 @@ async function postgresData() {
         updated_at: new Date(),
       },
       {
-        title: 'пляшка',
-        description: '',
+        title: 'шт',
+        description: 'одиниця',
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        title: 'одиниця',
+        title: 'пляшка',
         description: '',
         created_at: new Date(),
         updated_at: new Date(),

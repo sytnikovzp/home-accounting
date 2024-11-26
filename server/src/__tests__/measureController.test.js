@@ -57,12 +57,25 @@ describe('MeasureController', () => {
   });
 
   describe('GET /api/measures', () => {
-    it('should return list of measures', async () => {
+    it('should return list of measures (default pagination)', async () => {
       const response = await request(app)
         .get('/api/measures')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
+    });
+
+    it('should return list of measures (custom pagination)', async () => {
+      const response = await request(app)
+        .get('/api/measures')
+        .query({ page: 1, limit: 10 })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -173,7 +186,7 @@ describe('MeasureController', () => {
         .patch(`/api/measures/${measureId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'kg',
+          title: 'кг',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe('This measure already exists');

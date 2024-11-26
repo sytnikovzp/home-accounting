@@ -26,9 +26,10 @@ class RoleController {
 
   async getAllRoles(req, res, next) {
     try {
-      const allRoles = await getAllRoles();
+      const { limit, offset } = req.pagination;
+      const { allRoles, total } = await getAllRoles(limit, offset);
       if (allRoles.length > 0) {
-        res.status(200).json(allRoles);
+        res.status(200).set('X-Total-Count', total).json(allRoles);
       } else {
         res.status(401);
       }

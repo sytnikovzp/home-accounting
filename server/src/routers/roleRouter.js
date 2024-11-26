@@ -22,7 +22,7 @@ roleRouter
 
 roleRouter
   .route('/')
-  .get(authHandler, getAllRoles)
+  .get(authHandler, paginateElements, getAllRoles)
   .post(authHandler, validateRole, createRole);
 
 roleRouter

@@ -57,12 +57,25 @@ describe('CurrencyController', () => {
   });
 
   describe('GET /api/currencies', () => {
-    it('should return list of currencies', async () => {
+    it('should return list of currencies (default pagination)', async () => {
       const response = await request(app)
         .get('/api/currencies')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
+    });
+
+    it('should return list of currencies (custom pagination)', async () => {
+      const response = await request(app)
+        .get('/api/currencies')
+        .query({ page: 1, limit: 10 })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return 401 if access token is missing', async () => {

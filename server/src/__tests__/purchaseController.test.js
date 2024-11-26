@@ -62,7 +62,9 @@ describe('PurchaseController', () => {
         .get('/api/purchases')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
     it('should return list of purchases (custom pagination)', async () => {
@@ -71,7 +73,9 @@ describe('PurchaseController', () => {
         .query({ page: 1, limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -86,21 +90,21 @@ describe('PurchaseController', () => {
         .post('/api/purchases')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Headphones',
+          product: 'Навушники',
           amount: 2,
           price: 500,
           shop: 'Comfy',
-          measure: 'unit',
+          measure: 'шт',
           currency: 'UAH',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.product).toBe('Headphones');
+      expect(response.body.product).toBe('Навушники');
       expect(response.body.amount).toBe('2.00');
       expect(response.body.price).toBe('500.00');
       expect(response.body.summ).toBe('1000.00');
       expect(response.body.shop).toBe('Comfy');
-      expect(response.body.measure).toBe('unit');
+      expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('UAH');
       expect(response.body.createdBy).toBeDefined();
       purchaseId = response.body.id;
@@ -111,11 +115,11 @@ describe('PurchaseController', () => {
         .post('/api/purchases')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 2,
           price: 100,
-          shop: 'Velyka kyshenya',
-          measure: 'unit',
+          shop: 'Велика кишеня',
+          measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(404);
@@ -127,11 +131,11 @@ describe('PurchaseController', () => {
         .post('/api/purchases')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Notebook',
+          product: 'Ноутбуки',
           amount: 2,
           price: 100,
           shop: 'Comfy',
-          measure: 'unit',
+          measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(404);
@@ -143,11 +147,11 @@ describe('PurchaseController', () => {
         .post('/api/purchases')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 2,
           price: 100,
           shop: 'Comfy',
-          measure: 'liter',
+          measure: 'літр',
           currency: 'USD',
         });
       expect(response.status).toBe(404);
@@ -159,12 +163,12 @@ describe('PurchaseController', () => {
         .post('/api/purchases')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 2,
           price: 100,
           shop: 'Comfy',
-          measure: 'unit',
-          currency: 'YTL',
+          measure: 'шт',
+          currency: 'YYY',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Currency not found');
@@ -175,11 +179,11 @@ describe('PurchaseController', () => {
         .post('/api/purchases')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 2,
           price: 100,
           shop: 'Comfy',
-          measure: 'unit',
+          measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(403);
@@ -196,12 +200,12 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', purchaseId);
-      expect(response.body.product).toBe('Headphones');
+      expect(response.body.product).toBe('Навушники');
       expect(response.body.amount).toBe('2.00');
       expect(response.body.price).toBe('500.00');
       expect(response.body.summ).toBe('1000.00');
       expect(response.body.shop).toBe('Comfy');
-      expect(response.body.measure).toBe('unit');
+      expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('UAH');
       expect(response.body.createdBy).toBeDefined();
       expect(response.body.createdAt).toBeDefined();
@@ -228,21 +232,21 @@ describe('PurchaseController', () => {
         .patch(`/api/purchases/${purchaseId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 1,
           price: 850.0,
-          shop: 'Epicentr',
-          measure: 'unit',
+          shop: 'Епіцентр',
+          measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', purchaseId);
-      expect(response.body.product).toBe('Laptop');
+      expect(response.body.product).toBe('Ноутбук');
       expect(response.body.amount).toBe('1.00');
       expect(response.body.price).toBe('850.00');
       expect(response.body.summ).toBe('850.00');
-      expect(response.body.shop).toBe('Epicentr');
-      expect(response.body.measure).toBe('unit');
+      expect(response.body.shop).toBe('Епіцентр');
+      expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('USD');
       expect(response.body.createdBy).toBeDefined();
     });
@@ -252,11 +256,11 @@ describe('PurchaseController', () => {
         .patch(`/api/purchases/${purchaseId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 2,
           price: 100,
-          shop: 'Velyka kyshenya',
-          measure: 'unit',
+          shop: 'Велика кишеня',
+          measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(404);
@@ -268,11 +272,11 @@ describe('PurchaseController', () => {
         .patch(`/api/purchases/${purchaseId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Notebook',
+          product: 'Ноутбуки',
           amount: 2,
           price: 100,
           shop: 'Comfy',
-          measure: 'unit',
+          measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(404);
@@ -284,11 +288,11 @@ describe('PurchaseController', () => {
         .patch(`/api/purchases/${purchaseId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 2,
           price: 100,
           shop: 'Comfy',
-          measure: 'liter',
+          measure: 'літр',
           currency: 'USD',
         });
       expect(response.status).toBe(404);
@@ -300,12 +304,12 @@ describe('PurchaseController', () => {
         .patch(`/api/purchases/${purchaseId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 2,
           price: 100,
           shop: 'Comfy',
-          measure: 'unit',
-          currency: 'YTL',
+          measure: 'шт',
+          currency: 'YYY',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Currency not found');
@@ -316,11 +320,11 @@ describe('PurchaseController', () => {
         .patch(`/api/purchases/${purchaseId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 1,
           price: 850.0,
-          shop: 'Epicentr',
-          measure: 'unit',
+          shop: 'Епіцентр',
+          measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(403);
@@ -334,11 +338,11 @@ describe('PurchaseController', () => {
         .patch('/api/purchases/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          product: 'Laptop',
+          product: 'Ноутбук',
           amount: 1,
           price: 850.0,
-          shop: 'Epicentr',
-          measure: 'unit',
+          shop: 'Епіцентр',
+          measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(404);

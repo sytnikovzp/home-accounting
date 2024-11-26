@@ -11,23 +11,23 @@ describe('StatisticController', () => {
     it('should return cost for category with time filter (month)', async () => {
       const response = await request(app)
         .get('/api/statistics/category-per-period')
-        .query({ category: 'Household devices', ago: 'month' });
+        .query({ category: 'Побутові пристрої', ago: 'month' });
       expect(response.status).toBe(200);
       expect(response.body).toEqual([{ result: '83000.00' }]);
     });
 
-    it('should return the cost by category "Household devices" without time filter', async () => {
+    it('should return the cost by category "Побутові пристрої" without time filter', async () => {
       const response = await request(app)
         .get('/api/statistics/category-per-period')
-        .query({ category: 'Household devices' });
+        .query({ category: 'Побутові пристрої' });
       expect(response.status).toBe(200);
       expect(response.body).toEqual([{ result: '83000.00' }]);
     });
 
-    it('should return the cost by category "Clothes" with result 0', async () => {
+    it('should return the cost by category "Одяг" with result 0', async () => {
       const response = await request(app)
         .get('/api/statistics/category-per-period')
-        .query({ category: 'Clothes' });
+        .query({ category: 'Одяг' });
       expect(response.status).toBe(200);
       expect(response.body).toEqual([{ result: 0 }]);
     });
@@ -50,18 +50,18 @@ describe('StatisticController', () => {
       expect(response.body).toEqual([{ result: '49000.00' }]);
     });
 
-    it('should return total cost for shop "ATB" without time filter', async () => {
+    it('should return total cost for shop "АТБ" without time filter', async () => {
       const response = await request(app)
         .get('/api/statistics/shop-per-period')
-        .query({ shop: 'ATB' });
+        .query({ shop: 'АТБ' });
       expect(response.status).toBe(200);
       expect(response.body).toEqual([{ result: '44.75' }]);
     });
 
-    it('should return 404 error for non-existing shop "Auchan"', async () => {
+    it('should return 404 error for non-existing shop "Ашан"', async () => {
       const response = await request(app)
         .get('/api/statistics/shop-per-period')
-        .query({ shop: 'Auchan' });
+        .query({ shop: 'Ашан' });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Shop not found');
     });

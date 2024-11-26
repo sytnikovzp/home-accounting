@@ -72,7 +72,9 @@ describe('UserController', () => {
         .get('/api/users')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
     it('should get all users (custom pagination)', async () => {
@@ -81,7 +83,9 @@ describe('UserController', () => {
         .query({ page: 1, limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return 401 if access token is missing', async () => {

@@ -62,7 +62,9 @@ describe('ProductController', () => {
         .get('/api/products')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
     it('should return list of products (status approoved, custom pagination)', async () => {
@@ -71,7 +73,9 @@ describe('ProductController', () => {
         .query({ page: 1, limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return list of products (status pending, default pagination)', async () => {
@@ -80,7 +84,9 @@ describe('ProductController', () => {
         .query({ status: 'pending' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
     it('should return list of products (status pending, custom pagination)', async () => {
@@ -90,7 +96,9 @@ describe('ProductController', () => {
         .query({ page: 1, limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return list of products (status rejected, default pagination)', async () => {
@@ -99,7 +107,9 @@ describe('ProductController', () => {
         .query({ status: 'rejected' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
     it('should return list of products (status rejected, custom pagination)', async () => {
@@ -109,7 +119,9 @@ describe('ProductController', () => {
         .query({ page: 1, limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -125,12 +137,12 @@ describe('ProductController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'New product by moderator',
-          category: 'Devices',
+          category: 'Пристрої',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
       expect(response.body.title).toBe('New product by moderator');
-      expect(response.body.category).toBe('Devices');
+      expect(response.body.category).toBe('Пристрої');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
@@ -143,12 +155,12 @@ describe('ProductController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           title: 'New product by user',
-          category: 'Electronics',
+          category: 'Електроніка',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
       expect(response.body.title).toBe('New product by user');
-      expect(response.body.category).toBe('Electronics');
+      expect(response.body.category).toBe('Електроніка');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
@@ -162,7 +174,7 @@ describe('ProductController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           title: 'New product',
-          category: 'Cars',
+          category: 'Машини',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Category not found');
@@ -201,7 +213,7 @@ describe('ProductController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', productId);
       expect(response.body.title).toBe('New product by user');
-      expect(response.body.category).toBe('Electronics');
+      expect(response.body.category).toBe('Електроніка');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
@@ -261,12 +273,12 @@ describe('ProductController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           title: 'Updated Product Title',
-          category: 'Computing',
+          category: 'Обчислювальна техніка',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', productId);
       expect(response.body.title).toBe('Updated Product Title');
-      expect(response.body.category).toBe('Computing');
+      expect(response.body.category).toBe('Обчислювальна техніка');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
@@ -279,12 +291,12 @@ describe('ProductController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Updated Product Title',
-          category: 'Computing',
+          category: 'Обчислювальна техніка',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', productId);
       expect(response.body.title).toBe('Updated Product Title');
-      expect(response.body.category).toBe('Computing');
+      expect(response.body.category).toBe('Обчислювальна техніка');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
@@ -296,7 +308,7 @@ describe('ProductController', () => {
         .patch(`/api/products/${productId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Tomato',
+          title: 'Помідори',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe('This product already exists');

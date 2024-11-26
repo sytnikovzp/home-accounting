@@ -1,17 +1,22 @@
 ### Get list all permissions (default pagination)
 GET http://localhost:5000/api/roles/permissions HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDYwNDEzLCJleHAiOjE3MzIwNjEzMTN9.vihR0EaaZFyDFQbyAOe4bfGjKg2Mkidg1hzc7TutJL4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyNjIxMjQ4LCJleHAiOjE3MzI2MjIxNDh9.Q5pJX8GAiDQXqB8ErR19RGO7RUOFhXcaYN3J5bmevFw
 
 ### Get list all permissions (custom pagination)
 GET http://localhost:5000/api/roles/permissions?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMzY2ODIyLCJleHAiOjE3MzIzNjc3MjJ9.nmJQSQ-GgqGEG2e6X3AGXrk4nIxKCZlipBpy4SmJjz0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyNjIxMjQ4LCJleHAiOjE3MzI2MjIxNDh9.Q5pJX8GAiDQXqB8ErR19RGO7RUOFhXcaYN3J5bmevFw
 
-### Get list all roles
+### Get list all roles (default pagination)
 GET http://localhost:5000/api/roles HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDYwNDEzLCJleHAiOjE3MzIwNjEzMTN9.vihR0EaaZFyDFQbyAOe4bfGjKg2Mkidg1hzc7TutJL4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyNjIxMjQ4LCJleHAiOjE3MzI2MjIxNDh9.Q5pJX8GAiDQXqB8ErR19RGO7RUOFhXcaYN3J5bmevFw
+
+### Get list all roles (custom pagination)
+GET http://localhost:5000/api/roles?page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyNjIxMjQ4LCJleHAiOjE3MzI2MjIxNDh9.Q5pJX8GAiDQXqB8ErR19RGO7RUOFhXcaYN3J5bmevFw
 
 ### Create role
 POST http://localhost:5000/api/roles HTTP/1.1

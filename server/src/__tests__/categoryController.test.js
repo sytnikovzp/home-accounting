@@ -57,30 +57,71 @@ describe('CategoryController', () => {
   });
 
   describe('GET /api/categories', () => {
-    it('should return list of categories (status approoved)', async () => {
+    it('should return list of categories (status approoved, default pagination)', async () => {
       const response = await request(app)
         .get('/api/categories')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of categories (status pending)', async () => {
+    it('should return list of categories (status approoved, custom pagination)', async () => {
+      const response = await request(app)
+        .get('/api/categories')
+        .query({ page: 1, limit: 10 })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
+    });
+
+    it('should return list of categories (status pending, default pagination)', async () => {
       const response = await request(app)
         .get('/api/categories')
         .query({ status: 'pending' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of categories (status rejected)', async () => {
+    it('should return list of categories (status pending, custom pagination)', async () => {
+      const response = await request(app)
+        .get('/api/categories')
+        .query({ status: 'pending' })
+        .query({ page: 1, limit: 10 })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
+    });
+
+    it('should return list of categories (status rejected, default pagination)', async () => {
       const response = await request(app)
         .get('/api/categories')
         .query({ status: 'rejected' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
+    });
+
+    it('should return list of categories (status rejected, custom pagination)', async () => {
+      const response = await request(app)
+        .get('/api/categories')
+        .query({ status: 'rejected' })
+        .query({ page: 1, limit: 10 })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -248,7 +289,7 @@ describe('CategoryController', () => {
         .patch(`/api/categories/${categoryId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Devices',
+          title: 'Пристрої',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe(

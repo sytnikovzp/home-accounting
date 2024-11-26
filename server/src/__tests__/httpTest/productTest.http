@@ -59,7 +59,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU
 
 {
   "title": "Updated Product",
-  "category": "Devices"
+  "category": "Пристрої"
 }
 
 ### Delete product

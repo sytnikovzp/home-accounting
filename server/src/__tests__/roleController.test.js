@@ -62,7 +62,9 @@ describe('RoleController', () => {
         .get('/api/roles/permissions')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
     it('should get all permissions (custom pagination)', async () => {
@@ -71,7 +73,9 @@ describe('RoleController', () => {
         .query({ page: 1, limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -81,12 +85,36 @@ describe('RoleController', () => {
   });
 
   describe('GET /api/roles', () => {
-    it('should return list of roles', async () => {
+    it('should return list of roles (default pagination)', async () => {
       const response = await request(app)
         .get('/api/roles')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
       expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
+      response.body.forEach((role) => {
+        expect(role).toHaveProperty('id');
+        expect(role).toHaveProperty('title');
+        expect(role).toHaveProperty('description');
+        expect(role).toHaveProperty('permissions');
+        expect(Array.isArray(role.permissions)).toBe(true);
+        role.permissions.forEach((permission) => {
+          expect(permission).toHaveProperty('id');
+          expect(permission).toHaveProperty('title');
+        });
+      });
+    });
+
+    it('should return list of roles (custom pagination)', async () => {
+      const response = await request(app)
+        .get('/api/roles')
+        .query({ page: 1, limit: 10 })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(10);
       response.body.forEach((role) => {
         expect(role).toHaveProperty('id');
         expect(role).toHaveProperty('title');
