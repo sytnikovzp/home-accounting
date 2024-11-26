@@ -124,7 +124,6 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
         onClose();
         navigate('/');
       }}
-      modalType='form'
       title={renderTitle(isLoginMode)}
       content={content}
       actions={actions}

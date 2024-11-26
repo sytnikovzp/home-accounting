@@ -5,15 +5,11 @@ import { stylesFadeBox, stylesContentBox } from '../../styles/theme';
 function CustomModal({
   isOpen,
   onClose,
-  modalType = 'form',
   title,
   content,
   actions,
   disableBackdropClick = false,
 }) {
-  const isFormModal = modalType === 'form';
-  const isDialogModal = modalType === 'dialog';
-
   return (
     <Modal
       open={isOpen}
@@ -23,19 +19,11 @@ function CustomModal({
       aria-describedby='custom-modal-description'
     >
       <Fade in={isOpen}>
-        <Box
-          sx={{
-            ...stylesFadeBox,
-            minHeight: isFormModal ? 'auto' : 200,
-          }}
-        >
+        <Box sx={stylesFadeBox}>
           {title && (
             <Box id='custom-modal-title' mb={2}>
               {typeof title === 'string' ? (
-                <Typography
-                  component='h1'
-                  variant={isDialogModal ? 'h6' : 'h5'}
-                >
+                <Typography component='h1' variant='h5'>
                   {title}
                 </Typography>
               ) : (
@@ -43,21 +31,9 @@ function CustomModal({
               )}
             </Box>
           )}
-          <Box
-            sx={{
-              ...stylesContentBox,
-              minHeight: isDialogModal ? 100 : 200,
-            }}
-          >
-            {content}
-          </Box>
+          <Box sx={stylesContentBox}>{content}</Box>
           {actions && (
-            <Box
-              mt={2}
-              display='flex'
-              justifyContent={isDialogModal ? 'space-between' : 'flex-end'}
-              gap={2}
-            >
+            <Box mt={2} display='flex' justifyContent='flex-end' gap={2}>
               {actions}
             </Box>
           )}

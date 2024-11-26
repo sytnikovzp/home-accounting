@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Typography } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
+import useItemsPerPage from '../../hooks/useItemsPerPage';
 // ==============================================================
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
-import useItemsPerPage from '../../hooks/useItemsPerPage';
 
 function CurrenciesPage() {
   const itemsPerPage = useItemsPerPage();
@@ -20,27 +20,28 @@ function CurrenciesPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [currencyToDelete, setCurrencyToDelete] = useState(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+
+  const fetchCurrencies = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const { data, totalCount } = await restController.fetchAllCurrencies({
+        page: currentPage,
+        limit: pageSize,
+      });
+      setCurrencies(data);
+      setTotalCount(totalCount);
+    } catch (error) {
+      console.error('Не вдалося отримати валюти:', error);
+      setError('Не вдалося отримати валюти');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentPage, pageSize]);
 
   useEffect(() => {
-    const fetchCurrencies = async () => {
-      try {
-        setIsLoading(true);
-        const { data, totalCount } = await restController.fetchAllCurrencies({
-          page: currentPage,
-          limit: pageSize,
-        });
-        setCurrencies(data);
-        setTotalCount(totalCount);
-      } catch (error) {
-        console.error('Не вдалося отримати валюти:', error);
-        setError('Не вдалося отримати валюти');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchCurrencies();
-  }, [currentPage, pageSize]);
+  }, [fetchCurrencies]);
 
   const handleEdit = (currency) => {
     console.log('Edit:', currency);
@@ -49,20 +50,19 @@ function CurrenciesPage() {
   const handleDelete = (currency) => {
     setCurrencyToDelete(currency);
     setDeleteModalOpen(true);
+    setDeleteError(null);
   };
 
   const handleConfirmDelete = async () => {
     if (currencyToDelete) {
       try {
         await restController.removeCurrency(currencyToDelete.id);
-        console.log('Валюта успішно видалена:', currencyToDelete);
         setDeleteModalOpen(false);
         setCurrencyToDelete(null);
-        setCurrencies(
-          currencies.filter((currency) => currency.id !== currencyToDelete.id)
-        );
+        await fetchCurrencies();
       } catch (error) {
         console.error('Помилка при видаленні валюти:', error);
+        setDeleteError('Не вдалося видалити валюту. Недостатньо прав.');
       }
     }
   };
@@ -103,6 +103,7 @@ function CurrenciesPage() {
         isOpen={isDeleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
+        error={deleteError}
       />
     </div>
   );

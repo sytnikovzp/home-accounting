@@ -183,6 +183,7 @@ export const stylesFadeBox = {
   boxShadow: 24,
   p: 2,
   borderRadius: 2,
+  minHeight: 'auto',
   maxWidth: 600,
 };
 
@@ -191,6 +192,7 @@ export const stylesContentBox = {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+  minHeight: 200,
   width: '100%',
 };
 

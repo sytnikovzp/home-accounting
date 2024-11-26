@@ -1,28 +1,33 @@
-import { Button, Typography } from '@mui/material';
-// ==============================================================
-import CustomModal from '../../components/CustomModal/CustomModal';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Typography,
+} from '@mui/material';
 
-function DeleteConfirmation({ isOpen, onClose, onConfirm }) {
+function DeleteConfirmation({ isOpen, onClose, onConfirm, error }) {
   return (
-    <CustomModal
-      isOpen={isOpen}
-      onClose={onClose}
-      modalType='dialog'
-      title='Видалення елемента'
-      content={
+    <Dialog open={isOpen} onClose={onClose}>
+      <DialogTitle>Підтвердження видалення</DialogTitle>
+      <DialogContent>
         <Typography>Ви впевнені, що хочете видалити цей елемент?</Typography>
-      }
-      actions={
-        <>
-          <Button onClick={onClose} color='inherit'>
-            Скасувати
-          </Button>
-          <Button onClick={onConfirm} color='error' variant='contained'>
-            Видалити
-          </Button>
-        </>
-      }
-    />
+        {error && (
+          <Typography color='error' sx={{ mt: 2 }}>
+            {error}
+          </Typography>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color='primary'>
+          Скасувати
+        </Button>
+        <Button onClick={onConfirm} color='error' variant='contained'>
+          Видалити
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 
