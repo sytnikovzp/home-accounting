@@ -1,4 +1,4 @@
-import api from '../api/interceptor';
+import api from '../api';
 
 const getAllMeasures = async () => {
   const response = await api.get('/measures');

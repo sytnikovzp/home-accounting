@@ -1,4 +1,4 @@
-import api from '../api/interceptor';
+import api from '../api';
 
 const getCostByCategoryPerPeriod = async ({ category, ago = null }) => {
   const params = new URLSearchParams({

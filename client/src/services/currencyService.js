@@ -1,6 +1,6 @@
 import axios from 'axios';
 // ==============================================================
-import api from '../api/interceptor';
+import api from '../api';
 
 const getNBURates = async () => {
   const response = await axios.get(

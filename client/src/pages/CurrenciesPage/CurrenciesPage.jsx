@@ -9,23 +9,22 @@ import Error from '../../components/Error/Error';
 import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
 
 const CurrenciesPage = () => {
-  const [currencies, setCurrencies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [currencies, setCurrencies] = useState([]);
   const [currencyToDelete, setCurrencyToDelete] = useState(null);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
-        setLoading(true);
         const data = await restController.fetchAllCurrencies();
         setCurrencies(data);
       } catch (error) {
         console.error('Не вдалося отримати валюти:', error);
         setError('Не вдалося отримати валюти');
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -57,7 +56,7 @@ const CurrenciesPage = () => {
     }
   };
 
-  if (loading) return <Preloader />;
+  if (isLoading) return <Preloader />;
   if (error) return <Error error={error} />;
 
   return (

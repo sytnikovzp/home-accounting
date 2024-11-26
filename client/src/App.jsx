@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
@@ -10,6 +9,7 @@ import {
 import restController from './api/rest/restController';
 import { getAccessToken } from './utils/sharedFunctions';
 // ==============================================================
+import Preloader from './components/Preloader/Preloader';
 import Layout from './components/Layout/Layout';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import AuthPage from './pages/AuthPage/AuthPage';
@@ -25,6 +25,7 @@ import UsersPage from './pages/UsersPage/UsersPage';
 import RolesPage from './pages/RolesPage/RolesPage';
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isAuthModalOpen, setAuthModalOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
@@ -32,24 +33,27 @@ const App = () => {
   const handleCloseAuthModal = () => setAuthModalOpen(false);
 
   const checkAuthentication = async () => {
-    const token = getAccessToken();
-    if (token) {
-      try {
-        const userProfile = await restController.fetchUserProfile();
-        setUserProfile(userProfile);
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Не вдалося завантажити дані користувача:', error.message);
-        setIsAuthenticated(false);
-      }
-    } else {
-      setIsAuthenticated(false);
+    try {
+      const userProfile = await restController.fetchUserProfile();
+      setUserProfile(userProfile);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Не вдалося завантажити дані користувача:', error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    checkAuthentication();
+    const token = getAccessToken();
+    if (token) {
+      checkAuthentication();
+    } else {
+      setIsLoading(false);
+    }
   }, []);
+
+  if (isLoading) return <Preloader />;
 
   const renderPrivateRoute = (Component) => (
     <PrivateRoute
@@ -61,12 +65,7 @@ const App = () => {
   );
 
   return (
-    <Router
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
+    <Router>
       <Routes>
         <Route
           path='/'
@@ -84,10 +83,7 @@ const App = () => {
             path='purchases/*'
             element={renderPrivateRoute(<PurchasesPage />)}
           />
-          <Route 
-            path='shops/*' 
-            element={renderPrivateRoute(<ShopsPage />)} 
-          />
+          <Route path='shops/*' element={renderPrivateRoute(<ShopsPage />)} />
           <Route
             path='products/*'
             element={renderPrivateRoute(<ProductsPage />)}
@@ -108,14 +104,8 @@ const App = () => {
             path='moderation/*'
             element={renderPrivateRoute(<ModerationPage />)}
           />
-          <Route 
-            path='users/*' 
-            element={renderPrivateRoute(<UsersPage />)} 
-          />
-          <Route 
-            path='roles/*' 
-            element={renderPrivateRoute(<RolesPage />)} 
-          />
+          <Route path='users/*' element={renderPrivateRoute(<UsersPage />)} />
+          <Route path='roles/*' element={renderPrivateRoute(<RolesPage />)} />
           <Route
             path='auth/*'
             element={

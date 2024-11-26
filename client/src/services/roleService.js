@@ -1,4 +1,4 @@
-import api from '../api/interceptor';
+import api from '../api';
 
 const getAllPermissions = async ({ page = 1, limit = 10 } = {}) => {
   const params = new URLSearchParams({ page, limit }).toString();

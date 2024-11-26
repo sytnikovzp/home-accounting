@@ -16,9 +16,9 @@ import Preloader from '../Preloader/Preloader';
 import Error from '../Error/Error';
 
 function CurrencyExchange() {
-  const [rates, setRates] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [rates, setRates] = useState([]);
 
   const fetchRates = async () => {
     try {
@@ -28,7 +28,7 @@ function CurrencyExchange() {
       console.error('Не вдалося завантажити курси валют:', err.message);
       setError('Помилка завантаження курсів');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -36,7 +36,7 @@ function CurrencyExchange() {
     fetchRates();
   }, []);
 
-  if (loading) return <Preloader />;
+  if (isLoading) return <Preloader />;
   if (error) return <Error error={error} />;
 
   return (

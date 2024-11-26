@@ -11,11 +11,11 @@ module.exports.authHandler = (req, res, next) => {
     if (!accessToken) {
       return next(unAuthorizedError());
     }
-    const data = validateAccessToken(accessToken);
-    if (!data) {
+    const userData = validateAccessToken(accessToken);
+    if (!userData) {
       return next(unAuthorizedError());
     }
-    req.user = data;
+    req.user = userData;
     next();
   } catch (error) {
     console.log(error.message);
