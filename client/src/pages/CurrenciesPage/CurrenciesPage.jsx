@@ -56,14 +56,16 @@ const CurrenciesPage = () => {
     }
   };
 
-  if (isLoading) return <Preloader />;
+  if (isLoading) return <Preloader message='Завантаження валют...' />;
   if (error) return <Error error={error} />;
 
   return (
     <div style={{ padding: '20px' }}>
       <Typography variant='h6'>Валюти</Typography>
       <ListTable
-        columns={[{ field: 'title', headerName: 'Назва', align: 'center' }]}
+        columns={[
+          { field: 'title', headerName: 'Назва валюти', align: 'center' },
+        ]}
         rows={currencies}
         onEdit={handleEdit}
         onDelete={handleDelete}

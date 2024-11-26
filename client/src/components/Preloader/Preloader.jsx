@@ -9,7 +9,7 @@ function Preloader({ message = 'Завантаження...' }) {
       flexDirection='column'
       alignItems='center'
       justifyContent='center'
-      width='100%'
+      width='90%'
       padding='0 20px'
     >
       <Typography variant='h6' style={stylesPreloaderTitle}>

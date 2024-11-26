@@ -9,6 +9,7 @@ import {
 import restController from './api/rest/restController';
 import { getAccessToken } from './utils/sharedFunctions';
 // ==============================================================
+import CustomModal from './components/CustomModal/CustomModal';
 import Preloader from './components/Preloader/Preloader';
 import Layout from './components/Layout/Layout';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
@@ -53,7 +54,16 @@ const App = () => {
     }
   }, []);
 
-  if (isLoading) return <Preloader />;
+  if (isLoading) {
+    return (
+      <CustomModal
+        isOpen={true}
+        onClose={null}
+        content={<Preloader message='Завантаження додатку...' />}
+        disableBackdropClick={true}
+      />
+    );
+  }
 
   const renderPrivateRoute = (Component) => (
     <PrivateRoute
@@ -83,7 +93,10 @@ const App = () => {
             path='purchases/*'
             element={renderPrivateRoute(<PurchasesPage />)}
           />
-          <Route path='shops/*' element={renderPrivateRoute(<ShopsPage />)} />
+          <Route 
+            path='shops/*' 
+            element={renderPrivateRoute(<ShopsPage />)} 
+          />
           <Route
             path='products/*'
             element={renderPrivateRoute(<ProductsPage />)}
@@ -104,8 +117,14 @@ const App = () => {
             path='moderation/*'
             element={renderPrivateRoute(<ModerationPage />)}
           />
-          <Route path='users/*' element={renderPrivateRoute(<UsersPage />)} />
-          <Route path='roles/*' element={renderPrivateRoute(<RolesPage />)} />
+          <Route 
+            path='users/*' 
+            element={renderPrivateRoute(<UsersPage />)} 
+          />
+          <Route 
+            path='roles/*' 
+            element={renderPrivateRoute(<RolesPage />)} 
+          />
           <Route
             path='auth/*'
             element={

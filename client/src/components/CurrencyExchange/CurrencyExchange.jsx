@@ -36,7 +36,7 @@ function CurrencyExchange() {
     fetchRates();
   }, []);
 
-  if (isLoading) return <Preloader />;
+  if (isLoading) return <Preloader message = 'Завантаження курсів...' />;
   if (error) return <Error error={error} />;
 
   return (

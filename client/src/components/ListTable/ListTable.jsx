@@ -27,7 +27,7 @@ const ListTable = ({ columns, rows, onEdit, onDelete, pagination }) => {
                 {col.headerName}
               </TableCell>
             ))}
-            <TableCell align='center'>Дії</TableCell>
+            <TableCell align='center'>Редагування/Видалення</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
