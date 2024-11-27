@@ -43,18 +43,24 @@ const restController = {
 
   // Role and Permission management
   fetchAllPermissions: async ({ page = 1, limit = 6 } = {}) => {
-    const { data, total } = await roleService.getAllPermissions({
+    const { data, totalCount } = await roleService.getAllPermissions({
       page,
       limit,
     });
     return {
-      permissions: data,
-      totalCount: total,
+      data,
+      totalCount,
     };
   },
-  fetchAllRoles: async () => {
-    const roles = await roleService.getAllRoles();
-    return roles;
+  fetchAllRoles: async ({ page = 1, limit = 6 } = {}) => {
+    const { data, totalCount } = await roleService.getAllRoles({
+      page,
+      limit,
+    });
+    return {
+      data,
+      totalCount,
+    };
   },
   fetchRoleById: (roleId) => roleService.getRoleById(roleId),
   createRole: (roleData) => roleService.createRole(roleData),
