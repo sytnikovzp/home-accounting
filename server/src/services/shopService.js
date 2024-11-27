@@ -18,7 +18,9 @@ class ShopService {
       url: shop.url || '',
       logo: shop.logo || '',
     }));
-    const total = await Shop.count();
+    const total = await Shop.count({
+      where: { status },
+    });
     return {
       allShops,
       total,

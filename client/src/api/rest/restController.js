@@ -59,9 +59,20 @@ const restController = {
   removeRole: (roleId) => roleService.deleteRole(roleId),
 
   // Category management
-  fetchAllCategories: async (status) => {
-    const categories = await categoryService.getAllCategories(status);
-    return categories;
+  fetchAllCategories: async ({
+    status = 'approved',
+    page = 1,
+    limit = 10,
+  } = {}) => {
+    const { data, totalCount } = await categoryService.getAllCategories({
+      status,
+      page,
+      limit,
+    });
+    return {
+      data,
+      totalCount,
+    };
   },
   fetchCategoryById: (categoryId) =>
     categoryService.getCategoryById(categoryId),

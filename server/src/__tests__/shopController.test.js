@@ -58,7 +58,7 @@ describe('ShopController', () => {
   });
 
   describe('GET /api/shops', () => {
-    it('should return list of shops (status approoved, default pagination)', async () => {
+    it('should return list of shops (status approved, default pagination)', async () => {
       const response = await request(app)
         .get('/api/shops')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
@@ -68,7 +68,7 @@ describe('ShopController', () => {
       expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of shops (status approoved, custom pagination)', async () => {
+    it('should return list of shops (status approved, custom pagination)', async () => {
       const response = await request(app)
         .get('/api/shops')
         .query({ page: 1, limit: 10 })

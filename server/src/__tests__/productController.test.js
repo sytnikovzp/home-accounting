@@ -57,7 +57,7 @@ describe('ProductController', () => {
   });
 
   describe('GET /api/products', () => {
-    it('should return list of products (status approoved, default pagination)', async () => {
+    it('should return list of products (status approved, default pagination)', async () => {
       const response = await request(app)
         .get('/api/products')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
@@ -67,7 +67,7 @@ describe('ProductController', () => {
       expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of products (status approoved, custom pagination)', async () => {
+    it('should return list of products (status approved, custom pagination)', async () => {
       const response = await request(app)
         .get('/api/products')
         .query({ page: 1, limit: 10 })

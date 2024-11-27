@@ -1,9 +1,18 @@
 import api from '../api';
 
-const getAllCategories = async (status) => {
-  const query = status ? `?status=${status}` : '';
-  const response = await api.get(`/categories${query}`);
-  return response.data;
+const getAllCategories = async ({
+  status = 'approved',
+  page = 1,
+  limit = 5,
+} = {}) => {
+  const response = await api.get(
+    `/categories?status=${status}&page=${page}&limit=${limit}`
+  );
+  const totalCount = parseInt(response.headers['x-total-count']);
+  return {
+    data: response.data,
+    totalCount,
+  };
 };
 
 const getCategoryById = async (categoryId) => {

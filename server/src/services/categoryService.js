@@ -16,7 +16,9 @@ class CategoryService {
       id: category.id,
       title: category.title,
     }));
-    const total = await Category.count();
+    const total = await Category.count({
+      where: { status },
+    });
     return {
       allCategories,
       total,

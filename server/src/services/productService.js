@@ -22,7 +22,9 @@ class ProductService {
       title: product.title,
       category: product['Category.title'] || '',
     }));
-    const total = await Product.count();
+    const total = await Product.count({
+      where: { status },
+    });
     return {
       allProducts,
       total,

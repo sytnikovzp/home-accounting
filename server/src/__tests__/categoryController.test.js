@@ -57,7 +57,7 @@ describe('CategoryController', () => {
   });
 
   describe('GET /api/categories', () => {
-    it('should return list of categories (status approoved, default pagination)', async () => {
+    it('should return list of categories (status approved, default pagination)', async () => {
       const response = await request(app)
         .get('/api/categories')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
@@ -67,7 +67,7 @@ describe('CategoryController', () => {
       expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of categories (status approoved, custom pagination)', async () => {
+    it('should return list of categories (status approved, custom pagination)', async () => {
       const response = await request(app)
         .get('/api/categories')
         .query({ page: 1, limit: 10 })
