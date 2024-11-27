@@ -1,7 +1,7 @@
 ### Get list all measures (default pagination)
 GET http://localhost:5000/api/measures HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyNjY3OTg1LCJleHAiOjE3MzI2Njg4ODV9.dchTsmkr811AoMZhrImqgH5Qhdl7kMsV_SkTJWPY2GE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzI3MTk2NTgsImV4cCI6MTczMjcyMDU1OH0.jWSiqlURF9wuvxhXyI-HhOKtt1uYHvcAH1J9lyYyaQI
 
 ### Get list all measures (custom pagination)
 GET http://localhost:5000/api/measures?page=1&limit=10 HTTP/1.1

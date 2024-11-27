@@ -1,7 +1,7 @@
 ### Get list all categories (status approved, default pagination)
 GET http://localhost:5000/api/categories HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyNjY2MzU4LCJleHAiOjE3MzI2NjcyNTh9.dwzxPodf6RC8IN9XMniE51AS_BSK3t5pfjHJWw9hZYY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzI3MTk2NTgsImV4cCI6MTczMjcyMDU1OH0.jWSiqlURF9wuvxhXyI-HhOKtt1uYHvcAH1J9lyYyaQI
 
 ### Get list all categories (status approved, custom pagination)
 GET http://localhost:5000/api/categories?page=1&limit=10 HTTP/1.1

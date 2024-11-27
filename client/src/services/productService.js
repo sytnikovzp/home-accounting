@@ -3,13 +3,14 @@ import api from '../api';
 const getAllProducts = async ({
   status = 'approved',
   page = 1,
-  limit = 10,
+  limit = 6,
 } = {}) => {
   const params = new URLSearchParams({ status, page, limit }).toString();
   const response = await api.get(`/products?${params}`);
+  const totalCount = parseInt(response.headers['x-total-count']);
   return {
     data: response.data,
-    total: response.headers['x-total-count'],
+    totalCount,
   };
 };
 

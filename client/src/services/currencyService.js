@@ -9,8 +9,9 @@ const getNBURates = async () => {
   return response.data;
 };
 
-const getAllCurrencies = async ({ page = 1, limit = 5 } = {}) => {
-  const response = await api.get(`/currencies?page=${page}&limit=${limit}`);
+const getAllCurrencies = async ({ page = 1, limit = 6 } = {}) => {
+  const params = new URLSearchParams({ page, limit }).toString();
+  const response = await api.get(`/currencies?${params}`);
   const totalCount = parseInt(response.headers['x-total-count']);
   return {
     data: response.data,

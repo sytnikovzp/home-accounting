@@ -3,11 +3,10 @@ import api from '../api';
 const getAllCategories = async ({
   status = 'approved',
   page = 1,
-  limit = 5,
+  limit = 6,
 } = {}) => {
-  const response = await api.get(
-    `/categories?status=${status}&page=${page}&limit=${limit}`
-  );
+  const params = new URLSearchParams({ status, page, limit }).toString();
+  const response = await api.get(`/categories?${params}`);
   const totalCount = parseInt(response.headers['x-total-count']);
   return {
     data: response.data,

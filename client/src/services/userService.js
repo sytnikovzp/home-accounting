@@ -1,11 +1,12 @@
 import api from '../api';
 
-const getAllUsers = async ({ page = 1, limit = 10 } = {}) => {
+const getAllUsers = async ({ page = 1, limit = 6 } = {}) => {
   const params = new URLSearchParams({ page, limit }).toString();
   const response = await api.get(`/users?${params}`);
+  const totalCount = parseInt(response.headers['x-total-count']);
   return {
     data: response.data,
-    total: response.headers['x-total-count'],
+    totalCount,
   };
 };
 

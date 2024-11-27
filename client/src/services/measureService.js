@@ -1,7 +1,8 @@
 import api from '../api';
 
-const getAllMeasures = async ({ page = 1, limit = 5 } = {}) => {
-  const response = await api.get(`/measures?page=${page}&limit=${limit}`);
+const getAllMeasures = async ({ page = 1, limit = 6 } = {}) => {
+  const params = new URLSearchParams({ page, limit }).toString();
+  const response = await api.get(`/measures?${params}`);
   const totalCount = parseInt(response.headers['x-total-count']);
   return {
     data: response.data,

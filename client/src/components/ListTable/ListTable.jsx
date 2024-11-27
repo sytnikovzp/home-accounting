@@ -22,7 +22,7 @@ const ListTable = ({
     pageSize,
     onPageChange,
     onRowsPerPageChange,
-    rowsPerPageOptions = [5, 10, 25, 50],
+    rowsPerPageOptions = [6, 10, 25, 50],
   },
 }) => {
   return (
