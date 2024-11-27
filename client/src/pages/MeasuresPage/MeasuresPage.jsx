@@ -33,8 +33,8 @@ function MeasuresPage() {
       setMeasures(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати валюти:', error);
-      setError('Не вдалося отримати валюти');
+      console.error('Не вдалося отримати одиниці виміру:', error);
+      setError('Не вдалося отримати одиниці');
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +73,7 @@ function MeasuresPage() {
 
   return (
     <div>
-      <Typography variant='h6'>Валюти</Typography>
+      <Typography variant='h6'>Одиниці виміру</Typography>
       <ListTable
         columns={[
           { field: 'title', headerName: 'Назва одиниці', align: 'left' },

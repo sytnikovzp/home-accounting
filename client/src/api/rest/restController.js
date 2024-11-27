@@ -189,14 +189,14 @@ const restController = {
 
   // Shop management
   fetchAllShops: async ({ status = 'approved', page = 1, limit = 6 } = {}) => {
-    const { data, total } = await shopService.getAllShops({
+    const { data, totalCount } = await shopService.getAllShops({
       status,
       page,
       limit,
     });
     return {
-      shops: data,
-      totalCount: total,
+      data,
+      totalCount,
     };
   },
   fetchShopById: (shopId) => shopService.getShopById(shopId),

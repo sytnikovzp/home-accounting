@@ -33,8 +33,8 @@ function CategoriesPage() {
       setCategories(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати валюти:', error);
-      setError('Не вдалося отримати валюти');
+      console.error('Не вдалося отримати категорії:', error);
+      setError('Не вдалося отримати категорії');
     } finally {
       setIsLoading(false);
     }
