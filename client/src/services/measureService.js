@@ -1,8 +1,12 @@
 import api from '../api';
 
-const getAllMeasures = async () => {
-  const response = await api.get('/measures');
-  return response.data;
+const getAllMeasures = async ({ page = 1, limit = 5 } = {}) => {
+  const response = await api.get(`/measures?page=${page}&limit=${limit}`);
+  const totalCount = parseInt(response.headers['x-total-count']);
+  return {
+    data: response.data,
+    totalCount,
+  };
 };
 
 const getMeasureById = async (measureId) => {
