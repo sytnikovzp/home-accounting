@@ -153,13 +153,13 @@ const restController = {
 
   // Purchase management
   fetchAllPurchases: async ({ page = 1, limit = 6 } = {}) => {
-    const { data, total } = await purchaseService.getAllPurchases({
+    const { data, totalCount } = await purchaseService.getAllPurchases({
       page,
       limit,
     });
     return {
-      purchases: data,
-      totalCount: total,
+      data,
+      totalCount,
     };
   },
   fetchPurchaseById: (purchaseId) =>

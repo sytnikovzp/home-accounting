@@ -39,7 +39,7 @@ const ListTable = ({
                 {col.headerName}
               </TableCell>
             ))}
-            <TableCell align='right'>Редагування/Видалення</TableCell>
+            <TableCell align='right'>Редаг./Видал.</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
