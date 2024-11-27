@@ -23,10 +23,13 @@ const restController = {
 
   // User management
   fetchAllUsers: async ({ page = 1, limit = 6 } = {}) => {
-    const { data, total } = await userService.getAllUsers({ page, limit });
+    const { data, totalCount } = await userService.getAllUsers({
+      page,
+      limit,
+    });
     return {
-      users: data,
-      totalCount: total,
+      data,
+      totalCount,
     };
   },
   fetchUserProfile: () => userService.getUserProfile(),
