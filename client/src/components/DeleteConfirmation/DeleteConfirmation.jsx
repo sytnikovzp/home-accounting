@@ -7,25 +7,34 @@ import {
   Typography,
 } from '@mui/material';
 
-function DeleteConfirmation({ isOpen, onClose, onConfirm, error }) {
+function DeleteConfirmation({
+  isOpen,
+  onClose,
+  onConfirm,
+  error,
+  isErrorMode,
+}) {
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>Підтвердження видалення</DialogTitle>
+      <DialogTitle>
+        {isErrorMode ? 'Помилка' : 'Підтвердження видалення'}
+      </DialogTitle>
       <DialogContent>
-        <Typography>Ви впевнені, що хочете видалити цей елемент?</Typography>
-        {error && (
-          <Typography color='error' sx={{ mt: 2 }}>
-            {error}
-          </Typography>
+        {error ? (
+          <Typography color='error'>{error}</Typography>
+        ) : (
+          <Typography>Ви впевнені, що хочете видалити цей елемент?</Typography>
         )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color='primary'>
-          Скасувати
+          {isErrorMode ? 'OK' : 'Скасувати'}
         </Button>
-        <Button onClick={onConfirm} color='error' variant='contained'>
-          Видалити
-        </Button>
+        {!isErrorMode && (
+          <Button onClick={onConfirm} color='error' variant='contained'>
+            Видалити
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

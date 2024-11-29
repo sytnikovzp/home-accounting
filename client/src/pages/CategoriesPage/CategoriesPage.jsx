@@ -22,6 +22,7 @@ function CategoriesPage() {
   const [categoryToDelete, setCategoryToDelete] = useState(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteError, setDeleteError] = useState(null);
+  const [isErrorMode, setIsErrorMode] = useState(false);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -51,6 +52,7 @@ function CategoriesPage() {
   const handleDelete = (category) => {
     setCategoryToDelete(category);
     setDeleteModalOpen(true);
+    setIsErrorMode(false);
     setDeleteError(null);
   };
 
@@ -64,6 +66,9 @@ function CategoriesPage() {
       } catch (error) {
         console.error('Помилка при видаленні категорії:', error);
         setDeleteError('Не вдалося видалити категорію. Недостатньо прав.');
+        setIsErrorMode(true);
+        setDeleteModalOpen(false);
+        setTimeout(() => setDeleteModalOpen(true), 0);
       }
     }
   };
@@ -95,6 +100,7 @@ function CategoriesPage() {
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         error={deleteError}
+        isErrorMode={isErrorMode}
       />
     </div>
   );
