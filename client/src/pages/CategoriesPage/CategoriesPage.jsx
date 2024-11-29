@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Button, Box } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
@@ -45,6 +45,10 @@ function CategoriesPage() {
     fetchCategories();
   }, [fetchCategories]);
 
+  const handleAddCategory = () => {
+    console.log('Додавання нової категорії');
+  };
+
   const handleEdit = (category) => {
     console.log('Edit:', category);
   };
@@ -67,8 +71,7 @@ function CategoriesPage() {
         console.error('Помилка при видаленні категорії:', error);
         setDeleteError('Не вдалося видалити категорію. Недостатньо прав.');
         setIsErrorMode(true);
-        setDeleteModalOpen(false);
-        setTimeout(() => setDeleteModalOpen(true), 0);
+        setDeleteModalOpen(true);
       }
     }
   };
@@ -78,7 +81,17 @@ function CategoriesPage() {
 
   return (
     <div>
-      <Typography variant='h6'>Категорії</Typography>
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        mb={2}
+      >
+        <Typography variant='h6'>Категорії</Typography>
+        <Button variant='contained' color='success' onClick={handleAddCategory}>
+          Додати категорію
+        </Button>
+      </Box>
       <ListTable
         columns={[
           { field: 'title', headerName: 'Назва категорії', align: 'left' },
