@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { Field } from 'formik';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
+// ==============================================================
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  FormHelperText,
+} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function FormField({
@@ -8,6 +18,7 @@ function FormField({
   label,
   placeholder,
   type = 'text',
+  options = [],
   autoFocus = false,
   error,
   touched,
@@ -15,6 +26,25 @@ function FormField({
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (event) => event.preventDefault();
+  if (type === 'select') {
+    return (
+      <Field name={name}>
+        {({ field }) => (
+          <FormControl fullWidth error={Boolean(touched && error)}>
+            <InputLabel>{label}</InputLabel>
+            <Select {...field} label={label}>
+              {options.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>{touched && error ? error : ' '}</FormHelperText>
+          </FormControl>
+        )}
+      </Field>
+    );
+  }
 
   return (
     <Field

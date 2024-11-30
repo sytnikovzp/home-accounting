@@ -9,6 +9,8 @@ import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
+import CustomModal from '../../components/CustomModal/CustomModal';
+import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 
 function CategoriesPage() {
   const itemsPerPage = useItemsPerPage();
@@ -22,7 +24,10 @@ function CategoriesPage() {
   const [categoryToDelete, setCategoryToDelete] = useState(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteError, setDeleteError] = useState(null);
+  const [editError, setEditError] = useState(null);
   const [isErrorMode, setIsErrorMode] = useState(false);
+  const [isAddModalOpen, setAddModalOpen] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState(null);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -46,11 +51,15 @@ function CategoriesPage() {
   }, [fetchCategories]);
 
   const handleAddCategory = () => {
-    console.log('Додавання нової категорії');
+    setCategoryToEdit(null);
+    setAddModalOpen(true);
   };
 
   const handleEdit = (category) => {
-    console.log('Edit:', category);
+    setCategoryToEdit(category);
+    setAddModalOpen(true);
+    setIsErrorMode(false);
+    setEditError(null);
   };
 
   const handleDelete = (category) => {
@@ -107,6 +116,28 @@ function CategoriesPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
         }}
+      />
+      <CustomModal
+        isOpen={isAddModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        title={categoryToEdit ? 'Редагувати категорію' : 'Додати категорію'}
+        content={
+          <CategoryForm
+            category={categoryToEdit}
+            onClose={() => setAddModalOpen(false)}
+            onSuccess={() => {
+              setAddModalOpen(false);
+              fetchCategories();
+            }}
+          />
+        }
+        actions={
+          <Box display='flex' gap={2}>
+            <Button onClick={() => setAddModalOpen(false)} color='secondary'>
+              Закрити
+            </Button>
+          </Box>
+        }
       />
       <DeleteConfirmation
         isOpen={isDeleteModalOpen}

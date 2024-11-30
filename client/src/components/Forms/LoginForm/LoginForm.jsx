@@ -1,7 +1,7 @@
-import { LOGIN_FORM_INITIAL } from '../../constants';
-import { LOGIN_VALIDATION_SCHEME } from '../../utils/validationSchemes';
+import { LOGIN_FORM_INITIAL } from '../../../constants';
+import { LOGIN_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
-import AuthForm from '../AuthForm/AuthForm';
+import BaseForm from '../BaseForm/BaseForm';
 
 function LoginForm({ onSubmit }) {
   const fields = [
@@ -20,7 +20,7 @@ function LoginForm({ onSubmit }) {
   ];
 
   return (
-    <AuthForm
+    <BaseForm
       initialValues={LOGIN_FORM_INITIAL}
       validationSchema={LOGIN_VALIDATION_SCHEME}
       onSubmit={onSubmit}

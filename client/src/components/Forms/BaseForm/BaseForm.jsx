@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 // ==============================================================
 import FormField from '../FormField/FormField';
 
-function AuthForm({
+function BaseForm({
   initialValues,
   validationSchema,
   onSubmit,
@@ -14,18 +14,21 @@ function AuthForm({
     return (
       <Form>
         <Box sx={{ mt: 2 }}>
-          {fields.map(({ name, label, placeholder, autoFocus, type }) => (
-            <FormField
-              key={name}
-              name={name}
-              label={label}
-              placeholder={placeholder}
-              autoFocus={autoFocus}
-              type={type}
-              error={errors[name]}
-              touched={touched[name]}
-            />
-          ))}
+          {fields.map(
+            ({ name, label, placeholder, autoFocus, type, options }) => (
+              <FormField
+                key={name}
+                name={name}
+                label={label}
+                placeholder={placeholder}
+                autoFocus={autoFocus}
+                type={type}
+                options={options}
+                error={errors[name]}
+                touched={touched[name]}
+              />
+            )
+          )}
         </Box>
         <Button
           type='submit'
@@ -53,4 +56,4 @@ function AuthForm({
   );
 }
 
-export default AuthForm;
+export default BaseForm;

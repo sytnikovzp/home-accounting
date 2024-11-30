@@ -14,8 +14,8 @@ import {
 } from '../../styles/theme';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
-import LoginForm from '../../components/LoginForm/LoginForm';
-import RegistrationForm from '../../components/RegistrationForm/RegistrationForm';
+import LoginForm from '../../components/Forms/LoginForm/LoginForm';
+import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
 
 function AuthPage({ isOpen, onClose, checkAuthentication }) {
   const [isLoginMode, setIsLoginMode] = useState(true);
