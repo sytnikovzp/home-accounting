@@ -24,7 +24,18 @@ const ListTable = ({
     onRowsPerPageChange,
     rowsPerPageOptions = [6, 10, 25, 50],
   },
+  sortModel,
+  onSortModelChange,
 }) => {
+  const handleSort = (field) => {
+    const newSortModel =
+      sortModel.field === field
+        ? { field, order: sortModel.order === 'asc' ? 'desc' : 'asc' }
+        : { field, order: 'asc' };
+
+    onSortModelChange(newSortModel);
+  };
+
   return (
     <TableContainer style={{ width: '100%' }}>
       <Table sx={{ width: '100%' }}>
@@ -34,9 +45,12 @@ const ListTable = ({
               <TableCell
                 key={col.field}
                 align={col.align || 'center'}
-                sx={{ textAlign: col.align || 'center' }}
+                sx={{ textAlign: col.align || 'center', cursor: 'pointer' }}
+                onClick={() => handleSort(col.field)}
               >
                 {col.headerName}
+                {sortModel.field === col.field &&
+                  (sortModel.order === 'asc' ? ' ▲' : ' ▼')}
               </TableCell>
             ))}
             <TableCell align='right'>Редаг./Видал.</TableCell>

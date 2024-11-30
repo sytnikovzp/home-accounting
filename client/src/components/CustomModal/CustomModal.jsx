@@ -1,4 +1,4 @@
-import { Modal, Fade, Box, Typography } from '@mui/material';
+import { Modal, Fade, Box, Typography, Alert } from '@mui/material';
 // ==============================================================
 import { stylesFadeBox, stylesContentBox } from '../../styles/theme';
 
@@ -8,6 +8,7 @@ function CustomModal({
   title,
   content,
   actions,
+  error,
   disableBackdropClick = false,
 }) {
   return (
@@ -30,6 +31,11 @@ function CustomModal({
                 title
               )}
             </Box>
+          )}
+          {error && (
+            <Alert severity='error' sx={{ mb: 2 }}>
+              {error}
+            </Alert>
           )}
           <Box sx={stylesContentBox}>{content}</Box>
           {actions && (

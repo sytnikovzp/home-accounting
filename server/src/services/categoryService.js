@@ -3,10 +3,11 @@ const { formatDate, checkPermission } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 class CategoryService {
-  async getAllCategories(status, limit, offset) {
+  async getAllCategories(status, limit, offset, sort, order) {
     const foundCategories = await Category.findAll({
       attributes: ['id', 'title'],
       where: { status },
+      order: [[sort || 'id', order || 'asc']],
       raw: true,
       limit,
       offset,

@@ -28,14 +28,20 @@ function CategoriesPage() {
   const [isErrorMode, setIsErrorMode] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [categoryToEdit, setCategoryToEdit] = useState(null);
+  const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
 
   const fetchCategories = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data, totalCount } = await restController.fetchAllCategories({
+      const params = {
         page: currentPage,
         limit: pageSize,
-      });
+        sort: sortModel.field,
+        order: sortModel.order,
+      };
+      const { data, totalCount } = await restController.fetchAllCategories(
+        params
+      );
       setCategories(data);
       setTotalCount(totalCount);
     } catch (error) {
@@ -44,11 +50,26 @@ function CategoriesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, sortModel]);
 
   useEffect(() => {
     fetchCategories();
-  }, [fetchCategories]);
+  }, [sortModel, currentPage, pageSize, fetchCategories]);
+
+  const handleSubmitCategory = async (values) => {
+    try {
+      if (categoryToEdit) {
+        await restController.editCategory(categoryToEdit.id, values.title);
+      } else {
+        await restController.addCategory(values.title);
+      }
+      setAddModalOpen(false);
+      fetchCategories();
+    } catch (error) {
+      console.error('Помилка збереження категорії:', error);
+      setEditError('Не вдалося зберегти категорію. Недостатньо прав.');
+    }
+  };
 
   const handleAddCategory = () => {
     setCategoryToEdit(null);
@@ -103,6 +124,7 @@ function CategoriesPage() {
       </Box>
       <ListTable
         columns={[
+          { field: 'id', headerName: 'ID', align: 'left' },
           { field: 'title', headerName: 'Назва категорії', align: 'left' },
         ]}
         rows={categories}
@@ -116,6 +138,8 @@ function CategoriesPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
         }}
+        sortModel={sortModel}
+        onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
       />
       <CustomModal
         isOpen={isAddModalOpen}
@@ -124,13 +148,10 @@ function CategoriesPage() {
         content={
           <CategoryForm
             category={categoryToEdit}
-            onClose={() => setAddModalOpen(false)}
-            onSuccess={() => {
-              setAddModalOpen(false);
-              fetchCategories();
-            }}
+            onSubmit={handleSubmitCategory}
           />
         }
+        error={editError}
         actions={
           <Box display='flex' gap={2}>
             <Button onClick={() => setAddModalOpen(false)} color='secondary'>

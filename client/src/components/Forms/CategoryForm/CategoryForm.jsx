@@ -2,7 +2,9 @@ import { CATEGORY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 
-const CategoryForm = ({ onSubmit }) => {
+const CategoryForm = ({ category = null, onSubmit }) => {
+  const initialValues = category ? { title: category.title } : { title: '' };
+
   const fields = [
     {
       name: 'title',
@@ -13,11 +15,11 @@ const CategoryForm = ({ onSubmit }) => {
 
   return (
     <BaseForm
-      initialValues={{ title: '' }}
+      initialValues={initialValues}
       validationSchema={CATEGORY_VALIDATION_SCHEME}
       onSubmit={onSubmit}
       fields={fields}
-      submitButtonText='Додати категорію'
+      submitButtonText={category ? 'Зберегти зміни' : 'Додати категорію'}
     />
   );
 };

@@ -72,11 +72,15 @@ const restController = {
     status = 'approved',
     page = 1,
     limit = 6,
+    sort = 'id',
+    order = 'asc',
   } = {}) => {
     const { data, totalCount } = await categoryService.getAllCategories({
       status,
       page,
       limit,
+      sort,
+      order,
     });
     return {
       data,
