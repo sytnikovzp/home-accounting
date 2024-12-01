@@ -135,7 +135,7 @@ const ListTable = ({
               size='small'
               onChange={onStatusChange}
             >
-              <MenuItem value='pending'>Очікується</MenuItem>
+              <MenuItem value='pending'>Очікує модерації</MenuItem>
               <MenuItem value='approved'>Затверджено</MenuItem>
               <MenuItem value='rejected'>Відхилено</MenuItem>
             </Select>

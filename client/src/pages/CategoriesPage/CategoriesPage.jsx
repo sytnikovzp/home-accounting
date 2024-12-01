@@ -1,23 +1,25 @@
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Typography, Button, Box } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 // ==============================================================
+import CategoryAddPage from './CategoryAddPage';
+import CategoryEditPage from './CategoryEditPage';
+import CategoryDeletePage from './CategoryDeletePage';
+import CategoryViewPage from './CategoryViewPage';
+// ==============================================================
+import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
-import ListTable from '../../components/ListTable/ListTable';
-import CustomModal from '../../components/CustomModal/CustomModal';
-import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 
 function CategoriesPage() {
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -25,8 +27,17 @@ function CategoriesPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState('approved');
   const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
-  const [modalData, setModalData] = useState({ mode: null, data: null });
   const [crudError, setCrudError] = useState(null);
+
+  const handleModalClose = () => {
+    setCrudError(null);
+    navigate('/categories');
+  };
+
+  const openModal = (mode, data = null) => {
+    const path = mode === 'add' ? 'add' : `${mode}/${data?.id}`;
+    navigate(path);
+  };
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -52,42 +63,6 @@ function CategoriesPage() {
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
-
-  const openModal = (mode, data = null) => {
-    setModalData({ mode, data });
-    const path = mode === 'add' ? 'add' : `${mode}/${data?.id}`;
-    navigate(path);
-  };
-
-  const handleModalClose = () => {
-    setModalData({ mode: null, data: null });
-    setCrudError(null);
-    navigate('/categories');
-  };
-
-  const handleSubmitCategory = async (values) => {
-    try {
-      if (location.pathname.includes('/edit')) {
-        await restController.editCategory(modalData.data.id, values.title);
-      } else {
-        await restController.addCategory(values.title);
-      }
-      handleModalClose();
-      fetchCategories();
-    } catch (error) {
-      setCrudError(error.response?.data?.errors?.[0]?.title);
-    }
-  };
-
-  const handleDeleteCategory = async () => {
-    try {
-      await restController.removeCategory(modalData.data.id);
-      handleModalClose();
-      fetchCategories();
-    } catch (error) {
-      setCrudError(error.response?.data?.errors?.[0]?.title);
-    }
-  };
 
   if (isLoading)
     return <Preloader message='Завантаження списку "Категорій"...' />;
@@ -137,64 +112,41 @@ function CategoriesPage() {
         <Route
           path='add'
           element={
-            <CustomModal
-              isOpen
-              onClose={handleModalClose}
-              showCloseButton
-              title='Додавання категорії...'
-              content={<CategoryForm onSubmit={handleSubmitCategory} />}
-              error={crudError}
+            <CategoryAddPage
+              handleModalClose={handleModalClose}
+              fetchCategories={fetchCategories}
+              crudError={crudError}
+              setCrudError={setCrudError}
             />
           }
         />
         <Route
           path='edit/:id'
           element={
-            <CustomModal
-              isOpen
-              onClose={handleModalClose}
-              showCloseButton
-              title='Редагування категорії...'
-              content={
-                <CategoryForm
-                  category={modalData.data}
-                  onSubmit={handleSubmitCategory}
-                />
-              }
-              error={crudError}
+            <CategoryEditPage
+              handleModalClose={handleModalClose}
+              crudError={crudError}
+              setCrudError={setCrudError}
             />
           }
         />
         <Route
           path='delete/:id'
           element={
-            <CustomModal
-              isOpen
-              onClose={handleModalClose}
-              showCloseButton
-              title='Видалення категорії...'
-              content={
-                <Typography
-                  variant='body1'
-                  sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-                >
-                  Ви впевнені, що хочете видалити категорію "
-                  {modalData.data?.title}"?
-                </Typography>
-              }
-              actions={[
-                <Button
-                  key='delete'
-                  variant='contained'
-                  color='error'
-                  size='large'
-                  onClick={handleDeleteCategory}
-                  fullWidth
-                >
-                  Видалити
-                </Button>,
-              ]}
-              error={crudError}
+            <CategoryDeletePage
+              handleModalClose={handleModalClose}
+              crudError={crudError}
+              setCrudError={setCrudError}
+            />
+          }
+        />
+        <Route
+          path=':id'
+          element={
+            <CategoryViewPage
+              handleModalClose={handleModalClose}
+              crudError={crudError}
+              setCrudError={setCrudError}
             />
           }
         />
