@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Typography, Button, Box } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
@@ -15,6 +16,9 @@ function CategoriesPage() {
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -50,9 +54,16 @@ function CategoriesPage() {
     fetchCategories();
   }, [fetchCategories]);
 
+  const openModal = (mode, data = null) => {
+    setModalData({ mode, data });
+    const path = mode === 'add' ? 'add' : `${mode}/${data?.id}`;
+    navigate(path);
+  };
+
   const handleModalClose = () => {
     setModalData({ mode: null, data: null });
     setCrudError(null);
+    navigate('/categories');
   };
 
   const handleStatusChange = (event) => {
@@ -61,7 +72,7 @@ function CategoriesPage() {
 
   const handleSubmitCategory = async (values) => {
     try {
-      if (modalData.mode === 'edit') {
+      if (location.pathname.includes('/edit')) {
         await restController.editCategory(modalData.data.id, values.title);
       } else {
         await restController.addCategory(values.title);
@@ -84,100 +95,122 @@ function CategoriesPage() {
   };
 
   if (isLoading)
-    return <Preloader message='Завантаження списку "Kатегорій"...' />;
+    return <Preloader message='Завантаження списку "Категорій"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (
-    <div>
-      <Box
-        display='flex'
-        justifyContent='space-between'
-        alignItems='center'
-        mb={2}
-      >
-        <Typography variant='h6'>Категорії</Typography>
-        <Button
-          variant='contained'
-          color='success'
-          onClick={() => setModalData({ mode: 'add', data: null })}
-        >
-          Додати категорію
-        </Button>
-      </Box>
-      <ListTable
-        columns={[
-          { field: 'id', headerName: 'ID', align: 'left' },
-          { field: 'title', headerName: 'Назва категорії', align: 'left' },
-        ]}
-        rows={categories}
-        onEdit={(category) => setModalData({ mode: 'edit', data: category })}
-        onDelete={(category) =>
-          setModalData({ mode: 'delete', data: category })
-        }
-        pagination={{
-          totalCount,
-          currentPage,
-          pageSize,
-          onPageChange: handlePageChange,
-          onRowsPerPageChange: handleRowsPerPageChange,
-          rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
-        }}
-        sortModel={sortModel}
-        onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
-        selectedStatus={selectedStatus}
-        onStatusChange={handleStatusChange}
-        showStatusDropdown
-        linkEntity='categories'
-      />
-      {modalData.mode === 'add' || modalData.mode === 'edit' ? (
-        <CustomModal
-          isOpen
-          onClose={handleModalClose}
-          showCloseButton={true}
-          title={
-            modalData.mode === 'edit'
-              ? 'Редагування категорії...'
-              : 'Додавання категорії...'
-          }
-          content={
-            <CategoryForm
-              category={modalData.data}
-              onSubmit={handleSubmitCategory}
+    <Routes>
+      <Route
+        path='/'
+        element={
+          <>
+            <Box
+              display='flex'
+              justifyContent='space-between'
+              alignItems='center'
+              mb={2}
+            >
+              <Typography variant='h6'>Категорії</Typography>
+              <Button
+                variant='contained'
+                color='success'
+                onClick={() => openModal('add')}
+              >
+                Додати категорію
+              </Button>
+            </Box>
+            <ListTable
+              columns={[
+                { field: 'id', headerName: 'ID', align: 'left' },
+                {
+                  field: 'title',
+                  headerName: 'Назва категорії',
+                  align: 'left',
+                },
+              ]}
+              rows={categories}
+              onEdit={(category) => openModal('edit', category)}
+              onDelete={(category) => openModal('delete', category)}
+              pagination={{
+                totalCount,
+                currentPage,
+                pageSize,
+                onPageChange: handlePageChange,
+                onRowsPerPageChange: handleRowsPerPageChange,
+                rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
+              }}
+              sortModel={sortModel}
+              onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
+              selectedStatus={selectedStatus}
+              onStatusChange={handleStatusChange}
+              showStatusDropdown
+              linkEntity='categories'
             />
-          }
-          error={crudError}
-        />
-      ) : modalData.mode === 'delete' ? (
-        <CustomModal
-          isOpen
-          onClose={handleModalClose}
-          showCloseButton={true}
-          title='Видалення категорії...'
-          content={
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              Ви впевнені, що хочете видалити категорію "{modalData.data?.title}
-              "?
-            </Typography>
-          }
-          actions={[
-            <Button
-              key='delete'
-              variant='contained'
-              color='error'
-              size='large'
-              onClick={handleDeleteCategory}
-              fullWidth
-            >
-              Видалити
-            </Button>,
-          ]}
-          error={crudError}
-        />
-      ) : null}
-    </div>
+          </>
+        }
+      />
+      <Route
+        path='add'
+        element={
+          <CustomModal
+            isOpen
+            onClose={handleModalClose}
+            title='Додавання категорії...'
+            content={<CategoryForm onSubmit={handleSubmitCategory} />}
+            error={crudError}
+          />
+        }
+      />
+      <Route
+        path='edit/:id'
+        element={
+          <CustomModal
+            isOpen
+            onClose={handleModalClose}
+            title='Редагування категорії...'
+            content={
+              <CategoryForm
+                category={modalData.data}
+                onSubmit={handleSubmitCategory}
+              />
+            }
+            error={crudError}
+          />
+        }
+      />
+      <Route
+        path='delete/:id'
+        element={
+          <CustomModal
+            isOpen
+            onClose={handleModalClose}
+            title='Видалення категорії...'
+            content={
+              <Typography
+                variant='body1'
+                sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+              >
+                Ви впевнені, що хочете видалити категорію "
+                {modalData.data?.title}"?
+              </Typography>
+            }
+            actions={[
+              <Button
+                key='delete'
+                variant='contained'
+                color='error'
+                size='large'
+                onClick={handleDeleteCategory}
+                fullWidth
+              >
+                Видалити
+              </Button>,
+            ]}
+            error={crudError}
+          />
+        }
+      />
+    </Routes>
   );
 }
 
