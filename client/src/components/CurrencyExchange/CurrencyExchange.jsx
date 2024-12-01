@@ -43,7 +43,7 @@ function CurrencyExchange() {
   return (
     <Box
       sx={{
-        flexGrow: 1,
+        flexGrow: { sm: 1, md: 0 },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

@@ -14,12 +14,20 @@ const getAllCategories = async ({
     sort,
     order,
   }).toString();
-  const response = await api.get(`/categories?${params}`);
-  const totalCount = parseInt(response.headers['x-total-count']);
-  return {
-    data: response.data,
-    totalCount,
-  };
+  try {
+    const response = await api.get(`/categories?${params}`);
+    const totalCount = parseInt(response.headers['x-total-count']);
+    return {
+      data: response.data,
+      totalCount,
+    };
+  } catch (error) {
+    console.error(error.response.data.errors[0].title);
+    return {
+      data: [],
+      totalCount: 0,
+    };
+  }
 };
 
 const getCategoryById = async (categoryId) => {

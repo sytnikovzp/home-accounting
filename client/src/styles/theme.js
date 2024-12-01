@@ -114,7 +114,7 @@ export const stylesListItemText = {
 export const stylesNavMenuItems = {
   position: { md: 'sticky', xs: 'static' },
   top: 0,
-  minHeight: { md: '70vh', xs: 'auto' },
+  minHeight: { md: '75vh', xs: 'auto' },
   backgroundColor: 'transparent',
   display: 'flex',
   flexDirection: { md: 'column', xs: 'row' },
@@ -129,12 +129,12 @@ export const stylesNavMenuItems = {
 export const stylesServiceBlockBox = {
   position: { md: 'sticky', xs: 'static' },
   top: 0,
-  minHeight: { md: '70vh', xs: 'auto' },
+  minHeight: { md: '75vh', xs: 'auto' },
   backgroundColor: 'transparent',
-  display: { xs: 'none', sm: 'flex', md: 'flex' },
-  flexDirection: { xs: 'none', sm: 'row', md: 'column' },
-  alignItems: { sm: 'baseline', md: 'center' },
-  justifyContent: { md: 'flex-start', sm: 'center' },
+  display: { xs: 'none', lg: 'flex' },
+  flexDirection: { xs: 'none', lg: 'column' },
+  alignItems: { lg: 'center' },
+  justifyContent: { md: 'flex-start' },
   borderLeft: { md: '1px solid rgba(0, 0, 0, 0.1)', xs: 'none' },
   borderTop: { xs: '1px solid rgba(0, 0, 0, 0.1)', md: 'none' },
 };

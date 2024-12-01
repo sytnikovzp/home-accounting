@@ -1,4 +1,6 @@
 import {
+  Box,
+  Tooltip,
   TableContainer,
   Table,
   TableHead,
@@ -11,7 +13,6 @@ import {
   Select,
   InputLabel,
   FormControl,
-  Box,
   useMediaQuery,
 } from '@mui/material';
 // ==============================================================
@@ -93,12 +94,16 @@ const ListTable = ({
               ))}
               {!isMobile && (
                 <TableCell align='right' sx={stylesTableCell}>
-                  <IconButton onClick={() => onEdit(row)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => onDelete(row)}>
-                    <DeleteIcon />
-                  </IconButton>
+                  <Tooltip title='Редагувати'>
+                    <IconButton onClick={() => onEdit(row)}>
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Видалити'>
+                    <IconButton onClick={() => onDelete(row)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               )}
             </TableRow>
@@ -107,12 +112,13 @@ const ListTable = ({
       </Table>
       <Box
         display='flex'
+        flexWrap='wrap'
         justifyContent={showStatusDropdown ? 'space-between' : 'flex-end'}
         alignItems='center'
         m={2}
       >
         {showStatusDropdown && (
-          <FormControl sx={{ minWidth: 120 }}>
+          <FormControl sx={{ flexGrow: 1, minWidth: 120, maxWidth: '365px' }}>
             <InputLabel id='status-select-label'>Статус</InputLabel>
             <Select
               labelId='status-select-label'

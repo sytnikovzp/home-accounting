@@ -7,11 +7,11 @@ const useItemsPerPage = () => {
   const isLg = useMediaQuery((theme) => theme.breakpoints.between('lg', 'xl'));
   const isXl = useMediaQuery((theme) => theme.breakpoints.up('xl'));
 
-  if (isXs) return 3;
-  if (isSm) return 4;
-  if (isMd) return 5;
-  if (isLg) return 6;
-  if (isXl) return 8;
+  if (isXs) return 5;
+  if (isSm) return 6;
+  if (isMd) return 7;
+  if (isLg) return 8;
+  if (isXl) return 10;
   return 5;
 };
 
