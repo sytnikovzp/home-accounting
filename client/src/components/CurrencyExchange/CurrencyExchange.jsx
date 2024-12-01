@@ -17,16 +17,16 @@ import Error from '../Error/Error';
 
 function CurrencyExchange() {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [rates, setRates] = useState([]);
 
   const fetchRates = async () => {
     try {
       const filteredRates = await restController.fetchFilteredRates();
       setRates(filteredRates);
-    } catch (err) {
-      console.error('Не вдалося завантажити курси валют:', err.message);
-      setError('Помилка завантаження курсів');
+    } catch (error) {
+      console.error('Не вдалося завантажити курси валют:', error.message);
+      setErrorMessage('Помилка завантаження валют');
     } finally {
       setIsLoading(false);
     }
@@ -36,8 +36,8 @@ function CurrencyExchange() {
     fetchRates();
   }, []);
 
-  if (isLoading) return <Preloader message = 'Завантаження курсів...' />;
-  if (error) return <Error error={error} />;
+  if (isLoading) return <Preloader message='Завантаження валют...' />;
+  if (errorMessage) return <Error error={errorMessage} />;
 
   return (
     <div style={{ textAlign: 'center' }}>

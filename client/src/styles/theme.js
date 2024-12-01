@@ -173,7 +173,6 @@ export const stylesPreloaderTitle = {
 export const stylesFadeBox = {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -190,22 +189,13 @@ export const stylesFadeBox = {
 export const stylesContentBox = {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
   justifyContent: 'center',
-  minHeight: 200,
-  width: '100%',
 };
 
 // ==============================================================
 // ==============================================================
 // ==============================================================
 // Auth page
-
-export const stylesAuthBox = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 2,
-};
 
 export const stylesAuthTitle = {
   fontWeight: 600,
@@ -216,10 +206,4 @@ export const stylesAuthAvatar = {
   width: 50,
   height: 50,
   mb: 2,
-};
-
-export const stylesErrorMessage = {
-  mt: 1,
-  minHeight: '24px',
-  textAlign: 'center',
 };

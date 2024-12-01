@@ -2,14 +2,15 @@ import { CATEGORY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 
-const CategoryForm = ({ category = null, onSubmit }) => {
+function CategoryForm({ category = null, onSubmit }) {
   const initialValues = category ? { title: category.title } : { title: '' };
 
   const fields = [
     {
       name: 'title',
       label: 'Назва категорії',
-      placeholder: 'Наприклад, Електроніка',
+      placeholder: 'Наприклад "Електроніка"',
+      autoFocus: true,
     },
   ];
 
@@ -22,6 +23,6 @@ const CategoryForm = ({ category = null, onSubmit }) => {
       submitButtonText={category ? 'Зберегти зміни' : 'Додати категорію'}
     />
   );
-};
+}
 
 export default CategoryForm;

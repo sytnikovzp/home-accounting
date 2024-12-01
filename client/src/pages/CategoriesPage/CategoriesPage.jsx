@@ -8,7 +8,6 @@ import usePagination from '../../hooks/usePagination';
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
-import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
 import CustomModal from '../../components/CustomModal/CustomModal';
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 
@@ -18,13 +17,12 @@ function CategoriesPage() {
     usePagination(itemsPerPage);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [deleteError, setDeleteError] = useState(null);
-  const [editError, setEditError] = useState(null);
+  const [crudError, setCrudError] = useState(null);
   const [isErrorMode, setIsErrorMode] = useState(false);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [categoryToEdit, setCategoryToEdit] = useState(null);
@@ -45,8 +43,8 @@ function CategoriesPage() {
       setCategories(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати категорії:', error);
-      setError('Не вдалося отримати категорії');
+      console.error('Помилка завантаження списку "Категорій":', error);
+      setErrorMessage('Помилка завантаження списку "Категорій"');
     } finally {
       setIsLoading(false);
     }
@@ -66,28 +64,38 @@ function CategoriesPage() {
       setAddModalOpen(false);
       fetchCategories();
     } catch (error) {
-      console.error('Помилка збереження категорії:', error);
-      setEditError('Не вдалося зберегти категорію. Недостатньо прав.');
+      console.error(
+        categoryToEdit
+          ? 'Помилка редагування категорії:'
+          : 'Помилка додавання категорії:',
+        error
+      );
+      setCrudError(
+        categoryToEdit
+          ? 'Помилка редагування категорії. Недостатньо прав.'
+          : 'Помилка додавання категорії. Недостатньо прав.'
+      );
     }
   };
 
   const handleAddCategory = () => {
+    setCrudError(null);
     setCategoryToEdit(null);
     setAddModalOpen(true);
   };
 
   const handleEdit = (category) => {
+    setCrudError(null);
     setCategoryToEdit(category);
     setAddModalOpen(true);
     setIsErrorMode(false);
-    setEditError(null);
   };
 
   const handleDelete = (category) => {
+    setCrudError(null);
     setCategoryToDelete(category);
     setDeleteModalOpen(true);
     setIsErrorMode(false);
-    setDeleteError(null);
   };
 
   const handleConfirmDelete = async () => {
@@ -98,16 +106,17 @@ function CategoriesPage() {
         setCategoryToDelete(null);
         await fetchCategories();
       } catch (error) {
-        console.error('Помилка при видаленні категорії:', error);
-        setDeleteError('Не вдалося видалити категорію. Недостатньо прав.');
+        console.error('Помилка видалення категорії. Недостатньо прав.', error);
+        setCrudError('Помилка видалення категорії. Недостатньо прав.');
         setIsErrorMode(true);
         setDeleteModalOpen(true);
       }
     }
   };
 
-  if (isLoading) return <Preloader message='Завантаження категорій...' />;
-  if (error) return <Error error={error} />;
+  if (isLoading)
+    return <Preloader message='Завантаження списку "Kатегорій"...' />;
+  if (errorMessage) return <Error error={errorMessage} />;
 
   return (
     <div>
@@ -144,27 +153,47 @@ function CategoriesPage() {
       <CustomModal
         isOpen={isAddModalOpen}
         onClose={() => setAddModalOpen(false)}
-        title={categoryToEdit ? 'Редагувати категорію' : 'Додати категорію'}
+        showCloseButton={true}
+        title={
+          categoryToEdit ? 'Редагування категорії...' : 'Додавання категорії...'
+        }
         content={
           <CategoryForm
             category={categoryToEdit}
             onSubmit={handleSubmitCategory}
           />
         }
-        error={editError}
-        actions={
-          <Box display='flex' gap={2}>
-            <Button onClick={() => setAddModalOpen(false)} color='secondary'>
-              Закрити
-            </Button>
-          </Box>
-        }
+        error={crudError}
       />
-      <DeleteConfirmation
+      <CustomModal
         isOpen={isDeleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        onConfirm={handleConfirmDelete}
-        error={deleteError}
+        showCloseButton={true}
+        title='Видалення категорії'
+        content={
+          <>
+            <Typography
+              variant='body1'
+              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+            >
+              Ви впевнені, що хочете видалити категорію "
+              {categoryToDelete?.title}"?
+            </Typography>
+          </>
+        }
+        actions={[
+          <Button
+            key='delete'
+            variant='contained'
+            color='error'
+            size='large'
+            onClick={handleConfirmDelete}
+            fullWidth
+          >
+            Видалити
+          </Button>,
+        ]}
+        error={crudError}
         isErrorMode={isErrorMode}
       />
     </div>

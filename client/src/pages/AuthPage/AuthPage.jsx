@@ -6,12 +6,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // ==============================================================
 import restController from '../../api/rest/restController';
 // ==============================================================
-import {
-  stylesAuthBox,
-  stylesAuthTitle,
-  stylesAuthAvatar,
-  stylesErrorMessage,
-} from '../../styles/theme';
+import { stylesAuthTitle, stylesAuthAvatar } from '../../styles/theme';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import LoginForm from '../../components/Forms/LoginForm/LoginForm';
@@ -19,7 +14,7 @@ import RegistrationForm from '../../components/Forms/RegistrationForm/Registrati
 
 function AuthPage({ isOpen, onClose, checkAuthentication }) {
   const [isLoginMode, setIsLoginMode] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = useNavigate();
 
@@ -31,7 +26,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
   const handleAuth = useCallback(
     async (authMethod, ...args) => {
       try {
-        setErrorMessage('');
+        setErrorMessage(null);
         await authMethod(...args);
         checkAuthentication();
         onClose();
@@ -60,7 +55,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
   );
 
   const toggleAuthMode = () => {
-    setErrorMessage('');
+    setErrorMessage(null);
     setIsLoginMode((prev) => !prev);
   };
 
@@ -95,21 +90,9 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
   );
 
   const actions = (
-    <Box sx={stylesAuthBox}>
-      {errorMessage && (
-        <Typography color='error' sx={stylesErrorMessage}>
-          {errorMessage}
-        </Typography>
-      )}
-      <Button
-        onClick={toggleAuthMode}
-        variant='text'
-        color='secondary'
-        fullWidth
-      >
-        {isLoginMode ? 'Перейти до реєстрації' : 'Перейти до авторизації'}
-      </Button>
-    </Box>
+    <Button onClick={toggleAuthMode} variant='text' color='secondary' fullWidth>
+      {isLoginMode ? 'Перейти до реєстрації' : 'Перейти до авторизації'}
+    </Button>
   );
 
   useEffect(() => {
@@ -127,6 +110,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
       title={renderTitle(isLoginMode)}
       content={content}
       actions={actions}
+      error={errorMessage}
     />
   );
 }
