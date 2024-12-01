@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 // ==============================================================
 import {
+  Box,
   Table,
   TableHead,
   TableBody,
@@ -40,11 +41,18 @@ function CurrencyExchange() {
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <Typography variant='h6' gutterBottom>
-        Курси валют НБУ
+    <Box
+      sx={{
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Typography variant='h6' sx={{ mt: 1 }}>
+        Курси Національного Банку
       </Typography>
-      <TableContainer style={{ margin: '0 auto' }}>
+      <TableContainer sx={{ margin: '0 auto' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -66,7 +74,7 @@ function CurrencyExchange() {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 }
 

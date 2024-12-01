@@ -131,10 +131,10 @@ export const stylesServiceBlockBox = {
   top: 0,
   minHeight: { md: '70vh', xs: 'auto' },
   backgroundColor: 'transparent',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: { md: 'flex-start', xs: 'center' },
+  display: { xs: 'none', sm: 'flex', md: 'flex' },
+  flexDirection: { xs: 'none', sm: 'row', md: 'column' },
+  alignItems: { sm: 'baseline', md: 'center' },
+  justifyContent: { md: 'flex-start', sm: 'center' },
   borderLeft: { md: '1px solid rgba(0, 0, 0, 0.1)', xs: 'none' },
   borderTop: { xs: '1px solid rgba(0, 0, 0, 0.1)', md: 'none' },
 };
@@ -165,6 +165,27 @@ export const stylesFooterIcon = {
 export const stylesPreloaderTitle = {
   marginBottom: '20px',
   textAlign: 'center',
+};
+
+// ==============================================================
+// ListTable component
+
+export const stylesHeadTableCellDesktop = {
+  cursor: 'pointer',
+  fontWeight: 'bold',
+  padding: '6px 12px',
+  fontSize: '0.875rem',
+};
+
+export const stylesHeadTableCellMobile = {
+  fontWeight: 'bold',
+  padding: '6px 12px',
+  fontSize: '0.875rem',
+};
+
+export const stylesTableCell = {
+  padding: '6px 12px',
+  fontSize: '0.875rem',
 };
 
 // ==============================================================

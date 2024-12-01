@@ -12,7 +12,7 @@ class CategoryService {
       limit,
       offset,
     });
-    if (foundCategories.length === 0) throw notFound('Categories not found');
+    if (foundCategories.length === 0) throw notFound('Категорії не знайдено');
     const allCategories = foundCategories.map((category) => ({
       id: category.id,
       title: category.title,
@@ -28,7 +28,7 @@ class CategoryService {
 
   async getCategoryById(categoryId) {
     const foundCategory = await Category.findByPk(categoryId);
-    if (!foundCategory) throw notFound('Category not found');
+    if (!foundCategory) throw notFound('Категорія не знайдена');
     const categoryData = foundCategory.toJSON();
     return {
       id: categoryData.id,
@@ -50,10 +50,10 @@ class CategoryService {
       'MODERATE_CATEGORIES'
     );
     if (!hasPermission) {
-      throw forbidden('You don`t have permission to moderate categories');
+      throw forbidden('Ви не маєте дозволу модерувати категорії');
     }
     const foundCategory = await Category.findByPk(id);
-    if (!foundCategory) throw notFound('Category not found');
+    if (!foundCategory) throw notFound('Категорія не знайдена');
     if (!['approved', 'rejected'].includes(status)) {
       throw notFound('Status not found');
     }
@@ -65,7 +65,7 @@ class CategoryService {
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0) throw badRequest('Category is not moderated');
+    if (affectedRows === 0) throw badRequest('Категорія не модерується');
     return {
       id: moderatedCategory.id,
       title: moderatedCategory.title,
@@ -86,10 +86,10 @@ class CategoryService {
       'MANAGE_CATEGORIES'
     );
     if (!canAddCategories && !canManageCategories) {
-      throw forbidden('You don`t have permission to create categories');
+      throw forbidden('Ви не маєте дозволу на створення категорій');
     }
     const duplicateCategory = await Category.findOne({ where: { title } });
-    if (duplicateCategory) throw badRequest('This category already exists');
+    if (duplicateCategory) throw badRequest('Ця категорія вже існує');
     const currentUserId = currentUser.id.toString();
     const status = canManageCategories ? 'approved' : 'pending';
     const reviewedBy = canManageCategories ? currentUserId : null;
@@ -105,7 +105,7 @@ class CategoryService {
       },
       { transaction, returning: true }
     );
-    if (!newCategory) throw badRequest('Category is not created');
+    if (!newCategory) throw badRequest('Категорія не створена');
     return {
       id: newCategory.id,
       title: newCategory.title,
@@ -120,7 +120,7 @@ class CategoryService {
 
   async updateCategory(id, title, currentUser, transaction) {
     const foundCategory = await Category.findByPk(id);
-    if (!foundCategory) throw notFound('Category not found');
+    if (!foundCategory) throw notFound('Категорія не знайдена');
     const isCategoryOwner =
       currentUser.id.toString() === foundCategory.createdBy;
     const canManageCategories = await checkPermission(
@@ -128,12 +128,12 @@ class CategoryService {
       'MANAGE_CATEGORIES'
     );
     if (!isCategoryOwner && !canManageCategories) {
-      throw forbidden('You don`t have permission to edit this category');
+      throw forbidden('Ви не маєте дозволу редагувати цю категорію');
     }
     const currentTitle = foundCategory.title;
     if (title !== currentTitle) {
       const duplicateCategory = await Category.findOne({ where: { title } });
-      if (duplicateCategory) throw badRequest('This category already exists');
+      if (duplicateCategory) throw badRequest('Ця категорія вже існує');
     } else {
       title = currentTitle;
     }
@@ -146,7 +146,7 @@ class CategoryService {
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0) throw badRequest('Category is not updated');
+    if (affectedRows === 0) throw badRequest('Категорія не оновлена');
     return {
       id: updatedCategory.id,
       title: updatedCategory.title,
@@ -165,14 +165,14 @@ class CategoryService {
       'MANAGE_CATEGORIES'
     );
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete this category');
+      throw forbidden('Ви не маєте дозволу на видалення цієї категорії');
     const foundCategory = await Category.findByPk(categoryId);
-    if (!foundCategory) throw notFound('Category not found');
+    if (!foundCategory) throw notFound('Категорія не знайдена');
     const deletedCategory = await Category.destroy({
       where: { id: categoryId },
       transaction,
     });
-    if (!deletedCategory) throw badRequest('Category is not deleted');
+    if (!deletedCategory) throw badRequest('Категорія не видалена');
     return deletedCategory;
   }
 }

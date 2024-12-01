@@ -18,14 +18,14 @@ function CustomModal({
       open={isOpen}
       closeAfterTransition
       onClose={disableBackdropClick ? null : onClose}
-      aria-labelledby='custom-modal-title'
+      aria-labelledby={title ? 'custom-modal-title' : undefined}
       aria-describedby='custom-modal-description'
     >
       <Fade in={isOpen}>
         <Box sx={stylesFadeBox} position='relative'>
           {showCloseButton && (
             <IconButton
-              aria-label='close'
+              aria-label='Закрити'
               onClick={onClose}
               sx={{
                 position: 'absolute',
@@ -53,7 +53,9 @@ function CustomModal({
               {error}
             </Alert>
           )}
-          <Box sx={stylesContentBox}>{content}</Box>
+          <Box id='custom-modal-description' sx={stylesContentBox}>
+            {content}
+          </Box>
           {actions && (
             <Box mt={2} display='flex' justifyContent='center' gap={2}>
               {actions}

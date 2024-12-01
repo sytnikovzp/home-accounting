@@ -172,9 +172,7 @@ describe('CategoryController', () => {
           title: 'New category by moderator',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'This category already exists'
-      );
+      expect(response.body.errors[0].title).toBe('Ця категорія вже існує');
     });
 
     it('should return 403 for current user not having permission to create categories', async () => {
@@ -186,7 +184,7 @@ describe('CategoryController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to create categories'
+        'Ви не маєте дозволу на створення категорій'
       );
     });
   });
@@ -212,7 +210,7 @@ describe('CategoryController', () => {
         .get('/api/categories/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Category not found');
+      expect(response.body.errors[0].title).toBe('Категорія не знайдена');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -231,7 +229,7 @@ describe('CategoryController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to moderate categories'
+        'Ви не маєте дозволу модерувати категорії'
       );
     });
 
@@ -292,9 +290,7 @@ describe('CategoryController', () => {
           title: 'Пристрої',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'This category already exists'
-      );
+      expect(response.body.errors[0].title).toBe('Ця категорія вже існує');
     });
 
     it('should return 403 for current user not having permission to edit categories', async () => {
@@ -306,7 +302,7 @@ describe('CategoryController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to edit this category'
+        'Ви не маєте дозволу редагувати цю категорію'
       );
     });
 
@@ -318,7 +314,7 @@ describe('CategoryController', () => {
           title: 'Updated Category Title',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Category not found');
+      expect(response.body.errors[0].title).toBe('Категорія не знайдена');
     });
   });
 
@@ -329,7 +325,7 @@ describe('CategoryController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to delete this category'
+        'Ви не маєте дозволу на видалення цієї категорії'
       );
     });
 
@@ -345,7 +341,7 @@ describe('CategoryController', () => {
         .delete('/api/categories/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Category not found');
+      expect(response.body.errors[0].title).toBe('Категорія не знайдена');
     });
   });
 });

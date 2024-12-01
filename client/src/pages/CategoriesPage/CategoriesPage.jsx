@@ -20,13 +20,10 @@ function CategoriesPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [categories, setCategories] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [categoryToDelete, setCategoryToDelete] = useState(null);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [crudError, setCrudError] = useState(null);
-  const [isErrorMode, setIsErrorMode] = useState(false);
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const [categoryToEdit, setCategoryToEdit] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState('approved');
   const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
+  const [modalData, setModalData] = useState({ mode: null, data: null });
+  const [crudError, setCrudError] = useState(null);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -34,8 +31,8 @@ function CategoriesPage() {
       const params = {
         page: currentPage,
         limit: pageSize,
-        sort: sortModel.field,
-        order: sortModel.order,
+        status: selectedStatus,
+        ...sortModel,
       };
       const { data, totalCount } = await restController.fetchAllCategories(
         params
@@ -43,74 +40,46 @@ function CategoriesPage() {
       setCategories(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Помилка завантаження списку "Категорій":', error);
-      setErrorMessage('Помилка завантаження списку "Категорій"');
+      setErrorMessage(error.response.data.errors[0].title);
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, pageSize, sortModel]);
+  }, [currentPage, pageSize, sortModel, selectedStatus]);
 
   useEffect(() => {
     fetchCategories();
-  }, [sortModel, currentPage, pageSize, fetchCategories]);
+  }, [fetchCategories]);
+
+  const handleModalClose = () => {
+    setModalData({ mode: null, data: null });
+    setCrudError(null);
+  };
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
 
   const handleSubmitCategory = async (values) => {
     try {
-      if (categoryToEdit) {
-        await restController.editCategory(categoryToEdit.id, values.title);
+      if (modalData.mode === 'edit') {
+        await restController.editCategory(modalData.data.id, values.title);
       } else {
         await restController.addCategory(values.title);
       }
-      setAddModalOpen(false);
+      handleModalClose();
       fetchCategories();
     } catch (error) {
-      console.error(
-        categoryToEdit
-          ? 'Помилка редагування категорії:'
-          : 'Помилка додавання категорії:',
-        error
-      );
-      setCrudError(
-        categoryToEdit
-          ? 'Помилка редагування категорії. Недостатньо прав.'
-          : 'Помилка додавання категорії. Недостатньо прав.'
-      );
+      setCrudError(error.response.data.errors[0].title);
     }
   };
 
-  const handleAddCategory = () => {
-    setCrudError(null);
-    setCategoryToEdit(null);
-    setAddModalOpen(true);
-  };
-
-  const handleEdit = (category) => {
-    setCrudError(null);
-    setCategoryToEdit(category);
-    setAddModalOpen(true);
-    setIsErrorMode(false);
-  };
-
-  const handleDelete = (category) => {
-    setCrudError(null);
-    setCategoryToDelete(category);
-    setDeleteModalOpen(true);
-    setIsErrorMode(false);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (categoryToDelete) {
-      try {
-        await restController.removeCategory(categoryToDelete.id);
-        setDeleteModalOpen(false);
-        setCategoryToDelete(null);
-        await fetchCategories();
-      } catch (error) {
-        console.error('Помилка видалення категорії. Недостатньо прав.', error);
-        setCrudError('Помилка видалення категорії. Недостатньо прав.');
-        setIsErrorMode(true);
-        setDeleteModalOpen(true);
-      }
+  const handleDeleteCategory = async () => {
+    try {
+      await restController.removeCategory(modalData.data.id);
+      handleModalClose();
+      fetchCategories();
+    } catch (error) {
+      setCrudError(error.response.data.errors[0].title);
     }
   };
 
@@ -127,7 +96,11 @@ function CategoriesPage() {
         mb={2}
       >
         <Typography variant='h6'>Категорії</Typography>
-        <Button variant='contained' color='success' onClick={handleAddCategory}>
+        <Button
+          variant='contained'
+          color='success'
+          onClick={() => setModalData({ mode: 'add', data: null })}
+        >
           Додати категорію
         </Button>
       </Box>
@@ -137,8 +110,10 @@ function CategoriesPage() {
           { field: 'title', headerName: 'Назва категорії', align: 'left' },
         ]}
         rows={categories}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        onEdit={(category) => setModalData({ mode: 'edit', data: category })}
+        onDelete={(category) =>
+          setModalData({ mode: 'delete', data: category })
+        }
         pagination={{
           totalCount,
           currentPage,
@@ -149,53 +124,58 @@ function CategoriesPage() {
         }}
         sortModel={sortModel}
         onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
+        selectedStatus={selectedStatus}
+        onStatusChange={handleStatusChange}
+        showStatusDropdown
       />
-      <CustomModal
-        isOpen={isAddModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        showCloseButton={true}
-        title={
-          categoryToEdit ? 'Редагування категорії...' : 'Додавання категорії...'
-        }
-        content={
-          <CategoryForm
-            category={categoryToEdit}
-            onSubmit={handleSubmitCategory}
-          />
-        }
-        error={crudError}
-      />
-      <CustomModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
-        showCloseButton={true}
-        title='Видалення категорії'
-        content={
-          <>
+      {modalData.mode === 'add' || modalData.mode === 'edit' ? (
+        <CustomModal
+          isOpen
+          onClose={handleModalClose}
+          showCloseButton={true}
+          title={
+            modalData.mode === 'edit'
+              ? 'Редагування категорії...'
+              : 'Додавання категорії...'
+          }
+          content={
+            <CategoryForm
+              category={modalData.data}
+              onSubmit={handleSubmitCategory}
+            />
+          }
+          error={crudError}
+        />
+      ) : modalData.mode === 'delete' ? (
+        <CustomModal
+          isOpen
+          onClose={handleModalClose}
+          showCloseButton={true}
+          title='Видалення категорії...'
+          content={
             <Typography
               variant='body1'
               sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
             >
-              Ви впевнені, що хочете видалити категорію "
-              {categoryToDelete?.title}"?
+              Ви впевнені, що хочете видалити категорію "{modalData.data?.title}
+              "?
             </Typography>
-          </>
-        }
-        actions={[
-          <Button
-            key='delete'
-            variant='contained'
-            color='error'
-            size='large'
-            onClick={handleConfirmDelete}
-            fullWidth
-          >
-            Видалити
-          </Button>,
-        ]}
-        error={crudError}
-        isErrorMode={isErrorMode}
-      />
+          }
+          actions={[
+            <Button
+              key='delete'
+              variant='contained'
+              color='error'
+              size='large'
+              onClick={handleDeleteCategory}
+              fullWidth
+            >
+              Видалити
+            </Button>,
+          ]}
+          error={crudError}
+        />
+      ) : null}
     </div>
   );
 }

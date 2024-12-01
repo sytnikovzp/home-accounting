@@ -14,7 +14,7 @@ class StatisticService {
   async getCostByCategoryPerPeriod(category, ago) {
     const time = getTime(ago);
     const foundCategory = await getRecordByTitle(Category, category);
-    if (!foundCategory) throw notFound('Category not found');
+    if (!foundCategory) throw notFound('Категорія не знайдена');
     const productIds = await Product.findAll({
       where: { categoryId: foundCategory.id },
       attributes: ['id'],

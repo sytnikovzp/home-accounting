@@ -21,7 +21,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU
 ### Get list all categories (status pending, default pagination, without sort)
 GET http://localhost:5000/api/categories?status=pending HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyOTc2NDMxLCJleHAiOjE3MzI5NzczMzF9.JfYUunrG3tIjw1rEwearOcNdh4RSB1nvRUB_imzXzj8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMzMDI0Nzk2LCJleHAiOjE3MzMwMjU2OTZ9.cyD83V1iqMdxLrjP-SYscu6PO1AjKQfbVOPxOWUjdGo
 
 ### Get list all categories (status pending, custom pagination, without sort)
 GET http://localhost:5000/api/categories?status=pending&page=1&limit=10 HTTP/1.1

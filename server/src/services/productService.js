@@ -152,7 +152,7 @@ class ProductService {
     let categoryRecord = null;
     if (category !== undefined) {
       categoryRecord = await getRecordByTitle(Category, category);
-      if (category && !categoryRecord) throw notFound('Category not found');
+      if (category && !categoryRecord) throw notFound('Категорія не знайдена');
       updateData.categoryId = categoryRecord?.id || null;
     }
     const currentUserId = currentUser.id.toString();
