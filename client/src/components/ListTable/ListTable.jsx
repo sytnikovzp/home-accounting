@@ -1,3 +1,4 @@
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Tooltip,
@@ -43,6 +44,7 @@ const ListTable = ({
   selectedStatus,
   onStatusChange,
   showStatusDropdown = false,
+  linkEntity = '',
 }) => {
   const handleSort = (field) => {
     const newSortModel =
@@ -83,13 +85,19 @@ const ListTable = ({
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.id}>
-              {columns.map((col) => (
+              {columns.map((col, index) => (
                 <TableCell
                   key={col.field}
                   align={col.align || 'center'}
                   sx={stylesTableCell}
                 >
-                  {row[col.field]}
+                  {index === 1 ? (
+                    <RouterLink to={`/${linkEntity}/${row.id}`}>
+                      {row[col.field]}
+                    </RouterLink>
+                  ) : (
+                    row[col.field]
+                  )}
                 </TableCell>
               ))}
               {!isMobile && (

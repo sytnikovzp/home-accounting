@@ -127,6 +127,7 @@ function CategoriesPage() {
         selectedStatus={selectedStatus}
         onStatusChange={handleStatusChange}
         showStatusDropdown
+        linkEntity='categories'
       />
       {modalData.mode === 'add' || modalData.mode === 'edit' ? (
         <CustomModal

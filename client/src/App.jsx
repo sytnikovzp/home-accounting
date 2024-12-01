@@ -59,7 +59,7 @@ const App = () => {
       <CustomModal
         isOpen={true}
         onClose={null}
-        content={<Preloader message='Завантаження додатку...' />}
+        content={<Preloader message='Welcome to Home Accounting...' />}
         disableBackdropClick={true}
       />
     );
