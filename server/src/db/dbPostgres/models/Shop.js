@@ -28,15 +28,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 'pending',
       },
-      reviewedBy: {
+      moderatorId: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      reviewedAt: {
-        type: DataTypes.DATE,
+      moderatorFullName: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
-      createdBy: {
+      creatorId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      creatorFullName: {
         type: DataTypes.STRING,
         allowNull: true,
       },

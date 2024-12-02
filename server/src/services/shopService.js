@@ -43,9 +43,8 @@ class ShopService {
       url: shopData.url || '',
       logo: shopData.logo || '',
       status: statusMapping[shopData.status] || shopData.status,
-      reviewedBy: shopData.reviewedBy || '',
-      reviewedAt: shopData.reviewedAt ? formatDate(shopData.reviewedAt) : '',
-      createdBy: shopData.createdBy || '',
+      moderatorId: shopData.moderatorId || '',
+      creatorId: shopData.creatorId || '',
       createdAt: formatDate(shopData.createdAt),
       updatedAt: formatDate(shopData.updatedAt),
     };
@@ -63,8 +62,7 @@ class ShopService {
     }
     const currentUserId = currentUser.id.toString();
     const updateData = { status };
-    updateData.reviewedBy = currentUserId;
-    updateData.reviewedAt = new Date();
+    updateData.moderatorId = currentUserId;
     const [affectedRows, [moderatedShop]] = await Shop.update(updateData, {
       where: { id },
       returning: true,
@@ -75,9 +73,8 @@ class ShopService {
       id: moderatedShop.id,
       title: moderatedShop.title,
       status: moderatedShop.status,
-      reviewedBy: moderatedShop.reviewedBy,
-      reviewedAt: formatDate(moderatedShop.reviewedAt),
-      createdBy: moderatedShop.createdBy || '',
+      moderatorId: moderatedShop.moderatorId,
+      creatorId: moderatedShop.creatorId || '',
     };
   }
 
@@ -99,18 +96,16 @@ class ShopService {
     const url = urlValue === '' ? null : urlValue;
     const currentUserId = currentUser.id.toString();
     const status = canManageShops ? 'approved' : 'pending';
-    const reviewedBy = canManageShops ? currentUserId : null;
-    const reviewedAt = canManageShops ? new Date() : null;
-    const createdBy = currentUserId;
+    const moderatorId = canManageShops ? currentUserId : null;
+    const creatorId = currentUserId;
     const newShop = await Shop.create(
       {
         title,
         description,
         url,
         status,
-        reviewedBy,
-        reviewedAt,
-        createdBy,
+        moderatorId,
+        creatorId,
       },
       { transaction, returning: true }
     );
@@ -121,9 +116,8 @@ class ShopService {
       description: newShop.description || '',
       url: newShop.url || '',
       status: newShop.status,
-      reviewedBy: newShop.reviewedBy || '',
-      reviewedAt: newShop.reviewedAt ? formatDate(newShop.reviewedAt) : '',
-      createdBy: newShop.createdBy || '',
+      moderatorId: newShop.moderatorId || '',
+      creatorId: newShop.creatorId || '',
     };
   }
 
@@ -137,7 +131,7 @@ class ShopService {
   ) {
     const foundShop = await Shop.findByPk(id);
     if (!foundShop) throw notFound('Магазин не знайдено');
-    const isShopOwner = currentUser.id.toString() === foundShop.createdBy;
+    const isShopOwner = currentUser.id.toString() === foundShop.creatorId;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
     if (!isShopOwner && !canManageShops) {
       throw forbidden('Ви не маєте дозволу на редагування цього магазину');
@@ -160,8 +154,7 @@ class ShopService {
     }
     const currentUserId = currentUser.id.toString();
     updateData.status = canManageShops ? 'approved' : 'pending';
-    updateData.reviewedBy = canManageShops ? currentUserId : null;
-    updateData.reviewedAt = canManageShops ? new Date() : null;
+    updateData.moderatorId = canManageShops ? currentUserId : null;
     const [affectedRows, [updatedShop]] = await Shop.update(updateData, {
       where: { id },
       returning: true,
@@ -174,11 +167,8 @@ class ShopService {
       description: updatedShop.description || '',
       url: updatedShop.url || '',
       status: updatedShop.status,
-      reviewedBy: updatedShop.reviewedBy || '',
-      reviewedAt: updatedShop.reviewedAt
-        ? formatDate(updatedShop.reviewedAt)
-        : '',
-      createdBy: updatedShop.createdBy || '',
+      moderatorId: updatedShop.moderatorId || '',
+      creatorId: updatedShop.creatorId || '',
     };
   }
 
@@ -186,7 +176,7 @@ class ShopService {
     if (!filename) throw badRequest('Файл не завантажено');
     const foundShop = await Shop.findByPk(id);
     if (!foundShop) throw notFound('Магазин не знайдено');
-    const isShopOwner = currentUser.id.toString() === foundShop.createdBy;
+    const isShopOwner = currentUser.id.toString() === foundShop.creatorId;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
     if (!isShopOwner && !canManageShops) {
       throw forbidden(
@@ -196,13 +186,12 @@ class ShopService {
     const updateData = { logo: filename };
     const currentUserId = currentUser.id.toString();
     updateData.status = canManageShops ? 'approved' : 'pending';
-    updateData.reviewedBy = canManageShops ? currentUserId : null;
-    updateData.reviewedAt = canManageShops ? new Date() : null;
+    updateData.moderatorId = canManageShops ? currentUserId : null;
     const [affectedRows, [updatedShopLogo]] = await Shop.update(updateData, {
       where: { id },
       returning: true,
       raw: true,
-      fields: ['logo', 'status', 'reviewedBy', 'reviewedAt'],
+      fields: ['logo', 'status', 'moderatorId'],
       transaction,
     });
     if (affectedRows === 0) throw badRequest('Логотип магазину не оновлено');
@@ -210,18 +199,15 @@ class ShopService {
       id: updatedShopLogo.id,
       logo: updatedShopLogo.logo || '',
       status: updatedShopLogo.status,
-      reviewedBy: updatedShopLogo.reviewedBy || '',
-      reviewedAt: updatedShopLogo.reviewedAt
-        ? formatDate(updatedShopLogo.reviewedAt)
-        : '',
-      createdBy: updatedShopLogo.createdBy || '',
+      moderatorId: updatedShopLogo.moderatorId || '',
+      creatorId: updatedShopLogo.creatorId || '',
     };
   }
 
   async removeShopLogo(id, currentUser, transaction) {
     const foundShop = await Shop.findByPk(id);
     if (!foundShop) throw notFound('Магазин не знайдено');
-    const isShopOwner = currentUser.id.toString() === foundShop.createdBy;
+    const isShopOwner = currentUser.id.toString() === foundShop.creatorId;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
     if (!isShopOwner && !canManageShops) {
       throw forbidden(
@@ -231,13 +217,12 @@ class ShopService {
     const updateData = { logo: null };
     const currentUserId = currentUser.id.toString();
     updateData.status = canManageShops ? 'approved' : 'pending';
-    updateData.reviewedBy = canManageShops ? currentUserId : null;
-    updateData.reviewedAt = canManageShops ? new Date() : null;
+    updateData.moderatorId = canManageShops ? currentUserId : null;
     const [affectedRows, [removedShopLogo]] = await Shop.update(updateData, {
       where: { id },
       returning: true,
       raw: true,
-      fields: ['logo', 'status', 'reviewedBy', 'reviewedAt'],
+      fields: ['logo', 'status', 'moderatorId'],
       transaction,
     });
     if (affectedRows === 0) throw badRequest('Логотип магазину не видалено');
@@ -245,11 +230,8 @@ class ShopService {
       id: removedShopLogo.id,
       logo: removedShopLogo.logo || '',
       status: removedShopLogo.status,
-      reviewedBy: removedShopLogo.reviewedBy || '',
-      reviewedAt: removedShopLogo.reviewedAt
-        ? formatDate(removedShopLogo.reviewedAt)
-        : '',
-      createdBy: removedShopLogo.createdBy || '',
+      moderatorId: removedShopLogo.moderatorId || '',
+      creatorId: removedShopLogo.creatorId || '',
     };
   }
 

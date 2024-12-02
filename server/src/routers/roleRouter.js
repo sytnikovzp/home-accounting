@@ -17,13 +17,13 @@ const {
 const roleRouter = new Router();
 
 roleRouter
-  .route('/permissions')
-  .get(authHandler, paginateElements, getAllPermissions);
-
-roleRouter
   .route('/')
   .get(authHandler, paginateElements, getAllRoles)
   .post(authHandler, validateRole, createRole);
+
+roleRouter
+  .route('/permissions')
+  .get(authHandler, paginateElements, getAllPermissions);
 
 roleRouter
   .route('/:roleId')

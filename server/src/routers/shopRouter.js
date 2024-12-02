@@ -25,21 +25,21 @@ shopRouter
   .post(authHandler, validateShop, createShop);
 
 shopRouter
+  .route('/logo/:shopId')
+  .patch(authHandler, uploadShopLogos.single('shopLogo'), updateShopLogo);
+
+shopRouter
+  .route('/delete-logo/:shopId')
+  .patch(authHandler, removeShopLogo);
+
+shopRouter
+  .route('/moderate/:shopId')
+  .patch(authHandler, validateModeration, reviewShop);
+
+shopRouter
   .route('/:shopId')
   .get(authHandler, getShopById)
   .patch(authHandler, validateShop, updateShop)
   .delete(authHandler, deleteShop);
-
-shopRouter
-  .route('/:shopId/logo')
-  .patch(authHandler, uploadShopLogos.single('shopLogo'), updateShopLogo);
-
-shopRouter
-  .route('/:shopId/delete-logo')
-  .patch(authHandler, removeShopLogo);
-
-shopRouter
-  .route('/:shopId/moderate')
-  .patch(authHandler, validateModeration, reviewShop);
 
 module.exports = shopRouter;

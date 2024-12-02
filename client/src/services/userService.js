@@ -32,14 +32,14 @@ const updateUser = async (userId, { fullName, password, role }) => {
 const updateUserPhoto = async (userId, userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
-  const response = await api.patch(`/users/${userId}/photo`, formData, {
+  const response = await api.patch(`/users/photo/${userId}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return response.data;
 };
 
 const removeUserPhoto = async (userId) => {
-  const response = await api.patch(`/users/${userId}/delete-photo`, {
+  const response = await api.patch(`/users/delete-photo/${userId}`, {
     photo: null,
   });
   return response.data;

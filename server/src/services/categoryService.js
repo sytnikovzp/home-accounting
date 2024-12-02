@@ -39,13 +39,16 @@ class CategoryService {
       id: categoryData.id,
       title: categoryData.title,
       status: statusMapping[categoryData.status] || categoryData.status,
-      reviewedBy: categoryData.reviewedBy || '',
-      reviewedAt: categoryData.reviewedAt
-        ? formatDate(categoryData.reviewedAt)
-        : '',
-      createdBy: categoryData.createdBy || '',
-      createdAt: formatDate(categoryData.createdAt),
-      updatedAt: formatDate(categoryData.updatedAt),
+      moderation: {
+        moderatorId: categoryData.moderatorId || '',
+        moderatorFullName: categoryData.moderatorFullName || '',
+      },
+      creation: {
+        creatorId: categoryData.creatorId || '',
+        creatorFullName: categoryData.creatorFullName || '',
+        createdAt: formatDate(categoryData.createdAt),
+        updatedAt: formatDate(categoryData.updatedAt),
+      },
     };
   }
 
@@ -63,22 +66,36 @@ class CategoryService {
       throw notFound('Статус не знайдено');
     }
     const currentUserId = currentUser.id.toString();
+    const currentUserFullName = currentUser.fullName;
     const updateData = { status };
-    updateData.reviewedBy = currentUserId;
-    updateData.reviewedAt = new Date();
+    updateData.moderatorId = currentUserId;
+    updateData.moderatorFullName = currentUserFullName;
     const [affectedRows, [moderatedCategory]] = await Category.update(
       updateData,
       { where: { id }, returning: true, transaction }
     );
     if (affectedRows === 0)
       throw badRequest('Категорія не проходить модерацію');
+    const statusMapping = {
+      approved: 'Затверджено',
+      pending: 'Очікує модерації',
+      rejected: 'Відхилено',
+    };
     return {
       id: moderatedCategory.id,
       title: moderatedCategory.title,
-      status: moderatedCategory.status,
-      reviewedBy: moderatedCategory.reviewedBy,
-      reviewedAt: formatDate(moderatedCategory.reviewedAt),
-      createdBy: moderatedCategory.createdBy || '',
+      status:
+        statusMapping[moderatedCategory.status] || moderatedCategory.status,
+      moderation: {
+        moderatorId: moderatedCategory.moderatorId || '',
+        moderatorFullName: moderatedCategory.moderatorFullName || '',
+      },
+      creation: {
+        creatorId: moderatedCategory.creatorId || '',
+        creatorFullName: moderatedCategory.creatorFullName || '',
+        createdAt: formatDate(moderatedCategory.createdAt),
+        updatedAt: formatDate(moderatedCategory.updatedAt),
+      },
     };
   }
 
@@ -97,30 +114,43 @@ class CategoryService {
     const duplicateCategory = await Category.findOne({ where: { title } });
     if (duplicateCategory) throw badRequest('Ця категорія вже існує');
     const currentUserId = currentUser.id.toString();
+    const currentUserFullName = currentUser.fullName;
     const status = canManageCategories ? 'approved' : 'pending';
-    const reviewedBy = canManageCategories ? currentUserId : null;
-    const reviewedAt = canManageCategories ? new Date() : null;
-    const createdBy = currentUserId;
+    const moderatorId = canManageCategories ? currentUserId : null;
+    const moderatorFullName = canManageCategories ? currentUserFullName : null;
+    const creatorId = currentUserId;
+    const creatorFullName = currentUserFullName;
     const newCategory = await Category.create(
       {
         title,
         status,
-        reviewedBy,
-        reviewedAt,
-        createdBy,
+        moderatorId,
+        moderatorFullName,
+        creatorId,
+        creatorFullName,
       },
       { transaction, returning: true }
     );
     if (!newCategory) throw badRequest('Дані цієї категорії не створено');
+    const statusMapping = {
+      approved: 'Затверджено',
+      pending: 'Очікує модерації',
+      rejected: 'Відхилено',
+    };
     return {
       id: newCategory.id,
       title: newCategory.title,
-      status: newCategory.status,
-      reviewedBy: newCategory.reviewedBy || '',
-      reviewedAt: newCategory.reviewedAt
-        ? formatDate(newCategory.reviewedAt)
-        : '',
-      createdBy: newCategory.createdBy || '',
+      status: statusMapping[newCategory.status] || newCategory.status,
+      moderation: {
+        moderatorId: newCategory.moderatorId || '',
+        moderatorFullName: newCategory.moderatorFullName || '',
+      },
+      creation: {
+        creatorId: newCategory.creatorId || '',
+        creatorFullName: newCategory.creatorFullName || '',
+        createdAt: formatDate(newCategory.createdAt),
+        updatedAt: formatDate(newCategory.updatedAt),
+      },
     };
   }
 
@@ -128,7 +158,7 @@ class CategoryService {
     const foundCategory = await Category.findByPk(id);
     if (!foundCategory) throw notFound('Категорія не знайдена');
     const isCategoryOwner =
-      currentUser.id.toString() === foundCategory.createdBy;
+      currentUser.id.toString() === foundCategory.creatorId;
     const canManageCategories = await checkPermission(
       currentUser,
       'MANAGE_CATEGORIES'
@@ -145,23 +175,36 @@ class CategoryService {
     }
     const updateData = { title };
     const currentUserId = currentUser.id.toString();
+    const currentUserFullName = currentUser.fullName;
     updateData.status = canManageCategories ? 'approved' : 'pending';
-    updateData.reviewedBy = canManageCategories ? currentUserId : null;
-    updateData.reviewedAt = canManageCategories ? new Date() : null;
+    updateData.moderatorId = canManageCategories ? currentUserId : null;
+    updateData.moderatorFullName = canManageCategories
+      ? currentUserFullName
+      : null;
     const [affectedRows, [updatedCategory]] = await Category.update(
       updateData,
       { where: { id }, returning: true, transaction }
     );
     if (affectedRows === 0) throw badRequest('Дані цієї категорії не оновлено');
+    const statusMapping = {
+      approved: 'Затверджено',
+      pending: 'Очікує модерації',
+      rejected: 'Відхилено',
+    };
     return {
       id: updatedCategory.id,
       title: updatedCategory.title,
-      status: updatedCategory.status,
-      reviewedBy: updatedCategory.reviewedBy || '',
-      reviewedAt: updatedCategory.reviewedAt
-        ? formatDate(updatedCategory.reviewedAt)
-        : '',
-      createdBy: updatedCategory.createdBy || '',
+      status: statusMapping[updatedCategory.status] || updatedCategory.status,
+      moderation: {
+        moderatorId: updatedCategory.moderatorId || '',
+        moderatorFullName: updatedCategory.moderatorFullName || '',
+      },
+      creation: {
+        creatorId: updatedCategory.creatorId || '',
+        creatorFullName: updatedCategory.creatorFullName || '',
+        createdAt: formatDate(updatedCategory.createdAt),
+        updatedAt: formatDate(updatedCategory.updatedAt),
+      },
     };
   }
 

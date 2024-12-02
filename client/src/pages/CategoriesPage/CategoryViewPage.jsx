@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Box, Grid2, Typography } from '@mui/material';
+import { Info, CalendarToday, Person, Update } from '@mui/icons-material';
 // ==============================================================
 import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
@@ -25,60 +26,69 @@ function CategoryViewPage({ handleModalClose }) {
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title={categoryToCRUD?.title}
+      title='Деталі категорії...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <Box>
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              ID: {categoryToCRUD?.id}
-            </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              Назва: {categoryToCRUD?.title}
-            </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              Статус модерації: {categoryToCRUD?.status}
-            </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              ID Модератора: {categoryToCRUD?.reviewedBy}
-            </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              Дата модерації: {categoryToCRUD?.reviewedAt}
-            </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              ID Автора: {categoryToCRUD?.createdBy}
-            </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              Дата створення: {categoryToCRUD?.createdAt}
-            </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-            >
-              Дата редагування: {categoryToCRUD?.updatedAt}
-            </Typography>
+          <Box sx={{ mt: 3, mb: 3 }}>
+            <Grid2 container spacing={2}>
+              <Grid2 xs={12} sm={6}>
+                <Info color='primary' sx={{ verticalAlign: 'middle', mr: 1 }} />
+                <Typography variant='body1' component='span'>
+                  <strong>ID:</strong> {categoryToCRUD?.id}
+                </Typography>
+              </Grid2>
+              <Grid2 xs={12} sm={6}>
+                <Info color='primary' sx={{ verticalAlign: 'middle', mr: 1 }} />
+                <Typography variant='body1' component='span'>
+                  <strong>Назва:</strong> {categoryToCRUD?.title}
+                </Typography>
+              </Grid2>
+              <Grid2 xs={12} sm={6}>
+                <Info color='primary' sx={{ verticalAlign: 'middle', mr: 1 }} />
+                <Typography variant='body1' component='span'>
+                  <strong>Статус:</strong> {categoryToCRUD?.status}
+                </Typography>
+              </Grid2>
+              <Grid2 xs={12} sm={6}>
+                <Person
+                  color='primary'
+                  sx={{ verticalAlign: 'middle', mr: 1 }}
+                />
+                <Typography variant='body1' component='span'>
+                  <strong>Модератор: </strong>
+                  {categoryToCRUD?.moderatorId || 'Дані відсутні'}
+                </Typography>
+              </Grid2>
+              <Grid2 xs={12} sm={6}>
+                <Person
+                  color='primary'
+                  sx={{ verticalAlign: 'middle', mr: 1 }}
+                />
+                <Typography variant='body1' component='span'>
+                  <strong>Автор:</strong> {categoryToCRUD?.creatorId}
+                </Typography>
+              </Grid2>
+              <Grid2 xs={12} sm={6}>
+                <CalendarToday
+                  color='primary'
+                  sx={{ verticalAlign: 'middle', mr: 1 }}
+                />
+                <Typography variant='body1' component='span'>
+                  <strong>Створено:</strong> {categoryToCRUD?.createdAt}
+                </Typography>
+              </Grid2>
+              <Grid2 xs={12} sm={6}>
+                <Update
+                  color='primary'
+                  sx={{ verticalAlign: 'middle', mr: 1 }}
+                />
+                <Typography variant='body1' component='span'>
+                  <strong>Редаговано:</strong> {categoryToCRUD?.updatedAt}
+                </Typography>
+              </Grid2>
+            </Grid2>
           </Box>
         )
       }

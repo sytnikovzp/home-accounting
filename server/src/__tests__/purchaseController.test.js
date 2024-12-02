@@ -106,7 +106,7 @@ describe('PurchaseController', () => {
       expect(response.body.shop).toBe('Comfy');
       expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('UAH');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.creatorId).toBeDefined();
       purchaseId = response.body.id;
     });
 
@@ -207,7 +207,7 @@ describe('PurchaseController', () => {
       expect(response.body.shop).toBe('Comfy');
       expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('UAH');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.creatorId).toBeDefined();
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
     });
@@ -248,7 +248,7 @@ describe('PurchaseController', () => {
       expect(response.body.shop).toBe('Епіцентр');
       expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('USD');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 404 if you specify shop that don`t exist', async () => {

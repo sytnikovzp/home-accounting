@@ -141,10 +141,9 @@ describe('CategoryController', () => {
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
       expect(response.body.title).toBe('Нова модераторська категорія');
-      expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.status).toBe('Затверджено');
+      expect(response.body.moderatorId).toBeDefined();
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 201 for current user having permission to create categories (as user)', async () => {
@@ -157,10 +156,10 @@ describe('CategoryController', () => {
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
       expect(response.body.title).toBe('Нова користувацька категорія');
-      expect(response.body.status).toBe('pending');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderatorId).toBe('');
+
+      expect(response.body.creatorId).toBeDefined();
       categoryId = response.body.id;
     });
 
@@ -198,9 +197,9 @@ describe('CategoryController', () => {
       expect(response.body).toHaveProperty('id', categoryId);
       expect(response.body.title).toBe('Нова користувацька категорія');
       expect(response.body.status).toBe('Очікує модерації');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+
+      expect(response.body.creatorId).toBeDefined();
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
     });
@@ -219,10 +218,10 @@ describe('CategoryController', () => {
     });
   });
 
-  describe('PATCH /api/categories/:categoryId/moderate', () => {
+  describe('PATCH /api/categories/moderate/:categoryId', () => {
     it('should return 403 for current user not having permission to moderate categories', async () => {
       const response = await request(app)
-        .patch(`/api/categories/${categoryId}/moderate`)
+        .patch(`/api/categories/moderate/${categoryId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
@@ -235,7 +234,7 @@ describe('CategoryController', () => {
 
     it('should return 200 for current user having permission to moderate categories', async () => {
       const response = await request(app)
-        .patch(`/api/categories/${categoryId}/moderate`)
+        .patch(`/api/categories/moderate/${categoryId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',
@@ -243,9 +242,9 @@ describe('CategoryController', () => {
       expect(response.status).toBe(200);
       expect(response.body.title).toBe('Нова користувацька категорія');
       expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBeDefined();
+
+      expect(response.body.creatorId).toBeDefined();
     });
   });
 
@@ -261,9 +260,9 @@ describe('CategoryController', () => {
       expect(response.body).toHaveProperty('id', categoryId);
       expect(response.body.title).toBe('Оновлена назва категорії');
       expect(response.body.status).toBe('pending');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 200 for current user having permission to edit categories (as moderator)', async () => {
@@ -277,9 +276,9 @@ describe('CategoryController', () => {
       expect(response.body).toHaveProperty('id', categoryId);
       expect(response.body.title).toBe('Оновлена назва категорії');
       expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBeDefined();
+
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 400 if an element with that title already exists', async () => {

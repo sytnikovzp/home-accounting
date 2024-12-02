@@ -36,7 +36,7 @@ const updateShop = async (shopId, { title, description, url }) => {
 const updateShopLogo = async (shopId, shopLogo) => {
   const formData = new FormData();
   formData.append('shopLogo', shopLogo);
-  const response = await api.patch(`/shops/${shopId}/logo`, formData, {
+  const response = await api.patch(`/shops/logo/${shopId}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -45,14 +45,14 @@ const updateShopLogo = async (shopId, shopLogo) => {
 };
 
 const removeShopLogo = async (shopId) => {
-  const response = await api.patch(`/shops/${shopId}/delete-logo`, {
+  const response = await api.patch(`/shops/delete-logo/${shopId}`, {
     logo: null,
   });
   return response.data;
 };
 
 const reviewShop = async (shopId, status) => {
-  const response = await api.patch(`/shops/${shopId}/moderate`, { status });
+  const response = await api.patch(`/shops/moderate/${shopId}`, { status });
   return response.data;
 };
 

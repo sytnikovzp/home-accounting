@@ -15,15 +15,18 @@ import {
   InputLabel,
   FormControl,
   useMediaQuery,
+  Typography,
 } from '@mui/material';
 // ==============================================================
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 // ==============================================================
 import {
-  stylesHeadTableCellDesktop,
-  stylesHeadTableCellMobile,
+  stylesHeadTableCell,
   stylesTableCell,
+  stylesTableContainer,
+  stylesTableRow,
+  stylesTableTypography,
 } from '../../styles/theme';
 
 const ListTable = ({
@@ -56,17 +59,18 @@ const ListTable = ({
   const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
-    <TableContainer style={{ width: '100%', overflowX: 'auto' }}>
+    <TableContainer sx={stylesTableContainer}>
       <Table sx={{ width: '100%' }}>
         <TableHead>
-          <TableRow>
+          <TableRow sx={{ backgroundColor: 'success.main' }}>
             {columns.map((col) => (
               <TableCell
                 key={col.field}
                 align={col.align || 'center'}
                 sx={{
                   textAlign: col.align || 'center',
-                  ...stylesHeadTableCellDesktop,
+                  cursor: 'pointer',
+                  ...stylesHeadTableCell,
                 }}
                 onClick={() => handleSort(col.field)}
               >
@@ -76,7 +80,7 @@ const ListTable = ({
               </TableCell>
             ))}
             {!isMobile && (
-              <TableCell align='right' sx={stylesHeadTableCellMobile}>
+              <TableCell align='right' sx={stylesHeadTableCell}>
                 Редаг./Видал.
               </TableCell>
             )}
@@ -84,7 +88,7 @@ const ListTable = ({
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} sx={stylesTableRow}>
               {columns.map((col, index) => (
                 <TableCell
                   key={col.field}
@@ -92,11 +96,22 @@ const ListTable = ({
                   sx={stylesTableCell}
                 >
                   {index === 1 ? (
-                    <RouterLink to={`/${linkEntity}/${row.id}`}>
-                      {row[col.field]}
+                    <RouterLink
+                      to={`/${linkEntity}/${row.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Typography
+                        variant='body1'
+                        component='span'
+                        sx={stylesTableTypography}
+                      >
+                        {row[col.field]}
+                      </Typography>
                     </RouterLink>
                   ) : (
-                    row[col.field]
+                    <Typography variant='body1' sx={{ color: 'common.black' }}>
+                      {row[col.field]}
+                    </Typography>
                   )}
                 </TableCell>
               ))}

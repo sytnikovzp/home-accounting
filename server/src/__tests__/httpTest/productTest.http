@@ -43,8 +43,8 @@ GET http://localhost:5000/api/products/22 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjM3MDE2LCJleHAiOjE3MzE2NDA2MTZ9.OpruhAnpbIwlL3W-2DMGRqR59M1VdwFCQeyqH3s5Vt0
 
-### Review product
-PATCH http://localhost:5000/api/products/22/moderate HTTP/1.1
+### Moderation product
+PATCH http://localhost:5000/api/products/moderate/22 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzE2MzczMDYsImV4cCI6MTczMTY0MDkwNn0.6zmXAmMASPSGUMpf0LODVc_RPXCmHJNHosZyufBrMRI
 

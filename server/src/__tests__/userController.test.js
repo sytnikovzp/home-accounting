@@ -252,10 +252,10 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/:userId/photo', () => {
+  describe('PATCH /api/users/photo/:userId', () => {
     it('should update user photo', async () => {
       const response = await request(app)
-        .patch(`/api/users/${authData.user.id}/photo`)
+        .patch(`/api/users/photo/${authData.user.id}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .attach('userPhoto', path.resolve('/Users/nadia/Downloads/user.png'));
       expect(response.status).toBe(200);
@@ -265,13 +265,13 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/:userId/delete-photo', () => {
+  describe('PATCH /api/users/delete-photo/:userId', () => {
     it('should remove user photo', async () => {
       const updatedUser = {
         photo: null,
       };
       const response = await request(app)
-        .patch(`/api/users/${authData.user.id}/delete-photo`)
+        .patch(`/api/users/delete-photo/${authData.user.id}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send(updatedUser);
       expect(response.status).toBe(200);

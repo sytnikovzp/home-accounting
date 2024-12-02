@@ -67,7 +67,7 @@ class PurchaseService {
       shop: purchaseData.Shop.title,
       measure: purchaseData.Measure.title,
       currency: purchaseData.Currency.title,
-      createdBy: purchaseData.createdBy || '',
+      creatorId: purchaseData.creatorId || '',
       createdAt: formatDate(purchaseData.createdAt),
       updatedAt: formatDate(purchaseData.updatedAt),
     };
@@ -97,7 +97,7 @@ class PurchaseService {
     const amount = parseFloat(amountValue) || 0;
     const price = parseFloat(priceValue) || 0;
     const summ = parseFloat(amountValue) * parseFloat(priceValue) || 0;
-    const createdBy = currentUser.id.toString();
+    const creatorId = currentUser.id.toString();
     const newPurchaseData = {
       productId: foundProduct.id,
       amount,
@@ -106,7 +106,7 @@ class PurchaseService {
       shopId: foundShop.id,
       measureId: foundMeasure.id,
       currencyId: foundCurrency.id,
-      createdBy,
+      creatorId,
     };
     const newPurchase = await Purchase.create(newPurchaseData, {
       transaction,
@@ -122,7 +122,7 @@ class PurchaseService {
       shop: foundShop.title,
       measure: foundMeasure.title,
       currency: foundCurrency.title,
-      createdBy: newPurchase.createdBy || '',
+      creatorId: newPurchase.creatorId || '',
     };
   }
 
@@ -140,7 +140,7 @@ class PurchaseService {
     const foundPurchase = await Purchase.findByPk(id);
     if (!foundPurchase) throw notFound('Покупка не знайдена');
     const isPurchaseOwner =
-      currentUser.id.toString() === foundPurchase.createdBy;
+      currentUser.id.toString() === foundPurchase.creatorId;
     if (!isPurchaseOwner)
       throw forbidden('Ви не маєте дозволу на редагування цієї покупки');
     const foundProduct = await getRecordByTitle(Product, product);
@@ -187,7 +187,7 @@ class PurchaseService {
       shop: foundShop.title,
       measure: foundMeasure.title,
       currency: foundCurrency.title,
-      createdBy: updatedPurchase.createdBy || '',
+      creatorId: updatedPurchase.creatorId || '',
     };
   }
 
@@ -195,7 +195,7 @@ class PurchaseService {
     const foundPurchase = await Purchase.findByPk(purchaseId);
     if (!foundPurchase) throw notFound('Покупка не знайдена');
     const isPurchaseOwner =
-      currentUser.id.toString() === foundPurchase.createdBy;
+      currentUser.id.toString() === foundPurchase.creatorId;
     if (!isPurchaseOwner)
       throw forbidden('Ви не маєте дозволу на видалення цієї покупки');
     const deletedPurchase = await Purchase.destroy({

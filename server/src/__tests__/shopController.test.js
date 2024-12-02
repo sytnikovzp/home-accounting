@@ -147,9 +147,9 @@ describe('ShopController', () => {
       expect(response.body.description).toBe('Тестовий опис магазину');
       expect(response.body.url).toBe('https://www.moderator.com');
       expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBeDefined();
+      
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 201 for current user having permission to create shops (as user)', async () => {
@@ -167,9 +167,9 @@ describe('ShopController', () => {
       expect(response.body.description).toBe('Тестовий опис магазину');
       expect(response.body.url).toBe('https://www.user.com');
       expect(response.body.status).toBe('pending');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+      
+      expect(response.body.creatorId).toBeDefined();
       shopId = response.body.id;
     });
 
@@ -210,9 +210,9 @@ describe('ShopController', () => {
       expect(response.body.url).toBe('https://www.user.com');
       expect(response.body).toHaveProperty('logo');
       expect(response.body.status).toBe('Очікує модерації');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+      
+      expect(response.body.creatorId).toBeDefined();
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
     });
@@ -231,10 +231,10 @@ describe('ShopController', () => {
     });
   });
 
-  describe('PATCH /api/shops/:shopId/moderate', () => {
+  describe('PATCH /api/shops/moderate/:shopId', () => {
     it('should return 403 for current user not having permission to moderate shops', async () => {
       const response = await request(app)
-        .patch(`/api/shops/${shopId}/moderate`)
+        .patch(`/api/shops/moderate/${shopId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
@@ -247,7 +247,7 @@ describe('ShopController', () => {
 
     it('should return 200 for current user having permission to moderate shops', async () => {
       const response = await request(app)
-        .patch(`/api/shops/${shopId}/moderate`)
+        .patch(`/api/shops/moderate/${shopId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',
@@ -255,9 +255,9 @@ describe('ShopController', () => {
       expect(response.status).toBe(200);
       expect(response.body.title).toBe('Новий користувацький магазин');
       expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBeDefined();
+      
+      expect(response.body.creatorId).toBeDefined();
     });
   });
 
@@ -277,9 +277,9 @@ describe('ShopController', () => {
       expect(response.body.description).toBe('Оновлений опис магазину');
       expect(response.body.url).toBe('https://www.updated.com');
       expect(response.body.status).toBe('pending');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+      
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 200 for current user having permission to edit shops (as moderator)', async () => {
@@ -297,9 +297,9 @@ describe('ShopController', () => {
       expect(response.body.description).toBe('Оновлений опис магазину');
       expect(response.body.url).toBe('https://www.updated.com');
       expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBeDefined();
+      
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -338,10 +338,10 @@ describe('ShopController', () => {
     });
   });
 
-  describe('PATCH /api/shops/:shopId/logo', () => {
+  describe('PATCH /api/shops/logo/:shopId', () => {
     it('should update shop logo', async () => {
       const response = await request(app)
-        .patch(`/api/shops/${shopId}/logo`)
+        .patch(`/api/shops/logo/${shopId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .attach('shopLogo', path.resolve('/Users/nadia/Downloads/atb.png'));
       expect(response.status).toBe(200);
@@ -349,19 +349,19 @@ describe('ShopController', () => {
       expect(response.body).toHaveProperty('logo');
       expect(response.body.logo).toBeDefined();
       expect(response.body.status).toBe('pending');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+      
+      expect(response.body.creatorId).toBeDefined();
     });
   });
 
-  describe('PATCH /api/shops/:shopId/delete-logo', () => {
+  describe('PATCH /api/shops/delete-logo/:shopId', () => {
     it('should remove shop logo', async () => {
       const updatedShop = {
         logo: null,
       };
       const response = await request(app)
-        .patch(`/api/shops/${shopId}/delete-logo`)
+        .patch(`/api/shops/delete-logo/${shopId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send(updatedShop);
       expect(response.status).toBe(200);
@@ -369,9 +369,9 @@ describe('ShopController', () => {
       expect(response.body).toHaveProperty('logo');
       expect(response.body.logo).toBe('');
       expect(response.body.status).toBe('pending');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+      
+      expect(response.body.creatorId).toBeDefined();
     });
   });
 

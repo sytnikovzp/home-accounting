@@ -170,22 +170,41 @@ export const stylesPreloaderTitle = {
 // ==============================================================
 // ListTable component
 
-export const stylesHeadTableCellDesktop = {
-  cursor: 'pointer',
-  fontWeight: 'bold',
-  padding: '6px 12px',
-  fontSize: '0.875rem',
+export const stylesTableContainer = {
+  width: '100%',
+  overflowX: 'auto',
+  border: '1px solid #ccc',
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  mb: 2,
 };
 
-export const stylesHeadTableCellMobile = {
+export const stylesHeadTableCell = {
   fontWeight: 'bold',
-  padding: '6px 12px',
-  fontSize: '0.875rem',
+  color: 'common.white',
+  borderBottom: '1px solid #ccc',
+};
+
+export const stylesTableRow = {
+  '&:nth-of-type(odd)': { backgroundColor: 'action.hover' },
+  '&:hover': { backgroundColor: 'action.selected' },
 };
 
 export const stylesTableCell = {
-  padding: '6px 12px',
-  fontSize: '0.875rem',
+  padding: '8px 16px',
+  borderBottom: '1px solid #ddd',
+};
+
+export const stylesTableTypography = {
+  color: 'common.black',
+  padding: '5px 10px',
+  borderRadius: '5px',
+  boxShadow: '0 3px 4px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.3s ease-in-out',
+  '&:hover': {
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    transform: 'translateY(-2px)',
+  },
 };
 
 // ==============================================================

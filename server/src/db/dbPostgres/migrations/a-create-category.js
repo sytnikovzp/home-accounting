@@ -18,15 +18,19 @@ module.exports = {
         allowNull: false,
         defaultValue: 'pending',
       },
-      reviewed_by: {
+      moderator_id: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      reviewed_at: {
-        type: Sequelize.DATE,
+      moderator_full_name: {
+        type: Sequelize.STRING,
         allowNull: true,
       },
-      created_by: {
+      creator_id: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      creator_full_name: {
         type: Sequelize.STRING,
         allowNull: true,
       },

@@ -33,7 +33,7 @@ const updateProduct = async (productId, { title, category }) => {
 };
 
 const reviewProduct = async (productId, status) => {
-  const response = await api.patch(`/products/${productId}/moderate`, {
+  const response = await api.patch(`/products/moderate/${productId}`, {
     status,
   });
   return response.data;

@@ -63,9 +63,13 @@ const getRecordByTitle = async function (Model, title) {
   return record;
 };
 
-const getUserIdByEmail = async function (email) {
+const getUserDetailsByEmail = async function (email) {
   const user = await User.findOne({ email });
-  return user ? user._id.toString() : null;
+  if (!user) return null;
+  return {
+    id: user._id.toString(),
+    fullName: user.fullName,
+  };
 };
 
 module.exports = {
@@ -76,5 +80,5 @@ module.exports = {
   emailToLowerCase,
   checkPermission,
   getRecordByTitle,
-  getUserIdByEmail,
+  getUserDetailsByEmail,
 };

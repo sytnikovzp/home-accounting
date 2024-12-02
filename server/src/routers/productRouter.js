@@ -22,13 +22,13 @@ productRouter
   .post(authHandler, validateProduct, createProduct);
 
 productRouter
+  .route('/moderate/:productId')
+  .patch(authHandler, validateModeration, reviewProduct);
+
+productRouter
   .route('/:productId')
   .get(authHandler, getProductById)
   .patch(authHandler, validateProduct, updateProduct)
   .delete(authHandler, deleteProduct);
-
-productRouter
-  .route('/:productId/moderate')
-  .patch(authHandler, validateModeration, reviewProduct);
 
 module.exports = productRouter;

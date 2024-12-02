@@ -31,7 +31,6 @@ const getAllCategories = async ({
 };
 
 const getCategoryById = async (categoryId) => {
-  
   console.log(categoryId);
 
   const response = await api.get(`/categories/${categoryId}`);
@@ -49,7 +48,7 @@ const updateCategory = async (categoryId, title) => {
 };
 
 const reviewCategory = async (categoryId, status) => {
-  const response = await api.patch(`/categories/${categoryId}/moderate`, {
+  const response = await api.patch(`/categories/moderate/${categoryId}`, {
     status,
   });
   return response.data;

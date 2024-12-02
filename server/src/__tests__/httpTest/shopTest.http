@@ -44,8 +44,8 @@ GET http://localhost:5000/api/shops/11 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyNTkwNTI3LCJleHAiOjE3MzI1OTE0Mjd9.9sW4ycQHrEy05ayMTXXc95VsKclEa8DFHTEnkb5S-3U
 
-### Review shop
-PATCH http://localhost:5000/api/shops/11/moderate HTTP/1.1
+### Moderation shop
+PATCH http://localhost:5000/api/shops/moderate/11 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzE2NDAzNzYsImV4cCI6MTczMTY0Mzk3Nn0.FQo21PHhKf3EDiC1CS0guB655lOhZmt8EyXpsf92Yb8
 
@@ -65,7 +65,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU
 }
 
 ### Update shop logo
-PATCH http://localhost:5000/api/shops/11/logo HTTP/1.1
+PATCH http://localhost:5000/api/shops/logo/11 HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjQyMjU2LCJleHAiOjE3MzE2NDU4NTZ9.E9i4jBbjyAKTTffg56KSx1iy8TC0yhWBuAaNIqKQM4Q
 
@@ -82,7 +82,7 @@ Content-Type: image/png
 --boundary--
 
 ### Remove shop logo
-PATCH http://localhost:5000/api/shops/11/delete-logo HTTP/1.1
+PATCH http://localhost:5000/api/shops/delete-logo/11 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjQyMjU2LCJleHAiOjE3MzE2NDU4NTZ9.E9i4jBbjyAKTTffg56KSx1iy8TC0yhWBuAaNIqKQM4Q
 

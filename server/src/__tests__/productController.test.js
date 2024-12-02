@@ -144,9 +144,9 @@ describe('ProductController', () => {
       expect(response.body.title).toBe('Новий модераторський товар');
       expect(response.body.category).toBe('Пристрої');
       expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBeDefined();
+      
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 201 for current user having permission to create products (as user)', async () => {
@@ -162,9 +162,9 @@ describe('ProductController', () => {
       expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.category).toBe('Електроніка');
       expect(response.body.status).toBe('pending');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+      
+      expect(response.body.creatorId).toBeDefined();
       productId = response.body.id;
     });
 
@@ -215,9 +215,9 @@ describe('ProductController', () => {
       expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.category).toBe('Електроніка');
       expect(response.body.status).toBe('Очікує модерації');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+      
+      expect(response.body.creatorId).toBeDefined();
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
     });
@@ -236,10 +236,10 @@ describe('ProductController', () => {
     });
   });
 
-  describe('PATCH /api/products/:productId/moderate', () => {
+  describe('PATCH /api/products/moderate/:productId', () => {
     it('should return 403 for current user not having permission to moderate products', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productId}/moderate`)
+        .patch(`/api/products/moderate/${productId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
@@ -252,7 +252,7 @@ describe('ProductController', () => {
 
     it('should return 200 for current user having permission to moderate products', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productId}/moderate`)
+        .patch(`/api/products/moderate/${productId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',
@@ -260,9 +260,9 @@ describe('ProductController', () => {
       expect(response.status).toBe(200);
       expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBeDefined();
+      
+      expect(response.body.creatorId).toBeDefined();
     });
   });
 
@@ -280,9 +280,9 @@ describe('ProductController', () => {
       expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.category).toBe('Обчислювальна техніка');
       expect(response.body.status).toBe('pending');
-      expect(response.body.reviewedBy).toBe('');
-      expect(response.body.reviewedAt).toBe('');
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBe('');
+      
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 200 for current user having permission to edit products (as moderator)', async () => {
@@ -298,9 +298,9 @@ describe('ProductController', () => {
       expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.category).toBe('Обчислювальна техніка');
       expect(response.body.status).toBe('approved');
-      expect(response.body.reviewedBy).toBeDefined();
-      expect(response.body.reviewedAt).toBeDefined();
-      expect(response.body.createdBy).toBeDefined();
+      expect(response.body.moderatorId).toBeDefined();
+      
+      expect(response.body.creatorId).toBeDefined();
     });
 
     it('should return 400 if an element with that title already exists', async () => {

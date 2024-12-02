@@ -48,11 +48,8 @@ class ProductService {
       title: productData.title,
       category: productData.Category?.title || '',
       status: statusMapping[productData.status] || productData.status,
-      reviewedBy: productData.reviewedBy || '',
-      reviewedAt: productData.reviewedAt
-        ? formatDate(productData.reviewedAt)
-        : '',
-      createdBy: productData.createdBy || '',
+      moderatorId: productData.moderatorId || '',
+      creatorId: productData.creatorId || '',
       createdAt: formatDate(productData.createdAt),
       updatedAt: formatDate(productData.updatedAt),
     };
@@ -73,8 +70,7 @@ class ProductService {
     }
     const currentUserId = currentUser.id.toString();
     const updateData = { status };
-    updateData.reviewedBy = currentUserId;
-    updateData.reviewedAt = new Date();
+    updateData.moderatorId = currentUserId;
     const [affectedRows, [moderatedProduct]] = await Product.update(
       updateData,
       { where: { id }, returning: true, transaction }
@@ -84,9 +80,8 @@ class ProductService {
       id: moderatedProduct.id,
       title: moderatedProduct.title,
       status: moderatedProduct.status,
-      reviewedBy: moderatedProduct.reviewedBy,
-      reviewedAt: formatDate(moderatedProduct.reviewedAt),
-      createdBy: moderatedProduct.createdBy || '',
+      moderatorId: moderatedProduct.moderatorId,
+      creatorId: moderatedProduct.creatorId || '',
     };
   }
 
@@ -107,17 +102,15 @@ class ProductService {
     }
     const currentUserId = currentUser.id.toString();
     const status = canManageProducts ? 'approved' : 'pending';
-    const reviewedBy = canManageProducts ? currentUserId : null;
-    const reviewedAt = canManageProducts ? new Date() : null;
-    const createdBy = currentUserId;
+    const moderatorId = canManageProducts ? currentUserId : null;
+    const creatorId = currentUserId;
     const newProduct = await Product.create(
       {
         title,
         categoryId: categoryRecord?.id || null,
         status,
-        reviewedBy,
-        reviewedAt,
-        createdBy,
+        moderatorId,
+        creatorId,
       },
       { transaction, returning: true }
     );
@@ -127,18 +120,15 @@ class ProductService {
       title: newProduct.title,
       category: categoryRecord?.title || '',
       status: newProduct.status,
-      reviewedBy: newProduct.reviewedBy || '',
-      reviewedAt: newProduct.reviewedAt
-        ? formatDate(newProduct.reviewedAt)
-        : '',
-      createdBy: newProduct.createdBy || '',
+      moderatorId: newProduct.moderatorId || '',
+      creatorId: newProduct.creatorId || '',
     };
   }
 
   async updateProduct(id, title, category, currentUser, transaction) {
     const foundProduct = await Product.findByPk(id);
     if (!foundProduct) throw notFound('Товар не знайдено');
-    const isProductOwner = currentUser.id.toString() === foundProduct.createdBy;
+    const isProductOwner = currentUser.id.toString() === foundProduct.creatorId;
     const canManageProducts = await checkPermission(
       currentUser,
       'MANAGE_PRODUCTS'
@@ -162,8 +152,7 @@ class ProductService {
     }
     const currentUserId = currentUser.id.toString();
     updateData.status = canManageProducts ? 'approved' : 'pending';
-    updateData.reviewedBy = canManageProducts ? currentUserId : null;
-    updateData.reviewedAt = canManageProducts ? new Date() : null;
+    updateData.moderatorId = canManageProducts ? currentUserId : null;
     const [affectedRows, [updatedProduct]] = await Product.update(updateData, {
       where: { id },
       returning: true,
@@ -175,11 +164,8 @@ class ProductService {
       title: updatedProduct.title,
       category: categoryRecord?.title || '',
       status: updatedProduct.status,
-      reviewedBy: updatedProduct.reviewedBy || '',
-      reviewedAt: updatedProduct.reviewedAt
-        ? formatDate(updatedProduct.reviewedAt)
-        : '',
-      createdBy: updatedProduct.createdBy || '',
+      moderatorId: updatedProduct.moderatorId || '',
+      creatorId: updatedProduct.creatorId || '',
     };
   }
 
