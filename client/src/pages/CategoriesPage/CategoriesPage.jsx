@@ -54,7 +54,9 @@ function CategoriesPage() {
       setCategories(data);
       setTotalCount(totalCount);
     } catch (error) {
-      setErrorMessage(error.response?.data?.errors?.[0]?.title);
+      setErrorMessage(
+        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+      );
     } finally {
       setIsLoading(false);
     }
@@ -125,6 +127,7 @@ function CategoriesPage() {
           element={
             <CategoryEditPage
               handleModalClose={handleModalClose}
+              fetchCategories={fetchCategories}
               crudError={crudError}
               setCrudError={setCrudError}
             />
@@ -135,6 +138,7 @@ function CategoriesPage() {
           element={
             <CategoryDeletePage
               handleModalClose={handleModalClose}
+              fetchCategories={fetchCategories}
               crudError={crudError}
               setCrudError={setCrudError}
             />
@@ -142,13 +146,7 @@ function CategoriesPage() {
         />
         <Route
           path=':id'
-          element={
-            <CategoryViewPage
-              handleModalClose={handleModalClose}
-              crudError={crudError}
-              setCrudError={setCrudError}
-            />
-          }
+          element={<CategoryViewPage handleModalClose={handleModalClose} />}
         />
       </Routes>
     </>

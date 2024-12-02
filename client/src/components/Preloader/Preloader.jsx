@@ -2,7 +2,7 @@ import { Box, LinearProgress, Typography } from '@mui/material';
 // ==============================================================
 import { stylesPreloaderTitle } from '../../styles/theme';
 
-function Preloader({ message = 'Завантаження...' }) {
+function Preloader({ message = 'Завантаження даних...' }) {
   return (
     <Box
       display='flex'

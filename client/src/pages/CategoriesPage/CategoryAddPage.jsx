@@ -15,7 +15,9 @@ function CategoryAddPage({
       handleModalClose();
       fetchCategories();
     } catch (error) {
-      setCrudError(error.response?.data?.errors?.[0]?.title);
+      setCrudError(
+        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+      );
     }
   };
 

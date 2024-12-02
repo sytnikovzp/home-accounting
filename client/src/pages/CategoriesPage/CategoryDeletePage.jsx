@@ -1,10 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
+import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
+import Preloader from '../../components/Preloader/Preloader';
 
 function CategoryDeletePage({
   handleModalClose,
@@ -12,27 +14,17 @@ function CategoryDeletePage({
   crudError,
   setCrudError,
 }) {
-  const [categoryToCRUD, setCategoryToCRUD] = useState(null);
-
   const { id } = useParams();
-
-  const fetchCategoryById = useCallback(
-    async (categoryId) => {
-      try {
-        const categoryById = await restController.fetchCategoryById(categoryId);
-        setCategoryToCRUD(categoryById);
-      } catch (error) {
-        setCrudError(error.response?.data?.errors?.[0]?.title);
-      }
-    },
-    [setCrudError]
-  );
+  const {
+    entity: categoryToCRUD,
+    isLoading,
+    errorMessage,
+    fetchEntityById,
+  } = useFetchEntity('Category');
 
   useEffect(() => {
-    if (id) {
-      fetchCategoryById(id);
-    }
-  }, [id, fetchCategoryById]);
+    if (id) fetchEntityById(id);
+  }, [id, fetchEntityById]);
 
   const handleDeleteCategory = async () => {
     try {
@@ -40,7 +32,9 @@ function CategoryDeletePage({
       handleModalClose();
       fetchCategories();
     } catch (error) {
-      setCrudError(error.response?.data?.errors?.[0]?.title);
+      setCrudError(
+        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+      );
     }
   };
 
@@ -51,9 +45,16 @@ function CategoryDeletePage({
       showCloseButton
       title='Видалення категорії...'
       content={
-        <Typography variant='body1' sx={{ textAlign: 'justify', mt: 2, mb: 2 }}>
-          Ви впевнені, що хочете видалити категорію "{categoryToCRUD?.title}"?
-        </Typography>
+        isLoading ? (
+          <Preloader />
+        ) : (
+          <Typography
+            variant='body1'
+            sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+          >
+            Ви впевнені, що хочете видалити категорію "{categoryToCRUD?.title}"?
+          </Typography>
+        )
       }
       actions={[
         <Button
@@ -67,7 +68,7 @@ function CategoryDeletePage({
           Видалити
         </Button>,
       ]}
-      error={crudError}
+      error={errorMessage || crudError}
     />
   );
 }
