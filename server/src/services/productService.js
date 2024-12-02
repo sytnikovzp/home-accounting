@@ -16,7 +16,7 @@ class ProductService {
       limit,
       offset,
     });
-    if (foundProducts.length === 0) throw notFound('Products not found');
+    if (foundProducts.length === 0) throw notFound('Товарів не знайдено');
     const allProducts = foundProducts.map((product) => ({
       id: product.id,
       title: product.title,
@@ -36,13 +36,18 @@ class ProductService {
       attributes: { exclude: ['categoryId'] },
       include: [{ model: Category, attributes: ['title'] }],
     });
-    if (!foundProduct) throw notFound('Product not found');
+    if (!foundProduct) throw notFound('Товар не знайдено');
     const productData = foundProduct.toJSON();
+    const statusMapping = {
+      approved: 'Затверджено',
+      pending: 'Очікує модерації',
+      rejected: 'Відхилено',
+    };
     return {
       id: productData.id,
       title: productData.title,
       category: productData.Category?.title || '',
-      status: productData.status,
+      status: statusMapping[productData.status] || productData.status,
       reviewedBy: productData.reviewedBy || '',
       reviewedAt: productData.reviewedAt
         ? formatDate(productData.reviewedAt)
@@ -59,12 +64,12 @@ class ProductService {
       'MODERATE_PRODUCTS'
     );
     if (!hasPermission) {
-      throw forbidden('You don`t have permission to moderate products');
+      throw forbidden('Ви не маєте дозволу на модерацію товарів');
     }
     const foundProduct = await Product.findByPk(id);
-    if (!foundProduct) throw notFound('Product not found');
+    if (!foundProduct) throw notFound('Товар не знайдено');
     if (!['approved', 'rejected'].includes(status)) {
-      throw notFound('Status not found');
+      throw notFound('Статус не знайдено');
     }
     const currentUserId = currentUser.id.toString();
     const updateData = { status };
@@ -74,7 +79,7 @@ class ProductService {
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0) throw badRequest('Product is not moderated');
+    if (affectedRows === 0) throw badRequest('Товар не проходить модерацію');
     return {
       id: moderatedProduct.id,
       title: moderatedProduct.title,
@@ -92,10 +97,10 @@ class ProductService {
       'MANAGE_PRODUCTS'
     );
     if (!canAddProducts && !canManageProducts) {
-      throw forbidden('You don`t have permission to create products');
+      throw forbidden('Ви не маєте дозволу на створення товарів');
     }
     const duplicateProduct = await Product.findOne({ where: { title } });
-    if (duplicateProduct) throw badRequest('This product already exists');
+    if (duplicateProduct) throw badRequest('Цей товар вже існує');
     let categoryRecord = null;
     if (category !== undefined) {
       categoryRecord = await getRecordByTitle(Category, category);
@@ -116,7 +121,7 @@ class ProductService {
       },
       { transaction, returning: true }
     );
-    if (!newProduct) throw badRequest('Product is not created');
+    if (!newProduct) throw badRequest('Дані цього товару не створено');
     return {
       id: newProduct.id,
       title: newProduct.title,
@@ -132,19 +137,19 @@ class ProductService {
 
   async updateProduct(id, title, category, currentUser, transaction) {
     const foundProduct = await Product.findByPk(id);
-    if (!foundProduct) throw notFound('Product not found');
+    if (!foundProduct) throw notFound('Товар не знайдено');
     const isProductOwner = currentUser.id.toString() === foundProduct.createdBy;
     const canManageProducts = await checkPermission(
       currentUser,
       'MANAGE_PRODUCTS'
     );
     if (!isProductOwner && !canManageProducts) {
-      throw forbidden('You don`t have permission to edit this product');
+      throw forbidden('Ви не маєте дозволу на редагування цього товару');
     }
     const currentTitle = foundProduct.title;
     if (title !== currentTitle) {
       const duplicateProduct = await Product.findOne({ where: { title } });
-      if (duplicateProduct) throw badRequest('This product already exists');
+      if (duplicateProduct) throw badRequest('Цей товар вже існує');
     } else {
       title = currentTitle;
     }
@@ -164,7 +169,7 @@ class ProductService {
       returning: true,
       transaction,
     });
-    if (affectedRows === 0) throw badRequest('Product is not updated');
+    if (affectedRows === 0) throw badRequest('Дані цього товару не оновлено');
     return {
       id: updatedProduct.id,
       title: updatedProduct.title,
@@ -181,14 +186,14 @@ class ProductService {
   async deleteProduct(productId, currentUser, transaction) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_PRODUCTS');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete this product');
+      throw forbidden('Ви не маєте дозволу на видалення цього товару');
     const foundProduct = await Product.findByPk(productId);
-    if (!foundProduct) throw notFound('Product not found');
+    if (!foundProduct) throw notFound('Товар не знайдено');
     const deletedProduct = await Product.destroy({
       where: { id: productId },
       transaction,
     });
-    if (!deletedProduct) throw badRequest('Product is not deleted');
+    if (!deletedProduct) throw badRequest('Дані цього товару не видалено');
     return deletedProduct;
   }
 }

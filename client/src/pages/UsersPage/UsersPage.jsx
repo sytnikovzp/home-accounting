@@ -33,8 +33,8 @@ function UsersPage() {
       setUsers(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати користувачів:', error);
-      setError('Не вдалося отримати користувачів');
+      console.error('Не вдалося отримати дані про користувачів:', error);
+      setError('Не вдалося отримати дані про користувачів');
     } finally {
       setIsLoading(false);
     }

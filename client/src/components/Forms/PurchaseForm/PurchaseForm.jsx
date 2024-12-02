@@ -6,7 +6,7 @@ const PurchaseForm = ({ onSubmit, products, shops, measures, currencies }) => {
   const fields = [
     {
       name: 'product',
-      label: 'Продукт',
+      label: 'Товар',
       type: 'select',
       options: products,
     },
@@ -30,7 +30,7 @@ const PurchaseForm = ({ onSubmit, products, shops, measures, currencies }) => {
     },
     {
       name: 'measure',
-      label: 'Одиниця виміру',
+      label: 'Одиниця вимірювання',
       type: 'select',
       options: measures,
     },

@@ -14,7 +14,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzI1ODQ1MTAsImV4cCI6MTczMjU4NTQxMH0.RpSWoEnsZJmO4vpXfoQbtY87bRL9FpuAX1_gndyJkwc
 
 {
-  "title": "New Currency",
+  "title": "Нова валюта",
   "description": ""
 }
 
@@ -29,8 +29,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzI1ODQ1MTAsImV4cCI6MTczMjU4NTQxMH0.RpSWoEnsZJmO4vpXfoQbtY87bRL9FpuAX1_gndyJkwc
 
 {
-  "title": "Updated Currency",
-  "description": "test description"
+  "title": "Оновлена назва валюти",
+  "description": "Оновлений опис"
 }
 
 ### Delete currency

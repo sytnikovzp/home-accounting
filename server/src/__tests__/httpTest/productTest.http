@@ -34,7 +34,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjM2Njg0LCJleHAiOjE3MzE2NDAyODR9.ifNWI5LpVZRnZGubrOyWEnEZYDKCgmLGAcvzf0QZ0G0
 
 {
-  "title": "New Product",
+  "title": "Новий товар",
   "category": ""
 }
 
@@ -58,7 +58,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNjM4MTgyLCJleHAiOjE3MzE2NDE3ODJ9.aCrX2tgx7WxqzX4sg6wCnbH_gsZXmoZ0zoMLx_Oiblg
 
 {
-  "title": "Updated Product",
+  "title": "Оновлена назва товару",
   "category": "Пристрої"
 }
 

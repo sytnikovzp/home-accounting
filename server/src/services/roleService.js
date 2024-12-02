@@ -8,7 +8,8 @@ class RoleService {
       .limit(limit)
       .skip(offset)
       .lean();
-    if (foundPermissions.length === 0) throw notFound('Permissions not found');
+    if (foundPermissions.length === 0)
+      throw notFound('Права доступу не знайдено');
     const allPermissions = foundPermissions.map(({ _id, ...permission }) => ({
       id: _id,
       ...permission,
@@ -26,7 +27,7 @@ class RoleService {
       .limit(limit)
       .skip(offset)
       .lean();
-    if (foundRoles.length === 0) throw notFound('Roles not found');
+    if (foundRoles.length === 0) throw notFound('Ролі не знайдено');
     const allRoles = foundRoles.map(
       ({ _id, title, description, permissions }) => ({
         id: _id,
@@ -47,7 +48,7 @@ class RoleService {
 
   async getRoleById(id) {
     const foundRole = await Role.findById(id).populate('permissions');
-    if (!foundRole) throw notFound('Role not found');
+    if (!foundRole) throw notFound('Роль для користувача не знайдено');
     return {
       id: foundRole._id,
       title: foundRole.title,
@@ -65,9 +66,11 @@ class RoleService {
   async createRole(title, descriptionValue, permissions, currentUser) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to create roles for users');
+      throw forbidden(
+        'Ви не маєте дозволу на створення ролей для користувачів'
+      );
     const duplicateRole = await Role.findOne({ title });
-    if (duplicateRole) throw badRequest('This role already exists');
+    if (duplicateRole) throw badRequest('Ця роль для користувача вже існує');
     const foundPermissions = await Permission.find({
       title: { $in: permissions },
     });
@@ -76,7 +79,7 @@ class RoleService {
         (permission) => !foundPermissions.some((fp) => fp.title === permission)
       );
       throw notFound(
-        `Some permissions were not found: ${missingPermissions.join(', ')}`
+        `Не вдалося знайти деякі дозволи: ${missingPermissions.join(', ')}`
       );
     }
     const description = descriptionValue === '' ? null : descriptionValue;
@@ -101,13 +104,15 @@ class RoleService {
   async updateRole(id, title, descriptionValue, permissions, currentUser) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to edit roles for users');
+      throw forbidden(
+        'Ви не маєте дозволу на редагування цієї ролі для користувачів'
+      );
     const foundRole = await Role.findById(id);
-    if (!foundRole) throw notFound('Role not found');
+    if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const updateData = {};
     if (title && title !== foundRole.title) {
       const duplicateRole = await Role.findOne({ title });
-      if (duplicateRole) throw badRequest('This role already exists');
+      if (duplicateRole) throw badRequest('Ця роль для користувача вже існує');
       updateData.title = title;
     }
     if (descriptionValue !== undefined) {
@@ -129,7 +134,7 @@ class RoleService {
               !foundPermissions.some((fp) => fp.title === permission)
           );
           throw notFound(
-            `Some permissions were not found: ${missingPermissions.join(', ')}`
+            `Не вдалося знайти деякі дозволи: ${missingPermissions.join(', ')}`
           );
         }
         updateData.permissions = foundPermissions.map(
@@ -140,7 +145,8 @@ class RoleService {
     const updatedRole = await Role.findByIdAndUpdate(id, updateData, {
       new: true,
     });
-    if (!updatedRole) throw badRequest('Role is not updated');
+    if (!updatedRole)
+      throw badRequest('Дані цієї ролі для користувача не оновлено');
     const updatedPermissions = await Permission.find({
       _id: { $in: updatedRole.permissions },
     });
@@ -159,16 +165,19 @@ class RoleService {
   async deleteRole(id, currentUser) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete roles for users');
+      throw forbidden(
+        'Ви не маєте дозволу на видалення цієї ролі для користувачів'
+      );
     const foundRole = await Role.findById(id);
-    if (!foundRole) throw notFound('Role not found');
+    if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const usersWithRole = await User.countDocuments({ roleId: id });
     if (usersWithRole > 0)
       throw badRequest(
-        `Deletion impossible, because ${usersWithRole} user(s) use this role`
+        `Видалення неможливо, оскільки ${usersWithRole} користувачів використовують цю роль`
       );
     const deletedRole = await Role.findByIdAndDelete(id);
-    if (!deletedRole) throw badRequest('Role is not deleted');
+    if (!deletedRole)
+      throw badRequest('Дані цієї ролі для користувачів не видалено');
     return deletedRole;
   }
 }

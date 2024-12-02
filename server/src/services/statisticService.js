@@ -43,7 +43,7 @@ class StatisticService {
   async getCostByShopPerPeriod(shop, ago) {
     const time = getTime(ago);
     const foundShop = await getRecordByTitle(Shop, shop);
-    if (!foundShop) throw notFound('Shop not found');
+    if (!foundShop) throw notFound('Магазин не знайдено');
     const costByShopPerPeriod = await Purchase.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {

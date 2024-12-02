@@ -18,12 +18,12 @@ describe('PurchaseController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Jane.Smith@Gmail.com',
+        email: 'hanna.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Jane Smith');
+      expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
       authData.user.id = response.body.user.id;
       authData.user.accessToken = response.body.accessToken;
@@ -31,12 +31,12 @@ describe('PurchaseController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Alex.Johnson@Gmail.com',
+        email: 'oleksandra.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Alex Johnson');
+      expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
       authData.moderator.id = response.body.user.id;
       authData.moderator.accessToken = response.body.accessToken;
@@ -44,12 +44,12 @@ describe('PurchaseController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'John.Doe@Gmail.com',
+        email: 'ivan.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
       authData.admin.id = response.body.user.id;
       authData.admin.accessToken = response.body.accessToken;
@@ -188,7 +188,7 @@ describe('PurchaseController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to create purchases'
+        'Ви не маєте дозволу на створення покупок'
       );
     });
   });
@@ -217,7 +217,7 @@ describe('PurchaseController', () => {
         .get('/api/purchases/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Purchase not found');
+      expect(response.body.errors[0].title).toBe('Покупка не знайдена');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -329,7 +329,7 @@ describe('PurchaseController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to edit this purchase'
+        'Ви не маєте дозволу на редагування цієї покупки'
       );
     });
 
@@ -346,7 +346,7 @@ describe('PurchaseController', () => {
           currency: 'USD',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Purchase not found');
+      expect(response.body.errors[0].title).toBe('Покупка не знайдена');
     });
   });
 
@@ -357,7 +357,7 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to delete this purchase'
+        'Ви не маєте дозволу на видалення цієї покупки'
       );
     });
 
@@ -373,7 +373,7 @@ describe('PurchaseController', () => {
         .delete('/api/purchases/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Purchase not found');
+      expect(response.body.errors[0].title).toBe('Покупка не знайдена');
     });
   });
 });

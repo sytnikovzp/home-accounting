@@ -13,9 +13,9 @@ class AuthService {
   async registration(fullName, email, password) {
     const emailToLower = emailToLowerCase(email);
     const duplicateUser = await User.findOne({ email: emailToLower });
-    if (duplicateUser) throw badRequest('This user already exists');
+    if (duplicateUser) throw badRequest('Цей користувач вже існує');
     const foundRole = await Role.findOne({ title: 'User' });
-    if (!foundRole) throw notFound('Role not found');
+    if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const hashedPassword = await hashPassword(password);
     const user = await User.create({
       fullName,
@@ -23,7 +23,7 @@ class AuthService {
       password: hashedPassword,
       roleId: foundRole._id,
     });
-    if (!user) throw badRequest('User is not registered');
+    if (!user) throw badRequest('Користувач не зареєстрований');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
@@ -43,7 +43,7 @@ class AuthService {
     const isPassRight = await bcrypt.compare(password, user.password);
     if (!isPassRight) throw unAuthorizedError();
     const foundRole = await Role.findById(user.roleId);
-    if (!foundRole) throw notFound('Role not found');
+    if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
@@ -63,9 +63,9 @@ class AuthService {
     const { email } = data;
     const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
-    if (!foundUser) throw notFound('User not found');
+    if (!foundUser) throw notFound('Користувача не знайдено');
     const foundRole = await Role.findById(foundUser.roleId);
-    if (!foundRole) throw notFound('Role not found');
+    if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const tokens = generateTokens({ email });
     return {
       ...tokens,

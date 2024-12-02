@@ -33,8 +33,8 @@ function PurchasesPage() {
       setPurchases(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати закупівлі:', error);
-      setError('Не вдалося отримати закупівлі');
+      console.error('Не вдалося отримати дані про закупівлі:', error);
+      setError('Не вдалося отримати дані про закупівлі');
     } finally {
       setIsLoading(false);
     }
@@ -76,9 +76,13 @@ function PurchasesPage() {
       <Typography variant='h6'>Закупівлі</Typography>
       <ListTable
         columns={[
-          { field: 'product', headerName: 'Продукт', align: 'left' },
+          { field: 'product', headerName: 'Товар', align: 'left' },
           { field: 'amount', headerName: 'Кількість', align: 'left' },
-          { field: 'measure', headerName: 'Одиниця виміру', align: 'left' },
+          {
+            field: 'measure',
+            headerName: 'Одиниця вимірювання',
+            align: 'left',
+          },
           { field: 'price', headerName: 'Ціна', align: 'left' },
           { field: 'summ', headerName: 'Сума', align: 'left' },
           { field: 'currency', headerName: 'Валюта', align: 'left' },

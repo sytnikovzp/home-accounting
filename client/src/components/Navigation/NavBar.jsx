@@ -16,7 +16,7 @@ const navItems = [
   { to: '/', icon: 'Home', label: 'Головна' },
   { to: '/purchases', icon: 'ShoppingCart', label: 'Покупки' },
   { to: '/shops', icon: 'Store', label: 'Магазини' },
-  { to: '/products', icon: 'Storefront', label: 'Продукти' },
+  { to: '/products', icon: 'Storefront', label: 'Товари' },
   { to: '/categories', icon: 'Category', label: 'Категорії' },
   { to: '/currencies', icon: 'AttachMoney', label: 'Валюти' },
   { to: '/measures', icon: 'SquareFoot', label: 'Одиниці' },

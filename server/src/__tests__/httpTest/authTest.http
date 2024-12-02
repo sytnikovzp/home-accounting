@@ -24,7 +24,7 @@ POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "Jane.Smith@Gmail.com",
+  "email": "Hanna.Shevchenko@Gmail.com",
   "password": "Qwerty12"
 }
 
@@ -33,7 +33,7 @@ POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "Alex.Johnson@Gmail.com",
+  "email": "Oleksandra.Ivanchuk@Gmail.com",
   "password": "Qwerty12"
 }
 
@@ -42,7 +42,7 @@ POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "John.Doe@Gmail.com",
+  "email": "Ivan.Petrenko@Gmail.com",
   "password": "Qwerty12"
 }
 

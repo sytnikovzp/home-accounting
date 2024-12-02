@@ -9,80 +9,78 @@ const {
 module.exports.permissions = [
   {
     title: 'MANAGE_ROLES',
-    description: 'Full CRUD for user roles',
+    description: 'Повний CRUD для ролей користувачів',
   },
   {
     title: 'ASSIGN_ROLES',
-    description: 'Change roles for users',
+    description: 'Зміна ролей для користувачів',
   },
   {
     title: 'FULL_PROFILE_VIEWER',
-    description: 'View full information about other user profiles',
+    description: 'Перегляд повної інформації в профілях інших користувачів',
   },
   {
     title: 'LIMITED_PROFILE_VIEWER',
-    description:
-      'View limited information about other user profiles (id, name, role, photo)',
+    description: 'Перегляд обмеженої інформації в профілях інших користувачів',
   },
   {
     title: 'MANAGE_USER_PROFILES',
-    description: 'Edit or delete information about other users',
+    description: 'Повний CRUD інформації в профілях інших користувачів',
   },
   {
     title: 'MANAGE_CATEGORIES',
-    description: 'Full CRUD operations on category entities without moderation',
+    description: 'Повний CRUD для категорій без модерації',
   },
   {
     title: 'MANAGE_PRODUCTS',
-    description: 'Full CRUD operations on product entities without moderation',
+    description: 'Повний CRUD для товарів без модерації',
   },
   {
     title: 'MANAGE_SHOPS',
-    description: 'Full CRUD operations on shop entities without moderation',
+    description: 'Повний CRUD для магазинів без модерації',
   },
   {
     title: 'MANAGE_CURRENCIES',
-    description: 'Full CRUD operations on currency entities without moderation',
+    description: 'Повний CRUD для валют без модерації',
   },
   {
     title: 'MANAGE_MEASURES',
-    description: 'Full CRUD operations on measure entities without moderation',
+    description: 'Повний CRUD для одиниці вимірювань без модерації',
   },
   {
     title: 'ADD_PURCHASES',
-    description:
-      'Add new purchase records based on existing entities without moderation',
+    description: 'Додавання нових записів про покупки без модерації',
   },
   {
     title: 'ADD_SHOPS',
-    description: 'Add new shops, which need to be moderated',
+    description: 'Додавання нових магазинів, потребують модерації',
   },
   {
     title: 'MODERATE_SHOPS',
-    description: 'Review and change publication status for shops',
+    description: 'Перегляд та зміна статусу публікації для магазинів',
   },
   {
     title: 'ADD_PRODUCTS',
-    description: 'Add new products, which need to be moderated',
+    description: 'Додавання нових товарів, потребують модерації',
   },
   {
     title: 'MODERATE_PRODUCTS',
-    description: 'Review and change publication status for products',
+    description: 'Перегляд та зміна статусу публікації для товарів',
   },
   {
     title: 'ADD_CATEGORIES',
-    description: 'Add new categories, which need to be moderated',
+    description: 'Додавання нових категорій, потребують модерації',
   },
   {
     title: 'MODERATE_CATEGORIES',
-    description: 'Review and change publication status for categories',
+    description: 'Перегляд та зміна статусу публікації для категорій',
   },
 ];
 
 module.exports.roles = async (permissionIds) => [
   {
     title: 'Administrator',
-    description: 'Manages all aspects of the application',
+    description: 'Має повний доступ до керування користувачами та ролями',
     permissions: [
       permissionIds['MANAGE_ROLES'],
       permissionIds['ASSIGN_ROLES'],
@@ -92,7 +90,7 @@ module.exports.roles = async (permissionIds) => [
   },
   {
     title: 'Moderator',
-    description: 'Monitoring and tracking publications and content',
+    description: 'Моніторинг та відстеження публікацій й контенту',
     permissions: [
       permissionIds['MANAGE_CATEGORIES'],
       permissionIds['MANAGE_PRODUCTS'],
@@ -107,7 +105,7 @@ module.exports.roles = async (permissionIds) => [
   },
   {
     title: 'User',
-    description: 'Uses an app to track purchases',
+    description: 'Використання цього додатку для відстеження покупок',
     permissions: [
       permissionIds['ADD_PURCHASES'],
       permissionIds['ADD_SHOPS'],
@@ -120,23 +118,23 @@ module.exports.roles = async (permissionIds) => [
 
 module.exports.users = async (roleIds) => [
   {
-    fullName: 'John Doe',
-    email: 'john.doe@gmail.com',
-    photo: '1730686056955-john.doe.jpg',
+    fullName: 'Іван Петренко',
+    email: 'ivan.petrenko@gmail.com',
+    photo: '1730686056955-ivan.petrenko.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['Administrator'],
   },
   {
-    fullName: 'Alex Johnson',
-    email: 'alex.johnson@gmail.com',
-    photo: '1730686066968-alex.johnson.jpg',
+    fullName: 'Олександра Іванчук',
+    email: 'oleksandra.ivanchuk@gmail.com',
+    photo: '1730686066968-oleksandra.ivanchuk.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['Moderator'],
   },
   {
-    fullName: 'Jane Smith',
-    email: 'jane.smith@gmail.com',
-    photo: '1730713464386-jane.smith.jpg',
+    fullName: 'Ганна Шевченко',
+    email: 'hanna.shevchenko@gmail.com',
+    photo: '1730713464386-hanna.shevchenko.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['User'],
   },

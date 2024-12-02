@@ -18,12 +18,12 @@ describe('ProductController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Jane.Smith@Gmail.com',
+        email: 'hanna.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Jane Smith');
+      expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
       authData.user.id = response.body.user.id;
       authData.user.accessToken = response.body.accessToken;
@@ -31,12 +31,12 @@ describe('ProductController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Alex.Johnson@Gmail.com',
+        email: 'oleksandra.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Alex Johnson');
+      expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
       authData.moderator.id = response.body.user.id;
       authData.moderator.accessToken = response.body.accessToken;
@@ -44,12 +44,12 @@ describe('ProductController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'John.Doe@Gmail.com',
+        email: 'ivan.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
       authData.admin.id = response.body.user.id;
       authData.admin.accessToken = response.body.accessToken;
@@ -136,12 +136,12 @@ describe('ProductController', () => {
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New product by moderator',
+          title: 'Новий модераторський товар',
           category: 'Пристрої',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New product by moderator');
+      expect(response.body.title).toBe('Новий модераторський товар');
       expect(response.body.category).toBe('Пристрої');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
@@ -154,12 +154,12 @@ describe('ProductController', () => {
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'New product by user',
+          title: 'Новий користувацький товар',
           category: 'Електроніка',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New product by user');
+      expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.category).toBe('Електроніка');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
@@ -173,7 +173,7 @@ describe('ProductController', () => {
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'New product',
+          title: 'Новий товар',
           category: 'Машини',
         });
       expect(response.status).toBe(404);
@@ -185,10 +185,10 @@ describe('ProductController', () => {
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New product by moderator',
+          title: 'Новий модераторський товар',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('This product already exists');
+      expect(response.body.errors[0].title).toBe('Цей товар вже існує');
     });
 
     it('should return 403 for current user not having permission to create products', async () => {
@@ -196,11 +196,11 @@ describe('ProductController', () => {
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'New product',
+          title: 'Новий товар',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to create products'
+        'Ви не маєте дозволу на створення товарів'
       );
     });
   });
@@ -212,9 +212,9 @@ describe('ProductController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', productId);
-      expect(response.body.title).toBe('New product by user');
+      expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.category).toBe('Електроніка');
-      expect(response.body.status).toBe('pending');
+      expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
       expect(response.body.createdBy).toBeDefined();
@@ -227,7 +227,7 @@ describe('ProductController', () => {
         .get('/api/products/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Product not found');
+      expect(response.body.errors[0].title).toBe('Товар не знайдено');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -246,7 +246,7 @@ describe('ProductController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to moderate products'
+        'Ви не маєте дозволу на модерацію товарів'
       );
     });
 
@@ -258,7 +258,7 @@ describe('ProductController', () => {
           status: 'approved',
         });
       expect(response.status).toBe(200);
-      expect(response.body.title).toBe('New product by user');
+      expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
@@ -272,12 +272,12 @@ describe('ProductController', () => {
         .patch(`/api/products/${productId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Updated Product Title',
+          title: 'Оновлена назва товару',
           category: 'Обчислювальна техніка',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', productId);
-      expect(response.body.title).toBe('Updated Product Title');
+      expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.category).toBe('Обчислювальна техніка');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
@@ -290,12 +290,12 @@ describe('ProductController', () => {
         .patch(`/api/products/${productId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Product Title',
+          title: 'Оновлена назва товару',
           category: 'Обчислювальна техніка',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', productId);
-      expect(response.body.title).toBe('Updated Product Title');
+      expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.category).toBe('Обчислювальна техніка');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
@@ -311,7 +311,7 @@ describe('ProductController', () => {
           title: 'Помідори',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('This product already exists');
+      expect(response.body.errors[0].title).toBe('Цей товар вже існує');
     });
 
     it('should return 403 for current user not having permission to edit products', async () => {
@@ -319,11 +319,11 @@ describe('ProductController', () => {
         .patch(`/api/products/${productId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Updated Product Title',
+          title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to edit this product'
+        'Ви не маєте дозволу на редагування цього товару'
       );
     });
 
@@ -332,10 +332,10 @@ describe('ProductController', () => {
         .patch('/api/products/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Product Title',
+          title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Product not found');
+      expect(response.body.errors[0].title).toBe('Товар не знайдено');
     });
   });
 
@@ -346,7 +346,7 @@ describe('ProductController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to delete this product'
+        'Ви не маєте дозволу на видалення цього товару'
       );
     });
 
@@ -362,7 +362,7 @@ describe('ProductController', () => {
         .delete('/api/products/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Product not found');
+      expect(response.body.errors[0].title).toBe('Товар не знайдено');
     });
   });
 });

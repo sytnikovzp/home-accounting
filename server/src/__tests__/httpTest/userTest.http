@@ -26,7 +26,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNDE5NTI5LCJleHAiOjE3MzE0MjMxMjl9.WJVa4tenS-z0NR4Y8BH0Sv0wMKLbTmRqkNJEQMuVgJ8
 
 {
-  "fullName": "Updated User",
+  "fullName": "Оновлений користувач",
   "email": "Updated.User@GMAIL.com",
   "password": "Qwerty1234567",
   "role": "User"

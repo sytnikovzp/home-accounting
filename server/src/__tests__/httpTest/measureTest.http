@@ -14,7 +14,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzEyNTAzODMsImV4cCI6MTczMTI1Mzk4M30._6GxEUUU9zOQU4f7NuV5B4_48vqvnh15JGKgqbwXeUw
 
 {
-  "title": "New Measure",
+  "title": "Нова одиниця вимірювання",
   "description": ""
 }
 
@@ -29,8 +29,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzEyNTAzODMsImV4cCI6MTczMTI1Mzk4M30._6GxEUUU9zOQU4f7NuV5B4_48vqvnh15JGKgqbwXeUw
 
 {
-  "title": "Updated Measure",
-  "description": "test description"
+  "title": "Оновлена назва одиниці вимірювання",
+  "description": "Оновлений опис"
 }
 
 ### Delete measure

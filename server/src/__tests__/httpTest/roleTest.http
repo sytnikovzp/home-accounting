@@ -24,7 +24,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyMDYwNDEzLCJleHAiOjE3MzIwNjEzMTN9.vihR0EaaZFyDFQbyAOe4bfGjKg2Mkidg1hzc7TutJL4
 
 {
-  "title": "New role",
+  "title": "Нова роль користувача",
   "description": "",
   "permissions": ["ADD_CATEGORIES", "ADD_SHOPS", "ADD_PRODUCTS"]
 }
@@ -40,8 +40,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMxNDQ1MDcyLCJleHAiOjE3MzE0NDg2NzJ9.LIpoKno4gEIhOuF54alva0szlyC0UXX-TZ1RzlOccD8
 
 {
-  "title": "Updated role",
-  "description": "Updated description",
+  "title": "Оновлена назва ролі користувача",
+  "description": "Оновлений опис ролі користувача",
   "permissions": []
 }
 

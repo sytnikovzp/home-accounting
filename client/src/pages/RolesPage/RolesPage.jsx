@@ -33,8 +33,8 @@ function RolesPage() {
       setRoles(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати ролі:', error);
-      setError('Не вдалося отримати ролі');
+      console.error('Не вдалося отримати дані про ролі:', error);
+      setError('Не вдалося отримати дані про ролі');
     } finally {
       setIsLoading(false);
     }

@@ -2,8 +2,8 @@
 const { getUserIdByEmail } = require('../utils/sharedFunctions');
 
 async function postgresData() {
-  const moderatorId = await getUserIdByEmail('alex.johnson@gmail.com');
-  const userId = await getUserIdByEmail('jane.smith@gmail.com');
+  const moderatorId = await getUserIdByEmail('oleksandra.ivanchuk@gmail.com');
+  const userId = await getUserIdByEmail('hanna.shevchenko@gmail.com');
   return {
     categories: [
       {

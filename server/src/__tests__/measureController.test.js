@@ -18,12 +18,12 @@ describe('MeasureController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Jane.Smith@Gmail.com',
+        email: 'hanna.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Jane Smith');
+      expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
       authData.user.id = response.body.user.id;
       authData.user.accessToken = response.body.accessToken;
@@ -31,12 +31,12 @@ describe('MeasureController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Alex.Johnson@Gmail.com',
+        email: 'oleksandra.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Alex Johnson');
+      expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
       authData.moderator.id = response.body.user.id;
       authData.moderator.accessToken = response.body.accessToken;
@@ -44,12 +44,12 @@ describe('MeasureController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'John.Doe@Gmail.com',
+        email: 'ivan.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
       authData.admin.id = response.body.user.id;
       authData.admin.accessToken = response.body.accessToken;
@@ -90,12 +90,12 @@ describe('MeasureController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New measure',
+          title: 'Нова одиниця вимірювання',
           description: '',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New measure');
+      expect(response.body.title).toBe('Нова одиниця вимірювання');
       expect(response.body.description).toBe('');
       measureId = response.body.id;
     });
@@ -105,10 +105,12 @@ describe('MeasureController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New measure',
+          title: 'Нова одиниця вимірювання',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('This measure already exists');
+      expect(response.body.errors[0].title).toBe(
+        'Ця одиниця вимірювання вже існує'
+      );
     });
 
     it('should return 403 for current user not having permission to create measures', async () => {
@@ -116,12 +118,12 @@ describe('MeasureController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'New measure',
+          title: 'Нова одиниця вимірювання',
           description: '',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to create measures'
+        'Ви не маєте дозволу на створення одиниць вимірювання'
       );
     });
 
@@ -130,7 +132,7 @@ describe('MeasureController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          description: 'Missing title',
+          description: 'Відсутня назва',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe('Validation Error');
@@ -144,7 +146,7 @@ describe('MeasureController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', measureId);
-      expect(response.body.title).toBe('New measure');
+      expect(response.body.title).toBe('Нова одиниця вимірювання');
       expect(response.body.description).toBe('');
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
@@ -155,7 +157,9 @@ describe('MeasureController', () => {
         .get('/api/measures/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Measure not found');
+      expect(response.body.errors[0].title).toBe(
+        'Одиниця вимірювання не знайдена'
+      );
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -170,14 +174,14 @@ describe('MeasureController', () => {
         .patch(`/api/measures/${measureId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Measure Title',
-          description: 'Updated description of the measure',
+          title: 'Оновлена назва одиниці вимірювання',
+          description: 'Оновлений опис одиниці вимірювання',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', measureId);
-      expect(response.body.title).toBe('Updated Measure Title');
+      expect(response.body.title).toBe('Оновлена назва одиниці вимірювання');
       expect(response.body.description).toBe(
-        'Updated description of the measure'
+        'Оновлений опис одиниці вимірювання'
       );
     });
 
@@ -189,7 +193,9 @@ describe('MeasureController', () => {
           title: 'кг',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('This measure already exists');
+      expect(response.body.errors[0].title).toBe(
+        'Ця одиниця вимірювання вже існує'
+      );
     });
 
     it('should return 403 for current user not having permission to edit measures', async () => {
@@ -197,12 +203,12 @@ describe('MeasureController', () => {
         .patch(`/api/measures/${measureId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Updated Measure Title',
-          description: 'Updated description of the measure',
+          title: 'Оновлена назва одиниці вимірювання',
+          description: 'Оновлений опис одиниці вимірювання',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to edit this measure'
+        'Ви не маєте дозволу на редагування цієї одиниці вимірювання'
       );
     });
 
@@ -211,10 +217,12 @@ describe('MeasureController', () => {
         .patch('/api/measures/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Measure Title',
+          title: 'Оновлена назва одиниці вимірювання',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Measure not found');
+      expect(response.body.errors[0].title).toBe(
+        'Одиниця вимірювання не знайдена'
+      );
     });
   });
 
@@ -225,7 +233,7 @@ describe('MeasureController', () => {
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to delete this measure'
+        'Ви не маєте дозволу на видалення цієї одиниці вимірювання'
       );
     });
 
@@ -241,7 +249,9 @@ describe('MeasureController', () => {
         .delete('/api/measures/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Measure not found');
+      expect(response.body.errors[0].title).toBe(
+        'Одиниця вимірювання не знайдена'
+      );
     });
   });
 });

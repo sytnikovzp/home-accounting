@@ -18,12 +18,12 @@ describe('CurrencyController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Jane.Smith@Gmail.com',
+        email: 'hanna.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Jane Smith');
+      expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
       authData.user.id = response.body.user.id;
       authData.user.accessToken = response.body.accessToken;
@@ -31,12 +31,12 @@ describe('CurrencyController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Alex.Johnson@Gmail.com',
+        email: 'oleksandra.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Alex Johnson');
+      expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
       authData.moderator.id = response.body.user.id;
       authData.moderator.accessToken = response.body.accessToken;
@@ -44,12 +44,12 @@ describe('CurrencyController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'John.Doe@Gmail.com',
+        email: 'ivan.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
       authData.admin.id = response.body.user.id;
       authData.admin.accessToken = response.body.accessToken;
@@ -90,12 +90,12 @@ describe('CurrencyController', () => {
         .post('/api/currencies')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New currency',
+          title: 'Нова валюта',
           description: '',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New currency');
+      expect(response.body.title).toBe('Нова валюта');
       expect(response.body.description).toBe('');
       currencyId = response.body.id;
     });
@@ -105,12 +105,10 @@ describe('CurrencyController', () => {
         .post('/api/currencies')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New currency',
+          title: 'Нова валюта',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'This currency already exists'
-      );
+      expect(response.body.errors[0].title).toBe('Ця валюта вже існує');
     });
 
     it('should return 403 for current user not having permission to create currencies', async () => {
@@ -118,12 +116,12 @@ describe('CurrencyController', () => {
         .post('/api/currencies')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'New currency',
+          title: 'Нова валюта',
           description: '',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to create currencies'
+        'Ви не маєте дозволу на створення валют'
       );
     });
 
@@ -132,7 +130,7 @@ describe('CurrencyController', () => {
         .post('/api/currencies')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          description: 'Missing title',
+          description: 'Відсутня назва',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe('Validation Error');
@@ -146,7 +144,7 @@ describe('CurrencyController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', currencyId);
-      expect(response.body.title).toBe('New currency');
+      expect(response.body.title).toBe('Нова валюта');
       expect(response.body.description).toBe('');
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
@@ -157,7 +155,7 @@ describe('CurrencyController', () => {
         .get('/api/currencies/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Currency not found');
+      expect(response.body.errors[0].title).toBe('Валюта не знайдена');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -172,15 +170,13 @@ describe('CurrencyController', () => {
         .patch(`/api/currencies/${currencyId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Currency Title',
-          description: 'Updated description of the currency',
+          title: 'Оновлена назва валюти',
+          description: 'Оновлений опис валюти',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', currencyId);
-      expect(response.body.title).toBe('Updated Currency Title');
-      expect(response.body.description).toBe(
-        'Updated description of the currency'
-      );
+      expect(response.body.title).toBe('Оновлена назва валюти');
+      expect(response.body.description).toBe('Оновлений опис валюти');
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -191,9 +187,7 @@ describe('CurrencyController', () => {
           title: 'USD',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'This currency already exists'
-      );
+      expect(response.body.errors[0].title).toBe('Ця валюта вже існує');
     });
 
     it('should return 403 for current user not having permission to edit currencies', async () => {
@@ -201,12 +195,12 @@ describe('CurrencyController', () => {
         .patch(`/api/currencies/${currencyId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Updated Currency Title',
-          description: 'Updated description of the currency',
+          title: 'Оновлена назва валюти',
+          description: 'Оновлений опис валюти',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to edit this currency'
+        'Ви не маєте дозволу на редагування цієї валюти'
       );
     });
 
@@ -215,10 +209,10 @@ describe('CurrencyController', () => {
         .patch('/api/currencies/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Currency Title',
+          title: 'Оновлена назва валюти',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Currency not found');
+      expect(response.body.errors[0].title).toBe('Валюта не знайдена');
     });
   });
 
@@ -229,7 +223,7 @@ describe('CurrencyController', () => {
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to delete this currency'
+        'Ви не маєте дозволу на видалення цієї валюти'
       );
     });
 
@@ -245,7 +239,7 @@ describe('CurrencyController', () => {
         .delete('/api/currencies/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Currency not found');
+      expect(response.body.errors[0].title).toBe('Валюта не знайдена');
     });
   });
 });

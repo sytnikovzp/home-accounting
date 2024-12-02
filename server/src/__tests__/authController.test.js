@@ -12,13 +12,13 @@ describe('AuthController', () => {
   describe('POST /api/auth/registration', () => {
     it('should register a new user', async () => {
       const response = await request(app).post('/api/auth/registration').send({
-        fullName: 'John Doe',
-        email: 'John@Gmail.com',
+        fullName: 'Євген Ступка',
+        email: 'evgen.stupka@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(201);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Євген Ступка');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
       refreshToken = response.body.refreshToken;
@@ -26,24 +26,24 @@ describe('AuthController', () => {
 
     it('should return 400 for existing user', async () => {
       const response = await request(app).post('/api/auth/registration').send({
-        fullName: 'John Doe',
-        email: 'John@Gmail.com',
+        fullName: 'Іван Петренко',
+        email: 'ivan.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('This user already exists');
+      expect(response.body.errors[0].title).toBe('Цей користувач вже існує');
     });
   });
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'John@Gmail.com',
+        email: 'evgen.stupka@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Євген Ступка');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
       refreshToken = response.body.refreshToken;
@@ -65,7 +65,7 @@ describe('AuthController', () => {
         .set('Cookie', `refreshToken=${refreshToken}`);
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Євген Ступка');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
     });

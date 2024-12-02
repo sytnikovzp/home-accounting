@@ -10,7 +10,8 @@ class MeasureService {
       limit,
       offset,
     });
-    if (foundMeasures.length === 0) throw notFound('Measures not found');
+    if (foundMeasures.length === 0)
+      throw notFound('Одиниці вимірювання не знайдено');
     const allMeasures = foundMeasures.map((measure) => ({
       id: measure.id,
       title: measure.title,
@@ -25,7 +26,7 @@ class MeasureService {
 
   async getMeasureById(measureId) {
     const foundMeasure = await Measure.findByPk(measureId);
-    if (!foundMeasure) throw notFound('Measure not found');
+    if (!foundMeasure) throw notFound('Одиниця вимірювання не знайдена');
     const measureData = foundMeasure.toJSON();
     return {
       ...measureData,
@@ -38,15 +39,16 @@ class MeasureService {
   async createMeasure(title, descriptionValue, currentUser, transaction) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_MEASURES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to create measures');
+      throw forbidden('Ви не маєте дозволу на створення одиниць вимірювання');
     const duplicateMeasure = await Measure.findOne({ where: { title } });
-    if (duplicateMeasure) throw badRequest('This measure already exists');
+    if (duplicateMeasure) throw badRequest('Ця одиниця вимірювання вже існує');
     const description = descriptionValue === '' ? null : descriptionValue;
     const newMeasure = await Measure.create(
       { title, description },
       { transaction, returning: true }
     );
-    if (!newMeasure) throw badRequest('Measure is not created');
+    if (!newMeasure)
+      throw badRequest('Дані цієї одиниці вимірювання не створено');
     return {
       id: newMeasure.id,
       title: newMeasure.title,
@@ -57,13 +59,16 @@ class MeasureService {
   async updateMeasure(id, title, descriptionValue, currentUser, transaction) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_MEASURES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to edit this measure');
+      throw forbidden(
+        'Ви не маєте дозволу на редагування цієї одиниці вимірювання'
+      );
     const foundMeasure = await Measure.findByPk(id);
-    if (!foundMeasure) throw notFound('Measure not found');
+    if (!foundMeasure) throw notFound('Одиниця вимірювання не знайдена');
     const currentTitle = foundMeasure.title;
     if (title !== currentTitle) {
       const duplicateMeasure = await Measure.findOne({ where: { title } });
-      if (duplicateMeasure) throw badRequest('This measure already exists');
+      if (duplicateMeasure)
+        throw badRequest('Ця одиниця вимірювання вже існує');
     } else {
       title = currentTitle;
     }
@@ -77,7 +82,8 @@ class MeasureService {
       returning: true,
       transaction,
     });
-    if (affectedRows === 0) throw badRequest('Measure is not updated');
+    if (affectedRows === 0)
+      throw badRequest('Дані цієї одиниці вимірювання не оновлено');
     return {
       id: updatedMeasure.id,
       title: updatedMeasure.title,
@@ -88,14 +94,17 @@ class MeasureService {
   async deleteMeasure(measureId, currentUser, transaction) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_MEASURES');
     if (!hasPermission)
-      throw forbidden('You don`t have permission to delete this measure');
+      throw forbidden(
+        'Ви не маєте дозволу на видалення цієї одиниці вимірювання'
+      );
     const foundMeasure = await Measure.findByPk(measureId);
-    if (!foundMeasure) throw notFound('Measure not found');
+    if (!foundMeasure) throw notFound('Одиниця вимірювання не знайдена');
     const deletedMeasure = await Measure.destroy({
       where: { id: measureId },
       transaction,
     });
-    if (!deletedMeasure) throw badRequest('Measure is not deleted');
+    if (!deletedMeasure)
+      throw badRequest('Дані цієї одиниці вимірювання не видалено');
     return deletedMeasure;
   }
 }

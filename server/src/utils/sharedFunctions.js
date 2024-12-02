@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { uk } = require('date-fns/locale');
 const { format } = require('date-fns');
 // ==============================================================
 const {
@@ -23,7 +24,7 @@ const setRefreshTokenCookie = function (res, refreshToken) {
 };
 
 const formatDate = function (date) {
-  return format(new Date(date), 'dd MMMM yyyy, HH:mm');
+  return format(new Date(date), 'dd MMMM yyyy, HH:mm', { locale: uk });
 };
 
 const getTime = function (ago = 'allTime') {
@@ -46,7 +47,7 @@ const checkPermission = async function (user, requiredPermission) {
   const foundRole = await Role.findOne({ title: user.role }).populate(
     'permissions'
   );
-  if (!foundRole) throw notFound('Role not found');
+  if (!foundRole) throw notFound('Роль для користувача не знайдено');
   const permissions = foundRole.permissions.map((p) => p.title);
   return permissions.includes(requiredPermission);
 };

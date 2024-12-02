@@ -18,12 +18,12 @@ describe('CategoryController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Jane.Smith@Gmail.com',
+        email: 'hanna.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Jane Smith');
+      expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
       authData.user.id = response.body.user.id;
       authData.user.accessToken = response.body.accessToken;
@@ -31,12 +31,12 @@ describe('CategoryController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Alex.Johnson@Gmail.com',
+        email: 'oleksandra.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Alex Johnson');
+      expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
       authData.moderator.id = response.body.user.id;
       authData.moderator.accessToken = response.body.accessToken;
@@ -44,12 +44,12 @@ describe('CategoryController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'John.Doe@Gmail.com',
+        email: 'ivan.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
       authData.admin.id = response.body.user.id;
       authData.admin.accessToken = response.body.accessToken;
@@ -136,11 +136,11 @@ describe('CategoryController', () => {
         .post('/api/categories')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New category by moderator',
+          title: 'Нова модераторська категорія',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New category by moderator');
+      expect(response.body.title).toBe('Нова модераторська категорія');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
@@ -152,11 +152,11 @@ describe('CategoryController', () => {
         .post('/api/categories')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'New category by user',
+          title: 'Нова користувацька категорія',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New category by user');
+      expect(response.body.title).toBe('Нова користувацька категорія');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
@@ -169,7 +169,7 @@ describe('CategoryController', () => {
         .post('/api/categories')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'New category by moderator',
+          title: 'Нова модераторська категорія',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe('Ця категорія вже існує');
@@ -180,7 +180,7 @@ describe('CategoryController', () => {
         .post('/api/categories')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'New category',
+          title: 'Нова категорія',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -196,8 +196,8 @@ describe('CategoryController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', categoryId);
-      expect(response.body.title).toBe('New category by user');
-      expect(response.body.status).toBe('pending');
+      expect(response.body.title).toBe('Нова користувацька категорія');
+      expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
       expect(response.body.createdBy).toBeDefined();
@@ -229,7 +229,7 @@ describe('CategoryController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу модерувати категорії'
+        'Ви не маєте дозволу на модерацію категорій'
       );
     });
 
@@ -241,7 +241,7 @@ describe('CategoryController', () => {
           status: 'approved',
         });
       expect(response.status).toBe(200);
-      expect(response.body.title).toBe('New category by user');
+      expect(response.body.title).toBe('Нова користувацька категорія');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
@@ -255,11 +255,11 @@ describe('CategoryController', () => {
         .patch(`/api/categories/${categoryId}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Updated Category Title',
+          title: 'Оновлена назва категорії',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', categoryId);
-      expect(response.body.title).toBe('Updated Category Title');
+      expect(response.body.title).toBe('Оновлена назва категорії');
       expect(response.body.status).toBe('pending');
       expect(response.body.reviewedBy).toBe('');
       expect(response.body.reviewedAt).toBe('');
@@ -271,11 +271,11 @@ describe('CategoryController', () => {
         .patch(`/api/categories/${categoryId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Category Title',
+          title: 'Оновлена назва категорії',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', categoryId);
-      expect(response.body.title).toBe('Updated Category Title');
+      expect(response.body.title).toBe('Оновлена назва категорії');
       expect(response.body.status).toBe('approved');
       expect(response.body.reviewedBy).toBeDefined();
       expect(response.body.reviewedAt).toBeDefined();
@@ -298,11 +298,11 @@ describe('CategoryController', () => {
         .patch(`/api/categories/${categoryId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Updated Category Title',
+          title: 'Оновлена назва категорії',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу редагувати цю категорію'
+        'Ви не маєте дозволу на редагування цієї категорії'
       );
     });
 
@@ -311,7 +311,7 @@ describe('CategoryController', () => {
         .patch('/api/categories/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Category Title',
+          title: 'Оновлена назва категорії',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Категорія не знайдена');

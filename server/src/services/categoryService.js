@@ -30,10 +30,15 @@ class CategoryService {
     const foundCategory = await Category.findByPk(categoryId);
     if (!foundCategory) throw notFound('Категорія не знайдена');
     const categoryData = foundCategory.toJSON();
+    const statusMapping = {
+      approved: 'Затверджено',
+      pending: 'Очікує модерації',
+      rejected: 'Відхилено',
+    };
     return {
       id: categoryData.id,
       title: categoryData.title,
-      status: categoryData.status,
+      status: statusMapping[categoryData.status] || categoryData.status,
       reviewedBy: categoryData.reviewedBy || '',
       reviewedAt: categoryData.reviewedAt
         ? formatDate(categoryData.reviewedAt)
@@ -50,12 +55,12 @@ class CategoryService {
       'MODERATE_CATEGORIES'
     );
     if (!hasPermission) {
-      throw forbidden('Ви не маєте дозволу модерувати категорії');
+      throw forbidden('Ви не маєте дозволу на модерацію категорій');
     }
     const foundCategory = await Category.findByPk(id);
     if (!foundCategory) throw notFound('Категорія не знайдена');
     if (!['approved', 'rejected'].includes(status)) {
-      throw notFound('Status not found');
+      throw notFound('Статус не знайдено');
     }
     const currentUserId = currentUser.id.toString();
     const updateData = { status };
@@ -65,7 +70,8 @@ class CategoryService {
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0) throw badRequest('Категорія не модерується');
+    if (affectedRows === 0)
+      throw badRequest('Категорія не проходить модерацію');
     return {
       id: moderatedCategory.id,
       title: moderatedCategory.title,
@@ -105,7 +111,7 @@ class CategoryService {
       },
       { transaction, returning: true }
     );
-    if (!newCategory) throw badRequest('Категорія не створена');
+    if (!newCategory) throw badRequest('Дані цієї категорії не створено');
     return {
       id: newCategory.id,
       title: newCategory.title,
@@ -128,7 +134,7 @@ class CategoryService {
       'MANAGE_CATEGORIES'
     );
     if (!isCategoryOwner && !canManageCategories) {
-      throw forbidden('Ви не маєте дозволу редагувати цю категорію');
+      throw forbidden('Ви не маєте дозволу на редагування цієї категорії');
     }
     const currentTitle = foundCategory.title;
     if (title !== currentTitle) {
@@ -146,7 +152,7 @@ class CategoryService {
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0) throw badRequest('Категорія не оновлена');
+    if (affectedRows === 0) throw badRequest('Дані цієї категорії не оновлено');
     return {
       id: updatedCategory.id,
       title: updatedCategory.title,
@@ -172,7 +178,7 @@ class CategoryService {
       where: { id: categoryId },
       transaction,
     });
-    if (!deletedCategory) throw badRequest('Категорія не видалена');
+    if (!deletedCategory) throw badRequest('Дані цієї категорії не видалено');
     return deletedCategory;
   }
 }

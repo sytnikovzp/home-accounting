@@ -33,8 +33,8 @@ function CurrenciesPage() {
       setCurrencies(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати валюти:', error);
-      setError('Не вдалося отримати валюти');
+      console.error('Не вдалося отримати дані про валюти:', error);
+      setError('Не вдалося отримати дані про валюти');
     } finally {
       setIsLoading(false);
     }

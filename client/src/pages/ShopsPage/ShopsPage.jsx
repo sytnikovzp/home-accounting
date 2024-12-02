@@ -33,8 +33,8 @@ function ShopsPage() {
       setShops(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати магазини:', error);
-      setError('Не вдалося отримати магазини');
+      console.error('Не вдалося отримати дані про магазини:', error);
+      setError('Не вдалося отримати дані про магазини');
     } finally {
       setIsLoading(false);
     }

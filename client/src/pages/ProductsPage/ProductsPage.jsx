@@ -33,8 +33,8 @@ function ProductsPage() {
       setProducts(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати продукти:', error);
-      setError('Не вдалося отримати продукти');
+      console.error('Не вдалося отримати дані про товари:', error);
+      setError('Не вдалося отримати дані про товари');
     } finally {
       setIsLoading(false);
     }
@@ -62,21 +62,21 @@ function ProductsPage() {
         setProductToDelete(null);
         await fetchProducts();
       } catch (error) {
-        console.error('Помилка при видаленні продукту:', error);
-        setDeleteError('Не вдалося видалити продукт. Недостатньо прав.');
+        console.error('Помилка при видаленні товару:', error);
+        setDeleteError('Не вдалося видалити товар. Недостатньо прав.');
       }
     }
   };
 
-  if (isLoading) return <Preloader message='Завантаження продуктів...' />;
+  if (isLoading) return <Preloader message='Завантаження товарів...' />;
   if (error) return <Error error={error} />;
 
   return (
     <div>
-      <Typography variant='h6'>Продукти</Typography>
+      <Typography variant='h6'>Товари</Typography>
       <ListTable
         columns={[
-          { field: 'title', headerName: 'Назва продукту', align: 'left' },
+          { field: 'title', headerName: 'Назва товару', align: 'left' },
           { field: 'category', headerName: 'Категорія', align: 'left' },
         ]}
         rows={products}

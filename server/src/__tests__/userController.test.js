@@ -17,12 +17,12 @@ describe('UserController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Jane.Smith@Gmail.com',
+        email: 'hanna.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Jane Smith');
+      expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
       authData.user.id = response.body.user.id;
@@ -31,12 +31,12 @@ describe('UserController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Alex.Johnson@Gmail.com',
+        email: 'oleksandra.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Alex Johnson');
+      expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
       expect(response.body.user).toHaveProperty('photo');
       authData.moderator.id = response.body.user.id;
@@ -45,12 +45,12 @@ describe('UserController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'John.Doe@Gmail.com',
+        email: 'ivan.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
       expect(response.body.user).toHaveProperty('photo');
       authData.admin.id = response.body.user.id;
@@ -101,10 +101,10 @@ describe('UserController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', authData.user.id);
-      expect(response.body.fullName).toBe('Jane Smith');
+      expect(response.body.fullName).toBe('Ганна Шевченко');
       expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
-      expect(response.body.email).toBe('jane.smith@gmail.com');
+      expect(response.body.email).toBe('hanna.shevchenko@gmail.com');
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
@@ -119,7 +119,7 @@ describe('UserController', () => {
         .get('/api/users/6725684760b29fc86d0683bd')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('User not found');
+      expect(response.body.errors[0].title).toBe('Користувача не знайдено');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -135,10 +135,10 @@ describe('UserController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', authData.user.id);
-      expect(response.body.fullName).toBe('Jane Smith');
+      expect(response.body.fullName).toBe('Ганна Шевченко');
       expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
-      expect(response.body.email).toBe('jane.smith@gmail.com');
+      expect(response.body.email).toBe('hanna.shevchenko@gmail.com');
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
@@ -182,7 +182,7 @@ describe('UserController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to update this user data'
+        'У Вас немає дозволу на оновлення даних цього користувача'
       );
     });
 
@@ -191,10 +191,12 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.user.id}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          email: 'alex.johnson@gmail.com',
+          email: 'oleksandra.ivanchuk@gmail.com',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('This email is already used');
+      expect(response.body.errors[0].title).toBe(
+        'Ця електронна адреса вже використовується'
+      );
     });
 
     it('should return 403 for current user not having permission to change user roles', async () => {
@@ -208,7 +210,7 @@ describe('UserController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to change this user role'
+        'У Вас немає дозволу на редагування ролі цього користувача'
       );
     });
 
@@ -228,10 +230,10 @@ describe('UserController', () => {
         .patch('/api/users/6725684760b29fc86d0683bd')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          fullName: 'Invalid User',
+          fullName: 'Невірний користувач',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('User not found');
+      expect(response.body.errors[0].title).toBe('Користувача не знайдено');
     });
 
     it('should return 200 for current user having permission to change user roles', async () => {
@@ -286,7 +288,7 @@ describe('UserController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to delete this user profile'
+        'Ви не маєте дозволу на видалення цього профілю користувача'
       );
     });
 

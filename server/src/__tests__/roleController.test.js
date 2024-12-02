@@ -18,12 +18,12 @@ describe('RoleController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Jane.Smith@Gmail.com',
+        email: 'hanna.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Jane Smith');
+      expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
       authData.user.id = response.body.user.id;
       authData.user.accessToken = response.body.accessToken;
@@ -31,12 +31,12 @@ describe('RoleController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'Alex.Johnson@Gmail.com',
+        email: 'oleksandra.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('Alex Johnson');
+      expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
       authData.moderator.id = response.body.user.id;
       authData.moderator.accessToken = response.body.accessToken;
@@ -44,12 +44,12 @@ describe('RoleController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'John.Doe@Gmail.com',
+        email: 'ivan.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user.fullName).toBe('John Doe');
+      expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
       authData.admin.id = response.body.user.id;
       authData.admin.accessToken = response.body.accessToken;
@@ -140,28 +140,28 @@ describe('RoleController', () => {
         .post('/api/roles')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'New role',
+          title: 'Нова роль користувача',
           description: '',
           permissions: ['ADD_CATEGORIES', 'ADD_SHOPS', 'ADD_PRODUCTS'],
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('New role');
+      expect(response.body.title).toBe('Нова роль користувача');
       expect(response.body.description).toBe('');
       expect(response.body.permissions).toHaveLength(3);
       expect(response.body.permissions).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             title: 'ADD_CATEGORIES',
-            description: 'Add new categories, which need to be moderated',
+            description: 'Додавання нових категорій, потребують модерації',
           }),
           expect.objectContaining({
             title: 'ADD_SHOPS',
-            description: 'Add new shops, which need to be moderated',
+            description: 'Додавання нових магазинів, потребують модерації',
           }),
           expect.objectContaining({
             title: 'ADD_PRODUCTS',
-            description: 'Add new products, which need to be moderated',
+            description: 'Додавання нових товарів, потребують модерації',
           }),
         ])
       );
@@ -173,13 +173,13 @@ describe('RoleController', () => {
         .post('/api/roles')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'New second role',
+          title: 'Нова  наступна роль користувача',
           description: '',
           permissions: ['ADD_CATEGORIES1'],
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe(
-        'Some permissions were not found: ADD_CATEGORIES1'
+        'Не вдалося знайти деякі дозволи: ADD_CATEGORIES1'
       );
     });
 
@@ -188,10 +188,12 @@ describe('RoleController', () => {
         .post('/api/roles')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'New role',
+          title: 'Нова роль користувача',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('This role already exists');
+      expect(response.body.errors[0].title).toBe(
+        'Ця роль для користувача вже існує'
+      );
     });
 
     it('should return 403 for current user not having permission to create user roles', async () => {
@@ -199,12 +201,12 @@ describe('RoleController', () => {
         .post('/api/roles')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'New Role',
-          description: 'Role for testing purposes',
+          title: 'Нова роль користувача',
+          description: 'Роль для цілі тестування',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to create roles for users'
+        'Ви не маєте дозволу на створення ролей для користувачів'
       );
     });
 
@@ -213,7 +215,7 @@ describe('RoleController', () => {
         .post('/api/roles')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          description: 'Missing title',
+          description: 'Відсутня назва',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe('Validation Error');
@@ -227,22 +229,22 @@ describe('RoleController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', roleId);
-      expect(response.body.title).toBe('New role');
+      expect(response.body.title).toBe('Нова роль користувача');
       expect(response.body.description).toBe('');
       expect(response.body.permissions).toHaveLength(3);
       expect(response.body.permissions).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             title: 'ADD_CATEGORIES',
-            description: 'Add new categories, which need to be moderated',
+            description: 'Додавання нових категорій, потребують модерації',
           }),
           expect.objectContaining({
             title: 'ADD_SHOPS',
-            description: 'Add new shops, which need to be moderated',
+            description: 'Додавання нових магазинів, потребують модерації',
           }),
           expect.objectContaining({
             title: 'ADD_PRODUCTS',
-            description: 'Add new products, which need to be moderated',
+            description: 'Додавання нових товарів, потребують модерації',
           }),
         ])
       );
@@ -253,7 +255,9 @@ describe('RoleController', () => {
         .get('/api/roles/672b1351a8dc7c9f08add3b6')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Role not found');
+      expect(response.body.errors[0].title).toBe(
+        'Роль для користувача не знайдено'
+      );
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -268,14 +272,14 @@ describe('RoleController', () => {
         .patch(`/api/roles/${roleId}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Updated Role Title',
-          description: 'Updated description of the role',
+          title: 'Оновлена назва ролі',
+          description: 'Оновлений опис ролі',
           permissions: [],
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('id', roleId);
-      expect(response.body.title).toBe('Updated Role Title');
-      expect(response.body.description).toBe('Updated description of the role');
+      expect(response.body.title).toBe('Оновлена назва ролі');
+      expect(response.body.description).toBe('Оновлений опис ролі');
       expect(response.body.permissions).toHaveLength(0);
     });
 
@@ -287,7 +291,9 @@ describe('RoleController', () => {
           title: 'Administrator',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('This role already exists');
+      expect(response.body.errors[0].title).toBe(
+        'Ця роль для користувача вже існує'
+      );
     });
 
     it('should return 403 for current user not having permission to edit user roles', async () => {
@@ -295,13 +301,13 @@ describe('RoleController', () => {
         .patch(`/api/roles/${roleId}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Updated Role Title',
-          description: 'Updated description of the role',
+          title: 'Оновлена назва ролі',
+          description: 'Оновлений опис ролі',
           permissions: [],
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to edit roles for users'
+        'Ви не маєте дозволу на редагування цієї ролі для користувачів'
       );
     });
 
@@ -310,10 +316,12 @@ describe('RoleController', () => {
         .patch('/api/roles/6733c59555558d3a0383717c')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Updated Role Title',
+          title: 'Оновлена назва ролі',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Role not found');
+      expect(response.body.errors[0].title).toBe(
+        'Роль для користувача не знайдено'
+      );
     });
   });
 
@@ -324,7 +332,7 @@ describe('RoleController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'You don`t have permission to delete roles for users'
+        'Ви не маєте дозволу на видалення цієї ролі для користувачів'
       );
     });
 
@@ -340,7 +348,9 @@ describe('RoleController', () => {
         .delete('/api/roles/6733c59555558d3a0383717c')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Role not found');
+      expect(response.body.errors[0].title).toBe(
+        'Роль для користувача не знайдено'
+      );
     });
   });
 });
