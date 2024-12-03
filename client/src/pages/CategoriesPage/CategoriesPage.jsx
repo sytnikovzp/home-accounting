@@ -34,14 +34,13 @@ function CategoriesPage() {
     navigate('/categories');
   };
 
-  const openModal = (mode, data = null) => {
-    const path = mode === 'add' ? 'add' : `${mode}/${data?.id}`;
-    navigate(path);
+  const openModal = (mode, id = null) => {
+    navigate(id ? `${mode}/${id}` : mode);
   };
 
   const fetchCategories = useCallback(async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const params = {
         page: currentPage,
         limit: pageSize,
@@ -60,11 +59,53 @@ function CategoriesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, pageSize, sortModel, selectedStatus]);
+  }, [currentPage, pageSize, selectedStatus, sortModel]);
 
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
+
+  const renderRoutes = () => (
+    <Routes>
+      <Route
+        path='add'
+        element={
+          <CategoryAddPage
+            handleModalClose={handleModalClose}
+            fetchCategories={fetchCategories}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path='edit/:id'
+        element={
+          <CategoryEditPage
+            handleModalClose={handleModalClose}
+            fetchCategories={fetchCategories}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path='delete/:id'
+        element={
+          <CategoryDeletePage
+            handleModalClose={handleModalClose}
+            fetchCategories={fetchCategories}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path=':id'
+        element={<CategoryViewPage handleModalClose={handleModalClose} />}
+      />
+    </Routes>
+  );
 
   if (isLoading)
     return <Preloader message='Завантаження списку "Категорій"...' />;
@@ -94,8 +135,8 @@ function CategoriesPage() {
           { field: 'title', headerName: 'Назва категорії', align: 'left' },
         ]}
         rows={categories}
-        onEdit={(category) => openModal('edit', category)}
-        onDelete={(category) => openModal('delete', category)}
+        onEdit={(category) => openModal('edit', category.id)}
+        onDelete={(category) => openModal('delete', category.id)}
         pagination={{
           totalCount,
           currentPage,
@@ -105,51 +146,13 @@ function CategoriesPage() {
           rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
         }}
         sortModel={sortModel}
-        onSortModelChange={(newSortModel) => setSortModel(newSortModel)}
+        onSortModelChange={setSortModel}
         selectedStatus={selectedStatus}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
         showStatusDropdown
         linkEntity='categories'
       />
-      <Routes>
-        <Route
-          path='add'
-          element={
-            <CategoryAddPage
-              handleModalClose={handleModalClose}
-              fetchCategories={fetchCategories}
-              crudError={crudError}
-              setCrudError={setCrudError}
-            />
-          }
-        />
-        <Route
-          path='edit/:id'
-          element={
-            <CategoryEditPage
-              handleModalClose={handleModalClose}
-              fetchCategories={fetchCategories}
-              crudError={crudError}
-              setCrudError={setCrudError}
-            />
-          }
-        />
-        <Route
-          path='delete/:id'
-          element={
-            <CategoryDeletePage
-              handleModalClose={handleModalClose}
-              fetchCategories={fetchCategories}
-              crudError={crudError}
-              setCrudError={setCrudError}
-            />
-          }
-        />
-        <Route
-          path=':id'
-          element={<CategoryViewPage handleModalClose={handleModalClose} />}
-        />
-      </Routes>
+      {renderRoutes()}
     </>
   );
 }
