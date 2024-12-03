@@ -52,14 +52,12 @@ class ShopService {
 
   async updateShopStatus(id, status, currentUser, transaction) {
     const hasPermission = await checkPermission(currentUser, 'MODERATE_SHOPS');
-    if (!hasPermission) {
+    if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на модерацію магазинів');
-    }
     const foundShop = await Shop.findByPk(id);
     if (!foundShop) throw notFound('Магазин не знайдено');
-    if (!['approved', 'rejected'].includes(status)) {
+    if (!['approved', 'rejected'].includes(status))
       throw notFound('Статус не знайдено');
-    }
     const currentUserId = currentUser.id.toString();
     const updateData = { status };
     updateData.moderatorId = currentUserId;
@@ -87,9 +85,8 @@ class ShopService {
   ) {
     const canAddShops = await checkPermission(currentUser, 'ADD_SHOPS');
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
-    if (!canAddShops && !canManageShops) {
+    if (!canAddShops && !canManageShops)
       throw forbidden('Ви не маєте дозволу на створення магазинів');
-    }
     const duplicateShop = await Shop.findOne({ where: { title } });
     if (duplicateShop) throw badRequest('Цей магазин вже існує');
     const description = descriptionValue === '' ? null : descriptionValue;
@@ -133,9 +130,8 @@ class ShopService {
     if (!foundShop) throw notFound('Магазин не знайдено');
     const isShopOwner = currentUser.id.toString() === foundShop.creatorId;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
-    if (!isShopOwner && !canManageShops) {
+    if (!isShopOwner && !canManageShops)
       throw forbidden('Ви не маєте дозволу на редагування цього магазину');
-    }
     const currentTitle = foundShop.title;
     if (title !== currentTitle) {
       const duplicateShop = await Shop.findOne({ where: { title } });
@@ -178,11 +174,10 @@ class ShopService {
     if (!foundShop) throw notFound('Магазин не знайдено');
     const isShopOwner = currentUser.id.toString() === foundShop.creatorId;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
-    if (!isShopOwner && !canManageShops) {
+    if (!isShopOwner && !canManageShops)
       throw forbidden(
         'Ви не маєте дозволу на оновлення логотипу цього магазину'
       );
-    }
     const updateData = { logo: filename };
     const currentUserId = currentUser.id.toString();
     updateData.status = canManageShops ? 'approved' : 'pending';
@@ -209,11 +204,10 @@ class ShopService {
     if (!foundShop) throw notFound('Магазин не знайдено');
     const isShopOwner = currentUser.id.toString() === foundShop.creatorId;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
-    if (!isShopOwner && !canManageShops) {
+    if (!isShopOwner && !canManageShops)
       throw forbidden(
         'Ви не маєте дозволу на видалення логотипу цього магазину'
       );
-    }
     const updateData = { logo: null };
     const currentUserId = currentUser.id.toString();
     updateData.status = canManageShops ? 'approved' : 'pending';

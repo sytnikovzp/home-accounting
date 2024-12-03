@@ -56,7 +56,7 @@ class PurchaseService {
         { model: Currency, attributes: ['title'] },
       ],
     });
-    if (!foundPurchase) throw notFound('Покупка не знайдена');
+    if (!foundPurchase) throw notFound('Покупку не знайдено');
     const purchaseData = foundPurchase.toJSON();
     return {
       id: purchaseData.id,
@@ -91,9 +91,9 @@ class PurchaseService {
     const foundShop = await getRecordByTitle(Shop, shop);
     if (!foundShop) throw notFound('Магазин не знайдено');
     const foundMeasure = await getRecordByTitle(Measure, measure);
-    if (!foundMeasure) throw notFound('Одиниця вимірювання не знайдена');
+    if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
     const foundCurrency = await getRecordByTitle(Currency, currency);
-    if (!foundCurrency) throw notFound('Валюта не знайдена');
+    if (!foundCurrency) throw notFound('Валюту не знайдено');
     const amount = parseFloat(amountValue) || 0;
     const price = parseFloat(priceValue) || 0;
     const summ = parseFloat(amountValue) * parseFloat(priceValue) || 0;
@@ -138,7 +138,7 @@ class PurchaseService {
     transaction
   ) {
     const foundPurchase = await Purchase.findByPk(id);
-    if (!foundPurchase) throw notFound('Покупка не знайдена');
+    if (!foundPurchase) throw notFound('Покупку не знайдено');
     const isPurchaseOwner =
       currentUser.id.toString() === foundPurchase.creatorId;
     if (!isPurchaseOwner)
@@ -148,9 +148,9 @@ class PurchaseService {
     const foundShop = await getRecordByTitle(Shop, shop);
     if (!foundShop) throw notFound('Магазин не знайдено');
     const foundMeasure = await getRecordByTitle(Measure, measure);
-    if (!foundMeasure) throw notFound('Одиниця вимірювання не знайдена');
+    if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
     const foundCurrency = await getRecordByTitle(Currency, currency);
-    if (!foundCurrency) throw notFound('Валюта не знайдена');
+    if (!foundCurrency) throw notFound('Валюту не знайдено');
     let amount = foundPurchase.amount;
     if (amountValue) {
       amount = parseFloat(amountValue) || 0;
@@ -193,7 +193,7 @@ class PurchaseService {
 
   async deletePurchase(purchaseId, currentUser, transaction) {
     const foundPurchase = await Purchase.findByPk(purchaseId);
-    if (!foundPurchase) throw notFound('Покупка не знайдена');
+    if (!foundPurchase) throw notFound('Покупку не знайдено');
     const isPurchaseOwner =
       currentUser.id.toString() === foundPurchase.creatorId;
     if (!isPurchaseOwner)

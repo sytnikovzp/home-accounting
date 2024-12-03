@@ -217,7 +217,7 @@ describe('PurchaseController', () => {
         .get('/api/purchases/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Покупка не знайдена');
+      expect(response.body.errors[0].title).toBe('Покупку не знайдено');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -346,7 +346,7 @@ describe('PurchaseController', () => {
           currency: 'USD',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Покупка не знайдена');
+      expect(response.body.errors[0].title).toBe('Покупку не знайдено');
     });
   });
 
@@ -373,7 +373,7 @@ describe('PurchaseController', () => {
         .delete('/api/purchases/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Покупка не знайдена');
+      expect(response.body.errors[0].title).toBe('Покупку не знайдено');
     });
   });
 });

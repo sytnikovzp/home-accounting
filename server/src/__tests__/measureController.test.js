@@ -158,7 +158,7 @@ describe('MeasureController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe(
-        'Одиниця вимірювання не знайдена'
+        'Одиницю вимірювання не знайдено'
       );
     });
 
@@ -221,7 +221,7 @@ describe('MeasureController', () => {
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe(
-        'Одиниця вимірювання не знайдена'
+        'Одиницю вимірювання не знайдено'
       );
     });
   });
@@ -250,7 +250,7 @@ describe('MeasureController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe(
-        'Одиниця вимірювання не знайдена'
+        'Одиницю вимірювання не знайдено'
       );
     });
   });

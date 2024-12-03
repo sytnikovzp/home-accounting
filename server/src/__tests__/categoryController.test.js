@@ -209,7 +209,7 @@ describe('CategoryController', () => {
         .get('/api/categories/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Категорія не знайдена');
+      expect(response.body.errors[0].title).toBe('Категорію не знайдено');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -313,7 +313,7 @@ describe('CategoryController', () => {
           title: 'Оновлена назва категорії',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Категорія не знайдена');
+      expect(response.body.errors[0].title).toBe('Категорію не знайдено');
     });
   });
 
@@ -340,7 +340,7 @@ describe('CategoryController', () => {
         .delete('/api/categories/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Категорія не знайдена');
+      expect(response.body.errors[0].title).toBe('Категорію не знайдено');
     });
   });
 });

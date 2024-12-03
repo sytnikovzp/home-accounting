@@ -25,7 +25,7 @@ class CurrencyService {
 
   async getCurrencyById(currencyId) {
     const foundCurrency = await Currency.findByPk(currencyId);
-    if (!foundCurrency) throw notFound('Валюта не знайдена');
+    if (!foundCurrency) throw notFound('Валюту не знайдено');
     const currencyData = foundCurrency.toJSON();
     return {
       ...currencyData,
@@ -65,7 +65,7 @@ class CurrencyService {
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на редагування цієї валюти');
     const foundCurrency = await Currency.findByPk(id);
-    if (!foundCurrency) throw notFound('Валюта не знайдена');
+    if (!foundCurrency) throw notFound('Валюту не знайдено');
     const currentTitle = foundCurrency.title;
     if (title !== currentTitle) {
       const duplicateCurrency = await Currency.findOne({ where: { title } });
@@ -98,7 +98,7 @@ class CurrencyService {
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на видалення цієї валюти');
     const foundCurrency = await Currency.findByPk(currencyId);
-    if (!foundCurrency) throw notFound('Валюта не знайдена');
+    if (!foundCurrency) throw notFound('Валюту не знайдено');
     const deletedCurrency = await Currency.destroy({
       where: { id: currencyId },
       transaction,

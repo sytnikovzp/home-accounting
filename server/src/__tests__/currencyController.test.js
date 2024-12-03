@@ -155,7 +155,7 @@ describe('CurrencyController', () => {
         .get('/api/currencies/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Валюта не знайдена');
+      expect(response.body.errors[0].title).toBe('Валюту не знайдено');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -212,7 +212,7 @@ describe('CurrencyController', () => {
           title: 'Оновлена назва валюти',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Валюта не знайдена');
+      expect(response.body.errors[0].title).toBe('Валюту не знайдено');
     });
   });
 
@@ -239,7 +239,7 @@ describe('CurrencyController', () => {
         .delete('/api/currencies/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Валюта не знайдена');
+      expect(response.body.errors[0].title).toBe('Валюту не знайдено');
     });
   });
 });

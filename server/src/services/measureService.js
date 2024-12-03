@@ -26,7 +26,7 @@ class MeasureService {
 
   async getMeasureById(measureId) {
     const foundMeasure = await Measure.findByPk(measureId);
-    if (!foundMeasure) throw notFound('Одиниця вимірювання не знайдена');
+    if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
     const measureData = foundMeasure.toJSON();
     return {
       ...measureData,
@@ -63,7 +63,7 @@ class MeasureService {
         'Ви не маєте дозволу на редагування цієї одиниці вимірювання'
       );
     const foundMeasure = await Measure.findByPk(id);
-    if (!foundMeasure) throw notFound('Одиниця вимірювання не знайдена');
+    if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
     const currentTitle = foundMeasure.title;
     if (title !== currentTitle) {
       const duplicateMeasure = await Measure.findOne({ where: { title } });
@@ -98,7 +98,7 @@ class MeasureService {
         'Ви не маєте дозволу на видалення цієї одиниці вимірювання'
       );
     const foundMeasure = await Measure.findByPk(measureId);
-    if (!foundMeasure) throw notFound('Одиниця вимірювання не знайдена');
+    if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
     const deletedMeasure = await Measure.destroy({
       where: { id: measureId },
       transaction,
