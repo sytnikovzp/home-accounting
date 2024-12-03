@@ -184,8 +184,8 @@ class ShopService {
   }
 
   async deleteShop(shopId, currentUser, transaction) {
-    const hasPermission = await checkPermission(currentUser, 'MANAGE_SHOPS');
-    if (!hasPermission)
+    const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
+    if (!canManageShops)
       throw forbidden('Ви не маєте дозволу на видалення цього магазину');
     const foundShop = await Shop.findByPk(shopId);
     if (!foundShop) throw notFound('Магазин не знайдено');

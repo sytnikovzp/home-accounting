@@ -127,11 +127,11 @@ class CategoryService {
   }
 
   async deleteCategory(categoryId, currentUser, transaction) {
-    const hasPermission = await checkPermission(
+    const canManageCategories = await checkPermission(
       currentUser,
       'MANAGE_CATEGORIES'
     );
-    if (!hasPermission)
+    if (!canManageCategories)
       throw forbidden('Ви не маєте дозволу на видалення цієї категорії');
     const foundCategory = await Category.findByPk(categoryId);
     if (!foundCategory) throw notFound('Категорію не знайдено');

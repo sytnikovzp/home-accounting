@@ -126,7 +126,7 @@ module.exports.users = async (roleIds) => [
   },
   {
     fullName: 'Олександра Іванчук',
-    email: 'oleksandra.ivanchuk@gmail.com',
+    email: 'o.ivanchuk@gmail.com',
     photo: '1730686066968-oleksandra.ivanchuk.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     roleId: roleIds['Moderator'],

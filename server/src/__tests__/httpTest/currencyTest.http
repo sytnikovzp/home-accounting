@@ -1,17 +1,27 @@
-### Get list all currencies (default pagination)
+### Get list all currencies (default pagination, without sort)
 GET http://localhost:5000/api/currencies HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzI3MTk2NTgsImV4cCI6MTczMjcyMDU1OH0.jWSiqlURF9wuvxhXyI-HhOKtt1uYHvcAH1J9lyYyaQI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
 
-### Get list all currencies (custom pagination)
+### Get list all currencies (custom pagination, without sort)
 GET http://localhost:5000/api/currencies?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkphbmUuU21pdGhAR21haWwuY29tIiwiaWF0IjoxNzMyNTg2NTg1LCJleHAiOjE3MzI1ODc0ODV9.TscBXrEBAZlo6T8PS3Y06WYaKqC8jlKK2CPUySiaLb4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+
+### Get list all currencies (custom pagination, with sort by title (asc))
+GET http://localhost:5000/api/currencies?sort=title&order=asc&page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+
+### Get list all currencies (custom pagination, with sort by id (desc))
+GET http://localhost:5000/api/currencies?sort=id&order=desc&page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
 
 ### Create currency
 POST http://localhost:5000/api/currencies HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzI1ODQ1MTAsImV4cCI6MTczMjU4NTQxMH0.RpSWoEnsZJmO4vpXfoQbtY87bRL9FpuAX1_gndyJkwc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMTk4MjE1LCJleHAiOjE3MzMyODQ2MTV9.0H3e5sIlx3RJH6rRTNrSsUCx_4STU-GR_i31Hgb7NEc
 
 {
   "title": "Нова валюта",
@@ -19,14 +29,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguS
 }
 
 ### Get currency by id
-GET http://localhost:5000/api/currencies/5 HTTP/1.1
+GET http://localhost:5000/api/currencies/59 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzI1ODQ1MTAsImV4cCI6MTczMjU4NTQxMH0.RpSWoEnsZJmO4vpXfoQbtY87bRL9FpuAX1_gndyJkwc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
 
 ### Update currency
-PATCH http://localhost:5000/api/currencies/5 HTTP/1.1
+PATCH http://localhost:5000/api/currencies/59 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzI1ODQ1MTAsImV4cCI6MTczMjU4NTQxMH0.RpSWoEnsZJmO4vpXfoQbtY87bRL9FpuAX1_gndyJkwc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMTk4MjE1LCJleHAiOjE3MzMyODQ2MTV9.0H3e5sIlx3RJH6rRTNrSsUCx_4STU-GR_i31Hgb7NEc
 
 {
   "title": "Оновлена назва валюти",
@@ -36,4 +46,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguS
 ### Delete currency
 DELETE http://localhost:5000/api/currencies/5 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFsZXguSm9obnNvbkBHbWFpbC5jb20iLCJpYXQiOjE3MzEyNDc4OTYsImV4cCI6MTczMTI1MTQ5Nn0.g7POeqqDkPCjEMPhfWaHgaEjt07oQ8cUBAEPBDvuxAk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMTk4MjE1LCJleHAiOjE3MzMyODQ2MTV9.0H3e5sIlx3RJH6rRTNrSsUCx_4STU-GR_i31Hgb7NEc

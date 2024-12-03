@@ -31,7 +31,7 @@ describe('PurchaseController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'oleksandra.ivanchuk@gmail.com',
+        email: 'o.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);

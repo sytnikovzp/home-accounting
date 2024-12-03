@@ -2,23 +2,33 @@ const { Currency } = require('../db/dbPostgres/models');
 const { formatDate, checkPermission } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
+const formatCurrencyData = (currency) => ({
+  id: currency.id,
+  title: currency.title,
+  description: currency.description || '',
+  creation: {
+    createdAt: formatDate(currency.createdAt),
+    updatedAt: formatDate(currency.updatedAt),
+  },
+});
+
 class CurrencyService {
-  async getAllCurrencies(limit, offset) {
+  async getAllCurrencies(limit, offset, sort = 'id', order = 'asc') {
     const foundCurrencies = await Currency.findAll({
       attributes: ['id', 'title', 'description'],
+      order: [[sort, order]],
       raw: true,
       limit,
       offset,
     });
-    if (foundCurrencies.length === 0) throw notFound('Валюти не знайдено');
-    const allCurrencies = foundCurrencies.map((currency) => ({
-      id: currency.id,
-      title: currency.title,
-      description: currency.description || '',
-    }));
+    if (!foundCurrencies.length) throw notFound('Валюти не знайдено');
     const total = await Currency.count();
     return {
-      allCurrencies,
+      allCurrencies: foundCurrencies.map(({ id, title, description }) => ({
+        id,
+        title,
+        description: description || '',
+      })),
       total,
     };
   }
@@ -26,76 +36,62 @@ class CurrencyService {
   async getCurrencyById(currencyId) {
     const foundCurrency = await Currency.findByPk(currencyId);
     if (!foundCurrency) throw notFound('Валюту не знайдено');
-    const currencyData = foundCurrency.toJSON();
-    return {
-      ...currencyData,
-      description: currencyData.description || '',
-      createdAt: formatDate(currencyData.createdAt),
-      updatedAt: formatDate(currencyData.updatedAt),
-    };
+    return formatCurrencyData(foundCurrency.toJSON());
   }
 
-  async createCurrency(title, descriptionValue, currentUser, transaction) {
-    const hasPermission = await checkPermission(
+  async createCurrency(title, description, currentUser, transaction) {
+    const canManageCurrencies = await checkPermission(
       currentUser,
       'MANAGE_CURRENCIES'
     );
-    if (!hasPermission)
+    if (!canManageCurrencies)
       throw forbidden('Ви не маєте дозволу на створення валют');
-    const duplicateCurrency = await Currency.findOne({ where: { title } });
-    if (duplicateCurrency) throw badRequest('Ця валюта вже існує');
-    const description = descriptionValue === '' ? null : descriptionValue;
+    if (await Currency.findOne({ where: { title } }))
+      throw badRequest('Ця валюта вже існує');
     const newCurrency = await Currency.create(
-      { title, description },
+      {
+        title,
+        description: description || null,
+        creatorId: currentUser.id.toString(),
+        creatorFullName: currentUser.fullName,
+      },
       { transaction, returning: true }
     );
     if (!newCurrency) throw badRequest('Дані цієї валюти не створено');
-    return {
-      id: newCurrency.id,
-      title: newCurrency.title,
-      description: newCurrency.description || '',
-    };
+    return formatCurrencyData(newCurrency);
   }
 
-  async updateCurrency(id, title, descriptionValue, currentUser, transaction) {
-    const hasPermission = await checkPermission(
+  async updateCurrency(id, title, description, currentUser, transaction) {
+    const foundCurrency = await Currency.findByPk(id);
+    if (!foundCurrency) throw notFound('Валюту не знайдено');
+    const canManageCurrencies = await checkPermission(
       currentUser,
       'MANAGE_CURRENCIES'
     );
-    if (!hasPermission)
+    if (!canManageCurrencies)
       throw forbidden('Ви не маєте дозволу на редагування цієї валюти');
-    const foundCurrency = await Currency.findByPk(id);
-    if (!foundCurrency) throw notFound('Валюту не знайдено');
-    const currentTitle = foundCurrency.title;
-    if (title !== currentTitle) {
+    if (title !== foundCurrency.title) {
       const duplicateCurrency = await Currency.findOne({ where: { title } });
       if (duplicateCurrency) throw badRequest('Ця валюта вже існує');
-    } else {
-      title = currentTitle;
     }
-    const updateData = { title };
-    if (descriptionValue !== undefined) {
-      const description = descriptionValue === '' ? null : descriptionValue;
-      updateData.description = description;
-    }
+    const updateData = {
+      title,
+      description: description || null,
+    };
     const [affectedRows, [updatedCurrency]] = await Currency.update(
       updateData,
       { where: { id }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Дані цієї валюти не оновлено');
-    return {
-      id: updatedCurrency.id,
-      title: updatedCurrency.title,
-      description: updatedCurrency.description || '',
-    };
+    return formatCurrencyData(updatedCurrency);
   }
 
   async deleteCurrency(currencyId, currentUser, transaction) {
-    const hasPermission = await checkPermission(
+    const canManageCurrencies = await checkPermission(
       currentUser,
       'MANAGE_CURRENCIES'
     );
-    if (!hasPermission)
+    if (!canManageCurrencies)
       throw forbidden('Ви не маєте дозволу на видалення цієї валюти');
     const foundCurrency = await Currency.findByPk(currencyId);
     if (!foundCurrency) throw notFound('Валюту не знайдено');

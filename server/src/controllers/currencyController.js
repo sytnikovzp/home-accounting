@@ -12,7 +12,13 @@ class CurrencyController {
   async getAllCurrencies(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { allCurrencies, total } = await getAllCurrencies(limit, offset);
+      const { sort = 'id', order = 'asc' } = req.query;
+      const { allCurrencies, total } = await getAllCurrencies(
+        limit,
+        offset,
+        sort,
+        order
+      );
       if (allCurrencies.length > 0) {
         res.status(200).set('X-Total-Count', total).json(allCurrencies);
       } else {

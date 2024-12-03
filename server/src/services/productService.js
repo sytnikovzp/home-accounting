@@ -152,8 +152,11 @@ class ProductService {
   }
 
   async deleteProduct(productId, currentUser, transaction) {
-    const hasPermission = await checkPermission(currentUser, 'MANAGE_PRODUCTS');
-    if (!hasPermission)
+    const canManageProducts = await checkPermission(
+      currentUser,
+      'MANAGE_PRODUCTS'
+    );
+    if (!canManageProducts)
       throw forbidden('Ви не маєте дозволу на видалення цього товару');
     const foundProduct = await Product.findByPk(productId);
     if (!foundProduct) throw notFound('Товар не знайдено');

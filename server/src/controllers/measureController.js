@@ -12,7 +12,13 @@ class MeasureController {
   async getAllMeasures(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { allMeasures, total } = await getAllMeasures(limit, offset);
+      const { sort = 'id', order = 'asc' } = req.query;
+      const { allMeasures, total } = await getAllMeasures(
+        limit,
+        offset,
+        sort,
+        order
+      );
       if (allMeasures.length > 0) {
         res.status(200).set('X-Total-Count', total).json(allMeasures);
       } else {

@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       description: DataTypes.TEXT,
+      creatorId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      creatorFullName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,

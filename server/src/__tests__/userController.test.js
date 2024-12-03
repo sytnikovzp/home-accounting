@@ -31,7 +31,7 @@ describe('UserController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'oleksandra.ivanchuk@gmail.com',
+        email: 'o.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
@@ -191,7 +191,7 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.user.id}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          email: 'oleksandra.ivanchuk@gmail.com',
+          email: 'o.ivanchuk@gmail.com',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe(

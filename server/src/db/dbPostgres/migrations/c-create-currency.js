@@ -16,6 +16,14 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
+      creator_id: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      creator_full_name: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,

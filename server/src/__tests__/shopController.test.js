@@ -32,7 +32,7 @@ describe('ShopController', () => {
 
     it('should login an existing moderator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'oleksandra.ivanchuk@gmail.com',
+        email: 'o.ivanchuk@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
@@ -148,7 +148,7 @@ describe('ShopController', () => {
       expect(response.body.url).toBe('https://www.moderator.com');
       expect(response.body.status).toBe('approved');
       expect(response.body.moderatorId).toBeDefined();
-      
+
       expect(response.body.creatorId).toBeDefined();
     });
 
@@ -168,7 +168,7 @@ describe('ShopController', () => {
       expect(response.body.url).toBe('https://www.user.com');
       expect(response.body.status).toBe('pending');
       expect(response.body.moderatorId).toBe('');
-      
+
       expect(response.body.creatorId).toBeDefined();
       shopId = response.body.id;
     });
@@ -211,7 +211,7 @@ describe('ShopController', () => {
       expect(response.body).toHaveProperty('logo');
       expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.moderatorId).toBe('');
-      
+
       expect(response.body.creatorId).toBeDefined();
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
@@ -256,7 +256,7 @@ describe('ShopController', () => {
       expect(response.body.title).toBe('Новий користувацький магазин');
       expect(response.body.status).toBe('approved');
       expect(response.body.moderatorId).toBeDefined();
-      
+
       expect(response.body.creatorId).toBeDefined();
     });
   });
@@ -278,7 +278,7 @@ describe('ShopController', () => {
       expect(response.body.url).toBe('https://www.updated.com');
       expect(response.body.status).toBe('pending');
       expect(response.body.moderatorId).toBe('');
-      
+
       expect(response.body.creatorId).toBeDefined();
     });
 
@@ -298,7 +298,7 @@ describe('ShopController', () => {
       expect(response.body.url).toBe('https://www.updated.com');
       expect(response.body.status).toBe('approved');
       expect(response.body.moderatorId).toBeDefined();
-      
+
       expect(response.body.creatorId).toBeDefined();
     });
 
@@ -350,7 +350,7 @@ describe('ShopController', () => {
       expect(response.body.logo).toBeDefined();
       expect(response.body.status).toBe('pending');
       expect(response.body.moderatorId).toBe('');
-      
+
       expect(response.body.creatorId).toBeDefined();
     });
   });
@@ -370,7 +370,7 @@ describe('ShopController', () => {
       expect(response.body.logo).toBe('');
       expect(response.body.status).toBe('pending');
       expect(response.body.moderatorId).toBe('');
-      
+
       expect(response.body.creatorId).toBeDefined();
     });
   });
