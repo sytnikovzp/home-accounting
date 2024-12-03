@@ -1,27 +1,41 @@
 const { Category } = require('../db/dbPostgres/models');
-const { formatDate, checkPermission } = require('../utils/sharedFunctions');
+const {
+  formatDate,
+  checkPermission,
+  mapStatus,
+} = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
+const formatCategoryData = (category) => ({
+  id: category.id,
+  title: category.title,
+  status: mapStatus(category.status),
+  moderation: {
+    moderatorId: category.moderatorId || '',
+    moderatorFullName: category.moderatorFullName || '',
+  },
+  creation: {
+    creatorId: category.creatorId || '',
+    creatorFullName: category.creatorFullName || '',
+    createdAt: formatDate(category.createdAt),
+    updatedAt: formatDate(category.updatedAt),
+  },
+});
+
 class CategoryService {
-  async getAllCategories(status, limit, offset, sort, order) {
+  async getAllCategories(status, limit, offset, sort = 'id', order = 'asc') {
     const foundCategories = await Category.findAll({
       attributes: ['id', 'title'],
       where: { status },
-      order: [[sort || 'id', order || 'asc']],
+      order: [[sort, order]],
       raw: true,
       limit,
       offset,
     });
-    if (foundCategories.length === 0) throw notFound('Категорії не знайдено');
-    const allCategories = foundCategories.map((category) => ({
-      id: category.id,
-      title: category.title,
-    }));
-    const total = await Category.count({
-      where: { status },
-    });
+    if (!foundCategories.length) throw notFound('Категорії не знайдено');
+    const total = await Category.count({ where: { status } });
     return {
-      allCategories,
+      allCategories: foundCategories.map(({ id, title }) => ({ id, title })),
       total,
     };
   }
@@ -29,27 +43,7 @@ class CategoryService {
   async getCategoryById(categoryId) {
     const foundCategory = await Category.findByPk(categoryId);
     if (!foundCategory) throw notFound('Категорія не знайдена');
-    const categoryData = foundCategory.toJSON();
-    const statusMapping = {
-      approved: 'Затверджено',
-      pending: 'Очікує модерації',
-      rejected: 'Відхилено',
-    };
-    return {
-      id: categoryData.id,
-      title: categoryData.title,
-      status: statusMapping[categoryData.status] || categoryData.status,
-      moderation: {
-        moderatorId: categoryData.moderatorId || '',
-        moderatorFullName: categoryData.moderatorFullName || '',
-      },
-      creation: {
-        creatorId: categoryData.creatorId || '',
-        creatorFullName: categoryData.creatorFullName || '',
-        createdAt: formatDate(categoryData.createdAt),
-        updatedAt: formatDate(categoryData.updatedAt),
-      },
-    };
+    return formatCategoryData(foundCategory.toJSON());
   }
 
   async updateCategoryStatus(id, status, currentUser, transaction) {
@@ -65,38 +59,17 @@ class CategoryService {
     if (!['approved', 'rejected'].includes(status)) {
       throw notFound('Статус не знайдено');
     }
-    const currentUserId = currentUser.id.toString();
-    const currentUserFullName = currentUser.fullName;
-    const updateData = { status };
-    updateData.moderatorId = currentUserId;
-    updateData.moderatorFullName = currentUserFullName;
+    const updateData = {
+      status,
+      moderatorId: currentUser.id.toString(),
+      moderatorFullName: currentUser.fullName,
+    };
     const [affectedRows, [moderatedCategory]] = await Category.update(
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0)
-      throw badRequest('Категорія не проходить модерацію');
-    const statusMapping = {
-      approved: 'Затверджено',
-      pending: 'Очікує модерації',
-      rejected: 'Відхилено',
-    };
-    return {
-      id: moderatedCategory.id,
-      title: moderatedCategory.title,
-      status:
-        statusMapping[moderatedCategory.status] || moderatedCategory.status,
-      moderation: {
-        moderatorId: moderatedCategory.moderatorId || '',
-        moderatorFullName: moderatedCategory.moderatorFullName || '',
-      },
-      creation: {
-        creatorId: moderatedCategory.creatorId || '',
-        creatorFullName: moderatedCategory.creatorFullName || '',
-        createdAt: formatDate(moderatedCategory.createdAt),
-        updatedAt: formatDate(moderatedCategory.updatedAt),
-      },
-    };
+    if (!affectedRows) throw badRequest('Категорія не проходить модерацію');
+    return formatCategoryData(moderatedCategory);
   }
 
   async createCategory(title, currentUser, transaction) {
@@ -113,99 +86,49 @@ class CategoryService {
     }
     const duplicateCategory = await Category.findOne({ where: { title } });
     if (duplicateCategory) throw badRequest('Ця категорія вже існує');
-    const currentUserId = currentUser.id.toString();
-    const currentUserFullName = currentUser.fullName;
-    const status = canManageCategories ? 'approved' : 'pending';
-    const moderatorId = canManageCategories ? currentUserId : null;
-    const moderatorFullName = canManageCategories ? currentUserFullName : null;
-    const creatorId = currentUserId;
-    const creatorFullName = currentUserFullName;
     const newCategory = await Category.create(
       {
         title,
-        status,
-        moderatorId,
-        moderatorFullName,
-        creatorId,
-        creatorFullName,
+        status: canManageCategories ? 'approved' : 'pending',
+        moderatorId: canManageCategories ? currentUser.id.toString() : null,
+        moderatorFullName: canManageCategories ? currentUser.fullName : null,
+        creatorId: currentUser.id.toString(),
+        creatorFullName: currentUser.fullName,
       },
       { transaction, returning: true }
     );
     if (!newCategory) throw badRequest('Дані цієї категорії не створено');
-    const statusMapping = {
-      approved: 'Затверджено',
-      pending: 'Очікує модерації',
-      rejected: 'Відхилено',
-    };
-    return {
-      id: newCategory.id,
-      title: newCategory.title,
-      status: statusMapping[newCategory.status] || newCategory.status,
-      moderation: {
-        moderatorId: newCategory.moderatorId || '',
-        moderatorFullName: newCategory.moderatorFullName || '',
-      },
-      creation: {
-        creatorId: newCategory.creatorId || '',
-        creatorFullName: newCategory.creatorFullName || '',
-        createdAt: formatDate(newCategory.createdAt),
-        updatedAt: formatDate(newCategory.updatedAt),
-      },
-    };
+    return formatCategoryData(newCategory);
   }
 
   async updateCategory(id, title, currentUser, transaction) {
     const foundCategory = await Category.findByPk(id);
     if (!foundCategory) throw notFound('Категорія не знайдена');
-    const isCategoryOwner =
-      currentUser.id.toString() === foundCategory.creatorId;
+    const isOwner = currentUser.id.toString() === foundCategory.creatorId;
     const canManageCategories = await checkPermission(
       currentUser,
       'MANAGE_CATEGORIES'
     );
-    if (!isCategoryOwner && !canManageCategories) {
+    if (!isOwner && !canManageCategories) {
       throw forbidden('Ви не маєте дозволу на редагування цієї категорії');
     }
-    const currentTitle = foundCategory.title;
-    if (title !== currentTitle) {
+    if (title !== foundCategory.title) {
       const duplicateCategory = await Category.findOne({ where: { title } });
       if (duplicateCategory) throw badRequest('Ця категорія вже існує');
-    } else {
-      title = currentTitle;
     }
-    const updateData = { title };
-    const currentUserId = currentUser.id.toString();
-    const currentUserFullName = currentUser.fullName;
-    updateData.status = canManageCategories ? 'approved' : 'pending';
-    updateData.moderatorId = canManageCategories ? currentUserId : null;
-    updateData.moderatorFullName = canManageCategories
-      ? currentUserFullName
-      : null;
+
+    const updateData = {
+      title,
+      status: canManageCategories ? 'approved' : 'pending',
+      moderatorId: canManageCategories ? currentUser.id.toString() : null,
+      moderatorFullName: canManageCategories ? currentUser.fullName : null,
+    };
     const [affectedRows, [updatedCategory]] = await Category.update(
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0) throw badRequest('Дані цієї категорії не оновлено');
-    const statusMapping = {
-      approved: 'Затверджено',
-      pending: 'Очікує модерації',
-      rejected: 'Відхилено',
-    };
-    return {
-      id: updatedCategory.id,
-      title: updatedCategory.title,
-      status: statusMapping[updatedCategory.status] || updatedCategory.status,
-      moderation: {
-        moderatorId: updatedCategory.moderatorId || '',
-        moderatorFullName: updatedCategory.moderatorFullName || '',
-      },
-      creation: {
-        creatorId: updatedCategory.creatorId || '',
-        creatorFullName: updatedCategory.creatorFullName || '',
-        createdAt: formatDate(updatedCategory.createdAt),
-        updatedAt: formatDate(updatedCategory.updatedAt),
-      },
-    };
+    if (!affectedRows) throw badRequest('Дані цієї категорії не оновлено');
+    return formatCategoryData(updatedCategory);
   }
 
   async deleteCategory(categoryId, currentUser, transaction) {

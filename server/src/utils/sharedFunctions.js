@@ -72,6 +72,16 @@ const getUserDetailsByEmail = async function (email) {
   };
 };
 
+const statusMapping = {
+  approved: 'Затверджено',
+  pending: 'Очікує модерації',
+  rejected: 'Відхилено',
+};
+
+const mapStatus = function (status) {
+  return statusMapping[status] || status;
+};
+
 module.exports = {
   hashPassword,
   setRefreshTokenCookie,
@@ -81,4 +91,5 @@ module.exports = {
   checkPermission,
   getRecordByTitle,
   getUserDetailsByEmail,
+  mapStatus,
 };
