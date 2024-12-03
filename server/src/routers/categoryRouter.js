@@ -3,9 +3,9 @@ const { Router } = require('express');
 const {
   getAllCategories,
   getCategoryById,
-  reviewCategory,
   createCategory,
   updateCategory,
+  moderateCategory,
   deleteCategory,
 } = require('../controllers/categoryController');
 const {
@@ -23,7 +23,7 @@ categoryRouter
 
 categoryRouter
   .route('/moderate/:categoryId')
-  .patch(authHandler, validateModeration, reviewCategory);
+  .patch(authHandler, validateModeration, moderateCategory);
 
 categoryRouter
   .route('/:categoryId')

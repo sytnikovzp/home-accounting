@@ -47,32 +47,6 @@ class ProductController {
     }
   }
 
-  async reviewProduct(req, res, next) {
-    const transaction = await sequelize.transaction();
-    try {
-      const { productId } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
-      const updatedProduct = await updateProductStatus(
-        productId,
-        status,
-        currentUser,
-        transaction
-      );
-      if (updatedProduct) {
-        await transaction.commit();
-        res.status(200).json(updatedProduct);
-      } else {
-        await transaction.rollback();
-        res.status(401);
-      }
-    } catch (error) {
-      await transaction.rollback();
-      console.log('Moderate product error: ', error.message);
-      next(error);
-    }
-  }
-
   async createProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
@@ -121,6 +95,32 @@ class ProductController {
     } catch (error) {
       await transaction.rollback();
       console.error('Update product error: ', error.message);
+      next(error);
+    }
+  }
+
+  async moderateProduct(req, res, next) {
+    const transaction = await sequelize.transaction();
+    try {
+      const { productId } = req.params;
+      const { status } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedProduct = await updateProductStatus(
+        productId,
+        status,
+        currentUser,
+        transaction
+      );
+      if (updatedProduct) {
+        await transaction.commit();
+        res.status(200).json(updatedProduct);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
+    } catch (error) {
+      await transaction.rollback();
+      console.log('Moderate product error: ', error.message);
       next(error);
     }
   }

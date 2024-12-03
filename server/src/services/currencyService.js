@@ -82,7 +82,7 @@ class CurrencyService {
       updateData,
       { where: { id }, returning: true, transaction }
     );
-    if (affectedRows === 0) throw badRequest('Дані цієї валюти не оновлено');
+    if (!affectedRows) throw badRequest('Дані цієї валюти не оновлено');
     return {
       id: updatedCurrency.id,
       title: updatedCurrency.title,

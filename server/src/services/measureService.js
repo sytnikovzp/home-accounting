@@ -82,7 +82,7 @@ class MeasureService {
       returning: true,
       transaction,
     });
-    if (affectedRows === 0)
+    if (!affectedRows)
       throw badRequest('Дані цієї одиниці вимірювання не оновлено');
     return {
       id: updatedMeasure.id,

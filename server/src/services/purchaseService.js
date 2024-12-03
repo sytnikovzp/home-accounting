@@ -177,7 +177,7 @@ class PurchaseService {
         transaction,
       }
     );
-    if (affectedRows === 0) throw badRequest('Дані цієї покупки не оновлено');
+    if (!affectedRows) throw badRequest('Дані цієї покупки не оновлено');
     return {
       id: updatedPurchase.id,
       product: foundProduct.title,

@@ -47,32 +47,6 @@ class CategoryController {
     }
   }
 
-  async reviewCategory(req, res, next) {
-    const transaction = await sequelize.transaction();
-    try {
-      const { categoryId } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
-      const updatedCategory = await updateCategoryStatus(
-        categoryId,
-        status,
-        currentUser,
-        transaction
-      );
-      if (updatedCategory) {
-        await transaction.commit();
-        res.status(200).json(updatedCategory);
-      } else {
-        await transaction.rollback();
-        res.status(401);
-      }
-    } catch (error) {
-      await transaction.rollback();
-      console.log('Moderate category error: ', error.message);
-      next(error);
-    }
-  }
-
   async createCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
@@ -115,6 +89,32 @@ class CategoryController {
     } catch (error) {
       await transaction.rollback();
       console.log('Update category error: ', error.message);
+      next(error);
+    }
+  }
+
+  async moderateCategory(req, res, next) {
+    const transaction = await sequelize.transaction();
+    try {
+      const { categoryId } = req.params;
+      const { status } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedCategory = await updateCategoryStatus(
+        categoryId,
+        status,
+        currentUser,
+        transaction
+      );
+      if (updatedCategory) {
+        await transaction.commit();
+        res.status(200).json(updatedCategory);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
+    } catch (error) {
+      await transaction.rollback();
+      console.log('Moderate category error: ', error.message);
       next(error);
     }
   }

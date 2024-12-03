@@ -3,9 +3,9 @@ const { Router } = require('express');
 const {
   getAllProducts,
   getProductById,
-  reviewProduct,
   createProduct,
   updateProduct,
+  moderateProduct,
   deleteProduct,
 } = require('../controllers/productController');
 const {
@@ -23,7 +23,7 @@ productRouter
 
 productRouter
   .route('/moderate/:productId')
-  .patch(authHandler, validateModeration, reviewProduct);
+  .patch(authHandler, validateModeration, moderateProduct);
 
 productRouter
   .route('/:productId')

@@ -3,11 +3,11 @@ const { Router } = require('express');
 const {
   getAllShops,
   getShopById,
-  reviewShop,
   createShop,
   updateShop,
   updateShopLogo,
   removeShopLogo,
+  moderateShop,
   deleteShop,
 } = require('../controllers/shopController');
 const {
@@ -34,7 +34,7 @@ shopRouter
 
 shopRouter
   .route('/moderate/:shopId')
-  .patch(authHandler, validateModeration, reviewShop);
+  .patch(authHandler, validateModeration, moderateShop);
 
 shopRouter
   .route('/:shopId')

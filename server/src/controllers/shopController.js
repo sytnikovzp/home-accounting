@@ -15,8 +15,14 @@ class ShopController {
   async getAllShops(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { status = 'approved' } = req.query;
-      const { allShops, total } = await getAllShops(status, limit, offset);
+      const { status = 'approved', sort = 'id', order = 'asc' } = req.query;
+      const { allShops, total } = await getAllShops(
+        status,
+        limit,
+        offset,
+        sort,
+        order
+      );
       if (allShops.length > 0) {
         res.status(200).set('X-Total-Count', total).json(allShops);
       } else {
@@ -39,32 +45,6 @@ class ShopController {
       }
     } catch (error) {
       console.error('Get shop by id error: ', error.message);
-      next(error);
-    }
-  }
-
-  async reviewShop(req, res, next) {
-    const transaction = await sequelize.transaction();
-    try {
-      const { shopId } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
-      const updatedShop = await updateShopStatus(
-        shopId,
-        status,
-        currentUser,
-        transaction
-      );
-      if (updatedShop) {
-        await transaction.commit();
-        res.status(200).json(updatedShop);
-      } else {
-        await transaction.rollback();
-        res.status(401);
-      }
-    } catch (error) {
-      await transaction.rollback();
-      console.log('Moderate shop error: ', error.message);
       next(error);
     }
   }
@@ -171,6 +151,32 @@ class ShopController {
     } catch (error) {
       await transaction.rollback();
       console.error('Remove logo shop error: ', error.message);
+      next(error);
+    }
+  }
+
+  async moderateShop(req, res, next) {
+    const transaction = await sequelize.transaction();
+    try {
+      const { shopId } = req.params;
+      const { status } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedShop = await updateShopStatus(
+        shopId,
+        status,
+        currentUser,
+        transaction
+      );
+      if (updatedShop) {
+        await transaction.commit();
+        res.status(200).json(updatedShop);
+      } else {
+        await transaction.rollback();
+        res.status(401);
+      }
+    } catch (error) {
+      await transaction.rollback();
+      console.log('Moderate shop error: ', error.message);
       next(error);
     }
   }
