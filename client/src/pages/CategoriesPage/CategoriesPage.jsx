@@ -82,6 +82,7 @@ function CategoriesPage() {
         <Button
           variant='contained'
           color='success'
+          size='small'
           onClick={() => openModal('add')}
         >
           Додати категорію
@@ -89,7 +90,7 @@ function CategoriesPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'id', headerName: 'ID', align: 'left' },
+          { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва категорії', align: 'left' },
         ]}
         rows={categories}

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
@@ -14,16 +15,19 @@ import {
   Select,
   InputLabel,
   FormControl,
-  useMediaQuery,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 // ==============================================================
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 // ==============================================================
 import {
-  stylesHeadTableCell,
-  stylesTableCell,
+  cellStyle,
+  headCellStyle,
+  stylesActionsBodyTableCell,
+  stylesActionsHeadTableCell,
+  stylesFormControl,
   stylesTableContainer,
   stylesTableRow,
   stylesTableTypography,
@@ -56,21 +60,53 @@ const ListTable = ({
         : { field, order: 'asc' };
     onSortModelChange(newSortModel);
   };
+  const handleStatusChange = (event) => {
+    onStatusChange(event);
+    onPageChange(1);
+  };
   const isMobile = useMediaQuery('(max-width:600px)');
+  const memoizedColumns = useMemo(() => columns, [columns]);
+  const memoizedRows = useMemo(() => rows, [rows]);
+
+  const renderTableCell = (col, row, index) => (
+    <TableCell key={col.field} align={col.align || 'center'} sx={cellStyle}>
+      {index === 1 ? (
+        <RouterLink
+          to={`/${linkEntity}/${row.id}`}
+          style={{ textDecoration: 'none' }}
+        >
+          <Typography
+            variant='body1'
+            component='span'
+            sx={stylesTableTypography}
+          >
+            {row[col.field]}
+          </Typography>
+        </RouterLink>
+      ) : (
+        <Typography variant='body1' sx={{ color: 'common.black' }}>
+          {row[col.field]}
+        </Typography>
+      )}
+    </TableCell>
+  );
 
   return (
     <TableContainer sx={stylesTableContainer}>
-      <Table sx={{ width: '100%' }}>
+      <Table sx={{ width: '100%', borderCollapse: 'collapse' }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: 'success.main' }}>
-            {columns.map((col) => (
+            {memoizedColumns.map((col, index) => (
               <TableCell
                 key={col.field}
                 align={col.align || 'center'}
                 sx={{
-                  textAlign: col.align || 'center',
-                  cursor: 'pointer',
-                  ...stylesHeadTableCell,
+                  ...headCellStyle,
+                  borderRight:
+                    index < memoizedColumns.length - 1
+                      ? '1px solid darkgreen'
+                      : 'none',
+                  width: col.field === 'id' ? '60px' : 'auto',
                 }}
                 onClick={() => handleSort(col.field)}
               >
@@ -80,43 +116,20 @@ const ListTable = ({
               </TableCell>
             ))}
             {!isMobile && (
-              <TableCell align='right' sx={stylesHeadTableCell}>
+              <TableCell align='right' sx={stylesActionsHeadTableCell}>
                 Редаг./Видал.
               </TableCell>
             )}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {memoizedRows.map((row) => (
             <TableRow key={row.id} sx={stylesTableRow}>
-              {columns.map((col, index) => (
-                <TableCell
-                  key={col.field}
-                  align={col.align || 'center'}
-                  sx={stylesTableCell}
-                >
-                  {index === 1 ? (
-                    <RouterLink
-                      to={`/${linkEntity}/${row.id}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <Typography
-                        variant='body1'
-                        component='span'
-                        sx={stylesTableTypography}
-                      >
-                        {row[col.field]}
-                      </Typography>
-                    </RouterLink>
-                  ) : (
-                    <Typography variant='body1' sx={{ color: 'common.black' }}>
-                      {row[col.field]}
-                    </Typography>
-                  )}
-                </TableCell>
-              ))}
+              {memoizedColumns.map((col, index) =>
+                renderTableCell(col, row, index)
+              )}
               {!isMobile && (
-                <TableCell align='right' sx={stylesTableCell}>
+                <TableCell align='center' sx={stylesActionsBodyTableCell}>
                   <Tooltip title='Редагувати'>
                     <IconButton onClick={() => onEdit(row)}>
                       <EditIcon />
@@ -141,14 +154,14 @@ const ListTable = ({
         m={2}
       >
         {showStatusDropdown && (
-          <FormControl sx={{ flexGrow: 1, minWidth: 120, maxWidth: '365px' }}>
+          <FormControl sx={stylesFormControl}>
             <InputLabel id='status-select-label'>Статус</InputLabel>
             <Select
               labelId='status-select-label'
               value={selectedStatus}
               label='Статус'
               size='small'
-              onChange={onStatusChange}
+              onChange={handleStatusChange}
             >
               <MenuItem value='pending'>Очікує модерації</MenuItem>
               <MenuItem value='approved'>Затверджено</MenuItem>
@@ -161,11 +174,19 @@ const ListTable = ({
           count={totalCount}
           page={currentPage - 1}
           rowsPerPage={pageSize}
-          rowsPerPageOptions={rowsPerPageOptions}
+          rowsPerPageOptions={isMobile ? [] : rowsPerPageOptions}
           onPageChange={(event, page) => onPageChange(page + 1)}
           onRowsPerPageChange={(event) =>
             onRowsPerPageChange(parseInt(event.target.value))
           }
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}-${to} из ${count}`
+          }
+          sx={{
+            '& .MuiTablePagination-toolbar': {
+              flexWrap: isMobile ? 'wrap' : 'nowrap',
+            },
+          }}
         />
       </Box>
     </TableContainer>

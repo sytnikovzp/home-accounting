@@ -14,6 +14,7 @@ import {
   MenuItem,
   ListItemIcon,
   Button,
+  Divider,
 } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
 // ==============================================================
@@ -177,6 +178,7 @@ function Header({
           </Box>
         </Toolbar>
       </Container>
+      <Divider sx={{ borderWidth: '1px' }} />
       {openState.navBar && <NavBar onClose={handleToggleNavBar} />}
     </AppBar>
   );

@@ -170,6 +170,18 @@ export const stylesPreloaderTitle = {
 // ==============================================================
 // ListTable component
 
+export const headCellStyle = {
+  fontWeight: 'bold',
+  color: 'common.white',
+  borderBottom: '1px solid #ccc',
+  cursor: 'pointer',
+};
+export const cellStyle = {
+  borderRight: '1px solid #ccc',
+  padding: '8px 16px',
+  borderBottom: '1px solid #ccc',
+};
+
 export const stylesTableContainer = {
   width: '100%',
   overflowX: 'auto',
@@ -179,20 +191,23 @@ export const stylesTableContainer = {
   mb: 2,
 };
 
-export const stylesHeadTableCell = {
+export const stylesActionsHeadTableCell = {
   fontWeight: 'bold',
   color: 'common.white',
+  borderLeft: '1px solid darkgreen',
   borderBottom: '1px solid #ccc',
 };
 
-export const stylesTableRow = {
-  '&:nth-of-type(odd)': { backgroundColor: 'action.hover' },
-  '&:hover': { backgroundColor: 'action.selected' },
+export const stylesActionsBodyTableCell = {
+  padding: '8px 16px',
+  borderBottom: '1px solid #ccc',
+  borderLeft: '1px solid #ccc',
+  width: '140px',
 };
 
-export const stylesTableCell = {
-  padding: '8px 16px',
-  borderBottom: '1px solid #ddd',
+export const stylesTableRow = {
+  '&:nth-of-type(2n)': { backgroundColor: 'action.hover' },
+  '&:hover': { backgroundColor: 'action.selected' },
 };
 
 export const stylesTableTypography = {
@@ -205,6 +220,12 @@ export const stylesTableTypography = {
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     transform: 'translateY(-2px)',
   },
+};
+
+export const stylesFormControl = {
+  flexGrow: 1,
+  minWidth: 120,
+  maxWidth: '365px',
 };
 
 // ==============================================================
