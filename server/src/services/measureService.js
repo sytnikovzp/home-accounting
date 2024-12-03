@@ -1,5 +1,5 @@
 const { Measure } = require('../db/dbPostgres/models');
-const { formatDate, checkPermission } = require('../utils/sharedFunctions');
+const { formatDateTime, checkPermission } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 const formatMeasureData = (measure) => ({
@@ -7,8 +7,8 @@ const formatMeasureData = (measure) => ({
   title: measure.title,
   description: measure.description || '',
   creation: {
-    createdAt: formatDate(measure.createdAt),
-    updatedAt: formatDate(measure.updatedAt),
+    createdAt: formatDateTime(measure.createdAt),
+    updatedAt: formatDateTime(measure.updatedAt),
   },
 });
 
@@ -79,15 +79,10 @@ class MeasureService {
       if (duplicateMeasure)
         throw badRequest('Ця одиниця вимірювання вже існує');
     }
-    const updateData = {
-      title,
-      description: description || null,
-    };
-    const [affectedRows, [updatedMeasure]] = await Measure.update(updateData, {
-      where: { id },
-      returning: true,
-      transaction,
-    });
+    const [affectedRows, [updatedMeasure]] = await Measure.update(
+      { title, description: description || null },
+      { where: { id }, returning: true, transaction }
+    );
     if (!affectedRows)
       throw badRequest('Дані цієї одиниці вимірювання не оновлено');
     return formatMeasureData(updatedMeasure);

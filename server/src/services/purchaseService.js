@@ -7,39 +7,99 @@ const {
 } = require('../db/dbPostgres/models');
 const {
   formatDate,
-  getRecordByTitle,
   checkPermission,
+  getRecordByTitle,
 } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
+const formatPurchaseData = (purchase) => ({
+  id: purchase.id,
+  product: purchase.Product?.title || '',
+  amount: purchase.amount,
+  price: purchase.price,
+  summ: purchase.summ,
+  shop: purchase.Shop?.title || '',
+  measure: purchase.Measure?.title || '',
+  currency: purchase.Currency?.title || '',
+  creation: {
+    creatorId: purchase.creatorId,
+    creatorFullName: purchase.creatorFullName,
+    createdAt: formatDate(purchase.createdAt),
+    updatedAt: formatDate(purchase.updatedAt),
+  },
+});
+
 class PurchaseService {
-  async getAllPurchases(limit, offset) {
+  async getAllPurchases(limit, offset, sort = 'id', order = 'asc') {
+    const sortableFields = {
+      product: [Product, 'title'],
+      shop: [Shop, 'title'],
+      measure: [Measure, 'title'],
+      currency: [Currency, 'title'],
+    };
+    const orderConfig = sortableFields[sort]
+      ? [...sortableFields[sort], order]
+      : [
+          ['id', 'amount', 'price', 'summ', 'creatorId', 'createdAt'].includes(
+            sort
+          )
+            ? sort
+            : `Purchase.${sort}`,
+          order,
+        ];
     const foundPurchases = await Purchase.findAll({
-      attributes: ['id', 'amount', 'price', 'summ'],
+      attributes: [
+        'id',
+        'amount',
+        'price',
+        'summ',
+        'creatorId',
+        'creatorFullName',
+        'createdAt',
+      ],
       include: [
         { model: Product, attributes: ['title'] },
         { model: Shop, attributes: ['title'] },
         { model: Measure, attributes: ['title'] },
         { model: Currency, attributes: ['title'] },
       ],
+      order: [orderConfig],
       raw: true,
       limit,
       offset,
     });
-    if (foundPurchases.length === 0) throw notFound('Покупки не знайдено');
-    const allPurchases = foundPurchases.map((purchase) => ({
-      id: purchase.id,
-      product: purchase['Product.title'] || '',
-      amount: purchase.amount,
-      price: purchase.price,
-      summ: purchase.summ,
-      shop: purchase['Shop.title'] || '',
-      measure: purchase['Measure.title'] || '',
-      currency: purchase['Currency.title'] || '',
-    }));
+    if (!foundPurchases.length) throw notFound('Покупки не знайдено');
     const total = await Purchase.count();
     return {
-      allPurchases,
+      allPurchases: foundPurchases.map(
+        ({
+          id,
+          amount,
+          price,
+          summ,
+          'Product.title': productTitle,
+          'Shop.title': shopTitle,
+          'Measure.title': measureTitle,
+          'Currency.title': currencyTitle,
+          creatorId,
+          creatorFullName,
+          createdAt,
+        }) => ({
+          id,
+          product: productTitle || '',
+          amount,
+          price,
+          summ,
+          shop: shopTitle || '',
+          measure: measureTitle || '',
+          currency: currencyTitle || '',
+          creation: {
+            creatorId,
+            creatorFullName,
+            createdAt: formatDate(createdAt),
+          },
+        })
+      ),
       total,
     };
   }
@@ -57,20 +117,7 @@ class PurchaseService {
       ],
     });
     if (!foundPurchase) throw notFound('Покупку не знайдено');
-    const purchaseData = foundPurchase.toJSON();
-    return {
-      id: purchaseData.id,
-      product: purchaseData.Product.title,
-      amount: purchaseData.amount,
-      price: purchaseData.price,
-      summ: purchaseData.summ,
-      shop: purchaseData.Shop.title,
-      measure: purchaseData.Measure.title,
-      currency: purchaseData.Currency.title,
-      creatorId: purchaseData.creatorId || '',
-      createdAt: formatDate(purchaseData.createdAt),
-      updatedAt: formatDate(purchaseData.updatedAt),
-    };
+    return formatPurchaseData(foundPurchase.toJSON());
   }
 
   async createPurchase(
@@ -96,22 +143,21 @@ class PurchaseService {
     if (!foundCurrency) throw notFound('Валюту не знайдено');
     const amount = parseFloat(amountValue) || 0;
     const price = parseFloat(priceValue) || 0;
-    const summ = parseFloat(amountValue) * parseFloat(priceValue) || 0;
-    const creatorId = currentUser.id.toString();
-    const newPurchaseData = {
-      productId: foundProduct.id,
-      amount,
-      price,
-      summ,
-      shopId: foundShop.id,
-      measureId: foundMeasure.id,
-      currencyId: foundCurrency.id,
-      creatorId,
-    };
-    const newPurchase = await Purchase.create(newPurchaseData, {
-      transaction,
-      returning: true,
-    });
+    const summ = amount * price || 0;
+    const newPurchase = await Purchase.create(
+      {
+        productId: foundProduct.id,
+        amount,
+        price,
+        summ,
+        shopId: foundShop.id,
+        measureId: foundMeasure.id,
+        currencyId: foundCurrency.id,
+        creatorId: currentUser.id.toString(),
+        creatorFullName: currentUser.fullName,
+      },
+      { transaction, returning: true }
+    );
     if (!newPurchase) throw badRequest('Дані цієї покупки не створено');
     return {
       id: newPurchase.id,
@@ -122,7 +168,12 @@ class PurchaseService {
       shop: foundShop.title,
       measure: foundMeasure.title,
       currency: foundCurrency.title,
-      creatorId: newPurchase.creatorId || '',
+      creation: {
+        creatorId: newPurchase.creatorId,
+        creatorFullName: newPurchase.creatorFullName,
+        createdAt: formatDate(newPurchase.createdAt),
+        updatedAt: formatDate(newPurchase.updatedAt),
+      },
     };
   }
 
@@ -139,9 +190,8 @@ class PurchaseService {
   ) {
     const foundPurchase = await Purchase.findByPk(id);
     if (!foundPurchase) throw notFound('Покупку не знайдено');
-    const isPurchaseOwner =
-      currentUser.id.toString() === foundPurchase.creatorId;
-    if (!isPurchaseOwner)
+    const isOwner = currentUser.id.toString() === foundPurchase.creatorId;
+    if (!isOwner)
       throw forbidden('Ви не маєте дозволу на редагування цієї покупки');
     const foundProduct = await getRecordByTitle(Product, product);
     if (!foundProduct) throw notFound('Товар не знайдено');
@@ -151,31 +201,24 @@ class PurchaseService {
     if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
     const foundCurrency = await getRecordByTitle(Currency, currency);
     if (!foundCurrency) throw notFound('Валюту не знайдено');
-    let amount = foundPurchase.amount;
-    if (amountValue) {
-      amount = parseFloat(amountValue) || 0;
-    }
-    let price = foundPurchase.price;
-    if (priceValue) {
-      price = parseFloat(priceValue) || 0;
-    }
-    const summ = parseFloat(amount) * parseFloat(price) || 0;
-    const updateData = {
-      productId: foundProduct.id,
-      amount,
-      price,
-      summ,
-      shopId: foundShop.id,
-      measureId: foundMeasure.id,
-      currencyId: foundCurrency.id,
-    };
+    const amount = amountValue
+      ? parseFloat(amountValue) || 0
+      : foundPurchase.amount;
+    const price = priceValue
+      ? parseFloat(priceValue) || 0
+      : foundPurchase.price;
+    const summ = amount * price || 0;
     const [affectedRows, [updatedPurchase]] = await Purchase.update(
-      updateData,
       {
-        where: { id },
-        returning: true,
-        transaction,
-      }
+        productId: foundProduct.id,
+        amount,
+        price,
+        summ,
+        shopId: foundShop.id,
+        measureId: foundMeasure.id,
+        currencyId: foundCurrency.id,
+      },
+      { where: { id }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Дані цієї покупки не оновлено');
     return {
@@ -187,16 +230,20 @@ class PurchaseService {
       shop: foundShop.title,
       measure: foundMeasure.title,
       currency: foundCurrency.title,
-      creatorId: updatedPurchase.creatorId || '',
+      creation: {
+        creatorId: updatedPurchase.creatorId,
+        creatorFullName: updatedPurchase.creatorFullName,
+        createdAt: formatDate(updatedPurchase.createdAt),
+        updatedAt: formatDate(updatedPurchase.updatedAt),
+      },
     };
   }
 
   async deletePurchase(purchaseId, currentUser, transaction) {
     const foundPurchase = await Purchase.findByPk(purchaseId);
     if (!foundPurchase) throw notFound('Покупку не знайдено');
-    const isPurchaseOwner =
-      currentUser.id.toString() === foundPurchase.creatorId;
-    if (!isPurchaseOwner)
+    const isOwner = currentUser.id.toString() === foundPurchase.creatorId;
+    if (!isOwner)
       throw forbidden('Ви не маєте дозволу на видалення цієї покупки');
     const deletedPurchase = await Purchase.destroy({
       where: { id: purchaseId },

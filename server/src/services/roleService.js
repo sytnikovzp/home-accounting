@@ -1,5 +1,5 @@
 const { Role, User, Permission } = require('../db/dbMongo/models');
-const { formatDate, checkPermission } = require('../utils/sharedFunctions');
+const { formatDateTime, checkPermission } = require('../utils/sharedFunctions');
 const { badRequest, notFound, forbidden } = require('../errors/customErrors');
 
 class RoleService {
@@ -58,8 +58,8 @@ class RoleService {
         title,
         description,
       })),
-      createdAt: formatDate(foundRole.createdAt),
-      updatedAt: formatDate(foundRole.updatedAt),
+      createdAt: formatDateTime(foundRole.createdAt),
+      updatedAt: formatDateTime(foundRole.updatedAt),
     };
   }
 

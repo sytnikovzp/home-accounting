@@ -1,6 +1,6 @@
 const { Shop } = require('../db/dbPostgres/models');
 const {
-  formatDate,
+  formatDateTime,
   checkPermission,
   mapStatus,
 } = require('../utils/sharedFunctions');
@@ -20,8 +20,8 @@ const formatShopData = (shop) => ({
   creation: {
     creatorId: shop.creatorId || '',
     creatorFullName: shop.creatorFullName || '',
-    createdAt: formatDate(shop.createdAt),
-    updatedAt: formatDate(shop.updatedAt),
+    createdAt: formatDateTime(shop.createdAt),
+    updatedAt: formatDateTime(shop.updatedAt),
   },
 });
 
@@ -95,19 +95,17 @@ class ShopService {
       const duplicateUrl = await Shop.findOne({ where: { url } });
       if (duplicateUrl) throw badRequest('Цей URL вже використовується');
     }
-    const updateData = {
-      title,
-      description: description || null,
-      url: url || null,
-      status: canManageShops ? 'approved' : 'pending',
-      moderatorId: canManageShops ? currentUser.id.toString() : null,
-      moderatorFullName: canManageShops ? currentUser.fullName : null,
-    };
-    const [affectedRows, [updatedShop]] = await Shop.update(updateData, {
-      where: { id },
-      returning: true,
-      transaction,
-    });
+    const [affectedRows, [updatedShop]] = await Shop.update(
+      {
+        title,
+        description: description || null,
+        url: url || null,
+        status: canManageShops ? 'approved' : 'pending',
+        moderatorId: canManageShops ? currentUser.id.toString() : null,
+        moderatorFullName: canManageShops ? currentUser.fullName : null,
+      },
+      { where: { id }, returning: true, transaction }
+    );
     if (!affectedRows) throw badRequest('Дані цього магазину не оновлено');
     return formatShopData(updatedShop);
   }
@@ -122,17 +120,15 @@ class ShopService {
       throw forbidden(
         'Ви не маєте дозволу на оновлення логотипу цього магазину'
       );
-    const updateData = {
-      logo: filename,
-      status: canManageShops ? 'approved' : 'pending',
-      moderatorId: canManageShops ? currentUser.id.toString() : null,
-      moderatorFullName: canManageShops ? currentUser.fullName : null,
-    };
-    const [affectedRows, [updatedShopLogo]] = await Shop.update(updateData, {
-      where: { id },
-      returning: true,
-      transaction,
-    });
+    const [affectedRows, [updatedShopLogo]] = await Shop.update(
+      {
+        logo: filename,
+        status: canManageShops ? 'approved' : 'pending',
+        moderatorId: canManageShops ? currentUser.id.toString() : null,
+        moderatorFullName: canManageShops ? currentUser.fullName : null,
+      },
+      { where: { id }, returning: true, transaction }
+    );
     if (!affectedRows) throw badRequest('Логотип магазину не оновлено');
     return formatShopData(updatedShopLogo);
   }
@@ -146,17 +142,15 @@ class ShopService {
       throw forbidden(
         'Ви не маєте дозволу на видалення логотипу цього магазину'
       );
-    const updateData = {
-      logo: null,
-      status: canManageShops ? 'approved' : 'pending',
-      moderatorId: canManageShops ? currentUser.id.toString() : null,
-      moderatorFullName: canManageShops ? currentUser.fullName : null,
-    };
-    const [affectedRows, [removedShopLogo]] = await Shop.update(updateData, {
-      where: { id },
-      returning: true,
-      transaction,
-    });
+    const [affectedRows, [removedShopLogo]] = await Shop.update(
+      {
+        logo: null,
+        status: canManageShops ? 'approved' : 'pending',
+        moderatorId: canManageShops ? currentUser.id.toString() : null,
+        moderatorFullName: canManageShops ? currentUser.fullName : null,
+      },
+      { where: { id }, returning: true, transaction }
+    );
     if (!affectedRows) throw badRequest('Логотип магазину не видалено');
     return formatShopData(removedShopLogo);
   }
@@ -169,16 +163,14 @@ class ShopService {
     if (!foundShop) throw notFound('Магазин не знайдено');
     if (!['approved', 'rejected'].includes(status))
       throw notFound('Статус не знайдено');
-    const updateData = {
-      status,
-      moderatorId: currentUser.id.toString(),
-      moderatorFullName: currentUser.fullName,
-    };
-    const [affectedRows, [moderatedCategory]] = await Shop.update(updateData, {
-      where: { id },
-      returning: true,
-      transaction,
-    });
+    const [affectedRows, [moderatedCategory]] = await Shop.update(
+      {
+        status,
+        moderatorId: currentUser.id.toString(),
+        moderatorFullName: currentUser.fullName,
+      },
+      { where: { id }, returning: true, transaction }
+    );
     if (!affectedRows) throw badRequest('Магазин не проходить модерацію');
     return formatShopData(moderatedCategory);
   }

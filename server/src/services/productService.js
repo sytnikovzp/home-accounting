@@ -1,6 +1,6 @@
 const { Product, Category } = require('../db/dbPostgres/models');
 const {
-  formatDate,
+  formatDateTime,
   checkPermission,
   mapStatus,
   getRecordByTitle,
@@ -18,18 +18,24 @@ const formatProductData = (product) => ({
   creation: {
     creatorId: product.creatorId || '',
     creatorFullName: product.creatorFullName || '',
-    createdAt: formatDate(product.createdAt),
-    updatedAt: formatDate(product.updatedAt),
+    createdAt: formatDateTime(product.createdAt),
+    updatedAt: formatDateTime(product.updatedAt),
   },
 });
 
 class ProductService {
   async getAllProducts(status, limit, offset, sort = 'id', order = 'asc') {
+    const sortableFields = {
+      category: [Category, 'title'],
+    };
+    const orderConfig = sortableFields[sort]
+      ? [...sortableFields[sort], order]
+      : [['id', 'title'].includes(sort) ? sort : `Purchase.${sort}`, order];
     const foundProducts = await Product.findAll({
       attributes: ['id', 'title'],
       where: { status },
       include: [{ model: Category, attributes: ['title'] }],
-      order: [[sort, order]],
+      order: [orderConfig],
       raw: true,
       limit,
       offset,
@@ -111,18 +117,16 @@ class ProductService {
     const categoryRecord = category
       ? await getRecordByTitle(Category, category)
       : null;
-    const updateData = {
-      title,
-      categoryId: categoryRecord?.id || null,
-      status: canManageProducts ? 'approved' : 'pending',
-      moderatorId: canManageProducts ? currentUser.id.toString() : null,
-      moderatorFullName: canManageProducts ? currentUser.fullName : null,
-    };
-    const [affectedRows, [updatedProduct]] = await Product.update(updateData, {
-      where: { id },
-      returning: true,
-      transaction,
-    });
+    const [affectedRows, [updatedProduct]] = await Product.update(
+      {
+        title,
+        categoryId: categoryRecord?.id || null,
+        status: canManageProducts ? 'approved' : 'pending',
+        moderatorId: canManageProducts ? currentUser.id.toString() : null,
+        moderatorFullName: canManageProducts ? currentUser.fullName : null,
+      },
+      { where: { id }, returning: true, transaction }
+    );
     if (!affectedRows) throw badRequest('Дані цього товару не оновлено');
     return formatProductData(updatedProduct);
   }
@@ -138,13 +142,12 @@ class ProductService {
     if (!foundProduct) throw notFound('Товар не знайдено');
     if (!['approved', 'rejected'].includes(status))
       throw notFound('Статус не знайдено');
-    const updateData = {
-      status,
-      moderatorId: currentUser.id.toString(),
-      moderatorFullName: currentUser.fullName,
-    };
     const [affectedRows, [moderatedProduct]] = await Product.update(
-      updateData,
+      {
+        status,
+        moderatorId: currentUser.id.toString(),
+        moderatorFullName: currentUser.fullName,
+      },
       { where: { id }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Товар не проходить модерацію');

@@ -3,7 +3,7 @@ const { User, Role, Permission } = require('../db/dbMongo/models');
 const {
   hashPassword,
   emailToLowerCase,
-  formatDate,
+  formatDateTime,
   checkPermission,
 } = require('../utils/sharedFunctions');
 // ==============================================================
@@ -50,8 +50,8 @@ class UserService {
     const fullUserData = {
       ...limitUserData,
       email: foundUser.email,
-      createdAt: formatDate(foundUser.createdAt),
-      updatedAt: formatDate(foundUser.updatedAt),
+      createdAt: formatDateTime(foundUser.createdAt),
+      updatedAt: formatDateTime(foundUser.updatedAt),
       permissions: permissions.map((permission) => ({
         id: permission._id,
         title: permission.title,
@@ -84,8 +84,8 @@ class UserService {
       role: role.title || '',
       photo: foundUser.photo || '',
       email: foundUser.email,
-      createdAt: formatDate(foundUser.createdAt),
-      updatedAt: formatDate(foundUser.updatedAt),
+      createdAt: formatDateTime(foundUser.createdAt),
+      updatedAt: formatDateTime(foundUser.updatedAt),
       permissions: permissions.map((permission) => ({
         id: permission._id,
         title: permission.title,

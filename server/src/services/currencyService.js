@@ -1,5 +1,5 @@
 const { Currency } = require('../db/dbPostgres/models');
-const { formatDate, checkPermission } = require('../utils/sharedFunctions');
+const { formatDateTime, checkPermission } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/customErrors');
 
 const formatCurrencyData = (currency) => ({
@@ -7,8 +7,8 @@ const formatCurrencyData = (currency) => ({
   title: currency.title,
   description: currency.description || '',
   creation: {
-    createdAt: formatDate(currency.createdAt),
-    updatedAt: formatDate(currency.updatedAt),
+    createdAt: formatDateTime(currency.createdAt),
+    updatedAt: formatDateTime(currency.updatedAt),
   },
 });
 
@@ -74,12 +74,8 @@ class CurrencyService {
       const duplicateCurrency = await Currency.findOne({ where: { title } });
       if (duplicateCurrency) throw badRequest('Ця валюта вже існує');
     }
-    const updateData = {
-      title,
-      description: description || null,
-    };
     const [affectedRows, [updatedCurrency]] = await Currency.update(
-      updateData,
+      { title, description: description || null },
       { where: { id }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Дані цієї валюти не оновлено');

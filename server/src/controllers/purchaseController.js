@@ -12,7 +12,13 @@ class PurchaseController {
   async getAllPurchases(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { allPurchases, total } = await getAllPurchases(limit, offset);
+      const { sort = 'id', order = 'asc' } = req.query;
+      const { allPurchases, total } = await getAllPurchases(
+        limit,
+        offset,
+        sort,
+        order
+      );
       if (allPurchases.length > 0) {
         res.status(200).set('X-Total-Count', total).json(allPurchases);
       } else {

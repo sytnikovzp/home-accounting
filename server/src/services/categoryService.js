@@ -1,6 +1,6 @@
 const { Category } = require('../db/dbPostgres/models');
 const {
-  formatDate,
+  formatDateTime,
   checkPermission,
   mapStatus,
 } = require('../utils/sharedFunctions');
@@ -17,8 +17,8 @@ const formatCategoryData = (category) => ({
   creation: {
     creatorId: category.creatorId || '',
     creatorFullName: category.creatorFullName || '',
-    createdAt: formatDate(category.createdAt),
-    updatedAt: formatDate(category.updatedAt),
+    createdAt: formatDateTime(category.createdAt),
+    updatedAt: formatDateTime(category.updatedAt),
   },
 });
 
@@ -88,14 +88,13 @@ class CategoryService {
       const duplicateCategory = await Category.findOne({ where: { title } });
       if (duplicateCategory) throw badRequest('Ця категорія вже існує');
     }
-    const updateData = {
-      title,
-      status: canManageCategories ? 'approved' : 'pending',
-      moderatorId: canManageCategories ? currentUser.id.toString() : null,
-      moderatorFullName: canManageCategories ? currentUser.fullName : null,
-    };
     const [affectedRows, [updatedCategory]] = await Category.update(
-      updateData,
+      {
+        title,
+        status: canManageCategories ? 'approved' : 'pending',
+        moderatorId: canManageCategories ? currentUser.id.toString() : null,
+        moderatorFullName: canManageCategories ? currentUser.fullName : null,
+      },
       { where: { id }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Дані цієї категорії не оновлено');
@@ -113,13 +112,12 @@ class CategoryService {
     if (!foundCategory) throw notFound('Категорію не знайдено');
     if (!['approved', 'rejected'].includes(status))
       throw notFound('Статус не знайдено');
-    const updateData = {
-      status,
-      moderatorId: currentUser.id.toString(),
-      moderatorFullName: currentUser.fullName,
-    };
     const [affectedRows, [moderatedCategory]] = await Category.update(
-      updateData,
+      {
+        status,
+        moderatorId: currentUser.id.toString(),
+        moderatorFullName: currentUser.fullName,
+      },
       { where: { id }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Категорія не проходить модерацію');

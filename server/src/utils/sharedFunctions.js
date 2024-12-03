@@ -23,8 +23,12 @@ const setRefreshTokenCookie = function (res, refreshToken) {
   });
 };
 
-const formatDate = function (date) {
+const formatDateTime = function (date) {
   return format(new Date(date), 'dd MMMM yyyy, HH:mm', { locale: uk });
+};
+
+const formatDate = function (date) {
+  return format(new Date(date), 'dd MMMM yyyy', { locale: uk });
 };
 
 const getTime = function (ago = 'allTime') {
@@ -85,6 +89,7 @@ const mapStatus = function (status) {
 module.exports = {
   hashPassword,
   setRefreshTokenCookie,
+  formatDateTime,
   formatDate,
   getTime,
   emailToLowerCase,
