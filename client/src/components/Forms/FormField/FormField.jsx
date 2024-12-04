@@ -17,6 +17,7 @@ function FormField({
   name,
   label,
   placeholder,
+  required,
   type = 'text',
   options = [],
   autoFocus = false,
@@ -53,7 +54,7 @@ function FormField({
       label={label}
       placeholder={placeholder}
       fullWidth
-      required
+      required={required}
       autoFocus={autoFocus}
       type={type === 'password' && showPassword ? 'text' : type}
       sx={{

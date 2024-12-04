@@ -38,11 +38,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       creatorId: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       creatorFullName: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
     },
     {

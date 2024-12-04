@@ -20,11 +20,11 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT,
       creatorId: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       creatorFullName: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
     },
     {

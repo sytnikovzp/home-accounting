@@ -45,7 +45,8 @@ function CategoriesPage() {
         page: currentPage,
         limit: pageSize,
         status: selectedStatus,
-        ...sortModel,
+        sort: sortModel.field,
+        order: sortModel.order,
       };
       const { data, totalCount } = await restController.fetchAllCategories(
         params

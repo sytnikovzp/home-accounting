@@ -16,12 +16,21 @@ function BaseForm({
     <Form>
       <Box sx={{ mt: 2 }}>
         {fields.map(
-          ({ name, label, placeholder, autoFocus, type, options }) => (
+          ({
+            name,
+            label,
+            placeholder,
+            required,
+            autoFocus,
+            type,
+            options,
+          }) => (
             <FormField
               key={name}
               name={name}
               label={label}
               placeholder={placeholder}
+              required={required}
               autoFocus={autoFocus}
               type={type}
               options={options}

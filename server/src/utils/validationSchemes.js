@@ -105,7 +105,10 @@ const MEASURE_VALIDATION_SCHEME = yup.object().shape({
 });
 
 const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_REQUIRED_SCHEME,
+  title: TITLE_NAME_REQUIRED_SCHEME.length(
+    3,
+    'Введені дані мають бути дорівнювати 3 символам'
+  ),
   description: STRING_NULLABLE_SCHEME,
 });
 

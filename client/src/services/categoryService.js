@@ -31,8 +31,6 @@ const getAllCategories = async ({
 };
 
 const getCategoryById = async (categoryId) => {
-  console.log(categoryId);
-
   const response = await api.get(`/categories/${categoryId}`);
   return response.data;
 };

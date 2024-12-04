@@ -10,6 +10,7 @@ function CategoryForm({ category = null, onSubmit }) {
       name: 'title',
       label: 'Назва категорії',
       placeholder: 'Наприклад "Електроніка"',
+      required: true,
       autoFocus: true,
     },
   ];

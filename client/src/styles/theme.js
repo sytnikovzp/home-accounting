@@ -268,3 +268,19 @@ export const stylesAuthAvatar = {
   height: 50,
   mb: 2,
 };
+
+// ==============================================================
+// View page
+
+export const stylesRowContainerStyles = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: '8px',
+  width: '100%',
+};
+
+export const stylesViewTextStyles = {
+  wordBreak: 'break-word',
+  whiteSpace: 'pre-wrap',
+};

@@ -6,9 +6,7 @@ import {
   CalendarToday,
   Person,
   Update,
-  CheckCircle,
-  Cancel,
-  HourglassEmpty,
+  Description,
 } from '@mui/icons-material';
 // ==============================================================
 import {
@@ -21,44 +19,28 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
-function CategoryViewPage({ handleModalClose }) {
+function CurrencyViewPage({ handleModalClose }) {
   const { id } = useParams();
   const {
-    entity: categoryToCRUD,
+    entity: currencyToCRUD,
     isLoading,
     errorMessage,
     fetchEntityById,
-  } = useFetchEntity('Category');
+  } = useFetchEntity('Currency');
 
   useEffect(() => {
     if (id) fetchEntityById(id);
   }, [id, fetchEntityById]);
 
-  const {
-    id: categoryId,
-    title,
-    status,
-    moderation,
-    creation,
-  } = categoryToCRUD || {};
-  const { moderatorId, moderatorFullName } = moderation || {};
+  const { id: currencyId, title, description, creation } = currencyToCRUD || {};
   const { creatorId, creatorFullName, createdAt, updatedAt } = creation || {};
-
-  let statusIcon;
-  if (status === 'Затверджено') {
-    statusIcon = <CheckCircle color='success' />;
-  } else if (status === 'Очікує модерації') {
-    statusIcon = <HourglassEmpty color='warning' />;
-  } else if (status === 'Відхилено') {
-    statusIcon = <Cancel color='error' />;
-  }
 
   return (
     <CustomModal
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Деталі категорії...'
+      title='Деталі валюти...'
       content={
         isLoading ? (
           <Preloader />
@@ -68,7 +50,7 @@ function CategoryViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Info color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>ID:</strong> {categoryId}
+                  <strong>ID:</strong> {currencyId}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
@@ -78,9 +60,9 @@ function CategoryViewPage({ handleModalClose }) {
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
-                {statusIcon}
+                <Description color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Статус:</strong> {status}
+                  <strong>Опис:</strong> {description || '*Дані відсутні*'}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
@@ -93,19 +75,6 @@ function CategoryViewPage({ handleModalClose }) {
                     underline='hover'
                   >
                     {creatorFullName}
-                  </Link>
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Person color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Модератор:</strong>{' '}
-                  <Link
-                    href={`/users/${moderatorId}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {moderatorFullName}
                   </Link>
                 </Typography>
               </Box>
@@ -130,4 +99,4 @@ function CategoryViewPage({ handleModalClose }) {
   );
 }
 
-export default CategoryViewPage;
+export default CurrencyViewPage;

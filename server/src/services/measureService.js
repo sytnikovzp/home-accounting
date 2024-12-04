@@ -7,6 +7,8 @@ const formatMeasureData = (measure) => ({
   title: measure.title,
   description: measure.description || '',
   creation: {
+    creatorId: measure.creatorId || '',
+    creatorFullName: measure.creatorFullName || '',
     createdAt: formatDateTime(measure.createdAt),
     updatedAt: formatDateTime(measure.updatedAt),
   },

@@ -4,14 +4,30 @@ const getAllShops = async ({
   status = 'approved',
   page = 1,
   limit = 6,
+  sort = 'id',
+  order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({ status, page, limit }).toString();
-  const response = await api.get(`/shops?${params}`);
-  const totalCount = parseInt(response.headers['x-total-count']);
-  return {
-    data: response.data,
-    totalCount,
-  };
+  const params = new URLSearchParams({
+    status,
+    page,
+    limit,
+    sort,
+    order,
+  }).toString();
+  try {
+    const response = await api.get(`/shops?${params}`);
+    const totalCount = parseInt(response.headers['x-total-count']);
+    return {
+      data: response.data,
+      totalCount,
+    };
+  } catch (error) {
+    console.error(error.response.data.errors[0].title);
+    return {
+      data: [],
+      totalCount: 0,
+    };
+  }
 };
 
 const getShopById = async (shopId) => {

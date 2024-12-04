@@ -1,23 +1,59 @@
 import api from '../api';
 
-const getAllPermissions = async ({ page = 1, limit = 6 } = {}) => {
-  const params = new URLSearchParams({ page, limit }).toString();
-  const response = await api.get(`/roles/permissions?${params}`);
-  const totalCount = parseInt(response.headers['x-total-count']);
-  return {
-    data: response.data,
-    totalCount,
-  };
+const getAllPermissions = async ({
+  page = 1,
+  limit = 6,
+  sort = 'id',
+  order = 'asc',
+} = {}) => {
+  const params = new URLSearchParams({
+    page,
+    limit,
+    sort,
+    order,
+  }).toString();
+  try {
+    const response = await api.get(`/roles/permissions?${params}`);
+    const totalCount = parseInt(response.headers['x-total-count']);
+    return {
+      data: response.data,
+      totalCount,
+    };
+  } catch (error) {
+    console.error(error.response.data.errors[0].title);
+    return {
+      data: [],
+      totalCount: 0,
+    };
+  }
 };
 
-const getAllRoles = async ({ page = 1, limit = 6 } = {}) => {
-  const params = new URLSearchParams({ page, limit }).toString();
-  const response = await api.get(`/roles?${params}`);
-  const totalCount = parseInt(response.headers['x-total-count']);
-  return {
-    data: response.data,
-    totalCount,
-  };
+const getAllRoles = async ({
+  page = 1,
+  limit = 6,
+  sort = 'id',
+  order = 'asc',
+} = {}) => {
+  const params = new URLSearchParams({
+    page,
+    limit,
+    sort,
+    order,
+  }).toString();
+  try {
+    const response = await api.get(`/roles?${params}`);
+    const totalCount = parseInt(response.headers['x-total-count']);
+    return {
+      data: response.data,
+      totalCount,
+    };
+  } catch (error) {
+    console.error(error.response.data.errors[0].title);
+    return {
+      data: [],
+      totalCount: 0,
+    };
+  }
 };
 
 const getRoleById = async (roleId) => {

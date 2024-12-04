@@ -7,6 +7,8 @@ const formatCurrencyData = (currency) => ({
   title: currency.title,
   description: currency.description || '',
   creation: {
+    creatorId: currency.creatorId || '',
+    creatorFullName: currency.creatorFullName || '',
     createdAt: formatDateTime(currency.createdAt),
     updatedAt: formatDateTime(currency.updatedAt),
   },

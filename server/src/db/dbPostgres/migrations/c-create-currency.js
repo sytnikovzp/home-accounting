@@ -18,11 +18,11 @@ module.exports = {
       },
       creator_id: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       creator_full_name: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,
