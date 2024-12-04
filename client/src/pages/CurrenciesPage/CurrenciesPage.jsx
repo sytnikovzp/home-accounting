@@ -11,9 +11,9 @@ import CurrencyEditPage from './CurrencyEditPage';
 import CurrencyDeletePage from './CurrencyDeletePage';
 import CurrencyViewPage from './CurrencyViewPage';
 // ==============================================================
-import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
+import ListTable from '../../components/ListTable/ListTable';
 
 function CurrenciesPage() {
   const itemsPerPage = useItemsPerPage();

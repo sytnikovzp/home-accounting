@@ -16,7 +16,7 @@ function CurrencyDeletePage({
 }) {
   const { id } = useParams();
   const {
-    entity: сurrencyToCRUD,
+    entity: currencyToCRUD,
     isLoading,
     errorMessage,
     fetchEntityById,
@@ -28,7 +28,7 @@ function CurrencyDeletePage({
 
   const handleDeleteCurrency = async () => {
     try {
-      await restController.removeCurrency(сurrencyToCRUD.id);
+      await restController.removeCurrency(currencyToCRUD.id);
       handleModalClose();
       fetchCurrencies();
     } catch (error) {
@@ -52,7 +52,7 @@ function CurrencyDeletePage({
             variant='body1'
             sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
           >
-            Ви впевнені, що хочете видалити валюту "{сurrencyToCRUD?.title}"?
+            Ви впевнені, що хочете видалити валюту "{currencyToCRUD?.title}"?
           </Typography>
         )
       }

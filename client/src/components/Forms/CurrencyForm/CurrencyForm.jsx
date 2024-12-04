@@ -2,9 +2,9 @@ import { CURRENCY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 
-function CurrencyForm({ сurrency = null, onSubmit }) {
-  const initialValues = сurrency
-    ? { title: сurrency.title, description: сurrency.description }
+function CurrencyForm({ currency = null, onSubmit }) {
+  const initialValues = currency
+    ? { title: currency.title, description: currency.description }
     : { title: '', description: '' };
 
   const fields = [
@@ -28,7 +28,7 @@ function CurrencyForm({ сurrency = null, onSubmit }) {
       validationSchema={CURRENCY_VALIDATION_SCHEME}
       onSubmit={onSubmit}
       fields={fields}
-      submitButtonText={сurrency ? 'Зберегти зміни' : 'Додати валюту'}
+      submitButtonText={currency ? 'Зберегти зміни' : 'Додати валюту'}
     />
   );
 }

@@ -105,9 +105,9 @@ const MEASURE_VALIDATION_SCHEME = yup.object().shape({
 });
 
 const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_REQUIRED_SCHEME.length(
-    3,
-    'Введені дані мають бути дорівнювати 3 символам'
+  title: TITLE_NAME_REQUIRED_SCHEME.matches(
+    /^[A-Z]{3}$/,
+    'Поле повинно містити рівно 3 великі латинські літери без цифр'
   ),
   description: STRING_NULLABLE_SCHEME,
 });

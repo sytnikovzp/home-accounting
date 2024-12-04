@@ -11,9 +11,9 @@ import CategoryEditPage from './CategoryEditPage';
 import CategoryDeletePage from './CategoryDeletePage';
 import CategoryViewPage from './CategoryViewPage';
 // ==============================================================
-import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
+import ListTable from '../../components/ListTable/ListTable';
 
 function CategoriesPage() {
   const itemsPerPage = useItemsPerPage();

@@ -1,87 +1,142 @@
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Button, Box } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 // ==============================================================
+import MeasureAddPage from './MeasureAddPage';
+import MeasureEditPage from './MeasureEditPage';
+import MeasureDeletePage from './MeasureDeletePage';
+import MeasureViewPage from './MeasureViewPage';
+// ==============================================================
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
-import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
 
 function MeasuresPage() {
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [measures, setMeasures] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [measureToDelete, setMeasureToDelete] = useState(null);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [deleteError, setDeleteError] = useState(null);
+  const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
+  const [crudError, setCrudError] = useState(null);
+
+  const handleModalClose = () => {
+    setCrudError(null);
+    navigate('/measures');
+  };
+
+  const openModal = (mode, id = null) => {
+    navigate(id ? `${mode}/${id}` : mode);
+  };
 
   const fetchMeasures = useCallback(async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const { data, totalCount } = await restController.fetchAllMeasures({
+      const params = {
         page: currentPage,
         limit: pageSize,
-      });
+        sort: sortModel.field,
+        order: sortModel.order,
+      };
+      const { data, totalCount } = await restController.fetchAllMeasures(
+        params
+      );
       setMeasures(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати дані про одиниці вимірювання:', error);
-      setError('Не вдалося отримати дані про одиниці');
+      setErrorMessage(
+        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+      );
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, sortModel]);
 
   useEffect(() => {
     fetchMeasures();
   }, [fetchMeasures]);
 
-  const handleEdit = (measure) => {
-    console.log('Edit:', measure);
-  };
+  const renderRoutes = () => (
+    <Routes>
+      <Route
+        path='add'
+        element={
+          <MeasureAddPage
+            handleModalClose={handleModalClose}
+            fetchMeasures={fetchMeasures}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path='edit/:id'
+        element={
+          <MeasureEditPage
+            handleModalClose={handleModalClose}
+            fetchMeasures={fetchMeasures}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path='delete/:id'
+        element={
+          <MeasureDeletePage
+            handleModalClose={handleModalClose}
+            fetchMeasures={fetchMeasures}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path=':id'
+        element={<MeasureViewPage handleModalClose={handleModalClose} />}
+      />
+    </Routes>
+  );
 
-  const handleDelete = (measure) => {
-    setMeasureToDelete(measure);
-    setDeleteModalOpen(true);
-    setDeleteError(null);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (measureToDelete) {
-      try {
-        await restController.removeMeasure(measureToDelete.id);
-        setDeleteModalOpen(false);
-        setMeasureToDelete(null);
-        await fetchMeasures();
-      } catch (error) {
-        console.error('Помилка при видаленні одиниці вімірювання:', error);
-        setDeleteError('Не вдалося видалити одиницю. Недостатньо прав.');
-      }
-    }
-  };
-
-  if (isLoading) return <Preloader message='Завантаження одиниць...' />;
-  if (error) return <Error error={error} />;
+  if (isLoading)
+    return <Preloader message='Завантаження списку "Одиниць вимірювань"...' />;
+  if (errorMessage) return <Error error={errorMessage} />;
 
   return (
-    <div>
-      <Typography variant='h6'>Одиниці вимірювання</Typography>
+    <>
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        mb={2}
+      >
+        <Typography variant='h6'>Одиниці вимірювань</Typography>
+        <Button
+          variant='contained'
+          color='success'
+          size='small'
+          onClick={() => openModal('add')}
+        >
+          Додати одиницю
+        </Button>
+      </Box>
       <ListTable
         columns={[
+          { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва одиниці', align: 'left' },
           { field: 'description', headerName: 'Опис одиниці', align: 'left' },
         ]}
         rows={measures}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        onEdit={(measure) => openModal('edit', measure.id)}
+        onDelete={(measure) => openModal('delete', measure.id)}
         pagination={{
           totalCount,
           currentPage,
@@ -90,14 +145,12 @@ function MeasuresPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
         }}
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+        linkEntity='measures'
       />
-      <DeleteConfirmation
-        isOpen={isDeleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
-        onConfirm={handleConfirmDelete}
-        error={deleteError}
-      />
-    </div>
+      {renderRoutes()}
+    </>
   );
 }
 

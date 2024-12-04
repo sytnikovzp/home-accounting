@@ -88,6 +88,17 @@ export const stylesGridContainer = {
   backgroundImage: 'linear-gradient(to bottom, #e8f5e9, #c8e6c9)',
 };
 
+export const stylesXLContainer = {
+  flexGrow: 1,
+  display: 'flex',
+  flexDirection: 'column',
+};
+
+export const stylesGridXLContainer = {
+  flexGrow: 1,
+  flexWrap: 'nowrap',
+};
+
 export const stylesNavBarDesktop = {
   display: { xs: 'none', md: 'block' },
   width: '190px',
@@ -98,10 +109,18 @@ export const stylesNavBarMobile = {
   display: { xs: 'block', md: 'none' },
 };
 
+export const stylesOutlet = {
+  flexGrow: 1,
+  flexBasis: '0',
+  minWidth: 0,
+  maxWidth: '100%',
+  overflowX: 'auto',
+};
+
 export const stylesServiceBlock = {
   flexShrink: 0,
   display: { xs: 'block', md: 'flex' },
-  width: { xs: '100%', md: 'auto' },
+  maxWidth: 'calc(100% - 190px)',
 };
 
 // ==============================================================

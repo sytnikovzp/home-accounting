@@ -6,35 +6,35 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
+import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
 
-function CurrencyEditPage({
+function MeasureEditPage({
   handleModalClose,
-  fetchCurrencies,
+  fetchMeasures,
   crudError,
   setCrudError,
 }) {
   const { id } = useParams();
   const {
-    entity: currencyToCRUD,
+    entity: measureToCRUD,
     isLoading,
     errorMessage,
     fetchEntityById,
-  } = useFetchEntity('Currency');
+  } = useFetchEntity('Measure');
 
   useEffect(() => {
     if (id) fetchEntityById(id);
   }, [id, fetchEntityById]);
 
-  const handleSubmitCurrency = async (values) => {
+  const handleSubmitMeasure = async (values) => {
     try {
-      await restController.editCurrency(
-        currencyToCRUD.id,
+      await restController.editMeasure(
+        measureToCRUD.id,
         values.title,
         values.description
       );
       handleModalClose();
-      fetchCurrencies();
+      fetchMeasures();
     } catch (error) {
       setCrudError(
         error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
@@ -47,15 +47,12 @@ function CurrencyEditPage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Редагування валюти...'
+      title='Редагування одиниці...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <CurrencyForm
-            currency={currencyToCRUD}
-            onSubmit={handleSubmitCurrency}
-          />
+          <MeasureForm measure={measureToCRUD} onSubmit={handleSubmitMeasure} />
         )
       }
       error={errorMessage || crudError}
@@ -63,4 +60,4 @@ function CurrencyEditPage({
   );
 }
 
-export default CurrencyEditPage;
+export default MeasureEditPage;

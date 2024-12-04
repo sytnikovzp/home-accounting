@@ -6,8 +6,11 @@ import { Box, Grid2, Container } from '@mui/material';
 import {
   stylesBoxLayout,
   stylesGridContainer,
+  stylesXLContainer,
+  stylesGridXLContainer,
   stylesNavBarDesktop,
   stylesNavBarMobile,
+  stylesOutlet,
   stylesServiceBlock,
 } from '../../styles/theme';
 // ==============================================================
@@ -58,18 +61,18 @@ function Layout({
             setAuthModalOpen={setAuthModalOpen}
           />
         </Grid2>
-        <Container maxWidth='xl'>
-          <Grid2 container columnSpacing={2} sx={{ flexGrow: 1 }}>
+        <Container maxWidth='xl' sx={stylesXLContainer}>
+          <Grid2 container columnSpacing={2} sx={stylesGridXLContainer}>
             <Grid2 xs={12} md={2} sx={stylesNavBarDesktop}>
               <NavBar />
             </Grid2>
             <Grid2 sx={stylesNavBarMobile}>
               {isNavBarOpen && <NavBar onClose={handleCloseNavBar} />}
             </Grid2>
-            <Grid2 sx={{ flexGrow: 1 }}>
+            <Grid2 sx={stylesOutlet}>
               <Outlet />
             </Grid2>
-            <Grid2 xs={12} sx={stylesServiceBlock}>
+            <Grid2 xs={12} md='auto' sx={stylesServiceBlock}>
               <ServiceBlock />
             </Grid2>
           </Grid2>

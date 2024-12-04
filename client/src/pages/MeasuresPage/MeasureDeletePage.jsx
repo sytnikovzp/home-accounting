@@ -1,40 +1,36 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Button, Typography } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
 
-function CurrencyEditPage({
+function MeasureDeletePage({
   handleModalClose,
-  fetchCurrencies,
+  fetchMeasures,
   crudError,
   setCrudError,
 }) {
   const { id } = useParams();
   const {
-    entity: currencyToCRUD,
+    entity: measureToCRUD,
     isLoading,
     errorMessage,
     fetchEntityById,
-  } = useFetchEntity('Currency');
+  } = useFetchEntity('Measure');
 
   useEffect(() => {
     if (id) fetchEntityById(id);
   }, [id, fetchEntityById]);
 
-  const handleSubmitCurrency = async (values) => {
+  const handleDeleteMeasure = async () => {
     try {
-      await restController.editCurrency(
-        currencyToCRUD.id,
-        values.title,
-        values.description
-      );
+      await restController.removeMeasure(measureToCRUD.id);
       handleModalClose();
-      fetchCurrencies();
+      fetchMeasures();
     } catch (error) {
       setCrudError(
         error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
@@ -47,20 +43,35 @@ function CurrencyEditPage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Редагування валюти...'
+      title='Видалення одиниці...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <CurrencyForm
-            currency={currencyToCRUD}
-            onSubmit={handleSubmitCurrency}
-          />
+          <Typography
+            variant='body1'
+            sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+          >
+            Ви впевнені, що хочете видалити одиницю вимірювання "
+            {measureToCRUD?.title}"?
+          </Typography>
         )
       }
+      actions={[
+        <Button
+          key='delete'
+          variant='contained'
+          color='error'
+          size='large'
+          onClick={handleDeleteMeasure}
+          fullWidth
+        >
+          Видалити
+        </Button>,
+      ]}
       error={errorMessage || crudError}
     />
   );
 }
 
-export default CurrencyEditPage;
+export default MeasureDeletePage;
