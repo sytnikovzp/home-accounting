@@ -24,6 +24,7 @@ function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState('approved');
   const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
@@ -62,9 +63,31 @@ function ProductsPage() {
     }
   }, [currentPage, pageSize, selectedStatus, sortModel]);
 
+  const fetchCategories = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const params = {
+        page: 1,
+        limit: 500,
+      };
+      const { data, totalCount } = await restController.fetchAllCategories(
+        params
+      );
+      setCategories(data);
+      setTotalCount(totalCount);
+    } catch (error) {
+      setErrorMessage(
+        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+    fetchCategories();
+  }, [fetchCategories, fetchProducts]);
 
   const renderRoutes = () => (
     <Routes>
@@ -74,6 +97,7 @@ function ProductsPage() {
           <ProductAddPage
             handleModalClose={handleModalClose}
             fetchProducts={fetchProducts}
+            categories={categories}
             crudError={crudError}
             setCrudError={setCrudError}
           />
@@ -85,6 +109,7 @@ function ProductsPage() {
           <ProductEditPage
             handleModalClose={handleModalClose}
             fetchProducts={fetchProducts}
+            categories={categories}
             crudError={crudError}
             setCrudError={setCrudError}
           />

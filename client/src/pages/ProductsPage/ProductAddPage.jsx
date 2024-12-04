@@ -6,6 +6,7 @@ import ProductForm from '../../components/Forms/ProductForm/ProductForm';
 function ProductAddPage({
   handleModalClose,
   fetchProducts,
+  categories,
   crudError,
   setCrudError,
 }) {
@@ -27,7 +28,9 @@ function ProductAddPage({
       onClose={handleModalClose}
       showCloseButton
       title='Додавання товару...'
-      content={<ProductForm onSubmit={handleSubmitProduct} />}
+      content={
+        <ProductForm onSubmit={handleSubmitProduct} categories={categories} />
+      }
       error={crudError}
     />
   );

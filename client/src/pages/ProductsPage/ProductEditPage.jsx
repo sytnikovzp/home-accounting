@@ -11,6 +11,7 @@ import ProductForm from '../../components/Forms/ProductForm/ProductForm';
 function ProductEditPage({
   handleModalClose,
   fetchProducts,
+  categories,
   crudError,
   setCrudError,
 }) {
@@ -52,7 +53,11 @@ function ProductEditPage({
         isLoading ? (
           <Preloader />
         ) : (
-          <ProductForm product={productToCRUD} onSubmit={handleSubmitProduct} />
+          <ProductForm
+            product={productToCRUD}
+            onSubmit={handleSubmitProduct}
+            categories={categories}
+          />
         )
       }
       error={errorMessage || crudError}

@@ -2,7 +2,7 @@ import { PRODUCT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 
-function ProductForm({ product = null, onSubmit }) {
+function ProductForm({ product = null, onSubmit, categories }) {
   const initialValues = product
     ? { title: product.title, category: product.category }
     : { title: '', category: '' };
@@ -18,7 +18,16 @@ function ProductForm({ product = null, onSubmit }) {
     {
       name: 'category',
       label: 'Категорія товару',
+      type: 'select',
+      options: [
+        { value: '', label: 'Оберіть категорію:' },
+        ...categories.map((cat) => ({
+          value: cat.title,
+          label: cat.title,
+        })),
+      ],
       placeholder: 'Наприклад "Одяг"',
+      required: true,
     },
   ];
 
