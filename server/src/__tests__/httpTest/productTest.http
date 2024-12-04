@@ -1,7 +1,7 @@
 ### Get list all products (status approved, default pagination, without sort)
 GET http://localhost:5000/api/products HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMzE5ODM1LCJleHAiOjE3MzM0MDYyMzV9.9a2AR_jVxiGsDZg0LeQS0qQwSAN8RLPh4dTDw6_xk10
 
 ### Get list all products (status approved, custom pagination, without sort)
 GET http://localhost:5000/api/products?page=1&limit=10 HTTP/1.1

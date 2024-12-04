@@ -1,19 +1,19 @@
 import api from '../api';
 
-const getAllCategories = async ({
+const getAllCategories = async (
   status = 'approved',
   page = 1,
   limit = 6,
   sort = 'id',
-  order = 'asc',
-} = {}) => {
-  const params = new URLSearchParams({
+  order = 'asc'
+) => {
+  const params = new URLSearchParams(
     status,
     page,
     limit,
     sort,
-    order,
-  }).toString();
+    order
+  ).toString();
   try {
     const response = await api.get(`/categories?${params}`);
     const totalCount = parseInt(response.headers['x-total-count']);

@@ -1,17 +1,12 @@
 import api from '../api';
 
-const getAllPermissions = async ({
+const getAllPermissions = async (
   page = 1,
   limit = 6,
   sort = 'id',
-  order = 'asc',
-} = {}) => {
-  const params = new URLSearchParams({
-    page,
-    limit,
-    sort,
-    order,
-  }).toString();
+  order = 'asc'
+) => {
+  const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
     const response = await api.get(`/roles/permissions?${params}`);
     const totalCount = parseInt(response.headers['x-total-count']);
@@ -28,18 +23,8 @@ const getAllPermissions = async ({
   }
 };
 
-const getAllRoles = async ({
-  page = 1,
-  limit = 6,
-  sort = 'id',
-  order = 'asc',
-} = {}) => {
-  const params = new URLSearchParams({
-    page,
-    limit,
-    sort,
-    order,
-  }).toString();
+const getAllRoles = async (page = 1, limit = 6, sort = 'id', order = 'asc') => {
+  const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
     const response = await api.get(`/roles?${params}`);
     const totalCount = parseInt(response.headers['x-total-count']);
@@ -61,7 +46,7 @@ const getRoleById = async (roleId) => {
   return response.data;
 };
 
-const createRole = async ({ title, description = '', permissions = [] }) => {
+const createRole = async (title, description = '', permissions = []) => {
   const response = await api.post('/roles', {
     title,
     description,
@@ -70,7 +55,7 @@ const createRole = async ({ title, description = '', permissions = [] }) => {
   return response.data;
 };
 
-const updateRole = async (roleId, { title, description, permissions }) => {
+const updateRole = async (roleId, title, description, permissions) => {
   const response = await api.patch(`/roles/${roleId}`, {
     title,
     description,

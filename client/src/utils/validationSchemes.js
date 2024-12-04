@@ -83,13 +83,11 @@ const PURCHASE_VALIDATION_SCHEME = yup.object().shape({
 
 const PRODUCT_VALIDATION_SCHEME = yup.object().shape({
   title: TITLE_NAME_REQUIRED_SCHEME,
-  description: STRING_NULLABLE_SCHEME,
   category: STRING_NULLABLE_SCHEME,
 });
 
 const CATEGORY_VALIDATION_SCHEME = yup.object().shape({
   title: TITLE_NAME_REQUIRED_SCHEME,
-  description: STRING_NULLABLE_SCHEME,
 });
 
 const SHOP_VALIDATION_SCHEME = yup.object().shape({

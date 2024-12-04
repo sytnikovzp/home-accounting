@@ -1,17 +1,12 @@
 import api from '../api';
 
-const getAllMeasures = async ({
+const getAllMeasures = async (
   page = 1,
   limit = 6,
   sort = 'id',
-  order = 'asc',
-} = {}) => {
-  const params = new URLSearchParams({
-    page,
-    limit,
-    sort,
-    order,
-  }).toString();
+  order = 'asc'
+) => {
+  const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
     const response = await api.get(`/measures?${params}`);
     const totalCount = parseInt(response.headers['x-total-count']);

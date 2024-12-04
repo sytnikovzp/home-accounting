@@ -86,7 +86,7 @@ function CategoryViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Person color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Автор:</strong>{' '}
+                  <strong>Автор: </strong>
                   <Link
                     href={`/users/${creatorId}`}
                     color='primary'
@@ -96,19 +96,21 @@ function CategoryViewPage({ handleModalClose }) {
                   </Link>
                 </Typography>
               </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Person color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Модератор:</strong>{' '}
-                  <Link
-                    href={`/users/${moderatorId}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {moderatorFullName}
-                  </Link>
-                </Typography>
-              </Box>
+              {moderatorFullName && (
+                <Box sx={stylesRowContainerStyles}>
+                  <Person color='primary' />
+                  <Typography variant='body1' sx={stylesViewTextStyles}>
+                    <strong>Модератор: </strong>
+                    <Link
+                      href={`/users/${moderatorId}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {moderatorFullName}
+                    </Link>
+                  </Typography>
+                </Box>
+              )}
               <Box sx={stylesRowContainerStyles}>
                 <CalendarToday color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>

@@ -1,19 +1,19 @@
 import api from '../api';
 
-const getAllShops = async ({
+const getAllShops = async (
   status = 'approved',
   page = 1,
   limit = 6,
   sort = 'id',
-  order = 'asc',
-} = {}) => {
-  const params = new URLSearchParams({
+  order = 'asc'
+) => {
+  const params = new URLSearchParams(
     status,
     page,
     limit,
     sort,
-    order,
-  }).toString();
+    order
+  ).toString();
   try {
     const response = await api.get(`/shops?${params}`);
     const totalCount = parseInt(response.headers['x-total-count']);
@@ -35,12 +35,12 @@ const getShopById = async (shopId) => {
   return response.data;
 };
 
-const createShop = async ({ title, description = '', url = '' }) => {
+const createShop = async (title, description = '', url = '') => {
   const response = await api.post('/shops', { title, description, url });
   return response.data;
 };
 
-const updateShop = async (shopId, { title, description, url }) => {
+const updateShop = async (shopId, title, description, url) => {
   const response = await api.patch(`/shops/${shopId}`, {
     title,
     description,

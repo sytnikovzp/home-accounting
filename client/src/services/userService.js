@@ -38,7 +38,7 @@ const getUserById = async (userId) => {
   return response.data;
 };
 
-const updateUser = async (userId, { fullName, password, role }) => {
+const updateUser = async (userId, fullName, password, role) => {
   const response = await api.patch(`/users/${userId}`, {
     fullName,
     password,

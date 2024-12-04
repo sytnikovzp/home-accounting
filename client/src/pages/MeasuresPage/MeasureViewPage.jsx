@@ -28,8 +28,6 @@ function MeasureViewPage({ handleModalClose }) {
     fetchEntityById,
   } = useFetchEntity('Measure');
 
-  console.log(measureToCRUD);
-
   useEffect(() => {
     if (id) fetchEntityById(id);
   }, [id, fetchEntityById]);
@@ -70,7 +68,7 @@ function MeasureViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Person color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Автор:</strong>{' '}
+                  <strong>Автор:</strong>
                   <Link
                     href={`/users/${creatorId}`}
                     color='primary'

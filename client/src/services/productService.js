@@ -1,19 +1,19 @@
 import api from '../api';
 
-const getAllProducts = async ({
+const getAllProducts = async (
   status = 'approved',
   page = 1,
   limit = 6,
   sort = 'id',
-  order = 'asc',
-} = {}) => {
-  const params = new URLSearchParams({
+  order = 'asc'
+) => {
+  const params = new URLSearchParams(
     status,
     page,
     limit,
     sort,
-    order,
-  }).toString();
+    order
+  ).toString();
   try {
     const response = await api.get(`/products?${params}`);
     const totalCount = parseInt(response.headers['x-total-count']);
@@ -40,7 +40,7 @@ const createProduct = async (title, category = '') => {
   return response.data;
 };
 
-const updateProduct = async (productId, { title, category }) => {
+const updateProduct = async (productId, title, category) => {
   const response = await api.patch(`/products/${productId}`, {
     title,
     category,
