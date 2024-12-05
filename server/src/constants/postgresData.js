@@ -773,7 +773,7 @@ async function postgresData() {
       {
         title: 'Rozetka',
         url: 'https://rozetka.com.ua/',
-        logo: null,
+        logo: '1733358837502-Rozetka.png',
         description:
           'Найбільший інтернет-магазин в Україні для електроніки та побутових товарів',
         status: 'approved',
@@ -787,7 +787,7 @@ async function postgresData() {
       {
         title: 'Сільпо',
         url: 'https://silpo.ua/',
-        logo: null,
+        logo: '1733358841871-Silpo.png',
         description:
           'Популярна мережа супермаркетів в Україні, що пропонує широкий вибір продуктів та товарів',
         status: 'pending',
@@ -801,7 +801,7 @@ async function postgresData() {
       {
         title: 'Фокстрот',
         url: 'https://foxtrot.ua/',
-        logo: null,
+        logo: '1733358843327-Foxtrot.jpeg',
         description:
           'Провідний ритейлер електроніки та побутової техніки в Україні',
         status: 'pending',
@@ -815,7 +815,7 @@ async function postgresData() {
       {
         title: 'Метро',
         url: 'https://www.metro.ua/',
-        logo: null,
+        logo: '1733358844567-Metro.png',
         description:
           'Міжнародний оптовий магазин з великим вибором продуктів та товарів для бізнесу',
         status: 'rejected',
@@ -829,7 +829,7 @@ async function postgresData() {
       {
         title: 'Алло',
         url: 'https://allo.ua/',
-        logo: null,
+        logo: '1733358846085-Allo.png',
         description:
           'Один із популярних магазинів України для електроніки, гаджетів та побутових товарів',
         status: 'approved',
@@ -843,7 +843,7 @@ async function postgresData() {
       {
         title: 'Varus',
         url: 'https://varus.ua/',
-        logo: null,
+        logo: '1733358847810-Varus.jpeg',
         description:
           'Велика мережа продуктових магазинів в Україні з широким асортиментом товарів',
         status: 'approved',
@@ -857,7 +857,7 @@ async function postgresData() {
       {
         title: 'Ельдорадо',
         url: 'https://eldorado.ua/',
-        logo: null,
+        logo: '1733358849083-Eldorado.jpeg',
         description:
           'Добре відомий ритейлер електроніки та побутової техніки по всій Україні',
         status: 'rejected',

@@ -16,8 +16,11 @@ import {
   InputLabel,
   FormControl,
   Typography,
+  Avatar,
   useMediaQuery,
 } from '@mui/material';
+// ==============================================================
+import { BASE_URL } from '../../constants';
 // ==============================================================
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -70,7 +73,22 @@ const ListTable = ({
 
   const renderTableCell = (col, row, index) => (
     <TableCell key={col.field} align={col.align || 'center'} sx={cellStyle}>
-      {index === 1 ? (
+      {col.field === 'logo' ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Avatar
+            src={
+              row[col.field]
+                ? `${BASE_URL.replace('/api/', '')}/images/shops/${
+                    row[col.field]
+                  }`
+                : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
+            }
+            alt='Логотип магазину'
+            variant='rounded'
+            sx={{ width: 40, height: 40 }}
+          />
+        </Box>
+      ) : index === 1 ? (
         <RouterLink
           to={`/${linkEntity}/${row.id}`}
           style={{ textDecoration: 'none' }}

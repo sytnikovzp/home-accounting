@@ -26,11 +26,11 @@ import {
   stylesToolbar,
   stylesBoxLogoMobile,
   stylesHeaderTitleMobile,
-  stylesHeaderUserAvatar,
   stylesUserMenu,
 } from '../../styles/theme';
 // ==============================================================
 import { BASE_URL } from '../../constants';
+import { stringAvatar } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 // ==============================================================
 import NavBar from '../Navigation/NavBar';
@@ -120,7 +120,8 @@ function Header({
                     aria-expanded={openState.userAccount ? 'true' : undefined}
                   >
                     <Avatar
-                      alt={userProfile?.fullName || 'Користувач'}
+                      alt={userProfile.fullName}
+                      {...stringAvatar(userProfile.fullName)}
                       src={
                         userProfile?.photo
                           ? `${BASE_URL.replace('/api/', '')}/images/users/${
@@ -128,7 +129,6 @@ function Header({
                             }`
                           : undefined
                       }
-                      sx={stylesHeaderUserAvatar}
                     />
                   </IconButton>
                 </Tooltip>

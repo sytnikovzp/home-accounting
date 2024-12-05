@@ -28,7 +28,7 @@ const formatShopData = (shop) => ({
 class ShopService {
   async getAllShops(status, limit, offset, sort = 'id', order = 'asc') {
     const foundShops = await Shop.findAll({
-      attributes: ['id', 'title', 'url', 'logo'],
+      attributes: ['id', 'title', 'logo'],
       where: { status },
       order: [[sort, order]],
       raw: true,
@@ -38,10 +38,9 @@ class ShopService {
     if (!foundShops.length) throw notFound('Магазини не знайдені');
     const total = await Shop.count({ where: { status } });
     return {
-      allShops: foundShops.map(({ id, title, url, logo }) => ({
+      allShops: foundShops.map(({ id, title, logo }) => ({
         id,
         title,
-        url,
         logo,
       })),
       total,

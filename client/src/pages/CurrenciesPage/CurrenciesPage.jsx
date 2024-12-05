@@ -131,7 +131,7 @@ function CurrenciesPage() {
         columns={[
           { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва валюти', align: 'left' },
-          { field: 'description', headerName: 'Опис валюти', align: 'left' },
+          { field: 'description', headerName: 'Опис', align: 'left' },
         ]}
         rows={currencies}
         onEdit={(currency) => openModal('edit', currency.id)}

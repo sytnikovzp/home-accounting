@@ -159,7 +159,7 @@ function ProductsPage() {
         columns={[
           { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва товару', align: 'left' },
-          { field: 'category', headerName: 'Категорія товару', align: 'left' },
+          { field: 'category', headerName: 'Категорія', align: 'left' },
         ]}
         rows={products}
         onEdit={(product) => openModal('edit', product.id)}
