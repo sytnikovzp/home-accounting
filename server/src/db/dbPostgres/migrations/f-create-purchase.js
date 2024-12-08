@@ -63,6 +63,10 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
+      date: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
       creator_id: {
         type: Sequelize.STRING,
         allowNull: false,
