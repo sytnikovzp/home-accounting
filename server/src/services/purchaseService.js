@@ -9,6 +9,7 @@ const {
   formatDate,
   checkPermission,
   getRecordByTitle,
+  formatDateTime,
 } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
@@ -24,8 +25,8 @@ const formatPurchaseData = (purchase) => ({
   creation: {
     creatorId: purchase.creatorId,
     creatorFullName: purchase.creatorFullName,
-    createdAt: formatDate(purchase.createdAt),
-    updatedAt: formatDate(purchase.updatedAt),
+    createdAt: formatDateTime(purchase.createdAt),
+    updatedAt: formatDateTime(purchase.updatedAt),
   },
 });
 
@@ -74,30 +75,14 @@ class PurchaseService {
       allPurchases: foundPurchases.map(
         ({
           id,
-          amount,
-          price,
-          summ,
           'Product.title': productTitle,
           'Shop.title': shopTitle,
-          'Measure.title': measureTitle,
-          'Currency.title': currencyTitle,
-          creatorId,
-          creatorFullName,
           createdAt,
         }) => ({
           id,
           product: productTitle || '',
-          amount,
-          price,
-          summ,
           shop: shopTitle || '',
-          measure: measureTitle || '',
-          currency: currencyTitle || '',
-          creation: {
-            creatorId,
-            creatorFullName,
-            createdAt: formatDate(createdAt),
-          },
+          createdAt: formatDate(createdAt),
         })
       ),
       total,

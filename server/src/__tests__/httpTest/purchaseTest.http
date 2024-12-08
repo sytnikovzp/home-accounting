@@ -1,7 +1,7 @@
 ### Get list all purchases (default pagination, without sort)
 GET http://localhost:5000/api/purchases HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzNjI2NTE0LCJleHAiOjE3MzM2Mjc0MTR9.CA74ANg-G2JzDAliRWe9LXrZT4ctGU67ZxmUFz8dbP4
 
 ### Get list all purchases (custom pagination, without sort)
 GET http://localhost:5000/api/purchases?page=1&limit=10 HTTP/1.1
