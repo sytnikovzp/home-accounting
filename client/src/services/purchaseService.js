@@ -8,10 +8,10 @@ const getAllPurchases = async (
 ) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
-    const response = await api.get(`/purchases?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/purchases?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -24,8 +24,8 @@ const getAllPurchases = async (
 };
 
 const getPurchaseById = async (purchaseId) => {
-  const response = await api.get(`/purchases/${purchaseId}`);
-  return response.data;
+  const { data } = await api.get(`/purchases/${purchaseId}`);
+  return data;
 };
 
 const createPurchase = async (
@@ -36,7 +36,7 @@ const createPurchase = async (
   measure,
   currency
 ) => {
-  const response = await api.post('/purchases', {
+  const { data } = await api.post('/purchases', {
     product,
     amount,
     price,
@@ -44,7 +44,7 @@ const createPurchase = async (
     measure,
     currency,
   });
-  return response.data;
+  return data;
 };
 
 const updatePurchase = async (
@@ -56,7 +56,7 @@ const updatePurchase = async (
   measure,
   currency
 ) => {
-  const response = await api.patch(`/purchases/${purchaseId}`, {
+  const { data } = await api.patch(`/purchases/${purchaseId}`, {
     product,
     amount,
     price,
@@ -64,12 +64,12 @@ const updatePurchase = async (
     measure,
     currency,
   });
-  return response.data;
+  return data;
 };
 
 const deletePurchase = async (purchaseId) => {
-  const response = await api.delete(`/purchases/${purchaseId}`);
-  return response.data;
+  const { data } = await api.delete(`/purchases/${purchaseId}`);
+  return data;
 };
 
 export default {

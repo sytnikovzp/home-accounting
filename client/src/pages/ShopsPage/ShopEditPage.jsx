@@ -27,6 +27,7 @@ function ShopEditPage({
   }, [id, fetchEntityById]);
 
   const handleSubmitShop = async (values) => {
+    setCrudError(null);
     try {
       await restController.editShop(
         shopToCRUD.id,
@@ -38,7 +39,34 @@ function ShopEditPage({
       fetchShops();
     } catch (error) {
       setCrudError(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
+      );
+    }
+  };
+
+  const handleUploadLogo = async (file) => {
+    setCrudError(null);
+    try {
+      await restController.uploadShopLogo(shopToCRUD.id, file);
+      fetchEntityById(id);
+    } catch (error) {
+      setCrudError(
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження логотипу'
+      );
+    }
+  };
+
+  const handleRemoveLogo = async () => {
+    setCrudError(null);
+    try {
+      await restController.removeShopLogo(shopToCRUD.id);
+      fetchEntityById(id);
+    } catch (error) {
+      setCrudError(
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка видалення логотипу'
       );
     }
   };
@@ -53,7 +81,12 @@ function ShopEditPage({
         isLoading ? (
           <Preloader />
         ) : (
-          <ShopForm shop={shopToCRUD} onSubmit={handleSubmitShop} />
+          <ShopForm
+            shop={shopToCRUD}
+            onSubmit={handleSubmitShop}
+            onUploadLogo={handleUploadLogo}
+            onRemoveLogo={handleRemoveLogo}
+          />
         )
       }
       error={errorMessage || crudError}

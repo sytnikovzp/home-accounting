@@ -5,7 +5,7 @@ const {
   mapStatus,
   getRecordByTitle,
 } = require('../utils/sharedFunctions');
-const { notFound, badRequest, forbidden } = require('../errors/customErrors');
+const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatProductData = (product) => ({
   id: product.id,

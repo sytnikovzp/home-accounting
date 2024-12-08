@@ -27,13 +27,15 @@ function CategoryEditPage({
   }, [id, fetchEntityById]);
 
   const handleSubmitCategory = async (values) => {
+    setCrudError(null);
     try {
       await restController.editCategory(categoryToCRUD.id, values.title);
       handleModalClose();
       fetchCategories();
     } catch (error) {
       setCrudError(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
       );
     }
   };

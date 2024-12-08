@@ -10,13 +10,15 @@ function CurrencyAddPage({
   setCrudError,
 }) {
   const handleSubmitCurrency = async (values) => {
+    setCrudError(null);
     try {
       await restController.addCurrency(values.title, values.description);
       handleModalClose();
       fetchCurrencies();
     } catch (error) {
       setCrudError(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
       );
     }
   };

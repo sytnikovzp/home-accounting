@@ -13,6 +13,11 @@ module.exports = {
   STATIC: {
     PATH: process.env.STATIC_PATH,
   },
+  FILES: {
+    IMAGE_MIMETYPE: /^image\/(jpeg|png|gif)$/,
+    IMAGE_EXTENSIONS: ['jpg', 'jpeg', 'png', 'gif'],
+    MAX_FILE_SIZE: 5 * 1024 * 1024,
+  },
   CLIENT: {
     URL: process.env.CLIENT_URL,
   },

@@ -28,6 +28,7 @@ function ProductEditPage({
   }, [id, fetchEntityById]);
 
   const handleSubmitProduct = async (values) => {
+    setCrudError(null);
     try {
       await restController.editProduct(
         productToCRUD.id,
@@ -38,7 +39,8 @@ function ProductEditPage({
       fetchProducts();
     } catch (error) {
       setCrudError(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
       );
     }
   };

@@ -9,7 +9,7 @@ const {
 // ==============================================================
 const { generateTokens } = require('./tokenService');
 // ==============================================================
-const { badRequest, notFound, forbidden } = require('../errors/customErrors');
+const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 
 class UserService {
   async getAllUsers(limit, offset) {

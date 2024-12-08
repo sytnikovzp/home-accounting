@@ -8,10 +8,10 @@ const getAllPermissions = async (
 ) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
-    const response = await api.get(`/roles/permissions?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/roles/permissions?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -26,10 +26,10 @@ const getAllPermissions = async (
 const getAllRoles = async (page = 1, limit = 6, sort = 'id', order = 'asc') => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
-    const response = await api.get(`/roles?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/roles?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -42,31 +42,31 @@ const getAllRoles = async (page = 1, limit = 6, sort = 'id', order = 'asc') => {
 };
 
 const getRoleById = async (roleId) => {
-  const response = await api.get(`/roles/${roleId}`);
-  return response.data;
+  const { data } = await api.get(`/roles/${roleId}`);
+  return data;
 };
 
 const createRole = async (title, description = '', permissions = []) => {
-  const response = await api.post('/roles', {
+  const { data } = await api.post('/roles', {
     title,
     description,
     permissions,
   });
-  return response.data;
+  return data;
 };
 
 const updateRole = async (roleId, title, description, permissions) => {
-  const response = await api.patch(`/roles/${roleId}`, {
+  const { data } = await api.patch(`/roles/${roleId}`, {
     title,
     description,
     permissions,
   });
-  return response.data;
+  return data;
 };
 
 const deleteRole = async (roleId) => {
-  const response = await api.delete(`/roles/${roleId}`);
-  return response.data;
+  const { data } = await api.delete(`/roles/${roleId}`);
+  return data;
 };
 
 export default {

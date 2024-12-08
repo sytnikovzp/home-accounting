@@ -55,7 +55,8 @@ function CategoriesPage() {
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
       );
     } finally {
       setIsLoading(false);

@@ -4,7 +4,7 @@ const {
   checkPermission,
   mapStatus,
 } = require('../utils/sharedFunctions');
-const { notFound, badRequest, forbidden } = require('../errors/customErrors');
+const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatCategoryData = (category) => ({
   id: category.id,

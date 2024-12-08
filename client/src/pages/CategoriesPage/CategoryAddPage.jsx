@@ -10,13 +10,15 @@ function CategoryAddPage({
   setCrudError,
 }) {
   const handleSubmitCategory = async (values) => {
+    setCrudError(null);
     try {
       await restController.addCategory(values.title);
       handleModalClose();
       fetchCategories();
     } catch (error) {
       setCrudError(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
       );
     }
   };

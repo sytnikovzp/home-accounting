@@ -18,40 +18,22 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
 
   const navigate = useNavigate();
 
-  const errorMessages = {
-    login: 'Авторизація неуспішна. Перевірте облікові дані.',
-    registration: 'Реєстрація неуспішна. Спробуйте знову.',
-  };
-
   const handleAuth = useCallback(
     async (authMethod, ...args) => {
+      setErrorMessage(null);
       try {
-        setErrorMessage(null);
         await authMethod(...args);
         checkAuthentication();
         onClose();
         navigate('/');
       } catch (error) {
-        console.error(
-          `${
-            authMethod === restController.login ? 'Авторизація' : 'Реєстрація'
-          } неуспішна:`,
-          error.message
-        );
         setErrorMessage(
-          authMethod === restController.login
-            ? errorMessages.login
-            : errorMessages.registration
+          error.response?.data?.errors?.[0]?.message ||
+            'Помилка завантаження даних'
         );
       }
     },
-    [
-      checkAuthentication,
-      errorMessages.login,
-      errorMessages.registration,
-      navigate,
-      onClose,
-    ]
+    [checkAuthentication, navigate, onClose]
   );
 
   const toggleAuthMode = () => {

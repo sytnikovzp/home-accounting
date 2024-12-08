@@ -27,6 +27,7 @@ function CurrencyEditPage({
   }, [id, fetchEntityById]);
 
   const handleSubmitCurrency = async (values) => {
+    setCrudError(null);
     try {
       await restController.editCurrency(
         currencyToCRUD.id,
@@ -37,7 +38,8 @@ function CurrencyEditPage({
       fetchCurrencies();
     } catch (error) {
       setCrudError(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
       );
     }
   };

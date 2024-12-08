@@ -15,10 +15,10 @@ const getAllProducts = async (
     order
   ).toString();
   try {
-    const response = await api.get(`/products?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/products?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -31,33 +31,33 @@ const getAllProducts = async (
 };
 
 const getProductById = async (productId) => {
-  const response = await api.get(`/products/${productId}`);
-  return response.data;
+  const { data } = await api.get(`/products/${productId}`);
+  return data;
 };
 
 const createProduct = async (title, category = '') => {
-  const response = await api.post('/products', { title, category });
-  return response.data;
+  const { data } = await api.post('/products', { title, category });
+  return data;
 };
 
 const updateProduct = async (productId, title, category) => {
-  const response = await api.patch(`/products/${productId}`, {
+  const { data } = await api.patch(`/products/${productId}`, {
     title,
     category,
   });
-  return response.data;
+  return data;
 };
 
 const reviewProduct = async (productId, status) => {
-  const response = await api.patch(`/products/moderate/${productId}`, {
+  const { data } = await api.patch(`/products/moderate/${productId}`, {
     status,
   });
-  return response.data;
+  return data;
 };
 
 const deleteProduct = async (productId) => {
-  const response = await api.delete(`/products/${productId}`);
-  return response.data;
+  const { data } = await api.delete(`/products/${productId}`);
+  return data;
 };
 
 export default {

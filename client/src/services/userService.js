@@ -13,10 +13,10 @@ const getAllUsers = async ({
     order,
   }).toString();
   try {
-    const response = await api.get(`/users?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/users?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -29,43 +29,43 @@ const getAllUsers = async ({
 };
 
 const getUserProfile = async () => {
-  const response = await api.get('/users/profile');
-  return response.data;
+  const { data } = await api.get('/users/profile');
+  return data;
 };
 
 const getUserById = async (userId) => {
-  const response = await api.get(`/users/${userId}`);
-  return response.data;
+  const { data } = await api.get(`/users/${userId}`);
+  return data;
 };
 
 const updateUser = async (userId, fullName, password, role) => {
-  const response = await api.patch(`/users/${userId}`, {
+  const { data } = await api.patch(`/users/${userId}`, {
     fullName,
     password,
     role,
   });
-  return response.data;
+  return data;
 };
 
 const updateUserPhoto = async (userId, userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
-  const response = await api.patch(`/users/photo/${userId}`, formData, {
+  const { data } = await api.patch(`/users/photo/${userId}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
-  return response.data;
+  return data;
 };
 
 const removeUserPhoto = async (userId) => {
-  const response = await api.patch(`/users/delete-photo/${userId}`, {
+  const { data } = await api.patch(`/users/delete-photo/${userId}`, {
     photo: null,
   });
-  return response.data;
+  return data;
 };
 
 const deleteUser = async (userId) => {
-  const response = await api.delete(`/users/${userId}`);
-  return response.data;
+  const { data } = await api.delete(`/users/${userId}`);
+  return data;
 };
 
 export default {

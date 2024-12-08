@@ -15,10 +15,10 @@ const getAllShops = async (
     order
   ).toString();
   try {
-    const response = await api.get(`/shops?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/shops?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -31,50 +31,50 @@ const getAllShops = async (
 };
 
 const getShopById = async (shopId) => {
-  const response = await api.get(`/shops/${shopId}`);
-  return response.data;
+  const { data } = await api.get(`/shops/${shopId}`);
+  return data;
 };
 
 const createShop = async (title, description = '', url = '') => {
-  const response = await api.post('/shops', { title, description, url });
-  return response.data;
+  const { data } = await api.post('/shops', { title, description, url });
+  return data;
 };
 
 const updateShop = async (shopId, title, description, url) => {
-  const response = await api.patch(`/shops/${shopId}`, {
+  const { data } = await api.patch(`/shops/${shopId}`, {
     title,
     description,
     url,
   });
-  return response.data;
+  return data;
 };
 
 const updateShopLogo = async (shopId, shopLogo) => {
   const formData = new FormData();
   formData.append('shopLogo', shopLogo);
-  const response = await api.patch(`/shops/logo/${shopId}`, formData, {
+  const { data } = await api.patch(`/shops/logo/${shopId}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return response.data;
+  return data;
 };
 
 const removeShopLogo = async (shopId) => {
-  const response = await api.patch(`/shops/delete-logo/${shopId}`, {
+  const { data } = await api.patch(`/shops/delete-logo/${shopId}`, {
     logo: null,
   });
-  return response.data;
+  return data;
 };
 
 const reviewShop = async (shopId, status) => {
-  const response = await api.patch(`/shops/moderate/${shopId}`, { status });
-  return response.data;
+  const { data } = await api.patch(`/shops/moderate/${shopId}`, { status });
+  return data;
 };
 
 const deleteShop = async (shopId) => {
-  const response = await api.delete(`/shops/${shopId}`);
-  return response.data;
+  const { data } = await api.delete(`/shops/${shopId}`);
+  return data;
 };
 
 export default {

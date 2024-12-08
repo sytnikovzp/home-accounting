@@ -29,7 +29,7 @@ api.interceptors.response.use(
     const originalRequest = error.config;
     const token = getAccessToken();
     if (!token) {
-      return null;
+      return Promise.reject(error);
     }
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -42,6 +42,7 @@ api.interceptors.response.use(
           console.warn('Access token expired and refresh failed.');
           removeAccessToken();
         }
+        return Promise.reject(err);
       }
     }
     return Promise.reject(error);

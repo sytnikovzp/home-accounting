@@ -1,6 +1,6 @@
 const { Role, User, Permission } = require('../db/dbMongo/models');
 const { formatDateTime, checkPermission } = require('../utils/sharedFunctions');
-const { badRequest, notFound, forbidden } = require('../errors/customErrors');
+const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 
 class RoleService {
   async getAllPermissions(limit, offset) {

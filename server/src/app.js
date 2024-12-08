@@ -19,8 +19,10 @@ const {
 const {
   errorHandlers: {
     authErrorHandler,
+    generalErrorHandler,
     validationErrorHandler,
     sequelizeErrorHandler,
+    uploadErrorHandler,
     errorHandler,
   },
 } = require('./middlewares');
@@ -50,8 +52,10 @@ app.use('/api', router);
 
 app.use(
   authErrorHandler,
+  generalErrorHandler,
   validationErrorHandler,
   sequelizeErrorHandler,
+  uploadErrorHandler,
   errorHandler
 );
 

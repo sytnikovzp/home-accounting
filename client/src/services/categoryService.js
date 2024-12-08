@@ -15,10 +15,10 @@ const getAllCategories = async (
     order
   ).toString();
   try {
-    const response = await api.get(`/categories?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/categories?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -31,30 +31,30 @@ const getAllCategories = async (
 };
 
 const getCategoryById = async (categoryId) => {
-  const response = await api.get(`/categories/${categoryId}`);
-  return response.data;
+  const { data } = await api.get(`/categories/${categoryId}`);
+  return data;
 };
 
 const createCategory = async (title) => {
-  const response = await api.post('/categories', { title });
-  return response.data;
+  const { data } = await api.post('/categories', { title });
+  return data;
 };
 
 const updateCategory = async (categoryId, title) => {
-  const response = await api.patch(`/categories/${categoryId}`, { title });
-  return response.data;
+  const { data } = await api.patch(`/categories/${categoryId}`, { title });
+  return data;
 };
 
 const reviewCategory = async (categoryId, status) => {
-  const response = await api.patch(`/categories/moderate/${categoryId}`, {
+  const { data } = await api.patch(`/categories/moderate/${categoryId}`, {
     status,
   });
-  return response.data;
+  return data;
 };
 
 const deleteCategory = async (categoryId) => {
-  const response = await api.delete(`/categories/${categoryId}`);
-  return response.data;
+  const { data } = await api.delete(`/categories/${categoryId}`);
+  return data;
 };
 
 export default {

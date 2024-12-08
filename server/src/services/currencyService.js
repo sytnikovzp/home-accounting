@@ -1,6 +1,6 @@
 const { Currency } = require('../db/dbPostgres/models');
 const { formatDateTime, checkPermission } = require('../utils/sharedFunctions');
-const { notFound, badRequest, forbidden } = require('../errors/customErrors');
+const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatCurrencyData = (currency) => ({
   id: currency.id,

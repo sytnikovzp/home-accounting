@@ -27,6 +27,7 @@ function MeasureEditPage({
   }, [id, fetchEntityById]);
 
   const handleSubmitMeasure = async (values) => {
+    setCrudError(null);
     try {
       await restController.editMeasure(
         measureToCRUD.id,
@@ -37,7 +38,8 @@ function MeasureEditPage({
       fetchMeasures();
     } catch (error) {
       setCrudError(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
       );
     }
   };

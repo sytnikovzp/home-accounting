@@ -1,6 +1,6 @@
 const { Measure } = require('../db/dbPostgres/models');
 const { formatDateTime, checkPermission } = require('../utils/sharedFunctions');
-const { notFound, badRequest, forbidden } = require('../errors/customErrors');
+const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatMeasureData = (measure) => ({
   id: measure.id,

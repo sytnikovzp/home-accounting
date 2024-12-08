@@ -10,7 +10,7 @@ const {
 // ==============================================================
 const { User, Role } = require('../db/dbMongo/models');
 // ==============================================================
-const { notFound } = require('../errors/customErrors');
+const { notFound } = require('../errors/generalErrors');
 
 const hashPassword = async function (password) {
   return await bcrypt.hash(password, SALT_ROUNDS);

@@ -3,10 +3,10 @@ import axios from 'axios';
 import api from '../api';
 
 const getNBURates = async () => {
-  const response = await axios.get(
+  const { data } = await axios.get(
     'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json'
   );
-  return response.data;
+  return data;
 };
 
 const getAllCurrencies = async (
@@ -17,10 +17,10 @@ const getAllCurrencies = async (
 ) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
-    const response = await api.get(`/currencies?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/currencies?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -33,29 +33,29 @@ const getAllCurrencies = async (
 };
 
 const getCurrencyById = async (currencyId) => {
-  const response = await api.get(`/currencies/${currencyId}`);
-  return response.data;
+  const { data } = await api.get(`/currencies/${currencyId}`);
+  return data;
 };
 
 const createCurrency = async (title, description) => {
-  const response = await api.post('/currencies', {
+  const { data } = await api.post('/currencies', {
     title,
     description,
   });
-  return response.data;
+  return data;
 };
 
 const updateCurrency = async (currencyId, title, description) => {
-  const response = await api.patch(`/currencies/${currencyId}`, {
+  const { data } = await api.patch(`/currencies/${currencyId}`, {
     title,
     description,
   });
-  return response.data;
+  return data;
 };
 
 const deleteCurrency = async (currencyId) => {
-  const response = await api.delete(`/currencies/${currencyId}`);
-  return response.data;
+  const { data } = await api.delete(`/currencies/${currencyId}`);
+  return data;
 };
 
 export default {

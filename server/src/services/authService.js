@@ -7,7 +7,7 @@ const { hashPassword, emailToLowerCase } = require('../utils/sharedFunctions');
 const { generateTokens, validateRefreshToken } = require('./tokenService');
 // ==============================================================
 const { unAuthorizedError } = require('../errors/authErrors');
-const { badRequest, notFound } = require('../errors/customErrors');
+const { badRequest, notFound } = require('../errors/generalErrors');
 
 class AuthService {
   async registration(fullName, email, password) {

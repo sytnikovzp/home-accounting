@@ -10,13 +10,15 @@ function MeasureAddPage({
   setCrudError,
 }) {
   const handleSubmitMeasure = async (values) => {
+    setCrudError(null);
     try {
       await restController.addMeasure(values.title, values.description);
       handleModalClose();
       fetchMeasures();
     } catch (error) {
       setCrudError(
-        error.response?.data?.errors?.[0]?.title || 'Помилка завантаження даних'
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
       );
     }
   };

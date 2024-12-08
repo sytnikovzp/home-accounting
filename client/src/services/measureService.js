@@ -8,10 +8,10 @@ const getAllMeasures = async (
 ) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
-    const response = await api.get(`/measures?${params}`);
-    const totalCount = parseInt(response.headers['x-total-count']);
+    const { data, headers } = await api.get(`/measures?${params}`);
+    const totalCount = parseInt(headers['x-total-count']);
     return {
-      data: response.data,
+      data,
       totalCount,
     };
   } catch (error) {
@@ -24,26 +24,26 @@ const getAllMeasures = async (
 };
 
 const getMeasureById = async (measureId) => {
-  const response = await api.get(`/measures/${measureId}`);
-  return response.data;
+  const { data } = await api.get(`/measures/${measureId}`);
+  return data;
 };
 
 const createMeasure = async (title, description = '') => {
-  const response = await api.post('/measures', { title, description });
-  return response.data;
+  const { data } = await api.post('/measures', { title, description });
+  return data;
 };
 
 const updateMeasure = async (measureId, title, description) => {
-  const response = await api.patch(`/measures/${measureId}`, {
+  const { data } = await api.patch(`/measures/${measureId}`, {
     title,
     description,
   });
-  return response.data;
+  return data;
 };
 
 const deleteMeasure = async (measureId) => {
-  const response = await api.delete(`/measures/${measureId}`);
-  return response.data;
+  const { data } = await api.delete(`/measures/${measureId}`);
+  return data;
 };
 
 export default {
