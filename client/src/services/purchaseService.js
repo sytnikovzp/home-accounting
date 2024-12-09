@@ -34,7 +34,8 @@ const createPurchase = async (
   price,
   shop,
   measure,
-  currency
+  currency,
+  date
 ) => {
   const { data } = await api.post('/purchases', {
     product,
@@ -43,6 +44,7 @@ const createPurchase = async (
     shop,
     measure,
     currency,
+    date,
   });
   return data;
 };
@@ -54,7 +56,8 @@ const updatePurchase = async (
   price,
   shop,
   measure,
-  currency
+  currency,
+  date
 ) => {
   const { data } = await api.patch(`/purchases/${purchaseId}`, {
     product,
@@ -63,6 +66,7 @@ const updatePurchase = async (
     shop,
     measure,
     currency,
+    date,
   });
   return data;
 };

@@ -1,3 +1,6 @@
+const { parse } = require('date-fns');
+const { uk } = require('date-fns/locale');
+// ==============================================================
 const {
   Purchase,
   Product,
@@ -36,41 +39,15 @@ class PurchaseService {
     const sortableFields = {
       product: [Product, 'title'],
       shop: [Shop, 'title'],
-      measure: [Measure, 'title'],
-      currency: [Currency, 'title'],
     };
     const orderConfig = sortableFields[sort]
       ? [...sortableFields[sort], order]
-      : [
-          [
-            'id',
-            'amount',
-            'price',
-            'summ',
-            'creatorId',
-            'createdAt',
-            'date',
-          ].includes(sort)
-            ? sort
-            : `Purchase.${sort}`,
-          order,
-        ];
+      : [['id', 'date'].includes(sort) ? sort : `Purchase.${sort}`, order];
     const foundPurchases = await Purchase.findAll({
-      attributes: [
-        'id',
-        'amount',
-        'price',
-        'summ',
-        'creatorId',
-        'creatorFullName',
-        'createdAt',
-        'date',
-      ],
+      attributes: ['id', 'date'],
       include: [
         { model: Product, attributes: ['title'] },
         { model: Shop, attributes: ['title'] },
-        { model: Measure, attributes: ['title'] },
-        { model: Currency, attributes: ['title'] },
       ],
       order: [orderConfig],
       raw: true,
@@ -120,6 +97,7 @@ class PurchaseService {
     shop,
     measure,
     currency,
+    dateValue,
     currentUser,
     transaction
   ) {
@@ -137,6 +115,15 @@ class PurchaseService {
     const amount = parseFloat(amountValue) || 0;
     const price = parseFloat(priceValue) || 0;
     const summ = amount * price || 0;
+    let date = dateValue;
+    if (dateValue) {
+      try {
+        date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
+        if (isNaN(date)) throw new Error();
+      } catch {
+        throw badRequest('Невірний формат дати');
+      }
+    }
     const newPurchase = await Purchase.create(
       {
         productId: foundProduct.id,
@@ -146,6 +133,7 @@ class PurchaseService {
         shopId: foundShop.id,
         measureId: foundMeasure.id,
         currencyId: foundCurrency.id,
+        date,
         creatorId: currentUser.id.toString(),
         creatorFullName: currentUser.fullName,
       },
@@ -161,11 +149,12 @@ class PurchaseService {
       shop: foundShop.title,
       measure: foundMeasure.title,
       currency: foundCurrency.title,
+      date: formatDate(newPurchase.date),
       creation: {
         creatorId: newPurchase.creatorId,
         creatorFullName: newPurchase.creatorFullName,
-        createdAt: formatDate(newPurchase.createdAt),
-        updatedAt: formatDate(newPurchase.updatedAt),
+        createdAt: formatDateTime(newPurchase.createdAt),
+        updatedAt: formatDateTime(newPurchase.updatedAt),
       },
     };
   }
@@ -178,6 +167,7 @@ class PurchaseService {
     shop,
     measure,
     currency,
+    dateValue,
     currentUser,
     transaction
   ) {
@@ -201,6 +191,15 @@ class PurchaseService {
       ? parseFloat(priceValue) || 0
       : foundPurchase.price;
     const summ = amount * price || 0;
+    let date = foundPurchase.date;
+    if (dateValue) {
+      try {
+        date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
+        if (isNaN(date)) throw new Error();
+      } catch {
+        throw badRequest('Невірний формат дати');
+      }
+    }
     const [affectedRows, [updatedPurchase]] = await Purchase.update(
       {
         productId: foundProduct.id,
@@ -210,6 +209,7 @@ class PurchaseService {
         shopId: foundShop.id,
         measureId: foundMeasure.id,
         currencyId: foundCurrency.id,
+        date,
       },
       { where: { id }, returning: true, transaction }
     );
@@ -223,11 +223,12 @@ class PurchaseService {
       shop: foundShop.title,
       measure: foundMeasure.title,
       currency: foundCurrency.title,
+      date: formatDate(updatedPurchase.date),
       creation: {
         creatorId: updatedPurchase.creatorId,
         creatorFullName: updatedPurchase.creatorFullName,
-        createdAt: formatDate(updatedPurchase.createdAt),
-        updatedAt: formatDate(updatedPurchase.updatedAt),
+        createdAt: formatDateTime(updatedPurchase.createdAt),
+        updatedAt: formatDateTime(updatedPurchase.updatedAt),
       },
     };
   }

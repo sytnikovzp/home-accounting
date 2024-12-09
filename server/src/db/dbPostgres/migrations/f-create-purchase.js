@@ -64,7 +64,7 @@ module.exports = {
         onUpdate: 'CASCADE',
       },
       date: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false,
       },
       creator_id: {

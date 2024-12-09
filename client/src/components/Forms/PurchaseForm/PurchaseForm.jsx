@@ -33,7 +33,7 @@ function PurchaseForm({
   const fields = [
     {
       name: 'product',
-      label: 'Товар *',
+      label: 'Товар',
       type: 'select',
       options: [
         { value: '', label: 'Оберіть товар:' },
@@ -60,7 +60,7 @@ function PurchaseForm({
     },
     {
       name: 'shop',
-      label: 'Магазин *',
+      label: 'Магазин',
       type: 'select',
       options: [
         { value: '', label: 'Оберіть магазин:' },
@@ -74,7 +74,7 @@ function PurchaseForm({
     },
     {
       name: 'measure',
-      label: 'Одиниця вимірювань *',
+      label: 'Одиниця вимірювань',
       type: 'select',
       options: [
         { value: '', label: 'Оберіть одиницю:' },
@@ -88,7 +88,7 @@ function PurchaseForm({
     },
     {
       name: 'currency',
-      label: 'Валюта *',
+      label: 'Валюта',
       type: 'select',
       options: [
         { value: '', label: 'Оберіть валюту:' },
@@ -102,6 +102,7 @@ function PurchaseForm({
     },
     {
       name: 'date',
+      type: 'date',
       label: 'Дата покупки',
       placeholder: 'Наприклад "02 грудня 2024"',
       required: true,

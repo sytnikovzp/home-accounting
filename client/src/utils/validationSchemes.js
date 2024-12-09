@@ -1,4 +1,16 @@
 import * as yup from 'yup';
+import { parse, isValid } from 'date-fns';
+import { uk } from 'date-fns/locale';
+
+const parseDateString = (value, originalValue) => {
+  if (typeof originalValue === 'string') {
+    const parsedDate = parse(originalValue, 'dd MMMM yyyy', new Date(), {
+      locale: uk,
+    });
+    return isValid(parsedDate) ? parsedDate : new Date('');
+  }
+  return originalValue;
+};
 
 const TITLE_NAME_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
@@ -35,6 +47,13 @@ const STATUS_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
   .oneOf(['approved', 'rejected'], 'Неприпустиме значення для статусу')
   .required('Це поле є обовʼязкове');
+
+const DATE_SCHEME = yup
+  .date()
+  .transform(parseDateString)
+  .required('Оберіть дату')
+  .typeError('Некоректний формат дати')
+  .max(new Date(), 'Дата не може бути у майбутньому');
 
 const PAGINATION_SCHEME = yup.object().shape({
   limit: yup.number().min(1).max(500).required(),
@@ -78,6 +97,7 @@ const PURCHASE_VALIDATION_SCHEME = yup.object().shape({
   shop: TITLE_NAME_REQUIRED_SCHEME,
   measure: TITLE_NAME_REQUIRED_SCHEME,
   currency: TITLE_NAME_REQUIRED_SCHEME,
+  date: DATE_SCHEME,
 });
 
 const PRODUCT_VALIDATION_SCHEME = yup.object().shape({
