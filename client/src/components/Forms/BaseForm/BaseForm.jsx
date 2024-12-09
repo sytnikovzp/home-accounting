@@ -11,32 +11,91 @@ function BaseForm({
   submitButtonText,
   customActions,
   generalError,
+  layout,
 }) {
   const renderForm = ({ errors, touched, isValid, isSubmitting }) => (
     <Form>
       <Box sx={{ mt: 2 }}>
-        {fields.map(
-          ({
-            name,
-            label,
-            placeholder,
-            required,
-            autoFocus,
-            type,
-            options,
-          }) => (
-            <FormField
-              key={name}
-              name={name}
-              label={label}
-              placeholder={placeholder}
-              required={required}
-              autoFocus={autoFocus}
-              type={type}
-              options={options}
-              error={errors[name]}
-              touched={touched[name]}
-            />
+        {layout === 'purchase' ? (
+          <>
+            <Box sx={{ mb: 2 }}>
+              <FormField
+                {...fields.find((field) => field.name === 'product')}
+                error={errors['product']}
+                touched={touched['product']}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Box sx={{ flex: 1 }}>
+                <FormField
+                  {...fields.find((field) => field.name === 'amount')}
+                  error={errors['amount']}
+                  touched={touched['amount']}
+                />
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <FormField
+                  {...fields.find((field) => field.name === 'measure')}
+                  error={errors['measure']}
+                  touched={touched['measure']}
+                />
+              </Box>
+            </Box>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Box sx={{ flex: 1 }}>
+                <FormField
+                  {...fields.find((field) => field.name === 'price')}
+                  error={errors['price']}
+                  touched={touched['price']}
+                />
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <FormField
+                  {...fields.find((field) => field.name === 'currency')}
+                  error={errors['currency']}
+                  touched={touched['currency']}
+                />
+              </Box>
+            </Box>
+            <Box sx={{ mb: 2 }}>
+              <FormField
+                {...fields.find((field) => field.name === 'shop')}
+                error={errors['shop']}
+                touched={touched['shop']}
+              />
+            </Box>
+            <Box sx={{ mb: 2 }}>
+              <FormField
+                {...fields.find((field) => field.name === 'date')}
+                error={errors['date']}
+                touched={touched['date']}
+              />
+            </Box>
+          </>
+        ) : (
+          fields.map(
+            ({
+              name,
+              label,
+              placeholder,
+              required,
+              autoFocus,
+              type,
+              options,
+            }) => (
+              <FormField
+                key={name}
+                name={name}
+                label={label}
+                placeholder={placeholder}
+                required={required}
+                autoFocus={autoFocus}
+                type={type}
+                options={options}
+                error={errors[name]}
+                touched={touched[name]}
+              />
+            )
           )
         )}
       </Box>
@@ -60,6 +119,7 @@ function BaseForm({
       </Box>
     </Form>
   );
+
   return (
     <Formik
       initialValues={initialValues}

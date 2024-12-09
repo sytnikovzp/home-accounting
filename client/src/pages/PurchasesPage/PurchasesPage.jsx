@@ -29,10 +29,7 @@ function PurchasesPage() {
   const [measures, setMeasures] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [sortModel, setSortModel] = useState({
-    field: 'createdAt',
-    order: 'desc',
-  });
+  const [sortModel, setSortModel] = useState({ field: 'date', order: 'desc' });
   const [crudError, setCrudError] = useState(null);
 
   const handleModalClose = () => {
@@ -75,11 +72,8 @@ function PurchasesPage() {
         page: 1,
         limit: 500,
       };
-      const { data, totalCount } = await restController.fetchAllProducts(
-        params
-      );
+      const { data } = await restController.fetchAllProducts(params);
       setProducts(data);
-      setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
@@ -97,9 +91,8 @@ function PurchasesPage() {
         page: 1,
         limit: 500,
       };
-      const { data, totalCount } = await restController.fetchAllShops(params);
+      const { data } = await restController.fetchAllShops(params);
       setShops(data);
-      setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
@@ -117,11 +110,8 @@ function PurchasesPage() {
         page: 1,
         limit: 500,
       };
-      const { data, totalCount } = await restController.fetchAllMeasures(
-        params
-      );
+      const { data } = await restController.fetchAllMeasures(params);
       setMeasures(data);
-      setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
@@ -139,11 +129,8 @@ function PurchasesPage() {
         page: 1,
         limit: 500,
       };
-      const { data, totalCount } = await restController.fetchAllCurrencies(
-        params
-      );
+      const { data } = await restController.fetchAllCurrencies(params);
       setCurrencies(data);
-      setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
@@ -245,7 +232,7 @@ function PurchasesPage() {
           { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'product', headerName: 'Товар', align: 'left' },
           { field: 'shop', headerName: 'Магазин', align: 'left' },
-          { field: 'createdAt', headerName: 'Дата', align: 'left' },
+          { field: 'date', headerName: 'Дата', align: 'left' },
         ]}
         rows={purchases}
         onEdit={(purchase) => openModal('edit', purchase.id)}

@@ -230,6 +230,7 @@ export const stylesTableRow = {
 };
 
 export const stylesTableTypography = {
+  fontSize: '0.875rem',
   color: 'common.black',
   padding: '5px 10px',
   borderRadius: '5px',

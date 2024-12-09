@@ -22,6 +22,7 @@ const formatPurchaseData = (purchase) => ({
   shop: purchase.Shop?.title || '',
   measure: purchase.Measure?.title || '',
   currency: purchase.Currency?.title || '',
+  date: formatDate(purchase.date),
   creation: {
     creatorId: purchase.creatorId,
     creatorFullName: purchase.creatorFullName,
@@ -41,9 +42,15 @@ class PurchaseService {
     const orderConfig = sortableFields[sort]
       ? [...sortableFields[sort], order]
       : [
-          ['id', 'amount', 'price', 'summ', 'creatorId', 'createdAt'].includes(
-            sort
-          )
+          [
+            'id',
+            'amount',
+            'price',
+            'summ',
+            'creatorId',
+            'createdAt',
+            'date',
+          ].includes(sort)
             ? sort
             : `Purchase.${sort}`,
           order,
@@ -57,6 +64,7 @@ class PurchaseService {
         'creatorId',
         'creatorFullName',
         'createdAt',
+        'date',
       ],
       include: [
         { model: Product, attributes: ['title'] },
@@ -77,12 +85,12 @@ class PurchaseService {
           id,
           'Product.title': productTitle,
           'Shop.title': shopTitle,
-          createdAt,
+          date,
         }) => ({
           id,
           product: productTitle || '',
           shop: shopTitle || '',
-          createdAt: formatDate(createdAt),
+          date: formatDate(date),
         })
       ),
       total,

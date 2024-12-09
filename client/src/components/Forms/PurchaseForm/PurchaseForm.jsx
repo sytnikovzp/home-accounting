@@ -18,6 +18,7 @@ function PurchaseForm({
         shop: purchase.shop,
         measure: purchase.measure,
         currency: purchase.currency,
+        date: purchase.date,
       }
     : {
         product: '',
@@ -26,6 +27,7 @@ function PurchaseForm({
         shop: '',
         measure: '',
         currency: '',
+        date: '',
       };
 
   const fields = [
@@ -98,6 +100,12 @@ function PurchaseForm({
       placeholder: 'Наприклад "UAH"',
       required: true,
     },
+    {
+      name: 'date',
+      label: 'Дата покупки',
+      placeholder: 'Наприклад "02 грудня 2024"',
+      required: true,
+    },
   ];
 
   return (
@@ -107,6 +115,7 @@ function PurchaseForm({
       onSubmit={onSubmit}
       fields={fields}
       submitButtonText={purchase ? 'Зберегти зміни' : 'Додати покупку'}
+      layout='purchase'
     />
   );
 }

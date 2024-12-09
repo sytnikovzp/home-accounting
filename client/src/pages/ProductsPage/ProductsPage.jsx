@@ -71,11 +71,8 @@ function ProductsPage() {
         page: 1,
         limit: 500,
       };
-      const { data, totalCount } = await restController.fetchAllCategories(
-        params
-      );
+      const { data } = await restController.fetchAllCategories(params);
       setCategories(data);
-      setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||

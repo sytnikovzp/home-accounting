@@ -10,6 +10,7 @@ import {
   ShoppingCart,
   AttachMoney,
   Store,
+  Shop,
 } from '@mui/icons-material';
 // ==============================================================
 import {
@@ -44,6 +45,7 @@ function PurchaseViewPage({ handleModalClose }) {
     shop,
     measure,
     currency,
+    date,
     creation,
   } = purchaseToCRUD || {};
   const { creatorId, creatorFullName, createdAt, updatedAt } = creation || {};
@@ -107,6 +109,12 @@ function PurchaseViewPage({ handleModalClose }) {
                   >
                     {creatorFullName}
                   </Link>
+                </Typography>
+              </Box>
+              <Box sx={stylesRowContainerStyles}>
+                <Shop color='primary' />
+                <Typography variant='body1' sx={stylesViewTextStyles}>
+                  <strong>Дата покупки:</strong> {date}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>

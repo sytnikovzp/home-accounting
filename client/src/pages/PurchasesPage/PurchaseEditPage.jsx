@@ -40,7 +40,8 @@ function PurchaseEditPage({
         values.price,
         values.shop,
         values.measure,
-        values.currency
+        values.currency,
+        values.date
       );
       handleModalClose();
       fetchPurchases();
