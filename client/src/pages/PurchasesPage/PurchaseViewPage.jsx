@@ -83,7 +83,7 @@ function PurchaseViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <AttachMoney color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Ціна:</strong> {price} {currency}
+                  <strong>Ціна за одиницю:</strong> {price} {currency}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>

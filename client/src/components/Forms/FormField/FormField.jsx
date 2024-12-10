@@ -11,6 +11,7 @@ import {
   FormControl,
   InputLabel,
   FormHelperText,
+  Autocomplete,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -50,6 +51,45 @@ function FormField({
             <FormHelperText>{touched && error ? error : ' '}</FormHelperText>
           </FormControl>
         )}
+      </Field>
+    );
+  }
+  if (type === 'autocomplete') {
+    return (
+      <Field name={name}>
+        {({ field, form }) => {
+          const flattenedOptions = Object.entries(options).flatMap(
+            ([group, items]) => items.map((item) => ({ ...item, group }))
+          );
+          const selectedOption = flattenedOptions.find(
+            (item) => item.value === field.value
+          );
+          return (
+            <Autocomplete
+              value={selectedOption || null}
+              options={flattenedOptions}
+              groupBy={(option) => option.group}
+              getOptionLabel={(option) => option.label}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
+              onChange={(event, value) => {
+                form.setFieldTouched(name, true);
+                form.setFieldValue(name, value?.value || '');
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={label}
+                  placeholder={placeholder}
+                  required={required}
+                  error={Boolean(touched && error)}
+                  helperText={touched && error ? error : ' '}
+                />
+              )}
+            />
+          );
+        }}
       </Field>
     );
   }

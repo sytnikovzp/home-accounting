@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+// ==============================================================
 import { PURCHASE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
@@ -30,18 +32,23 @@ function PurchaseForm({
         date: '',
       };
 
+  const groupedProducts = useMemo(() => {
+    return products
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .reduce((acc, product) => {
+        const firstLetter = product.title[0].toUpperCase();
+        if (!acc[firstLetter]) acc[firstLetter] = [];
+        acc[firstLetter].push({ label: product.title, value: product.title });
+        return acc;
+      }, {});
+  }, [products]);
+
   const fields = [
     {
       name: 'product',
       label: 'Товар',
-      type: 'select',
-      options: [
-        { value: '', label: 'Оберіть товар:' },
-        ...products.map((cat) => ({
-          value: cat.title,
-          label: cat.title,
-        })),
-      ],
+      type: 'autocomplete',
+      options: groupedProducts,
       placeholder: 'Наприклад "Помідори"',
       required: true,
       autoFocus: true,
