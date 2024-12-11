@@ -1,12 +1,22 @@
-### Get list all users (default pagination)
+### Get list all users (default pagination, without sort)
 GET http://localhost:5000/api/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzODg2OTkwLCJleHAiOjE3MzM4ODc4OTB9.HG_8qVKNMs2-1WPQNIybXkeBYCBgx5PhK-yrsb-W-98
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzODg4NDY1LCJleHAiOjE3MzM4ODkzNjV9.JgGyXlNSfhTypixaNfbkcCLjP9-P5I05WYjKkQc0xI4
 
-### Get list all users (custom pagination)
+### Get list all users (custom pagination, without sort)
 GET http://localhost:5000/api/users?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzODg2OTkwLCJleHAiOjE3MzM4ODc4OTB9.HG_8qVKNMs2-1WPQNIybXkeBYCBgx5PhK-yrsb-W-98
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzODg4NDY1LCJleHAiOjE3MzM4ODkzNjV9.JgGyXlNSfhTypixaNfbkcCLjP9-P5I05WYjKkQc0xI4
+
+### Get list all users (custom pagination, with sort by isActivated (asc))
+GET http://localhost:5000/api/users?sort=isActivated&order=asc&page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzODg4NDY1LCJleHAiOjE3MzM4ODkzNjV9.JgGyXlNSfhTypixaNfbkcCLjP9-P5I05WYjKkQc0xI4
+
+### Get list all users (custom pagination, with sort by _id (desc))
+GET http://localhost:5000/api/users?sort=_id&order=desc&page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzODg4NDY1LCJleHAiOjE3MzM4ODkzNjV9.JgGyXlNSfhTypixaNfbkcCLjP9-P5I05WYjKkQc0xI4
 
 ### Get current user profile
 GET http://localhost:5000/api/users/profile HTTP/1.1

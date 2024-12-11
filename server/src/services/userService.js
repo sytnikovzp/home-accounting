@@ -12,8 +12,13 @@ const { generateTokens } = require('./tokenService');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 
 class UserService {
-  async getAllUsers(limit, offset) {
-    const foundUsers = await User.find().limit(limit).skip(offset);
+  async getAllUsers(limit, offset, sort = '_id', order = 'asc') {
+    const sortOrder = order === 'asc' ? 1 : -1;
+    const sortOptions = { [sort]: sortOrder };
+    const foundUsers = await User.find()
+      .sort(sortOptions)
+      .limit(limit)
+      .skip(offset);
     if (foundUsers.length === 0) throw notFound('Користувачів не знайдено');
     const allUsers = await Promise.all(
       foundUsers.map(async (user) => {
@@ -22,7 +27,7 @@ class UserService {
           id: user._id,
           fullName: user.fullName,
           isActivated: user.isActivated,
-          role: role.title || '',
+          role: role ? role.title : '',
           photo: user.photo || '',
         };
       })
@@ -46,7 +51,7 @@ class UserService {
       id: foundUser._id,
       fullName: foundUser.fullName,
       isActivated: foundUser.isActivated,
-      role: role.title || '',
+      role: role ? role.title : '',
       photo: foundUser.photo || '',
     };
     const fullUserData = {
@@ -85,7 +90,7 @@ class UserService {
       id: foundUser._id,
       fullName: foundUser.fullName,
       isActivated: foundUser.isActivated,
-      role: role.title || '',
+      role: role ? role.title : '',
       photo: foundUser.photo || '',
       email: foundUser.email,
       createdAt: formatDateTime(foundUser.createdAt),
