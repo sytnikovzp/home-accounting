@@ -16,6 +16,12 @@ const usersSchema = new Schema(
       required: true,
     },
     photo: String,
+    isActivated: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    activationLink: String,
     roleId: { type: Schema.Types.ObjectId, ref: 'Role' },
   },
   {

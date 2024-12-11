@@ -1,9 +1,17 @@
 const bcrypt = require('bcrypt');
+const uuid = require('uuid');
+// ==============================================================
+const {
+  configs: {
+    SERVER: { HOST, PORT },
+  },
+} = require('../constants');
 // ==============================================================
 const { User, Role } = require('../db/dbMongo/models');
 // ==============================================================
 const { hashPassword, emailToLowerCase } = require('../utils/sharedFunctions');
 // ==============================================================
+const mailService = require('./mailService');
 const { generateTokens, validateRefreshToken } = require('./tokenService');
 // ==============================================================
 const { unAuthorizedError } = require('../errors/authErrors');
@@ -17,19 +25,26 @@ class AuthService {
     const foundRole = await Role.findOne({ title: 'User' });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const hashedPassword = await hashPassword(password);
+    const activationLink = uuid.v4();
     const user = await User.create({
       fullName,
       email: emailToLower,
       password: hashedPassword,
+      activationLink,
       roleId: foundRole._id,
     });
     if (!user) throw badRequest('Користувач не зареєстрований');
+    await mailService.sendActivationMail(
+      email,
+      `http://${HOST}:${PORT}/api/auth/activate/${activationLink}`
+    );
     const tokens = generateTokens({ email });
     return {
       ...tokens,
       user: {
         id: user._id,
         fullName: user.fullName,
+        isActivated: user.isActivated,
         role: foundRole.title || '',
         photo: user.photo || '',
       },
@@ -50,10 +65,19 @@ class AuthService {
       user: {
         id: user._id,
         fullName: user.fullName,
+        isActivated: user.isActivated,
         role: foundRole.title || '',
         photo: user.photo || '',
       },
     };
+  }
+
+  async activate(activationLink) {
+    const user = await User.findOne({ activationLink });
+    if (!user)
+      throw badRequest('Посилання для активації недійсне або не існує');
+    user.isActivated = true;
+    await user.save();
   }
 
   async refresh(refreshToken) {
@@ -72,6 +96,7 @@ class AuthService {
       user: {
         id: foundUser._id,
         fullName: foundUser.fullName,
+        isActivated: foundUser.isActivated,
         role: foundRole.title || '',
         photo: foundUser.photo || '',
       },

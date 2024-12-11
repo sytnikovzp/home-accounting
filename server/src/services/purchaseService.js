@@ -117,12 +117,8 @@ class PurchaseService {
     const summ = amount * price || 0;
     let date = dateValue;
     if (dateValue) {
-      try {
-        date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
-        if (isNaN(date)) throw new Error();
-      } catch {
-        throw badRequest('Невірний формат дати');
-      }
+      date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
+      if (isNaN(date)) throw badRequest('Невірний формат дати');
     }
     const newPurchase = await Purchase.create(
       {
@@ -193,12 +189,8 @@ class PurchaseService {
     const summ = amount * price || 0;
     let date = foundPurchase.date;
     if (dateValue) {
-      try {
-        date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
-        if (isNaN(date)) throw new Error();
-      } catch {
-        throw badRequest('Невірний формат дати');
-      }
+      date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
+      if (isNaN(date)) throw badRequest('Невірний формат дати');
     }
     const [affectedRows, [updatedPurchase]] = await Purchase.update(
       {

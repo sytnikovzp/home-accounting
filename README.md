@@ -19,6 +19,11 @@ SALT_ROUNDS=9
 STATIC_PATH=public
 CLIENT_URL=http://localhost:3000
 
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USER=projectpet7@gmail.com
+SMTP_PASSWORD="kzlp javu fwoq kszk"
+
 #For database
 DB_USER=postgres
 DB_PASS=root

@@ -1,7 +1,7 @@
 const {
   configs: {
     DATABASE: { MONGO_PORT, MONGO_DB_NAME, MONGO_DB_NAME_TEST },
-    SERVER_CONFIG: { HOST },
+    SERVER: { HOST },
   },
 } = require('../constants');
 

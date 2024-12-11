@@ -1,5 +1,17 @@
+const {
+  configs: {
+    CLIENT: { URL },
+  },
+} = require('../constants');
+// ==============================================================
+const {
+  registration,
+  login,
+  activate,
+  refresh,
+} = require('../services/authService');
+// ==============================================================
 const { setRefreshTokenCookie } = require('../utils/sharedFunctions');
-const { registration, login, refresh } = require('../services/authService');
 
 class AuthController {
   async registration(req, res, next) {
@@ -32,6 +44,17 @@ class AuthController {
       res.sendStatus(res.statusCode);
     } catch (error) {
       console.log('Logout error: ', error.message);
+      next(error);
+    }
+  }
+
+  async activate(req, res, next) {
+    try {
+      const activationLink = req.params.link;
+      await activate(activationLink);
+      return res.redirect(`${URL}`);
+    } catch (error) {
+      console.log('Activate account error: ', error.message);
       next(error);
     }
   }

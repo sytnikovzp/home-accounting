@@ -3,7 +3,7 @@ const { createServer } = require('http');
 // ==============================================================
 const {
   configs: {
-    SERVER_CONFIG: { HOST, PORT },
+    SERVER: { HOST, PORT },
     DATABASE: { DB_NAME },
   },
 } = require('./src/constants');

@@ -1,9 +1,9 @@
-const SERVER_CONFIG = {
+const SERVER = {
   HOST: import.meta.env.ACCOUNTING_SERVER_HOST,
   PORT: parseInt(import.meta.env.ACCOUNTING_SERVER_PORT),
 };
 
-const BASE_URL = `http://${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}/api/`;
+const BASE_URL = `http://${SERVER.HOST}:${SERVER.PORT}/api/`;
 
 const LOGIN_FORM_INITIAL = {
   email: '',

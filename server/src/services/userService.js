@@ -21,6 +21,7 @@ class UserService {
         return {
           id: user._id,
           fullName: user.fullName,
+          isActivated: user.isActivated,
           role: role.title || '',
           photo: user.photo || '',
         };
@@ -44,6 +45,7 @@ class UserService {
     const limitUserData = {
       id: foundUser._id,
       fullName: foundUser.fullName,
+      isActivated: foundUser.isActivated,
       role: role.title || '',
       photo: foundUser.photo || '',
     };
@@ -70,6 +72,7 @@ class UserService {
   }
 
   async getCurrentUser(email) {
+    if (!email) throw badRequest('Email відсутній');
     const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
     if (!foundUser) throw notFound('Користувача не знайдено');
@@ -81,6 +84,7 @@ class UserService {
     return {
       id: foundUser._id,
       fullName: foundUser.fullName,
+      isActivated: foundUser.isActivated,
       role: role.title || '',
       photo: foundUser.photo || '',
       email: foundUser.email,
@@ -148,6 +152,8 @@ class UserService {
       user: {
         id: updatedUser._id,
         fullName: updatedUser.fullName,
+        // isActivated: foundUser.isActivated,
+        isActivated: updatedUser.isActivated,
         role: role || (await Role.findById(foundUser.roleId)).title,
       },
     };

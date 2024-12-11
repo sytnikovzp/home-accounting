@@ -1,7 +1,7 @@
 const {
   configs: {
     DATABASE: { DB_USER, DB_PASS, DB_NAME, DB_NAME_TEST, DB_DIALECT },
-    SERVER_CONFIG: { HOST },
+    SERVER: { HOST },
   },
 } = require('../constants');
 

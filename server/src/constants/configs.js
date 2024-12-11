@@ -21,9 +21,15 @@ module.exports = {
   CLIENT: {
     URL: process.env.CLIENT_URL,
   },
-  SERVER_CONFIG: {
+  SERVER: {
     HOST: process.env.ACCOUNTING_SERVER_HOST,
     PORT: parseInt(process.env.ACCOUNTING_SERVER_PORT) || 5000,
+  },
+  SMTP: {
+    HOST: process.env.SMTP_HOST,
+    PORT: process.env.SMTP_PORT,
+    USER: process.env.SMTP_USER,
+    PASSWORD: process.env.SMTP_PASSWORD,
   },
   DATABASE: {
     DB_USER: process.env.DB_USER,
