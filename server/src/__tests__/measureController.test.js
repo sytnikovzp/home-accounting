@@ -7,13 +7,13 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { id: null, accessToken: null },
-  moderator: { id: null, accessToken: null },
-  admin: { id: null, accessToken: null },
+  user: { uuid: null, accessToken: null },
+  moderator: { uuid: null, accessToken: null },
+  admin: { uuid: null, accessToken: null },
 };
 
 describe('MeasureController', () => {
-  let measureId;
+  let measureUuid;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
@@ -22,10 +22,10 @@ describe('MeasureController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
-      authData.user.id = response.body.user.id;
+      authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -35,10 +35,10 @@ describe('MeasureController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
-      authData.moderator.id = response.body.user.id;
+      authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
 
@@ -48,10 +48,10 @@ describe('MeasureController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
-      authData.admin.id = response.body.user.id;
+      authData.admin.uuid = response.body.user.uuid;
       authData.admin.accessToken = response.body.accessToken;
     });
   });
@@ -94,10 +94,10 @@ describe('MeasureController', () => {
           description: '',
         });
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Нова одиниця вимірювання');
       expect(response.body.description).toBe('');
-      measureId = response.body.id;
+      measureUuid = response.body.uuid;
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -139,13 +139,13 @@ describe('MeasureController', () => {
     });
   });
 
-  describe('GET /api/measures/:measureId', () => {
+  describe('GET /api/measures/:measureUuid', () => {
     it('should get measure by id', async () => {
       const response = await request(app)
-        .get(`/api/measures/${measureId}`)
+        .get(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', measureId);
+      expect(response.body).toHaveProperty('uuid', measureUuid);
       expect(response.body.title).toBe('Нова одиниця вимірювання');
       expect(response.body.description).toBe('');
       expect(response.body.createdAt).toBeDefined();
@@ -163,22 +163,22 @@ describe('MeasureController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/measures/${measureId}`);
+      const response = await request(app).get(`/api/measures/${measureUuid}`);
       expect(response.status).toBe(401);
     });
   });
 
-  describe('PATCH /api/measures/:measureId', () => {
+  describe('PATCH /api/measures/:measureUuid', () => {
     it('should return 200 for current user having permission to edit measures', async () => {
       const response = await request(app)
-        .patch(`/api/measures/${measureId}`)
+        .patch(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва одиниці вимірювання',
           description: 'Оновлений опис одиниці вимірювання',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', measureId);
+      expect(response.body).toHaveProperty('uuid', measureUuid);
       expect(response.body.title).toBe('Оновлена назва одиниці вимірювання');
       expect(response.body.description).toBe(
         'Оновлений опис одиниці вимірювання'
@@ -187,7 +187,7 @@ describe('MeasureController', () => {
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .patch(`/api/measures/${measureId}`)
+        .patch(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'кг',
@@ -200,7 +200,7 @@ describe('MeasureController', () => {
 
     it('should return 403 for current user not having permission to edit measures', async () => {
       const response = await request(app)
-        .patch(`/api/measures/${measureId}`)
+        .patch(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           title: 'Оновлена назва одиниці вимірювання',
@@ -226,10 +226,10 @@ describe('MeasureController', () => {
     });
   });
 
-  describe('DELETE /api/measures/:measureId', () => {
+  describe('DELETE /api/measures/:measureUuid', () => {
     it('should return 403 for current user not having permission to delete measures', async () => {
       const response = await request(app)
-        .delete(`/api/measures/${measureId}`)
+        .delete(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -239,7 +239,7 @@ describe('MeasureController', () => {
 
     it('should return 200 for current user having permission to delete measures', async () => {
       const response = await request(app)
-        .delete(`/api/measures/${measureId}`)
+        .delete(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(200);
     });

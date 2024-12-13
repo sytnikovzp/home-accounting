@@ -20,20 +20,25 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
 function CurrencyViewPage({ handleModalClose }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: currencyToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Currency');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
-  const { id: currencyId, title, description, creation } = currencyToCRUD || {};
-  const { creatorId, creatorFullName, createdAt, updatedAt } = creation || {};
+  const {
+    uuid: currencyUuid,
+    title,
+    description,
+    creation,
+  } = currencyToCRUD || {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   return (
     <CustomModal
@@ -50,7 +55,7 @@ function CurrencyViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Info color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>ID:</strong> {currencyId}
+                  <strong>UUID:</strong> {currencyUuid}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
@@ -70,7 +75,7 @@ function CurrencyViewPage({ handleModalClose }) {
                 <Typography variant='body1' sx={stylesViewTextStyles}>
                   <strong>Автор:</strong>
                   <Link
-                    href={`/users/${creatorId}`}
+                    href={`/users/${creatorUuid}`}
                     color='primary'
                     underline='hover'
                   >

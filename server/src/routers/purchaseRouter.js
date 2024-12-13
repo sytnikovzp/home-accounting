@@ -2,7 +2,7 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllPurchases,
-  getPurchaseById,
+  getPurchaseByUuid,
   createPurchase,
   updatePurchase,
   deletePurchase,
@@ -21,8 +21,8 @@ purchaseRouter
   .post(authHandler, validatePurchase, createPurchase);
 
 purchaseRouter
-  .route('/:purchaseId')
-  .get(authHandler, getPurchaseById)
+  .route('/:purchaseUuid')
+  .get(authHandler, getPurchaseByUuid)
   .patch(authHandler, validatePurchase, updatePurchase)
   .delete(authHandler, deletePurchase);
 

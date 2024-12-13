@@ -20,20 +20,25 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
 function MeasureViewPage({ handleModalClose }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: measureToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Measure');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
-  const { id: measureId, title, description, creation } = measureToCRUD || {};
-  const { creatorId, creatorFullName, createdAt, updatedAt } = creation || {};
+  const {
+    uuid: measureUuid,
+    title,
+    description,
+    creation,
+  } = measureToCRUD || {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   return (
     <CustomModal
@@ -50,7 +55,7 @@ function MeasureViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Info color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>ID:</strong> {measureId}
+                  <strong>UUID:</strong> {measureUuid}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
@@ -70,7 +75,7 @@ function MeasureViewPage({ handleModalClose }) {
                 <Typography variant='body1' sx={stylesViewTextStyles}>
                   <strong>Автор:</strong>
                   <Link
-                    href={`/users/${creatorId}`}
+                    href={`/users/${creatorUuid}`}
                     color='primary'
                     underline='hover'
                   >

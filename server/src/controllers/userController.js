@@ -1,6 +1,6 @@
 const {
   getAllUsers,
-  getUserById,
+  getUserByUuid,
   getCurrentUser,
   updateUser,
   updateUserPhoto,
@@ -31,11 +31,11 @@ class UserController {
     }
   }
 
-  async getUserById(req, res, next) {
+  async getUserByUuid(req, res, next) {
     try {
-      const { userId } = req.params;
+      const { userUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const user = await getUserById(userId, currentUser);
+      const user = await getUserByUuid(userUuid, currentUser);
       if (user) {
         res.status(200).json(user);
       } else {
@@ -63,11 +63,11 @@ class UserController {
 
   async updateUser(req, res, next) {
     try {
-      const { userId } = req.params;
+      const { userUuid } = req.params;
       const { fullName, email, password, role } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedUser = await updateUser(
-        userId,
+        userUuid,
         fullName,
         email,
         password,
@@ -88,11 +88,15 @@ class UserController {
   async updateUserPhoto(req, res, next) {
     try {
       const {
-        params: { userId },
+        params: { userUuid },
         file: { filename },
       } = req;
       const currentUser = await getCurrentUser(req.user.email);
-      const updatedUser = await updateUserPhoto(userId, filename, currentUser);
+      const updatedUser = await updateUserPhoto(
+        userUuid,
+        filename,
+        currentUser
+      );
       if (updatedUser) {
         res.status(200).json(updatedUser);
       } else {
@@ -106,9 +110,9 @@ class UserController {
 
   async removeUserPhoto(req, res, next) {
     try {
-      const { userId } = req.params;
+      const { userUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const updatedUser = await removeUserPhoto(userId, currentUser);
+      const updatedUser = await removeUserPhoto(userUuid, currentUser);
       if (updatedUser) {
         res.status(200).json(updatedUser);
       } else {
@@ -122,9 +126,9 @@ class UserController {
 
   async deleteUser(req, res, next) {
     try {
-      const { userId } = req.params;
+      const { userUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const deletedUser = await deleteUser(userId, currentUser);
+      const deletedUser = await deleteUser(userUuid, currentUser);
       if (deletedUser) {
         res.sendStatus(res.statusCode);
       } else {

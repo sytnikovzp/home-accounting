@@ -3,7 +3,7 @@ import api from '../api';
 const getAllUsers = async ({
   page = 1,
   limit = 6,
-  sort = 'id',
+  sort = 'uuid',
   order = 'asc',
 } = {}) => {
   const params = new URLSearchParams({
@@ -33,13 +33,13 @@ const getUserProfile = async () => {
   return data;
 };
 
-const getUserById = async (userId) => {
-  const { data } = await api.get(`/users/${userId}`);
+const getUserByUuid = async (userUuid) => {
+  const { data } = await api.get(`/users/${userUuid}`);
   return data;
 };
 
-const updateUser = async (userId, fullName, password, role) => {
-  const { data } = await api.patch(`/users/${userId}`, {
+const updateUser = async (userUuid, fullName, password, role) => {
+  const { data } = await api.patch(`/users/${userUuid}`, {
     fullName,
     password,
     role,
@@ -47,31 +47,31 @@ const updateUser = async (userId, fullName, password, role) => {
   return data;
 };
 
-const updateUserPhoto = async (userId, userPhoto) => {
+const updateUserPhoto = async (userUuid, userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
-  const { data } = await api.patch(`/users/photo/${userId}`, formData, {
+  const { data } = await api.patch(`/users/photo/${userUuid}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return data;
 };
 
-const removeUserPhoto = async (userId) => {
-  const { data } = await api.patch(`/users/delete-photo/${userId}`, {
+const removeUserPhoto = async (userUuid) => {
+  const { data } = await api.patch(`/users/delete-photo/${userUuid}`, {
     photo: null,
   });
   return data;
 };
 
-const deleteUser = async (userId) => {
-  const { data } = await api.delete(`/users/${userId}`);
+const deleteUser = async (userUuid) => {
+  const { data } = await api.delete(`/users/${userUuid}`);
   return data;
 };
 
 export default {
   getAllUsers,
   getUserProfile,
-  getUserById,
+  getUserByUuid,
   updateUser,
   updateUserPhoto,
   removeUserPhoto,

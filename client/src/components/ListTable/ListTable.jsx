@@ -90,7 +90,7 @@ const ListTable = ({
         </Box>
       ) : index === 1 ? (
         <RouterLink
-          to={`/${linkEntity}/${row.id}`}
+          to={`/${linkEntity}/${row.uuid}`}
           style={{ textDecoration: 'none' }}
         >
           <Typography
@@ -124,7 +124,7 @@ const ListTable = ({
                     index < memoizedColumns.length - 1
                       ? '1px solid darkgreen'
                       : 'none',
-                  width: col.field === 'id' ? '60px' : 'auto',
+                  width: 'auto',
                 }}
                 onClick={() => handleSort(col.field)}
               >
@@ -142,7 +142,7 @@ const ListTable = ({
         </TableHead>
         <TableBody>
           {memoizedRows.map((row) => (
-            <TableRow key={row.id} sx={stylesTableRow}>
+            <TableRow key={row.uuid} sx={stylesTableRow}>
               {memoizedColumns.map((col, index) =>
                 renderTableCell(col, row, index)
               )}

@@ -2,7 +2,7 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllUsers,
-  getUserById,
+  getUserByUuid,
   getCurrentUserProfile,
   updateUser,
   updateUserPhoto,
@@ -27,16 +27,16 @@ userRouter
   .get(authHandler, getCurrentUserProfile);
 
 userRouter
-  .route('/photo/:userId')
+  .route('/photo/:userUuid')
   .patch(authHandler, uploadUserPhotos.single('userPhoto'), updateUserPhoto);
 
 userRouter
-  .route('/delete-photo/:userId')
+  .route('/delete-photo/:userUuid')
   .patch(authHandler, removeUserPhoto);
 
 userRouter
-  .route('/:userId')
-  .get(authHandler, getUserById)
+  .route('/:userUuid')
+  .get(authHandler, getUserByUuid)
   .patch(authHandler, validateUpdateUser, updateUser)
   .delete(authHandler, deleteUser);
 

@@ -27,7 +27,7 @@ function ProductsPage() {
   const [categories, setCategories] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState('approved');
-  const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
+  const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [crudError, setCrudError] = useState(null);
 
   const handleModalClose = () => {
@@ -35,8 +35,8 @@ function ProductsPage() {
     navigate('/products');
   };
 
-  const openModal = (mode, id = null) => {
-    navigate(id ? `${mode}/${id}` : mode);
+  const openModal = (mode, uuid = null) => {
+    navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
   const fetchProducts = useCallback(async () => {
@@ -103,7 +103,7 @@ function ProductsPage() {
         }
       />
       <Route
-        path='edit/:id'
+        path='edit/:uuid'
         element={
           <ProductEditPage
             handleModalClose={handleModalClose}
@@ -115,7 +115,7 @@ function ProductsPage() {
         }
       />
       <Route
-        path='delete/:id'
+        path='delete/:uuid'
         element={
           <ProductDeletePage
             handleModalClose={handleModalClose}
@@ -126,7 +126,7 @@ function ProductsPage() {
         }
       />
       <Route
-        path=':id'
+        path=':uuid'
         element={<ProductViewPage handleModalClose={handleModalClose} />}
       />
     </Routes>
@@ -156,13 +156,12 @@ function ProductsPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва товару', align: 'left' },
           { field: 'category', headerName: 'Категорія', align: 'left' },
         ]}
         rows={products}
-        onEdit={(product) => openModal('edit', product.id)}
-        onDelete={(product) => openModal('delete', product.id)}
+        onEdit={(product) => openModal('edit', product.uuid)}
+        onDelete={(product) => openModal('delete', product.uuid)}
         pagination={{
           totalCount,
           currentPage,

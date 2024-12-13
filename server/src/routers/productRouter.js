@@ -2,7 +2,7 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllProducts,
-  getProductById,
+  getProductByUuid,
   createProduct,
   updateProduct,
   moderateProduct,
@@ -22,12 +22,12 @@ productRouter
   .post(authHandler, validateProduct, createProduct);
 
 productRouter
-  .route('/moderate/:productId')
+  .route('/moderate/:productUuid')
   .patch(authHandler, validateModeration, moderateProduct);
 
 productRouter
-  .route('/:productId')
-  .get(authHandler, getProductById)
+  .route('/:productUuid')
+  .get(authHandler, getProductByUuid)
   .patch(authHandler, validateProduct, updateProduct)
   .delete(authHandler, deleteProduct);
 

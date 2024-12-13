@@ -14,21 +14,21 @@ function ProductDeletePage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: productToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Product');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteProduct = async () => {
     try {
-      await restController.removeProduct(productToCRUD.id);
+      await restController.removeProduct(productToCRUD.uuid);
       handleModalClose();
       fetchProducts();
     } catch (error) {

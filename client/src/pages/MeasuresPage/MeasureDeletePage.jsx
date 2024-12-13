@@ -14,21 +14,21 @@ function MeasureDeletePage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: measureToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Measure');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteMeasure = async () => {
     try {
-      await restController.removeMeasure(measureToCRUD.id);
+      await restController.removeMeasure(measureToCRUD.uuid);
       handleModalClose();
       fetchMeasures();
     } catch (error) {

@@ -2,7 +2,7 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllShops,
-  getShopById,
+  getShopByUuid,
   createShop,
   updateShop,
   updateShopLogo,
@@ -25,20 +25,20 @@ shopRouter
   .post(authHandler, validateShop, createShop);
 
 shopRouter
-  .route('/logo/:shopId')
+  .route('/logo/:shopUuid')
   .patch(authHandler, uploadShopLogos.single('shopLogo'), updateShopLogo);
 
 shopRouter
-  .route('/delete-logo/:shopId')
+  .route('/delete-logo/:shopUuid')
   .patch(authHandler, removeShopLogo);
 
 shopRouter
-  .route('/moderate/:shopId')
+  .route('/moderate/:shopUuid')
   .patch(authHandler, validateModeration, moderateShop);
 
 shopRouter
-  .route('/:shopId')
-  .get(authHandler, getShopById)
+  .route('/:shopUuid')
+  .get(authHandler, getShopByUuid)
   .patch(authHandler, validateShop, updateShop)
   .delete(authHandler, deleteShop);
 

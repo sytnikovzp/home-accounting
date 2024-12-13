@@ -14,22 +14,22 @@ function CategoryEditPage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: categoryToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Category');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitCategory = async (values) => {
     setCrudError(null);
     try {
-      await restController.editCategory(categoryToCRUD.id, values.title);
+      await restController.editCategory(categoryToCRUD.uuid, values.title);
       handleModalClose();
       fetchCategories();
     } catch (error) {

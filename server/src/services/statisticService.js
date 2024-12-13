@@ -15,22 +15,22 @@ class StatisticService {
     const time = getTime(ago);
     const foundCategory = await getRecordByTitle(Category, category);
     if (!foundCategory) throw notFound('Категорію не знайдено');
-    const productIds = await Product.findAll({
-      where: { categoryId: foundCategory.id },
-      attributes: ['id'],
+    const productUuids = await Product.findAll({
+      where: { categoryUuid: foundCategory.uuid },
+      attributes: ['uuid'],
       raw: true,
     });
-    const prodIds = productIds.map((purchase) => purchase.id);
-    if (prodIds.length === 0) {
+    const prodUuids = productUuids.map((purchase) => purchase.uuid);
+    if (prodUuids.length === 0) {
       return [{ result: 0 }];
     }
     const costByCategoryPerPeriod = await Purchase.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {
-        productId: { [Op.in]: prodIds },
+        productUuid: { [Op.in]: prodUuids },
         createdAt: { [Op.gte]: time },
       },
-      group: ['currency_id'],
+      group: ['currency_uuid'],
       raw: true,
     });
     const totalCost =
@@ -47,10 +47,10 @@ class StatisticService {
     const costByShopPerPeriod = await Purchase.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {
-        shopId: foundShop.id,
+        shopUuid: foundShop.uuid,
         createdAt: { [Op.gte]: time },
       },
-      group: ['currency_id'],
+      group: ['currency_uuid'],
       raw: true,
     });
     const totalCost =
@@ -78,7 +78,7 @@ class StatisticService {
         },
       ],
       where: { createdAt: { [Op.gte]: time } },
-      group: ['Product->Category.id'],
+      group: ['Product->Category.uuid'],
       raw: true,
     });
     const totalCost = result.length

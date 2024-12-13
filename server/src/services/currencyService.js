@@ -39,7 +39,7 @@ class CurrencyService {
     };
   }
 
-  async getCurrencyById(uuid) {
+  async getCurrencyByUuid(uuid) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundCurrency = await Currency.findOne({
       where: { uuid },

@@ -17,13 +17,10 @@ class RoleService {
       .lean();
     if (foundPermissions.length === 0)
       throw notFound('Права доступу не знайдено');
-    const allPermissions = foundPermissions.map(
-      ({ uuid, title, description }) => ({
-        uuid,
-        title,
-        description,
-      })
-    );
+    const allPermissions = foundPermissions.map(({ uuid, title }) => ({
+      uuid,
+      title,
+    }));
     const total = await Permission.countDocuments();
     return {
       allPermissions,
@@ -40,11 +37,10 @@ class RoleService {
       .sort(sortOptions)
       .lean();
     if (foundRoles.length === 0) throw notFound('Ролі не знайдено');
-    const allRoles = foundRoles.map(({ uuid, title, description }) => {
+    const allRoles = foundRoles.map(({ uuid, title }) => {
       return {
         uuid,
         title,
-        description: description || '',
       };
     });
     const total = await Role.countDocuments();
@@ -54,7 +50,7 @@ class RoleService {
     };
   }
 
-  async getRoleById(uuid) {
+  async getRoleByUuid(uuid) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundRole = await Role.findOne({ uuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
@@ -189,7 +185,7 @@ class RoleService {
       );
     const foundRole = await Role.findOne({ uuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
-    const usersWithRole = await User.countDocuments({ roleId: uuid });
+    const usersWithRole = await User.countDocuments({ roleUuid: uuid });
     if (usersWithRole > 0)
       throw badRequest(
         `Видалення неможливо, оскільки ${usersWithRole} користувачів використовують цю роль`

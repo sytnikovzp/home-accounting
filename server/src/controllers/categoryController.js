@@ -2,7 +2,7 @@ const { sequelize } = require('../db/dbPostgres/models');
 const { getCurrentUser } = require('../services/userService');
 const {
   getAllCategories,
-  getCategoryById,
+  getCategoryByUuid,
   updateCategoryStatus,
   createCategory,
   updateCategory,
@@ -32,10 +32,10 @@ class CategoryController {
     }
   }
 
-  async getCategoryById(req, res, next) {
+  async getCategoryByUuid(req, res, next) {
     try {
-      const { categoryId } = req.params;
-      const category = await getCategoryById(categoryId);
+      const { categoryUuid } = req.params;
+      const category = await getCategoryByUuid(categoryUuid);
       if (category) {
         res.status(200).json(category);
       } else {
@@ -70,11 +70,11 @@ class CategoryController {
   async updateCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { categoryId } = req.params;
+      const { categoryUuid } = req.params;
       const { title } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedCategory = await updateCategory(
-        categoryId,
+        categoryUuid,
         title,
         currentUser,
         transaction
@@ -96,11 +96,11 @@ class CategoryController {
   async moderateCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { categoryId } = req.params;
+      const { categoryUuid } = req.params;
       const { status } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedCategory = await updateCategoryStatus(
-        categoryId,
+        categoryUuid,
         status,
         currentUser,
         transaction
@@ -122,10 +122,10 @@ class CategoryController {
   async deleteCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { categoryId } = req.params;
+      const { categoryUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
       const deletedCategory = await deleteCategory(
-        categoryId,
+        categoryUuid,
         currentUser,
         transaction
       );

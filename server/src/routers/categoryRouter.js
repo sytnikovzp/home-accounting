@@ -2,7 +2,7 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllCategories,
-  getCategoryById,
+  getCategoryByUuid,
   createCategory,
   updateCategory,
   moderateCategory,
@@ -22,12 +22,12 @@ categoryRouter
   .post(authHandler, validateCategory, createCategory);
 
 categoryRouter
-  .route('/moderate/:categoryId')
+  .route('/moderate/:categoryUuid')
   .patch(authHandler, validateModeration, moderateCategory);
 
 categoryRouter
-  .route('/:categoryId')
-  .get(authHandler, getCategoryById)
+  .route('/:categoryUuid')
+  .get(authHandler, getCategoryByUuid)
   .patch(authHandler, validateCategory, updateCategory)
   .delete(authHandler, deleteCategory);
 

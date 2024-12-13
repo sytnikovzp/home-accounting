@@ -40,7 +40,7 @@ class MeasureService {
     };
   }
 
-  async getMeasureById(uuid) {
+  async getMeasureByUuid(uuid) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundMeasure = await Measure.findOne({
       where: { uuid },

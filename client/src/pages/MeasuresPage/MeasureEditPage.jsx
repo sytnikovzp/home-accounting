@@ -14,23 +14,23 @@ function MeasureEditPage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: measureToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Measure');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitMeasure = async (values) => {
     setCrudError(null);
     try {
       await restController.editMeasure(
-        measureToCRUD.id,
+        measureToCRUD.uuid,
         values.title,
         values.description
       );

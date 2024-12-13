@@ -26,7 +26,7 @@ function ShopsPage() {
   const [shops, setShops] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState('approved');
-  const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
+  const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [crudError, setCrudError] = useState(null);
 
   const handleModalClose = () => {
@@ -34,8 +34,8 @@ function ShopsPage() {
     navigate('/shops');
   };
 
-  const openModal = (mode, id = null) => {
-    navigate(id ? `${mode}/${id}` : mode);
+  const openModal = (mode, uuid = null) => {
+    navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
   const fetchShops = useCallback(async () => {
@@ -79,7 +79,7 @@ function ShopsPage() {
         }
       />
       <Route
-        path='edit/:id'
+        path='edit/:uuid'
         element={
           <ShopEditPage
             handleModalClose={handleModalClose}
@@ -90,7 +90,7 @@ function ShopsPage() {
         }
       />
       <Route
-        path='delete/:id'
+        path='delete/:uuid'
         element={
           <ShopDeletePage
             handleModalClose={handleModalClose}
@@ -101,7 +101,7 @@ function ShopsPage() {
         }
       />
       <Route
-        path=':id'
+        path=':uuid'
         element={<ShopViewPage handleModalClose={handleModalClose} />}
       />
     </Routes>
@@ -131,13 +131,12 @@ function ShopsPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва магазину', align: 'left' },
           { field: 'logo', headerName: 'Логотип', align: 'center' },
         ]}
         rows={shops}
-        onEdit={(shop) => openModal('edit', shop.id)}
-        onDelete={(shop) => openModal('delete', shop.id)}
+        onEdit={(shop) => openModal('edit', shop.uuid)}
+        onDelete={(shop) => openModal('delete', shop.uuid)}
         pagination={{
           totalCount,
           currentPage,

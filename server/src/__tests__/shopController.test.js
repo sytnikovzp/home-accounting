@@ -8,13 +8,13 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { id: null, accessToken: null },
-  moderator: { id: null, accessToken: null },
-  admin: { id: null, accessToken: null },
+  user: { uuid: null, accessToken: null },
+  moderator: { uuid: null, accessToken: null },
+  admin: { uuid: null, accessToken: null },
 };
 
 describe('ShopController', () => {
-  let shopId;
+  let shopUuid;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
@@ -23,10 +23,10 @@ describe('ShopController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
-      authData.user.id = response.body.user.id;
+      authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -36,10 +36,10 @@ describe('ShopController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
-      authData.moderator.id = response.body.user.id;
+      authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
 
@@ -49,10 +49,10 @@ describe('ShopController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
-      authData.admin.id = response.body.user.id;
+      authData.admin.uuid = response.body.user.uuid;
       authData.admin.accessToken = response.body.accessToken;
     });
   });
@@ -142,14 +142,14 @@ describe('ShopController', () => {
           url: 'https://www.moderator.com',
         });
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Новий модераторський магазин');
       expect(response.body.description).toBe('Тестовий опис магазину');
       expect(response.body.url).toBe('https://www.moderator.com');
       expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorId).toBeDefined();
+      expect(response.body.moderatorUuid).toBeDefined();
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
 
     it('should return 201 for current user having permission to create shops (as user)', async () => {
@@ -162,15 +162,15 @@ describe('ShopController', () => {
           url: 'https://www.user.com',
         });
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Новий користувацький магазин');
       expect(response.body.description).toBe('Тестовий опис магазину');
       expect(response.body.url).toBe('https://www.user.com');
       expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorId).toBe('');
+      expect(response.body.moderatorUuid).toBe('');
 
-      expect(response.body.creatorId).toBeDefined();
-      shopId = response.body.id;
+      expect(response.body.creatorUuid).toBeDefined();
+      shopUuid = response.body.uuid;
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -198,21 +198,21 @@ describe('ShopController', () => {
     });
   });
 
-  describe('GET /api/shops/:shopId', () => {
+  describe('GET /api/shops/:shopUuid', () => {
     it('should get shop by id', async () => {
       const response = await request(app)
-        .get(`/api/shops/${shopId}`)
+        .get(`/api/shops/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body).toHaveProperty('uuid', shopUuid);
       expect(response.body.title).toBe('Новий користувацький магазин');
       expect(response.body.description).toBe('Тестовий опис магазину');
       expect(response.body.url).toBe('https://www.user.com');
       expect(response.body).toHaveProperty('logo');
       expect(response.body.status).toBe('Очікує модерації');
-      expect(response.body.moderatorId).toBe('');
+      expect(response.body.moderatorUuid).toBe('');
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
     });
@@ -226,15 +226,15 @@ describe('ShopController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/shops/${shopId}`);
+      const response = await request(app).get(`/api/shops/${shopUuid}`);
       expect(response.status).toBe(401);
     });
   });
 
-  describe('PATCH /api/shops/moderate/:shopId', () => {
+  describe('PATCH /api/shops/moderate/:shopUuid', () => {
     it('should return 403 for current user not having permission to moderate shops', async () => {
       const response = await request(app)
-        .patch(`/api/shops/moderate/${shopId}`)
+        .patch(`/api/shops/moderate/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
@@ -247,7 +247,7 @@ describe('ShopController', () => {
 
     it('should return 200 for current user having permission to moderate shops', async () => {
       const response = await request(app)
-        .patch(`/api/shops/moderate/${shopId}`)
+        .patch(`/api/shops/moderate/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',
@@ -255,16 +255,16 @@ describe('ShopController', () => {
       expect(response.status).toBe(200);
       expect(response.body.title).toBe('Новий користувацький магазин');
       expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorId).toBeDefined();
+      expect(response.body.moderatorUuid).toBeDefined();
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
   });
 
-  describe('PATCH /api/shops/:shopId', () => {
+  describe('PATCH /api/shops/:shopUuid', () => {
     it('should return 200 for current user having permission to edit shops (as user)', async () => {
       const response = await request(app)
-        .patch(`/api/shops/${shopId}`)
+        .patch(`/api/shops/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           title: 'Оновлена назва магазину',
@@ -272,19 +272,19 @@ describe('ShopController', () => {
           url: 'https://www.updated.com',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body).toHaveProperty('uuid', shopUuid);
       expect(response.body.title).toBe('Оновлена назва магазину');
       expect(response.body.description).toBe('Оновлений опис магазину');
       expect(response.body.url).toBe('https://www.updated.com');
       expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorId).toBe('');
+      expect(response.body.moderatorUuid).toBe('');
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
 
     it('should return 200 for current user having permission to edit shops (as moderator)', async () => {
       const response = await request(app)
-        .patch(`/api/shops/${shopId}`)
+        .patch(`/api/shops/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва магазину',
@@ -292,19 +292,19 @@ describe('ShopController', () => {
           url: 'https://www.updated.com',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body).toHaveProperty('uuid', shopUuid);
       expect(response.body.title).toBe('Оновлена назва магазину');
       expect(response.body.description).toBe('Оновлений опис магазину');
       expect(response.body.url).toBe('https://www.updated.com');
       expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorId).toBeDefined();
+      expect(response.body.moderatorUuid).toBeDefined();
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .patch(`/api/shops/${shopId}`)
+        .patch(`/api/shops/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Varus',
@@ -315,7 +315,7 @@ describe('ShopController', () => {
 
     it('should return 403 for current user not having permission to edit shops', async () => {
       const response = await request(app)
-        .patch(`/api/shops/${shopId}`)
+        .patch(`/api/shops/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           title: 'Оновлена назва магазину',
@@ -338,47 +338,47 @@ describe('ShopController', () => {
     });
   });
 
-  describe('PATCH /api/shops/logo/:shopId', () => {
+  describe('PATCH /api/shops/logo/:shopUuid', () => {
     it('should update shop logo', async () => {
       const response = await request(app)
-        .patch(`/api/shops/logo/${shopId}`)
+        .patch(`/api/shops/logo/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .attach('shopLogo', path.resolve('/Users/nadia/Downloads/atb.png'));
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body).toHaveProperty('uuid', shopUuid);
       expect(response.body).toHaveProperty('logo');
       expect(response.body.logo).toBeDefined();
       expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorId).toBe('');
+      expect(response.body.moderatorUuid).toBe('');
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
   });
 
-  describe('PATCH /api/shops/delete-logo/:shopId', () => {
+  describe('PATCH /api/shops/delete-logo/:shopUuid', () => {
     it('should remove shop logo', async () => {
       const updatedShop = {
         logo: null,
       };
       const response = await request(app)
-        .patch(`/api/shops/delete-logo/${shopId}`)
+        .patch(`/api/shops/delete-logo/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send(updatedShop);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', shopId);
+      expect(response.body).toHaveProperty('uuid', shopUuid);
       expect(response.body).toHaveProperty('logo');
       expect(response.body.logo).toBe('');
       expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorId).toBe('');
+      expect(response.body.moderatorUuid).toBe('');
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
   });
 
-  describe('DELETE /api/shops/:shopId', () => {
+  describe('DELETE /api/shops/:shopUuid', () => {
     it('should return 403 for current user not having permission to delete shops', async () => {
       const response = await request(app)
-        .delete(`/api/shops/${shopId}`)
+        .delete(`/api/shops/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -388,7 +388,7 @@ describe('ShopController', () => {
 
     it('should return 200 for current user having permission to delete shops', async () => {
       const response = await request(app)
-        .delete(`/api/shops/${shopId}`)
+        .delete(`/api/shops/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(200);
     });

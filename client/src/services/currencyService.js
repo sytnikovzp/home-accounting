@@ -12,7 +12,7 @@ const getNBURates = async () => {
 const getAllCurrencies = async (
   page = 1,
   limit = 6,
-  sort = 'id',
+  sort = 'uuid',
   order = 'asc'
 ) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
@@ -32,8 +32,8 @@ const getAllCurrencies = async (
   }
 };
 
-const getCurrencyById = async (currencyId) => {
-  const { data } = await api.get(`/currencies/${currencyId}`);
+const getCurrencyByUuid = async (currencyUuid) => {
+  const { data } = await api.get(`/currencies/${currencyUuid}`);
   return data;
 };
 
@@ -45,23 +45,23 @@ const createCurrency = async (title, description) => {
   return data;
 };
 
-const updateCurrency = async (currencyId, title, description) => {
-  const { data } = await api.patch(`/currencies/${currencyId}`, {
+const updateCurrency = async (currencyUuid, title, description) => {
+  const { data } = await api.patch(`/currencies/${currencyUuid}`, {
     title,
     description,
   });
   return data;
 };
 
-const deleteCurrency = async (currencyId) => {
-  const { data } = await api.delete(`/currencies/${currencyId}`);
+const deleteCurrency = async (currencyUuid) => {
+  const { data } = await api.delete(`/currencies/${currencyUuid}`);
   return data;
 };
 
 export default {
   getNBURates,
   getAllCurrencies,
-  getCurrencyById,
+  getCurrencyByUuid,
   createCurrency,
   updateCurrency,
   deleteCurrency,

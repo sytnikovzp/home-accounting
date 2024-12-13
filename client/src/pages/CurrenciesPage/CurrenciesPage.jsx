@@ -25,7 +25,7 @@ function CurrenciesPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [currencies, setCurrencies] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
+  const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [crudError, setCrudError] = useState(null);
 
   const handleModalClose = () => {
@@ -33,8 +33,8 @@ function CurrenciesPage() {
     navigate('/currencies');
   };
 
-  const openModal = (mode, id = null) => {
-    navigate(id ? `${mode}/${id}` : mode);
+  const openModal = (mode, uuid = null) => {
+    navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
   const fetchCurrencies = useCallback(async () => {
@@ -79,7 +79,7 @@ function CurrenciesPage() {
         }
       />
       <Route
-        path='edit/:id'
+        path='edit/:uuid'
         element={
           <CurrencyEditPage
             handleModalClose={handleModalClose}
@@ -90,7 +90,7 @@ function CurrenciesPage() {
         }
       />
       <Route
-        path='delete/:id'
+        path='delete/:uuid'
         element={
           <CurrencyDeletePage
             handleModalClose={handleModalClose}
@@ -101,7 +101,7 @@ function CurrenciesPage() {
         }
       />
       <Route
-        path=':id'
+        path=':uuid'
         element={<CurrencyViewPage handleModalClose={handleModalClose} />}
       />
     </Routes>
@@ -130,13 +130,12 @@ function CurrenciesPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва валюти', align: 'left' },
           { field: 'description', headerName: 'Опис', align: 'left' },
         ]}
         rows={currencies}
-        onEdit={(currency) => openModal('edit', currency.id)}
-        onDelete={(currency) => openModal('delete', currency.id)}
+        onEdit={(currency) => openModal('edit', currency.uuid)}
+        onDelete={(currency) => openModal('delete', currency.uuid)}
         pagination={{
           totalCount,
           currentPage,

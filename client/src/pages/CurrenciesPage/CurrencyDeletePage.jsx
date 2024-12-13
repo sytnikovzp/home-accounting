@@ -14,21 +14,21 @@ function CurrencyDeletePage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: currencyToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Currency');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteCurrency = async () => {
     try {
-      await restController.removeCurrency(currencyToCRUD.id);
+      await restController.removeCurrency(currencyToCRUD.uuid);
       handleModalClose();
       fetchCurrencies();
     } catch (error) {

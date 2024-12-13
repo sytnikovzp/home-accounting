@@ -3,7 +3,7 @@ import api from '../api';
 const getAllMeasures = async (
   page = 1,
   limit = 6,
-  sort = 'id',
+  sort = 'uuid',
   order = 'asc'
 ) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
@@ -23,8 +23,8 @@ const getAllMeasures = async (
   }
 };
 
-const getMeasureById = async (measureId) => {
-  const { data } = await api.get(`/measures/${measureId}`);
+const getMeasureByUuid = async (measureUuid) => {
+  const { data } = await api.get(`/measures/${measureUuid}`);
   return data;
 };
 
@@ -33,22 +33,22 @@ const createMeasure = async (title, description = '') => {
   return data;
 };
 
-const updateMeasure = async (measureId, title, description) => {
-  const { data } = await api.patch(`/measures/${measureId}`, {
+const updateMeasure = async (measureUuid, title, description) => {
+  const { data } = await api.patch(`/measures/${measureUuid}`, {
     title,
     description,
   });
   return data;
 };
 
-const deleteMeasure = async (measureId) => {
-  const { data } = await api.delete(`/measures/${measureId}`);
+const deleteMeasure = async (measureUuid) => {
+  const { data } = await api.delete(`/measures/${measureUuid}`);
   return data;
 };
 
 export default {
   getAllMeasures,
-  getMeasureById,
+  getMeasureByUuid,
   createMeasure,
   updateMeasure,
   deleteMeasure,

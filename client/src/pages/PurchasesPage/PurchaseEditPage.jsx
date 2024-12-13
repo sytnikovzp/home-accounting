@@ -18,23 +18,23 @@ function PurchaseEditPage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: purchaseToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Purchase');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitPurchase = async (values) => {
     setCrudError(null);
     try {
       await restController.editPurchase(
-        purchaseToCRUD.id,
+        purchaseToCRUD.uuid,
         values.product,
         values.amount,
         values.price,

@@ -25,25 +25,25 @@ const connectDatabase = async () => {
 
 const createPermissions = async () => {
   const createdPermissions = await Permission.insertMany(permissions);
-  const permissionIds = {};
+  const permissionUuids = {};
   createdPermissions.forEach((permission) => {
-    permissionIds[permission.title] = permission.uuid;
+    permissionUuids[permission.title] = permission.uuid;
   });
-  return permissionIds;
+  return permissionUuids;
 };
 
-const createRoles = async (permissionIds) => {
-  const rolesWithPermissions = await roles(permissionIds);
+const createRoles = async (permissionUuids) => {
+  const rolesWithPermissions = await roles(permissionUuids);
   const createdRoles = await Role.insertMany(rolesWithPermissions);
-  const roleIds = {};
+  const roleUuids = {};
   createdRoles.forEach((role) => {
-    roleIds[role.title] = role.uuid;
+    roleUuids[role.title] = role.uuid;
   });
-  return roleIds;
+  return roleUuids;
 };
 
-const createUsers = async (roleIds) => {
-  const usersToInsert = await users(roleIds);
+const createUsers = async (roleUuids) => {
+  const usersToInsert = await users(roleUuids);
   await User.create(usersToInsert);
 };
 
@@ -52,9 +52,9 @@ const seedDatabase = async () => {
     await User.deleteMany({});
     await Role.deleteMany({});
     await Permission.deleteMany({});
-    const permissionIds = await createPermissions();
-    const roleIds = await createRoles(permissionIds);
-    await createUsers(roleIds);
+    const permissionUuids = await createPermissions();
+    const roleUuids = await createRoles(permissionUuids);
+    await createUsers(roleUuids);
     console.log('Database seeded successfully');
   } catch (error) {
     console.error('Error seeding database:', error);

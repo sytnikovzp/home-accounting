@@ -1,27 +1,27 @@
 ### Get list all measures (default pagination, without sort)
 GET http://localhost:5000/api/measures HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
 ### Get list all measures (custom pagination, without sort)
 GET http://localhost:5000/api/measures?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
 ### Get list all measures (custom pagination, with sort by title (asc))
 GET http://localhost:5000/api/measures?sort=title&order=asc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
 ### Get list all measures (custom pagination, with sort by uuid (desc))
 GET http://localhost:5000/api/measures?sort=uuid&order=desc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
 ### Create measure
 POST http://localhost:5000/api/measures HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
 {
   "title": "Нова одиниця вимірювання",
@@ -29,14 +29,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
 }
 
 ### Get measure by uuid
-GET http://localhost:5000/api/measures/1b7bf265-116f-415d-be02-5471522d3f31 HTTP/1.1
+GET http://localhost:5000/api/measures/4e27dbfd-dea6-45d2-a0f4-b4eba3a43d39 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
 ### Update measure
-PATCH http://localhost:5000/api/measures/1b7bf265-116f-415d-be02-5471522d3f31 HTTP/1.1
+PATCH http://localhost:5000/api/measures/4e27dbfd-dea6-45d2-a0f4-b4eba3a43d39 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
 {
   "title": "Оновлена назва одиниці вимірювання",
@@ -44,6 +44,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
 }
 
 ### Delete measure
-DELETE http://localhost:5000/api/measures/1b7bf265-116f-415d-be02-5471522d3f31 HTTP/1.1
+DELETE http://localhost:5000/api/measures/4e27dbfd-dea6-45d2-a0f4-b4eba3a43d39 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M

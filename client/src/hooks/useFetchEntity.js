@@ -7,11 +7,11 @@ function useFetchEntity(entityType) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const fetchEntityById = useCallback(
-    async (id) => {
+  const fetchEntityByUuid = useCallback(
+    async (uuid) => {
       setIsLoading(true);
       try {
-        const response = await restController[`fetch${entityType}ById`](id);
+        const response = await restController[`fetch${entityType}ByUuid`](uuid);
         setEntity(response);
       } catch (error) {
         console.log(error);
@@ -26,7 +26,7 @@ function useFetchEntity(entityType) {
     [entityType]
   );
 
-  return { entity, isLoading, errorMessage, fetchEntityById };
+  return { entity, isLoading, errorMessage, fetchEntityByUuid };
 }
 
 export default useFetchEntity;

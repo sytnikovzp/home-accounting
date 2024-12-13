@@ -17,7 +17,7 @@ describe('AuthController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(201);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
@@ -42,7 +42,7 @@ describe('AuthController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
@@ -64,7 +64,7 @@ describe('AuthController', () => {
         .get('/api/auth/refresh')
         .set('Cookie', `refreshToken=${refreshToken}`);
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');

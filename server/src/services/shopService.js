@@ -44,7 +44,7 @@ class ShopService {
     };
   }
 
-  async getShopById(uuid) {
+  async getShopByUuid(uuid) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundShop = await Shop.findOne({ where: { uuid } });
     if (!foundShop) throw notFound('Магазин не знайдено');

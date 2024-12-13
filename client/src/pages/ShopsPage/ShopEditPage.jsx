@@ -14,23 +14,23 @@ function ShopEditPage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: shopToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Shop');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitShop = async (values) => {
     setCrudError(null);
     try {
       await restController.editShop(
-        shopToCRUD.id,
+        shopToCRUD.uuid,
         values.title,
         values.description,
         values.url
@@ -48,8 +48,8 @@ function ShopEditPage({
   const handleUploadLogo = async (file) => {
     setCrudError(null);
     try {
-      await restController.uploadShopLogo(shopToCRUD.id, file);
-      fetchEntityById(id);
+      await restController.uploadShopLogo(shopToCRUD.uuid, file);
+      fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(
         error.response?.data?.errors?.[0]?.message ||
@@ -61,8 +61,8 @@ function ShopEditPage({
   const handleRemoveLogo = async () => {
     setCrudError(null);
     try {
-      await restController.removeShopLogo(shopToCRUD.id);
-      fetchEntityById(id);
+      await restController.removeShopLogo(shopToCRUD.uuid);
+      fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(
         error.response?.data?.errors?.[0]?.message ||

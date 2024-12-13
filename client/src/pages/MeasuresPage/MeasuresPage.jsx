@@ -25,7 +25,7 @@ function MeasuresPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [measures, setMeasures] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
+  const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [crudError, setCrudError] = useState(null);
 
   const handleModalClose = () => {
@@ -33,8 +33,8 @@ function MeasuresPage() {
     navigate('/measures');
   };
 
-  const openModal = (mode, id = null) => {
-    navigate(id ? `${mode}/${id}` : mode);
+  const openModal = (mode, uuid = null) => {
+    navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
   const fetchMeasures = useCallback(async () => {
@@ -79,7 +79,7 @@ function MeasuresPage() {
         }
       />
       <Route
-        path='edit/:id'
+        path='edit/:uuid'
         element={
           <MeasureEditPage
             handleModalClose={handleModalClose}
@@ -90,7 +90,7 @@ function MeasuresPage() {
         }
       />
       <Route
-        path='delete/:id'
+        path='delete/:uuid'
         element={
           <MeasureDeletePage
             handleModalClose={handleModalClose}
@@ -101,7 +101,7 @@ function MeasuresPage() {
         }
       />
       <Route
-        path=':id'
+        path=':uuid'
         element={<MeasureViewPage handleModalClose={handleModalClose} />}
       />
     </Routes>
@@ -131,13 +131,12 @@ function MeasuresPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва одиниці', align: 'left' },
           { field: 'description', headerName: 'Опис', align: 'left' },
         ]}
         rows={measures}
-        onEdit={(measure) => openModal('edit', measure.id)}
-        onDelete={(measure) => openModal('delete', measure.id)}
+        onEdit={(measure) => openModal('edit', measure.uuid)}
+        onDelete={(measure) => openModal('delete', measure.uuid)}
         pagination={{
           totalCount,
           currentPage,

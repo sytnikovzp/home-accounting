@@ -14,23 +14,23 @@ function CurrencyEditPage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: currencyToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Currency');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitCurrency = async (values) => {
     setCrudError(null);
     try {
       await restController.editCurrency(
-        currencyToCRUD.id,
+        currencyToCRUD.uuid,
         values.title,
         values.description
       );

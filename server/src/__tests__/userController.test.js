@@ -8,9 +8,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { id: null, accessToken: null },
-  moderator: { id: null, accessToken: null },
-  admin: { id: null, accessToken: null },
+  user: { uuid: null, accessToken: null },
+  moderator: { uuid: null, accessToken: null },
+  admin: { uuid: null, accessToken: null },
 };
 
 describe('UserController', () => {
@@ -21,11 +21,11 @@ describe('UserController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
       expect(response.body.user).toHaveProperty('photo');
-      authData.user.id = response.body.user.id;
+      authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -35,11 +35,11 @@ describe('UserController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
       expect(response.body.user).toHaveProperty('photo');
-      authData.moderator.id = response.body.user.id;
+      authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
 
@@ -49,11 +49,11 @@ describe('UserController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
       expect(response.body.user).toHaveProperty('photo');
-      authData.admin.id = response.body.user.id;
+      authData.admin.uuid = response.body.user.uuid;
       authData.admin.accessToken = response.body.accessToken;
     });
 
@@ -94,13 +94,13 @@ describe('UserController', () => {
     });
   });
 
-  describe('GET /api/users/:userId', () => {
+  describe('GET /api/users/:userUuid', () => {
     it('should get user by id', async () => {
       const response = await request(app)
-        .get(`/api/users/${authData.user.id}`)
+        .get(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', authData.user.id);
+      expect(response.body).toHaveProperty('uuid', authData.user.uuid);
       expect(response.body.fullName).toBe('Ганна Шевченко');
       expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
@@ -109,7 +109,7 @@ describe('UserController', () => {
       expect(response.body.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
-      expect(response.body.permissions[0]).toHaveProperty('id');
+      expect(response.body.permissions[0]).toHaveProperty('uuid');
       expect(response.body.permissions[0]).toHaveProperty('title');
       expect(response.body.permissions[0]).toHaveProperty('description');
     });
@@ -123,7 +123,9 @@ describe('UserController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/users/${authData.user.id}`);
+      const response = await request(app).get(
+        `/api/users/${authData.user.uuid}`
+      );
       expect(response.status).toBe(401);
     });
   });
@@ -134,7 +136,7 @@ describe('UserController', () => {
         .get('/api/users/profile')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', authData.user.id);
+      expect(response.body).toHaveProperty('uuid', authData.user.uuid);
       expect(response.body.fullName).toBe('Ганна Шевченко');
       expect(response.body.role).toBe('User');
       expect(response.body).toHaveProperty('photo');
@@ -143,7 +145,7 @@ describe('UserController', () => {
       expect(response.body.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
-      expect(response.body.permissions[0]).toHaveProperty('id');
+      expect(response.body.permissions[0]).toHaveProperty('uuid');
       expect(response.body.permissions[0]).toHaveProperty('title');
       expect(response.body.permissions[0]).toHaveProperty('description');
     });
@@ -154,10 +156,10 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/:userId', () => {
+  describe('PATCH /api/users/:userUuid', () => {
     it('should update myself user data without change role', async () => {
       const response = await request(app)
-        .patch(`/api/users/${authData.user.id}`)
+        .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           fullName: 'Charlie Updated',
@@ -165,7 +167,7 @@ describe('UserController', () => {
           role: 'User',
         });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Charlie Updated');
       expect(response.body.user.role).toBe('User');
       authData.user.accessToken = response.body.accessToken;
@@ -173,7 +175,7 @@ describe('UserController', () => {
 
     it('should update other user data with change role', async () => {
       const response = await request(app)
-        .patch(`/api/users/${authData.moderator.id}`)
+        .patch(`/api/users/${authData.moderator.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           fullName: 'Charlie Updated',
@@ -188,7 +190,7 @@ describe('UserController', () => {
 
     it('should return 400 if an element with that email already exists', async () => {
       const response = await request(app)
-        .patch(`/api/users/${authData.user.id}`)
+        .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           email: 'o.ivanchuk@gmail.com',
@@ -201,7 +203,7 @@ describe('UserController', () => {
 
     it('should return 403 for current user not having permission to change user roles', async () => {
       const response = await request(app)
-        .patch(`/api/users/${authData.user.id}`)
+        .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           fullName: 'Charlie Updated',
@@ -216,7 +218,7 @@ describe('UserController', () => {
 
     it('should return 401 if access token is missing', async () => {
       const response = await request(app)
-        .patch(`/api/users/${authData.user.id}`)
+        .patch(`/api/users/${authData.user.uuid}`)
         .send({
           fullName: 'Charlie Updated',
           email: 'Charlie.Updated@Gmail.com',
@@ -238,7 +240,7 @@ describe('UserController', () => {
 
     it('should return 200 for current user having permission to change user roles', async () => {
       const response = await request(app)
-        .patch(`/api/users/${authData.user.id}`)
+        .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           fullName: 'Charlie Updated',
@@ -246,45 +248,45 @@ describe('UserController', () => {
           role: 'Moderator',
         });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Charlie Updated');
       expect(response.body.user.role).toBe('Moderator');
     });
   });
 
-  describe('PATCH /api/users/photo/:userId', () => {
+  describe('PATCH /api/users/photo/:userUuid', () => {
     it('should update user photo', async () => {
       const response = await request(app)
-        .patch(`/api/users/photo/${authData.user.id}`)
+        .patch(`/api/users/photo/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .attach('userPhoto', path.resolve('/Users/nadia/Downloads/user.png'));
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', authData.user.id);
+      expect(response.body).toHaveProperty('uuid', authData.user.uuid);
       expect(response.body).toHaveProperty('photo');
       expect(response.body.photo).toBeDefined();
     });
   });
 
-  describe('PATCH /api/users/delete-photo/:userId', () => {
+  describe('PATCH /api/users/delete-photo/:userUuid', () => {
     it('should remove user photo', async () => {
       const updatedUser = {
         photo: null,
       };
       const response = await request(app)
-        .patch(`/api/users/delete-photo/${authData.user.id}`)
+        .patch(`/api/users/delete-photo/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send(updatedUser);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', authData.user.id);
+      expect(response.body).toHaveProperty('uuid', authData.user.uuid);
       expect(response.body).toHaveProperty('photo');
       expect(response.body.photo).toBe('');
     });
   });
 
-  describe('DELETE /api/users/:userId', () => {
+  describe('DELETE /api/users/:userUuid', () => {
     it('should return 403 for current user not having permission to delete user', async () => {
       const response = await request(app)
-        .delete(`/api/users/${authData.user.id}`)
+        .delete(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -294,7 +296,7 @@ describe('UserController', () => {
 
     it('should return 200 for current user having permission to delete myself user', async () => {
       const response = await request(app)
-        .delete(`/api/users/${authData.user.id}`)
+        .delete(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
     });

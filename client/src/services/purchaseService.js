@@ -3,7 +3,7 @@ import api from '../api';
 const getAllPurchases = async (
   page = 1,
   limit = 6,
-  sort = 'id',
+  sort = 'uuid',
   order = 'asc'
 ) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
@@ -23,8 +23,8 @@ const getAllPurchases = async (
   }
 };
 
-const getPurchaseById = async (purchaseId) => {
-  const { data } = await api.get(`/purchases/${purchaseId}`);
+const getPurchaseByUuid = async (purchaseUuid) => {
+  const { data } = await api.get(`/purchases/${purchaseUuid}`);
   return data;
 };
 
@@ -50,7 +50,7 @@ const createPurchase = async (
 };
 
 const updatePurchase = async (
-  purchaseId,
+  purchaseUuid,
   product,
   amount,
   price,
@@ -59,7 +59,7 @@ const updatePurchase = async (
   currency,
   date
 ) => {
-  const { data } = await api.patch(`/purchases/${purchaseId}`, {
+  const { data } = await api.patch(`/purchases/${purchaseUuid}`, {
     product,
     amount,
     price,
@@ -71,14 +71,14 @@ const updatePurchase = async (
   return data;
 };
 
-const deletePurchase = async (purchaseId) => {
-  const { data } = await api.delete(`/purchases/${purchaseId}`);
+const deletePurchase = async (purchaseUuid) => {
+  const { data } = await api.delete(`/purchases/${purchaseUuid}`);
   return data;
 };
 
 export default {
   getAllPurchases,
-  getPurchaseById,
+  getPurchaseByUuid,
   createPurchase,
   updatePurchase,
   deletePurchase,

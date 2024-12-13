@@ -39,7 +39,7 @@ function ShopForm({ shop = null, onSubmit, onUploadLogo, onRemoveLogo }) {
 
   return (
     <>
-      {shop?.id && (
+      {shop?.uuid && (
         <FileUpload
           file={shop.logo}
           onUpload={async (file) => {

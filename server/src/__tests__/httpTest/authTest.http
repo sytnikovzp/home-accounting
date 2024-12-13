@@ -13,7 +13,7 @@ POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "neW.useR@GMAIL.com",
+  "email": "neW.useR@gmaiL.com",
   "password": "Qwerty12"
 }
 
@@ -37,7 +37,7 @@ Content-Type: application/json
   "password": "Qwerty12"
 }
 
-### Login exists administrator user
+### Login exists administrator
 POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 

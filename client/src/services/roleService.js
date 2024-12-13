@@ -3,7 +3,7 @@ import api from '../api';
 const getAllPermissions = async (
   page = 1,
   limit = 6,
-  sort = 'id',
+  sort = 'uuid',
   order = 'asc'
 ) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
@@ -23,7 +23,12 @@ const getAllPermissions = async (
   }
 };
 
-const getAllRoles = async (page = 1, limit = 6, sort = 'id', order = 'asc') => {
+const getAllRoles = async (
+  page = 1,
+  limit = 6,
+  sort = 'uuid',
+  order = 'asc'
+) => {
   const params = new URLSearchParams(page, limit, sort, order).toString();
   try {
     const { data, headers } = await api.get(`/roles?${params}`);
@@ -41,8 +46,8 @@ const getAllRoles = async (page = 1, limit = 6, sort = 'id', order = 'asc') => {
   }
 };
 
-const getRoleById = async (roleId) => {
-  const { data } = await api.get(`/roles/${roleId}`);
+const getRoleByUuid = async (roleUuid) => {
+  const { data } = await api.get(`/roles/${roleUuid}`);
   return data;
 };
 
@@ -55,8 +60,8 @@ const createRole = async (title, description = '', permissions = []) => {
   return data;
 };
 
-const updateRole = async (roleId, title, description, permissions) => {
-  const { data } = await api.patch(`/roles/${roleId}`, {
+const updateRole = async (roleUuid, title, description, permissions) => {
+  const { data } = await api.patch(`/roles/${roleUuid}`, {
     title,
     description,
     permissions,
@@ -64,15 +69,15 @@ const updateRole = async (roleId, title, description, permissions) => {
   return data;
 };
 
-const deleteRole = async (roleId) => {
-  const { data } = await api.delete(`/roles/${roleId}`);
+const deleteRole = async (roleUuid) => {
+  const { data } = await api.delete(`/roles/${roleUuid}`);
   return data;
 };
 
 export default {
   getAllPermissions,
   getAllRoles,
-  getRoleById,
+  getRoleByUuid,
   createRole,
   updateRole,
   deleteRole,

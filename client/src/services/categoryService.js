@@ -4,7 +4,7 @@ const getAllCategories = async (
   status = 'approved',
   page = 1,
   limit = 6,
-  sort = 'id',
+  sort = 'uuid',
   order = 'asc'
 ) => {
   const params = new URLSearchParams(
@@ -30,8 +30,8 @@ const getAllCategories = async (
   }
 };
 
-const getCategoryById = async (categoryId) => {
-  const { data } = await api.get(`/categories/${categoryId}`);
+const getCategoryByUuid = async (categoryUuid) => {
+  const { data } = await api.get(`/categories/${categoryUuid}`);
   return data;
 };
 
@@ -40,26 +40,26 @@ const createCategory = async (title) => {
   return data;
 };
 
-const updateCategory = async (categoryId, title) => {
-  const { data } = await api.patch(`/categories/${categoryId}`, { title });
+const updateCategory = async (categoryUuid, title) => {
+  const { data } = await api.patch(`/categories/${categoryUuid}`, { title });
   return data;
 };
 
-const reviewCategory = async (categoryId, status) => {
-  const { data } = await api.patch(`/categories/moderate/${categoryId}`, {
+const reviewCategory = async (categoryUuid, status) => {
+  const { data } = await api.patch(`/categories/moderate/${categoryUuid}`, {
     status,
   });
   return data;
 };
 
-const deleteCategory = async (categoryId) => {
-  const { data } = await api.delete(`/categories/${categoryId}`);
+const deleteCategory = async (categoryUuid) => {
+  const { data } = await api.delete(`/categories/${categoryUuid}`);
   return data;
 };
 
 export default {
   getAllCategories,
-  getCategoryById,
+  getCategoryByUuid,
   createCategory,
   updateCategory,
   reviewCategory,

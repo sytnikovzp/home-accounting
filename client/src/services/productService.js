@@ -4,7 +4,7 @@ const getAllProducts = async (
   status = 'approved',
   page = 1,
   limit = 6,
-  sort = 'id',
+  sort = 'uuid',
   order = 'asc'
 ) => {
   const params = new URLSearchParams(
@@ -30,8 +30,8 @@ const getAllProducts = async (
   }
 };
 
-const getProductById = async (productId) => {
-  const { data } = await api.get(`/products/${productId}`);
+const getProductByUuid = async (productUuid) => {
+  const { data } = await api.get(`/products/${productUuid}`);
   return data;
 };
 
@@ -40,29 +40,29 @@ const createProduct = async (title, category = '') => {
   return data;
 };
 
-const updateProduct = async (productId, title, category) => {
-  const { data } = await api.patch(`/products/${productId}`, {
+const updateProduct = async (productUuid, title, category) => {
+  const { data } = await api.patch(`/products/${productUuid}`, {
     title,
     category,
   });
   return data;
 };
 
-const reviewProduct = async (productId, status) => {
-  const { data } = await api.patch(`/products/moderate/${productId}`, {
+const reviewProduct = async (productUuid, status) => {
+  const { data } = await api.patch(`/products/moderate/${productUuid}`, {
     status,
   });
   return data;
 };
 
-const deleteProduct = async (productId) => {
-  const { data } = await api.delete(`/products/${productId}`);
+const deleteProduct = async (productUuid) => {
+  const { data } = await api.delete(`/products/${productUuid}`);
   return data;
 };
 
 export default {
   getAllProducts,
-  getProductById,
+  getProductByUuid,
   createProduct,
   updateProduct,
   reviewProduct,

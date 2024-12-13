@@ -2,7 +2,7 @@ const { sequelize } = require('../db/dbPostgres/models');
 const { getCurrentUser } = require('../services/userService');
 const {
   getAllCurrencies,
-  getCurrencyById,
+  getCurrencyByUuid,
   createCurrency,
   updateCurrency,
   deleteCurrency,
@@ -30,10 +30,10 @@ class CurrencyController {
     }
   }
 
-  async getCurrencyById(req, res, next) {
+  async getCurrencyByUuid(req, res, next) {
     try {
-      const { currencyId } = req.params;
-      const currency = await getCurrencyById(currencyId);
+      const { currencyUuid } = req.params;
+      const currency = await getCurrencyByUuid(currencyUuid);
       if (currency) {
         res.status(200).json(currency);
       } else {
@@ -73,11 +73,11 @@ class CurrencyController {
   async updateCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { currencyId } = req.params;
+      const { currencyUuid } = req.params;
       const { title, description } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedCurrency = await updateCurrency(
-        currencyId,
+        currencyUuid,
         title,
         description,
         currentUser,
@@ -100,10 +100,10 @@ class CurrencyController {
   async deleteCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { currencyId } = req.params;
+      const { currencyUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
       const deletedCurrency = await deleteCurrency(
-        currencyId,
+        currencyUuid,
         currentUser,
         transaction
       );

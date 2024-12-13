@@ -57,7 +57,7 @@ function RolesPage() {
   const handleConfirmDelete = async () => {
     if (roleToDelete) {
       try {
-        await restController.removeRole(roleToDelete.id);
+        await restController.removeRole(roleToDelete.uuid);
         setDeleteModalOpen(false);
         setRoleToDelete(null);
         await fetchRoles();

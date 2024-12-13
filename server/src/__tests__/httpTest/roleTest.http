@@ -1,37 +1,37 @@
 ### Get list all permissions (default pagination, without sort)
 GET http://localhost:5000/api/roles/permissions HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 ### Get list all permissions (custom pagination, without sort)
 GET http://localhost:5000/api/roles/permissions?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 ### Get list all permissions (custom pagination, with sort by title (asc))
 GET http://localhost:5000/api/roles/permissions?sort=title&order=asc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 ### Get list all roles (default pagination, without sort)
 GET http://localhost:5000/api/roles HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 ### Get list all roles (custom pagination, without sort)
 GET http://localhost:5000/api/roles?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 ### Get list all roles (custom pagination, with sort by title (asc))
 GET http://localhost:5000/api/roles?sort=title&order=asc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 ### Create role
 POST http://localhost:5000/api/roles HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 {
   "title": "Нова роль користувача",
@@ -40,14 +40,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uU
 }
 
 ### Get role by id
-GET http://localhost:5000/api/roles/6c378873-de0d-4318-a82a-bb31683445c9 HTTP/1.1
+GET http://localhost:5000/api/roles/ea653b72-c384-4a37-b687-16007fdd9eed HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 ### Update role data
-PATCH http://localhost:5000/api/roles/6c378873-de0d-4318-a82a-bb31683445c9 HTTP/1.1
+PATCH http://localhost:5000/api/roles/ea653b72-c384-4a37-b687-16007fdd9eed HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k
 
 {
   "title": "Оновлена назва ролі користувача",
@@ -57,6 +57,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uU
 }
 
 ### Delete role by id
-DELETE http://localhost:5000/api/roles/6c378873-de0d-4318-a82a-bb31683445c9 HTTP/1.1
+DELETE http://localhost:5000/api/roles/ea653b72-c384-4a37-b687-16007fdd9eed HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDQ4NzgwLCJleHAiOjE3MzUzNDQ3ODB9.7XOcpRW-007-X907L9QKldVNl3WroARwe6IUxAWta2g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTMzMTcyLCJleHAiOjE3MzU0MjkxNzJ9.0TWkoVRwArx3lkVy9-Ot_RD_h5iGmlBwlp4H26mtB9k

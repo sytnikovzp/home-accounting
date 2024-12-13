@@ -2,7 +2,7 @@ const { sequelize } = require('../db/dbPostgres/models');
 const { getCurrentUser } = require('../services/userService');
 const {
   getAllMeasures,
-  getMeasureById,
+  getMeasureByUuid,
   createMeasure,
   updateMeasure,
   deleteMeasure,
@@ -30,10 +30,10 @@ class MeasureController {
     }
   }
 
-  async getMeasureById(req, res, next) {
+  async getMeasureByUuid(req, res, next) {
     try {
-      const { measureId } = req.params;
-      const measure = await getMeasureById(measureId);
+      const { measureUuid } = req.params;
+      const measure = await getMeasureByUuid(measureUuid);
       if (measure) {
         res.status(200).json(measure);
       } else {
@@ -73,11 +73,11 @@ class MeasureController {
   async updateMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { measureId } = req.params;
+      const { measureUuid } = req.params;
       const { title, description } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedMeasure = await updateMeasure(
-        measureId,
+        measureUuid,
         title,
         description,
         currentUser,
@@ -100,10 +100,10 @@ class MeasureController {
   async deleteMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { measureId } = req.params;
+      const { measureUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
       const deletedMeasure = await deleteMeasure(
-        measureId,
+        measureUuid,
         currentUser,
         transaction
       );

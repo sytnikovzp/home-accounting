@@ -14,21 +14,21 @@ function ShopDeletePage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: shopToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Shop');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteShop = async () => {
     try {
-      await restController.removeShop(shopToCRUD.id);
+      await restController.removeShop(shopToCRUD.uuid);
       handleModalClose();
       fetchShops();
     } catch (error) {

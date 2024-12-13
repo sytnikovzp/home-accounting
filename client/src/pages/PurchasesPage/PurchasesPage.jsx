@@ -37,8 +37,8 @@ function PurchasesPage() {
     navigate('/purchases');
   };
 
-  const openModal = (mode, id = null) => {
-    navigate(id ? `${mode}/${id}` : mode);
+  const openModal = (mode, uuid = null) => {
+    navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
   const fetchPurchases = useCallback(async () => {
@@ -173,7 +173,7 @@ function PurchasesPage() {
         }
       />
       <Route
-        path='edit/:id'
+        path='edit/:uuid'
         element={
           <PurchaseEditPage
             handleModalClose={handleModalClose}
@@ -188,7 +188,7 @@ function PurchasesPage() {
         }
       />
       <Route
-        path='delete/:id'
+        path='delete/:uuid'
         element={
           <PurchaseDeletePage
             handleModalClose={handleModalClose}
@@ -199,7 +199,7 @@ function PurchasesPage() {
         }
       />
       <Route
-        path=':id'
+        path=':uuid'
         element={<PurchaseViewPage handleModalClose={handleModalClose} />}
       />
     </Routes>
@@ -229,14 +229,13 @@ function PurchasesPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'id', headerName: 'ID', align: 'center' },
+          { field: 'date', headerName: 'Дата', align: 'left' },
           { field: 'product', headerName: 'Товар', align: 'left' },
           { field: 'shop', headerName: 'Магазин', align: 'left' },
-          { field: 'date', headerName: 'Дата', align: 'left' },
         ]}
         rows={purchases}
-        onEdit={(purchase) => openModal('edit', purchase.id)}
-        onDelete={(purchase) => openModal('delete', purchase.id)}
+        onEdit={(purchase) => openModal('edit', purchase.uuid)}
+        onDelete={(purchase) => openModal('delete', purchase.uuid)}
         pagination={{
           totalCount,
           currentPage,

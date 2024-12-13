@@ -57,7 +57,7 @@ function UsersPage() {
   const handleConfirmDelete = async () => {
     if (userToDelete) {
       try {
-        await restController.removeUser(userToDelete.id);
+        await restController.removeUser(userToDelete.uuid);
         setDeleteModalOpen(false);
         setUserToDelete(null);
         await fetchUsers();

@@ -2,7 +2,7 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllMeasures,
-  getMeasureById,
+  getMeasureByUuid,
   createMeasure,
   updateMeasure,
   deleteMeasure,
@@ -21,8 +21,8 @@ measureRouter
   .post(authHandler, validateMeasure, createMeasure);
 
 measureRouter
-  .route('/:measureId')
-  .get(authHandler, getMeasureById)
+  .route('/:measureUuid')
+  .get(authHandler, getMeasureByUuid)
   .patch(authHandler, validateMeasure, updateMeasure)
   .delete(authHandler, deleteMeasure);
 

@@ -2,7 +2,7 @@ const { sequelize } = require('../db/dbPostgres/models');
 const { getCurrentUser } = require('../services/userService');
 const {
   getAllShops,
-  getShopById,
+  getShopByUuid,
   updateShopStatus,
   createShop,
   updateShop,
@@ -34,10 +34,10 @@ class ShopController {
     }
   }
 
-  async getShopById(req, res, next) {
+  async getShopByUuid(req, res, next) {
     try {
-      const { shopId } = req.params;
-      const shop = await getShopById(shopId);
+      const { shopUuid } = req.params;
+      const shop = await getShopByUuid(shopUuid);
       if (shop) {
         res.status(200).json(shop);
       } else {
@@ -78,11 +78,11 @@ class ShopController {
   async updateShop(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { shopId } = req.params;
+      const { shopUuid } = req.params;
       const { title, description, url } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedShop = await updateShop(
-        shopId,
+        shopUuid,
         title,
         description,
         url,
@@ -107,12 +107,12 @@ class ShopController {
     const transaction = await sequelize.transaction();
     try {
       const {
-        params: { shopId },
+        params: { shopUuid },
         file: { filename },
       } = req;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedLogoShop = await updateShopLogo(
-        shopId,
+        shopUuid,
         filename,
         currentUser,
         transaction
@@ -134,10 +134,10 @@ class ShopController {
   async removeShopLogo(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { shopId } = req.params;
+      const { shopUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedShop = await removeShopLogo(
-        shopId,
+        shopUuid,
         currentUser,
         transaction
       );
@@ -158,11 +158,11 @@ class ShopController {
   async moderateShop(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { shopId } = req.params;
+      const { shopUuid } = req.params;
       const { status } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedShop = await updateShopStatus(
-        shopId,
+        shopUuid,
         status,
         currentUser,
         transaction
@@ -184,9 +184,9 @@ class ShopController {
   async deleteShop(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { shopId } = req.params;
+      const { shopUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const deletedShop = await deleteShop(shopId, currentUser, transaction);
+      const deletedShop = await deleteShop(shopUuid, currentUser, transaction);
       if (deletedShop) {
         await transaction.commit();
         res.sendStatus(res.statusCode);

@@ -55,21 +55,25 @@ class ProductService {
     };
   }
 
-  async getProductById(uuid) {
+  async getProductByUuid(uuid) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundProduct = await Product.findOne({
       where: { uuid },
       attributes: { exclude: ['categoryUuid'] },
-      include: [{ model: Category, attributes: ['title'] }],
+      include: [{ model: Category, attributes: ['uuid', 'title'] }],
     });
     if (!foundProduct) throw notFound('Товар не знайдено');
     const productData = {
       ...foundProduct.toJSON(),
-      category: foundProduct.Category?.title || '',
+      categoryUuid: foundProduct.Category?.uuid || '',
+      categoryTitle: foundProduct.Category?.title || '',
     };
     return {
       ...formatProductData(productData),
-      category: productData.category,
+      category: {
+        uuid: productData.categoryUuid,
+        title: productData.categoryTitle,
+      },
     };
   }
 

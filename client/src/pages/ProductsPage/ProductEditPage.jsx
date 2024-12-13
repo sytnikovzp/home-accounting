@@ -15,23 +15,23 @@ function ProductEditPage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: productToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Product');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitProduct = async (values) => {
     setCrudError(null);
     try {
       await restController.editProduct(
-        productToCRUD.id,
+        productToCRUD.uuid,
         values.title,
         values.category
       );

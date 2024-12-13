@@ -7,13 +7,13 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { id: null, accessToken: null },
-  moderator: { id: null, accessToken: null },
-  admin: { id: null, accessToken: null },
+  user: { uuid: null, accessToken: null },
+  moderator: { uuid: null, accessToken: null },
+  admin: { uuid: null, accessToken: null },
 };
 
 describe('ProductController', () => {
-  let productId;
+  let productUuid;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
@@ -22,10 +22,10 @@ describe('ProductController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
-      authData.user.id = response.body.user.id;
+      authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -35,10 +35,10 @@ describe('ProductController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
-      authData.moderator.id = response.body.user.id;
+      authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
 
@@ -48,10 +48,10 @@ describe('ProductController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
-      authData.admin.id = response.body.user.id;
+      authData.admin.uuid = response.body.user.uuid;
       authData.admin.accessToken = response.body.accessToken;
     });
   });
@@ -140,13 +140,13 @@ describe('ProductController', () => {
           category: 'Пристрої',
         });
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Новий модераторський товар');
       expect(response.body.category).toBe('Пристрої');
       expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorId).toBeDefined();
+      expect(response.body.moderatorUuid).toBeDefined();
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
 
     it('should return 201 for current user having permission to create products (as user)', async () => {
@@ -158,14 +158,14 @@ describe('ProductController', () => {
           category: 'Електроніка',
         });
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.category).toBe('Електроніка');
       expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorId).toBe('');
+      expect(response.body.moderatorUuid).toBe('');
 
-      expect(response.body.creatorId).toBeDefined();
-      productId = response.body.id;
+      expect(response.body.creatorUuid).toBeDefined();
+      productUuid = response.body.uuid;
     });
 
     it('should return 404 if you specify category that don`t exist', async () => {
@@ -205,19 +205,19 @@ describe('ProductController', () => {
     });
   });
 
-  describe('GET /api/products/:productId', () => {
+  describe('GET /api/products/:productUuid', () => {
     it('should get product by id', async () => {
       const response = await request(app)
-        .get(`/api/products/${productId}`)
+        .get(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', productId);
+      expect(response.body).toHaveProperty('uuid', productUuid);
       expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.category).toBe('Електроніка');
       expect(response.body.status).toBe('Очікує модерації');
-      expect(response.body.moderatorId).toBe('');
+      expect(response.body.moderatorUuid).toBe('');
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
     });
@@ -231,15 +231,15 @@ describe('ProductController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/products/${productId}`);
+      const response = await request(app).get(`/api/products/${productUuid}`);
       expect(response.status).toBe(401);
     });
   });
 
-  describe('PATCH /api/products/moderate/:productId', () => {
+  describe('PATCH /api/products/moderate/:productUuid', () => {
     it('should return 403 for current user not having permission to moderate products', async () => {
       const response = await request(app)
-        .patch(`/api/products/moderate/${productId}`)
+        .patch(`/api/products/moderate/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
@@ -252,7 +252,7 @@ describe('ProductController', () => {
 
     it('should return 200 for current user having permission to moderate products', async () => {
       const response = await request(app)
-        .patch(`/api/products/moderate/${productId}`)
+        .patch(`/api/products/moderate/${productUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',
@@ -260,52 +260,52 @@ describe('ProductController', () => {
       expect(response.status).toBe(200);
       expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorId).toBeDefined();
+      expect(response.body.moderatorUuid).toBeDefined();
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
   });
 
-  describe('PATCH /api/products/:productId', () => {
+  describe('PATCH /api/products/:productUuid', () => {
     it('should return 200 for current user having permission to edit products (as user)', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productId}`)
+        .patch(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           title: 'Оновлена назва товару',
           category: 'Обчислювальна техніка',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', productId);
+      expect(response.body).toHaveProperty('uuid', productUuid);
       expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.category).toBe('Обчислювальна техніка');
       expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorId).toBe('');
+      expect(response.body.moderatorUuid).toBe('');
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
 
     it('should return 200 for current user having permission to edit products (as moderator)', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productId}`)
+        .patch(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва товару',
           category: 'Обчислювальна техніка',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', productId);
+      expect(response.body).toHaveProperty('uuid', productUuid);
       expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.category).toBe('Обчислювальна техніка');
       expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorId).toBeDefined();
+      expect(response.body.moderatorUuid).toBeDefined();
 
-      expect(response.body.creatorId).toBeDefined();
+      expect(response.body.creatorUuid).toBeDefined();
     });
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productId}`)
+        .patch(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Помідори',
@@ -316,7 +316,7 @@ describe('ProductController', () => {
 
     it('should return 403 for current user not having permission to edit products', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productId}`)
+        .patch(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           title: 'Оновлена назва товару',
@@ -339,10 +339,10 @@ describe('ProductController', () => {
     });
   });
 
-  describe('DELETE /api/products/:productId', () => {
+  describe('DELETE /api/products/:productUuid', () => {
     it('should return 403 for current user not having permission to delete products', async () => {
       const response = await request(app)
-        .delete(`/api/products/${productId}`)
+        .delete(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -352,7 +352,7 @@ describe('ProductController', () => {
 
     it('should return 200 for current user having permission to delete products', async () => {
       const response = await request(app)
-        .delete(`/api/products/${productId}`)
+        .delete(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(200);
     });

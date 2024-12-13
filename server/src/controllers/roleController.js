@@ -2,7 +2,7 @@ const { getCurrentUser } = require('../services/userService');
 const {
   getAllPermissions,
   getAllRoles,
-  getRoleById,
+  getRoleByUuid,
   createRole,
   updateRole,
   deleteRole,
@@ -46,10 +46,10 @@ class RoleController {
     }
   }
 
-  async getRoleById(req, res, next) {
+  async getRoleByUuid(req, res, next) {
     try {
-      const { roleId } = req.params;
-      const role = await getRoleById(roleId);
+      const { roleUuid } = req.params;
+      const role = await getRoleByUuid(roleUuid);
       if (role) {
         res.status(200).json(role);
       } else {
@@ -84,11 +84,11 @@ class RoleController {
 
   async updateRole(req, res, next) {
     try {
-      const { roleId } = req.params;
+      const { roleUuid } = req.params;
       const { title, description, permissions } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedRole = await updateRole(
-        roleId,
+        roleUuid,
         title,
         description,
         permissions,
@@ -107,9 +107,9 @@ class RoleController {
 
   async deleteRole(req, res, next) {
     try {
-      const { roleId } = req.params;
+      const { roleUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const deletedRole = await deleteRole(roleId, currentUser);
+      const deletedRole = await deleteRole(roleUuid, currentUser);
       if (deletedRole) {
         res.sendStatus(res.statusCode);
       } else {

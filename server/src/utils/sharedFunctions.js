@@ -54,7 +54,7 @@ const isValidUUID = function (uuid) {
 };
 
 const checkPermission = async function (user, requiredPermission) {
-  const foundRole = await Role.findOne({ title: user.role });
+  const foundRole = await Role.findOne({ title: user.role.title });
   if (!foundRole) throw notFound('Роль для користувача не знайдено');
   const permission = await Permission.findOne({ title: requiredPermission });
   if (!permission) throw notFound('Необхідного дозволу не знайдено');

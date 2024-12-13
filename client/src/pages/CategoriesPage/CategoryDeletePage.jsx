@@ -14,21 +14,21 @@ function CategoryDeletePage({
   crudError,
   setCrudError,
 }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: categoryToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Category');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteCategory = async () => {
     try {
-      await restController.removeCategory(categoryToCRUD.id);
+      await restController.removeCategory(categoryToCRUD.uuid);
       handleModalClose();
       fetchCategories();
     } catch (error) {

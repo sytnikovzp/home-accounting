@@ -22,27 +22,27 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
 function CategoryViewPage({ handleModalClose }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: categoryToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Category');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const {
-    id: categoryId,
+    uuid: categoryUuid,
     title,
     status,
     moderation,
     creation,
   } = categoryToCRUD || {};
-  const { moderatorId, moderatorFullName } = moderation || {};
-  const { creatorId, creatorFullName, createdAt, updatedAt } = creation || {};
+  const { moderatorUuid, moderatorFullName } = moderation || {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   let statusIcon;
   if (status === 'Затверджено') {
@@ -68,7 +68,7 @@ function CategoryViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Info color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>ID:</strong> {categoryId}
+                  <strong>UUID:</strong> {categoryUuid}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
@@ -88,7 +88,7 @@ function CategoryViewPage({ handleModalClose }) {
                 <Typography variant='body1' sx={stylesViewTextStyles}>
                   <strong>Автор: </strong>
                   <Link
-                    href={`/users/${creatorId}`}
+                    href={`/users/${creatorUuid}`}
                     color='primary'
                     underline='hover'
                   >
@@ -102,7 +102,7 @@ function CategoryViewPage({ handleModalClose }) {
                   <Typography variant='body1' sx={stylesViewTextStyles}>
                     <strong>Модератор: </strong>
                     <Link
-                      href={`/users/${moderatorId}`}
+                      href={`/users/${moderatorUuid}`}
                       color='primary'
                       underline='hover'
                     >

@@ -22,7 +22,7 @@ const restController = {
     authService.refreshAccessToken(originalRequest),
 
   // User management
-  fetchAllUsers: async (page = 1, limit = 6, sort = 'id', order = 'asc') => {
+  fetchAllUsers: async (page = 1, limit = 6, sort = 'uuid', order = 'asc') => {
     const { data, totalCount } = await userService.getAllUsers(
       page,
       limit,
@@ -35,19 +35,19 @@ const restController = {
     };
   },
   fetchUserProfile: () => userService.getUserProfile(),
-  fetchUserById: (userId) => userService.getUserById(userId),
-  editUser: (userId, fullName, password, role) =>
-    userService.updateUser(userId, fullName, password, role),
-  uploadUserPhoto: (userId, userPhoto) =>
-    userService.updateUserPhoto(userId, userPhoto),
-  removeUserPhoto: (userId) => userService.removeUserPhoto(userId),
-  removeUser: (userId) => userService.deleteUser(userId),
+  fetchUserByUuid: (userUuid) => userService.getUserByUuid(userUuid),
+  editUser: (userUuid, fullName, password, role) =>
+    userService.updateUser(userUuid, fullName, password, role),
+  uploadUserPhoto: (userUuid, userPhoto) =>
+    userService.updateUserPhoto(userUuid, userPhoto),
+  removeUserPhoto: (userUuid) => userService.removeUserPhoto(userUuid),
+  removeUser: (userUuid) => userService.deleteUser(userUuid),
 
   // Role and Permission management
   fetchAllPermissions: async (
     page = 1,
     limit = 6,
-    sort = 'id',
+    sort = 'uuid',
     order = 'asc'
   ) => {
     const { data, totalCount } = await roleService.getAllPermissions(
@@ -61,7 +61,7 @@ const restController = {
       totalCount,
     };
   },
-  fetchAllRoles: async (page = 1, limit = 6, sort = 'id', order = 'asc') => {
+  fetchAllRoles: async (page = 1, limit = 6, sort = 'uuid', order = 'asc') => {
     const { data, totalCount } = await roleService.getAllRoles(
       page,
       limit,
@@ -73,17 +73,17 @@ const restController = {
       totalCount,
     };
   },
-  fetchRoleById: (roleId) => roleService.getRoleById(roleId),
+  fetchRoleByUuid: (roleUuid) => roleService.getRoleByUuid(roleUuid),
   createRole: (roleData) => roleService.createRole(roleData),
-  editRole: (roleId, roleData) => roleService.updateRole(roleId, roleData),
-  removeRole: (roleId) => roleService.deleteRole(roleId),
+  editRole: (roleUuid, roleData) => roleService.updateRole(roleUuid, roleData),
+  removeRole: (roleUuid) => roleService.deleteRole(roleUuid),
 
   // Category management
   fetchAllCategories: async (
     status = 'approved',
     page = 1,
     limit = 6,
-    sort = 'id',
+    sort = 'uuid',
     order = 'asc'
   ) => {
     const { data, totalCount } = await categoryService.getAllCategories(
@@ -98,14 +98,15 @@ const restController = {
       totalCount,
     };
   },
-  fetchCategoryById: (categoryId) =>
-    categoryService.getCategoryById(categoryId),
+  fetchCategoryByUuid: (categoryUuid) =>
+    categoryService.getCategoryByUuid(categoryUuid),
   addCategory: (title) => categoryService.createCategory(title),
-  editCategory: (categoryId, title) =>
-    categoryService.updateCategory(categoryId, title),
-  reviewCategory: (categoryId, status) =>
-    categoryService.reviewCategory(categoryId, status),
-  removeCategory: (categoryId) => categoryService.deleteCategory(categoryId),
+  editCategory: (categoryUuid, title) =>
+    categoryService.updateCategory(categoryUuid, title),
+  reviewCategory: (categoryUuid, status) =>
+    categoryService.reviewCategory(categoryUuid, status),
+  removeCategory: (categoryUuid) =>
+    categoryService.deleteCategory(categoryUuid),
 
   // Currency rates
   fetchFilteredRates: async () => {
@@ -117,7 +118,7 @@ const restController = {
   fetchAllCurrencies: async (
     page = 1,
     limit = 6,
-    sort = 'id',
+    sort = 'uuid',
     order = 'asc'
   ) => {
     const { data, totalCount } = await currencyService.getAllCurrencies(
@@ -131,16 +132,22 @@ const restController = {
       totalCount,
     };
   },
-  fetchCurrencyById: (currencyId) =>
-    currencyService.getCurrencyById(currencyId),
+  fetchCurrencyByUuid: (currencyUuid) =>
+    currencyService.getCurrencyByUuid(currencyUuid),
   addCurrency: (title, description) =>
     currencyService.createCurrency(title, description),
-  editCurrency: (currencyId, title, description) =>
-    currencyService.updateCurrency(currencyId, title, description),
-  removeCurrency: (currencyId) => currencyService.deleteCurrency(currencyId),
+  editCurrency: (currencyUuid, title, description) =>
+    currencyService.updateCurrency(currencyUuid, title, description),
+  removeCurrency: (currencyUuid) =>
+    currencyService.deleteCurrency(currencyUuid),
 
   // Measure management
-  fetchAllMeasures: async (page = 1, limit = 6, sort = 'id', order = 'asc') => {
+  fetchAllMeasures: async (
+    page = 1,
+    limit = 6,
+    sort = 'uuid',
+    order = 'asc'
+  ) => {
     const { data, totalCount } = await measureService.getAllMeasures(
       page,
       limit,
@@ -152,19 +159,20 @@ const restController = {
       totalCount,
     };
   },
-  fetchMeasureById: (measureId) => measureService.getMeasureById(measureId),
+  fetchMeasureByUuid: (measureUuid) =>
+    measureService.getMeasureByUuid(measureUuid),
   addMeasure: (title, description = '') =>
     measureService.createMeasure(title, description),
-  editMeasure: (measureId, title, description) =>
-    measureService.updateMeasure(measureId, title, description),
-  removeMeasure: (measureId) => measureService.deleteMeasure(measureId),
+  editMeasure: (measureUuid, title, description) =>
+    measureService.updateMeasure(measureUuid, title, description),
+  removeMeasure: (measureUuid) => measureService.deleteMeasure(measureUuid),
 
   // Product management
   fetchAllProducts: async (
     status = 'approved',
     page = 1,
     limit = 6,
-    sort = 'id',
+    sort = 'uuid',
     order = 'asc'
   ) => {
     const { data, totalCount } = await productService.getAllProducts(
@@ -179,20 +187,21 @@ const restController = {
       totalCount,
     };
   },
-  fetchProductById: (productId) => productService.getProductById(productId),
+  fetchProductByUuid: (productUuid) =>
+    productService.getProductByUuid(productUuid),
   addProduct: (title, category = '') =>
     productService.createProduct(title, category),
-  editProduct: (productId, title, category) =>
-    productService.updateProduct(productId, title, category),
-  reviewProduct: (productId, status) =>
-    productService.reviewProduct(productId, status),
-  removeProduct: (productId) => productService.deleteProduct(productId),
+  editProduct: (productUuid, title, category) =>
+    productService.updateProduct(productUuid, title, category),
+  reviewProduct: (productUuid, status) =>
+    productService.reviewProduct(productUuid, status),
+  removeProduct: (productUuid) => productService.deleteProduct(productUuid),
 
   // Purchase management
   fetchAllPurchases: async (
     page = 1,
     limit = 6,
-    sort = 'id',
+    sort = 'uuid',
     order = 'asc'
   ) => {
     const { data, totalCount } = await purchaseService.getAllPurchases(
@@ -206,8 +215,8 @@ const restController = {
       totalCount,
     };
   },
-  fetchPurchaseById: (purchaseId) =>
-    purchaseService.getPurchaseById(purchaseId),
+  fetchPurchaseByUuid: (purchaseUuid) =>
+    purchaseService.getPurchaseByUuid(purchaseUuid),
   addPurchase: (product, amount, price, shop, measure, currency, date) =>
     purchaseService.createPurchase(
       product,
@@ -219,7 +228,7 @@ const restController = {
       date
     ),
   editPurchase: (
-    purchaseId,
+    purchaseUuid,
     product,
     amount,
     price,
@@ -229,7 +238,7 @@ const restController = {
     date
   ) =>
     purchaseService.updatePurchase(
-      purchaseId,
+      purchaseUuid,
       product,
       amount,
       price,
@@ -238,14 +247,15 @@ const restController = {
       currency,
       date
     ),
-  removePurchase: (purchaseId) => purchaseService.deletePurchase(purchaseId),
+  removePurchase: (purchaseUuid) =>
+    purchaseService.deletePurchase(purchaseUuid),
 
   // Shop management
   fetchAllShops: async (
     status = 'approved',
     page = 1,
     limit = 6,
-    sort = 'id',
+    sort = 'uuid',
     order = 'asc'
   ) => {
     const { data, totalCount } = await shopService.getAllShops(
@@ -260,16 +270,16 @@ const restController = {
       totalCount,
     };
   },
-  fetchShopById: (shopId) => shopService.getShopById(shopId),
+  fetchShopByUuid: (shopUuid) => shopService.getShopByUuid(shopUuid),
   addShop: (title, description = '', url = '') =>
     shopService.createShop(title, description, url),
-  editShop: (shopId, title, description, url) =>
-    shopService.updateShop(shopId, title, description, url),
-  uploadShopLogo: (shopId, shopLogo) =>
-    shopService.updateShopLogo(shopId, shopLogo),
-  removeShopLogo: (shopId) => shopService.removeShopLogo(shopId),
-  reviewShop: (shopId, status) => shopService.reviewShop(shopId, status),
-  removeShop: (shopId) => shopService.deleteShop(shopId),
+  editShop: (shopUuid, title, description, url) =>
+    shopService.updateShop(shopUuid, title, description, url),
+  uploadShopLogo: (shopUuid, shopLogo) =>
+    shopService.updateShopLogo(shopUuid, shopLogo),
+  removeShopLogo: (shopUuid) => shopService.removeShopLogo(shopUuid),
+  reviewShop: (shopUuid, status) => shopService.reviewShop(shopUuid, status),
+  removeShop: (shopUuid) => shopService.deleteShop(shopUuid),
 
   // Statistics
   fetchCostByCategoryPerPeriod: async (category, ago = null) => {

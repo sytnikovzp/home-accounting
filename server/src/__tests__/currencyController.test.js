@@ -7,13 +7,13 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { id: null, accessToken: null },
-  moderator: { id: null, accessToken: null },
-  admin: { id: null, accessToken: null },
+  user: { uuid: null, accessToken: null },
+  moderator: { uuid: null, accessToken: null },
+  admin: { uuid: null, accessToken: null },
 };
 
 describe('CurrencyController', () => {
-  let currencyId;
+  let currencyUuid;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
@@ -22,10 +22,10 @@ describe('CurrencyController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
-      authData.user.id = response.body.user.id;
+      authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -35,10 +35,10 @@ describe('CurrencyController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
-      authData.moderator.id = response.body.user.id;
+      authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
 
@@ -48,10 +48,10 @@ describe('CurrencyController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
-      authData.admin.id = response.body.user.id;
+      authData.admin.uuid = response.body.user.uuid;
       authData.admin.accessToken = response.body.accessToken;
     });
   });
@@ -94,10 +94,10 @@ describe('CurrencyController', () => {
           description: '',
         });
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Нова валюта');
       expect(response.body.description).toBe('');
-      currencyId = response.body.id;
+      currencyUuid = response.body.uuid;
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -137,13 +137,13 @@ describe('CurrencyController', () => {
     });
   });
 
-  describe('GET /api/currencies/:currencyId', () => {
+  describe('GET /api/currencies/:currencyUuid', () => {
     it('should get currency by id', async () => {
       const response = await request(app)
-        .get(`/api/currencies/${currencyId}`)
+        .get(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', currencyId);
+      expect(response.body).toHaveProperty('uuid', currencyUuid);
       expect(response.body.title).toBe('Нова валюта');
       expect(response.body.description).toBe('');
       expect(response.body.createdAt).toBeDefined();
@@ -159,29 +159,31 @@ describe('CurrencyController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/currencies/${currencyId}`);
+      const response = await request(app).get(
+        `/api/currencies/${currencyUuid}`
+      );
       expect(response.status).toBe(401);
     });
   });
 
-  describe('PATCH /api/currencies/:currencyId', () => {
+  describe('PATCH /api/currencies/:currencyUuid', () => {
     it('should return 200 for current user having permission to edit currencies', async () => {
       const response = await request(app)
-        .patch(`/api/currencies/${currencyId}`)
+        .patch(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва валюти',
           description: 'Оновлений опис валюти',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', currencyId);
+      expect(response.body).toHaveProperty('uuid', currencyUuid);
       expect(response.body.title).toBe('Оновлена назва валюти');
       expect(response.body.description).toBe('Оновлений опис валюти');
     });
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .patch(`/api/currencies/${currencyId}`)
+        .patch(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'USD',
@@ -192,7 +194,7 @@ describe('CurrencyController', () => {
 
     it('should return 403 for current user not having permission to edit currencies', async () => {
       const response = await request(app)
-        .patch(`/api/currencies/${currencyId}`)
+        .patch(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           title: 'Оновлена назва валюти',
@@ -216,10 +218,10 @@ describe('CurrencyController', () => {
     });
   });
 
-  describe('DELETE /api/currencies/:currencyId', () => {
+  describe('DELETE /api/currencies/:currencyUuid', () => {
     it('should return 403 for current user not having permission to delete currencies', async () => {
       const response = await request(app)
-        .delete(`/api/currencies/${currencyId}`)
+        .delete(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -229,7 +231,7 @@ describe('CurrencyController', () => {
 
     it('should return 200 for current user having permission to delete currencies', async () => {
       const response = await request(app)
-        .delete(`/api/currencies/${currencyId}`)
+        .delete(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(200);
     });

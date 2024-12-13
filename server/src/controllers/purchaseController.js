@@ -2,7 +2,7 @@ const { sequelize } = require('../db/dbPostgres/models');
 const { getCurrentUser } = require('../services/userService');
 const {
   getAllPurchases,
-  getPurchaseById,
+  getPurchaseByUuid,
   createPurchase,
   updatePurchase,
   deletePurchase,
@@ -30,10 +30,10 @@ class PurchaseController {
     }
   }
 
-  async getPurchaseById(req, res, next) {
+  async getPurchaseByUuid(req, res, next) {
     try {
-      const { purchaseId } = req.params;
-      const purchase = await getPurchaseById(purchaseId);
+      const { purchaseUuid } = req.params;
+      const purchase = await getPurchaseByUuid(purchaseUuid);
       if (purchase) {
         res.status(200).json(purchase);
       } else {
@@ -79,12 +79,12 @@ class PurchaseController {
   async updatePurchase(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { purchaseId } = req.params;
+      const { purchaseUuid } = req.params;
       const { product, amount, price, shop, measure, currency, date } =
         req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedPurchase = await updatePurchase(
-        purchaseId,
+        purchaseUuid,
         product,
         amount,
         price,
@@ -112,10 +112,10 @@ class PurchaseController {
   async deletePurchase(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { purchaseId } = req.params;
+      const { purchaseUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
       const deletedPurchase = await deletePurchase(
-        purchaseId,
+        purchaseUuid,
         currentUser,
         transaction
       );

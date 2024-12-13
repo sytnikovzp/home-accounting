@@ -7,13 +7,13 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { id: null, accessToken: null },
-  moderator: { id: null, accessToken: null },
-  admin: { id: null, accessToken: null },
+  user: { uuid: null, accessToken: null },
+  moderator: { uuid: null, accessToken: null },
+  admin: { uuid: null, accessToken: null },
 };
 
 describe('RoleController', () => {
-  let roleId;
+  let roleUuid;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
@@ -22,10 +22,10 @@ describe('RoleController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('User');
-      authData.user.id = response.body.user.id;
+      authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -35,10 +35,10 @@ describe('RoleController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderator');
-      authData.moderator.id = response.body.user.id;
+      authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
 
@@ -48,10 +48,10 @@ describe('RoleController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrator');
-      authData.admin.id = response.body.user.id;
+      authData.admin.uuid = response.body.user.uuid;
       authData.admin.accessToken = response.body.accessToken;
     });
   });
@@ -94,13 +94,13 @@ describe('RoleController', () => {
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeLessThanOrEqual(5);
       response.body.forEach((role) => {
-        expect(role).toHaveProperty('id');
+        expect(role).toHaveProperty('uuid');
         expect(role).toHaveProperty('title');
         expect(role).toHaveProperty('description');
         expect(role).toHaveProperty('permissions');
         expect(Array.isArray(role.permissions)).toBe(true);
         role.permissions.forEach((permission) => {
-          expect(permission).toHaveProperty('id');
+          expect(permission).toHaveProperty('uuid');
           expect(permission).toHaveProperty('title');
         });
       });
@@ -116,13 +116,13 @@ describe('RoleController', () => {
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeLessThanOrEqual(10);
       response.body.forEach((role) => {
-        expect(role).toHaveProperty('id');
+        expect(role).toHaveProperty('uuid');
         expect(role).toHaveProperty('title');
         expect(role).toHaveProperty('description');
         expect(role).toHaveProperty('permissions');
         expect(Array.isArray(role.permissions)).toBe(true);
         role.permissions.forEach((permission) => {
-          expect(permission).toHaveProperty('id');
+          expect(permission).toHaveProperty('uuid');
           expect(permission).toHaveProperty('title');
         });
       });
@@ -145,7 +145,7 @@ describe('RoleController', () => {
           permissions: ['ADD_CATEGORIES', 'ADD_SHOPS', 'ADD_PRODUCTS'],
         });
       expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Нова роль користувача');
       expect(response.body.description).toBe('');
       expect(response.body.permissions).toHaveLength(3);
@@ -165,7 +165,7 @@ describe('RoleController', () => {
           }),
         ])
       );
-      roleId = response.body.id;
+      roleUuid = response.body.uuid;
     });
 
     it('should return 404 if you specify permissions that don`t exist', async () => {
@@ -222,13 +222,13 @@ describe('RoleController', () => {
     });
   });
 
-  describe('GET /api/roles/:roleId', () => {
+  describe('GET /api/roles/:roleUuid', () => {
     it('should get role by id', async () => {
       const response = await request(app)
-        .get(`/api/roles/${roleId}`)
+        .get(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', roleId);
+      expect(response.body).toHaveProperty('uuid', roleUuid);
       expect(response.body.title).toBe('Нова роль користувача');
       expect(response.body.description).toBe('');
       expect(response.body.permissions).toHaveLength(3);
@@ -261,15 +261,15 @@ describe('RoleController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/roles/${roleId}`);
+      const response = await request(app).get(`/api/roles/${roleUuid}`);
       expect(response.status).toBe(401);
     });
   });
 
-  describe('PATCH /api/roles/:roleId', () => {
+  describe('PATCH /api/roles/:roleUuid', () => {
     it('should return 200 for current user having permission to edit user roles', async () => {
       const response = await request(app)
-        .patch(`/api/roles/${roleId}`)
+        .patch(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           title: 'Оновлена назва ролі',
@@ -277,7 +277,7 @@ describe('RoleController', () => {
           permissions: [],
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('id', roleId);
+      expect(response.body).toHaveProperty('uuid', roleUuid);
       expect(response.body.title).toBe('Оновлена назва ролі');
       expect(response.body.description).toBe('Оновлений опис ролі');
       expect(response.body.permissions).toHaveLength(0);
@@ -285,7 +285,7 @@ describe('RoleController', () => {
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .patch(`/api/roles/${roleId}`)
+        .patch(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           title: 'Administrator',
@@ -298,7 +298,7 @@ describe('RoleController', () => {
 
     it('should return 403 for current user not having permission to edit user roles', async () => {
       const response = await request(app)
-        .patch(`/api/roles/${roleId}`)
+        .patch(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва ролі',
@@ -325,10 +325,10 @@ describe('RoleController', () => {
     });
   });
 
-  describe('DELETE /api/roles/:roleId', () => {
+  describe('DELETE /api/roles/:roleUuid', () => {
     it('should return 403 for current user not having permission to delete user roles', async () => {
       const response = await request(app)
-        .delete(`/api/roles/${roleId}`)
+        .delete(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -338,7 +338,7 @@ describe('RoleController', () => {
 
     it('should return 200 for current user having permission to delete user roles', async () => {
       const response = await request(app)
-        .delete(`/api/roles/${roleId}`)
+        .delete(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(200);
     });

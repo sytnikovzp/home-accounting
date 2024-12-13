@@ -41,7 +41,7 @@ class CategoryService {
     };
   }
 
-  async getCategoryById(uuid) {
+  async getCategoryByUuid(uuid) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundCategory = await Category.findOne({ where: { uuid } });
     if (!foundCategory) throw notFound('Категорію не знайдено');

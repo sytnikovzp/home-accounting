@@ -31,7 +31,7 @@ class AuthService {
       email: emailToLower,
       password: hashedPassword,
       activationLink,
-      roleId: foundRole.uuid,
+      roleUuid: foundRole.uuid,
     });
     if (!user) throw badRequest('Користувач не зареєстрований');
     await mailService.sendActivationMail(
@@ -57,7 +57,7 @@ class AuthService {
     if (!user) throw unAuthorizedError();
     const isPassRight = await bcrypt.compare(password, user.password);
     if (!isPassRight) throw unAuthorizedError();
-    const foundRole = await Role.findOne({ uuid: user.roleId });
+    const foundRole = await Role.findOne({ uuid: user.roleUuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const tokens = generateTokens({ email });
     return {
@@ -88,7 +88,7 @@ class AuthService {
     const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
     if (!foundUser) throw notFound('Користувача не знайдено');
-    const foundRole = await Role.findOne({ uuid: foundUser.roleId });
+    const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const tokens = generateTokens({ email });
     return {

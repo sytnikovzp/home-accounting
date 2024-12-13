@@ -2,7 +2,7 @@ const { sequelize } = require('../db/dbPostgres/models');
 const { getCurrentUser } = require('../services/userService');
 const {
   getAllProducts,
-  getProductById,
+  getProductByUuid,
   updateProductStatus,
   createProduct,
   updateProduct,
@@ -32,10 +32,10 @@ class ProductController {
     }
   }
 
-  async getProductById(req, res, next) {
+  async getProductByUuid(req, res, next) {
     try {
-      const { productId } = req.params;
-      const product = await getProductById(productId);
+      const { productUuid } = req.params;
+      const product = await getProductByUuid(productUuid);
       if (product) {
         res.status(200).json(product);
       } else {
@@ -75,11 +75,11 @@ class ProductController {
   async updateProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { productId } = req.params;
+      const { productUuid } = req.params;
       const { title, category } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedProduct = await updateProduct(
-        productId,
+        productUuid,
         title,
         category,
         currentUser,
@@ -102,11 +102,11 @@ class ProductController {
   async moderateProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { productId } = req.params;
+      const { productUuid } = req.params;
       const { status } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedProduct = await updateProductStatus(
-        productId,
+        productUuid,
         status,
         currentUser,
         transaction
@@ -128,10 +128,10 @@ class ProductController {
   async deleteProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { productId } = req.params;
+      const { productUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
       const deletedProduct = await deleteProduct(
-        productId,
+        productUuid,
         currentUser,
         transaction
       );

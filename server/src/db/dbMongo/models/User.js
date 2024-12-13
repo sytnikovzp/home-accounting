@@ -29,7 +29,11 @@ const usersSchema = new Schema(
       default: false,
     },
     activationLink: String,
-    roleId: { type: Schema.Types.UUID, ref: 'Role' },
+    roleUuid: {
+      type: Schema.Types.UUID,
+      required: true,
+      ref: 'Role',
+    },
   },
   {
     timestamps: true,

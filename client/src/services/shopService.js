@@ -4,7 +4,7 @@ const getAllShops = async (
   status = 'approved',
   page = 1,
   limit = 6,
-  sort = 'id',
+  sort = 'uuid',
   order = 'asc'
 ) => {
   const params = new URLSearchParams(
@@ -30,8 +30,8 @@ const getAllShops = async (
   }
 };
 
-const getShopById = async (shopId) => {
-  const { data } = await api.get(`/shops/${shopId}`);
+const getShopByUuid = async (shopUuid) => {
+  const { data } = await api.get(`/shops/${shopUuid}`);
   return data;
 };
 
@@ -40,8 +40,8 @@ const createShop = async (title, description = '', url = '') => {
   return data;
 };
 
-const updateShop = async (shopId, title, description, url) => {
-  const { data } = await api.patch(`/shops/${shopId}`, {
+const updateShop = async (shopUuid, title, description, url) => {
+  const { data } = await api.patch(`/shops/${shopUuid}`, {
     title,
     description,
     url,
@@ -49,10 +49,10 @@ const updateShop = async (shopId, title, description, url) => {
   return data;
 };
 
-const updateShopLogo = async (shopId, shopLogo) => {
+const updateShopLogo = async (shopUuid, shopLogo) => {
   const formData = new FormData();
   formData.append('shopLogo', shopLogo);
-  const { data } = await api.patch(`/shops/logo/${shopId}`, formData, {
+  const { data } = await api.patch(`/shops/logo/${shopUuid}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -60,26 +60,26 @@ const updateShopLogo = async (shopId, shopLogo) => {
   return data;
 };
 
-const removeShopLogo = async (shopId) => {
-  const { data } = await api.patch(`/shops/delete-logo/${shopId}`, {
+const removeShopLogo = async (shopUuid) => {
+  const { data } = await api.patch(`/shops/delete-logo/${shopUuid}`, {
     logo: null,
   });
   return data;
 };
 
-const reviewShop = async (shopId, status) => {
-  const { data } = await api.patch(`/shops/moderate/${shopId}`, { status });
+const reviewShop = async (shopUuid, status) => {
+  const { data } = await api.patch(`/shops/moderate/${shopUuid}`, { status });
   return data;
 };
 
-const deleteShop = async (shopId) => {
-  const { data } = await api.delete(`/shops/${shopId}`);
+const deleteShop = async (shopUuid) => {
+  const { data } = await api.delete(`/shops/${shopUuid}`);
   return data;
 };
 
 export default {
   getAllShops,
-  getShopById,
+  getShopByUuid,
   createShop,
   updateShop,
   updateShopLogo,

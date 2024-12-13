@@ -19,13 +19,25 @@ const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatPurchaseData = (purchase) => ({
   uuid: purchase.uuid,
-  product: purchase.Product?.title || '',
+  product: {
+    uuid: purchase.Product?.uuid || '',
+    title: purchase.Product?.title || '',
+  },
   amount: purchase.amount,
   price: purchase.price,
   summ: purchase.summ,
-  shop: purchase.Shop?.title || '',
-  measure: purchase.Measure?.title || '',
-  currency: purchase.Currency?.title || '',
+  shop: {
+    uuid: purchase.Shop?.uuid || '',
+    title: purchase.Shop?.title || '',
+  },
+  measure: {
+    uuid: purchase.Measure?.uuid || '',
+    title: purchase.Measure?.title || '',
+  },
+  currency: {
+    uuid: purchase.Currency?.uuid || '',
+    title: purchase.Currency?.title || '',
+  },
   date: formatDate(purchase.date),
   creation: {
     creatorUuid: purchase.creatorUuid,
@@ -75,17 +87,17 @@ class PurchaseService {
     };
   }
 
-  async getPurchaseById(uuid) {
+  async getPurchaseByUuid(uuid) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundPurchase = await Purchase.findByPk(uuid, {
       attributes: {
         exclude: ['productUuid', 'shopUuid', 'measureUuid', 'currencyUuid'],
       },
       include: [
-        { model: Product, attributes: ['title'] },
-        { model: Shop, attributes: ['title'] },
-        { model: Measure, attributes: ['title'] },
-        { model: Currency, attributes: ['title'] },
+        { model: Product, attributes: ['uuid', 'title'] },
+        { model: Shop, attributes: ['uuid', 'title'] },
+        { model: Measure, attributes: ['uuid', 'title'] },
+        { model: Currency, attributes: ['uuid', 'title'] },
       ],
     });
     if (!foundPurchase) throw notFound('Покупку не знайдено');
@@ -140,13 +152,25 @@ class PurchaseService {
     if (!newPurchase) throw badRequest('Дані цієї покупки не створено');
     return {
       uuid: newPurchase.uuid,
-      product: foundProduct.title,
+      product: {
+        uuid: foundProduct.uuid,
+        title: foundProduct.title,
+      },
       amount: newPurchase.amount,
       price: newPurchase.price,
       summ: newPurchase.summ,
-      shop: foundShop.title,
-      measure: foundMeasure.title,
-      currency: foundCurrency.title,
+      shop: {
+        uuid: foundShop.uuid,
+        title: foundShop.title,
+      },
+      measure: {
+        uuid: foundMeasure.uuid,
+        title: foundMeasure.title,
+      },
+      currency: {
+        uuid: foundCurrency.uuid,
+        title: foundCurrency.title,
+      },
       date: formatDate(newPurchase.date),
       creation: {
         creatorUuid: newPurchase.creatorUuid,
@@ -211,13 +235,25 @@ class PurchaseService {
     if (!affectedRows) throw badRequest('Дані цієї покупки не оновлено');
     return {
       uuid: updatedPurchase.uuid,
-      product: foundProduct.title,
+      product: {
+        uuid: foundProduct.uuid,
+        title: foundProduct.title,
+      },
       amount: updatedPurchase.amount,
       price: updatedPurchase.price,
       summ: updatedPurchase.summ,
-      shop: foundShop.title,
-      measure: foundMeasure.title,
-      currency: foundCurrency.title,
+      shop: {
+        uuid: foundShop.uuid,
+        title: foundShop.title,
+      },
+      measure: {
+        uuid: foundMeasure.uuid,
+        title: foundMeasure.title,
+      },
+      currency: {
+        uuid: foundCurrency.uuid,
+        title: foundCurrency.title,
+      },
       date: formatDate(updatedPurchase.date),
       creation: {
         creatorUuid: updatedPurchase.creatorUuid,

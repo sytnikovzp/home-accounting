@@ -3,7 +3,7 @@ const { Router } = require('express');
 const {
   getAllPermissions,
   getAllRoles,
-  getRoleById,
+  getRoleByUuid,
   createRole,
   updateRole,
   deleteRole,
@@ -26,8 +26,8 @@ roleRouter
   .get(authHandler, paginateElements, getAllPermissions);
 
 roleRouter
-  .route('/:roleId')
-  .get(authHandler, getRoleById)
+  .route('/:roleUuid')
+  .get(authHandler, getRoleByUuid)
   .patch(authHandler, validateRole, updateRole)
   .delete(authHandler, deleteRole);
 

@@ -2,7 +2,7 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getAllCurrencies,
-  getCurrencyById,
+  getCurrencyByUuid,
   createCurrency,
   updateCurrency,
   deleteCurrency,
@@ -21,8 +21,8 @@ currencyRouter
   .post(authHandler, validateCurrency, createCurrency);
 
 currencyRouter
-  .route('/:currencyId')
-  .get(authHandler, getCurrencyById)
+  .route('/:currencyUuid')
+  .get(authHandler, getCurrencyByUuid)
   .patch(authHandler, validateCurrency, updateCurrency)
   .delete(authHandler, deleteCurrency);
 

@@ -24,20 +24,20 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
 function PurchaseViewPage({ handleModalClose }) {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const {
     entity: purchaseToCRUD,
     isLoading,
     errorMessage,
-    fetchEntityById,
+    fetchEntityByUuid,
   } = useFetchEntity('Purchase');
 
   useEffect(() => {
-    if (id) fetchEntityById(id);
-  }, [id, fetchEntityById]);
+    if (uuid) fetchEntityByUuid(uuid);
+  }, [uuid, fetchEntityByUuid]);
 
   const {
-    id: purchaseId,
+    uuid: purchaseUuid,
     product,
     amount,
     price,
@@ -48,7 +48,7 @@ function PurchaseViewPage({ handleModalClose }) {
     date,
     creation,
   } = purchaseToCRUD || {};
-  const { creatorId, creatorFullName, createdAt, updatedAt } = creation || {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   return (
     <CustomModal
@@ -65,7 +65,7 @@ function PurchaseViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Info color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>ID:</strong> {purchaseId}
+                  <strong>UUID:</strong> {purchaseUuid}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
@@ -103,7 +103,7 @@ function PurchaseViewPage({ handleModalClose }) {
                 <Typography variant='body1' sx={stylesViewTextStyles}>
                   <strong>Автор: </strong>
                   <Link
-                    href={`/users/${creatorId}`}
+                    href={`/users/${creatorUuid}`}
                     color='primary'
                     underline='hover'
                   >

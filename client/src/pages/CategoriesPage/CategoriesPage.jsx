@@ -26,7 +26,7 @@ function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState('approved');
-  const [sortModel, setSortModel] = useState({ field: 'id', order: 'asc' });
+  const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [crudError, setCrudError] = useState(null);
 
   const handleModalClose = () => {
@@ -34,8 +34,8 @@ function CategoriesPage() {
     navigate('/categories');
   };
 
-  const openModal = (mode, id = null) => {
-    navigate(id ? `${mode}/${id}` : mode);
+  const openModal = (mode, uuid = null) => {
+    navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
   const fetchCategories = useCallback(async () => {
@@ -81,7 +81,7 @@ function CategoriesPage() {
         }
       />
       <Route
-        path='edit/:id'
+        path='edit/:uuid'
         element={
           <CategoryEditPage
             handleModalClose={handleModalClose}
@@ -92,7 +92,7 @@ function CategoriesPage() {
         }
       />
       <Route
-        path='delete/:id'
+        path='delete/:uuid'
         element={
           <CategoryDeletePage
             handleModalClose={handleModalClose}
@@ -103,7 +103,7 @@ function CategoriesPage() {
         }
       />
       <Route
-        path=':id'
+        path=':uuid'
         element={<CategoryViewPage handleModalClose={handleModalClose} />}
       />
     </Routes>
@@ -133,12 +133,11 @@ function CategoriesPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'id', headerName: 'ID', align: 'center' },
           { field: 'title', headerName: 'Назва категорії', align: 'left' },
         ]}
         rows={categories}
-        onEdit={(category) => openModal('edit', category.id)}
-        onDelete={(category) => openModal('delete', category.id)}
+        onEdit={(category) => openModal('edit', category.uuid)}
+        onDelete={(category) => openModal('delete', category.uuid)}
         pagination={{
           totalCount,
           currentPage,
