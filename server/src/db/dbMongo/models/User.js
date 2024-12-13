@@ -1,7 +1,14 @@
+const { v4: uuidv4 } = require('uuid');
 const { Schema, model } = require('mongoose');
 
 const usersSchema = new Schema(
   {
+    uuid: {
+      type: Schema.Types.UUID,
+      default: uuidv4,
+      unique: true,
+      required: true,
+    },
     fullName: {
       type: String,
       required: true,
@@ -22,7 +29,7 @@ const usersSchema = new Schema(
       default: false,
     },
     activationLink: String,
-    roleId: { type: Schema.Types.ObjectId, ref: 'Role' },
+    roleId: { type: Schema.Types.UUID, ref: 'Role' },
   },
   {
     timestamps: true,

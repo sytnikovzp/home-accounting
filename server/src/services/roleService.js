@@ -1,19 +1,29 @@
 const { Role, User, Permission } = require('../db/dbMongo/models');
-const { formatDateTime, checkPermission } = require('../utils/sharedFunctions');
+const {
+  formatDateTime,
+  isValidUUID,
+  checkPermission,
+} = require('../utils/sharedFunctions');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 
 class RoleService {
-  async getAllPermissions(limit, offset) {
+  async getAllPermissions(limit, offset, sort = 'uuid', order = 'asc') {
+    const sortOrder = order === 'asc' ? 1 : -1;
+    const sortOptions = { [sort]: sortOrder };
     const foundPermissions = await Permission.find()
+      .sort(sortOptions)
       .limit(limit)
       .skip(offset)
       .lean();
     if (foundPermissions.length === 0)
       throw notFound('Права доступу не знайдено');
-    const allPermissions = foundPermissions.map(({ _id, ...permission }) => ({
-      id: _id,
-      ...permission,
-    }));
+    const allPermissions = foundPermissions.map(
+      ({ uuid, title, description }) => ({
+        uuid,
+        title,
+        description,
+      })
+    );
     const total = await Permission.countDocuments();
     return {
       allPermissions,
@@ -21,24 +31,22 @@ class RoleService {
     };
   }
 
-  async getAllRoles(limit, offset) {
+  async getAllRoles(limit, offset, sort = 'uuid', order = 'asc') {
+    const sortOrder = order === 'asc' ? 1 : -1;
+    const sortOptions = { [sort]: sortOrder };
     const foundRoles = await Role.find()
-      .populate('permissions')
       .limit(limit)
       .skip(offset)
+      .sort(sortOptions)
       .lean();
     if (foundRoles.length === 0) throw notFound('Ролі не знайдено');
-    const allRoles = foundRoles.map(
-      ({ _id, title, description, permissions }) => ({
-        id: _id,
+    const allRoles = foundRoles.map(({ uuid, title, description }) => {
+      return {
+        uuid,
         title,
         description: description || '',
-        permissions: permissions.map(({ _id, title }) => ({
-          id: _id,
-          title,
-        })),
-      })
-    );
+      };
+    });
     const total = await Role.countDocuments();
     return {
       allRoles,
@@ -46,24 +54,28 @@ class RoleService {
     };
   }
 
-  async getRoleById(id) {
-    const foundRole = await Role.findById(id).populate('permissions');
+  async getRoleById(uuid) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundRole = await Role.findOne({ uuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
+    const permissions = await Permission.find({
+      uuid: { $in: foundRole.permissions },
+    });
     return {
-      id: foundRole._id,
+      uuid: foundRole.uuid,
       title: foundRole.title,
       description: foundRole.description || '',
-      permissions: foundRole.permissions.map(({ _id, title, description }) => ({
-        id: _id,
-        title,
-        description,
+      permissions: permissions.map((permission) => ({
+        uuid: permission.uuid,
+        title: permission.title,
+        description: permission.description,
       })),
       createdAt: formatDateTime(foundRole.createdAt),
       updatedAt: formatDateTime(foundRole.updatedAt),
     };
   }
 
-  async createRole(title, descriptionValue, permissions, currentUser) {
+  async createRole(title, descriptionValue, permissionsTitles, currentUser) {
     const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
       throw forbidden(
@@ -71,43 +83,49 @@ class RoleService {
       );
     const duplicateRole = await Role.findOne({ title });
     if (duplicateRole) throw badRequest('Ця роль для користувача вже існує');
-    const foundPermissions = await Permission.find({
-      title: { $in: permissions },
-    });
-    if (foundPermissions.length !== permissions.length) {
-      const missingPermissions = permissions.filter(
-        (permission) => !foundPermissions.some((fp) => fp.title === permission)
+    const allPermissions = await Permission.find();
+    const foundPermissions = allPermissions.filter((permission) =>
+      permissionsTitles.includes(permission.title)
+    );
+    if (foundPermissions.length !== permissionsTitles.length) {
+      const missingPermissions = permissionsTitles.filter(
+        (title) =>
+          !foundPermissions.some((permission) => permission.title === title)
       );
       throw notFound(
         `Не вдалося знайти деякі дозволи: ${missingPermissions.join(', ')}`
       );
     }
+    const permissionUUIDs = foundPermissions.map(
+      (permission) => permission.uuid
+    );
     const description = descriptionValue === '' ? null : descriptionValue;
     const newRole = new Role({
       title,
       description,
-      permissions: foundPermissions.map((permission) => permission._id),
+      permissions: permissionUUIDs,
     });
     await newRole.save();
     return {
-      id: newRole._id,
+      uuid: newRole.uuid,
       title: newRole.title,
       description: newRole.description || '',
       permissions: foundPermissions.map((permission) => ({
-        id: permission._id,
+        uuid: permission.uuid,
         title: permission.title,
         description: permission.description,
       })),
     };
   }
 
-  async updateRole(id, title, descriptionValue, permissions, currentUser) {
+  async updateRole(uuid, title, descriptionValue, permissions, currentUser) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
       throw forbidden(
         'Ви не маєте дозволу на редагування цієї ролі для користувачів'
       );
-    const foundRole = await Role.findById(id);
+    const foundRole = await Role.findOne({ uuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const updateData = {};
     if (title && title !== foundRole.title) {
@@ -138,44 +156,45 @@ class RoleService {
           );
         }
         updateData.permissions = foundPermissions.map(
-          (permission) => permission._id
+          (permission) => permission.uuid
         );
       }
     }
-    const updatedRole = await Role.findByIdAndUpdate(id, updateData, {
+    const updatedRole = await Role.findOneAndUpdate({ uuid }, updateData, {
       new: true,
     });
     if (!updatedRole)
       throw badRequest('Дані цієї ролі для користувача не оновлено');
     const updatedPermissions = await Permission.find({
-      _id: { $in: updatedRole.permissions },
+      uuid: { $in: updatedRole.permissions },
     });
     return {
-      id: updatedRole._id,
+      uuid: updatedRole.uuid,
       title: updatedRole.title,
       description: updatedRole.description || '',
       permissions: updatedPermissions.map((permission) => ({
-        id: permission._id,
+        uuid: permission.uuid,
         title: permission.title,
         description: permission.description,
       })),
     };
   }
 
-  async deleteRole(id, currentUser) {
+  async deleteRole(uuid, currentUser) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
     if (!hasPermission)
       throw forbidden(
         'Ви не маєте дозволу на видалення цієї ролі для користувачів'
       );
-    const foundRole = await Role.findById(id);
+    const foundRole = await Role.findOne({ uuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
-    const usersWithRole = await User.countDocuments({ roleId: id });
+    const usersWithRole = await User.countDocuments({ roleId: uuid });
     if (usersWithRole > 0)
       throw badRequest(
         `Видалення неможливо, оскільки ${usersWithRole} користувачів використовують цю роль`
       );
-    const deletedRole = await Role.findByIdAndDelete(id);
+    const deletedRole = await Role.findOneAndDelete({ uuid });
     if (!deletedRole)
       throw badRequest('Дані цієї ролі для користувачів не видалено');
     return deletedRole;

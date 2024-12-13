@@ -4,6 +4,7 @@ const {
   hashPassword,
   emailToLowerCase,
   formatDateTime,
+  isValidUUID,
   checkPermission,
 } = require('../utils/sharedFunctions');
 // ==============================================================
@@ -12,19 +13,22 @@ const { generateTokens } = require('./tokenService');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 
 class UserService {
-  async getAllUsers(limit, offset, sort = '_id', order = 'asc') {
+  async getAllUsers(isActivated, limit, offset, sort = 'uuid', order = 'asc') {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
-    const foundUsers = await User.find()
+    const query =
+      isActivated !== undefined ? { isActivated: isActivated === 'true' } : {};
+    const foundUsers = await User.find(query)
       .sort(sortOptions)
       .limit(limit)
-      .skip(offset);
+      .skip(offset)
+      .lean();
     if (foundUsers.length === 0) throw notFound('Користувачів не знайдено');
     const allUsers = await Promise.all(
       foundUsers.map(async (user) => {
-        const role = await Role.findById(user.roleId);
+        const role = await Role.findOne({ uuid: user.roleId });
         return {
-          id: user._id,
+          uuid: user.uuid,
           fullName: user.fullName,
           isActivated: user.isActivated,
           role: role ? role.title : '',
@@ -32,41 +36,43 @@ class UserService {
         };
       })
     );
-    const total = await User.countDocuments();
+    const total = await User.countDocuments(query);
     return {
       allUsers,
       total,
     };
   }
 
-  async getUserById(id, currentUser) {
-    const foundUser = await User.findById(id);
+  async getUserById(uuid, currentUser) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundUser = await User.findOne({ uuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
-    const role = await Role.findById(foundUser.roleId);
+    const roleIdBinary = foundUser.roleId;
+    const role = await Role.findOne({ uuid: roleIdBinary });
     if (!role) throw notFound('Роль для користувача не знайдено');
     const permissions = await Permission.find({
-      _id: { $in: role.permissions },
+      uuid: { $in: role.permissions },
     });
     const limitUserData = {
-      id: foundUser._id,
+      uuid: foundUser.uuid,
       fullName: foundUser.fullName,
-      isActivated: foundUser.isActivated,
       role: role ? role.title : '',
       photo: foundUser.photo || '',
     };
     const fullUserData = {
       ...limitUserData,
       email: foundUser.email,
+      isActivated: foundUser.isActivated,
       createdAt: formatDateTime(foundUser.createdAt),
       updatedAt: formatDateTime(foundUser.updatedAt),
       permissions: permissions.map((permission) => ({
-        id: permission._id,
+        uuid: permission.uuid,
         title: permission.title,
         description: permission.description,
       })),
     };
     if (
-      currentUser.id.toString() === id.toString() ||
+      currentUser.uuid.toString() === uuid.toString() ||
       (await checkPermission(currentUser, 'FULL_PROFILE_VIEWER'))
     ) {
       return fullUserData;
@@ -81,13 +87,13 @@ class UserService {
     const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
     if (!foundUser) throw notFound('Користувача не знайдено');
-    const role = await Role.findById(foundUser.roleId);
+    const role = await Role.findOne({ uuid: foundUser.roleId });
     if (!role) throw notFound('Роль для користувача не знайдено');
     const permissions = await Permission.find({
-      _id: { $in: role.permissions },
+      uuid: { $in: role.permissions },
     });
     return {
-      id: foundUser._id,
+      uuid: foundUser.uuid,
       fullName: foundUser.fullName,
       isActivated: foundUser.isActivated,
       role: role ? role.title : '',
@@ -96,24 +102,25 @@ class UserService {
       createdAt: formatDateTime(foundUser.createdAt),
       updatedAt: formatDateTime(foundUser.updatedAt),
       permissions: permissions.map((permission) => ({
-        id: permission._id,
+        uuid: permission.uuid,
         title: permission.title,
         description: permission.description,
       })),
     };
   }
 
-  async updateUser(id, fullName, email, password, role, currentUser) {
+  async updateUser(uuid, fullName, email, password, role, currentUser) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const hasPermission =
-      currentUser.id.toString() === id.toString() ||
+      currentUser.uuid === uuid ||
       (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden(
         'У Вас немає дозволу на оновлення даних цього користувача'
       );
-    const foundUser = await User.findById(id);
+    const foundUser = await User.findOne({ uuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
-    const foundRole = await Role.findById(foundUser.roleId);
+    const foundRole = await Role.findOne({ uuid: foundUser.roleId });
     if (!foundRole) throw badRequest('Роль для користувача не знайдено');
     const updateData = {};
     if (fullName) updateData.fullName = fullName;
@@ -143,9 +150,9 @@ class UserService {
       }
       const newRole = await Role.findOne({ title: role });
       if (!newRole) throw notFound('Роль для користувача не знайдено');
-      updateData.roleId = newRole._id;
+      updateData.roleId = newRole.uuid;
     }
-    const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+    const updatedUser = await User.findOneAndUpdate({ uuid }, updateData, {
       new: true,
     });
     if (!updatedUser) throw badRequest('Дані цього користувача не оновлено');
@@ -155,63 +162,65 @@ class UserService {
     return {
       ...tokens,
       user: {
-        id: updatedUser._id,
+        uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        // isActivated: foundUser.isActivated,
         isActivated: updatedUser.isActivated,
-        role: role || (await Role.findById(foundUser.roleId)).title,
+        role: role || (await Role.findOne({ uuid: foundUser.roleId })).title,
       },
     };
   }
 
-  async updateUserPhoto(id, filename, currentUser) {
+  async updateUserPhoto(uuid, filename, currentUser) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const hasPermission =
-      currentUser.id.toString() === id.toString() ||
+      currentUser.uuid === uuid ||
       (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden(
         'Ви не маєте дозволу на оновлення фотографії цього користувача'
       );
     if (!filename) throw badRequest('Файл не завантажено');
-    const foundUser = await User.findById(id);
+    const foundUser = await User.findOne({ uuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
     foundUser.photo = filename;
     const updatedUser = await foundUser.save();
     return {
-      id: updatedUser._id,
+      uuid: updatedUser.uuid,
       photo: updatedUser.photo || '',
     };
   }
 
-  async removeUserPhoto(id, currentUser) {
+  async removeUserPhoto(uuid, currentUser) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const hasPermission =
-      currentUser.id.toString() === id.toString() ||
+      currentUser.uuid === uuid ||
       (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden(
         'Ви не маєте дозволу на видалення фотографії цього користувача'
       );
-    const foundUser = await User.findById(id);
+    const foundUser = await User.findOne({ uuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
     foundUser.photo = null;
     const updatedUser = await foundUser.save();
     return {
-      id: updatedUser._id,
+      uuid: updatedUser.uuid,
       photo: updatedUser.photo || '',
     };
   }
 
-  async deleteUser(id, currentUser) {
+  async deleteUser(uuid, currentUser) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const hasPermission =
-      currentUser.id.toString() === id.toString() ||
+      currentUser.uuid === uuid ||
       (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
     if (!hasPermission)
       throw forbidden(
         'Ви не маєте дозволу на видалення цього профілю користувача'
       );
-    const foundUser = await User.findById(id);
+    const foundUser = await User.findOne({ uuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
-    const foundRole = await Role.findById(foundUser.roleId);
+    const foundRole = await Role.findOne({ uuid: foundUser.roleId });
     if (!foundRole) throw badRequest('Роль для користувача не знайдено');
     if (foundRole.title === 'Administrator') {
       const adminCount = await User.countDocuments({
@@ -220,7 +229,7 @@ class UserService {
       if (adminCount === 1)
         throw forbidden('Неможливо видалити останнього Адміністратора');
     }
-    const deletedUser = await User.findByIdAndDelete(id);
+    const deletedUser = await User.findOneAndDelete({ uuid });
     if (!deletedUser) throw badRequest('Профіль цього користувача не видалено');
     return deletedUser;
   }

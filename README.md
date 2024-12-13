@@ -21,8 +21,8 @@ CLIENT_URL=http://localhost:3000
 
 SMTP_HOST="smtp.gmail.com"
 SMTP_PORT=587
-SMTP_USER=projectpet7@gmail.com
-SMTP_PASSWORD="kzlp javu fwoq kszk"
+SMTP_USER=
+SMTP_PASSWORD=""
 
 #For database
 DB_USER=postgres

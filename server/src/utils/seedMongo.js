@@ -27,7 +27,7 @@ const createPermissions = async () => {
   const createdPermissions = await Permission.insertMany(permissions);
   const permissionIds = {};
   createdPermissions.forEach((permission) => {
-    permissionIds[permission.title] = permission._id;
+    permissionIds[permission.title] = permission.uuid;
   });
   return permissionIds;
 };
@@ -37,7 +37,7 @@ const createRoles = async (permissionIds) => {
   const createdRoles = await Role.insertMany(rolesWithPermissions);
   const roleIds = {};
   createdRoles.forEach((role) => {
-    roleIds[role.title] = role._id;
+    roleIds[role.title] = role.uuid;
   });
   return roleIds;
 };

@@ -1,4 +1,4 @@
-const { Model } = require('sequelize');
+const { Model, Sequelize } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Purchase extends Model {
@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Purchase.init(
     {
+      uuid: {
+        type: DataTypes.UUID,
+        defaultValue: Sequelize.literal('uuid_generate_v4()'),
+        allowNull: false,
+      },
       productId: {
         type: DataTypes.INTEGER,
         allowNull: false,

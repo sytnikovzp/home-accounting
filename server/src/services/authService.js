@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const uuid = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 // ==============================================================
 const {
   configs: {
@@ -25,13 +25,13 @@ class AuthService {
     const foundRole = await Role.findOne({ title: 'User' });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const hashedPassword = await hashPassword(password);
-    const activationLink = uuid.v4();
+    const activationLink = uuidv4();
     const user = await User.create({
       fullName,
       email: emailToLower,
       password: hashedPassword,
       activationLink,
-      roleId: foundRole._id,
+      roleId: foundRole.uuid,
     });
     if (!user) throw badRequest('Користувач не зареєстрований');
     await mailService.sendActivationMail(
@@ -42,7 +42,7 @@ class AuthService {
     return {
       ...tokens,
       user: {
-        id: user._id,
+        uuid: user.uuid,
         fullName: user.fullName,
         isActivated: user.isActivated,
         role: foundRole.title || '',
@@ -57,13 +57,13 @@ class AuthService {
     if (!user) throw unAuthorizedError();
     const isPassRight = await bcrypt.compare(password, user.password);
     if (!isPassRight) throw unAuthorizedError();
-    const foundRole = await Role.findById(user.roleId);
+    const foundRole = await Role.findOne({ uuid: user.roleId });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
       user: {
-        id: user._id,
+        uuid: user.uuid,
         fullName: user.fullName,
         isActivated: user.isActivated,
         role: foundRole.title || '',
@@ -88,13 +88,13 @@ class AuthService {
     const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
     if (!foundUser) throw notFound('Користувача не знайдено');
-    const foundRole = await Role.findById(foundUser.roleId);
+    const foundRole = await Role.findOne({ uuid: foundUser.roleId });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const tokens = generateTokens({ email });
     return {
       ...tokens,
       user: {
-        id: foundUser._id,
+        uuid: foundUser.uuid,
         fullName: foundUser.fullName,
         isActivated: foundUser.isActivated,
         role: foundRole.title || '',

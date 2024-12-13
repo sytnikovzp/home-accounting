@@ -8,7 +8,7 @@ const {
   },
 } = require('../constants');
 // ==============================================================
-const { User, Role } = require('../db/dbMongo/models');
+const { User, Role, Permission } = require('../db/dbMongo/models');
 // ==============================================================
 const { notFound } = require('../errors/generalErrors');
 
@@ -47,13 +47,31 @@ const emailToLowerCase = function (email) {
   return email.toLowerCase();
 };
 
+const isValidUUID = function (uuid) {
+  const regex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return regex.test(uuid);
+};
+
 const checkPermission = async function (user, requiredPermission) {
-  const foundRole = await Role.findOne({ title: user.role }).populate(
-    'permissions'
-  );
+  const foundRole = await Role.findOne({ title: user.role });
   if (!foundRole) throw notFound('Роль для користувача не знайдено');
-  const permissions = foundRole.permissions.map((p) => p.title);
-  return permissions.includes(requiredPermission);
+  const permission = await Permission.findOne({ title: requiredPermission });
+  if (!permission) throw notFound('Необхідного дозволу не знайдено');
+  const requiredPermissionUUID = permission.uuid.toString();
+  const permissionUUIDs = foundRole.permissions.map((permission) => {
+    const hex = permission.toString('hex');
+    const uuidWithDashes = [
+      hex.slice(0, 8),
+      hex.slice(8, 12),
+      hex.slice(12, 16),
+      hex.slice(16, 20),
+      hex.slice(20, 32),
+    ].join('-');
+    return uuidWithDashes;
+  });
+  const hasPermission = permissionUUIDs.includes(requiredPermissionUUID);
+  return hasPermission;
 };
 
 const getRecordByTitle = async function (Model, title) {
@@ -93,6 +111,7 @@ module.exports = {
   formatDate,
   getTime,
   emailToLowerCase,
+  isValidUUID,
   checkPermission,
   getRecordByTitle,
   getUserDetailsByEmail,
