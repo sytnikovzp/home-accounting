@@ -10,6 +10,7 @@ const {
 } = require('../db/dbPostgres/models');
 const {
   formatDate,
+  isValidUUID,
   checkPermission,
   getRecordByTitle,
   formatDateTime,
@@ -17,7 +18,7 @@ const {
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatPurchaseData = (purchase) => ({
-  id: purchase.id,
+  uuid: purchase.uuid,
   product: purchase.Product?.title || '',
   amount: purchase.amount,
   price: purchase.price,
@@ -27,7 +28,7 @@ const formatPurchaseData = (purchase) => ({
   currency: purchase.Currency?.title || '',
   date: formatDate(purchase.date),
   creation: {
-    creatorId: purchase.creatorId,
+    creatorUuid: purchase.creatorUuid,
     creatorFullName: purchase.creatorFullName,
     createdAt: formatDateTime(purchase.createdAt),
     updatedAt: formatDateTime(purchase.updatedAt),
@@ -35,16 +36,16 @@ const formatPurchaseData = (purchase) => ({
 });
 
 class PurchaseService {
-  async getAllPurchases(limit, offset, sort = 'id', order = 'asc') {
+  async getAllPurchases(limit, offset, sort, order) {
     const sortableFields = {
       product: [Product, 'title'],
       shop: [Shop, 'title'],
     };
     const orderConfig = sortableFields[sort]
       ? [...sortableFields[sort], order]
-      : [['id', 'date'].includes(sort) ? sort : `Purchase.${sort}`, order];
+      : [['uuid', 'date'].includes(sort) ? sort : `Purchase.${sort}`, order];
     const foundPurchases = await Purchase.findAll({
-      attributes: ['id', 'date'],
+      attributes: ['uuid', 'date'],
       include: [
         { model: Product, attributes: ['title'] },
         { model: Shop, attributes: ['title'] },
@@ -59,12 +60,12 @@ class PurchaseService {
     return {
       allPurchases: foundPurchases.map(
         ({
-          id,
+          uuid,
           'Product.title': productTitle,
           'Shop.title': shopTitle,
           date,
         }) => ({
-          id,
+          uuid,
           product: productTitle || '',
           shop: shopTitle || '',
           date: formatDate(date),
@@ -74,10 +75,11 @@ class PurchaseService {
     };
   }
 
-  async getPurchaseById(purchaseId) {
-    const foundPurchase = await Purchase.findByPk(purchaseId, {
+  async getPurchaseById(uuid) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundPurchase = await Purchase.findByPk(uuid, {
       attributes: {
-        exclude: ['productId', 'shopId', 'measureId', 'currencyId'],
+        exclude: ['productUuid', 'shopUuid', 'measureUuid', 'currencyUuid'],
       },
       include: [
         { model: Product, attributes: ['title'] },
@@ -122,22 +124,22 @@ class PurchaseService {
     }
     const newPurchase = await Purchase.create(
       {
-        productId: foundProduct.id,
+        productUuid: foundProduct.uuid,
         amount,
         price,
         summ,
-        shopId: foundShop.id,
-        measureId: foundMeasure.id,
-        currencyId: foundCurrency.id,
+        shopUuid: foundShop.uuid,
+        measureUuid: foundMeasure.uuid,
+        currencyUuid: foundCurrency.uuid,
         date,
-        creatorId: currentUser.id.toString(),
+        creatorUuid: currentUser.uuid,
         creatorFullName: currentUser.fullName,
       },
       { transaction, returning: true }
     );
     if (!newPurchase) throw badRequest('Дані цієї покупки не створено');
     return {
-      id: newPurchase.id,
+      uuid: newPurchase.uuid,
       product: foundProduct.title,
       amount: newPurchase.amount,
       price: newPurchase.price,
@@ -147,7 +149,7 @@ class PurchaseService {
       currency: foundCurrency.title,
       date: formatDate(newPurchase.date),
       creation: {
-        creatorId: newPurchase.creatorId,
+        creatorUuid: newPurchase.creatorUuid,
         creatorFullName: newPurchase.creatorFullName,
         createdAt: formatDateTime(newPurchase.createdAt),
         updatedAt: formatDateTime(newPurchase.updatedAt),
@@ -156,7 +158,7 @@ class PurchaseService {
   }
 
   async updatePurchase(
-    id,
+    uuid,
     product,
     amountValue,
     priceValue,
@@ -167,9 +169,10 @@ class PurchaseService {
     currentUser,
     transaction
   ) {
-    const foundPurchase = await Purchase.findByPk(id);
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundPurchase = await Purchase.findOne({ where: { uuid } });
     if (!foundPurchase) throw notFound('Покупку не знайдено');
-    const isOwner = currentUser.id.toString() === foundPurchase.creatorId;
+    const isOwner = currentUser.uuid.toString() === foundPurchase.creatorUuid;
     if (!isOwner)
       throw forbidden('Ви не маєте дозволу на редагування цієї покупки');
     const foundProduct = await getRecordByTitle(Product, product);
@@ -194,20 +197,20 @@ class PurchaseService {
     }
     const [affectedRows, [updatedPurchase]] = await Purchase.update(
       {
-        productId: foundProduct.id,
+        productUuid: foundProduct.uuid,
         amount,
         price,
         summ,
-        shopId: foundShop.id,
-        measureId: foundMeasure.id,
-        currencyId: foundCurrency.id,
+        shopUuid: foundShop.uuid,
+        measureUuid: foundMeasure.uuid,
+        currencyUuid: foundCurrency.uuid,
         date,
       },
-      { where: { id }, returning: true, transaction }
+      { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Дані цієї покупки не оновлено');
     return {
-      id: updatedPurchase.id,
+      uuid: updatedPurchase.uuid,
       product: foundProduct.title,
       amount: updatedPurchase.amount,
       price: updatedPurchase.price,
@@ -217,7 +220,7 @@ class PurchaseService {
       currency: foundCurrency.title,
       date: formatDate(updatedPurchase.date),
       creation: {
-        creatorId: updatedPurchase.creatorId,
+        creatorUuid: updatedPurchase.creatorUuid,
         creatorFullName: updatedPurchase.creatorFullName,
         createdAt: formatDateTime(updatedPurchase.createdAt),
         updatedAt: formatDateTime(updatedPurchase.updatedAt),
@@ -225,14 +228,15 @@ class PurchaseService {
     };
   }
 
-  async deletePurchase(purchaseId, currentUser, transaction) {
-    const foundPurchase = await Purchase.findByPk(purchaseId);
+  async deletePurchase(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundPurchase = await Purchase.findOne({ where: { uuid } });
     if (!foundPurchase) throw notFound('Покупку не знайдено');
-    const isOwner = currentUser.id.toString() === foundPurchase.creatorId;
+    const isOwner = currentUser.uuid.toString() === foundPurchase.creatorUuid;
     if (!isOwner)
       throw forbidden('Ви не маєте дозволу на видалення цієї покупки');
     const deletedPurchase = await Purchase.destroy({
-      where: { id: purchaseId },
+      where: { uuid },
       transaction,
     });
     if (!deletedPurchase) throw badRequest('Дані цієї покупки не видалено');

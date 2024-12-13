@@ -4,22 +4,22 @@ module.exports = (sequelize, DataTypes) => {
   class Purchase extends Model {
     static associate(models) {
       Purchase.belongsTo(models.Product, {
-        foreignKey: 'product_id',
+        foreignKey: 'productUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
       Purchase.belongsTo(models.Shop, {
-        foreignKey: 'shop_id',
+        foreignKey: 'shopUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
       Purchase.belongsTo(models.Measure, {
-        foreignKey: 'measure_id',
+        foreignKey: 'measureUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
       Purchase.belongsTo(models.Currency, {
-        foreignKey: 'currency_id',
+        foreignKey: 'currencyUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
@@ -31,9 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
+        primaryKey: true,
       },
-      productId: {
-        type: DataTypes.INTEGER,
+      productUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       amount: {
@@ -51,24 +52,24 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0.0,
       },
-      shopId: {
-        type: DataTypes.INTEGER,
+      shopUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
-      measureId: {
-        type: DataTypes.INTEGER,
+      measureUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
-      currencyId: {
-        type: DataTypes.INTEGER,
+      currencyUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       date: {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
-      creatorId: {
-        type: DataTypes.STRING,
+      creatorUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       creatorFullName: {

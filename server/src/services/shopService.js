@@ -1,24 +1,25 @@
 const { Shop } = require('../db/dbPostgres/models');
 const {
   formatDateTime,
+  isValidUUID,
   checkPermission,
   mapStatus,
 } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatShopData = (shop) => ({
-  id: shop.id,
+  uuid: shop.uuid,
   title: shop.title,
   description: shop.description || '',
   url: shop.url || '',
   logo: shop.logo || '',
   status: mapStatus(shop.status),
   moderation: {
-    moderatorId: shop.moderatorId || '',
+    moderatorUuid: shop.moderatorUuid || '',
     moderatorFullName: shop.moderatorFullName || '',
   },
   creation: {
-    creatorId: shop.creatorId || '',
+    creatorUuid: shop.creatorUuid || '',
     creatorFullName: shop.creatorFullName || '',
     createdAt: formatDateTime(shop.createdAt),
     updatedAt: formatDateTime(shop.updatedAt),
@@ -26,9 +27,9 @@ const formatShopData = (shop) => ({
 });
 
 class ShopService {
-  async getAllShops(status, limit, offset, sort = 'id', order = 'asc') {
+  async getAllShops(status, limit, offset, sort, order) {
     const foundShops = await Shop.findAll({
-      attributes: ['id', 'title', 'logo'],
+      attributes: ['uuid', 'title', 'logo'],
       where: { status },
       order: [[sort, order]],
       raw: true,
@@ -38,17 +39,14 @@ class ShopService {
     if (!foundShops.length) throw notFound('Магазини не знайдені');
     const total = await Shop.count({ where: { status } });
     return {
-      allShops: foundShops.map(({ id, title, logo }) => ({
-        id,
-        title,
-        logo,
-      })),
+      allShops: foundShops,
       total,
     };
   }
 
-  async getShopById(shopId) {
-    const foundShop = await Shop.findByPk(shopId);
+  async getShopById(uuid) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundShop = await Shop.findOne({ where: { uuid } });
     if (!foundShop) throw notFound('Магазин не знайдено');
     return formatShopData(foundShop.toJSON());
   }
@@ -68,9 +66,9 @@ class ShopService {
         description: description || null,
         url: url || null,
         status: canManageShops ? 'approved' : 'pending',
-        moderatorId: canManageShops ? currentUser.id.toString() : null,
+        moderatorUuid: canManageShops ? currentUser.uuid : null,
         moderatorFullName: canManageShops ? currentUser.fullName : null,
-        creatorId: currentUser.id.toString(),
+        creatorUuid: currentUser.uuid,
         creatorFullName: currentUser.fullName,
       },
       { transaction, returning: true }
@@ -79,18 +77,19 @@ class ShopService {
     return formatShopData(newShop);
   }
 
-  async updateShop(id, title, description, url, currentUser, transaction) {
-    const foundShop = await Shop.findByPk(id);
+  async updateShop(uuid, title, description, url, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundShop = await Shop.findOne({ where: { uuid } });
     if (!foundShop) throw notFound('Магазин не знайдено');
-    const isOwner = currentUser.id.toString() === foundShop.creatorId;
+    const isOwner = currentUser.uuid === foundShop.creatorUuid;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
     if (!isOwner && !canManageShops)
       throw forbidden('Ви не маєте дозволу на редагування цього магазину');
-    if (title !== foundShop.title) {
+    if (title && title !== foundShop.title) {
       const duplicateShop = await Shop.findOne({ where: { title } });
       if (duplicateShop) throw badRequest('Цей магазин вже існує');
     }
-    if (url !== foundShop.url) {
+    if (url && url !== foundShop.url) {
       const duplicateUrl = await Shop.findOne({ where: { url } });
       if (duplicateUrl) throw badRequest('Цей URL вже використовується');
     }
@@ -100,20 +99,21 @@ class ShopService {
         description: description || null,
         url: url || null,
         status: canManageShops ? 'approved' : 'pending',
-        moderatorId: canManageShops ? currentUser.id.toString() : null,
+        moderatorUuid: canManageShops ? currentUser.uuid : null,
         moderatorFullName: canManageShops ? currentUser.fullName : null,
       },
-      { where: { id }, returning: true, transaction }
+      { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Дані цього магазину не оновлено');
     return formatShopData(updatedShop);
   }
 
-  async updateShopLogo(id, filename, currentUser, transaction) {
+  async updateShopLogo(uuid, filename, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     if (!filename) throw badRequest('Файл не завантажено');
-    const foundShop = await Shop.findByPk(id);
+    const foundShop = await Shop.findOne({ where: { uuid } });
     if (!foundShop) throw notFound('Магазин не знайдено');
-    const isOwner = currentUser.id.toString() === foundShop.creatorId;
+    const isOwner = currentUser.uuid === foundShop.creatorUuid;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
     if (!isOwner && !canManageShops)
       throw forbidden(
@@ -123,19 +123,20 @@ class ShopService {
       {
         logo: filename,
         status: canManageShops ? 'approved' : 'pending',
-        moderatorId: canManageShops ? currentUser.id.toString() : null,
+        moderatorUuid: canManageShops ? currentUser.uuid : null,
         moderatorFullName: canManageShops ? currentUser.fullName : null,
       },
-      { where: { id }, returning: true, transaction }
+      { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Логотип магазину не оновлено');
     return formatShopData(updatedShopLogo);
   }
 
-  async removeShopLogo(id, currentUser, transaction) {
-    const foundShop = await Shop.findByPk(id);
+  async removeShopLogo(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundShop = await Shop.findOne({ where: { uuid } });
     if (!foundShop) throw notFound('Магазин не знайдено');
-    const isOwner = currentUser.id.toString() === foundShop.creatorId;
+    const isOwner = currentUser.uuid === foundShop.creatorUuid;
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
     if (!isOwner && !canManageShops)
       throw forbidden(
@@ -145,45 +146,44 @@ class ShopService {
       {
         logo: null,
         status: canManageShops ? 'approved' : 'pending',
-        moderatorId: canManageShops ? currentUser.id.toString() : null,
+        moderatorUuid: canManageShops ? currentUser.uuid : null,
         moderatorFullName: canManageShops ? currentUser.fullName : null,
       },
-      { where: { id }, returning: true, transaction }
+      { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Логотип магазину не видалено');
     return formatShopData(removedShopLogo);
   }
 
-  async updateShopStatus(id, status, currentUser, transaction) {
+  async updateShopStatus(uuid, status, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    if (!['approved', 'rejected'].includes(status))
+      throw badRequest('Недопустимий статус');
     const hasPermission = await checkPermission(currentUser, 'MODERATE_SHOPS');
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на модерацію магазинів');
-    const foundShop = await Shop.findByPk(id);
+    const foundShop = await Shop.findOne({ where: { uuid } });
     if (!foundShop) throw notFound('Магазин не знайдено');
-    if (!['approved', 'rejected'].includes(status))
-      throw notFound('Статус не знайдено');
     const [affectedRows, [moderatedCategory]] = await Shop.update(
       {
         status,
-        moderatorId: currentUser.id.toString(),
+        moderatorUuid: currentUser.uuid,
         moderatorFullName: currentUser.fullName,
       },
-      { where: { id }, returning: true, transaction }
+      { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Магазин не проходить модерацію');
     return formatShopData(moderatedCategory);
   }
 
-  async deleteShop(shopId, currentUser, transaction) {
+  async deleteShop(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');
     if (!canManageShops)
       throw forbidden('Ви не маєте дозволу на видалення цього магазину');
-    const foundShop = await Shop.findByPk(shopId);
+    const foundShop = await Shop.findOne({ where: { uuid } });
     if (!foundShop) throw notFound('Магазин не знайдено');
-    const deletedShop = await Shop.destroy({
-      where: { id: shopId },
-      transaction,
-    });
+    const deletedShop = await Shop.destroy({ where: { uuid }, transaction });
     if (!deletedShop) throw badRequest('Дані цього магазину не видалено');
     return deletedShop;
   }

@@ -1,62 +1,62 @@
 ### Get list all products (status approved, default pagination, without sort)
 GET http://localhost:5000/api/products HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMzE5ODM1LCJleHAiOjE3MzM0MDYyMzV9.9a2AR_jVxiGsDZg0LeQS0qQwSAN8RLPh4dTDw6_xk10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 ### Get list all products (status approved, custom pagination, without sort)
 GET http://localhost:5000/api/products?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 ### Get list all products (status approved, custom pagination, with sort by category (asc))
 GET http://localhost:5000/api/products?sort=category&order=asc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
-### Get list all products (status approved, custom pagination, with sort by id (desc))
-GET http://localhost:5000/api/products?sort=id&order=desc&page=1&limit=10 HTTP/1.1
+### Get list all products (status approved, custom pagination, with sort by uuid (desc))
+GET http://localhost:5000/api/products?sort=uuid&order=desc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 ### Get list all products (status pending, default pagination, without sort)
 GET http://localhost:5000/api/products?status=pending HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 ### Get list all products (status pending, custom pagination, without sort)
 GET http://localhost:5000/api/products?status=pending&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 ### Get list all products (status rejected, default pagination, without sort)
 GET http://localhost:5000/api/products?status=rejected HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 ### Get list all products (status rejected, custom pagination, without sort)
 GET http://localhost:5000/api/products?status=rejected&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 ### Create product
 POST http://localhost:5000/api/products HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 {
   "title": "Новий товар",
   "category": ""
 }
 
-### Get product by id
-GET http://localhost:5000/api/products/22 HTTP/1.1
+### Get product by uuid
+GET http://localhost:5000/api/products/e5e23b48-dd70-467e-9d5f-0d3ed0abde27 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzMzMTczMTg3LCJleHAiOjE3MzMyNTk1ODd9.FKRRdBLfIDb2DNdL9lPuCQ511TctbVPzrUrKm-vD3WE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 ### Update product
-PATCH http://localhost:5000/api/products/22 HTTP/1.1
+PATCH http://localhost:5000/api/products/e5e23b48-dd70-467e-9d5f-0d3ed0abde27 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjMyNTMyLCJleHAiOjE3MzMzMTg5MzJ9.3KQQ5mW8jQ4IRbWYGmxpHQSkxS4tGq85Ji9FXUP5Vi8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDYzNzcxLCJleHAiOjE3MzUzNTk3NzF9.zRimyokSV23KDdc1yMBa6DIr8oLTCeePYnWoUP-NF7Y
 
 {
   "title": "Оновлена назва",
@@ -64,15 +64,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
 }
 
 ### Moderation product
-PATCH http://localhost:5000/api/products/moderate/22 HTTP/1.1
+PATCH http://localhost:5000/api/products/moderate/e5e23b48-dd70-467e-9d5f-0d3ed0abde27 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjMyNTMyLCJleHAiOjE3MzMzMTg5MzJ9.3KQQ5mW8jQ4IRbWYGmxpHQSkxS4tGq85Ji9FXUP5Vi8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDY0MzE1LCJleHAiOjE3MzUzNjAzMTV9._BhidquvkyvH2IJ-66_MU3cycHQ_mSKnpGdo5ZmnBwk
 
 {
   "status": "rejected"
 }
 
 ### Delete product
-DELETE http://localhost:5000/api/products/22 HTTP/1.1
+DELETE http://localhost:5000/api/products/e5e23b48-dd70-467e-9d5f-0d3ed0abde27 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjMyNTMyLCJleHAiOjE3MzMzMTg5MzJ9.3KQQ5mW8jQ4IRbWYGmxpHQSkxS4tGq85Ji9FXUP5Vi8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDY0MzE1LCJleHAiOjE3MzUzNjAzMTV9._BhidquvkyvH2IJ-66_MU3cycHQ_mSKnpGdo5ZmnBwk

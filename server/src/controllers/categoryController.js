@@ -13,7 +13,7 @@ class CategoryController {
   async getAllCategories(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { status = 'approved', sort = 'id', order = 'asc' } = req.query;
+      const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
       const { allCategories, total } = await getAllCategories(
         status,
         limit,
@@ -42,7 +42,7 @@ class CategoryController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get category by id error: ', error.message);
+      console.log('Get category by uuid error: ', error.message);
       next(error);
     }
   }

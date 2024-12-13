@@ -1,6 +1,7 @@
 const { Product, Category } = require('../db/dbPostgres/models');
 const {
   formatDateTime,
+  isValidUUID,
   checkPermission,
   mapStatus,
   getRecordByTitle,
@@ -8,15 +9,15 @@ const {
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatProductData = (product) => ({
-  id: product.id,
+  uuid: product.uuid,
   title: product.title,
   status: mapStatus(product.status),
   moderation: {
-    moderatorId: product.moderatorId || '',
+    moderatorUuid: product.moderatorUuid || '',
     moderatorFullName: product.moderatorFullName || '',
   },
   creation: {
-    creatorId: product.creatorId || '',
+    creatorUuid: product.creatorUuid || '',
     creatorFullName: product.creatorFullName || '',
     createdAt: formatDateTime(product.createdAt),
     updatedAt: formatDateTime(product.updatedAt),
@@ -24,15 +25,15 @@ const formatProductData = (product) => ({
 });
 
 class ProductService {
-  async getAllProducts(status, limit, offset, sort = 'id', order = 'asc') {
+  async getAllProducts(status, limit, offset, sort, order) {
     const sortableFields = {
       category: [Category, 'title'],
     };
     const orderConfig = sortableFields[sort]
       ? [...sortableFields[sort], order]
-      : [['id', 'title'].includes(sort) ? sort : `Purchase.${sort}`, order];
+      : [['uuid', 'title'].includes(sort) ? sort : `Purchase.${sort}`, order];
     const foundProducts = await Product.findAll({
-      attributes: ['id', 'title'],
+      attributes: ['uuid', 'title'],
       where: { status },
       include: [{ model: Category, attributes: ['title'] }],
       order: [orderConfig],
@@ -44,8 +45,8 @@ class ProductService {
     const total = await Product.count({ where: { status } });
     return {
       allProducts: foundProducts.map(
-        ({ id, title, 'Category.title': categoryTitle }) => ({
-          id,
+        ({ uuid, title, 'Category.title': categoryTitle }) => ({
+          uuid,
           title,
           category: categoryTitle || '',
         })
@@ -54,9 +55,11 @@ class ProductService {
     };
   }
 
-  async getProductById(productId) {
-    const foundProduct = await Product.findByPk(productId, {
-      attributes: { exclude: ['categoryId'] },
+  async getProductById(uuid) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundProduct = await Product.findOne({
+      where: { uuid },
+      attributes: { exclude: ['categoryUuid'] },
       include: [{ model: Category, attributes: ['title'] }],
     });
     if (!foundProduct) throw notFound('Товар не знайдено');
@@ -87,11 +90,11 @@ class ProductService {
     const newProduct = await Product.create(
       {
         title,
-        categoryId: categoryRecord?.id || null,
+        categoryUuid: categoryRecord?.uuid || null,
         status: canManageProducts ? 'approved' : 'pending',
-        moderatorId: canManageProducts ? currentUser.id.toString() : null,
+        moderatorUuid: canManageProducts ? currentUser.uuid : null,
         moderatorFullName: canManageProducts ? currentUser.fullName : null,
-        creatorId: currentUser.id.toString(),
+        creatorUuid: currentUser.uuid,
         creatorFullName: currentUser.fullName,
       },
       { transaction, returning: true }
@@ -100,17 +103,18 @@ class ProductService {
     return formatProductData(newProduct);
   }
 
-  async updateProduct(id, title, category, currentUser, transaction) {
-    const foundProduct = await Product.findByPk(id);
+  async updateProduct(uuid, title, category, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundProduct = await Product.findOne({ where: { uuid } });
     if (!foundProduct) throw notFound('Товар не знайдено');
-    const isOwner = currentUser.id.toString() === foundProduct.creatorId;
+    const isOwner = currentUser.uuid === foundProduct.creatorUuid;
     const canManageProducts = await checkPermission(
       currentUser,
       'MANAGE_PRODUCTS'
     );
     if (!isOwner && !canManageProducts)
       throw forbidden('Ви не маєте дозволу на редагування цього товару');
-    if (title !== foundProduct.title) {
+    if (title && title !== foundProduct.title) {
       const duplicateProduct = await Product.findOne({ where: { title } });
       if (duplicateProduct) throw badRequest('Цей товар вже існує');
     }
@@ -120,51 +124,53 @@ class ProductService {
     const [affectedRows, [updatedProduct]] = await Product.update(
       {
         title,
-        categoryId: categoryRecord?.id || null,
+        categoryUuid: categoryRecord?.uuid || null,
         status: canManageProducts ? 'approved' : 'pending',
-        moderatorId: canManageProducts ? currentUser.id.toString() : null,
+        moderatorUuid: canManageProducts ? currentUser.uuid : null,
         moderatorFullName: canManageProducts ? currentUser.fullName : null,
       },
-      { where: { id }, returning: true, transaction }
+      { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Дані цього товару не оновлено');
     return formatProductData(updatedProduct);
   }
 
-  async updateProductStatus(id, status, currentUser, transaction) {
+  async updateProductStatus(uuid, status, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    if (!['approved', 'rejected'].includes(status))
+      throw badRequest('Недопустимий статус');
     const hasPermission = await checkPermission(
       currentUser,
       'MODERATE_PRODUCTS'
     );
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на модерацію товарів');
-    const foundProduct = await Product.findByPk(id);
+    const foundProduct = await Product.findOne({ where: { uuid } });
     if (!foundProduct) throw notFound('Товар не знайдено');
-    if (!['approved', 'rejected'].includes(status))
-      throw notFound('Статус не знайдено');
     const [affectedRows, [moderatedProduct]] = await Product.update(
       {
         status,
-        moderatorId: currentUser.id.toString(),
+        moderatorUuid: currentUser.uuid,
         moderatorFullName: currentUser.fullName,
       },
-      { where: { id }, returning: true, transaction }
+      { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Товар не проходить модерацію');
     return formatProductData(moderatedProduct);
   }
 
-  async deleteProduct(productId, currentUser, transaction) {
+  async deleteProduct(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const canManageProducts = await checkPermission(
       currentUser,
       'MANAGE_PRODUCTS'
     );
     if (!canManageProducts)
       throw forbidden('Ви не маєте дозволу на видалення цього товару');
-    const foundProduct = await Product.findByPk(productId);
+    const foundProduct = await Product.findOne({ where: { uuid } });
     if (!foundProduct) throw notFound('Товар не знайдено');
     const deletedProduct = await Product.destroy({
-      where: { id: productId },
+      where: { uuid },
       transaction,
     });
     if (!deletedProduct) throw badRequest('Дані цього товару не видалено');

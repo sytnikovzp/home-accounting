@@ -5,24 +5,19 @@ module.exports = {
       'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'
     );
     await queryInterface.createTable('purchases', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
       uuid: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
+        primaryKey: true,
         unique: true,
       },
-      product_id: {
-        type: Sequelize.INTEGER,
+      product_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'products',
-          key: 'id',
+          key: 'uuid',
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -42,32 +37,32 @@ module.exports = {
         allowNull: false,
         defaultValue: 0.0,
       },
-      shop_id: {
-        type: Sequelize.INTEGER,
+      shop_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'shops',
-          key: 'id',
+          key: 'uuid',
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      measure_id: {
-        type: Sequelize.INTEGER,
+      measure_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'measures',
-          key: 'id',
+          key: 'uuid',
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      currency_id: {
-        type: Sequelize.INTEGER,
+      currency_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'currencies',
-          key: 'id',
+          key: 'uuid',
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -76,8 +71,8 @@ module.exports = {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
-      creator_id: {
-        type: Sequelize.STRING,
+      creator_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
       },
       creator_full_name: {

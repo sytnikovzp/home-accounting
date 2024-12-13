@@ -5,16 +5,11 @@ module.exports = {
       'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'
     );
     await queryInterface.createTable('currencies', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
       uuid: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
+        primaryKey: true,
         unique: true,
       },
       title: {
@@ -25,8 +20,8 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
-      creator_id: {
-        type: Sequelize.STRING,
+      creator_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
       },
       creator_full_name: {

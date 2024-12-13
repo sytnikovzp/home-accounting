@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Shop extends Model {
     static associate(models) {
       Shop.hasMany(models.Purchase, {
-        foreignKey: 'shop_id',
+        foreignKey: 'shopUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
+        primaryKey: true,
       },
       title: {
         type: DataTypes.STRING,
@@ -33,16 +34,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 'pending',
       },
-      moderatorId: {
-        type: DataTypes.STRING,
+      moderatorUuid: {
+        type: DataTypes.UUID,
         allowNull: true,
       },
       moderatorFullName: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      creatorId: {
-        type: DataTypes.STRING,
+      creatorUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       creatorFullName: {

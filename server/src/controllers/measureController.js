@@ -12,7 +12,7 @@ class MeasureController {
   async getAllMeasures(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { sort = 'id', order = 'asc' } = req.query;
+      const { sort = 'uuid', order = 'asc' } = req.query;
       const { allMeasures, total } = await getAllMeasures(
         limit,
         offset,
@@ -40,7 +40,7 @@ class MeasureController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get measure by id error: ', error.message);
+      console.log('Get measure by uuid error: ', error.message);
       next(error);
     }
   }

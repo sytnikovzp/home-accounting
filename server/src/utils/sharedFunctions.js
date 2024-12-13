@@ -78,7 +78,7 @@ const getRecordByTitle = async function (Model, title) {
   if (!title) return null;
   const record = await Model.findOne({
     where: { title },
-    attributes: ['id', 'title'],
+    attributes: ['uuid', 'title'],
     raw: true,
   });
   if (!record) throw notFound(`${Model.name} not found`);
@@ -89,7 +89,7 @@ const getUserDetailsByEmail = async function (email) {
   const user = await User.findOne({ email });
   if (!user) return null;
   return {
-    id: user._id.toString(),
+    uuid: user.uuid,
     fullName: user.fullName,
   };
 };

@@ -13,7 +13,7 @@ class ProductController {
   async getAllProducts(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { status = 'approved', sort = 'id', order = 'asc' } = req.query;
+      const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
       const { allProducts, total } = await getAllProducts(
         status,
         limit,
@@ -42,7 +42,7 @@ class ProductController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get product by id error: ', error.message);
+      console.error('Get product by uuid error: ', error.message);
       next(error);
     }
   }

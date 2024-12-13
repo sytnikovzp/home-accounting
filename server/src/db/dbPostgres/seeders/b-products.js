@@ -10,7 +10,7 @@ module.exports = {
         where: { title: product.category },
       });
       if (category) {
-        product.category_id = category.id;
+        product.category_uuid = category.uuid;
       }
       delete product.category;
     }

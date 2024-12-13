@@ -1,76 +1,76 @@
 ### Get list all categories (status approved, default pagination, without sort)
 GET http://localhost:5000/api/categories HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 ### Get list all categories (status approved, custom pagination, without sort)
 GET http://localhost:5000/api/categories?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 ### Get list all categories (status approved, custom pagination, with sort by title (asc))
 GET http://localhost:5000/api/categories?sort=title&order=asc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
-### Get list all categories (status approved, custom pagination, with sort by id (desc))
-GET http://localhost:5000/api/categories?sort=id&order=desc&page=1&limit=10 HTTP/1.1
+### Get list all categories (status approved, custom pagination, with sort by uuid (desc))
+GET http://localhost:5000/api/categories?sort=uuid&order=desc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 ### Get list all categories (status pending, default pagination, without sort)
 GET http://localhost:5000/api/categories?status=pending HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 ### Get list all categories (status pending, custom pagination, without sort)
 GET http://localhost:5000/api/categories?status=pending&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 ### Get list all categories (status rejected, default pagination, without sort)
 GET http://localhost:5000/api/categories?status=rejected HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 ### Get list all categories (status rejected, custom pagination, without sort)
 GET http://localhost:5000/api/categories?status=rejected&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 ### Create category
 POST http://localhost:5000/api/categories HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MDU3NzcxLCJleHAiOjE3MzUzNTM3NzF9.geVNG2MI4og3-MmvC4l3MWpTEEDR-PZHtNvWDU373iE
 
 {
   "title": "Нова категорія"
 }
 
-### Get category by id
-GET http://localhost:5000/api/categories/16 HTTP/1.1
+### Get category by uuid
+GET http://localhost:5000/api/categories/2447f8e1-0e9c-483d-a2ce-8b3996df4174 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 ### Update category
-PATCH http://localhost:5000/api/categories/16 HTTP/1.1
+PATCH http://localhost:5000/api/categories/2447f8e1-0e9c-483d-a2ce-8b3996df4174 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 {
   "title": "Оновлена назва"
 }
 
 ### Moderation category
-PATCH http://localhost:5000/api/categories/moderate/16 HTTP/1.1
+PATCH http://localhost:5000/api/categories/moderate/20474aa8-8d6e-4d00-bc9b-a96d26365984 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM
 
 {
   "status": "rejected"
 }
 
 ### Delete category
-DELETE http://localhost:5000/api/categories/16 HTTP/1.1
+DELETE http://localhost:5000/api/categories/2447f8e1-0e9c-483d-a2ce-8b3996df4174 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzMzMjY2NzgxLCJleHAiOjE3MzMzNTMxODF9.RiGum8E_4iMHWk3jK-gRiUkrP32Na5I_U_wA_TZLIZk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MDU1MjEyLCJleHAiOjE3MzUzNTEyMTJ9.l1w8mZXWYUM7Uul7Urr9HautKmU502f_W5BpoL7Y5aM

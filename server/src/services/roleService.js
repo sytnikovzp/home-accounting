@@ -7,7 +7,7 @@ const {
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 
 class RoleService {
-  async getAllPermissions(limit, offset, sort = 'uuid', order = 'asc') {
+  async getAllPermissions(limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
     const foundPermissions = await Permission.find()
@@ -31,7 +31,7 @@ class RoleService {
     };
   }
 
-  async getAllRoles(limit, offset, sort = 'uuid', order = 'asc') {
+  async getAllRoles(limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
     const foundRoles = await Role.find()

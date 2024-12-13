@@ -10,25 +10,25 @@ module.exports = {
         where: { title: purchase.product },
       });
       if (product) {
-        purchase.product_id = product.id;
+        purchase.product_uuid = product.uuid;
       }
       const shop = await Shop.findOne({
         where: { title: purchase.shop },
       });
       if (shop) {
-        purchase.shop_id = shop.id;
+        purchase.shop_uuid = shop.uuid;
       }
       const measure = await Measure.findOne({
         where: { title: purchase.measure },
       });
       if (measure) {
-        purchase.measure_id = measure.id;
+        purchase.measure_uuid = measure.uuid;
       }
       const currency = await Currency.findOne({
         where: { title: purchase.currency },
       });
       if (currency) {
-        purchase.currency_id = currency.id;
+        purchase.currency_uuid = currency.uuid;
       }
       delete purchase.product;
       delete purchase.shop;

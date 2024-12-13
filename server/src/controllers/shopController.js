@@ -15,7 +15,7 @@ class ShopController {
   async getAllShops(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { status = 'approved', sort = 'id', order = 'asc' } = req.query;
+      const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
       const { allShops, total } = await getAllShops(
         status,
         limit,
@@ -44,7 +44,7 @@ class ShopController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get shop by id error: ', error.message);
+      console.error('Get shop by uuid error: ', error.message);
       next(error);
     }
   }

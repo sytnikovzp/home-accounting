@@ -12,7 +12,7 @@ class RoleController {
   async getAllPermissions(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { sort, order } = req.query;
+      const { sort = 'uuid', order = 'asc' } = req.query;
       const { allPermissions, total } = await getAllPermissions(
         limit,
         offset,
@@ -33,7 +33,7 @@ class RoleController {
   async getAllRoles(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { sort, order } = req.query;
+      const { sort = 'uuid', order = 'asc' } = req.query;
       const { allRoles, total } = await getAllRoles(limit, offset, sort, order);
       if (allRoles.length > 0) {
         res.status(200).set('X-Total-Count', total).json(allRoles);

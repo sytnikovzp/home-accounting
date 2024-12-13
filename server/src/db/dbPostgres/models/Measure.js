@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Measure extends Model {
     static associate(models) {
       Measure.hasMany(models.Purchase, {
-        foreignKey: 'measure_id',
+        foreignKey: 'measureUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
+        primaryKey: true,
       },
       title: {
         type: DataTypes.STRING,
@@ -23,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       description: DataTypes.TEXT,
-      creatorId: {
-        type: DataTypes.STRING,
+      creatorUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       creatorFullName: {

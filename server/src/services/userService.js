@@ -13,7 +13,7 @@ const { generateTokens } = require('./tokenService');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 
 class UserService {
-  async getAllUsers(isActivated, limit, offset, sort = 'uuid', order = 'asc') {
+  async getAllUsers(isActivated, limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
     const query =

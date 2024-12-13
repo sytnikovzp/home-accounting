@@ -12,7 +12,7 @@ class CurrencyController {
   async getAllCurrencies(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { sort = 'id', order = 'asc' } = req.query;
+      const { sort = 'uuid', order = 'asc' } = req.query;
       const { allCurrencies, total } = await getAllCurrencies(
         limit,
         offset,
@@ -40,7 +40,7 @@ class CurrencyController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get currency by id error: ', error.message);
+      console.log('Get currency by uuid error: ', error.message);
       next(error);
     }
   }

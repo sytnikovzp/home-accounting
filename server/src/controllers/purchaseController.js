@@ -12,7 +12,7 @@ class PurchaseController {
   async getAllPurchases(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { sort = 'id', order = 'asc' } = req.query;
+      const { sort = 'uuid', order = 'asc' } = req.query;
       const { allPurchases, total } = await getAllPurchases(
         limit,
         offset,
@@ -40,7 +40,7 @@ class PurchaseController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get purchase by id error:', error.message);
+      console.error('Get purchase by uuid error:', error.message);
       next(error);
     }
   }

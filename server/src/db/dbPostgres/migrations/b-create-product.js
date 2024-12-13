@@ -5,29 +5,25 @@ module.exports = {
       'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'
     );
     await queryInterface.createTable('products', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
       uuid: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
+        primaryKey: true,
         unique: true,
       },
       title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      category_id: {
-        type: Sequelize.INTEGER,
+      category_uuid: {
+        type: Sequelize.UUID,
+        allowNull: true,
         references: {
           model: 'categories',
-          key: 'id',
+          key: 'uuid',
         },
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       },
       status: {
@@ -35,16 +31,16 @@ module.exports = {
         allowNull: false,
         defaultValue: 'pending',
       },
-      moderator_id: {
-        type: Sequelize.STRING,
+      moderator_uuid: {
+        type: Sequelize.UUID,
         allowNull: true,
       },
       moderator_full_name: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      creator_id: {
-        type: Sequelize.STRING,
+      creator_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
       },
       creator_full_name: {

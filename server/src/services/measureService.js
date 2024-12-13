@@ -1,13 +1,17 @@
 const { Measure } = require('../db/dbPostgres/models');
-const { formatDateTime, checkPermission } = require('../utils/sharedFunctions');
+const {
+  formatDateTime,
+  isValidUUID,
+  checkPermission,
+} = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatMeasureData = (measure) => ({
-  id: measure.id,
+  uuid: measure.uuid,
   title: measure.title,
   description: measure.description || '',
   creation: {
-    creatorId: measure.creatorId || '',
+    creatorUuid: measure.creatorUuid || '',
     creatorFullName: measure.creatorFullName || '',
     createdAt: formatDateTime(measure.createdAt),
     updatedAt: formatDateTime(measure.updatedAt),
@@ -15,9 +19,9 @@ const formatMeasureData = (measure) => ({
 });
 
 class MeasureService {
-  async getAllMeasures(limit, offset, sort = 'id', order = 'asc') {
+  async getAllMeasures(limit, offset, sort, order) {
     const foundMeasures = await Measure.findAll({
-      attributes: ['id', 'title', 'description'],
+      attributes: ['uuid', 'title', 'description'],
       order: [[sort, order]],
       raw: true,
       limit,
@@ -27,8 +31,8 @@ class MeasureService {
       throw notFound('Одиниці вимірювання не знайдено');
     const total = await Measure.count();
     return {
-      allMeasures: foundMeasures.map(({ id, title, description }) => ({
-        id,
+      allMeasures: foundMeasures.map(({ uuid, title, description }) => ({
+        uuid,
         title,
         description: description || '',
       })),
@@ -36,10 +40,13 @@ class MeasureService {
     };
   }
 
-  async getMeasureById(measureId) {
-    const foundMeasure = await Measure.findByPk(measureId);
+  async getMeasureById(uuid) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundMeasure = await Measure.findOne({
+      where: { uuid },
+    });
     if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
-    return formatMeasureData(foundMeasure.toJSON());
+    return formatMeasureData(foundMeasure);
   }
 
   async createMeasure(title, description, currentUser, transaction) {
@@ -55,7 +62,7 @@ class MeasureService {
       {
         title,
         description: description || null,
-        creatorId: currentUser.id.toString(),
+        creatorUuid: currentUser.uuid,
         creatorFullName: currentUser.fullName,
       },
       { transaction, returning: true }
@@ -65,8 +72,9 @@ class MeasureService {
     return formatMeasureData(newMeasure);
   }
 
-  async updateMeasure(id, title, description, currentUser, transaction) {
-    const foundMeasure = await Measure.findByPk(id);
+  async updateMeasure(uuid, title, description, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundMeasure = await Measure.findOne({ where: { uuid } });
     if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
     const canManageMeasures = await checkPermission(
       currentUser,
@@ -76,21 +84,22 @@ class MeasureService {
       throw forbidden(
         'Ви не маєте дозволу на редагування цієї одиниці вимірювання'
       );
-    if (title !== foundMeasure.title) {
+    if (title && title !== foundMeasure.title) {
       const duplicateMeasure = await Measure.findOne({ where: { title } });
       if (duplicateMeasure)
         throw badRequest('Ця одиниця вимірювання вже існує');
     }
     const [affectedRows, [updatedMeasure]] = await Measure.update(
       { title, description: description || null },
-      { where: { id }, returning: true, transaction }
+      { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows)
       throw badRequest('Дані цієї одиниці вимірювання не оновлено');
     return formatMeasureData(updatedMeasure);
   }
 
-  async deleteMeasure(measureId, currentUser, transaction) {
+  async deleteMeasure(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const canManageMeasures = await checkPermission(
       currentUser,
       'MANAGE_MEASURES'
@@ -99,10 +108,10 @@ class MeasureService {
       throw forbidden(
         'Ви не маєте дозволу на видалення цієї одиниці вимірювання'
       );
-    const foundMeasure = await Measure.findByPk(measureId);
+    const foundMeasure = await Measure.findOne({ where: { uuid } });
     if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
     const deletedMeasure = await Measure.destroy({
-      where: { id: measureId },
+      where: { uuid },
       transaction,
     });
     if (!deletedMeasure)

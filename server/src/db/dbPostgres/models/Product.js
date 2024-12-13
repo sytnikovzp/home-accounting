@@ -4,12 +4,12 @@ module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
       Product.belongsTo(models.Category, {
-        foreignKey: 'category_id',
-        onDelete: 'CASCADE',
+        foreignKey: 'categoryUuid',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       });
       Product.hasMany(models.Purchase, {
-        foreignKey: 'product_id',
+        foreignKey: 'productUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
@@ -21,27 +21,31 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
+        primaryKey: true,
       },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      categoryId: DataTypes.INTEGER,
+      categoryUuid: {
+        type: DataTypes.UUID,
+        allowNull: true,
+      },
       status: {
         type: DataTypes.ENUM('approved', 'rejected', 'pending'),
         allowNull: false,
         defaultValue: 'pending',
       },
-      moderatorId: {
-        type: DataTypes.STRING,
+      moderatorUuid: {
+        type: DataTypes.UUID,
         allowNull: true,
       },
       moderatorFullName: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      creatorId: {
-        type: DataTypes.STRING,
+      creatorUuid: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       creatorFullName: {

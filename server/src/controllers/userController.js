@@ -12,7 +12,7 @@ class UserController {
   async getAllUsers(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { isActivated, sort, order } = req.query;
+      const { isActivated, sort = 'uuid', order = 'asc' } = req.query;
       const { allUsers, total } = await getAllUsers(
         isActivated,
         limit,
