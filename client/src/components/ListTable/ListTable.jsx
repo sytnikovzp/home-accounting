@@ -71,24 +71,26 @@ const ListTable = ({
   const memoizedColumns = useMemo(() => columns, [columns]);
   const memoizedRows = useMemo(() => rows, [rows]);
 
-  const renderTableCell = (col, row, index) => (
+  const renderTableCell = (col, row) => (
     <TableCell key={col.field} align={col.align || 'center'} sx={cellStyle}>
-      {col.field === 'logo' ? (
+      {['logo', 'photo'].includes(col.field) ? (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Avatar
             src={
               row[col.field]
-                ? `${BASE_URL.replace('/api/', '')}/images/shops/${
-                    row[col.field]
-                  }`
-                : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
+                ? `${BASE_URL.replace('/api/', '')}/images/${
+                    col.field === 'logo' ? 'shops' : 'users'
+                  }/${row[col.field]}`
+                : col.field === 'logo'
+                ? `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
+                : undefined
             }
-            alt='Логотип магазину'
+            alt={col.field === 'logo' ? 'Логотип магазину' : 'Фото користувача'}
             variant='rounded'
             sx={{ width: 40, height: 40 }}
           />
         </Box>
-      ) : index === 1 ? (
+      ) : ['title', 'product', 'fullName'].includes(col.field) ? (
         <RouterLink
           to={`/${linkEntity}/${row.uuid}`}
           style={{ textDecoration: 'none' }}
@@ -124,7 +126,9 @@ const ListTable = ({
                     index < memoizedColumns.length - 1
                       ? '1px solid darkgreen'
                       : 'none',
-                  width: 'auto',
+                  width: ['logo', 'photo'].includes(col.field)
+                    ? '60px'
+                    : 'auto',
                 }}
                 onClick={() => handleSort(col.field)}
               >

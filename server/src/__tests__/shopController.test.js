@@ -231,10 +231,10 @@ describe('ShopController', () => {
     });
   });
 
-  describe('PATCH /api/shops/moderate/:shopUuid', () => {
-    it('should return 403 for current user not having permission to moderate shops', async () => {
+  describe('PATCH /api/shops/moderation/:shopUuid', () => {
+    it('should return 403 for current user not having permission to moderation shops', async () => {
       const response = await request(app)
-        .patch(`/api/shops/moderate/${shopUuid}`)
+        .patch(`/api/shops/moderation/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
@@ -245,9 +245,9 @@ describe('ShopController', () => {
       );
     });
 
-    it('should return 200 for current user having permission to moderate shops', async () => {
+    it('should return 200 for current user having permission to moderation shops', async () => {
       const response = await request(app)
-        .patch(`/api/shops/moderate/${shopUuid}`)
+        .patch(`/api/shops/moderation/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',

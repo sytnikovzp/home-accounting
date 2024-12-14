@@ -156,8 +156,8 @@ function ProductsPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'title', headerName: 'Назва товару', align: 'left' },
           { field: 'category', headerName: 'Категорія', align: 'left' },
+          { field: 'title', headerName: 'Назва товару', align: 'left' },
         ]}
         rows={products}
         onEdit={(product) => openModal('edit', product.uuid)}

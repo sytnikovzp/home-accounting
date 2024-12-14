@@ -45,8 +45,8 @@ const updateCategory = async (categoryUuid, title) => {
   return data;
 };
 
-const reviewCategory = async (categoryUuid, status) => {
-  const { data } = await api.patch(`/categories/moderate/${categoryUuid}`, {
+const moderationCategory = async (categoryUuid, status) => {
+  const { data } = await api.patch(`/categories/moderation/${categoryUuid}`, {
     status,
   });
   return data;
@@ -62,6 +62,6 @@ export default {
   getCategoryByUuid,
   createCategory,
   updateCategory,
-  reviewCategory,
+  moderationCategory,
   deleteCategory,
 };

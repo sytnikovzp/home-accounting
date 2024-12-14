@@ -131,7 +131,6 @@ function CurrenciesPage() {
       <ListTable
         columns={[
           { field: 'title', headerName: 'Назва валюти', align: 'left' },
-          { field: 'description', headerName: 'Опис', align: 'left' },
         ]}
         rows={currencies}
         onEdit={(currency) => openModal('edit', currency.uuid)}

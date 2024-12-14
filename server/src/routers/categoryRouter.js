@@ -5,7 +5,7 @@ const {
   getCategoryByUuid,
   createCategory,
   updateCategory,
-  moderateCategory,
+  moderationCategory,
   deleteCategory,
 } = require('../controllers/categoryController');
 const {
@@ -22,8 +22,8 @@ categoryRouter
   .post(authHandler, validateCategory, createCategory);
 
 categoryRouter
-  .route('/moderate/:categoryUuid')
-  .patch(authHandler, validateModeration, moderateCategory);
+  .route('/moderation/:categoryUuid')
+  .patch(authHandler, validateModeration, moderationCategory);
 
 categoryRouter
   .route('/:categoryUuid')

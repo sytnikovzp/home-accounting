@@ -1,7 +1,7 @@
 ### Get list all currencies (default pagination, without sort)
 GET http://localhost:5000/api/currencies HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTM1MjI3LCJleHAiOjE3MzU0MzEyMjd9.yfBSKFw2SalTcfH4bdaA_MS7FMzvidGroaccqwbmJc8
 
 ### Get list all currencies (custom pagination, without sort)
 GET http://localhost:5000/api/currencies?page=1&limit=10 HTTP/1.1
@@ -29,7 +29,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
 }
 
 ### Get currency by uuid
-GET http://localhost:5000/api/currencies/fed2a935-e5bf-4136-820f-f5102bb138c0 HTTP/1.1
+GET http://localhost:5000/api/currencies/e231a4ae-5c6e-41a8-9838-2e5664542133 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 

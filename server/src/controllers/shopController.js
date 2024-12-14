@@ -155,7 +155,7 @@ class ShopController {
     }
   }
 
-  async moderateShop(req, res, next) {
+  async moderationShop(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { shopUuid } = req.params;
@@ -176,7 +176,7 @@ class ShopController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Moderate shop error: ', error.message);
+      console.log('Moderation shop error: ', error.message);
       next(error);
     }
   }

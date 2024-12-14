@@ -67,8 +67,8 @@ const removeShopLogo = async (shopUuid) => {
   return data;
 };
 
-const reviewShop = async (shopUuid, status) => {
-  const { data } = await api.patch(`/shops/moderate/${shopUuid}`, { status });
+const moderationShop = async (shopUuid, status) => {
+  const { data } = await api.patch(`/shops/moderation/${shopUuid}`, { status });
   return data;
 };
 
@@ -84,6 +84,6 @@ export default {
   updateShop,
   updateShopLogo,
   removeShopLogo,
-  reviewShop,
+  moderationShop,
   deleteShop,
 };

@@ -56,7 +56,7 @@ module.exports.permissions = [
     description: 'Додавання нових магазинів, потребують модерації',
   },
   {
-    title: 'MODERATE_SHOPS',
+    title: 'MODERATION_SHOPS',
     description: 'Перегляд та зміна статусу публікації для магазинів',
   },
   {
@@ -64,7 +64,7 @@ module.exports.permissions = [
     description: 'Додавання нових товарів, потребують модерації',
   },
   {
-    title: 'MODERATE_PRODUCTS',
+    title: 'MODERATION_PRODUCTS',
     description: 'Перегляд та зміна статусу публікації для товарів',
   },
   {
@@ -72,7 +72,7 @@ module.exports.permissions = [
     description: 'Додавання нових категорій, потребують модерації',
   },
   {
-    title: 'MODERATE_CATEGORIES',
+    title: 'MODERATION_CATEGORIES',
     description: 'Перегляд та зміна статусу публікації для категорій',
   },
 ];
@@ -97,9 +97,9 @@ module.exports.roles = async (permissionUuids) => [
       permissionUuids['MANAGE_SHOPS'],
       permissionUuids['MANAGE_CURRENCIES'],
       permissionUuids['MANAGE_MEASURES'],
-      permissionUuids['MODERATE_CATEGORIES'],
-      permissionUuids['MODERATE_PRODUCTS'],
-      permissionUuids['MODERATE_SHOPS'],
+      permissionUuids['MODERATION_CATEGORIES'],
+      permissionUuids['MODERATION_PRODUCTS'],
+      permissionUuids['MODERATION_SHOPS'],
       permissionUuids['LIMITED_PROFILE_VIEWER'],
     ],
   },

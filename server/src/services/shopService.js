@@ -159,7 +159,10 @@ class ShopService {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     if (!['approved', 'rejected'].includes(status))
       throw badRequest('Недопустимий статус');
-    const hasPermission = await checkPermission(currentUser, 'MODERATE_SHOPS');
+    const hasPermission = await checkPermission(
+      currentUser,
+      'MODERATION_SHOPS'
+    );
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на модерацію магазинів');
     const foundShop = await Shop.findOne({ where: { uuid } });

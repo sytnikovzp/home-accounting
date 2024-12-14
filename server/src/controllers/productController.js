@@ -99,7 +99,7 @@ class ProductController {
     }
   }
 
-  async moderateProduct(req, res, next) {
+  async moderationProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { productUuid } = req.params;
@@ -120,7 +120,7 @@ class ProductController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Moderate product error: ', error.message);
+      console.log('Moderation product error: ', error.message);
       next(error);
     }
   }

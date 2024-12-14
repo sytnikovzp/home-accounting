@@ -1,7 +1,7 @@
 ### Get list all products (status approved, default pagination, without sort)
 GET http://localhost:5000/api/products HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MTM1MjI3LCJleHAiOjE3MzU0MzEyMjd9.yfBSKFw2SalTcfH4bdaA_MS7FMzvidGroaccqwbmJc8
 
 ### Get list all products (status approved, custom pagination, without sort)
 GET http://localhost:5000/api/products?page=1&limit=10 HTTP/1.1
@@ -36,7 +36,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
 ### Get list all products (status rejected, custom pagination, without sort)
 GET http://localhost:5000/api/products?status=rejected&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTM1MDI5LCJleHAiOjE3MzU0MzEwMjl9.6ussjSKy03eg5HWH54jIAFCJuvm-flA36wMtldroGa0
 
 ### Create product
 POST http://localhost:5000/api/products HTTP/1.1
@@ -64,9 +64,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
 }
 
 ### Moderation product
-PATCH http://localhost:5000/api/products/moderate/9a79e2be-35f0-41e6-b493-cf850faed9c5 HTTP/1.1
+PATCH http://localhost:5000/api/products/moderation/02d41fd1-dffe-48c9-bfad-c66050887a87 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTM1MDI5LCJleHAiOjE3MzU0MzEwMjl9.6ussjSKy03eg5HWH54jIAFCJuvm-flA36wMtldroGa0
 
 {
   "status": "rejected"

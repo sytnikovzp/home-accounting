@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import { Box, Typography, Link } from '@mui/material';
 import {
   Info,
@@ -73,9 +73,10 @@ function MeasureViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Person color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Автор:</strong>
+                  <strong>Автор: </strong>
                   <Link
-                    href={`/users/${creatorUuid}`}
+                    component={RouterLink}
+                    to={`/users/${creatorUuid}`}
                     color='primary'
                     underline='hover'
                   >

@@ -5,7 +5,7 @@ const {
   getProductByUuid,
   createProduct,
   updateProduct,
-  moderateProduct,
+  moderationProduct,
   deleteProduct,
 } = require('../controllers/productController');
 const {
@@ -22,8 +22,8 @@ productRouter
   .post(authHandler, validateProduct, createProduct);
 
 productRouter
-  .route('/moderate/:productUuid')
-  .patch(authHandler, validateModeration, moderateProduct);
+  .route('/moderation/:productUuid')
+  .patch(authHandler, validateModeration, moderationProduct);
 
 productRouter
   .route('/:productUuid')

@@ -110,7 +110,7 @@ class CategoryService {
       throw badRequest('Недопустимий статус');
     const hasPermission = await checkPermission(
       currentUser,
-      'MODERATE_CATEGORIES'
+      'MODERATION_CATEGORIES'
     );
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на модерацію категорій');

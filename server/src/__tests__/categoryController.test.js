@@ -220,10 +220,10 @@ describe('CategoryController', () => {
     });
   });
 
-  describe('PATCH /api/categories/moderate/:categoryUuid', () => {
-    it('should return 403 for current user not having permission to moderate categories', async () => {
+  describe('PATCH /api/categories/moderation/:categoryUuid', () => {
+    it('should return 403 for current user not having permission to moderation categories', async () => {
       const response = await request(app)
-        .patch(`/api/categories/moderate/${categoryUuid}`)
+        .patch(`/api/categories/moderation/${categoryUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
@@ -234,9 +234,9 @@ describe('CategoryController', () => {
       );
     });
 
-    it('should return 200 for current user having permission to moderate categories', async () => {
+    it('should return 200 for current user having permission to moderation categories', async () => {
       const response = await request(app)
-        .patch(`/api/categories/moderate/${categoryUuid}`)
+        .patch(`/api/categories/moderation/${categoryUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',

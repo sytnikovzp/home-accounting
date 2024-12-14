@@ -21,7 +21,7 @@ const formatMeasureData = (measure) => ({
 class MeasureService {
   async getAllMeasures(limit, offset, sort, order) {
     const foundMeasures = await Measure.findAll({
-      attributes: ['uuid', 'title', 'description'],
+      attributes: ['uuid', 'title'],
       order: [[sort, order]],
       raw: true,
       limit,
@@ -31,10 +31,9 @@ class MeasureService {
       throw notFound('Одиниці вимірювання не знайдено');
     const total = await Measure.count();
     return {
-      allMeasures: foundMeasures.map(({ uuid, title, description }) => ({
+      allMeasures: foundMeasures.map(({ uuid, title }) => ({
         uuid,
         title,
-        description: description || '',
       })),
       total,
     };

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import { Box, Typography, Link } from '@mui/material';
 import {
   Info,
@@ -45,6 +45,7 @@ function ProductViewPage({ handleModalClose }) {
   } = productToCRUD || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+  const categoryTitle = category?.title || 'Невідомо';
 
   let statusIcon;
   if (status === 'Затверджено') {
@@ -88,7 +89,15 @@ function ProductViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Category color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Категорія:</strong> {category}
+                  <strong>Категорія: </strong>
+                  <Link
+                    component={RouterLink}
+                    to={`/categories/${category?.uuid}`}
+                    color='primary'
+                    underline='hover'
+                  >
+                    {categoryTitle}
+                  </Link>
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
@@ -96,7 +105,8 @@ function ProductViewPage({ handleModalClose }) {
                 <Typography variant='body1' sx={stylesViewTextStyles}>
                   <strong>Автор: </strong>
                   <Link
-                    href={`/users/${creatorUuid}`}
+                    component={RouterLink}
+                    to={`/users/${creatorUuid}`}
                     color='primary'
                     underline='hover'
                   >
@@ -110,7 +120,8 @@ function ProductViewPage({ handleModalClose }) {
                   <Typography variant='body1' sx={stylesViewTextStyles}>
                     <strong>Модератор: </strong>
                     <Link
-                      href={`/users/${moderatorUuid}`}
+                      component={RouterLink}
+                      to={`/users/${moderatorUuid}`}
                       color='primary'
                       underline='hover'
                     >

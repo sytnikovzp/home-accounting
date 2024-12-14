@@ -21,7 +21,7 @@ const formatCurrencyData = (currency) => ({
 class CurrencyService {
   async getAllCurrencies(limit, offset, sort, order) {
     const foundCurrencies = await Currency.findAll({
-      attributes: ['uuid', 'title', 'description'],
+      attributes: ['uuid', 'title'],
       order: [[sort, order]],
       raw: true,
       limit,
@@ -30,10 +30,9 @@ class CurrencyService {
     if (!foundCurrencies.length) throw notFound('Валюти не знайдено');
     const total = await Currency.count();
     return {
-      allCurrencies: foundCurrencies.map(({ uuid, title, description }) => ({
+      allCurrencies: foundCurrencies.map(({ uuid, title }) => ({
         uuid,
         title,
-        description: description || '',
       })),
       total,
     };

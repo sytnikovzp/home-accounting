@@ -48,8 +48,8 @@ const updateProduct = async (productUuid, title, category) => {
   return data;
 };
 
-const reviewProduct = async (productUuid, status) => {
-  const { data } = await api.patch(`/products/moderate/${productUuid}`, {
+const moderationProduct = async (productUuid, status) => {
+  const { data } = await api.patch(`/products/moderation/${productUuid}`, {
     status,
   });
   return data;
@@ -65,6 +65,6 @@ export default {
   getProductByUuid,
   createProduct,
   updateProduct,
-  reviewProduct,
+  moderationProduct,
   deleteProduct,
 };

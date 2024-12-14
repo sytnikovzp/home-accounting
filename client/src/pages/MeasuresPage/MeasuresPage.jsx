@@ -132,7 +132,6 @@ function MeasuresPage() {
       <ListTable
         columns={[
           { field: 'title', headerName: 'Назва одиниці', align: 'left' },
-          { field: 'description', headerName: 'Опис', align: 'left' },
         ]}
         rows={measures}
         onEdit={(measure) => openModal('edit', measure.uuid)}

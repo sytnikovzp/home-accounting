@@ -236,10 +236,10 @@ describe('ProductController', () => {
     });
   });
 
-  describe('PATCH /api/products/moderate/:productUuid', () => {
-    it('should return 403 for current user not having permission to moderate products', async () => {
+  describe('PATCH /api/products/moderation/:productUuid', () => {
+    it('should return 403 for current user not having permission to moderation products', async () => {
       const response = await request(app)
-        .patch(`/api/products/moderate/${productUuid}`)
+        .patch(`/api/products/moderation/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           status: 'approved',
@@ -250,9 +250,9 @@ describe('ProductController', () => {
       );
     });
 
-    it('should return 200 for current user having permission to moderate products', async () => {
+    it('should return 200 for current user having permission to moderation products', async () => {
       const response = await request(app)
-        .patch(`/api/products/moderate/${productUuid}`)
+        .patch(`/api/products/moderation/${productUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           status: 'approved',

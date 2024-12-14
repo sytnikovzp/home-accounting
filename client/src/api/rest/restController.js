@@ -103,8 +103,8 @@ const restController = {
   addCategory: (title) => categoryService.createCategory(title),
   editCategory: (categoryUuid, title) =>
     categoryService.updateCategory(categoryUuid, title),
-  reviewCategory: (categoryUuid, status) =>
-    categoryService.reviewCategory(categoryUuid, status),
+  moderationCategory: (categoryUuid, status) =>
+    categoryService.moderationCategory(categoryUuid, status),
   removeCategory: (categoryUuid) =>
     categoryService.deleteCategory(categoryUuid),
 
@@ -193,8 +193,8 @@ const restController = {
     productService.createProduct(title, category),
   editProduct: (productUuid, title, category) =>
     productService.updateProduct(productUuid, title, category),
-  reviewProduct: (productUuid, status) =>
-    productService.reviewProduct(productUuid, status),
+  moderationProduct: (productUuid, status) =>
+    productService.moderationProduct(productUuid, status),
   removeProduct: (productUuid) => productService.deleteProduct(productUuid),
 
   // Purchase management
@@ -278,7 +278,8 @@ const restController = {
   uploadShopLogo: (shopUuid, shopLogo) =>
     shopService.updateShopLogo(shopUuid, shopLogo),
   removeShopLogo: (shopUuid) => shopService.removeShopLogo(shopUuid),
-  reviewShop: (shopUuid, status) => shopService.reviewShop(shopUuid, status),
+  moderationShop: (shopUuid, status) =>
+    shopService.moderationShop(shopUuid, status),
   removeShop: (shopUuid) => shopService.deleteShop(shopUuid),
 
   // Statistics

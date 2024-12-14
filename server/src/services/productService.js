@@ -145,7 +145,7 @@ class ProductService {
       throw badRequest('Недопустимий статус');
     const hasPermission = await checkPermission(
       currentUser,
-      'MODERATE_PRODUCTS'
+      'MODERATION_PRODUCTS'
     );
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на модерацію товарів');

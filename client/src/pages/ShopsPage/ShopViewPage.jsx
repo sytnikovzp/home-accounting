@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import { Box, Typography, Link, Avatar } from '@mui/material';
 import {
   Info,
@@ -130,7 +130,8 @@ function ShopViewPage({ handleModalClose }) {
                 <Typography variant='body1' sx={stylesViewTextStyles}>
                   <strong>Автор: </strong>
                   <Link
-                    href={`/users/${creatorUuid}`}
+                    component={RouterLink}
+                    to={`/users/${creatorUuid}`}
                     color='primary'
                     underline='hover'
                   >
@@ -144,7 +145,8 @@ function ShopViewPage({ handleModalClose }) {
                   <Typography variant='body1' sx={stylesViewTextStyles}>
                     <strong>Модератор: </strong>
                     <Link
-                      href={`/users/${moderatorUuid}`}
+                      component={RouterLink}
+                      to={`/users/${moderatorUuid}`}
                       color='primary'
                       underline='hover'
                     >

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import { Box, Typography, Link } from '@mui/material';
 import {
   Info,
@@ -49,6 +49,10 @@ function PurchaseViewPage({ handleModalClose }) {
     creation,
   } = purchaseToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+  const productTitle = product?.title || 'Невідомо';
+  const shopTitle = shop?.title || 'Невідомо';
+  const measureTitle = measure?.title || 'Невідомо';
+  const currencyTitle = currency?.title || 'Невідомо';
 
   return (
     <CustomModal
@@ -71,31 +75,47 @@ function PurchaseViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <ShoppingCart color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Товар:</strong> {product}
+                  <strong>Товар: </strong>
+                  <Link
+                    component={RouterLink}
+                    to={`/products/${product?.uuid}`}
+                    color='primary'
+                    underline='hover'
+                  >
+                    {productTitle}
+                  </Link>
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
                 <ProductionQuantityLimits color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Кількість:</strong> {amount} {measure}
+                  <strong>Кількість:</strong> {amount} {measureTitle}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
                 <AttachMoney color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Ціна за одиницю:</strong> {price} {currency}
+                  <strong>Ціна за одиницю:</strong> {price} {currencyTitle}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
                 <AttachMoney color='secondary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Сума:</strong> {summ} {currency}
+                  <strong>Сума:</strong> {summ} {currencyTitle}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
                 <Store color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Магазин:</strong> {shop}
+                  <strong>Магазин: </strong>
+                  <Link
+                    component={RouterLink}
+                    to={`/shops/${shop?.uuid}`}
+                    color='primary'
+                    underline='hover'
+                  >
+                    {shopTitle}
+                  </Link>
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
@@ -103,7 +123,8 @@ function PurchaseViewPage({ handleModalClose }) {
                 <Typography variant='body1' sx={stylesViewTextStyles}>
                   <strong>Автор: </strong>
                   <Link
-                    href={`/users/${creatorUuid}`}
+                    component={RouterLink}
+                    to={`/users/${creatorUuid}`}
                     color='primary'
                     underline='hover'
                   >

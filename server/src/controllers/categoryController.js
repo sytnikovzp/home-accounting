@@ -93,7 +93,7 @@ class CategoryController {
     }
   }
 
-  async moderateCategory(req, res, next) {
+  async moderationCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { categoryUuid } = req.params;
@@ -114,7 +114,7 @@ class CategoryController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Moderate category error: ', error.message);
+      console.log('Moderation category error: ', error.message);
       next(error);
     }
   }

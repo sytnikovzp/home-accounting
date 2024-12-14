@@ -131,8 +131,8 @@ function ShopsPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'title', headerName: 'Назва магазину', align: 'left' },
           { field: 'logo', headerName: 'Логотип', align: 'center' },
+          { field: 'title', headerName: 'Назва магазину', align: 'left' },
         ]}
         rows={shops}
         onEdit={(shop) => openModal('edit', shop.uuid)}

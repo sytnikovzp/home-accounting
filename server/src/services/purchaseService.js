@@ -73,14 +73,14 @@ class PurchaseService {
       allPurchases: foundPurchases.map(
         ({
           uuid,
+          date,
           'Product.title': productTitle,
           'Shop.title': shopTitle,
-          date,
         }) => ({
           uuid,
+          date: formatDate(date),
           product: productTitle || '',
           shop: shopTitle || '',
-          date: formatDate(date),
         })
       ),
       total,
