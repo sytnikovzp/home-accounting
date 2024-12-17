@@ -1,9 +1,13 @@
+const { Op } = require('sequelize');
+// ==============================================================
 const { Currency } = require('../db/dbPostgres/models');
+// ==============================================================
 const {
   formatDateTime,
   isValidUUID,
   checkPermission,
 } = require('../utils/sharedFunctions');
+// ==============================================================
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatCurrencyData = (currency) => ({
@@ -55,8 +59,12 @@ class CurrencyService {
     );
     if (!canManageCurrencies)
       throw forbidden('Ви не маєте дозволу на створення валют');
-    if (await Currency.findOne({ where: { title } }))
-      throw badRequest('Ця валюта вже існує');
+    const duplicateCurrency = await Currency.findOne({
+      where: {
+        [Op.or]: [{ title }, { code }],
+      },
+    });
+    if (duplicateCurrency) throw badRequest('Ця валюта вже існує');
     const newCurrency = await Currency.create(
       {
         title,
@@ -82,6 +90,10 @@ class CurrencyService {
       throw forbidden('Ви не маєте дозволу на редагування цієї валюти');
     if (title && title !== foundCurrency.title) {
       const duplicateCurrency = await Currency.findOne({ where: { title } });
+      if (duplicateCurrency) throw badRequest('Ця валюта вже існує');
+    }
+    if (code && code !== foundCurrency.code) {
+      const duplicateCurrency = await Currency.findOne({ where: { code } });
       if (duplicateCurrency) throw badRequest('Ця валюта вже існує');
     }
     const [affectedRows, [updatedCurrency]] = await Currency.update(

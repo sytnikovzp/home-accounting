@@ -1,36 +1,42 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Typography } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import RoleForm from '../../components/Forms/RoleForm/RoleForm';
 
-function PurchaseDeletePage({
+function RoleEditPage({
   handleModalClose,
-  fetchPurchases,
+  fetchRoles,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: purchaseToCRUD,
+    entity: roleToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Purchase');
+  } = useFetchEntity('Role');
 
   useEffect(() => {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeletePurchase = async () => {
+  const handleSubmitRole = async (values) => {
+    setCrudError(null);
     try {
-      await restController.removePurchase(purchaseToCRUD.uuid);
+      await restController.editRole(
+        roleToCRUD.uuid,
+        values.title,
+        values.description,
+        values.permissions
+      );
       handleModalClose();
-      fetchPurchases();
+      fetchRoles();
     } catch (error) {
       setCrudError(
         error.response?.data?.errors?.[0]?.message ||
@@ -44,35 +50,17 @@ function PurchaseDeletePage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Видалення покупки...'
+      title='Редагування ролі...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <Typography
-            variant='body1'
-            sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
-          >
-            Ви впевнені, що хочете видалити покупку «
-            {purchaseToCRUD?.product.title}»?
-          </Typography>
+          <RoleForm role={roleToCRUD} onSubmit={handleSubmitRole} />
         )
       }
-      actions={[
-        <Button
-          key='delete'
-          variant='contained'
-          color='error'
-          size='large'
-          onClick={handleDeletePurchase}
-          fullWidth
-        >
-          Видалити
-        </Button>,
-      ]}
       error={errorMessage || crudError}
     />
   );
 }
 
-export default PurchaseDeletePage;
+export default RoleEditPage;

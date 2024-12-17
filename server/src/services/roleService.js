@@ -188,7 +188,7 @@ class RoleService {
     const usersWithRole = await User.countDocuments({ roleUuid: uuid });
     if (usersWithRole > 0)
       throw badRequest(
-        `Видалення неможливо, оскільки ${usersWithRole} користувачів використовують цю роль`
+        `Видалення неможливо, оскільки ${usersWithRole} користувач(ів) використовують цю роль`
       );
     const deletedRole = await Role.findOneAndDelete({ uuid });
     if (!deletedRole)

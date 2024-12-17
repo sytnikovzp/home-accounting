@@ -115,7 +115,7 @@ function PurchaseForm({
       label: 'Валюта',
       type: 'autocomplete',
       options: groupedCurrencies,
-      placeholder: 'Наприклад "UAH"',
+      placeholder: 'Наприклад "Українська гривня"',
       required: true,
     },
     {

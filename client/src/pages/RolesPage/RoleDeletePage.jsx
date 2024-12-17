@@ -8,29 +8,29 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
-function PurchaseDeletePage({
+function RoleDeletePage({
   handleModalClose,
-  fetchPurchases,
+  fetchRoles,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: purchaseToCRUD,
+    entity: roleToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Purchase');
+  } = useFetchEntity('Role');
 
   useEffect(() => {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeletePurchase = async () => {
+  const handleDeleteRole = async () => {
     try {
-      await restController.removePurchase(purchaseToCRUD.uuid);
+      await restController.removeRole(roleToCRUD.uuid);
       handleModalClose();
-      fetchPurchases();
+      fetchRoles();
     } catch (error) {
       setCrudError(
         error.response?.data?.errors?.[0]?.message ||
@@ -44,7 +44,7 @@ function PurchaseDeletePage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Видалення покупки...'
+      title='Видалення ролі...'
       content={
         isLoading ? (
           <Preloader />
@@ -53,8 +53,7 @@ function PurchaseDeletePage({
             variant='body1'
             sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
           >
-            Ви впевнені, що хочете видалити покупку «
-            {purchaseToCRUD?.product.title}»?
+            Ви впевнені, що хочете видалити роль «{roleToCRUD?.title}»?
           </Typography>
         )
       }
@@ -64,7 +63,7 @@ function PurchaseDeletePage({
           variant='contained'
           color='error'
           size='large'
-          onClick={handleDeletePurchase}
+          onClick={handleDeleteRole}
           fullWidth
         >
           Видалити
@@ -75,4 +74,4 @@ function PurchaseDeletePage({
   );
 }
 
-export default PurchaseDeletePage;
+export default RoleDeletePage;
