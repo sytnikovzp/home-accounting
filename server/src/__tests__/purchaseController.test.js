@@ -91,8 +91,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Навушники',
-          amount: 2,
-          price: 500,
+          quantity: 2,
+          unitPrice: 500,
           shop: 'Comfy',
           measure: 'шт',
           currency: 'UAH',
@@ -100,8 +100,8 @@ describe('PurchaseController', () => {
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
       expect(response.body.product).toBe('Навушники');
-      expect(response.body.amount).toBe('2.00');
-      expect(response.body.price).toBe('500.00');
+      expect(response.body.quantity).toBe('2.00');
+      expect(response.body.unitPrice).toBe('500.00');
       expect(response.body.summ).toBe('1000.00');
       expect(response.body.shop).toBe('Comfy');
       expect(response.body.measure).toBe('шт');
@@ -116,8 +116,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Велика кишеня',
           measure: 'шт',
           currency: 'USD',
@@ -132,8 +132,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбуки',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Comfy',
           measure: 'шт',
           currency: 'USD',
@@ -148,8 +148,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Comfy',
           measure: 'літр',
           currency: 'USD',
@@ -164,8 +164,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Comfy',
           measure: 'шт',
           currency: 'YYY',
@@ -180,8 +180,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Comfy',
           measure: 'шт',
           currency: 'USD',
@@ -201,8 +201,8 @@ describe('PurchaseController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', purchaseUuid);
       expect(response.body.product).toBe('Навушники');
-      expect(response.body.amount).toBe('2.00');
-      expect(response.body.price).toBe('500.00');
+      expect(response.body.quantity).toBe('2.00');
+      expect(response.body.unitPrice).toBe('500.00');
       expect(response.body.summ).toBe('1000.00');
       expect(response.body.shop).toBe('Comfy');
       expect(response.body.measure).toBe('шт');
@@ -233,8 +233,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 1,
-          price: 850.0,
+          quantity: 1,
+          unitPrice: 850.0,
           shop: 'Епіцентр',
           measure: 'шт',
           currency: 'USD',
@@ -242,8 +242,8 @@ describe('PurchaseController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', purchaseUuid);
       expect(response.body.product).toBe('Ноутбук');
-      expect(response.body.amount).toBe('1.00');
-      expect(response.body.price).toBe('850.00');
+      expect(response.body.quantity).toBe('1.00');
+      expect(response.body.unitPrice).toBe('850.00');
       expect(response.body.summ).toBe('850.00');
       expect(response.body.shop).toBe('Епіцентр');
       expect(response.body.measure).toBe('шт');
@@ -257,8 +257,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Велика кишеня',
           measure: 'шт',
           currency: 'USD',
@@ -273,8 +273,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбуки',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Comfy',
           measure: 'шт',
           currency: 'USD',
@@ -289,8 +289,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Comfy',
           measure: 'літр',
           currency: 'USD',
@@ -305,8 +305,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 2,
-          price: 100,
+          quantity: 2,
+          unitPrice: 100,
           shop: 'Comfy',
           measure: 'шт',
           currency: 'YYY',
@@ -321,8 +321,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 1,
-          price: 850.0,
+          quantity: 1,
+          unitPrice: 850.0,
           shop: 'Епіцентр',
           measure: 'шт',
           currency: 'USD',
@@ -339,8 +339,8 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           product: 'Ноутбук',
-          amount: 1,
-          price: 850.0,
+          quantity: 1,
+          unitPrice: 850.0,
           shop: 'Епіцентр',
           measure: 'шт',
           currency: 'USD',

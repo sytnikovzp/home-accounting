@@ -30,8 +30,8 @@ const getPurchaseByUuid = async (purchaseUuid) => {
 
 const createPurchase = async (
   product,
-  amount,
-  price,
+  quantity,
+  unitPrice,
   shop,
   measure,
   currency,
@@ -39,8 +39,8 @@ const createPurchase = async (
 ) => {
   const { data } = await api.post('/purchases', {
     product,
-    amount,
-    price,
+    quantity,
+    unitPrice,
     shop,
     measure,
     currency,
@@ -52,8 +52,8 @@ const createPurchase = async (
 const updatePurchase = async (
   purchaseUuid,
   product,
-  amount,
-  price,
+  quantity,
+  unitPrice,
   shop,
   measure,
   currency,
@@ -61,8 +61,8 @@ const updatePurchase = async (
 ) => {
   const { data } = await api.patch(`/purchases/${purchaseUuid}`, {
     product,
-    amount,
-    price,
+    quantity,
+    unitPrice,
     shop,
     measure,
     currency,

@@ -22,11 +22,19 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
         unique: true,
+        validate: {
+          len: [0, 100],
+        },
       },
       code: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          len: [3, 3],
+          isUppercase: true,
+          is: /^[A-Z]{3}$/,
+        },
       },
       creatorUuid: {
         type: DataTypes.UUID,
@@ -41,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Currency',
       tableName: 'currencies',
+      timestamps: true,
       underscored: true,
     }
   );

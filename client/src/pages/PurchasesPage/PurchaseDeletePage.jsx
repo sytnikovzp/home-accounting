@@ -53,7 +53,7 @@ function PurchaseDeletePage({
             variant='body1'
             sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
           >
-            Ви впевнені, що хочете видалити покупку "{purchaseToCRUD?.product}"?
+            Ви впевнені, що хочете видалити покупку «{purchaseToCRUD?.product}»?
           </Typography>
         )
       }

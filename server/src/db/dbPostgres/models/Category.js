@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          len: [0, 100],
+        },
       },
       status: {
         type: DataTypes.ENUM('approved', 'rejected', 'pending'),
@@ -49,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Category',
       tableName: 'categories',
+      timestamps: true,
       underscored: true,
     }
   );

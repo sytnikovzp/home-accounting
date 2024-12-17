@@ -53,7 +53,7 @@ function CategoryDeletePage({
             variant='body1'
             sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
           >
-            Ви впевнені, що хочете видалити категорію "{categoryToCRUD?.title}"?
+            Ви впевнені, що хочете видалити категорію «{categoryToCRUD?.title}»?
           </Typography>
         )
       }

@@ -28,9 +28,9 @@ function BaseForm({
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Box sx={{ width: '40%' }}>
                 <FormField
-                  {...fields.find((field) => field.name === 'amount')}
-                  error={errors['amount']}
-                  touched={touched['amount']}
+                  {...fields.find((field) => field.name === 'quantity')}
+                  error={errors['quantity']}
+                  touched={touched['quantity']}
                 />
               </Box>
               <Box sx={{ flex: 1 }}>
@@ -44,9 +44,9 @@ function BaseForm({
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Box sx={{ width: '40%' }}>
                 <FormField
-                  {...fields.find((field) => field.name === 'price')}
-                  error={errors['price']}
-                  touched={touched['price']}
+                  {...fields.find((field) => field.name === 'unitPrice')}
+                  error={errors['unitPrice']}
+                  touched={touched['unitPrice']}
                 />
               </Box>
               <Box sx={{ flex: 1 }}>

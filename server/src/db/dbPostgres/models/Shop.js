@@ -22,13 +22,27 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          len: [0, 100],
+        },
       },
-      description: DataTypes.TEXT,
+      description: {
+        type: DataTypes.TEXT,
+        validate: {
+          len: [0, 100],
+        },
+      },
       url: {
         type: DataTypes.STRING,
         unique: true,
       },
-      logo: DataTypes.STRING,
+      logo: {
+        type: DataTypes.STRING,
+        unique: true,
+        validate: {
+          len: [0, 100],
+        },
+      },
       status: {
         type: DataTypes.ENUM('approved', 'rejected', 'pending'),
         allowNull: false,
@@ -55,6 +69,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Shop',
       tableName: 'shops',
+      timestamps: true,
       underscored: true,
     }
   );

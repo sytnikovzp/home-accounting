@@ -18,8 +18,8 @@ function PurchaseAddPage({
     try {
       await restController.addPurchase(
         values.product,
-        values.amount,
-        values.price,
+        values.quantity,
+        values.unitPrice,
         values.shop,
         values.measure,
         values.currency,

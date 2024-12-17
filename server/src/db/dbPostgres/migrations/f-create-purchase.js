@@ -22,17 +22,12 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      amount: {
+      quantity: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
         defaultValue: 0.0,
       },
-      price: {
-        type: Sequelize.DECIMAL(10, 2),
-        allowNull: false,
-        defaultValue: 0.0,
-      },
-      summ: {
+      unit_price: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
         defaultValue: 0.0,

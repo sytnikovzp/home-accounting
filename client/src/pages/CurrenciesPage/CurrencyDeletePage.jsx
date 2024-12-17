@@ -53,7 +53,9 @@ function CurrencyDeletePage({
             variant='body1'
             sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
           >
-            Ви впевнені, що хочете видалити валюту "{currencyToCRUD?.title}"?
+            Ви впевнені, що хочете видалити валюту «{currencyToCRUD?.title}»?
+            Зверніть увагу, що видалення цієї валюти призведе до видалення всіх
+            покупок, у яких вона використовується.
           </Typography>
         )
       }

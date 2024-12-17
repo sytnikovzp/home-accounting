@@ -23,9 +23,9 @@ const formatPurchaseData = (purchase) => ({
     uuid: purchase.Product?.uuid || '',
     title: purchase.Product?.title || '',
   },
-  amount: purchase.amount,
-  price: purchase.price,
-  summ: purchase.summ,
+  quantity: purchase.quantity,
+  unitPrice: purchase.unitPrice,
+  totalPrice: purchase.totalPrice,
   shop: {
     uuid: purchase.Shop?.uuid || '',
     title: purchase.Shop?.title || '',
@@ -107,7 +107,7 @@ class PurchaseService {
 
   async createPurchase(
     product,
-    amountValue,
+    quantityValue,
     priceValue,
     shop,
     measure,
@@ -127,9 +127,8 @@ class PurchaseService {
     if (!foundMeasure) throw notFound('Одиницю вимірів не знайдено');
     const foundCurrency = await getRecordByTitle(Currency, currency);
     if (!foundCurrency) throw notFound('Валюту не знайдено');
-    const amount = parseFloat(amountValue) || 0;
-    const price = parseFloat(priceValue) || 0;
-    const summ = amount * price || 0;
+    const quantity = parseFloat(quantityValue) || 0;
+    const unitPrice = parseFloat(priceValue) || 0;
     let date = dateValue;
     if (dateValue) {
       date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
@@ -138,9 +137,8 @@ class PurchaseService {
     const newPurchase = await Purchase.create(
       {
         productUuid: foundProduct.uuid,
-        amount,
-        price,
-        summ,
+        quantity,
+        unitPrice,
         shopUuid: foundShop.uuid,
         measureUuid: foundMeasure.uuid,
         currencyUuid: foundCurrency.uuid,
@@ -157,9 +155,9 @@ class PurchaseService {
         uuid: foundProduct.uuid,
         title: foundProduct.title,
       },
-      amount: newPurchase.amount,
-      price: newPurchase.price,
-      summ: newPurchase.summ,
+      quantity: newPurchase.quantity,
+      unitPrice: newPurchase.unitPrice,
+      totalPrice: newPurchase.totalPrice,
       shop: {
         uuid: foundShop.uuid,
         title: foundShop.title,
@@ -185,7 +183,7 @@ class PurchaseService {
   async updatePurchase(
     uuid,
     product,
-    amountValue,
+    quantityValue,
     priceValue,
     shop,
     measure,
@@ -208,13 +206,12 @@ class PurchaseService {
     if (!foundMeasure) throw notFound('Одиницю вимірів не знайдено');
     const foundCurrency = await getRecordByTitle(Currency, currency);
     if (!foundCurrency) throw notFound('Валюту не знайдено');
-    const amount = amountValue
-      ? parseFloat(amountValue) || 0
-      : foundPurchase.amount;
-    const price = priceValue
+    const quantity = quantityValue
+      ? parseFloat(quantityValue) || 0
+      : foundPurchase.quantity;
+    const unitPrice = priceValue
       ? parseFloat(priceValue) || 0
-      : foundPurchase.price;
-    const summ = amount * price || 0;
+      : foundPurchase.unitPrice;
     let date = foundPurchase.date;
     if (dateValue) {
       date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
@@ -223,9 +220,8 @@ class PurchaseService {
     const [affectedRows, [updatedPurchase]] = await Purchase.update(
       {
         productUuid: foundProduct.uuid,
-        amount,
-        price,
-        summ,
+        quantity,
+        unitPrice,
         shopUuid: foundShop.uuid,
         measureUuid: foundMeasure.uuid,
         currencyUuid: foundCurrency.uuid,
@@ -240,9 +236,9 @@ class PurchaseService {
         uuid: foundProduct.uuid,
         title: foundProduct.title,
       },
-      amount: updatedPurchase.amount,
-      price: updatedPurchase.price,
-      summ: updatedPurchase.summ,
+      quantity: updatedPurchase.quantity,
+      unitPrice: updatedPurchase.unitPrice,
+      totalPrice: updatedPurchase.totalPrice,
       shop: {
         uuid: foundShop.uuid,
         title: foundShop.title,

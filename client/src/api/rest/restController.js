@@ -216,11 +216,11 @@ const restController = {
   },
   fetchPurchaseByUuid: (purchaseUuid) =>
     purchaseService.getPurchaseByUuid(purchaseUuid),
-  addPurchase: (product, amount, price, shop, measure, currency, date) =>
+  addPurchase: (product, quantity, unitPrice, shop, measure, currency, date) =>
     purchaseService.createPurchase(
       product,
-      amount,
-      price,
+      quantity,
+      unitPrice,
       shop,
       measure,
       currency,
@@ -229,8 +229,8 @@ const restController = {
   editPurchase: (
     purchaseUuid,
     product,
-    amount,
-    price,
+    quantity,
+    unitPrice,
     shop,
     measure,
     currency,
@@ -239,8 +239,8 @@ const restController = {
     purchaseService.updatePurchase(
       purchaseUuid,
       product,
-      amount,
-      price,
+      quantity,
+      unitPrice,
       shop,
       measure,
       currency,

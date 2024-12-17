@@ -37,20 +37,27 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      amount: {
+      quantity: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
         defaultValue: 0.0,
+        validate: {
+          min: 0,
+        },
       },
-      price: {
+      unitPrice: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
         defaultValue: 0.0,
+        validate: {
+          min: 0,
+        },
       },
-      summ: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-        defaultValue: 0.0,
+      totalPrice: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return (this.quantity * this.unitPrice).toFixed(2);
+        },
       },
       shopUuid: {
         type: DataTypes.UUID,
@@ -67,6 +74,10 @@ module.exports = (sequelize, DataTypes) => {
       date: {
         type: DataTypes.DATEONLY,
         allowNull: false,
+        validate: {
+          isDate: true,
+          isBefore: new Date().toISOString().split('T')[0],
+        },
       },
       creatorUuid: {
         type: DataTypes.UUID,
@@ -81,6 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Purchase',
       tableName: 'purchases',
+      timestamps: true,
       underscored: true,
     }
   );

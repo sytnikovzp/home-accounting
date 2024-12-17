@@ -22,11 +22,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          len: [0, 100],
+        },
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: false,
         unique: true,
+        validate: {
+          len: [0, 100],
+        },
       },
       creatorUuid: {
         type: DataTypes.UUID,
@@ -41,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Measure',
       tableName: 'measures',
+      timestamps: true,
       underscored: true,
     }
   );

@@ -53,7 +53,8 @@ function ProductDeletePage({
             variant='body1'
             sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
           >
-            Ви впевнені, що хочете видалити товар "{productToCRUD?.title}"?
+            Ви впевнені, що хочете видалити товар «{productToCRUD?.title}»? Це
+            призведе до видалення всіх покупок, що містять цей товар.
           </Typography>
         )
       }

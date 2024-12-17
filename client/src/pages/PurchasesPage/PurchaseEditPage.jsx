@@ -36,8 +36,8 @@ function PurchaseEditPage({
       await restController.editPurchase(
         purchaseToCRUD.uuid,
         values.product,
-        values.amount,
-        values.price,
+        values.quantity,
+        values.unitPrice,
         values.shop,
         values.measure,
         values.currency,

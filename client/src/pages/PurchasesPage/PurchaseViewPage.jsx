@@ -39,9 +39,9 @@ function PurchaseViewPage({ handleModalClose }) {
   const {
     uuid: purchaseUuid,
     product,
-    amount,
-    price,
-    summ,
+    quantity,
+    unitPrice,
+    totalPrice,
     shop,
     measure,
     currency,
@@ -89,19 +89,19 @@ function PurchaseViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <ProductionQuantityLimits color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Кількість:</strong> {amount} {measureTitle}
+                  <strong>Кількість:</strong> {quantity} {measureTitle}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
                 <AttachMoney color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Ціна за одиницю:</strong> {price} {currencyCode}
+                  <strong>Ціна за одиницю:</strong> {unitPrice} {currencyCode}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
                 <AttachMoney color='secondary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Сума:</strong> {summ} {currencyCode}
+                  <strong>Сума:</strong> {totalPrice} {currencyCode}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>

@@ -26,6 +26,7 @@ module.exports = {
       },
       logo: {
         type: Sequelize.STRING,
+        unique: true,
       },
       status: {
         type: Sequelize.ENUM('approved', 'rejected', 'pending'),

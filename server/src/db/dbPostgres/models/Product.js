@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       title: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
+        validate: {
+          len: [0, 100],
+        },
       },
       categoryUuid: {
         type: DataTypes.UUID,
@@ -57,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Product',
       tableName: 'products',
+      timestamps: true,
       underscored: true,
     }
   );

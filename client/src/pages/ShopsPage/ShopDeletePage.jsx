@@ -53,7 +53,8 @@ function ShopDeletePage({
             variant='body1'
             sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
           >
-            Ви впевнені, що хочете видалити магазин "{shopToCRUD?.title}"?
+            Ви впевнені, що хочете видалити магазин «{shopToCRUD?.title}»? Це
+            призведе до видалення всіх покупок, пов'язаних з цим магазином.
           </Typography>
         )
       }

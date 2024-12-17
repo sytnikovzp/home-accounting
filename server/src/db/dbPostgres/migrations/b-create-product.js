@@ -15,6 +15,7 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       category_uuid: {
         type: Sequelize.UUID,

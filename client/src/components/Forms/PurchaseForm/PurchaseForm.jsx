@@ -15,8 +15,8 @@ function PurchaseForm({
   const initialValues = purchase
     ? {
         product: purchase.product.title,
-        amount: purchase.amount,
-        price: purchase.price,
+        quantity: purchase.quantity,
+        unitPrice: purchase.unitPrice,
         shop: purchase.shop.title,
         measure: purchase.measure.title,
         currency: purchase.currency.title,
@@ -24,8 +24,8 @@ function PurchaseForm({
       }
     : {
         product: '',
-        amount: '',
-        price: '',
+        quantity: '',
+        unitPrice: '',
         shop: '',
         measure: '',
         currency: '',
@@ -71,13 +71,13 @@ function PurchaseForm({
       autoFocus: true,
     },
     {
-      name: 'amount',
+      name: 'quantity',
       label: 'Кількість',
       placeholder: 'Наприклад "1"',
       required: true,
     },
     {
-      name: 'price',
+      name: 'unitPrice',
       label: 'Ціна за одиницю',
       placeholder: 'Наприклад "80"',
       required: true,
