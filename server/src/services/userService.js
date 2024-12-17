@@ -1,16 +1,22 @@
 const { User, Role, Permission } = require('../db/dbMongo/models');
 // ==============================================================
 const {
+  dataMapping: { titleRolesMapping },
+} = require('../constants');
+// ==============================================================
+const {
   hashPassword,
   emailToLowerCase,
   formatDateTime,
   isValidUUID,
   checkPermission,
+  mapValue,
 } = require('../utils/sharedFunctions');
 // ==============================================================
 const { generateTokens } = require('./tokenService');
 // ==============================================================
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
+const { roleTitleMapping } = require('../constants/dataMapping');
 
 class UserService {
   async getAllUsers(isActivated, limit, offset, sort, order) {
@@ -47,6 +53,7 @@ class UserService {
     const roleUuidBinary = foundUser.roleUuid;
     const role = await Role.findOne({ uuid: roleUuidBinary });
     if (!role) throw notFound('Роль для користувача не знайдено');
+    const translatedRoleTitle = mapValue(role.title, titleRolesMapping);
     const permissions = await Permission.find({
       uuid: { $in: role.permissions },
     });
@@ -55,7 +62,7 @@ class UserService {
       fullName: foundUser.fullName,
       role: {
         uuid: role.uuid,
-        title: role.title,
+        title: translatedRoleTitle,
       },
       photo: foundUser.photo || '',
     };
@@ -91,6 +98,7 @@ class UserService {
     if (!foundUser) throw notFound('Користувача не знайдено');
     const role = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!role) throw notFound('Роль для користувача не знайдено');
+    const translatedRoleTitle = mapValue(role.title, titleRolesMapping);
     const permissions = await Permission.find({
       uuid: { $in: role.permissions },
     });
@@ -99,7 +107,7 @@ class UserService {
       fullName: foundUser.fullName,
       role: {
         uuid: role.uuid,
-        title: role.title,
+        title: translatedRoleTitle,
       },
       photo: foundUser.photo || '',
       email: foundUser.email,
@@ -155,7 +163,8 @@ class UserService {
         if (adminCount === 1)
           throw forbidden('Неможливо видалити останнього Адміністратора');
       }
-      const newRole = await Role.findOne({ title: role });
+      const internalRoleTitle = roleTitleMapping[role];
+      const newRole = await Role.findOne({ title: internalRoleTitle });
       if (!newRole) throw notFound('Роль для користувача не знайдено');
       updateData.roleUuid = newRole.uuid;
     }

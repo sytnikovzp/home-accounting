@@ -54,7 +54,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hL
   # "currency": "Українська гривня",
   # "currency": "Долар США",
   "currency": "Євро",
-  "date": "02 грудня 2024"
+  "date": "17 грудня 2024"
 }
 
 ### Delete purchase

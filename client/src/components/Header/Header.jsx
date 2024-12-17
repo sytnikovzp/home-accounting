@@ -107,7 +107,21 @@ function Header({
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {isAuthenticated ? (
-              <>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    display: { xs: 'none', sm: 'block' },
+                    alignItems: 'center',
+                    marginRight: 2,
+                  }}
+                >
+                  <Typography variant='body1'>
+                    Привіт, {userProfile.fullName}!
+                  </Typography>
+                  <Typography variant='body2' color='text.secondary'>
+                    Ваша роль на сайті: {userProfile.role.title}
+                  </Typography>
+                </Box>
                 <Tooltip title='Обліковий запис'>
                   <IconButton
                     size='small'
@@ -165,7 +179,7 @@ function Header({
                     Вийти
                   </MenuItem>
                 </Menu>
-              </>
+              </Box>
             ) : (
               <Button
                 variant='contained'

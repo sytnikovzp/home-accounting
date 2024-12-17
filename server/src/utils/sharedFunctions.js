@@ -7,6 +7,7 @@ const {
   configs: {
     HASH: { SALT_ROUNDS },
   },
+  dataMapping: { roleTitleMapping },
 } = require('../constants');
 // ==============================================================
 const { User, Role, Permission } = require('../db/dbMongo/models');
@@ -55,7 +56,8 @@ const isValidUUID = function (uuid) {
 };
 
 const checkPermission = async function (user, requiredPermission) {
-  const foundRole = await Role.findOne({ title: user.role.title });
+  const internalRoleTitle = roleTitleMapping[user.role.title];
+  const foundRole = await Role.findOne({ title: internalRoleTitle });
   if (!foundRole) throw notFound('Роль для користувача не знайдено');
   const permission = await Permission.findOne({ title: requiredPermission });
   if (!permission) throw notFound('Необхідного дозволу не знайдено');
@@ -106,14 +108,8 @@ const getUserDetailsByEmail = async function (email) {
   };
 };
 
-const statusMapping = {
-  approved: 'Затверджено',
-  pending: 'Очікує модерації',
-  rejected: 'Відхилено',
-};
-
-const mapStatus = function (status) {
-  return statusMapping[status] || status;
+const mapValue = function (value, mapping) {
+  return mapping[value] || value;
 };
 
 const getNBURates = async () => {
@@ -146,6 +142,6 @@ module.exports = {
   getRecordByTitle,
   getCurrencyByTitle,
   getUserDetailsByEmail,
-  mapStatus,
+  mapValue,
   convertToUAH,
 };

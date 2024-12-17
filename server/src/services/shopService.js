@@ -1,9 +1,12 @@
 const { Shop } = require('../db/dbPostgres/models');
 const {
+  dataMapping: { statusModerationMapping },
+} = require('../constants');
+const {
   formatDateTime,
   isValidUUID,
   checkPermission,
-  mapStatus,
+  mapValue,
 } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
@@ -13,7 +16,7 @@ const formatShopData = (shop) => ({
   description: shop.description || '',
   url: shop.url || '',
   logo: shop.logo || '',
-  status: mapStatus(shop.status),
+  status: mapValue(shop.status, statusModerationMapping),
   moderation: {
     moderatorUuid: shop.moderatorUuid || '',
     moderatorFullName: shop.moderatorFullName || '',
