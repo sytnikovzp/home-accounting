@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { Box, Typography, Link } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import {
   Info,
   CalendarToday,
@@ -9,15 +9,11 @@ import {
   Description,
 } from '@mui/icons-material';
 // ==============================================================
-import {
-  stylesRowContainerStyles,
-  stylesViewTextStyles,
-} from '../../styles/theme';
-// ==============================================================
 import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import DetailRow from '../../components/DetailRow/DetailRow';
 
 function CurrencyViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -47,28 +43,17 @@ function CurrencyViewPage({ handleModalClose }) {
         ) : (
           <Box sx={{ mt: 3, mb: 3 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <Box sx={stylesRowContainerStyles}>
-                <Info color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>UUID:</strong> {currencyUuid}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Info color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Назва:</strong> {title}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Description color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Міжнародний код валюти:</strong> {code}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Person color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Автор: </strong>
+              <DetailRow icon={Info} label='UUID' value={currencyUuid} />
+              <DetailRow icon={Info} label='Назва' value={title} />
+              <DetailRow
+                icon={Description}
+                label='Міжнародний код валюти'
+                value={code}
+              />
+              <DetailRow
+                icon={Person}
+                label='Автор'
+                value={
                   <Link
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
@@ -77,20 +62,14 @@ function CurrencyViewPage({ handleModalClose }) {
                   >
                     {creatorFullName}
                   </Link>
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <CalendarToday color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Створено:</strong> {createdAt}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Update color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Редаговано:</strong> {updatedAt}
-                </Typography>
-              </Box>
+                }
+              />
+              <DetailRow
+                icon={CalendarToday}
+                label='Створено'
+                value={createdAt}
+              />
+              <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
             </Box>
           </Box>
         )

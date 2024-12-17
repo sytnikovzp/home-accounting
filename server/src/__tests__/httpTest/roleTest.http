@@ -31,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uU
 ### Create role
 POST http://localhost:5000/api/roles HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0NDE0MjE3LCJleHAiOjE3MzU3MTAyMTd9.sHlAHfcaoJFNK4PlF7GuCJXUEpeQ578D0cNxdAOyCTo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uUGV0cmVua29AR21haWwuY29tIiwiaWF0IjoxNzM0NDY5NDcxLCJleHAiOjE3MzU3NjU0NzF9.NcwIQA5o-SD7jXSwS0pwacJqEbWdb6D6rMSe6e7c6Rc
 
 {
   "title": "Нова роль користувача",

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { Box, Typography, Link, Avatar } from '@mui/material';
+import { Box, Link, Avatar } from '@mui/material';
 import {
   Info,
   CalendarToday,
@@ -13,16 +13,12 @@ import {
   Link as LinkIcon,
 } from '@mui/icons-material';
 // ==============================================================
-import {
-  stylesRowContainerStyles,
-  stylesViewTextStyles,
-} from '../../styles/theme';
-// ==============================================================
 import useFetchEntity from '../../hooks/useFetchEntity';
 import { BASE_URL } from '../../constants';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import DetailRow from '../../components/DetailRow/DetailRow';
 
 function ShopViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -47,17 +43,26 @@ function ShopViewPage({ handleModalClose }) {
     moderation,
     creation,
   } = shopToCRUD || {};
+
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
-  let statusIcon;
-  if (status === 'Затверджено') {
-    statusIcon = <CheckCircle color='success' />;
-  } else if (status === 'Очікує модерації') {
-    statusIcon = <HourglassEmpty color='warning' />;
-  } else if (status === 'Відхилено') {
-    statusIcon = <Cancel color='error' />;
-  }
+  const statusIcon = (() => {
+    switch (status) {
+      case 'Затверджено':
+        return <CheckCircle color='success' />;
+      case 'Очікує модерації':
+        return <HourglassEmpty color='warning' />;
+      case 'Відхилено':
+        return <Cancel color='error' />;
+      default:
+        return null;
+    }
+  })();
+
+  const logoSrc = logo
+    ? `${BASE_URL.replace('/api/', '')}/images/shops/${logo}`
+    : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
 
   return (
     <CustomModal
@@ -77,58 +82,42 @@ function ShopViewPage({ handleModalClose }) {
                   justifyContent: 'space-between',
                 }}
               >
-                <Box sx={stylesRowContainerStyles}>
-                  <Info color='primary' />
-                  <Typography variant='body1' sx={stylesViewTextStyles}>
-                    <strong>UUID:</strong> {shopUuid}
-                  </Typography>
-                </Box>
+                <DetailRow icon={Info} label='UUID' value={shopUuid} />
                 <Avatar
-                  src={
-                    logo
-                      ? `${BASE_URL.replace('/api/', '')}/images/shops/${logo}`
-                      : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
-                  }
+                  src={logoSrc}
                   alt='Логотип магазину'
                   variant='rounded'
                   sx={{ width: 50, height: 50 }}
                 />
               </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Info color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Назва:</strong> {title}
-                </Typography>
-              </Box>
+              <DetailRow icon={Info} label='Назва' value={title} />
               {description && (
-                <Box sx={stylesRowContainerStyles}>
-                  <Description color='primary' />
-                  <Typography variant='body1' sx={stylesViewTextStyles}>
-                    <strong>Опис:</strong> {description}
-                  </Typography>
-                </Box>
+                <DetailRow
+                  icon={Description}
+                  label='Опис'
+                  value={description}
+                />
               )}
               {url && (
-                <Box sx={stylesRowContainerStyles}>
-                  <LinkIcon color='primary' />
-                  <Typography variant='body1' sx={stylesViewTextStyles}>
-                    <strong>Посилання: </strong>
+                <DetailRow
+                  icon={LinkIcon}
+                  label='Посилання'
+                  value={
                     <Link href={url} target='_blank' rel='noopener noreferrer'>
                       {url}
                     </Link>
-                  </Typography>
-                </Box>
+                  }
+                />
               )}
-              <Box sx={stylesRowContainerStyles}>
-                {statusIcon}
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Статус:</strong> {status}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Person color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Автор: </strong>
+              <DetailRow
+                icon={() => statusIcon}
+                label='Статус'
+                value={status}
+              />
+              <DetailRow
+                icon={Person}
+                label='Автор'
+                value={
                   <Link
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
@@ -137,13 +126,13 @@ function ShopViewPage({ handleModalClose }) {
                   >
                     {creatorFullName}
                   </Link>
-                </Typography>
-              </Box>
+                }
+              />
               {moderatorFullName && (
-                <Box sx={stylesRowContainerStyles}>
-                  <Person color='primary' />
-                  <Typography variant='body1' sx={stylesViewTextStyles}>
-                    <strong>Модератор: </strong>
+                <DetailRow
+                  icon={Person}
+                  label='Модератор'
+                  value={
                     <Link
                       component={RouterLink}
                       to={`/users/${moderatorUuid}`}
@@ -152,21 +141,15 @@ function ShopViewPage({ handleModalClose }) {
                     >
                       {moderatorFullName}
                     </Link>
-                  </Typography>
-                </Box>
+                  }
+                />
               )}
-              <Box sx={stylesRowContainerStyles}>
-                <CalendarToday color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Створено:</strong> {createdAt}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Update color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Редаговано:</strong> {updatedAt}
-                </Typography>
-              </Box>
+              <DetailRow
+                icon={CalendarToday}
+                label='Створено'
+                value={createdAt}
+              />
+              <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
             </Box>
           </Box>
         )

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { Box, Typography, Link } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import {
   Info,
   CalendarToday,
@@ -13,15 +13,11 @@ import {
   Shop,
 } from '@mui/icons-material';
 // ==============================================================
-import {
-  stylesRowContainerStyles,
-  stylesViewTextStyles,
-} from '../../styles/theme';
-// ==============================================================
 import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import DetailRow from '../../components/DetailRow/DetailRow';
 
 function PurchaseViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -49,6 +45,7 @@ function PurchaseViewPage({ handleModalClose }) {
     creation,
   } = purchaseToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+
   const productTitle = product?.title || 'Невідомо';
   const shopTitle = shop?.title || 'Невідомо';
   const measureTitle = measure?.title || 'Невідомо';
@@ -66,16 +63,11 @@ function PurchaseViewPage({ handleModalClose }) {
         ) : (
           <Box sx={{ mt: 3, mb: 3 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <Box sx={stylesRowContainerStyles}>
-                <Info color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>UUID:</strong> {purchaseUuid}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <ShoppingCart color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Товар: </strong>
+              <DetailRow icon={Info} label='UUID' value={purchaseUuid} />
+              <DetailRow
+                icon={ShoppingCart}
+                label='Товар'
+                value={
                   <Link
                     component={RouterLink}
                     to={`/products/${product?.uuid}`}
@@ -84,30 +76,28 @@ function PurchaseViewPage({ handleModalClose }) {
                   >
                     {productTitle}
                   </Link>
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <ProductionQuantityLimits color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Кількість:</strong> {quantity} {measureTitle}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <AttachMoney color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Ціна за одиницю:</strong> {unitPrice} {currencyCode}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <AttachMoney color='secondary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Сума:</strong> {totalPrice} {currencyCode}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Store color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Магазин: </strong>
+                }
+              />
+              <DetailRow
+                icon={ProductionQuantityLimits}
+                label='Кількість'
+                value={`${quantity} ${measureTitle}`}
+              />
+              <DetailRow
+                icon={AttachMoney}
+                label='Ціна за одиницю'
+                value={`${unitPrice} ${currencyCode}`}
+              />
+              <DetailRow
+                icon={AttachMoney}
+                label='Сума'
+                value={`${totalPrice} ${currencyCode}`}
+                iconColor='secondary'
+              />
+              <DetailRow
+                icon={Store}
+                label='Магазин'
+                value={
                   <Link
                     component={RouterLink}
                     to={`/shops/${shop?.uuid}`}
@@ -116,12 +106,12 @@ function PurchaseViewPage({ handleModalClose }) {
                   >
                     {shopTitle}
                   </Link>
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Person color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Автор: </strong>
+                }
+              />
+              <DetailRow
+                icon={Person}
+                label='Автор'
+                value={
                   <Link
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
@@ -130,26 +120,15 @@ function PurchaseViewPage({ handleModalClose }) {
                   >
                     {creatorFullName}
                   </Link>
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Shop color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Дата покупки:</strong> {date}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <CalendarToday color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Створено:</strong> {createdAt}
-                </Typography>
-              </Box>
-              <Box sx={stylesRowContainerStyles}>
-                <Update color='primary' />
-                <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Редаговано:</strong> {updatedAt}
-                </Typography>
-              </Box>
+                }
+              />
+              <DetailRow icon={Shop} label='Дата покупки' value={date} />
+              <DetailRow
+                icon={CalendarToday}
+                label='Створено'
+                value={createdAt}
+              />
+              <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
             </Box>
           </Box>
         )

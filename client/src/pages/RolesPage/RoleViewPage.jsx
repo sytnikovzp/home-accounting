@@ -17,7 +17,6 @@ import {
   Description,
   Lock,
 } from '@mui/icons-material';
-
 // ==============================================================
 import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
@@ -58,9 +57,7 @@ function RoleViewPage({ handleModalClose }) {
           <Preloader />
         ) : (
           <Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', 
-              gap: '16px' 
-              }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <DetailRow icon={Info} label='UUID' value={roleUuid} />
               <DetailRow icon={Info} label='Назва' value={title} />
               <DetailRow icon={Description} label='Опис' value={description} />
@@ -104,7 +101,17 @@ function RoleViewPage({ handleModalClose }) {
                       </ListItem>
                     ))
                   ) : (
-                    <Typography sx={{ p: 2 }}>*Дозволи відсутні*</Typography>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        p: 2,
+                        color: 'grey.600',
+                      }}
+                    >
+                      <Lock color='disabled' sx={{ mr: 1 }} />
+                      <Typography>*Дозволи відсутні*</Typography>
+                    </Box>
                   )}
                 </List>
               </Box>

@@ -1,15 +1,11 @@
-import {  Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+// ==============================================================
+import { Box, Typography, Link } from '@mui/material';
 // ==============================================================
 import {
   stylesRowContainerStyles,
   stylesViewTextStyles,
 } from '../../styles/theme';
-// ==============================================================
-import {
-  Box,
-  Typography,
-  Link,
-} from '@mui/material';
 
 const DetailRow = ({ icon: Icon, label, value, linkTo }) => (
   <Box sx={stylesRowContainerStyles}>
@@ -32,4 +28,4 @@ const DetailRow = ({ icon: Icon, label, value, linkTo }) => (
   </Box>
 );
 
-export default DetailRow
+export default DetailRow;
