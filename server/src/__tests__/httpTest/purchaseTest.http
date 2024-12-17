@@ -25,21 +25,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hL
 
 {
   "product": "Навушники",
-  "quantity": 2,
-  "unitPrice": 500,
+  "quantity": 1,
+  "unitPrice": 100,
   "shop": "Comfy",
   "measure": "кг",
-  "currency": "Українська гривня",
+  # "currency": "Українська гривня",
+  "currency": "Долар США",
+  # "currency": "Євро",
   "date": "30 листопада 2024"
 }
 
 ### Get purchase by uuid
-GET http://localhost:5000/api/purchases/bf38ae60-3885-475f-bd5b-fc3e903a610c HTTP/1.1
+GET http://localhost:5000/api/purchases/f590615c-adb7-47fa-a564-8fe7fbb58395 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MzkxMTY4LCJleHAiOjE3MzU2ODcxNjh9.vnhJAphvxOteDaUOpUb-kGLhj389b6rUrQggLcKpMCU
 
 ### Update purchase
-PATCH http://localhost:5000/api/purchases/bf38ae60-3885-475f-bd5b-fc3e903a610c HTTP/1.1
+PATCH http://localhost:5000/api/purchases/f590615c-adb7-47fa-a564-8fe7fbb58395 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hLlNoZXZjaGVua29AR21haWwuY29tIiwiaWF0IjoxNzM0MzkxMTY4LCJleHAiOjE3MzU2ODcxNjh9.vnhJAphvxOteDaUOpUb-kGLhj389b6rUrQggLcKpMCU
 
@@ -49,7 +51,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikhhbm5hL
   "unitPrice": 850.00,
   "shop": "Comfy",
   "measure": "шт",
-  "currency": "Долар США",
+  # "currency": "Українська гривня",
+  # "currency": "Долар США",
+  "currency": "Євро",
   "date": "02 грудня 2024"
 }
 

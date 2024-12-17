@@ -1,4 +1,4 @@
-const { parse } = require('date-fns');
+const { parse, isValid } = require('date-fns');
 const { uk } = require('date-fns/locale');
 // ==============================================================
 const {
@@ -12,8 +12,10 @@ const {
   formatDate,
   isValidUUID,
   checkPermission,
+  getCurrencyByTitle,
   getRecordByTitle,
   formatDateTime,
+  convertToUAH,
 } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
@@ -119,21 +121,31 @@ class PurchaseService {
     const hasPermission = await checkPermission(currentUser, 'ADD_PURCHASES');
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на створення покупок');
-    const foundProduct = await getRecordByTitle(Product, product);
-    if (!foundProduct) throw notFound('Товар не знайдено');
-    const foundShop = await getRecordByTitle(Shop, shop);
-    if (!foundShop) throw notFound('Магазин не знайдено');
-    const foundMeasure = await getRecordByTitle(Measure, measure);
-    if (!foundMeasure) throw notFound('Одиницю вимірів не знайдено');
-    const foundCurrency = await getRecordByTitle(Currency, currency);
-    if (!foundCurrency) throw notFound('Валюту не знайдено');
+    const [foundProduct, foundShop, foundMeasure, foundCurrency, uahCurrency] =
+      await Promise.all([
+        getRecordByTitle(Product, product),
+        getRecordByTitle(Shop, shop),
+        getRecordByTitle(Measure, measure),
+        getCurrencyByTitle(Currency, currency),
+        getCurrencyByTitle(Currency, 'Українська гривня'),
+      ]);
+    if (
+      !foundProduct ||
+      !foundShop ||
+      !foundMeasure ||
+      !foundCurrency ||
+      !uahCurrency
+    )
+      throw notFound('Один або більше об`єктів не знайдено');
     const quantity = parseFloat(quantityValue) || 0;
-    const unitPrice = parseFloat(priceValue) || 0;
-    let date = dateValue;
-    if (dateValue) {
-      date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
-      if (isNaN(date)) throw badRequest('Невірний формат дати');
+    let unitPrice = parseFloat(priceValue) || 0;
+    if (foundCurrency.code !== 'UAH') {
+      unitPrice = await convertToUAH(unitPrice, foundCurrency.code);
     }
+    const date = dateValue
+      ? parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk })
+      : null;
+    if (dateValue && !isValid(date)) throw badRequest('Невірний формат дати');
     const newPurchase = await Purchase.create(
       {
         productUuid: foundProduct.uuid,
@@ -141,7 +153,7 @@ class PurchaseService {
         unitPrice,
         shopUuid: foundShop.uuid,
         measureUuid: foundMeasure.uuid,
-        currencyUuid: foundCurrency.uuid,
+        currencyUuid: uahCurrency.uuid,
         date,
         creatorUuid: currentUser.uuid,
         creatorFullName: currentUser.fullName,
@@ -151,25 +163,13 @@ class PurchaseService {
     if (!newPurchase) throw badRequest('Дані цієї покупки не створено');
     return {
       uuid: newPurchase.uuid,
-      product: {
-        uuid: foundProduct.uuid,
-        title: foundProduct.title,
-      },
+      product: { uuid: foundProduct.uuid, title: foundProduct.title },
       quantity: newPurchase.quantity,
       unitPrice: newPurchase.unitPrice,
       totalPrice: newPurchase.totalPrice,
-      shop: {
-        uuid: foundShop.uuid,
-        title: foundShop.title,
-      },
-      measure: {
-        uuid: foundMeasure.uuid,
-        title: foundMeasure.title,
-      },
-      currency: {
-        uuid: foundCurrency.uuid,
-        title: foundCurrency.title,
-      },
+      shop: { uuid: foundShop.uuid, title: foundShop.title },
+      measure: { uuid: foundMeasure.uuid, title: foundMeasure.title },
+      currency: { uuid: uahCurrency.uuid, title: uahCurrency.title },
       date: formatDate(newPurchase.date),
       creation: {
         creatorUuid: newPurchase.creatorUuid,
@@ -198,24 +198,31 @@ class PurchaseService {
     const isOwner = currentUser.uuid.toString() === foundPurchase.creatorUuid;
     if (!isOwner)
       throw forbidden('Ви не маєте дозволу на редагування цієї покупки');
-    const foundProduct = await getRecordByTitle(Product, product);
-    if (!foundProduct) throw notFound('Товар не знайдено');
-    const foundShop = await getRecordByTitle(Shop, shop);
-    if (!foundShop) throw notFound('Магазин не знайдено');
-    const foundMeasure = await getRecordByTitle(Measure, measure);
-    if (!foundMeasure) throw notFound('Одиницю вимірів не знайдено');
-    const foundCurrency = await getRecordByTitle(Currency, currency);
-    if (!foundCurrency) throw notFound('Валюту не знайдено');
-    const quantity = quantityValue
-      ? parseFloat(quantityValue) || 0
-      : foundPurchase.quantity;
-    const unitPrice = priceValue
-      ? parseFloat(priceValue) || 0
-      : foundPurchase.unitPrice;
+    const [foundProduct, foundShop, foundMeasure, foundCurrency, uahCurrency] =
+      await Promise.all([
+        getRecordByTitle(Product, product),
+        getRecordByTitle(Shop, shop),
+        getRecordByTitle(Measure, measure),
+        getCurrencyByTitle(Currency, currency),
+        getCurrencyByTitle(Currency, 'Українська гривня'),
+      ]);
+    if (
+      !foundProduct ||
+      !foundShop ||
+      !foundMeasure ||
+      !foundCurrency ||
+      !uahCurrency
+    )
+      throw notFound('Один або більше об`єктів не знайдено');
+    const quantity = parseFloat(quantityValue) || 0;
+    let unitPrice = parseFloat(priceValue) || 0;
+    if (foundCurrency.code !== 'UAH') {
+      unitPrice = await convertToUAH(unitPrice, foundCurrency.code);
+    }
     let date = foundPurchase.date;
     if (dateValue) {
       date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
-      if (isNaN(date)) throw badRequest('Невірний формат дати');
+      if (!isValid(date)) throw badRequest('Невірний формат дати');
     }
     const [affectedRows, [updatedPurchase]] = await Purchase.update(
       {
@@ -224,7 +231,7 @@ class PurchaseService {
         unitPrice,
         shopUuid: foundShop.uuid,
         measureUuid: foundMeasure.uuid,
-        currencyUuid: foundCurrency.uuid,
+        currencyUuid: uahCurrency.uuid,
         date,
       },
       { where: { uuid }, returning: true, transaction }
@@ -232,25 +239,13 @@ class PurchaseService {
     if (!affectedRows) throw badRequest('Дані цієї покупки не оновлено');
     return {
       uuid: updatedPurchase.uuid,
-      product: {
-        uuid: foundProduct.uuid,
-        title: foundProduct.title,
-      },
+      product: { uuid: foundProduct.uuid, title: foundProduct.title },
       quantity: updatedPurchase.quantity,
       unitPrice: updatedPurchase.unitPrice,
       totalPrice: updatedPurchase.totalPrice,
-      shop: {
-        uuid: foundShop.uuid,
-        title: foundShop.title,
-      },
-      measure: {
-        uuid: foundMeasure.uuid,
-        title: foundMeasure.title,
-      },
-      currency: {
-        uuid: foundCurrency.uuid,
-        title: foundCurrency.title,
-      },
+      shop: { uuid: foundShop.uuid, title: foundShop.title },
+      measure: { uuid: foundMeasure.uuid, title: foundMeasure.title },
+      currency: { uuid: uahCurrency.uuid, title: uahCurrency.title },
       date: formatDate(updatedPurchase.date),
       creation: {
         creatorUuid: updatedPurchase.creatorUuid,

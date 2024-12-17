@@ -1,3 +1,4 @@
+const axios = require('axios');
 const bcrypt = require('bcrypt');
 const { uk } = require('date-fns/locale');
 const { format } = require('date-fns');
@@ -10,7 +11,7 @@ const {
 // ==============================================================
 const { User, Role, Permission } = require('../db/dbMongo/models');
 // ==============================================================
-const { notFound } = require('../errors/generalErrors');
+const { notFound, badRequest } = require('../errors/generalErrors');
 
 const hashPassword = async function (password) {
   return await bcrypt.hash(password, SALT_ROUNDS);
@@ -85,6 +86,17 @@ const getRecordByTitle = async function (Model, title) {
   return record;
 };
 
+const getCurrencyByTitle = async function (Model, title) {
+  if (!title) return null;
+  const record = await Model.findOne({
+    where: { title },
+    attributes: ['uuid', 'title', 'code'],
+    raw: true,
+  });
+  if (!record) throw notFound(`${Model.name} not found`);
+  return record;
+};
+
 const getUserDetailsByEmail = async function (email) {
   const user = await User.findOne({ email });
   if (!user) return null;
@@ -104,6 +116,24 @@ const mapStatus = function (status) {
   return statusMapping[status] || status;
 };
 
+const getNBURates = async () => {
+  const { data } = await axios.get(
+    'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json'
+  );
+  return data;
+};
+
+const convertToUAH = async (amount, currencyCode) => {
+  const rates = await getNBURates();
+  const currency = rates.find((rate) => rate.cc === currencyCode);
+  if (!currency) {
+    throw badRequest(`Курс для валюти ${currencyCode} не знайдено`);
+  }
+  const conversionRate = currency.rate;
+  const amountInUAH = (amount * conversionRate).toFixed(2);
+  return amountInUAH;
+};
+
 module.exports = {
   hashPassword,
   setRefreshTokenCookie,
@@ -114,6 +144,8 @@ module.exports = {
   isValidUUID,
   checkPermission,
   getRecordByTitle,
+  getCurrencyByTitle,
   getUserDetailsByEmail,
   mapStatus,
+  convertToUAH,
 };
