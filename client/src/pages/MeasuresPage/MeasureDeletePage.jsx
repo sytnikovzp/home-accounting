@@ -53,7 +53,7 @@ function MeasureDeletePage({
             variant='body1'
             sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
           >
-            Ви впевнені, що хочете видалити одиницю вимірювання "
+            Ви впевнені, що хочете видалити одиницю вимірів "
             {measureToCRUD?.title}"?
           </Typography>
         )

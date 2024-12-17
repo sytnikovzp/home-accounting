@@ -4,21 +4,22 @@ import BaseForm from '../BaseForm/BaseForm';
 
 function CurrencyForm({ currency = null, onSubmit }) {
   const initialValues = currency
-    ? { title: currency.title, description: currency.description }
-    : { title: '', description: '' };
+    ? { title: currency.title, code: currency.code }
+    : { title: '', code: '' };
 
   const fields = [
     {
       name: 'title',
       label: 'Назва валюти',
-      placeholder: 'Наприклад "AUD"',
+      placeholder: 'Наприклад "Австралійський долар"',
       required: true,
       autoFocus: true,
     },
     {
-      name: 'description',
-      label: 'Опис валюти',
-      placeholder: 'Наприклад "Австралійський долар"',
+      name: 'code',
+      label: 'Міжнародний код валюти',
+      placeholder: 'Наприклад "AUD"',
+      required: true,
     },
   ];
 

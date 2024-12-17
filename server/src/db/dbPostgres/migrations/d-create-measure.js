@@ -19,6 +19,8 @@ module.exports = {
       },
       description: {
         type: Sequelize.TEXT,
+        allowNull: false,
+        unique: true,
       },
       creator_uuid: {
         type: Sequelize.UUID,

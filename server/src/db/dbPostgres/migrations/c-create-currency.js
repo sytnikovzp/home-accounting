@@ -13,12 +13,14 @@ module.exports = {
         unique: true,
       },
       title: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
         unique: true,
       },
-      description: {
-        type: Sequelize.TEXT,
+      code: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
       creator_uuid: {
         type: Sequelize.UUID,

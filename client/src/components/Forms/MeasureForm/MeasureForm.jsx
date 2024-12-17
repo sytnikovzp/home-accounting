@@ -10,15 +10,16 @@ function MeasureForm({ measure = null, onSubmit }) {
   const fields = [
     {
       name: 'title',
-      label: 'Назва одиниці',
+      label: 'Назва одиниці вимірів',
       placeholder: 'Наприклад "кг"',
       required: true,
       autoFocus: true,
     },
     {
       name: 'description',
-      label: 'Опис валюти',
+      label: 'Опис',
       placeholder: 'Наприклад "кілограм"',
+      required: true,
     },
   ];
 

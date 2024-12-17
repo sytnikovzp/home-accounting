@@ -32,12 +32,7 @@ function CurrencyViewPage({ handleModalClose }) {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const {
-    uuid: currencyUuid,
-    title,
-    description,
-    creation,
-  } = currencyToCRUD || {};
+  const { uuid: currencyUuid, title, code, creation } = currencyToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   return (
@@ -67,7 +62,7 @@ function CurrencyViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <Description color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Опис:</strong> {description || '*Дані відсутні*'}
+                  <strong>Міжнародний код валюти:</strong> {code}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>

@@ -52,7 +52,7 @@ function PurchaseViewPage({ handleModalClose }) {
   const productTitle = product?.title || 'Невідомо';
   const shopTitle = shop?.title || 'Невідомо';
   const measureTitle = measure?.title || 'Невідомо';
-  const currencyTitle = currency?.title || 'Невідомо';
+  const currencyCode = currency?.code || 'Невідомо';
 
   return (
     <CustomModal
@@ -95,13 +95,13 @@ function PurchaseViewPage({ handleModalClose }) {
               <Box sx={stylesRowContainerStyles}>
                 <AttachMoney color='primary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Ціна за одиницю:</strong> {price} {currencyTitle}
+                  <strong>Ціна за одиницю:</strong> {price} {currencyCode}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>
                 <AttachMoney color='secondary' />
                 <Typography variant='body1' sx={stylesViewTextStyles}>
-                  <strong>Сума:</strong> {summ} {currencyTitle}
+                  <strong>Сума:</strong> {summ} {currencyCode}
                 </Typography>
               </Box>
               <Box sx={stylesRowContainerStyles}>

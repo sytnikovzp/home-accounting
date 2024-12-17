@@ -14,12 +14,12 @@ function PurchaseForm({
 }) {
   const initialValues = purchase
     ? {
-        product: purchase.product,
+        product: purchase.product.title,
         amount: purchase.amount,
         price: purchase.price,
-        shop: purchase.shop,
-        measure: purchase.measure,
-        currency: purchase.currency,
+        shop: purchase.shop.title,
+        measure: purchase.measure.title,
+        currency: purchase.currency.title,
         date: purchase.date,
       }
     : {
@@ -38,10 +38,27 @@ function PurchaseForm({
       .reduce((acc, product) => {
         const firstLetter = product.title[0].toUpperCase();
         if (!acc[firstLetter]) acc[firstLetter] = [];
-        acc[firstLetter].push({ label: product.title, value: product.title });
+        acc[firstLetter].push({
+          label: product.title,
+          value: product.title,
+        });
         return acc;
       }, {});
   }, [products]);
+
+  const groupedCurrencies = useMemo(() => {
+    return currencies
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .reduce((acc, currency) => {
+        const firstLetter = currency.title[0].toUpperCase();
+        if (!acc[firstLetter]) acc[firstLetter] = [];
+        acc[firstLetter].push({
+          label: currency.title,
+          value: currency.title,
+        });
+        return acc;
+      }, {});
+  }, [currencies]);
 
   const fields = [
     {
@@ -81,7 +98,7 @@ function PurchaseForm({
     },
     {
       name: 'measure',
-      label: 'Одиниця вимірювань',
+      label: 'Одиниця вимірів',
       type: 'select',
       options: [
         { value: '', label: 'Оберіть одиницю:' },
@@ -96,14 +113,8 @@ function PurchaseForm({
     {
       name: 'currency',
       label: 'Валюта',
-      type: 'select',
-      options: [
-        { value: '', label: 'Оберіть валюту:' },
-        ...currencies.map((cat) => ({
-          value: cat.title,
-          label: cat.description,
-        })),
-      ],
+      type: 'autocomplete',
+      options: groupedCurrencies,
       placeholder: 'Наприклад "UAH"',
       required: true,
     },

@@ -21,11 +21,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
 ### Create measure
 POST http://localhost:5000/api/measures HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0Mzg5NTE5LCJleHAiOjE3MzU2ODU1MTl9.LwLruIB5h9ztLrt0vjDkBT8u-K8Epby6IGwgrZUjs9U
 
 {
-  "title": "Нова одиниця вимірювання",
-  "description": ""
+  "title": "Нова одиниця вимірів",
+  "description": "Тестовий опис"
 }
 
 ### Get measure by uuid
@@ -34,12 +34,12 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
 ### Update measure
-PATCH http://localhost:5000/api/measures/4e27dbfd-dea6-45d2-a0f4-b4eba3a43d39 HTTP/1.1
+PATCH http://localhost:5000/api/measures/8e1a493e-4900-41bb-8195-294c34517805 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0Mzg5NTE5LCJleHAiOjE3MzU2ODU1MTl9.LwLruIB5h9ztLrt0vjDkBT8u-K8Epby6IGwgrZUjs9U
 
 {
-  "title": "Оновлена назва одиниці вимірювання",
+  "title": "Оновлена назва одиниці вимірів",
   "description": "Оновлений опис"
 }
 

@@ -32,7 +32,7 @@ function CurrencyEditPage({
       await restController.editCurrency(
         currencyToCRUD.uuid,
         values.title,
-        values.description
+        values.code
       );
       handleModalClose();
       fetchCurrencies();

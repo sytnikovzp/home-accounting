@@ -108,7 +108,7 @@ function MeasuresPage() {
   );
 
   if (isLoading)
-    return <Preloader message='Завантаження списку "Одиниць вимірювань"...' />;
+    return <Preloader message='Завантаження списку "Одиниць вимірів"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (
@@ -119,7 +119,7 @@ function MeasuresPage() {
         alignItems='center'
         mb={2}
       >
-        <Typography variant='h6'>Одиниці вимірювань</Typography>
+        <Typography variant='h6'>Одиниці вимірів</Typography>
         <Button
           variant='contained'
           color='success'

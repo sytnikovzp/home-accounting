@@ -48,11 +48,11 @@ class CurrencyController {
   async createCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title, description } = req.body;
+      const { title, code } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const newCurrency = await createCurrency(
         title,
-        description,
+        code,
         currentUser,
         transaction
       );
@@ -74,12 +74,12 @@ class CurrencyController {
     const transaction = await sequelize.transaction();
     try {
       const { currencyUuid } = req.params;
-      const { title, description } = req.body;
+      const { title, code } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedCurrency = await updateCurrency(
         currencyUuid,
         title,
-        description,
+        code,
         currentUser,
         transaction
       );

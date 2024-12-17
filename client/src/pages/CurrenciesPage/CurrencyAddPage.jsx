@@ -12,7 +12,7 @@ function CurrencyAddPage({
   const handleSubmitCurrency = async (values) => {
     setCrudError(null);
     try {
-      await restController.addCurrency(values.title, values.description);
+      await restController.addCurrency(values.title, values.code);
       handleModalClose();
       fetchCurrencies();
     } catch (error) {

@@ -12,19 +12,23 @@ const parseDateString = (value, originalValue) => {
   return originalValue;
 };
 
-const TITLE_NAME_REQUIRED_SCHEME = yup
+const STRING_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
   .trim('Введені дані не можуть містити пробіли на початку або в кінці')
   .max(100, 'Введені дані не можуть перевищувати 100 символів')
   .required('Це поле є обовʼязкове');
+
+const STRING_NULLABLE_SCHEME = yup
+  .string('Це поле має бути рядком')
+  .trim('Введені дані не можуть містити пробіли на початку або в кінці')
+  .max(100, 'Введені дані не можуть перевищувати 100 символів')
+  .nullable();
 
 const PASSWORD_SCHEME = yup
   .string('Це поле має бути рядком')
   .trim('Введені дані не можуть містити пробіли на початку або в кінці')
   .min(8, 'Введені дані мають бути не менше 8 символів')
   .max(20, 'Введені дані не можуть перевищувати 20 символів');
-
-const STRING_NULLABLE_SCHEME = yup.string('Це поле має бути рядком').nullable();
 
 const NUMBER_REQUIRED_SCHEME = yup
   .number('Це поле має бути числом')
@@ -63,7 +67,7 @@ const PAGINATION_SCHEME = yup.object().shape({
 // ==============================================================
 
 const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
-  fullName: TITLE_NAME_REQUIRED_SCHEME,
+  fullName: STRING_REQUIRED_SCHEME,
   email: EMAIL_VALIDATION_SCHEME.required('E-mail є обовʼязковим полем'),
   password: PASSWORD_SCHEME.required('Пароль є обовʼязковим полем'),
 });
@@ -81,7 +85,7 @@ const LOGIN_VALIDATION_SCHEME = yup.object().shape({
 });
 
 const ROLE_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_REQUIRED_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
   permissions: ARRAY_OF_STRING_NULLABLE_SCHEME,
 });
@@ -91,42 +95,42 @@ const MODERATION_VALIDATION_SCHEME = yup.object().shape({
 });
 
 const PURCHASE_VALIDATION_SCHEME = yup.object().shape({
-  product: TITLE_NAME_REQUIRED_SCHEME,
+  product: STRING_REQUIRED_SCHEME,
   amount: NUMBER_REQUIRED_SCHEME,
   price: NUMBER_REQUIRED_SCHEME,
-  shop: TITLE_NAME_REQUIRED_SCHEME,
-  measure: TITLE_NAME_REQUIRED_SCHEME,
-  currency: TITLE_NAME_REQUIRED_SCHEME,
+  shop: STRING_REQUIRED_SCHEME,
+  measure: STRING_REQUIRED_SCHEME,
+  currency: STRING_REQUIRED_SCHEME,
   date: DATE_SCHEME,
 });
 
 const PRODUCT_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_REQUIRED_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
   category: STRING_NULLABLE_SCHEME,
 });
 
 const CATEGORY_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_REQUIRED_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
 });
 
 const SHOP_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_REQUIRED_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
   url: URL_RESOURCE_NULLABLE_SCHEME,
   image: STRING_NULLABLE_SCHEME,
 });
 
 const MEASURE_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_REQUIRED_SCHEME,
-  description: STRING_NULLABLE_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
+  description: STRING_REQUIRED_SCHEME,
 });
 
 const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
-  title: TITLE_NAME_REQUIRED_SCHEME.matches(
+  title: STRING_REQUIRED_SCHEME,
+  code: STRING_REQUIRED_SCHEME.matches(
     /^[A-Z]{3}$/,
     'Поле повинно містити рівно 3 великі латинські літери без цифр'
   ),
-  description: STRING_NULLABLE_SCHEME,
 });
 
 module.exports = {

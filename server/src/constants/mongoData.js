@@ -45,7 +45,7 @@ module.exports.permissions = [
   },
   {
     title: 'MANAGE_MEASURES',
-    description: 'Повний CRUD для одиниці вимірювань без модерації',
+    description: 'Повний CRUD для одиниць вимірів без модерації',
   },
   {
     title: 'ADD_PURCHASES',

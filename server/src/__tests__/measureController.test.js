@@ -90,12 +90,12 @@ describe('MeasureController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Нова одиниця вимірювання',
+          title: 'Нова одиниця вимірів',
           description: '',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
-      expect(response.body.title).toBe('Нова одиниця вимірювання');
+      expect(response.body.title).toBe('Нова одиниця вимірів');
       expect(response.body.description).toBe('');
       measureUuid = response.body.uuid;
     });
@@ -105,11 +105,11 @@ describe('MeasureController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Нова одиниця вимірювання',
+          title: 'Нова одиниця вимірів',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe(
-        'Ця одиниця вимірювання вже існує'
+        'Ця одиниця вимірів вже існує'
       );
     });
 
@@ -118,12 +118,12 @@ describe('MeasureController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Нова одиниця вимірювання',
+          title: 'Нова одиниця вимірів',
           description: '',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на створення одиниць вимірювання'
+        'Ви не маєте дозволу на створення одиниць вимірів'
       );
     });
 
@@ -146,7 +146,7 @@ describe('MeasureController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', measureUuid);
-      expect(response.body.title).toBe('Нова одиниця вимірювання');
+      expect(response.body.title).toBe('Нова одиниця вимірів');
       expect(response.body.description).toBe('');
       expect(response.body.createdAt).toBeDefined();
       expect(response.body.updatedAt).toBeDefined();
@@ -158,7 +158,7 @@ describe('MeasureController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe(
-        'Одиницю вимірювання не знайдено'
+        'Одиницю вимірів не знайдено'
       );
     });
 
@@ -174,14 +174,14 @@ describe('MeasureController', () => {
         .patch(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Оновлена назва одиниці вимірювання',
-          description: 'Оновлений опис одиниці вимірювання',
+          title: 'Оновлена назва одиниці вимірів',
+          description: 'Оновлений опис одиниці вимірів',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', measureUuid);
-      expect(response.body.title).toBe('Оновлена назва одиниці вимірювання');
+      expect(response.body.title).toBe('Оновлена назва одиниці вимірів');
       expect(response.body.description).toBe(
-        'Оновлений опис одиниці вимірювання'
+        'Оновлений опис одиниці вимірів'
       );
     });
 
@@ -194,7 +194,7 @@ describe('MeasureController', () => {
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe(
-        'Ця одиниця вимірювання вже існує'
+        'Ця одиниця вимірів вже існує'
       );
     });
 
@@ -203,12 +203,12 @@ describe('MeasureController', () => {
         .patch(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Оновлена назва одиниці вимірювання',
-          description: 'Оновлений опис одиниці вимірювання',
+          title: 'Оновлена назва одиниці вимірів',
+          description: 'Оновлений опис одиниці вимірів',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цієї одиниці вимірювання'
+        'Ви не маєте дозволу на редагування цієї одиниці вимірів'
       );
     });
 
@@ -217,11 +217,11 @@ describe('MeasureController', () => {
         .patch('/api/measures/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Оновлена назва одиниці вимірювання',
+          title: 'Оновлена назва одиниці вимірів',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe(
-        'Одиницю вимірювання не знайдено'
+        'Одиницю вимірів не знайдено'
       );
     });
   });
@@ -233,7 +233,7 @@ describe('MeasureController', () => {
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цієї одиниці вимірювання'
+        'Ви не маєте дозволу на видалення цієї одиниці вимірів'
       );
     });
 
@@ -250,7 +250,7 @@ describe('MeasureController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe(
-        'Одиницю вимірювання не знайдено'
+        'Одиницю вимірів не знайдено'
       );
     });
   });

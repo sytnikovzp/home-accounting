@@ -4,7 +4,7 @@ import BaseForm from '../BaseForm/BaseForm';
 
 function ProductForm({ product = null, onSubmit, categories }) {
   const initialValues = product
-    ? { title: product.title, category: product.category }
+    ? { title: product.title, category: product.category.title }
     : { title: '', category: '' };
 
   const fields = [

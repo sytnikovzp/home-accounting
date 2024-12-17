@@ -134,10 +134,9 @@ const restController = {
   },
   fetchCurrencyByUuid: (currencyUuid) =>
     currencyService.getCurrencyByUuid(currencyUuid),
-  addCurrency: (title, description) =>
-    currencyService.createCurrency(title, description),
-  editCurrency: (currencyUuid, title, description) =>
-    currencyService.updateCurrency(currencyUuid, title, description),
+  addCurrency: (title, code) => currencyService.createCurrency(title, code),
+  editCurrency: (currencyUuid, title, code) =>
+    currencyService.updateCurrency(currencyUuid, title, code),
   removeCurrency: (currencyUuid) =>
     currencyService.deleteCurrency(currencyUuid),
 

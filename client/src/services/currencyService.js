@@ -37,18 +37,18 @@ const getCurrencyByUuid = async (currencyUuid) => {
   return data;
 };
 
-const createCurrency = async (title, description) => {
+const createCurrency = async (title, code) => {
   const { data } = await api.post('/currencies', {
     title,
-    description,
+    code,
   });
   return data;
 };
 
-const updateCurrency = async (currencyUuid, title, description) => {
+const updateCurrency = async (currencyUuid, title, code) => {
   const { data } = await api.patch(`/currencies/${currencyUuid}`, {
     title,
-    description,
+    code,
   });
   return data;
 };

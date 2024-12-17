@@ -9,7 +9,7 @@ const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const formatCurrencyData = (currency) => ({
   uuid: currency.uuid,
   title: currency.title,
-  description: currency.description || '',
+  code: currency.code,
   creation: {
     creatorUuid: currency.creatorUuid || '',
     creatorFullName: currency.creatorFullName || '',
@@ -21,7 +21,7 @@ const formatCurrencyData = (currency) => ({
 class CurrencyService {
   async getAllCurrencies(limit, offset, sort, order) {
     const foundCurrencies = await Currency.findAll({
-      attributes: ['uuid', 'title'],
+      attributes: ['uuid', 'title', 'code'],
       order: [[sort, order]],
       raw: true,
       limit,
@@ -30,9 +30,10 @@ class CurrencyService {
     if (!foundCurrencies.length) throw notFound('Валюти не знайдено');
     const total = await Currency.count();
     return {
-      allCurrencies: foundCurrencies.map(({ uuid, title }) => ({
+      allCurrencies: foundCurrencies.map(({ uuid, title, code }) => ({
         uuid,
         title,
+        code,
       })),
       total,
     };
@@ -47,7 +48,7 @@ class CurrencyService {
     return formatCurrencyData(foundCurrency);
   }
 
-  async createCurrency(title, description, currentUser, transaction) {
+  async createCurrency(title, code, currentUser, transaction) {
     const canManageCurrencies = await checkPermission(
       currentUser,
       'MANAGE_CURRENCIES'
@@ -59,7 +60,7 @@ class CurrencyService {
     const newCurrency = await Currency.create(
       {
         title,
-        description: description || null,
+        code,
         creatorUuid: currentUser.uuid,
         creatorFullName: currentUser.fullName,
       },
@@ -69,7 +70,7 @@ class CurrencyService {
     return formatCurrencyData(newCurrency);
   }
 
-  async updateCurrency(uuid, title, description, currentUser, transaction) {
+  async updateCurrency(uuid, title, code, currentUser, transaction) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundCurrency = await Currency.findOne({ where: { uuid } });
     if (!foundCurrency) throw notFound('Валюту не знайдено');
@@ -84,7 +85,7 @@ class CurrencyService {
       if (duplicateCurrency) throw badRequest('Ця валюта вже існує');
     }
     const [affectedRows, [updatedCurrency]] = await Currency.update(
-      { title, description: description || null },
+      { title, code },
       { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) throw badRequest('Дані цієї валюти не оновлено');

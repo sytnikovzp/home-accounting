@@ -37,6 +37,7 @@ const formatPurchaseData = (purchase) => ({
   currency: {
     uuid: purchase.Currency?.uuid || '',
     title: purchase.Currency?.title || '',
+    code: purchase.Currency?.code || '',
   },
   date: formatDate(purchase.date),
   creation: {
@@ -97,7 +98,7 @@ class PurchaseService {
         { model: Product, attributes: ['uuid', 'title'] },
         { model: Shop, attributes: ['uuid', 'title'] },
         { model: Measure, attributes: ['uuid', 'title'] },
-        { model: Currency, attributes: ['uuid', 'title'] },
+        { model: Currency, attributes: ['uuid', 'title', 'code'] },
       ],
     });
     if (!foundPurchase) throw notFound('Покупку не знайдено');
@@ -123,7 +124,7 @@ class PurchaseService {
     const foundShop = await getRecordByTitle(Shop, shop);
     if (!foundShop) throw notFound('Магазин не знайдено');
     const foundMeasure = await getRecordByTitle(Measure, measure);
-    if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
+    if (!foundMeasure) throw notFound('Одиницю вимірів не знайдено');
     const foundCurrency = await getRecordByTitle(Currency, currency);
     if (!foundCurrency) throw notFound('Валюту не знайдено');
     const amount = parseFloat(amountValue) || 0;
@@ -204,7 +205,7 @@ class PurchaseService {
     const foundShop = await getRecordByTitle(Shop, shop);
     if (!foundShop) throw notFound('Магазин не знайдено');
     const foundMeasure = await getRecordByTitle(Measure, measure);
-    if (!foundMeasure) throw notFound('Одиницю вимірювання не знайдено');
+    if (!foundMeasure) throw notFound('Одиницю вимірів не знайдено');
     const foundCurrency = await getRecordByTitle(Currency, currency);
     if (!foundCurrency) throw notFound('Валюту не знайдено');
     const amount = amountValue
