@@ -1,3 +1,4 @@
+const { isBefore, parseISO } = require('date-fns');
 const { Model, Sequelize } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -76,7 +77,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isDate: true,
-          isBefore: new Date().toISOString().split('T')[0],
+          isBeforeCurrentDate(value) {
+            const currentDate = new Date();
+            if (!isBefore(parseISO(value), currentDate)) {
+              throw new Error('Дата не може бути у майбутньому');
+            }
+          },
         },
       },
       creatorUuid: {
