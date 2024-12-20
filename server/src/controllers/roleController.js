@@ -11,16 +11,9 @@ const {
 class RoleController {
   async getAllPermissions(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { sort = 'uuid', order = 'asc' } = req.query;
-      const { allPermissions, total } = await getAllPermissions(
-        limit,
-        offset,
-        sort,
-        order
-      );
+      const { allPermissions } = await getAllPermissions();
       if (allPermissions.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allPermissions);
+        res.status(200).json(allPermissions);
       } else {
         res.status(401);
       }

@@ -6,6 +6,7 @@ import RoleForm from '../../components/Forms/RoleForm/RoleForm';
 function RoleAddPage({
   handleModalClose,
   fetchRoles,
+  permissionsList,
   crudError,
   setCrudError,
 }) {
@@ -33,7 +34,12 @@ function RoleAddPage({
       onClose={handleModalClose}
       showCloseButton
       title='Додавання ролі...'
-      content={<RoleForm onSubmit={handleSubmitRole} />}
+      content={
+        <RoleForm
+          onSubmit={handleSubmitRole}
+          permissionsList={permissionsList}
+        />
+      }
       error={crudError}
     />
   );

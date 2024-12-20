@@ -7,24 +7,19 @@ const {
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 
 class RoleService {
-  async getAllPermissions(limit, offset, sort, order) {
-    const sortOrder = order === 'asc' ? 1 : -1;
-    const sortOptions = { [sort]: sortOrder };
-    const foundPermissions = await Permission.find()
-      .sort(sortOptions)
-      .limit(limit)
-      .skip(offset)
-      .lean();
+  async getAllPermissions() {
+    const foundPermissions = await Permission.find().lean();
     if (foundPermissions.length === 0)
       throw notFound('Права доступу не знайдено');
-    const allPermissions = foundPermissions.map(({ uuid, title }) => ({
-      uuid,
-      title,
-    }));
-    const total = await Permission.countDocuments();
+    const allPermissions = foundPermissions.map(
+      ({ uuid, title, description }) => ({
+        uuid,
+        title,
+        description,
+      })
+    );
     return {
       allPermissions,
-      total,
     };
   }
 

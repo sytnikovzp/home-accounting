@@ -12,6 +12,7 @@ function BaseForm({
   customActions,
   generalError,
   layout,
+  customContent,
 }) {
   const renderForm = ({ errors, touched, isValid, isSubmitting }) => (
     <Form>
@@ -99,6 +100,7 @@ function BaseForm({
           )
         )}
       </Box>
+      {customContent}
       {generalError && (
         <Typography color='error' sx={{ mt: 1 }}>
           {generalError}

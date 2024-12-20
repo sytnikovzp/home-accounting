@@ -11,6 +11,7 @@ import RoleForm from '../../components/Forms/RoleForm/RoleForm';
 function RoleEditPage({
   handleModalClose,
   fetchRoles,
+  permissionsList,
   crudError,
   setCrudError,
 }) {
@@ -55,7 +56,11 @@ function RoleEditPage({
         isLoading ? (
           <Preloader />
         ) : (
-          <RoleForm role={roleToCRUD} onSubmit={handleSubmitRole} />
+          <RoleForm
+            role={roleToCRUD}
+            onSubmit={handleSubmitRole}
+            permissionsList={permissionsList}
+          />
         )
       }
       error={errorMessage || crudError}

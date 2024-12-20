@@ -44,22 +44,9 @@ const restController = {
   removeUser: (userUuid) => userService.deleteUser(userUuid),
 
   // Role and Permission management
-  fetchAllPermissions: async (
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc'
-  ) => {
-    const { data, totalCount } = await roleService.getAllPermissions(
-      page,
-      limit,
-      sort,
-      order
-    );
-    return {
-      data,
-      totalCount,
-    };
+  fetchAllPermissions: async () => {
+    const { data } = await roleService.getAllPermissions();
+    return { data };
   },
   fetchAllRoles: async (page = 1, limit = 6, sort = 'uuid', order = 'asc') => {
     const { data, totalCount } = await roleService.getAllRoles(
@@ -74,8 +61,10 @@ const restController = {
     };
   },
   fetchRoleByUuid: (roleUuid) => roleService.getRoleByUuid(roleUuid),
-  createRole: (roleData) => roleService.createRole(roleData),
-  editRole: (roleUuid, roleData) => roleService.updateRole(roleUuid, roleData),
+  createRole: (title, description, permissions) =>
+    roleService.createRole(title, description, permissions),
+  editRole: (roleUuid, title, description, permissions) =>
+    roleService.updateRole(roleUuid, title, description, permissions),
   removeRole: (roleUuid) => roleService.deleteRole(roleUuid),
 
   // Category management

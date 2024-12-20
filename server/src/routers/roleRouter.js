@@ -23,7 +23,7 @@ roleRouter
 
 roleRouter
   .route('/permissions')
-  .get(authHandler, paginateElements, getAllPermissions);
+  .get(authHandler, getAllPermissions);
 
 roleRouter
   .route('/:roleUuid')

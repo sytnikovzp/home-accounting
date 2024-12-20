@@ -84,7 +84,11 @@ function RoleViewPage({ handleModalClose }) {
                 <List dense>
                   {permissions.length > 0 ? (
                     permissions.map((permission) => (
-                      <ListItem key={permission.uuid} disableGutters>
+                      <ListItem
+                        key={permission.uuid}
+                        sx={{ ml: 3 }}
+                        disableGutters
+                      >
                         <ListItemIcon>
                           <Lock color='primary' />
                         </ListItemIcon>

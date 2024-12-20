@@ -24,6 +24,7 @@ function RolesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [permissionsList, setPermissionsList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [crudError, setCrudError] = useState(null);
@@ -59,9 +60,25 @@ function RolesPage() {
     }
   }, [currentPage, pageSize, sortModel]);
 
+  const fetchPermissions = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await restController.fetchAllPermissions();
+      setPermissionsList(data);
+    } catch (error) {
+      setErrorMessage(
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchRoles();
-  }, [fetchRoles]);
+    fetchPermissions();
+  }, [fetchRoles, fetchPermissions]);
 
   const renderRoutes = () => (
     <Routes>
@@ -71,6 +88,7 @@ function RolesPage() {
           <RoleAddPage
             handleModalClose={handleModalClose}
             fetchRoles={fetchRoles}
+            permissionsList={permissionsList}
             crudError={crudError}
             setCrudError={setCrudError}
           />
@@ -82,6 +100,7 @@ function RolesPage() {
           <RoleEditPage
             handleModalClose={handleModalClose}
             fetchRoles={fetchRoles}
+            permissionsList={permissionsList}
             crudError={crudError}
             setCrudError={setCrudError}
           />
