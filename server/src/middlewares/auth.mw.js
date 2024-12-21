@@ -1,7 +1,10 @@
+const { User } = require('../db/dbMongo/models');
+// ==============================================================
+const tokenService = require('../services/tokenService');
+// ==============================================================
 const { unAuthorizedError } = require('../errors/authErrors');
-const { validateAccessToken } = require('../services/tokenService');
 
-module.exports.authHandler = (req, res, next) => {
+module.exports.authHandler = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -11,14 +14,21 @@ module.exports.authHandler = (req, res, next) => {
     if (!accessToken) {
       return next(unAuthorizedError());
     }
-    const userData = validateAccessToken(accessToken);
+    const userData = await tokenService.validateAccessToken(accessToken);
     if (!userData) {
       return next(unAuthorizedError());
+    }
+    const foundUser = await User.findOne({ uuid: userData.uuid });
+    if (!foundUser) {
+      return next(unAuthorizedError('Користувача не знайдено'));
+    }
+    if (foundUser.tokenVersion !== userData.tokenVersion) {
+      return next(unAuthorizedError('Токен більше не дійсний'));
     }
     req.user = userData;
     next();
   } catch (error) {
-    console.log(error.message);
+    console.error('Authorization middleware error:', error.message);
     return next(unAuthorizedError());
   }
 };

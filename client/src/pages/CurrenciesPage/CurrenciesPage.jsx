@@ -2,6 +2,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { Typography, Button, Box } from '@mui/material';
 // ==============================================================
+import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -22,6 +23,7 @@ function CurrenciesPage() {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [currencies, setCurrencies] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -39,6 +41,7 @@ function CurrenciesPage() {
 
   const fetchCurrencies = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: currentPage,
@@ -64,6 +67,16 @@ function CurrenciesPage() {
   useEffect(() => {
     fetchCurrencies();
   }, [fetchCurrencies]);
+
+  useEffect(() => {
+    let timeout;
+    if (isLoading) {
+      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
+    } else {
+      setShowPreloader(false);
+    }
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
   const renderRoutes = () => (
     <Routes>
@@ -107,7 +120,8 @@ function CurrenciesPage() {
     </Routes>
   );
 
-  if (isLoading) return <Preloader message='Завантаження списку "Валют"...' />;
+  if (showPreloader)
+    return <Preloader message='Завантаження списку "Валют"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (

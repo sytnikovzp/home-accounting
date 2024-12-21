@@ -5,22 +5,8 @@ const SERVER = {
 
 const BASE_URL = `http://${SERVER.HOST}:${SERVER.PORT}/api/`;
 
-const LOGIN_FORM_INITIAL = {
-  email: '',
-  password: '',
-};
-
-const REGISTRATION_FORM_INITIAL = {
-  fullName: '',
-  email: '',
-  password: '',
-};
-
 const CURRENCY_CODES = ['USD', 'EUR', 'GBP'];
 
-export {
-  BASE_URL,
-  LOGIN_FORM_INITIAL,
-  REGISTRATION_FORM_INITIAL,
-  CURRENCY_CODES,
-};
+const DELAY_SHOW_PRELOADER = 300;
+
+export { BASE_URL, CURRENCY_CODES, DELAY_SHOW_PRELOADER };

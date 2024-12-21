@@ -2,6 +2,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { Typography, Button, Box } from '@mui/material';
 // ==============================================================
+import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -22,6 +23,7 @@ function PurchasesPage() {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [purchases, setPurchases] = useState([]);
   const [products, setProducts] = useState([]);
@@ -43,6 +45,7 @@ function PurchasesPage() {
 
   const fetchPurchases = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: currentPage,
@@ -67,6 +70,7 @@ function PurchasesPage() {
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: 1,
@@ -86,6 +90,7 @@ function PurchasesPage() {
 
   const fetchShops = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: 1,
@@ -105,6 +110,7 @@ function PurchasesPage() {
 
   const fetchMeasures = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: 1,
@@ -124,6 +130,7 @@ function PurchasesPage() {
 
   const fetchCurrencies = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: 1,
@@ -154,6 +161,16 @@ function PurchasesPage() {
     fetchPurchases,
     fetchShops,
   ]);
+
+  useEffect(() => {
+    let timeout;
+    if (isLoading) {
+      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
+    } else {
+      setShowPreloader(false);
+    }
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
   const renderRoutes = () => (
     <Routes>
@@ -205,7 +222,7 @@ function PurchasesPage() {
     </Routes>
   );
 
-  if (isLoading)
+  if (showPreloader)
     return <Preloader message='Завантаження списку "Покупок"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 

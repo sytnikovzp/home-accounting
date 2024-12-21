@@ -54,6 +54,7 @@ const ListTable = ({
   selectedStatus,
   onStatusChange,
   showStatusDropdown = false,
+  usersPage = false,
   linkEntity = '',
 }) => {
   const handleSort = (field) => {
@@ -175,7 +176,7 @@ const ListTable = ({
         alignItems='center'
         m={2}
       >
-        {showStatusDropdown && (
+        {showStatusDropdown && !usersPage && (
           <FormControl sx={stylesFormControl}>
             <InputLabel id='status-select-label'>Статус</InputLabel>
             <Select
@@ -188,6 +189,22 @@ const ListTable = ({
               <MenuItem value='pending'>Очікує модерації</MenuItem>
               <MenuItem value='approved'>Затверджено</MenuItem>
               <MenuItem value='rejected'>Відхилено</MenuItem>
+            </Select>
+          </FormControl>
+        )}
+        {showStatusDropdown && usersPage && (
+          <FormControl sx={stylesFormControl}>
+            <InputLabel id='status-select-label'>Статус</InputLabel>
+            <Select
+              labelId='status-select-label'
+              value={selectedStatus}
+              label='Статус'
+              size='small'
+              onChange={handleStatusChange}
+            >
+              <MenuItem value='all'>Всі користувачі</MenuItem>
+              <MenuItem value='true'>Підтверджені</MenuItem>
+              <MenuItem value='false'>Не підтверджені</MenuItem>
             </Select>
           </FormControl>
         )}

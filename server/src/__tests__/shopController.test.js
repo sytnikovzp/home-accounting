@@ -338,10 +338,10 @@ describe('ShopController', () => {
     });
   });
 
-  describe('PATCH /api/shops/logo/:shopUuid', () => {
+  describe('PATCH /api/shops/update-logo/:shopUuid', () => {
     it('should update shop logo', async () => {
       const response = await request(app)
-        .patch(`/api/shops/logo/${shopUuid}`)
+        .patch(`/api/shops/update-logo/${shopUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .attach('shopLogo', path.resolve('/Users/nadia/Downloads/atb.png'));
       expect(response.status).toBe(200);

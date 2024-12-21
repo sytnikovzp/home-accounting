@@ -2,6 +2,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { Typography, Button, Box } from '@mui/material';
 // ==============================================================
+import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -22,6 +23,7 @@ function RolesPage() {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [roles, setRoles] = useState([]);
   const [permissionsList, setPermissionsList] = useState([]);
@@ -40,6 +42,7 @@ function RolesPage() {
 
   const fetchRoles = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: currentPage,
@@ -62,6 +65,7 @@ function RolesPage() {
 
   const fetchPermissions = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const { data } = await restController.fetchAllPermissions();
       setPermissionsList(data);
@@ -79,6 +83,16 @@ function RolesPage() {
     fetchRoles();
     fetchPermissions();
   }, [fetchRoles, fetchPermissions]);
+
+  useEffect(() => {
+    let timeout;
+    if (isLoading) {
+      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
+    } else {
+      setShowPreloader(false);
+    }
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
   const renderRoutes = () => (
     <Routes>
@@ -124,7 +138,7 @@ function RolesPage() {
     </Routes>
   );
 
-  if (isLoading)
+  if (showPreloader)
     return <Preloader message='Завантаження списку "Ролей користувачів"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 

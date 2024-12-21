@@ -1,88 +1,150 @@
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 // ==============================================================
+import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 // ==============================================================
+import UserEditPage from './UserEditPage';
+import UserPasswordPage from './UserPasswordPage';
+import UserDeletePage from './UserDeletePage';
+import UserViewPage from './UserViewPage';
+// ==============================================================
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
-import DeleteConfirmation from '../../components/DeleteConfirmation/DeleteConfirmation';
 
 function UsersPage() {
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [showPreloader, setShowPreloader] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [users, setUsers] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [userToDelete, setUserToDelete] = useState(null);
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [deleteError, setDeleteError] = useState(null);
+  const [isActivated, setIsActivated] = useState('all');
+  const [sortModel, setSortModel] = useState({
+    field: 'fullName',
+    order: 'asc',
+  });
+  const [crudError, setCrudError] = useState(null);
+
+  const handleModalClose = () => {
+    setCrudError(null);
+    navigate('/users');
+  };
+
+  const openModal = (mode, uuid = null) => {
+    navigate(uuid ? `${mode}/${uuid}` : mode);
+  };
 
   const fetchUsers = useCallback(async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
     try {
-      setIsLoading(true);
-      const { data, totalCount } = await restController.fetchAllUsers({
+      const params = {
         page: currentPage,
         limit: pageSize,
-      });
+        isActivated,
+        sort: sortModel.field,
+        order: sortModel.order,
+      };
+      const { data, totalCount } = await restController.fetchAllUsers(params);
       setUsers(data);
       setTotalCount(totalCount);
     } catch (error) {
-      console.error('Не вдалося отримати дані про користувачів:', error);
-      setError('Не вдалося отримати дані про користувачів');
+      setErrorMessage(
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
+      );
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, isActivated, sortModel]);
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const handleEdit = (user) => {
-    console.log('Edit:', user);
-  };
-
-  const handleDelete = (user) => {
-    setUserToDelete(user);
-    setDeleteModalOpen(true);
-    setDeleteError(null);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (userToDelete) {
-      try {
-        await restController.removeUser(userToDelete.uuid);
-        setDeleteModalOpen(false);
-        setUserToDelete(null);
-        await fetchUsers();
-      } catch (error) {
-        console.error('Помилка при видаленні користувача:', error);
-        setDeleteError('Не вдалося видалити користувача. Недостатньо прав.');
-      }
+  useEffect(() => {
+    let timeout;
+    if (isLoading) {
+      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
+    } else {
+      setShowPreloader(false);
     }
-  };
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
-  if (isLoading) return <Preloader message='Завантаження користувачів...' />;
-  if (error) return <Error error={error} />;
+  const renderRoutes = () => (
+    <Routes>
+      <Route
+        path='edit/:uuid'
+        element={
+          <UserEditPage
+            handleModalClose={handleModalClose}
+            fetchUsers={fetchUsers}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path='password/:uuid'
+        element={
+          <UserPasswordPage
+            handleModalClose={handleModalClose}
+            fetchUsers={fetchUsers}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path='delete/:uuid'
+        element={
+          <UserDeletePage
+            handleModalClose={handleModalClose}
+            fetchUsers={fetchUsers}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
+      />
+      <Route
+        path=':uuid'
+        element={<UserViewPage handleModalClose={handleModalClose} />}
+      />
+    </Routes>
+  );
+
+  if (showPreloader)
+    return <Preloader message='Завантаження списку "Користувачів"...' />;
+  if (errorMessage) return <Error error={errorMessage} />;
 
   return (
-    <div>
-      <Typography variant='h6'>Користувачі</Typography>
+    <>
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        mb={2}
+      >
+        <Typography variant='h6'>Користувачі</Typography>
+      </Box>
       <ListTable
         columns={[
-          { field: 'fullName', headerName: 'Повне імʼя', align: 'left' },
-          { field: 'role', headerName: 'Роль', align: 'left' },
-          { field: 'photo', headerName: 'Фото', align: 'left' },
+          { field: 'photo', headerName: 'Фото', align: 'center' },
+          { field: 'fullName', headerName: 'Повне ім`я', align: 'left' },
         ]}
         rows={users}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        onEdit={(user) => openModal('edit', user.uuid)}
+        onDelete={(user) => openModal('delete', user.uuid)}
         pagination={{
           totalCount,
           currentPage,
@@ -91,14 +153,16 @@ function UsersPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
         }}
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+        selectedStatus={isActivated}
+        onStatusChange={(event) => setIsActivated(event.target.value)}
+        showStatusDropdown
+        usersPage
+        linkEntity='users'
       />
-      <DeleteConfirmation
-        isOpen={isDeleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
-        onConfirm={handleConfirmDelete}
-        error={deleteError}
-      />
-    </div>
+      {renderRoutes()}
+    </>
   );
 }
 

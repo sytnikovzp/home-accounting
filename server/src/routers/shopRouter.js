@@ -25,10 +25,12 @@ shopRouter
   .post(authHandler, validateShop, createShop);
 
 shopRouter
-  .route('/logo/:shopUuid')
+  .route('/update-logo/:shopUuid')
   .patch(authHandler, uploadShopLogos.single('shopLogo'), updateShopLogo);
 
-shopRouter.route('/delete-logo/:shopUuid').patch(authHandler, removeShopLogo);
+shopRouter
+  .route('/delete-logo/:shopUuid')
+  .patch(authHandler, removeShopLogo);
 
 shopRouter
   .route('/moderation/:shopUuid')

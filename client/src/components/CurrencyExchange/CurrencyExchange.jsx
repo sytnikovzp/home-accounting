@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 // ==============================================================
+import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 // ==============================================================
 import Preloader from '../Preloader/Preloader';
@@ -18,10 +19,13 @@ import Error from '../Error/Error';
 
 function CurrencyExchange() {
   const [isLoading, setIsLoading] = useState(true);
+  const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [rates, setRates] = useState([]);
 
   const fetchRates = async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
     try {
       const filteredRates = await restController.fetchFilteredRates();
       setRates(filteredRates);
@@ -37,7 +41,17 @@ function CurrencyExchange() {
     fetchRates();
   }, []);
 
-  if (isLoading) return <Preloader message='Завантаження валют...' />;
+  useEffect(() => {
+    let timeout;
+    if (isLoading) {
+      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
+    } else {
+      setShowPreloader(false);
+    }
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
+
+  if (showPreloader) return <Preloader message='Завантаження валют...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (

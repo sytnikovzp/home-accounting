@@ -1,44 +1,38 @@
 const { User, Role, Permission } = require('../db/dbMongo/models');
 // ==============================================================
 const {
-  dataMapping: { titleRolesMapping },
-} = require('../constants');
-// ==============================================================
-const {
   hashPassword,
   emailToLowerCase,
   formatDateTime,
   isValidUUID,
   checkPermission,
-  mapValue,
 } = require('../utils/sharedFunctions');
 // ==============================================================
 const { generateTokens } = require('./tokenService');
 // ==============================================================
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
-const { roleTitleMapping } = require('../constants/dataMapping');
 
 class UserService {
   async getAllUsers(isActivated, limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
-    const query =
-      isActivated !== undefined ? { isActivated: isActivated === 'true' } : {};
+    const query = {};
+    if (isActivated === 'true') {
+      query.isActivated = true;
+    } else if (isActivated === 'false') {
+      query.isActivated = false;
+    }
     const foundUsers = await User.find(query)
       .sort(sortOptions)
       .limit(limit)
       .skip(offset)
       .lean();
     if (foundUsers.length === 0) throw notFound('Користувачів не знайдено');
-    const allUsers = await Promise.all(
-      foundUsers.map(async (user) => {
-        return {
-          uuid: user.uuid,
-          fullName: user.fullName,
-          photo: user.photo || '',
-        };
-      })
-    );
+    const allUsers = foundUsers.map((user) => ({
+      uuid: user.uuid,
+      fullName: user.fullName,
+      photo: user.photo || '',
+    }));
     const total = await User.countDocuments(query);
     return {
       allUsers,
@@ -53,7 +47,6 @@ class UserService {
     const roleUuidBinary = foundUser.roleUuid;
     const role = await Role.findOne({ uuid: roleUuidBinary });
     if (!role) throw notFound('Роль для користувача не знайдено');
-    const translatedRoleTitle = mapValue(role.title, titleRolesMapping);
     const permissions = await Permission.find({
       uuid: { $in: role.permissions },
     });
@@ -62,7 +55,7 @@ class UserService {
       fullName: foundUser.fullName,
       role: {
         uuid: role.uuid,
-        title: translatedRoleTitle,
+        title: role.title,
       },
       photo: foundUser.photo || '',
     };
@@ -98,7 +91,6 @@ class UserService {
     if (!foundUser) throw notFound('Користувача не знайдено');
     const role = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!role) throw notFound('Роль для користувача не знайдено');
-    const translatedRoleTitle = mapValue(role.title, titleRolesMapping);
     const permissions = await Permission.find({
       uuid: { $in: role.permissions },
     });
@@ -107,7 +99,7 @@ class UserService {
       fullName: foundUser.fullName,
       role: {
         uuid: role.uuid,
-        title: translatedRoleTitle,
+        title: role.title,
       },
       photo: foundUser.photo || '',
       email: foundUser.email,
@@ -124,7 +116,7 @@ class UserService {
     };
   }
 
-  async updateUser(uuid, fullName, email, password, role, currentUser) {
+  async updateUser(uuid, fullName, email, role, currentUser) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const hasPermission =
       currentUser.uuid === uuid ||
@@ -146,7 +138,6 @@ class UserService {
         throw badRequest('Ця електронна адреса вже використовується');
       updateData.email = newEmail;
     }
-    if (password) updateData.password = await hashPassword(password);
     if (role && role !== foundRole.title) {
       const hasPermissionToChangeRole = await checkPermission(
         currentUser,
@@ -163,8 +154,7 @@ class UserService {
         if (adminCount === 1)
           throw forbidden('Неможливо видалити останнього Адміністратора');
       }
-      const internalRoleTitle = roleTitleMapping[role];
-      const newRole = await Role.findOne({ title: internalRoleTitle });
+      const newRole = await Role.findOne({ title: role });
       if (!newRole) throw notFound('Роль для користувача не знайдено');
       updateData.roleUuid = newRole.uuid;
     }
@@ -172,9 +162,7 @@ class UserService {
       new: true,
     });
     if (!updatedUser) throw badRequest('Дані цього користувача не оновлено');
-    const tokens = generateTokens({
-      email: updateData.email || foundUser.email,
-    });
+    const tokens = generateTokens(updatedUser);
     return {
       ...tokens,
       user: {
@@ -182,6 +170,36 @@ class UserService {
         fullName: updatedUser.fullName,
         isActivated: updatedUser.isActivated,
         role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,
+      },
+    };
+  }
+
+  async changePassword(uuid, newPassword, confirmNewPassword, currentUser) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const hasPermission =
+      currentUser.uuid === uuid ||
+      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
+    if (!hasPermission)
+      throw forbidden(
+        'У Вас немає дозволу на оновлення паролю цього користувача'
+      );
+    if (newPassword !== confirmNewPassword) {
+      throw badRequest('Новий пароль та підтвердження пароля не збігаються');
+    }
+    const foundUser = await User.findOne({ uuid });
+    if (!foundUser) throw notFound('Користувача не знайдено');
+    const hashedNewPassword = await hashPassword(newPassword);
+    foundUser.password = hashedNewPassword;
+    foundUser.tokenVersion += 1;
+    const updatedUser = await foundUser.save();
+    if (!updatedUser) throw badRequest('Дані цього користувача не оновлено');
+    const tokens = generateTokens(updatedUser);
+    return {
+      ...tokens,
+      user: {
+        uuid: updatedUser.uuid,
+        fullName: updatedUser.fullName,
+        isActivated: updatedUser.isActivated,
       },
     };
   }

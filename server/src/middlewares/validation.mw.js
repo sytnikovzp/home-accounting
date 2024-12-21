@@ -1,6 +1,7 @@
 const {
   REGISTRATION_VALIDATION_SCHEME,
   UPDATE_USER_VALIDATION_SCHEME,
+  PASSWORD_VALIDATION_SCHEME,
   LOGIN_VALIDATION_SCHEME,
   ROLE_VALIDATION_SCHEME,
   MODERATION_VALIDATION_SCHEME,
@@ -29,6 +30,7 @@ module.exports = {
   validateRegistration: validateSchema(REGISTRATION_VALIDATION_SCHEME),
   validateUpdateUser: validateSchema(UPDATE_USER_VALIDATION_SCHEME),
   validateAuth: validateSchema(LOGIN_VALIDATION_SCHEME),
+  validatePassword: validateSchema(PASSWORD_VALIDATION_SCHEME),
   validateRole: validateSchema(ROLE_VALIDATION_SCHEME),
   validateModeration: validateSchema(MODERATION_VALIDATION_SCHEME),
   validatePurchase: validateSchema(PURCHASE_VALIDATION_SCHEME),

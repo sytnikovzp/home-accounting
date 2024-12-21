@@ -52,7 +52,7 @@ const updateShop = async (shopUuid, title, description, url) => {
 const updateShopLogo = async (shopUuid, shopLogo) => {
   const formData = new FormData();
   formData.append('shopLogo', shopLogo);
-  const { data } = await api.patch(`/shops/logo/${shopUuid}`, formData, {
+  const { data } = await api.patch(`/shops/update-logo/${shopUuid}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

@@ -24,11 +24,20 @@ const STRING_NULLABLE_SCHEME = yup
   .max(100, 'Введені дані не можуть перевищувати 100 символів')
   .nullable();
 
-const PASSWORD_SCHEME = yup
+const PASSWORD_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
   .trim('Введені дані не можуть містити пробіли на початку або в кінці')
   .min(8, 'Введені дані мають бути не менше 8 символів')
-  .max(20, 'Введені дані не можуть перевищувати 20 символів');
+  .max(20, 'Введені дані не можуть перевищувати 20 символів')
+  .matches(/[a-z]/, 'Пароль повинен містити хоча б одну маленьку літеру')
+  .matches(/[A-Z]/, 'Пароль повинен містити хоча б одну велику літеру')
+  .matches(/[0-9]/, 'Пароль повинен містити хоча б одну цифру')
+  .required('Пароль є обовʼязковим полем');
+
+const PASSWORD_REQUIRED_CONFIRM_SCHEME = yup
+  .string('Це поле має бути рядком')
+  .oneOf([yup.ref('newPassword')], 'Паролі повинні співпадати')
+  .required('Підтвердження паролю є обов’язковим');
 
 const NUMBER_REQUIRED_SCHEME = yup
   .number('Це поле має бути числом')
@@ -43,9 +52,10 @@ const URL_RESOURCE_NULLABLE_SCHEME = yup
   .url('Введіть коректний URL')
   .nullable();
 
-const EMAIL_VALIDATION_SCHEME = yup
+const EMAIL_REQUIRED_VALIDATION_SCHEME = yup
   .string('Це поле має бути рядком')
-  .email('Введіть коректний e-mail');
+  .email('Введіть коректний e-mail')
+  .required('E-mail є обовʼязковим полем');
 
 const STATUS_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
@@ -68,20 +78,25 @@ const PAGINATION_SCHEME = yup.object().shape({
 
 const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
   fullName: STRING_REQUIRED_SCHEME,
-  email: EMAIL_VALIDATION_SCHEME.required('E-mail є обовʼязковим полем'),
-  password: PASSWORD_SCHEME.required('Пароль є обовʼязковим полем'),
+  email: EMAIL_REQUIRED_VALIDATION_SCHEME,
+  password: PASSWORD_REQUIRED_SCHEME,
 });
 
 const UPDATE_USER_VALIDATION_SCHEME = yup.object().shape({
-  fullName: STRING_NULLABLE_SCHEME,
-  email: EMAIL_VALIDATION_SCHEME.nullable(),
-  password: PASSWORD_SCHEME.nullable(),
+  fullName: STRING_REQUIRED_SCHEME,
+  email: EMAIL_REQUIRED_VALIDATION_SCHEME,
   role: STRING_NULLABLE_SCHEME,
+  photo: STRING_NULLABLE_SCHEME,
 });
 
 const LOGIN_VALIDATION_SCHEME = yup.object().shape({
-  email: EMAIL_VALIDATION_SCHEME.required('E-mail є обовʼязковим полем'),
-  password: PASSWORD_SCHEME.required('Пароль є обовʼязковим полем'),
+  email: EMAIL_REQUIRED_VALIDATION_SCHEME,
+  password: PASSWORD_REQUIRED_SCHEME,
+});
+
+const PASSWORD_VALIDATION_SCHEME = yup.object().shape({
+  newPassword: PASSWORD_REQUIRED_SCHEME,
+  confirmNewPassword: PASSWORD_REQUIRED_CONFIRM_SCHEME,
 });
 
 const ROLE_VALIDATION_SCHEME = yup.object().shape({
@@ -137,6 +152,7 @@ export {
   REGISTRATION_VALIDATION_SCHEME,
   UPDATE_USER_VALIDATION_SCHEME,
   LOGIN_VALIDATION_SCHEME,
+  PASSWORD_VALIDATION_SCHEME,
   ROLE_VALIDATION_SCHEME,
   MODERATION_VALIDATION_SCHEME,
   PURCHASE_VALIDATION_SCHEME,

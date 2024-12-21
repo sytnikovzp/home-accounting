@@ -3,6 +3,7 @@ const {
   getUserByUuid,
   getCurrentUser,
   updateUser,
+  changePassword,
   updateUserPhoto,
   removeUserPhoto,
   deleteUser,
@@ -64,13 +65,12 @@ class UserController {
   async updateUser(req, res, next) {
     try {
       const { userUuid } = req.params;
-      const { fullName, email, password, role } = req.body;
+      const { fullName, email, role } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedUser = await updateUser(
         userUuid,
         fullName,
         email,
-        password,
         role,
         currentUser
       );
@@ -81,6 +81,28 @@ class UserController {
       }
     } catch (error) {
       console.log('Update user error: ', error.message);
+      next(error);
+    }
+  }
+
+  async changePassword(req, res, next) {
+    try {
+      const { userUuid } = req.params;
+      const { newPassword, confirmNewPassword } = req.body;
+      const currentUser = await getCurrentUser(req.user.email);
+      const updatedUser = await changePassword(
+        userUuid,
+        newPassword,
+        confirmNewPassword,
+        currentUser
+      );
+      if (updatedUser) {
+        res.status(200).json(updatedUser);
+      } else {
+        res.status(401);
+      }
+    } catch (error) {
+      console.log('Change password error: ', error.message);
       next(error);
     }
   }

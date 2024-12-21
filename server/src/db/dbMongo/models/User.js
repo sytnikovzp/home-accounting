@@ -22,6 +22,10 @@ const usersSchema = new Schema(
       type: String,
       required: true,
     },
+    tokenVersion: {
+      type: Number,
+      default: 0,
+    },
     photo: String,
     isActivated: {
       type: Boolean,

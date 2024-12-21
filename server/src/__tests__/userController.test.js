@@ -254,10 +254,10 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/photo/:userUuid', () => {
+  describe('PATCH /api/users/update-photo/:userUuid', () => {
     it('should update user photo', async () => {
       const response = await request(app)
-        .patch(`/api/users/photo/${authData.user.uuid}`)
+        .patch(`/api/users/update-photo/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .attach('userPhoto', path.resolve('/Users/nadia/Downloads/user.png'));
       expect(response.status).toBe(200);

@@ -4,10 +4,15 @@ import BaseForm from '../BaseForm/BaseForm';
 import PermissionsSwitches from '../PermissionsSwitches/PermissionsSwitches';
 
 function RoleForm({ role = null, onSubmit, permissionsList = [] }) {
+  const permissionMap = permissionsList.reduce((acc, permission) => {
+    acc[permission.uuid] = permission.title;
+    return acc;
+  }, {});
+
   const initialValues = role
     ? {
         title: role.title,
-        description: role.description || '',
+        description: role.description,
         permissions: role.permissions.map((permission) => permission.uuid),
       }
     : { title: '', description: '', permissions: [] };
@@ -29,10 +34,7 @@ function RoleForm({ role = null, onSubmit, permissionsList = [] }) {
 
   const handleSubmit = (values) => {
     const permissionsTitles = values.permissions
-      .map((uuid) => {
-        const permission = permissionsList.find((p) => p.uuid === uuid);
-        return permission ? permission.title : null;
-      })
+      .map((uuid) => permissionMap[uuid])
       .filter(Boolean);
     const payload = {
       ...values,

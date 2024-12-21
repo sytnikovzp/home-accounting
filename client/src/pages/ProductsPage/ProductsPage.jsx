@@ -2,6 +2,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { Typography, Button, Box } from '@mui/material';
 // ==============================================================
+import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -22,6 +23,7 @@ function ProductsPage() {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -41,6 +43,7 @@ function ProductsPage() {
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: currentPage,
@@ -66,6 +69,7 @@ function ProductsPage() {
 
   const fetchCategories = useCallback(async () => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const params = {
         page: 1,
@@ -87,6 +91,16 @@ function ProductsPage() {
     fetchProducts();
     fetchCategories();
   }, [fetchCategories, fetchProducts]);
+
+  useEffect(() => {
+    let timeout;
+    if (isLoading) {
+      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
+    } else {
+      setShowPreloader(false);
+    }
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
   const renderRoutes = () => (
     <Routes>
@@ -132,7 +146,7 @@ function ProductsPage() {
     </Routes>
   );
 
-  if (isLoading)
+  if (showPreloader)
     return <Preloader message='Завантаження списку "Товарів"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 

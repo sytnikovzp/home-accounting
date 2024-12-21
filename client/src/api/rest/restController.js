@@ -22,8 +22,15 @@ const restController = {
     authService.refreshAccessToken(originalRequest),
 
   // User management
-  fetchAllUsers: async (page = 1, limit = 6, sort = 'uuid', order = 'asc') => {
+  fetchAllUsers: async (
+    isActivated = 'all',
+    page = 1,
+    limit = 6,
+    sort = 'uuid',
+    order = 'asc'
+  ) => {
     const { data, totalCount } = await userService.getAllUsers(
+      isActivated,
       page,
       limit,
       sort,
@@ -36,8 +43,10 @@ const restController = {
   },
   fetchUserProfile: () => userService.getUserProfile(),
   fetchUserByUuid: (userUuid) => userService.getUserByUuid(userUuid),
-  editUser: (userUuid, fullName, password, role) =>
-    userService.updateUser(userUuid, fullName, password, role),
+  editUser: (userUuid, fullName, email, role) =>
+    userService.updateUser(userUuid, fullName, email, role),
+  changePassword: (userUuid, newPassword, confirmNewPassword) =>
+    userService.changePassword(userUuid, newPassword, confirmNewPassword),
   uploadUserPhoto: (userUuid, userPhoto) =>
     userService.updateUserPhoto(userUuid, userPhoto),
   removeUserPhoto: (userUuid) => userService.removeUserPhoto(userUuid),
@@ -61,7 +70,7 @@ const restController = {
     };
   },
   fetchRoleByUuid: (roleUuid) => roleService.getRoleByUuid(roleUuid),
-  createRole: (title, description, permissions) =>
+  addRole: (title, description, permissions) =>
     roleService.createRole(title, description, permissions),
   editRole: (roleUuid, title, description, permissions) =>
     roleService.updateRole(roleUuid, title, description, permissions),

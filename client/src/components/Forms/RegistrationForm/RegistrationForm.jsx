@@ -1,9 +1,14 @@
-import { REGISTRATION_FORM_INITIAL } from '../../../constants';
 import { REGISTRATION_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 
 function RegistrationForm({ onSubmit }) {
+  const initialValues = {
+    fullName: '',
+    email: '',
+    password: '',
+  };
+
   const fields = [
     {
       name: 'fullName',
@@ -26,7 +31,7 @@ function RegistrationForm({ onSubmit }) {
 
   return (
     <BaseForm
-      initialValues={REGISTRATION_FORM_INITIAL}
+      initialValues={initialValues}
       validationSchema={REGISTRATION_VALIDATION_SCHEME}
       onSubmit={onSubmit}
       fields={fields}

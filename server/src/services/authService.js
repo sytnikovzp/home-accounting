@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 // ==============================================================
 const {
@@ -9,7 +8,11 @@ const {
 // ==============================================================
 const { User, Role } = require('../db/dbMongo/models');
 // ==============================================================
-const { hashPassword, emailToLowerCase } = require('../utils/sharedFunctions');
+const {
+  hashPassword,
+  verifyPassword,
+  emailToLowerCase,
+} = require('../utils/sharedFunctions');
 // ==============================================================
 const mailService = require('./mailService');
 const { generateTokens, validateRefreshToken } = require('./tokenService');
@@ -38,7 +41,7 @@ class AuthService {
       email,
       `http://${HOST}:${PORT}/api/auth/activate/${activationLink}`
     );
-    const tokens = generateTokens({ email });
+    const tokens = generateTokens(user);
     return {
       ...tokens,
       user: {
@@ -55,11 +58,11 @@ class AuthService {
     const emailToLower = emailToLowerCase(email);
     const user = await User.findOne({ email: emailToLower });
     if (!user) throw unAuthorizedError();
-    const isPassRight = await bcrypt.compare(password, user.password);
-    if (!isPassRight) throw unAuthorizedError();
+    const isPasswordValid = await verifyPassword(password, user.password);
+    if (!isPasswordValid) throw unAuthorizedError();
     const foundRole = await Role.findOne({ uuid: user.roleUuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
-    const tokens = generateTokens({ email });
+    const tokens = generateTokens(user);
     return {
       ...tokens,
       user: {
@@ -90,7 +93,7 @@ class AuthService {
     if (!foundUser) throw notFound('Користувача не знайдено');
     const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
-    const tokens = generateTokens({ email });
+    const tokens = generateTokens(foundUser);
     return {
       ...tokens,
       user: {

@@ -1,12 +1,14 @@
 import api from '../api';
 
 const getAllUsers = async ({
+  isActivated = 'all',
   page = 1,
   limit = 6,
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
   const params = new URLSearchParams({
+    isActivated,
     page,
     limit,
     sort,
@@ -38,11 +40,19 @@ const getUserByUuid = async (userUuid) => {
   return data;
 };
 
-const updateUser = async (userUuid, fullName, password, role) => {
+const updateUser = async (userUuid, fullName, email, role) => {
   const { data } = await api.patch(`/users/${userUuid}`, {
     fullName,
-    password,
+    email,
     role,
+  });
+  return data;
+};
+
+const changePassword = async (userUuid, newPassword, confirmNewPassword) => {
+  const { data } = await api.patch(`/users/change-password/${userUuid}`, {
+    newPassword,
+    confirmNewPassword,
   });
   return data;
 };
@@ -50,9 +60,13 @@ const updateUser = async (userUuid, fullName, password, role) => {
 const updateUserPhoto = async (userUuid, userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
-  const { data } = await api.patch(`/users/photo/${userUuid}`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  const { data } = await api.patch(
+    `/users/update-photo/${userUuid}`,
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }
+  );
   return data;
 };
 
@@ -73,6 +87,7 @@ export default {
   getUserProfile,
   getUserByUuid,
   updateUser,
+  changePassword,
   updateUserPhoto,
   removeUserPhoto,
   deleteUser,

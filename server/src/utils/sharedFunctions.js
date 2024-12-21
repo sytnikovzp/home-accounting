@@ -7,7 +7,6 @@ const {
   configs: {
     HASH: { SALT_ROUNDS },
   },
-  dataMapping: { roleTitleMapping },
 } = require('../constants');
 // ==============================================================
 const { User, Role, Permission } = require('../db/dbMongo/models');
@@ -16,6 +15,10 @@ const { notFound, badRequest } = require('../errors/generalErrors');
 
 const hashPassword = async function (password) {
   return await bcrypt.hash(password, SALT_ROUNDS);
+};
+
+const verifyPassword = async function (password, userPassword) {
+  return await bcrypt.compare(password, userPassword);
 };
 
 const setRefreshTokenCookie = function (res, refreshToken) {
@@ -56,8 +59,7 @@ const isValidUUID = function (uuid) {
 };
 
 const checkPermission = async function (user, requiredPermission) {
-  const internalRoleTitle = roleTitleMapping[user.role.title];
-  const foundRole = await Role.findOne({ title: internalRoleTitle });
+  const foundRole = await Role.findOne({ title: user.role.title });
   if (!foundRole) throw notFound('Роль для користувача не знайдено');
   const permission = await Permission.findOne({ title: requiredPermission });
   if (!permission) throw notFound('Необхідного дозволу не знайдено');
@@ -132,6 +134,7 @@ const convertToUAH = async (amount, currencyCode) => {
 
 module.exports = {
   hashPassword,
+  verifyPassword,
   setRefreshTokenCookie,
   formatDateTime,
   formatDate,

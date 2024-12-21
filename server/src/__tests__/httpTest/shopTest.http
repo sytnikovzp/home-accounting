@@ -66,7 +66,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
 }
 
 ### Update shop logo
-PATCH http://localhost:5000/api/shops/logo/5492bc96-7e77-4a6d-b7f5-49e0b3a0960f HTTP/1.1
+PATCH http://localhost:5000/api/shops/update-logo/5492bc96-7e77-4a6d-b7f5-49e0b3a0960f HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTMyMDIyLCJleHAiOjE3MzU0MjgwMjJ9.ecF-zgeZVhi8RKhng2dKW-AZrtuJsqKd0jmox3V4B9M
 
