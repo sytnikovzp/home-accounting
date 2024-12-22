@@ -36,7 +36,7 @@ import {
   stylesTableTypography,
 } from '../../styles/theme';
 
-const ListTable = ({
+function ListTable({
   columns,
   rows,
   onEdit,
@@ -56,7 +56,7 @@ const ListTable = ({
   showStatusDropdown = false,
   usersPage = false,
   linkEntity = '',
-}) => {
+}) {
   const handleSort = (field) => {
     const newSortModel =
       sortModel.field === field
@@ -230,6 +230,6 @@ const ListTable = ({
       </Box>
     </TableContainer>
   );
-};
+}
 
 export default ListTable;

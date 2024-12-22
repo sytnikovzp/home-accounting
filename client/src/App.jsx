@@ -29,14 +29,14 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthModalOpen, setAuthModalOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
+  const [currentUser, setUserProfile] = useState(null);
 
   const handleCloseAuthModal = () => setAuthModalOpen(false);
 
   const checkAuthentication = async () => {
     try {
-      const userProfile = await restController.fetchUserProfile();
-      setUserProfile(userProfile);
+      const currentUser = await restController.fetchUserProfile();
+      setUserProfile(currentUser);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Не вдалося завантажити дані користувача:', error.message);
@@ -82,7 +82,7 @@ const App = () => {
           element={
             <Layout
               isAuthenticated={isAuthenticated}
-              userProfile={userProfile}
+              currentUser={currentUser}
               setIsAuthenticated={setIsAuthenticated}
               setAuthModalOpen={setAuthModalOpen}
             />

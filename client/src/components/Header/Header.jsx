@@ -11,12 +11,16 @@ import {
   Typography,
   Menu,
   IconButton,
-  MenuItem,
-  ListItemIcon,
   Button,
   Divider,
 } from '@mui/material';
-import { Logout, Settings } from '@mui/icons-material';
+import {
+  AdminPanelSettings,
+  ListAlt,
+  Logout,
+  Password,
+  Portrait,
+} from '@mui/icons-material';
 // ==============================================================
 import {
   stylesAppBar,
@@ -34,32 +38,52 @@ import { stringAvatar } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 // ==============================================================
 import NavBar from '../Navigation/NavBar';
+import UserMenu from '../UserMenu/UserMenu';
 import accountingIcon from '../../assets/accounting.png';
+
+const menuItemsData = [
+  {
+    label: 'Переглянути профіль',
+    icon: <Portrait fontSize='small' />,
+    action: (currentUser) => `/users/${currentUser.uuid}`,
+  },
+  {
+    label: 'Редагувати профіль',
+    icon: <ListAlt fontSize='small' />,
+    action: (currentUser) => `/users/edit/${currentUser.uuid}`,
+  },
+  {
+    label: 'Переглянути права',
+    icon: <AdminPanelSettings fontSize='small' />,
+    action: (currentUser) => `/roles/${currentUser.role.uuid}`,
+  },
+  {
+    label: 'Змінити пароль',
+    icon: <Password fontSize='small' />,
+    action: (currentUser) => `/users/password/${currentUser.uuid}`,
+  },
+  {
+    label: 'Вийти',
+    icon: <Logout fontSize='small' />,
+    action: 'handleLogout',
+    isLogout: true,
+  },
+];
 
 function Header({
   isAuthenticated,
-  userProfile,
+  currentUser,
   setIsAuthenticated,
   setAuthModalOpen,
 }) {
-  const [openState, setOpenState] = useState({
-    navBar: false,
-    userAccount: false,
-  });
+  const [openNavBar, setOpenNavBar] = useState(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const navigate = useNavigate();
-
-  const handleToggleNavBar = () => {
-    setOpenState({ ...openState, navBar: !openState.navBar });
-  };
-
-  const toggleMenu = (event) => {
-    setOpenState({ ...openState, userAccount: event.currentTarget });
-  };
-
-  const closeMenu = () => {
-    setOpenState({ ...openState, userAccount: false });
-  };
+  const navigateTo = (path) => navigate(path);
+  const handleToggleNavBar = () => setOpenNavBar((prev) => !prev);
+  const toggleUserMenu = (event) => setOpenUserMenu(event.currentTarget);
+  const closeMenu = () => setOpenUserMenu(false);
 
   const openAuthModal = () => {
     navigate('/auth');
@@ -116,30 +140,28 @@ function Header({
                   }}
                 >
                   <Typography variant='body1'>
-                    Привіт, {userProfile.fullName}!
+                    Привіт, {currentUser.fullName}!
                   </Typography>
                   <Typography variant='body2' color='text.secondary'>
-                    Ваша роль на сайті: {userProfile.role.title}
+                    Ваша роль на сайті: {currentUser.role.title}
                   </Typography>
                 </Box>
                 <Tooltip title='Обліковий запис'>
                   <IconButton
                     size='small'
-                    onClick={toggleMenu}
+                    onClick={toggleUserMenu}
                     sx={{ ml: 2 }}
-                    aria-controls={
-                      openState.userAccount ? 'account-menu' : undefined
-                    }
+                    aria-controls={openUserMenu ? 'account-menu' : undefined}
                     aria-haspopup='true'
-                    aria-expanded={openState.userAccount ? 'true' : undefined}
+                    aria-expanded={openUserMenu ? 'true' : undefined}
                   >
                     <Avatar
-                      alt={userProfile.fullName}
-                      {...stringAvatar(userProfile.fullName)}
+                      alt={currentUser.fullName}
+                      {...stringAvatar(currentUser.fullName)}
                       src={
-                        userProfile?.photo
+                        currentUser?.photo
                           ? `${BASE_URL.replace('/api/', '')}/images/users/${
-                              userProfile.photo
+                              currentUser.photo
                             }`
                           : undefined
                       }
@@ -147,10 +169,10 @@ function Header({
                   </IconButton>
                 </Tooltip>
                 <Menu
-                  anchorEl={openState.userAccount}
+                  anchorEl={openUserMenu}
                   id='account-menu'
-                  open={Boolean(openState.userAccount)}
-                  onClick={closeMenu}
+                  open={Boolean(openUserMenu)}
+                  onClose={closeMenu}
                   slotProps={{
                     paper: {
                       elevation: 0,
@@ -166,18 +188,13 @@ function Header({
                     vertical: 'bottom',
                   }}
                 >
-                  <MenuItem onClick={closeMenu}>
-                    <ListItemIcon>
-                      <Settings fontSize='small' />
-                    </ListItemIcon>
-                    Налаштування
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>
-                    <ListItemIcon>
-                      <Logout fontSize='small' />
-                    </ListItemIcon>
-                    Вийти
-                  </MenuItem>
+                  <UserMenu
+                    menuItems={menuItemsData}
+                    currentUser={currentUser}
+                    navigateTo={navigateTo}
+                    closeMenu={closeMenu}
+                    handleLogout={handleLogout}
+                  />
                 </Menu>
               </Box>
             ) : (
@@ -193,7 +210,7 @@ function Header({
         </Toolbar>
       </Container>
       <Divider sx={{ borderWidth: '1px' }} />
-      {openState.navBar && <NavBar onClose={handleToggleNavBar} />}
+      {openNavBar && <NavBar onClose={handleToggleNavBar} />}
     </AppBar>
   );
 }

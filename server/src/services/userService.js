@@ -84,7 +84,6 @@ class UserService {
       permissions: permissions.map((permission) => ({
         uuid: permission.uuid,
         title: permission.title,
-        description: permission.description,
       })),
     };
     if (
@@ -128,7 +127,6 @@ class UserService {
       permissions: permissions.map((permission) => ({
         uuid: permission.uuid,
         title: permission.title,
-        description: permission.description,
       })),
     };
   }

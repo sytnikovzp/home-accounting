@@ -21,7 +21,7 @@ import Footer from '../Footer/Footer';
 
 function Layout({
   isAuthenticated,
-  userProfile,
+  currentUser,
   setIsAuthenticated,
   setAuthModalOpen,
 }) {
@@ -56,7 +56,7 @@ function Layout({
         <Grid2>
           <Header
             isAuthenticated={isAuthenticated}
-            userProfile={userProfile}
+            currentUser={currentUser}
             setIsAuthenticated={setIsAuthenticated}
             setAuthModalOpen={setAuthModalOpen}
           />
