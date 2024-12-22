@@ -1,3 +1,12 @@
+const { v4: uuidv4 } = require('uuid');
+// ==============================================================
+const {
+  configs: {
+    SERVER: { HOST, PORT },
+  },
+  dataMapping: { userVerificationMapping },
+} = require('../constants');
+// ==============================================================
 const { User, Role, Permission } = require('../db/dbMongo/models');
 // ==============================================================
 const {
@@ -6,21 +15,23 @@ const {
   formatDateTime,
   isValidUUID,
   checkPermission,
+  mapValue,
 } = require('../utils/sharedFunctions');
 // ==============================================================
 const { generateTokens } = require('./tokenService');
 // ==============================================================
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
+const mailService = require('./mailService');
 
 class UserService {
-  async getAllUsers(isActivated, limit, offset, sort, order) {
+  async getAllUsers(emailVerificationStatus, limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
     const query = {};
-    if (isActivated === 'true') {
-      query.isActivated = true;
-    } else if (isActivated === 'false') {
-      query.isActivated = false;
+    if (emailVerificationStatus === 'verified') {
+      query.emailVerificationStatus = 'verified';
+    } else if (emailVerificationStatus === 'pending') {
+      query.emailVerificationStatus = 'pending';
     }
     const foundUsers = await User.find(query)
       .sort(sortOptions)
@@ -62,7 +73,10 @@ class UserService {
     const fullUserData = {
       ...limitUserData,
       email: foundUser.email,
-      isActivated: foundUser.isActivated,
+      emailVerificationStatus: mapValue(
+        foundUser.emailVerificationStatus,
+        userVerificationMapping
+      ),
       creation: {
         createdAt: formatDateTime(foundUser.createdAt),
         updatedAt: formatDateTime(foundUser.updatedAt),
@@ -103,7 +117,10 @@ class UserService {
       },
       photo: foundUser.photo || '',
       email: foundUser.email,
-      isActivated: foundUser.isActivated,
+      emailVerificationStatus: mapValue(
+        foundUser.emailVerificationStatus,
+        userVerificationMapping
+      ),
       creation: {
         createdAt: formatDateTime(foundUser.createdAt),
         updatedAt: formatDateTime(foundUser.updatedAt),
@@ -137,6 +154,13 @@ class UserService {
       if (existingEmail)
         throw badRequest('Ця електронна адреса вже використовується');
       updateData.email = newEmail;
+      const newVerificationLink = uuidv4();
+      updateData.emailVerificationStatus = 'pending';
+      updateData.verificationLink = newVerificationLink;
+      await mailService.sendEmailChangeVerification(
+        newEmail,
+        `http://${HOST}:${PORT}/api/auth/verification/${newVerificationLink}`
+      );
     }
     if (role && role !== foundRole.title) {
       const hasPermissionToChangeRole = await checkPermission(
@@ -168,7 +192,10 @@ class UserService {
       user: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        isActivated: updatedUser.isActivated,
+        emailVerificationStatus: mapValue(
+          updatedUser.emailVerificationStatus,
+          userVerificationMapping
+        ),
         role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,
       },
     };
@@ -199,7 +226,10 @@ class UserService {
       user: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        isActivated: updatedUser.isActivated,
+        emailVerificationStatus: mapValue(
+          updatedUser.emailVerificationStatus,
+          userVerificationMapping
+        ),
       },
     };
   }

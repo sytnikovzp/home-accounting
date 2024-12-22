@@ -13,9 +13,8 @@ function ShopForm({ shop = null, onSubmit, onUploadLogo, onRemoveLogo }) {
         title: shop.title,
         description: shop.description,
         url: shop.url,
-        logo: null,
       }
-    : { title: '', description: '', url: '', logo: null };
+    : { title: '', description: '', url: '' };
 
   const fields = [
     {

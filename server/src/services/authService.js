@@ -4,6 +4,7 @@ const {
   configs: {
     SERVER: { HOST, PORT },
   },
+  dataMapping: { userVerificationMapping },
 } = require('../constants');
 // ==============================================================
 const { User, Role } = require('../db/dbMongo/models');
@@ -12,6 +13,7 @@ const {
   hashPassword,
   verifyPassword,
   emailToLowerCase,
+  mapValue,
 } = require('../utils/sharedFunctions');
 // ==============================================================
 const mailService = require('./mailService');
@@ -28,18 +30,18 @@ class AuthService {
     const foundRole = await Role.findOne({ title: 'User' });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const hashedPassword = await hashPassword(password);
-    const activationLink = uuidv4();
+    const verificationLink = uuidv4();
     const user = await User.create({
       fullName,
       email: emailToLower,
       password: hashedPassword,
-      activationLink,
+      verificationLink,
       roleUuid: foundRole.uuid,
     });
     if (!user) throw badRequest('Користувач не зареєстрований');
-    await mailService.sendActivationMail(
+    await mailService.sendVerificationMail(
       email,
-      `http://${HOST}:${PORT}/api/auth/activate/${activationLink}`
+      `http://${HOST}:${PORT}/api/auth/verification/${verificationLink}`
     );
     const tokens = generateTokens(user);
     return {
@@ -47,7 +49,10 @@ class AuthService {
       user: {
         uuid: user.uuid,
         fullName: user.fullName,
-        isActivated: user.isActivated,
+        emailVerificationStatus: mapValue(
+          user.emailVerificationStatus,
+          userVerificationMapping
+        ),
         role: foundRole.title || '',
         photo: user.photo || '',
       },
@@ -68,18 +73,22 @@ class AuthService {
       user: {
         uuid: user.uuid,
         fullName: user.fullName,
-        isActivated: user.isActivated,
+        emailVerificationStatus: mapValue(
+          user.emailVerificationStatus,
+          userVerificationMapping
+        ),
         role: foundRole.title || '',
         photo: user.photo || '',
       },
     };
   }
 
-  async activate(activationLink) {
-    const user = await User.findOne({ activationLink });
+  async verification(verificationLink) {
+    const user = await User.findOne({ verificationLink });
     if (!user)
-      throw badRequest('Посилання для активації недійсне або не існує');
-    user.isActivated = true;
+      throw badRequest('Посилання для веріфікації недійсне або не існує');
+    user.emailVerificationStatus = 'verified';
+    user.verificationLink = null;
     await user.save();
   }
 
@@ -99,7 +108,10 @@ class AuthService {
       user: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
-        isActivated: foundUser.isActivated,
+        emailVerificationStatus: mapValue(
+          foundUser.emailVerificationStatus,
+          userVerificationMapping
+        ),
         role: foundRole.title || '',
         photo: foundUser.photo || '',
       },

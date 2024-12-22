@@ -49,7 +49,7 @@ function UserPasswordPage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Редагування паролю...'
+      title='Зміна паролю...'
       content={
         isLoading ? <Preloader /> : <PasswordForm onSubmit={handleSubmitUser} />
       }

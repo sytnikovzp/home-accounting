@@ -26,8 +26,9 @@ function UsersPage() {
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [isActivated, setIsActivated] = useState('all');
+  const [emailVerificationStatus, setEmailVerificationStatus] = useState('all');
   const [sortModel, setSortModel] = useState({
     field: 'fullName',
     order: 'asc',
@@ -50,7 +51,7 @@ function UsersPage() {
       const params = {
         page: currentPage,
         limit: pageSize,
-        isActivated,
+        emailVerificationStatus,
         sort: sortModel.field,
         order: sortModel.order,
       };
@@ -65,11 +66,32 @@ function UsersPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, pageSize, isActivated, sortModel]);
+  }, [currentPage, pageSize, emailVerificationStatus, sortModel]);
+
+  const fetchRoles = useCallback(async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    try {
+      const params = {
+        page: 1,
+        limit: 500,
+      };
+      const { data } = await restController.fetchAllRoles(params);
+      setRoles(data);
+    } catch (error) {
+      setErrorMessage(
+        error.response?.data?.errors?.[0]?.message ||
+          'Помилка завантаження даних'
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+    fetchRoles();
+  }, [fetchUsers, fetchRoles]);
 
   useEffect(() => {
     let timeout;
@@ -89,6 +111,7 @@ function UsersPage() {
           <UserEditPage
             handleModalClose={handleModalClose}
             fetchUsers={fetchUsers}
+            roles={roles}
             crudError={crudError}
             setCrudError={setCrudError}
           />
@@ -155,8 +178,10 @@ function UsersPage() {
         }}
         sortModel={sortModel}
         onSortModelChange={setSortModel}
-        selectedStatus={isActivated}
-        onStatusChange={(event) => setIsActivated(event.target.value)}
+        selectedStatus={emailVerificationStatus}
+        onStatusChange={(event) =>
+          setEmailVerificationStatus(event.target.value)
+        }
         showStatusDropdown
         usersPage
         linkEntity='users'

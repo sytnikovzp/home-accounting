@@ -7,7 +7,7 @@ const {
 const {
   registration,
   login,
-  activate,
+  verification,
   refresh,
 } = require('../services/authService');
 // ==============================================================
@@ -48,13 +48,13 @@ class AuthController {
     }
   }
 
-  async activate(req, res, next) {
+  async verification(req, res, next) {
     try {
-      const activationLink = req.params.link;
-      await activate(activationLink);
+      const verificationLink = req.params.link;
+      await verification(verificationLink);
       return res.redirect(`${URL}`);
     } catch (error) {
-      console.log('Activate account error: ', error.message);
+      console.log('Verification account error: ', error.message);
       next(error);
     }
   }

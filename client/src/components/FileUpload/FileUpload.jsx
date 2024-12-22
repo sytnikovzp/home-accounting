@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, LinearProgress } from '@mui/material';
+import { Avatar, Box, Button, IconButton, LinearProgress } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 // ==============================================================
 import { BASE_URL } from '../../constants';
@@ -35,16 +35,19 @@ function FileUpload({ file, onUpload, onRemove, label, entity, uploading }) {
           justifyContent: 'center',
         }}
       >
-        <img
+        <Avatar
           src={
             file
               ? `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`
+              : entity === 'users'
+              ? undefined
               : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
           }
           alt={file ? 'Файл завантажений' : 'Файл не завантажений'}
-          style={{
-            maxWidth: '100%',
-            maxHeight: '100%',
+          variant='rounded'
+          sx={{
+            width: '100%',
+            height: '100%',
             objectFit: 'contain',
           }}
         />

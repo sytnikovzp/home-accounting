@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 // ==============================================================
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
@@ -11,10 +11,12 @@ import UserForm from '../../components/Forms/UserForm/UserForm';
 function UserEditPage({
   handleModalClose,
   fetchUsers,
+  roles,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
+  const navigate = useNavigate();
   const {
     entity: userToCRUD,
     isLoading,
@@ -33,7 +35,6 @@ function UserEditPage({
         userToCRUD.uuid,
         values.fullName,
         values.email,
-        values.password,
         values.role
       );
       handleModalClose();
@@ -72,6 +73,10 @@ function UserEditPage({
     }
   };
 
+  const handleChangePassword = () => {
+    navigate(`/users/password/${uuid}`);
+  };
+
   return (
     <CustomModal
       isOpen
@@ -85,8 +90,10 @@ function UserEditPage({
           <UserForm
             user={userToCRUD}
             onSubmit={handleSubmitUser}
+            roles={roles}
             onUploadPhoto={handleUploadPhoto}
             onRemovePhoto={handleRemovePhoto}
+            onChangePassword={handleChangePassword}
           />
         )
       }

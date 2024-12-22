@@ -203,8 +203,8 @@ const ListTable = ({
               onChange={handleStatusChange}
             >
               <MenuItem value='all'>Всі користувачі</MenuItem>
-              <MenuItem value='true'>Підтверджені</MenuItem>
-              <MenuItem value='false'>Не підтверджені</MenuItem>
+              <MenuItem value='pending'>Очікують веріфікації</MenuItem>
+              <MenuItem value='verified'>Веріфіковані</MenuItem>
             </Select>
           </FormControl>
         )}

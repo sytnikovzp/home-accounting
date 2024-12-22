@@ -6,7 +6,7 @@ import {
   CalendarToday,
   Update,
   CheckCircle,
-  Cancel,
+  HourglassEmpty,
   AlternateEmail,
   AssignmentInd,
 } from '@mui/icons-material';
@@ -37,21 +37,26 @@ function UserViewPage({ handleModalClose }) {
     role,
     photo,
     email,
-    isActivated,
+    emailVerificationStatus,
     creation,
   } = userToCRUD || {};
 
   const { createdAt, updatedAt } = creation || {};
 
-  const statusIcon = isActivated ? (
-    <CheckCircle color='success' />
-  ) : (
-    <Cancel color='error' />
-  );
+  const statusIcon = (() => {
+    switch (emailVerificationStatus) {
+      case 'Веріфікований':
+        return <CheckCircle color='success' />;
+      case 'Очікує веріфікації':
+        return <HourglassEmpty color='warning' />;
+      default:
+        return null;
+    }
+  })();
 
   const photoSrc = photo
     ? `${BASE_URL.replace('/api/', '')}/images/users/${photo}`
-    : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
+    : undefined;
 
   return (
     <CustomModal
@@ -94,31 +99,39 @@ function UserViewPage({ handleModalClose }) {
                   </Link>
                 }
               />
-              <DetailRow
-                icon={AlternateEmail}
-                label='Email'
-                value={
-                  <Link
-                    component={RouterLink}
-                    to={`mailto:${email}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {email}
-                  </Link>
-                }
-              />
-              <DetailRow
-                icon={() => statusIcon}
-                label='Обліковий запис'
-                value={isActivated ? 'Підтверджено' : 'Не підтверджено'}
-              />
-              <DetailRow
-                icon={CalendarToday}
-                label='Створено'
-                value={createdAt}
-              />
-              <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
+              {email && (
+                <DetailRow
+                  icon={AlternateEmail}
+                  label='Email'
+                  value={
+                    <Link
+                      component={RouterLink}
+                      to={`mailto:${email}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {email}
+                    </Link>
+                  }
+                />
+              )}
+              {emailVerificationStatus && (
+                <DetailRow
+                  icon={() => statusIcon}
+                  label='Обліковий запис'
+                  value={emailVerificationStatus}
+                />
+              )}
+              {createdAt && (
+                <DetailRow
+                  icon={CalendarToday}
+                  label='Створено'
+                  value={createdAt}
+                />
+              )}
+              {updatedAt && (
+                <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
+              )}
             </Box>
           </Box>
         )

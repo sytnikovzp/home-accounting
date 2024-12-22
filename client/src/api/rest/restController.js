@@ -23,14 +23,14 @@ const restController = {
 
   // User management
   fetchAllUsers: async (
-    isActivated = 'all',
+    emailVerificationStatus = 'all',
     page = 1,
     limit = 6,
     sort = 'uuid',
     order = 'asc'
   ) => {
     const { data, totalCount } = await userService.getAllUsers(
-      isActivated,
+      emailVerificationStatus,
       page,
       limit,
       sort,

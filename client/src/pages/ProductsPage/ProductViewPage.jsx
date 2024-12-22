@@ -44,14 +44,18 @@ function ProductViewPage({ handleModalClose }) {
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
   const categoryTitle = category?.title || 'Невідомо';
 
-  let statusIcon;
-  if (status === 'Затверджено') {
-    statusIcon = <CheckCircle color='success' />;
-  } else if (status === 'Очікує модерації') {
-    statusIcon = <HourglassEmpty color='warning' />;
-  } else if (status === 'Відхилено') {
-    statusIcon = <Cancel color='error' />;
-  }
+  const statusIcon = (() => {
+    switch (status) {
+      case 'Затверджено':
+        return <CheckCircle color='success' />;
+      case 'Очікує модерації':
+        return <HourglassEmpty color='warning' />;
+      case 'Відхилено':
+        return <Cancel color='error' />;
+      default:
+        return null;
+    }
+  })();
 
   return (
     <CustomModal

@@ -62,12 +62,12 @@ const STATUS_REQUIRED_SCHEME = yup
   .oneOf(['approved', 'rejected'], 'Неприпустиме значення для статусу')
   .required('Це поле є обовʼязкове');
 
-const DATE_SCHEME = yup
+const DATE_REQUIRED_SCHEME = yup
   .date()
   .transform(parseDateString)
-  .required('Оберіть дату')
   .typeError('Некоректний формат дати')
-  .max(new Date(), 'Дата не може бути у майбутньому');
+  .max(new Date(), 'Дата не може бути у майбутньому')
+  .required('Оберіть дату');
 
 const PAGINATION_SCHEME = yup.object().shape({
   limit: yup.number().min(1).max(500).required(),
@@ -85,7 +85,7 @@ const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
 const UPDATE_USER_VALIDATION_SCHEME = yup.object().shape({
   fullName: STRING_REQUIRED_SCHEME,
   email: EMAIL_REQUIRED_VALIDATION_SCHEME,
-  role: STRING_NULLABLE_SCHEME,
+  role: STRING_REQUIRED_SCHEME,
   photo: STRING_NULLABLE_SCHEME,
 });
 
@@ -116,7 +116,7 @@ const PURCHASE_VALIDATION_SCHEME = yup.object().shape({
   shop: STRING_REQUIRED_SCHEME,
   measure: STRING_REQUIRED_SCHEME,
   currency: STRING_REQUIRED_SCHEME,
-  date: DATE_SCHEME,
+  date: DATE_REQUIRED_SCHEME,
 });
 
 const PRODUCT_VALIDATION_SCHEME = yup.object().shape({

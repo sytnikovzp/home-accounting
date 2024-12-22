@@ -122,7 +122,7 @@ module.exports.users = async (roleUuids) => [
     email: 'ivan.petrenko@gmail.com',
     photo: '1730686056955-ivan.petrenko.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
-    isActivated: true,
+    emailVerificationStatus: 'verified',
     roleUuid: roleUuids['Administrator'],
   },
   {
@@ -130,7 +130,7 @@ module.exports.users = async (roleUuids) => [
     email: 'o.ivanchuk@gmail.com',
     photo: '1730686066968-oleksandra.ivanchuk.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
-    isActivated: true,
+    emailVerificationStatus: 'verified',
     roleUuid: roleUuids['Moderator'],
   },
   {
@@ -138,7 +138,7 @@ module.exports.users = async (roleUuids) => [
     email: 'hanna.shevchenko@gmail.com',
     photo: '1730713464386-hanna.shevchenko.jpg',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
-    isActivated: true,
+    emailVerificationStatus: 'verified',
     roleUuid: roleUuids['User'],
   },
 ];

@@ -4,7 +4,7 @@ const {
   registration,
   login,
   logout,
-  activate,
+  verification,
   refresh,
 } = require('../controllers/authController');
 const {
@@ -16,7 +16,7 @@ const authRouter = new Router();
 authRouter.post('/registration', validateRegistration, registration);
 authRouter.post('/login', validateAuth, login);
 authRouter.get('/logout', logout);
-authRouter.get('/activate/:link', activate);
+authRouter.get('/verification/:link', verification);
 authRouter.get('/refresh', refresh);
 
 module.exports = authRouter;

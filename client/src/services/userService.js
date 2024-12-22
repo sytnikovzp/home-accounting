@@ -1,14 +1,14 @@
 import api from '../api';
 
 const getAllUsers = async ({
-  isActivated = 'all',
+  emailVerificationStatus = 'all',
   page = 1,
   limit = 6,
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
   const params = new URLSearchParams({
-    isActivated,
+    emailVerificationStatus,
     page,
     limit,
     sort,

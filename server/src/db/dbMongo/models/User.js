@@ -27,12 +27,13 @@ const usersSchema = new Schema(
       default: 0,
     },
     photo: String,
-    isActivated: {
-      type: Boolean,
+    emailVerificationStatus: {
+      type: String,
+      enum: ['pending', 'verified'],
       required: true,
-      default: false,
+      default: 'pending',
     },
-    activationLink: String,
+    verificationLink: String,
     roleUuid: {
       type: Schema.Types.UUID,
       required: true,
@@ -44,6 +45,7 @@ const usersSchema = new Schema(
     versionKey: false,
   }
 );
+
 const User = model('User', usersSchema);
 
 module.exports = User;

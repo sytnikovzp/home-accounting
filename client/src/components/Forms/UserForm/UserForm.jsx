@@ -1,21 +1,27 @@
 import { useState } from 'react';
+import { Box, Button } from '@mui/material';
 // ==============================================================
 import { UPDATE_USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 import FileUpload from '../../FileUpload/FileUpload';
 
-function UserForm({ user = null, onSubmit, onUploadPhoto, onRemovePhoto }) {
+function UserForm({
+  user = null,
+  onSubmit,
+  roles,
+  onUploadPhoto,
+  onRemovePhoto,
+  onChangePassword,
+}) {
   const [uploading, setUploading] = useState(false);
-
   const initialValues = user
     ? {
         fullName: user.fullName,
         email: user.email,
         role: user.role.title,
-        photo: null,
       }
-    : { fullName: '', email: '', role: '', photo: null };
+    : { fullName: '', email: '', role: '' };
 
   const fields = [
     {
@@ -34,7 +40,15 @@ function UserForm({ user = null, onSubmit, onUploadPhoto, onRemovePhoto }) {
     {
       name: 'role',
       label: 'Роль',
-      placeholder: 'User',
+      type: 'select',
+      options: [
+        { value: '', label: 'Оберіть роль:' },
+        ...roles.map((role) => ({
+          value: role.title,
+          label: role.title,
+        })),
+      ],
+      placeholder: 'Наприклад "User"',
       required: true,
     },
   ];
@@ -55,6 +69,17 @@ function UserForm({ user = null, onSubmit, onUploadPhoto, onRemovePhoto }) {
           uploading={uploading}
         />
       )}
+      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+        {user?.uuid && (
+          <Button
+            variant='contained'
+            color='success'
+            onClick={onChangePassword}
+          >
+            Змінити пароль
+          </Button>
+        )}
+      </Box>
       <BaseForm
         initialValues={initialValues}
         validationSchema={UPDATE_USER_VALIDATION_SCHEME}
