@@ -3,7 +3,6 @@ const { getCurrentUser } = require('../services/userService');
 const {
   getAllProducts,
   getProductByUuid,
-  updateProductStatus,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -95,32 +94,6 @@ class ProductController {
     } catch (error) {
       await transaction.rollback();
       console.error('Update product error: ', error.message);
-      next(error);
-    }
-  }
-
-  async moderationProduct(req, res, next) {
-    const transaction = await sequelize.transaction();
-    try {
-      const { productUuid } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
-      const updatedProduct = await updateProductStatus(
-        productUuid,
-        status,
-        currentUser,
-        transaction
-      );
-      if (updatedProduct) {
-        await transaction.commit();
-        res.status(200).json(updatedProduct);
-      } else {
-        await transaction.rollback();
-        res.status(401);
-      }
-    } catch (error) {
-      await transaction.rollback();
-      console.log('Moderation product error: ', error.message);
       next(error);
     }
   }

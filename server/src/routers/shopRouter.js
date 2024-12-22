@@ -7,12 +7,11 @@ const {
   updateShop,
   updateShopLogo,
   removeShopLogo,
-  moderationShop,
   deleteShop,
 } = require('../controllers/shopController');
 const {
   auth: { authHandler },
-  validation: { validateShop, validateModeration },
+  validation: { validateShop },
   pagination: { paginateElements },
   upload: { uploadShopLogos },
 } = require('../middlewares');
@@ -31,10 +30,6 @@ shopRouter
 shopRouter
   .route('/delete-logo/:shopUuid')
   .patch(authHandler, removeShopLogo);
-
-shopRouter
-  .route('/moderation/:shopUuid')
-  .patch(authHandler, validateModeration, moderationShop);
 
 shopRouter
   .route('/:shopUuid')

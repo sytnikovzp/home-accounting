@@ -10,6 +10,7 @@ const purchaseRouter = require('./purchaseRouter');
 const statisticRouter = require('./statisticRouter');
 const userRouter = require('./userRouter');
 const roleRouter = require('./roleRouter');
+const moderationRouter = require('./moderationRouter');
 
 const router = new Router();
 
@@ -23,5 +24,6 @@ router.use('/purchases', purchaseRouter);
 router.use('/statistics', statisticRouter);
 router.use('/users', userRouter);
 router.use('/roles', roleRouter);
+router.use('/moderation', moderationRouter);
 
 module.exports = router;

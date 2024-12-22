@@ -3,7 +3,6 @@ const { getCurrentUser } = require('../services/userService');
 const {
   getAllCategories,
   getCategoryByUuid,
-  updateCategoryStatus,
   createCategory,
   updateCategory,
   deleteCategory,
@@ -89,32 +88,6 @@ class CategoryController {
     } catch (error) {
       await transaction.rollback();
       console.log('Update category error: ', error.message);
-      next(error);
-    }
-  }
-
-  async moderationCategory(req, res, next) {
-    const transaction = await sequelize.transaction();
-    try {
-      const { categoryUuid } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
-      const updatedCategory = await updateCategoryStatus(
-        categoryUuid,
-        status,
-        currentUser,
-        transaction
-      );
-      if (updatedCategory) {
-        await transaction.commit();
-        res.status(200).json(updatedCategory);
-      } else {
-        await transaction.rollback();
-        res.status(401);
-      }
-    } catch (error) {
-      await transaction.rollback();
-      console.log('Moderation category error: ', error.message);
       next(error);
     }
   }

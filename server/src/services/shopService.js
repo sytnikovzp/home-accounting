@@ -158,30 +158,6 @@ class ShopService {
     return formatShopData(removedShopLogo);
   }
 
-  async updateShopStatus(uuid, status, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    if (!['approved', 'rejected'].includes(status))
-      throw badRequest('Недопустимий статус');
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MODERATION_SHOPS'
-    );
-    if (!hasPermission)
-      throw forbidden('Ви не маєте дозволу на модерацію магазинів');
-    const foundShop = await Shop.findOne({ where: { uuid } });
-    if (!foundShop) throw notFound('Магазин не знайдено');
-    const [affectedRows, [moderatedCategory]] = await Shop.update(
-      {
-        status,
-        moderatorUuid: currentUser.uuid,
-        moderatorFullName: currentUser.fullName,
-      },
-      { where: { uuid }, returning: true, transaction }
-    );
-    if (!affectedRows) throw badRequest('Магазин не проходить модерацію');
-    return formatShopData(moderatedCategory);
-  }
-
   async deleteShop(uuid, currentUser, transaction) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const canManageShops = await checkPermission(currentUser, 'MANAGE_SHOPS');

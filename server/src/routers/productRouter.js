@@ -5,12 +5,11 @@ const {
   getProductByUuid,
   createProduct,
   updateProduct,
-  moderationProduct,
   deleteProduct,
 } = require('../controllers/productController');
 const {
   auth: { authHandler },
-  validation: { validateProduct, validateModeration },
+  validation: { validateProduct },
   pagination: { paginateElements },
 } = require('../middlewares');
 
@@ -20,10 +19,6 @@ productRouter
   .route('/')
   .get(authHandler, paginateElements, getAllProducts)
   .post(authHandler, validateProduct, createProduct);
-
-productRouter
-  .route('/moderation/:productUuid')
-  .patch(authHandler, validateModeration, moderationProduct);
 
 productRouter
   .route('/:productUuid')

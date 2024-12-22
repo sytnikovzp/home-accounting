@@ -107,30 +107,6 @@ class CategoryService {
     return formatCategoryData(updatedCategory);
   }
 
-  async updateCategoryStatus(uuid, status, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    if (!['approved', 'rejected'].includes(status))
-      throw badRequest('Недопустимий статус');
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MODERATION_CATEGORIES'
-    );
-    if (!hasPermission)
-      throw forbidden('Ви не маєте дозволу на модерацію категорій');
-    const foundCategory = await Category.findOne({ where: { uuid } });
-    if (!foundCategory) throw notFound('Категорію не знайдено');
-    const [affectedRows, [moderatedCategory]] = await Category.update(
-      {
-        status,
-        moderatorUuid: currentUser.uuid,
-        moderatorFullName: currentUser.fullName,
-      },
-      { where: { uuid }, returning: true, transaction }
-    );
-    if (!affectedRows) throw badRequest('Категорія не проходить модерацію');
-    return formatCategoryData(moderatedCategory);
-  }
-
   async deleteCategory(uuid, currentUser, transaction) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const canManageCategories = await checkPermission(

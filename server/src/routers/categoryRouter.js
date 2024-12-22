@@ -5,12 +5,11 @@ const {
   getCategoryByUuid,
   createCategory,
   updateCategory,
-  moderationCategory,
   deleteCategory,
 } = require('../controllers/categoryController');
 const {
   auth: { authHandler },
-  validation: { validateCategory, validateModeration },
+  validation: { validateCategory },
   pagination: { paginateElements },
 } = require('../middlewares');
 
@@ -20,10 +19,6 @@ categoryRouter
   .route('/')
   .get(authHandler, paginateElements, getAllCategories)
   .post(authHandler, validateCategory, createCategory);
-
-categoryRouter
-  .route('/moderation/:categoryUuid')
-  .patch(authHandler, validateModeration, moderationCategory);
 
 categoryRouter
   .route('/:categoryUuid')

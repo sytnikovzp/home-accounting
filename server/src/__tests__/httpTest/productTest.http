@@ -63,15 +63,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhb
   "category": "Пристрої"
 }
 
-### Moderation product
-PATCH http://localhost:5000/api/products/moderation/02d41fd1-dffe-48c9-bfad-c66050887a87 HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik8uSXZhbmNodWtAR21haWwuY29tIiwiaWF0IjoxNzM0MTM1MDI5LCJleHAiOjE3MzU0MzEwMjl9.6ussjSKy03eg5HWH54jIAFCJuvm-flA36wMtldroGa0
-
-{
-  "status": "rejected"
-}
-
 ### Delete product
 DELETE http://localhost:5000/api/products/9a79e2be-35f0-41e6-b493-cf850faed9c5 HTTP/1.1
 Content-Type: application/json

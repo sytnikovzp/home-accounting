@@ -3,7 +3,6 @@ const { getCurrentUser } = require('../services/userService');
 const {
   getAllShops,
   getShopByUuid,
-  updateShopStatus,
   createShop,
   updateShop,
   deleteShop,
@@ -151,32 +150,6 @@ class ShopController {
     } catch (error) {
       await transaction.rollback();
       console.error('Remove logo shop error: ', error.message);
-      next(error);
-    }
-  }
-
-  async moderationShop(req, res, next) {
-    const transaction = await sequelize.transaction();
-    try {
-      const { shopUuid } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
-      const updatedShop = await updateShopStatus(
-        shopUuid,
-        status,
-        currentUser,
-        transaction
-      );
-      if (updatedShop) {
-        await transaction.commit();
-        res.status(200).json(updatedShop);
-      } else {
-        await transaction.rollback();
-        res.status(401);
-      }
-    } catch (error) {
-      await transaction.rollback();
-      console.log('Moderation shop error: ', error.message);
       next(error);
     }
   }

@@ -142,30 +142,6 @@ class ProductService {
     return formatProductData(updatedProduct);
   }
 
-  async updateProductStatus(uuid, status, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    if (!['approved', 'rejected'].includes(status))
-      throw badRequest('Недопустимий статус');
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MODERATION_PRODUCTS'
-    );
-    if (!hasPermission)
-      throw forbidden('Ви не маєте дозволу на модерацію товарів');
-    const foundProduct = await Product.findOne({ where: { uuid } });
-    if (!foundProduct) throw notFound('Товар не знайдено');
-    const [affectedRows, [moderatedProduct]] = await Product.update(
-      {
-        status,
-        moderatorUuid: currentUser.uuid,
-        moderatorFullName: currentUser.fullName,
-      },
-      { where: { uuid }, returning: true, transaction }
-    );
-    if (!affectedRows) throw badRequest('Товар не проходить модерацію');
-    return formatProductData(moderatedProduct);
-  }
-
   async deleteProduct(uuid, currentUser, transaction) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const canManageProducts = await checkPermission(
