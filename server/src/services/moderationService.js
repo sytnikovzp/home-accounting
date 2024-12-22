@@ -14,7 +14,7 @@ const entityModels = {
   shops: Shop,
 };
 
-const formatAllEntities = {
+const formatAllEntitiesData = {
   categories: (category) => ({
     uuid: category.uuid,
     title: category.title,
@@ -56,16 +56,21 @@ class ModerationService {
     for (const [entity, Model] of Object.entries(entityModels)) {
       const foundItems = await Model.findAll({
         where: { status: pendingStatus },
-        order: [[sort, order]],
         raw: true,
-        limit,
-        offset,
       });
       total += await Model.count({ where: { status: pendingStatus } });
-      const formattedItems = foundItems.map(formatAllEntities[entity]);
+      const formattedItems = foundItems.map(formatAllEntitiesData[entity]);
       allItems.push(...formattedItems);
     }
-    return { allItems, total };
+    allItems.sort((a, b) => {
+      if (order === 'asc') {
+        return a[sort] > b[sort] ? 1 : a[sort] < b[sort] ? -1 : 0;
+      } else {
+        return a[sort] < b[sort] ? 1 : a[sort] > b[sort] ? -1 : 0;
+      }
+    });
+    const paginatedItems = allItems.slice(offset, offset + limit);
+    return { allItems: paginatedItems, total };
   }
 
   async updateCategoryStatus(uuid, status, currentUser, transaction) {

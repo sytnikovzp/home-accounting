@@ -8,7 +8,7 @@ const {
 } = require('../services/moderationService');
 
 class ModerationController {
-  async getPendingItems(req, res, next) {
+  async getAllPendingItems(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;

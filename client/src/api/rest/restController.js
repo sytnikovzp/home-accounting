@@ -9,6 +9,7 @@ import {
   productService,
   purchaseService,
   shopService,
+  moderationService,
   statisticService,
 } from '../../services';
 
@@ -101,8 +102,6 @@ const restController = {
   addCategory: (title) => categoryService.createCategory(title),
   editCategory: (categoryUuid, title) =>
     categoryService.updateCategory(categoryUuid, title),
-  moderationCategory: (categoryUuid, status) =>
-    categoryService.moderationCategory(categoryUuid, status),
   removeCategory: (categoryUuid) =>
     categoryService.deleteCategory(categoryUuid),
 
@@ -190,8 +189,6 @@ const restController = {
     productService.createProduct(title, category),
   editProduct: (productUuid, title, category) =>
     productService.updateProduct(productUuid, title, category),
-  moderationProduct: (productUuid, status) =>
-    productService.moderationProduct(productUuid, status),
   removeProduct: (productUuid) => productService.deleteProduct(productUuid),
 
   // Purchase management
@@ -275,9 +272,32 @@ const restController = {
   uploadShopLogo: (shopUuid, shopLogo) =>
     shopService.updateShopLogo(shopUuid, shopLogo),
   removeShopLogo: (shopUuid) => shopService.removeShopLogo(shopUuid),
-  moderationShop: (shopUuid, status) =>
-    shopService.moderationShop(shopUuid, status),
   removeShop: (shopUuid) => shopService.deleteShop(shopUuid),
+
+  // Moderation
+  fetchAllPendingItems: async (
+    page = 1,
+    limit = 6,
+    sort = 'uuid',
+    order = 'asc'
+  ) => {
+    const { data, totalCount } = await moderationService.getAllPendingItems(
+      page,
+      limit,
+      sort,
+      order
+    );
+    return {
+      data,
+      totalCount,
+    };
+  },
+  moderationCategory: (categoryUuid, status) =>
+    moderationService.moderationCategory(categoryUuid, status),
+  moderationProduct: (productUuid, status) =>
+    moderationService.moderationProduct(productUuid, status),
+  moderationShop: (shopUuid, status) =>
+    moderationService.moderationShop(shopUuid, status),
 
   // Statistics
   fetchCostByCategoryPerPeriod: async (category, ago = null) => {

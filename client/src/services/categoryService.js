@@ -45,13 +45,6 @@ const updateCategory = async (categoryUuid, title) => {
   return data;
 };
 
-const moderationCategory = async (categoryUuid, status) => {
-  const { data } = await api.patch(`/categories/moderation/${categoryUuid}`, {
-    status,
-  });
-  return data;
-};
-
 const deleteCategory = async (categoryUuid) => {
   const { data } = await api.delete(`/categories/${categoryUuid}`);
   return data;
@@ -62,6 +55,5 @@ export default {
   getCategoryByUuid,
   createCategory,
   updateCategory,
-  moderationCategory,
   deleteCategory,
 };

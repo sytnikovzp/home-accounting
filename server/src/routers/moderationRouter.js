@@ -1,7 +1,7 @@
 const { Router } = require('express');
 // ==============================================================
 const {
-  getPendingItems,
+  getAllPendingItems,
   moderationCategory,
   moderationProduct,
   moderationShop,
@@ -16,7 +16,7 @@ const moderationRouter = new Router();
 
 moderationRouter
   .route('/')
-  .get(authHandler, paginateElements, getPendingItems);
+  .get(authHandler, paginateElements, getAllPendingItems);
 
 moderationRouter
   .route('/categories/:categoryUuid')

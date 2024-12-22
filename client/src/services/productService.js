@@ -48,13 +48,6 @@ const updateProduct = async (productUuid, title, category) => {
   return data;
 };
 
-const moderationProduct = async (productUuid, status) => {
-  const { data } = await api.patch(`/products/moderation/${productUuid}`, {
-    status,
-  });
-  return data;
-};
-
 const deleteProduct = async (productUuid) => {
   const { data } = await api.delete(`/products/${productUuid}`);
   return data;
@@ -65,6 +58,5 @@ export default {
   getProductByUuid,
   createProduct,
   updateProduct,
-  moderationProduct,
   deleteProduct,
 };
