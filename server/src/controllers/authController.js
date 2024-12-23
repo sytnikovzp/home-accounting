@@ -21,7 +21,7 @@ class AuthController {
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(201).json(authData);
     } catch (error) {
-      console.log('Registration error: ', error.message);
+      console.error('Registration error: ', error.message);
       next(error);
     }
   }
@@ -33,7 +33,7 @@ class AuthController {
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(200).json(authData);
     } catch (error) {
-      console.log('Login error: ', error.message);
+      console.error('Login error: ', error.message);
       next(error);
     }
   }
@@ -43,7 +43,7 @@ class AuthController {
       res.clearCookie('refreshToken');
       res.sendStatus(res.statusCode);
     } catch (error) {
-      console.log('Logout error: ', error.message);
+      console.error('Logout error: ', error.message);
       next(error);
     }
   }
@@ -54,7 +54,7 @@ class AuthController {
       await verification(verificationLink);
       return res.redirect(`${URL}`);
     } catch (error) {
-      console.log('Verification account error: ', error.message);
+      console.error('Verification account error: ', error.message);
       next(error);
     }
   }
@@ -66,7 +66,7 @@ class AuthController {
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(200).json(authData);
     } catch (error) {
-      console.log('Refresh error: ', error.message);
+      console.error('Refresh error: ', error.message);
       next(error);
     }
   }

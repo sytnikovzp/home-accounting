@@ -24,7 +24,7 @@ class ModerationController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get all pending items error: ', error.message);
+      console.error('Get all pending items error: ', error.message);
       next(error);
     }
   }
@@ -50,7 +50,7 @@ class ModerationController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Moderation category error: ', error.message);
+      console.error('Moderation category error: ', error.message);
       next(error);
     }
   }
@@ -76,7 +76,7 @@ class ModerationController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Moderation product error: ', error.message);
+      console.error('Moderation product error: ', error.message);
       next(error);
     }
   }
@@ -102,7 +102,7 @@ class ModerationController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Moderation shop error: ', error.message);
+      console.error('Moderation shop error: ', error.message);
       next(error);
     }
   }

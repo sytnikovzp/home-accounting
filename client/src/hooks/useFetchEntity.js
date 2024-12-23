@@ -14,7 +14,7 @@ function useFetchEntity(entityType) {
         const response = await restController[`fetch${entityType}ByUuid`](uuid);
         setEntity(response);
       } catch (error) {
-        console.log(error);
+        console.error('Помилка виконання операції:', error.message);
         setErrorMessage(
           error.response?.data?.errors?.[0]?.title ||
             'Помилка виконання операції'

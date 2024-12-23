@@ -26,7 +26,7 @@ class CategoryController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get all categories error: ', error.message);
+      console.error('Get all categories error: ', error.message);
       next(error);
     }
   }
@@ -41,7 +41,7 @@ class CategoryController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get category by uuid error: ', error.message);
+      console.error('Get category by uuid error: ', error.message);
       next(error);
     }
   }
@@ -61,7 +61,7 @@ class CategoryController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Create category error: ', error.message);
+      console.error('Create category error: ', error.message);
       next(error);
     }
   }
@@ -87,7 +87,7 @@ class CategoryController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Update category error: ', error.message);
+      console.error('Update category error: ', error.message);
       next(error);
     }
   }
@@ -111,7 +111,7 @@ class CategoryController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Delete category error: ', error.message);
+      console.error('Delete category error: ', error.message);
       next(error);
     }
   }

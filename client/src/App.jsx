@@ -15,15 +15,15 @@ import Layout from './components/Layout/Layout';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import AuthPage from './pages/AuthPage/AuthPage';
 import HomePage from './pages/HomePage/HomePage';
-import PurchasesPage from './pages/PurchasesPage/PurchasesPage';
-import ShopsPage from './pages/ShopsPage/ShopsPage';
-import ProductsPage from './pages/ProductsPage/ProductsPage';
-import CategoriesPage from './pages/CategoriesPage/CategoriesPage';
-import CurrenciesPage from './pages/CurrenciesPage/CurrenciesPage';
-import MeasuresPage from './pages/MeasuresPage/MeasuresPage';
-import ModerationPage from './pages/ModerationPage/ModerationPage';
-import UsersPage from './pages/UsersPage/UsersPage';
-import RolesPage from './pages/RolesPage/RolesPage';
+import PurchasesPage from './pages/Purchases/PurchasesPage';
+import ShopsPage from './pages/Shops/ShopsPage';
+import ProductsPage from './pages/Products/ProductsPage';
+import CategoriesPage from './pages/Categories/CategoriesPage';
+import CurrenciesPage from './pages/Currencies/CurrenciesPage';
+import MeasuresPage from './pages/Measures/MeasuresPage';
+import ModerationPage from './pages/Moderation/ModerationPage';
+import UsersPage from './pages/Users/UsersPage';
+import RolesPage from './pages/Roles/RolesPage';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);

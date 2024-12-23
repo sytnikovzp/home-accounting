@@ -19,7 +19,7 @@ const postgresConnect = async () => {
     await dbPostgres.sequelize.authenticate();
     console.log(`Connection to DB <<< ${DB_NAME} >>> is done!`);
   } catch (error) {
-    console.log(`Can not connect to DB ${DB_NAME}!`, error.message);
+    console.error(`Can not connect to DB ${DB_NAME}!`, error.message);
   }
 };
 postgresConnect();

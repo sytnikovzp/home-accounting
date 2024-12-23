@@ -31,7 +31,7 @@ class UserController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get all users error: ', error.message);
+      console.error('Get all users error: ', error.message);
       next(error);
     }
   }
@@ -47,7 +47,7 @@ class UserController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get user profile error: ', error.message);
+      console.error('Get user profile error: ', error.message);
       next(error);
     }
   }
@@ -61,7 +61,7 @@ class UserController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get user profile error: ', error.message);
+      console.error('Get user profile error: ', error.message);
       next(error);
     }
   }
@@ -84,7 +84,7 @@ class UserController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Update user error: ', error.message);
+      console.error('Update user error: ', error.message);
       next(error);
     }
   }
@@ -106,7 +106,7 @@ class UserController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Change password error: ', error.message);
+      console.error('Change password error: ', error.message);
       next(error);
     }
   }
@@ -161,7 +161,7 @@ class UserController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Delete user error: ', error.message);
+      console.error('Delete user error: ', error.message);
       next(error);
     }
   }

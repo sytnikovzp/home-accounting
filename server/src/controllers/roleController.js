@@ -49,7 +49,7 @@ class RoleController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get role error: ', error.message);
+      console.error('Get role error: ', error.message);
       next(error);
     }
   }
@@ -70,7 +70,7 @@ class RoleController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Create role error: ', error.message);
+      console.error('Create role error: ', error.message);
       next(error);
     }
   }
@@ -93,7 +93,7 @@ class RoleController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Update role error: ', error.message);
+      console.error('Update role error: ', error.message);
       next(error);
     }
   }
@@ -109,7 +109,7 @@ class RoleController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Delete role error: ', error.message);
+      console.error('Delete role error: ', error.message);
       next(error);
     }
   }

@@ -73,6 +73,7 @@ class ModerationService {
       }
     });
     const paginatedItems = allItems.slice(offset, offset + limit);
+    if (!paginatedItems.length) throw notFound('Елементи не знайдено');
     return { allItems: paginatedItems, total };
   }
 

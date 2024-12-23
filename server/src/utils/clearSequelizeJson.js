@@ -11,7 +11,7 @@ console.log(filesToClear);
 filesToClear.forEach((filePath) => {
   fs.writeFile(filePath, JSON.stringify([]), (error) => {
     if (error) {
-      console.log(`erroror clearing file ${filePath}:`, error);
+      console.error(`Error clearing file ${filePath}:`, error);
     } else {
       console.log(`Cleared file ${filePath}`);
     }

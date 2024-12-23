@@ -67,10 +67,12 @@ function ListTable({
         : { field, order: 'asc' };
     onSortModelChange(newSortModel);
   };
+
   const handleStatusChange = (event) => {
     onStatusChange(event);
     onPageChange(1);
   };
+
   const isMobile = useMediaQuery('(max-width:600px)');
   const memoizedColumns = useMemo(() => columns, [columns]);
   const memoizedRows = useMemo(() => rows, [rows]);
@@ -153,37 +155,47 @@ function ListTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {memoizedRows.map((row) => (
-            <TableRow key={row.uuid} sx={stylesTableRow}>
-              {memoizedColumns.map((col, index) =>
-                renderTableCell(col, row, index)
-              )}
-              {!isMobile && (
-                <TableCell align='center' sx={stylesActionsBodyTableCell}>
-                  {isModerationPage ? (
-                    <Tooltip title='Модерувати'>
-                      <IconButton onClick={() => onModerate(row)}>
-                        <TaskIcon />
-                      </IconButton>
-                    </Tooltip>
-                  ) : (
-                    <>
-                      <Tooltip title='Редагувати'>
-                        <IconButton onClick={() => onEdit(row)}>
-                          <EditIcon />
+          {memoizedRows.length > 0 ? (
+            memoizedRows.map((row) => (
+              <TableRow key={row.uuid} sx={stylesTableRow}>
+                {memoizedColumns.map((col, index) =>
+                  renderTableCell(col, row, index)
+                )}
+                {!isMobile && (
+                  <TableCell align='center' sx={stylesActionsBodyTableCell}>
+                    {isModerationPage ? (
+                      <Tooltip title='Модерувати'>
+                        <IconButton onClick={() => onModerate(row)}>
+                          <TaskIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title='Видалити'>
-                        <IconButton onClick={() => onDelete(row)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </>
-                  )}
-                </TableCell>
-              )}
+                    ) : (
+                      <>
+                        <Tooltip title='Редагувати'>
+                          <IconButton onClick={() => onEdit(row)}>
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title='Видалити'>
+                          <IconButton onClick={() => onDelete(row)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    )}
+                  </TableCell>
+                )}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={memoizedColumns.length + 1} align='center'>
+                <Typography variant='body1'>
+                  Немає даних для відображення
+                </Typography>
+              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
       <Box

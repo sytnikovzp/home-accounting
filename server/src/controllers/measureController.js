@@ -25,7 +25,7 @@ class MeasureController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get all measures error: ', error.message);
+      console.error('Get all measures error: ', error.message);
       next(error);
     }
   }
@@ -40,7 +40,7 @@ class MeasureController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get measure by uuid error: ', error.message);
+      console.error('Get measure by uuid error: ', error.message);
       next(error);
     }
   }
@@ -65,7 +65,7 @@ class MeasureController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Create measure error: ', error.message);
+      console.error('Create measure error: ', error.message);
       next(error);
     }
   }
@@ -92,7 +92,7 @@ class MeasureController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Update measure error: ', error.message);
+      console.error('Update measure error: ', error.message);
       next(error);
     }
   }
@@ -116,7 +116,7 @@ class MeasureController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Delete measure error: ', error.message);
+      console.error('Delete measure error: ', error.message);
       next(error);
     }
   }

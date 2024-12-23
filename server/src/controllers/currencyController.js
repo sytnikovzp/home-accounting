@@ -25,7 +25,7 @@ class CurrencyController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get all currencies error: ', error.message);
+      console.error('Get all currencies error: ', error.message);
       next(error);
     }
   }
@@ -40,7 +40,7 @@ class CurrencyController {
         res.status(401);
       }
     } catch (error) {
-      console.log('Get currency by uuid error: ', error.message);
+      console.error('Get currency by uuid error: ', error.message);
       next(error);
     }
   }
@@ -65,7 +65,7 @@ class CurrencyController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Create currency error: ', error.message);
+      console.error('Create currency error: ', error.message);
       next(error);
     }
   }
@@ -92,7 +92,7 @@ class CurrencyController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Update currency error: ', error.message);
+      console.error('Update currency error: ', error.message);
       next(error);
     }
   }
@@ -116,7 +116,7 @@ class CurrencyController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.log('Delete currency error: ', error.message);
+      console.error('Delete currency error: ', error.message);
       next(error);
     }
   }

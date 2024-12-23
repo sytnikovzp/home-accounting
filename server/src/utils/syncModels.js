@@ -6,8 +6,8 @@ module.exports.syncModel = async (model) => {
     console.log('===========================================');
     console.log(`Sync of ${model.name} has been done successfully!`);
   } catch (error) {
-    console.log('===========================================');
-    console.log(`Can't sync ${model.name}: `, error.message);
+    console.error('===========================================');
+    console.error(`Can't sync ${model.name}: `, error.message);
   }
 };
 
@@ -17,7 +17,7 @@ module.exports.syncAllModels = async () => {
     console.log('===========================================');
     console.log('Sync all models has been done successfully!');
   } catch (error) {
-    console.log('===========================================');
-    console.log('Can not sync all models: ', error.message);
+    console.error('===========================================');
+    console.error('Can not sync all models: ', error.message);
   }
 };
