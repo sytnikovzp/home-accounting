@@ -13,6 +13,7 @@ const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const formatCategoryData = (category) => ({
   uuid: category.uuid,
   title: category.title,
+  contentType: 'Категорія',
   status: mapValue(category.status, statusModerationMapping),
   moderation: {
     moderatorUuid: category.moderatorUuid || '',

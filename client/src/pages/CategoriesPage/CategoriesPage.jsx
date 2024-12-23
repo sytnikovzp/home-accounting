@@ -54,12 +54,12 @@ function CategoriesPage() {
       const { data, totalCount } = await restController.fetchAllCategories(
         params
       );
-      setCategories(data);
+      setCategories(data || []);
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);

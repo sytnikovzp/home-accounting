@@ -13,6 +13,7 @@ const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const formatShopData = (shop) => ({
   uuid: shop.uuid,
   title: shop.title,
+  contentType: 'Магазин',
   description: shop.description || '',
   url: shop.url || '',
   logo: shop.logo || '',

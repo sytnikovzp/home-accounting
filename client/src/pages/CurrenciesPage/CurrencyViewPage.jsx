@@ -28,7 +28,7 @@ function CurrencyViewPage({ handleModalClose }) {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const { uuid: currencyUuid, title, code, creation } = currencyToCRUD || {};
+  const { title, code, creation } = currencyToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   return (
@@ -41,9 +41,8 @@ function CurrencyViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 3, mb: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='UUID' value={currencyUuid} />
               <DetailRow icon={Info} label='Назва' value={title} />
               <DetailRow
                 icon={Description}

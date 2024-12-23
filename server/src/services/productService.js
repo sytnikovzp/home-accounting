@@ -14,6 +14,7 @@ const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const formatProductData = (product) => ({
   uuid: product.uuid,
   title: product.title,
+  contentType: 'Товар',
   status: mapValue(product.status, statusModerationMapping),
   moderation: {
     moderatorUuid: product.moderatorUuid || '',

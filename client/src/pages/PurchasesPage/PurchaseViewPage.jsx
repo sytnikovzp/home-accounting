@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { Box, Link } from '@mui/material';
 import {
-  Info,
   CalendarToday,
   Person,
   Update,
@@ -33,7 +32,6 @@ function PurchaseViewPage({ handleModalClose }) {
   }, [uuid, fetchEntityByUuid]);
 
   const {
-    uuid: purchaseUuid,
     product,
     quantity,
     unitPrice,
@@ -46,10 +44,10 @@ function PurchaseViewPage({ handleModalClose }) {
   } = purchaseToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
-  const productTitle = product?.title || 'Невідомо';
-  const shopTitle = shop?.title || 'Невідомо';
-  const measureTitle = measure?.title || 'Невідомо';
-  const currencyCode = currency?.code || 'Невідомо';
+  const productTitle = product?.title || '*Дані відсутні*';
+  const shopTitle = shop?.title || '*Дані відсутні*';
+  const measureTitle = measure?.title || '*Дані відсутні*';
+  const currencyCode = currency?.code || '*Дані відсутні*';
 
   return (
     <CustomModal
@@ -61,9 +59,8 @@ function PurchaseViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 3, mb: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='UUID' value={purchaseUuid} />
               <DetailRow
                 icon={ShoppingCart}
                 label='Товар'

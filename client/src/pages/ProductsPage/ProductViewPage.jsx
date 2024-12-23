@@ -31,18 +31,11 @@ function ProductViewPage({ handleModalClose }) {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const {
-    uuid: productUuid,
-    title,
-    status,
-    moderation,
-    creation,
-    category,
-  } = productToCRUD || {};
+  const { title, status, moderation, creation, category } = productToCRUD || {};
 
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
-  const categoryTitle = category?.title || 'Невідомо';
+  const categoryTitle = category?.title || '*Дані відсутні*';
 
   const statusIcon = (() => {
     switch (status) {
@@ -67,9 +60,8 @@ function ProductViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 3, mb: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='UUID' value={productUuid} />
               <DetailRow icon={Info} label='Назва' value={title} />
               <DetailRow
                 icon={() => statusIcon}

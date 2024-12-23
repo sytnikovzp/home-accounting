@@ -24,6 +24,7 @@ import { BASE_URL } from '../../constants';
 // ==============================================================
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import TaskIcon from '@mui/icons-material/Task';
 // ==============================================================
 import {
   cellStyle,
@@ -41,6 +42,7 @@ function ListTable({
   rows,
   onEdit,
   onDelete,
+  onModerate,
   pagination: {
     totalCount,
     currentPage,
@@ -56,6 +58,7 @@ function ListTable({
   showStatusDropdown = false,
   usersPage = false,
   linkEntity = '',
+  isModerationPage = false,
 }) {
   const handleSort = (field) => {
     const newSortModel =
@@ -91,6 +94,10 @@ function ListTable({
             sx={{ width: 40, height: 40 }}
           />
         </Box>
+      ) : col.field === 'title' && isModerationPage ? (
+        <Typography variant='body1' sx={{ color: 'common.black' }}>
+          {row[col.field]}
+        </Typography>
       ) : ['title', 'product', 'fullName'].includes(col.field) ? (
         <RouterLink
           to={`/${linkEntity}/${row.uuid}`}
@@ -139,8 +146,8 @@ function ListTable({
               </TableCell>
             ))}
             {!isMobile && (
-              <TableCell align='right' sx={stylesActionsHeadTableCell}>
-                Редаг./Видал.
+              <TableCell align='center' sx={stylesActionsHeadTableCell}>
+                {isModerationPage ? 'Модерувати' : 'Редаг./Видал.'}
               </TableCell>
             )}
           </TableRow>
@@ -153,16 +160,26 @@ function ListTable({
               )}
               {!isMobile && (
                 <TableCell align='center' sx={stylesActionsBodyTableCell}>
-                  <Tooltip title='Редагувати'>
-                    <IconButton onClick={() => onEdit(row)}>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title='Видалити'>
-                    <IconButton onClick={() => onDelete(row)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
+                  {isModerationPage ? (
+                    <Tooltip title='Модерувати'>
+                      <IconButton onClick={() => onModerate(row)}>
+                        <TaskIcon />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <>
+                      <Tooltip title='Редагувати'>
+                        <IconButton onClick={() => onEdit(row)}>
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title='Видалити'>
+                        <IconButton onClick={() => onDelete(row)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </>
+                  )}
                 </TableCell>
               )}
             </TableRow>

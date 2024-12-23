@@ -56,12 +56,12 @@ function PurchasesPage() {
       const { data, totalCount } = await restController.fetchAllPurchases(
         params
       );
-      setPurchases(data);
+      setPurchases(data || []);
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);
@@ -77,11 +77,11 @@ function PurchasesPage() {
         limit: 500,
       };
       const { data } = await restController.fetchAllProducts(params);
-      setProducts(data);
+      setProducts(data || []);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);
@@ -97,11 +97,11 @@ function PurchasesPage() {
         limit: 500,
       };
       const { data } = await restController.fetchAllShops(params);
-      setShops(data);
+      setShops(data || []);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);
@@ -117,11 +117,11 @@ function PurchasesPage() {
         limit: 500,
       };
       const { data } = await restController.fetchAllMeasures(params);
-      setMeasures(data);
+      setMeasures(data || []);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);
@@ -137,11 +137,11 @@ function PurchasesPage() {
         limit: 500,
       };
       const { data } = await restController.fetchAllCurrencies(params);
-      setCurrencies(data);
+      setCurrencies(data || []);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);

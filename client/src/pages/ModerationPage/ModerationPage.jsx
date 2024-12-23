@@ -7,13 +7,13 @@ import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 // ==============================================================
-import ModerationViewPage from './ModerationViewPage';
+import ContentModerationPage from './ContentModerationPage';
 // ==============================================================
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 
-function ModerationPage() {
+function ModerationsPage() {
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
@@ -29,11 +29,17 @@ function ModerationPage() {
 
   const handleModalClose = () => {
     setCrudError(null);
-    navigate('/moderations');
+    navigate('/moderation');
   };
 
-  const openModal = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
+  const openModal = (moderation) => {
+    const { path, uuid } = moderation;
+    const allowedPaths = ['category', 'product', 'shop'];
+    if (allowedPaths.includes(path) && uuid) {
+      navigate(`/moderation/${path}/${uuid}`);
+    } else {
+      console.error('Недійсний шлях або UUID відсутній:', moderation);
+    }
   };
 
   const fetchModerations = useCallback(async () => {
@@ -49,12 +55,12 @@ function ModerationPage() {
       const { data, totalCount } = await restController.fetchAllPendingItems(
         params
       );
-      setModerations(data);
+      setModerations(data || []);
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);
@@ -78,14 +84,21 @@ function ModerationPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path=':uuid'
-        element={<ModerationViewPage handleModalClose={handleModalClose} />}
+        path=':path/:uuid'
+        element={
+          <ContentModerationPage
+            handleModalClose={handleModalClose}
+            fetchModerations={fetchModerations}
+            crudError={crudError}
+            setCrudError={setCrudError}
+          />
+        }
       />
     </Routes>
   );
 
   if (showPreloader)
-    return <Preloader message='Завантаження списку "Модерації"...' />;
+    return <Preloader message='Завантаження списку "Модерацій"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (
@@ -96,16 +109,16 @@ function ModerationPage() {
         alignItems='center'
         mb={2}
       >
-        <Typography variant='h6'>Модерація</Typography>
+        <Typography variant='h6'>Підлягають модерації</Typography>
       </Box>
       <ListTable
         columns={[
-          { field: 'type', headerName: 'Тип', align: 'left' },
+          { field: 'contentType', headerName: 'Тип контенту', align: 'left' },
           { field: 'title', headerName: 'Назва', align: 'left' },
         ]}
         rows={moderations}
-        onEdit={(moderation) => openModal('edit', moderation.uuid)}
-        onDelete={(moderation) => openModal('delete', moderation.uuid)}
+        onModerate={openModal}
+        disableClickableTitles
         pagination={{
           totalCount,
           currentPage,
@@ -117,10 +130,11 @@ function ModerationPage() {
         sortModel={sortModel}
         onSortModelChange={setSortModel}
         linkEntity='moderations'
+        isModerationPage={true}
       />
       {renderRoutes()}
     </>
   );
 }
 
-export default ModerationPage;
+export default ModerationsPage;

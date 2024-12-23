@@ -31,15 +31,8 @@ function UserViewPage({ handleModalClose }) {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const {
-    uuid: userUuid,
-    fullName,
-    role,
-    photo,
-    email,
-    emailVerificationStatus,
-    creation,
-  } = userToCRUD || {};
+  const { fullName, role, photo, email, emailVerificationStatus, creation } =
+    userToCRUD || {};
 
   const { createdAt, updatedAt } = creation || {};
 
@@ -68,7 +61,7 @@ function UserViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 3, mb: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <Box
                 sx={{
@@ -76,7 +69,7 @@ function UserViewPage({ handleModalClose }) {
                   justifyContent: 'space-between',
                 }}
               >
-                <DetailRow icon={Info} label='UUID' value={userUuid} />
+                <DetailRow icon={Info} label='Повне ім’я' value={fullName} />
                 <Avatar
                   src={photoSrc}
                   alt='Фото користувача'
@@ -84,7 +77,6 @@ function UserViewPage({ handleModalClose }) {
                   sx={{ width: 50, height: 50 }}
                 />
               </Box>
-              <DetailRow icon={Info} label='Повне ім’я' value={fullName} />
               <DetailRow
                 icon={AssignmentInd}
                 label='Роль'

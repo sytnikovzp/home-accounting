@@ -56,12 +56,12 @@ function UsersPage() {
         order: sortModel.order,
       };
       const { data, totalCount } = await restController.fetchAllUsers(params);
-      setUsers(data);
+      setUsers(data || []);
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);
@@ -77,11 +77,11 @@ function UsersPage() {
         limit: 500,
       };
       const { data } = await restController.fetchAllRoles(params);
-      setRoles(data);
+      setRoles(data || []);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);

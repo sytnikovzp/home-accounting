@@ -33,16 +33,8 @@ function ShopViewPage({ handleModalClose }) {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const {
-    uuid: shopUuid,
-    title,
-    description,
-    url,
-    logo,
-    status,
-    moderation,
-    creation,
-  } = shopToCRUD || {};
+  const { title, description, url, logo, status, moderation, creation } =
+    shopToCRUD || {};
 
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
@@ -74,7 +66,7 @@ function ShopViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 3, mb: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <Box
                 sx={{
@@ -82,7 +74,7 @@ function ShopViewPage({ handleModalClose }) {
                   justifyContent: 'space-between',
                 }}
               >
-                <DetailRow icon={Info} label='UUID' value={shopUuid} />
+                <DetailRow icon={Info} label='Назва' value={title} />
                 <Avatar
                   src={logoSrc}
                   alt='Логотип магазину'
@@ -90,7 +82,6 @@ function ShopViewPage({ handleModalClose }) {
                   sx={{ width: 50, height: 50 }}
                 />
               </Box>
-              <DetailRow icon={Info} label='Назва' value={title} />
               {description && (
                 <DetailRow
                   icon={Description}

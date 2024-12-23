@@ -38,7 +38,6 @@ function RoleViewPage({ handleModalClose }) {
   }, [uuid, fetchEntityByUuid]);
 
   const {
-    uuid: roleUuid,
     title,
     description,
     permissions = [],
@@ -56,9 +55,8 @@ function RoleViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box>
+          <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='UUID' value={roleUuid} />
               <DetailRow icon={Info} label='Назва' value={title} />
               <DetailRow icon={Description} label='Опис' value={description} />
               <DetailRow

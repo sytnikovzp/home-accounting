@@ -57,7 +57,13 @@ function CustomModal({
             {content}
           </Box>
           {actions && (
-            <Box mt={2} display='flex' justifyContent='center' gap={2}>
+            <Box
+              mt={2}
+              display='flex'
+              flexDirection='column'
+              justifyContent='center'
+              gap={2}
+            >
               {actions}
             </Box>
           )}

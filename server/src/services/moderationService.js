@@ -18,17 +18,20 @@ const formatAllEntitiesData = {
   categories: (category) => ({
     uuid: category.uuid,
     title: category.title,
-    type: 'Категорії',
+    contentType: 'Категорія',
+    path: 'category',
   }),
   products: (product) => ({
     uuid: product.uuid,
     title: product.title,
-    type: 'Товари',
+    contentType: 'Товар',
+    path: 'product',
   }),
   shops: (shop) => ({
     uuid: shop.uuid,
     title: shop.title,
-    type: 'Магазини',
+    contentType: 'Магазин',
+    path: 'shop',
   }),
 };
 

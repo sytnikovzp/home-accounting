@@ -41,7 +41,7 @@ function RoleEditPage({
     } catch (error) {
       setCrudError(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     }
   };

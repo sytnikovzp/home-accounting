@@ -17,7 +17,7 @@ function useFetchEntity(entityType) {
         console.log(error);
         setErrorMessage(
           error.response?.data?.errors?.[0]?.title ||
-            'Помилка завантаження даних'
+            'Помилка виконання операції'
         );
       } finally {
         setIsLoading(false);

@@ -51,12 +51,12 @@ function RolesPage() {
         order: sortModel.order,
       };
       const { data, totalCount } = await restController.fetchAllRoles(params);
-      setRoles(data);
+      setRoles(data || []);
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);
@@ -72,7 +72,7 @@ function RolesPage() {
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);

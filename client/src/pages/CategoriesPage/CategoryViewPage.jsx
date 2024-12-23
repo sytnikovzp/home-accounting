@@ -30,13 +30,7 @@ function CategoryViewPage({ handleModalClose }) {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const {
-    uuid: categoryUuid,
-    title,
-    status,
-    moderation,
-    creation,
-  } = categoryToCRUD || {};
+  const { title, status, moderation, creation } = categoryToCRUD || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
@@ -63,9 +57,8 @@ function CategoryViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 3, mb: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='UUID' value={categoryUuid} />
               <DetailRow icon={Info} label='Назва' value={title} />
               <DetailRow
                 icon={() => statusIcon}

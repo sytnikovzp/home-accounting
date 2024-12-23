@@ -55,12 +55,12 @@ function ProductsPage() {
       const { data, totalCount } = await restController.fetchAllProducts(
         params
       );
-      setProducts(data);
+      setProducts(data || []);
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);
@@ -76,11 +76,11 @@ function ProductsPage() {
         limit: 500,
       };
       const { data } = await restController.fetchAllCategories(params);
-      setCategories(data);
+      setCategories(data || []);
     } catch (error) {
       setErrorMessage(
         error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження даних'
+          'Помилка виконання операції'
       );
     } finally {
       setIsLoading(false);

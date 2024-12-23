@@ -28,12 +28,7 @@ function MeasureViewPage({ handleModalClose }) {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const {
-    uuid: measureUuid,
-    title,
-    description,
-    creation,
-  } = measureToCRUD || {};
+  const { title, description, creation } = measureToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   return (
@@ -46,9 +41,8 @@ function MeasureViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 3, mb: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='UUID' value={measureUuid} />
               <DetailRow icon={Info} label='Назва' value={title} />
               <DetailRow
                 icon={Description}
