@@ -1,17 +1,17 @@
 import api from '../api';
 
-const getAllPendingItems = async (
+const getAllPendingItems = async ({
   page = 1,
   limit = 6,
   sort = 'uuid',
-  order = 'asc'
-) => {
-  const params = new URLSearchParams(
+  order = 'asc',
+} = {}) => {
+  const params = new URLSearchParams({
     page,
     limit,
     sort,
     order,
-  ).toString();
+  }).toString();
   try {
     const { data, headers } = await api.get(`/moderation?${params}`);
     const totalCount = parseInt(headers['x-total-count']);

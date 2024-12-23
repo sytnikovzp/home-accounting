@@ -1,35 +1,26 @@
 import api from '../api';
 
-const getAllPermissions = async (
-  page = 1,
-  limit = 6,
-  sort = 'uuid',
-  order = 'asc'
-) => {
-  const params = new URLSearchParams(page, limit, sort, order).toString();
+const getAllPermissions = async () => {
   try {
-    const { data, headers } = await api.get(`/roles/permissions?${params}`);
-    const totalCount = parseInt(headers['x-total-count']);
+    const { data } = await api.get(`/roles/permissions`);
     return {
       data,
-      totalCount,
     };
   } catch (error) {
     console.error(error.response.data.errors[0].title);
     return {
       data: [],
-      totalCount: 0,
     };
   }
 };
 
-const getAllRoles = async (
+const getAllRoles = async ({
   page = 1,
   limit = 6,
   sort = 'uuid',
-  order = 'asc'
-) => {
-  const params = new URLSearchParams(page, limit, sort, order).toString();
+  order = 'asc',
+} = {}) => {
+  const params = new URLSearchParams({ page, limit, sort, order }).toString();
   try {
     const { data, headers } = await api.get(`/roles?${params}`);
     const totalCount = parseInt(headers['x-total-count']);

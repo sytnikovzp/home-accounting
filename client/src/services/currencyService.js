@@ -9,13 +9,13 @@ const getNBURates = async () => {
   return data;
 };
 
-const getAllCurrencies = async (
+const getAllCurrencies = async ({
   page = 1,
   limit = 6,
   sort = 'uuid',
-  order = 'asc'
-) => {
-  const params = new URLSearchParams(page, limit, sort, order).toString();
+  order = 'asc',
+} = {}) => {
+  const params = new URLSearchParams({ page, limit, sort, order }).toString();
   try {
     const { data, headers } = await api.get(`/currencies?${params}`);
     const totalCount = parseInt(headers['x-total-count']);

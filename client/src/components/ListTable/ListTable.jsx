@@ -128,7 +128,7 @@ function ListTable({
                       ? '1px solid darkgreen'
                       : 'none',
                   width: ['logo', 'photo'].includes(col.field)
-                    ? '60px'
+                    ? '90px'
                     : 'auto',
                 }}
                 onClick={() => handleSort(col.field)}

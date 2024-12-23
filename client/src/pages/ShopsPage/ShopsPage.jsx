@@ -144,7 +144,7 @@ function ShopsPage() {
       </Box>
       <ListTable
         columns={[
-          { field: 'logo', headerName: 'Логотип', align: 'center' },
+          { field: 'logo', headerName: 'Лого', align: 'center' },
           { field: 'title', headerName: 'Назва магазину', align: 'left' },
         ]}
         rows={shops}
