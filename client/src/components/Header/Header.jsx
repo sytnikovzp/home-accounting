@@ -86,7 +86,6 @@ function Header({
   const closeMenu = () => setOpenUserMenu(false);
 
   const openAuthModal = () => {
-    navigate('/auth');
     setAuthModalOpen(true);
   };
 

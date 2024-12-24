@@ -27,7 +27,7 @@ import RolesPage from './pages/Roles/RolesPage';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthModalOpen, setAuthModalOpen] = useState(true);
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setUserProfile] = useState(null);
 
@@ -125,23 +125,20 @@ const App = () => {
             path='roles/*' 
             element={renderPrivateRoute(<RolesPage />)} 
           />
-          <Route
-            path='auth/*'
-            element={
-              isAuthenticated ? (
-                <Navigate to='/' replace />
-              ) : (
-                <AuthPage
-                  isOpen={isAuthModalOpen}
-                  onClose={handleCloseAuthModal}
-                  checkAuthentication={checkAuthentication}
-                />
-              )
-            }
+          <Route 
+            path='*' 
+            element={<Navigate to='/' replace />} 
           />
-          <Route path='*' element={<Navigate to='/' replace />} />
         </Route>
       </Routes>
+
+      {isAuthModalOpen && !isAuthenticated && (
+        <AuthPage
+          isOpen={isAuthModalOpen}
+          onClose={handleCloseAuthModal}
+          checkAuthentication={checkAuthentication}
+        />
+      )}
     </Router>
   );
 };

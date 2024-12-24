@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 
 function PrivateRoute({ children, isAuthenticated, setAuthModalOpen }) {
   useEffect(() => {
@@ -8,7 +7,7 @@ function PrivateRoute({ children, isAuthenticated, setAuthModalOpen }) {
     }
   }, [isAuthenticated, setAuthModalOpen]);
   if (!isAuthenticated) {
-    return <Navigate to='/auth' replace />;
+    return null;
   }
   return children;
 }
