@@ -5,8 +5,8 @@ const {
     AUTH: {
       ACCESS_SECRET,
       REFRESH_SECRET,
-      ACCESS_TOKEN_TIME,
-      REFRESH_TOKEN_TIME,
+      ACCESS_TOKEN_LIFETIME,
+      REFRESH_TOKEN_LIFETIME,
     },
   },
 } = require('../constants');
@@ -19,10 +19,10 @@ class TokenService {
       tokenVersion: user.tokenVersion,
     };
     const accessToken = jwt.sign(payload, ACCESS_SECRET, {
-      expiresIn: ACCESS_TOKEN_TIME,
+      expiresIn: ACCESS_TOKEN_LIFETIME,
     });
     const refreshToken = jwt.sign(payload, REFRESH_SECRET, {
-      expiresIn: REFRESH_TOKEN_TIME,
+      expiresIn: REFRESH_TOKEN_LIFETIME,
     });
     return {
       accessToken,

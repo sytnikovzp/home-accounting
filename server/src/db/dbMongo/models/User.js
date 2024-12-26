@@ -33,7 +33,6 @@ const usersSchema = new Schema(
       required: true,
       default: 'pending',
     },
-    verificationLink: String,
     roleUuid: {
       type: Schema.Types.UUID,
       required: true,

@@ -1,13 +1,17 @@
-const { v4: uuidv4 } = require('uuid');
-// ==============================================================
 const {
   configs: {
     SERVER: { HOST, PORT },
+    TOKEN_LIFETIME: { VERIFICATION, RESET_PASSWORD },
   },
   dataMapping: { userVerificationMapping },
 } = require('../constants');
 // ==============================================================
-const { User, Role, PasswordResetToken } = require('../db/dbMongo/models');
+const {
+  User,
+  Role,
+  VerificationToken,
+  PasswordResetToken,
+} = require('../db/dbMongo/models');
 // ==============================================================
 const {
   hashPassword,
@@ -30,18 +34,20 @@ class AuthService {
     const foundRole = await Role.findOne({ title: 'User' });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');
     const hashedPassword = await hashPassword(password);
-    const verificationLink = uuidv4();
     const user = await User.create({
       fullName,
       email: emailToLower,
       password: hashedPassword,
-      verificationLink,
       roleUuid: foundRole.uuid,
     });
     if (!user) throw badRequest('Користувач не зареєстрований');
+    const verificationToken = await VerificationToken.create({
+      userUuid: user.uuid,
+      expiresAt: new Date(Date.now() + VERIFICATION),
+    });
     await mailService.sendVerificationMail(
       email,
-      `http://${HOST}:${PORT}/api/auth/verification/${verificationLink}`
+      `http://${HOST}:${PORT}/api/auth/verification?token=${verificationToken.token}`
     );
     const tokens = generateTokens(user);
     return {
@@ -83,13 +89,15 @@ class AuthService {
     };
   }
 
-  async verification(verificationLink) {
-    const user = await User.findOne({ verificationLink });
-    if (!user)
-      throw badRequest('Посилання для веріфікації недійсне або не існує');
+  async verifyEmail(token) {
+    const tokenRecord = await VerificationToken.findOne({ token });
+    if (!tokenRecord || tokenRecord.expiresAt < Date.now())
+      throw badRequest('Невірний токен, або закінчився термін дії');
+    const user = await User.findOne({ uuid: tokenRecord.userUuid });
+    if (!user) throw notFound('Користувача не знайдено');
     user.emailVerificationStatus = 'verified';
-    user.verificationLink = null;
     await user.save();
+    await VerificationToken.deleteOne({ token });
   }
 
   async refresh(refreshToken) {
@@ -125,6 +133,7 @@ class AuthService {
     await PasswordResetToken.deleteMany({ userUuid: foundUser.uuid });
     const resetToken = await PasswordResetToken.create({
       userUuid: foundUser.uuid,
+      expiresAt: new Date(Date.now() + RESET_PASSWORD),
     });
     await mailService.sendResetPasswordEmail(
       foundUser.email,

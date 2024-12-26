@@ -8,7 +8,7 @@ const {
   registration,
   login,
   refresh,
-  verification,
+  verifyEmail,
   forgotPassword,
   resetPassword,
 } = require('../services/authService');
@@ -64,11 +64,15 @@ class AuthController {
 
   async verification(req, res, next) {
     try {
-      const verificationLink = req.params.link;
-      await verification(verificationLink);
-      return res.redirect(`${URL}`);
+      const { token } = req.query;
+      await verifyEmail(token);
+      res.redirect(
+        `${URL}/notification?type=success&title=${encodeURIComponent(
+          'Підтвердження email'
+        )}&message=${encodeURIComponent('Ваш email успішно підтверджений')}`
+      );
     } catch (error) {
-      console.error('Verification account error: ', error.message);
+      console.error('Verification email error: ', error.message);
       next(error);
     }
   }
@@ -86,9 +90,10 @@ class AuthController {
 
   async resetPassword(req, res, next) {
     try {
-      const { token } = req.params;
+      const { token } = req.query;
       const { newPassword, confirmNewPassword } = req.body;
       await resetPassword(token, newPassword, confirmNewPassword);
+      // return res.redirect(`${URL}`);
       res
         .status(200)
         .json({ message: 'Password has been reset successfully.' });

@@ -24,6 +24,7 @@ import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
 import UsersPage from './pages/Users/UsersPage';
 import RolesPage from './pages/Roles/RolesPage';
+import NotificationPage from './pages/NotificationPage/NotificationPage';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -124,6 +125,15 @@ const App = () => {
           <Route 
             path='roles/*' 
             element={renderPrivateRoute(<RolesPage />)} 
+          />
+          <Route
+            path='notification'
+            element={
+              <NotificationPage
+                isOpen={isAuthModalOpen}
+                onClose={handleCloseAuthModal}
+              />
+            }
           />
           <Route 
             path='*' 

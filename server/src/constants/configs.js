@@ -4,8 +4,8 @@ module.exports = {
   AUTH: {
     ACCESS_SECRET: process.env.ACCESS_SECRET,
     REFRESH_SECRET: process.env.REFRESH_SECRET,
-    ACCESS_TOKEN_TIME: process.env.ACCESS_TOKEN_TIME,
-    REFRESH_TOKEN_TIME: process.env.REFRESH_TOKEN_TIME,
+    ACCESS_TOKEN_LIFETIME: process.env.ACCESS_TOKEN_LIFETIME,
+    REFRESH_TOKEN_LIFETIME: process.env.REFRESH_TOKEN_LIFETIME,
   },
   HASH: {
     SALT_ROUNDS: parseInt(process.env.SALT_ROUNDS),
@@ -24,6 +24,10 @@ module.exports = {
   SERVER: {
     HOST: process.env.ACCOUNTING_SERVER_HOST,
     PORT: parseInt(process.env.ACCOUNTING_SERVER_PORT) || 5000,
+  },
+  TOKEN_LIFETIME: {
+    VERIFICATION: 24 * 60 * 60 * 1000,
+    RESET_PASSWORD: 1 * 60 * 60 * 1000,
   },
   SMTP: {
     HOST: process.env.SMTP_HOST,

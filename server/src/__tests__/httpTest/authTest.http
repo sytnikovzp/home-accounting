@@ -9,16 +9,20 @@ Content-Type: application/json
   "password": "Qwerty12"
 }
 
-### Login user
+### Login new user
 POST http://localhost:5000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
   # "email": "neW.useR@gmaiL.com",
   "email": "nepushkin93@Gmail.com",
-  "password": "Qwerty1234"
+  "password": "Qwerty12"
   # "password": "Qwerty1234567"
 }
+
+### Verification new user email
+GET http://localhost:5000/api/auth/verification?token=2b9465c2-e897-41d6-a802-5e98e61d324f HTTP/1.1
+Content-Type: application/json
 
 // ==============================================================
 
@@ -60,7 +64,7 @@ GET http://localhost:5000/api/auth/logout HTTP/1.1
 Content-Type: application/json
 
 // ==============================================================
-### Initiate password reset
+### Forgot password
 POST http://localhost:5000/api/auth/forgot HTTP/1.1
 Content-Type: application/json
 
@@ -69,7 +73,7 @@ Content-Type: application/json
 }
 
 ### Reset password with valid token
-POST http://localhost:5000/api/auth/reset/d782db05-0353-42dd-b34a-e6a488a9b3b8 HTTP/1.1
+POST http://localhost:5000/api/auth/reset?token=59fd2d33-fbd3-4302-bb81-df7611a54df2 HTTP/1.1
 Content-Type: application/json
 
 {

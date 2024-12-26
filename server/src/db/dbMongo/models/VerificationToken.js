@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
-const passwordResetTokenSchema = new Schema(
+const verificationTokenSchema = new Schema(
   {
     userUuid: {
       type: Schema.Types.UUID,
@@ -17,7 +17,7 @@ const passwordResetTokenSchema = new Schema(
     expiresAt: {
       type: Date,
       required: true,
-      default: () => Date.now() + 1 * 60 * 60 * 1000,
+      default: () => Date.now() + 24 * 60 * 60 * 1000,
     },
   },
   {
@@ -26,9 +26,6 @@ const passwordResetTokenSchema = new Schema(
   }
 );
 
-const PasswordResetToken = model(
-  'PasswordResetToken',
-  passwordResetTokenSchema
-);
+const VerificationToken = model('VerificationToken', verificationTokenSchema);
 
-module.exports = PasswordResetToken;
+module.exports = VerificationToken;

@@ -23,9 +23,9 @@ const authRouter = new Router();
 authRouter.post('/registration', validateRegistration, registration);
 authRouter.post('/login', validateLogin, login);
 authRouter.get('/logout', logout);
-authRouter.get('/verification/:link', verification);
+authRouter.get('/verification', verification);
 authRouter.get('/refresh', refresh);
 authRouter.post('/forgot', validateForgotPassword, forgotPassword);
-authRouter.post('/reset/:token', validateChangePassword, resetPassword);
+authRouter.post('/reset', validateChangePassword, resetPassword);
 
 module.exports = authRouter;
