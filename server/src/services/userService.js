@@ -208,9 +208,8 @@ class UserService {
       throw forbidden(
         'У Вас немає дозволу на оновлення паролю цього користувача'
       );
-    if (newPassword !== confirmNewPassword) {
+    if (newPassword !== confirmNewPassword)
       throw badRequest('Новий пароль та підтвердження пароля не збігаються');
-    }
     const foundUser = await User.findOne({ uuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
     const hashedNewPassword = await hashPassword(newPassword);

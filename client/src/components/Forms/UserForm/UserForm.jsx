@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Button } from '@mui/material';
 // ==============================================================
-import { UPDATE_USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import { USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 import FileUpload from '../../FileUpload/FileUpload';
@@ -82,7 +82,7 @@ function UserForm({
       </Box>
       <BaseForm
         initialValues={initialValues}
-        validationSchema={UPDATE_USER_VALIDATION_SCHEME}
+        validationSchema={USER_VALIDATION_SCHEME}
         onSubmit={onSubmit}
         fields={fields}
         submitButtonText={'Зберегти зміни'}

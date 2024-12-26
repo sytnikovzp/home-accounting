@@ -12,7 +12,7 @@ const {
 } = require('../controllers/userController');
 const {
   auth: { authHandler },
-  validation: { validateUpdateUser, validatePassword },
+  validation: { validateUser, validateChangePassword },
   pagination: { paginateElements },
   upload: { uploadUserPhotos },
 } = require('../middlewares');
@@ -29,7 +29,7 @@ userRouter
 
 userRouter
   .route('/change-password/:userUuid')
-  .patch(authHandler, validatePassword, changePassword);
+  .patch(authHandler, validateChangePassword, changePassword);
 
 userRouter
   .route('/update-photo/:userUuid')
@@ -42,7 +42,7 @@ userRouter
 userRouter
   .route('/:userUuid')
   .get(authHandler, getUserByUuid)
-  .patch(authHandler, validateUpdateUser, updateUser)
+  .patch(authHandler, validateUser, updateUser)
   .delete(authHandler, deleteUser);
 
 module.exports = userRouter;

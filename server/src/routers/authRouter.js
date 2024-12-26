@@ -6,17 +6,26 @@ const {
   logout,
   verification,
   refresh,
+  forgotPassword,
+  resetPassword,
 } = require('../controllers/authController');
 const {
-  validation: { validateRegistration, validateAuth },
+  validation: {
+    validateRegistration,
+    validateLogin,
+    validateForgotPassword,
+    validateChangePassword,
+  },
 } = require('../middlewares');
 
 const authRouter = new Router();
 
 authRouter.post('/registration', validateRegistration, registration);
-authRouter.post('/login', validateAuth, login);
+authRouter.post('/login', validateLogin, login);
 authRouter.get('/logout', logout);
 authRouter.get('/verification/:link', verification);
 authRouter.get('/refresh', refresh);
+authRouter.post('/forgot', validateForgotPassword, forgotPassword);
+authRouter.post('/reset/:token', validateChangePassword, resetPassword);
 
 module.exports = authRouter;

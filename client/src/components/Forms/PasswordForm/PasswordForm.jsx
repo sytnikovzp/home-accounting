@@ -1,4 +1,4 @@
-import { PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import { CHANGE_PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 
@@ -27,7 +27,7 @@ function PasswordForm({ onSubmit }) {
   return (
     <BaseForm
       initialValues={initialValues}
-      validationSchema={PASSWORD_VALIDATION_SCHEME}
+      validationSchema={CHANGE_PASSWORD_VALIDATION_SCHEME}
       onSubmit={onSubmit}
       fields={fields}
       submitButtonText='Змінити пароль'

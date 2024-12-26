@@ -69,12 +69,12 @@ const DATE_REQUIRED_SCHEME = yup
   .max(new Date(), 'Дата не може бути у майбутньому')
   .required('Оберіть дату');
 
+// ==============================================================
+
 const PAGINATION_SCHEME = yup.object().shape({
   limit: yup.number().min(1).max(500).required(),
   offset: yup.number().min(0).required(),
 });
-
-// ==============================================================
 
 const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
   fullName: STRING_REQUIRED_SCHEME,
@@ -82,21 +82,25 @@ const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
   password: PASSWORD_REQUIRED_SCHEME,
 });
 
-const UPDATE_USER_VALIDATION_SCHEME = yup.object().shape({
-  fullName: STRING_REQUIRED_SCHEME,
-  email: EMAIL_REQUIRED_VALIDATION_SCHEME,
-  role: STRING_REQUIRED_SCHEME,
-  photo: STRING_NULLABLE_SCHEME,
-});
-
 const LOGIN_VALIDATION_SCHEME = yup.object().shape({
   email: EMAIL_REQUIRED_VALIDATION_SCHEME,
   password: PASSWORD_REQUIRED_SCHEME,
 });
 
-const PASSWORD_VALIDATION_SCHEME = yup.object().shape({
+const FORGOT_PASSWORD_VALIDATION_SCHEME = yup.object().shape({
+  email: EMAIL_REQUIRED_VALIDATION_SCHEME,
+});
+
+const CHANGE_PASSWORD_VALIDATION_SCHEME = yup.object().shape({
   newPassword: PASSWORD_REQUIRED_SCHEME,
   confirmNewPassword: PASSWORD_REQUIRED_CONFIRM_SCHEME,
+});
+
+const USER_VALIDATION_SCHEME = yup.object().shape({
+  fullName: STRING_REQUIRED_SCHEME,
+  email: EMAIL_REQUIRED_VALIDATION_SCHEME,
+  role: STRING_REQUIRED_SCHEME,
+  photo: STRING_NULLABLE_SCHEME,
 });
 
 const ROLE_VALIDATION_SCHEME = yup.object().shape({
@@ -149,10 +153,12 @@ const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
 });
 
 export {
+  PAGINATION_SCHEME,
   REGISTRATION_VALIDATION_SCHEME,
-  UPDATE_USER_VALIDATION_SCHEME,
   LOGIN_VALIDATION_SCHEME,
-  PASSWORD_VALIDATION_SCHEME,
+  FORGOT_PASSWORD_VALIDATION_SCHEME,
+  CHANGE_PASSWORD_VALIDATION_SCHEME,
+  USER_VALIDATION_SCHEME,
   ROLE_VALIDATION_SCHEME,
   MODERATION_VALIDATION_SCHEME,
   PURCHASE_VALIDATION_SCHEME,
@@ -161,5 +167,4 @@ export {
   SHOP_VALIDATION_SCHEME,
   MEASURE_VALIDATION_SCHEME,
   CURRENCY_VALIDATION_SCHEME,
-  PAGINATION_SCHEME,
 };

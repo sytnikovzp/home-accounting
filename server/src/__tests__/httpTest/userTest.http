@@ -46,14 +46,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2QxNzkzM
 // ==============================================================
 
 ### Update user data
-PATCH http://localhost:5000/api/users/821d730e-b621-4399-9f7b-e8a2e6d9d940 HTTP/1.1
+PATCH http://localhost:5000/api/users/19413914-13e9-4c3c-983e-a9d9a5fe50da HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiODIxZDczMGUtYjYyMS00Mzk5LTlmN2ItZThhMmU2ZDlkOTQwIiwiZW1haWwiOiJzeXRuaWtvdi56cEBnbWFpbC5jb20iLCJ0b2tlblZlcnNpb24iOjAsImlhdCI6MTczNDgyOTc4OCwiZXhwIjoxNzM2MTI1Nzg4fQ.Te7ya6d07Y30cm7b-7z6DNBIwFbpHxUIO53RG8Fcqco
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTk0MTM5MTQtMTNlOS00YzNjLTk4M2UtYTlkOWE1ZmU1MGRhIiwiZW1haWwiOiJuZXB1c2hraW45MzFAZ21haWwuY29tIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzUxNjg3OTAsImV4cCI6MTczNjQ2NDc5MH0.Fh9QLv5Cr5h8-OJQYyQbE_AGrsCiJb5niMzRP62m9zA
 
 {
   "fullName": "Оновлений користувач",
   # "email": "New.User@Gmail.com",
-  "email": "sytnikov.zp@Gmail.com",
+  "email": "nepushkin93@Gmail.com",
   "role": "User"
 }
 

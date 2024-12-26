@@ -93,6 +93,7 @@ function Header({
     try {
       await restController.logout();
       setIsAuthenticated(false);
+      navigate('/');
     } catch (error) {
       console.error('Помилка виходу із системи:', error.message);
     }

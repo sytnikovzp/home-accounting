@@ -7,7 +7,7 @@ const {
   dataMapping: { userVerificationMapping },
 } = require('../constants');
 // ==============================================================
-const { User, Role } = require('../db/dbMongo/models');
+const { User, Role, PasswordResetToken } = require('../db/dbMongo/models');
 // ==============================================================
 const {
   hashPassword,
@@ -116,6 +116,38 @@ class AuthService {
         photo: foundUser.photo || '',
       },
     };
+  }
+
+  async forgotPassword(email) {
+    const emailToLower = email.toLowerCase();
+    const foundUser = await User.findOne({ email: emailToLower });
+    if (!foundUser) throw notFound('Користувача не знайдено');
+    await PasswordResetToken.deleteMany({ userUuid: foundUser.uuid });
+    const resetToken = await PasswordResetToken.create({
+      userUuid: foundUser.uuid,
+    });
+    await mailService.sendResetPasswordEmail(
+      foundUser.email,
+      `http://${HOST}:${PORT}/api/auth/reset?token=${resetToken.token}`
+    );
+  }
+
+  async resetPassword(token, newPassword, confirmNewPassword) {
+    const resetToken = await PasswordResetToken.findOne({ token });
+    if (!resetToken)
+      throw badRequest('Невірний токен, або закінчився термін дії');
+    if (resetToken.expiresAt < Date.now())
+      throw badRequest('Термін дії токену закінчився');
+    if (newPassword !== confirmNewPassword)
+      throw badRequest('Новий пароль та підтвердження пароля не збігаються');
+    const foundUser = await User.findOne({ uuid: resetToken.userUuid });
+    if (!foundUser) throw notFound('Користувача не знайдено');
+    const hashedNewPassword = await hashPassword(newPassword);
+    foundUser.password = hashedNewPassword;
+    foundUser.tokenVersion += 1;
+    const updatedUser = await foundUser.save();
+    if (!updatedUser) throw badRequest('Пароль цього користувача не оновлено');
+    await PasswordResetToken.deleteOne({ token });
   }
 }
 

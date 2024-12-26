@@ -7,8 +7,10 @@ const {
 const {
   registration,
   login,
-  verification,
   refresh,
+  verification,
+  forgotPassword,
+  resetPassword,
 } = require('../services/authService');
 // ==============================================================
 const { setRefreshTokenCookie } = require('../utils/sharedFunctions');
@@ -48,6 +50,18 @@ class AuthController {
     }
   }
 
+  async refresh(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+      const authData = await refresh(refreshToken);
+      setRefreshTokenCookie(res, authData.refreshToken);
+      res.status(200).json(authData);
+    } catch (error) {
+      console.error('Refresh error: ', error.message);
+      next(error);
+    }
+  }
+
   async verification(req, res, next) {
     try {
       const verificationLink = req.params.link;
@@ -59,14 +73,27 @@ class AuthController {
     }
   }
 
-  async refresh(req, res, next) {
+  async forgotPassword(req, res, next) {
     try {
-      const { refreshToken } = req.cookies;
-      const authData = await refresh(refreshToken);
-      setRefreshTokenCookie(res, authData.refreshToken);
-      res.status(200).json(authData);
+      const { email } = req.body;
+      await forgotPassword(email);
+      res.status(200).json({ message: 'Password reset link sent to email.' });
     } catch (error) {
-      console.error('Refresh error: ', error.message);
+      console.error('Password reset error: ', error.message);
+      next(error);
+    }
+  }
+
+  async resetPassword(req, res, next) {
+    try {
+      const { token } = req.params;
+      const { newPassword, confirmNewPassword } = req.body;
+      await resetPassword(token, newPassword, confirmNewPassword);
+      res
+        .status(200)
+        .json({ message: 'Password has been reset successfully.' });
+    } catch (error) {
+      console.error('Password reset error: ', error.message);
       next(error);
     }
   }
