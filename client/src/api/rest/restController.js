@@ -21,6 +21,10 @@ const restController = {
   logout: () => authService.logout(),
   refreshAccessToken: (originalRequest) =>
     authService.refreshAccessToken(originalRequest),
+  resendVerifyEmail: (email) => authService.resendVerifyEmail(email),
+  forgotPassword: (email) => authService.forgotPassword(email),
+  resetPassword: (token, newPassword, confirmNewPassword) =>
+    authService.resetPassword(token, newPassword, confirmNewPassword),
 
   // User management
   fetchAllUsers: async ({

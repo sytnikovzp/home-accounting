@@ -157,7 +157,7 @@ class UserService {
       updateData.verificationLink = newVerificationLink;
       await mailService.sendEmailChangeVerification(
         newEmail,
-        `http://${HOST}:${PORT}/api/auth/verification/${newVerificationLink}`
+        `http://${HOST}:${PORT}/api/auth/verify/${newVerificationLink}`
       );
     }
     if (role && role !== foundRole.title) {

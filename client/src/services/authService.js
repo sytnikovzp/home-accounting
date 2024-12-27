@@ -29,4 +29,30 @@ const refreshAccessToken = async () => {
   return data;
 };
 
-export default { registration, login, logout, refreshAccessToken };
+const resendVerifyEmail = async (email) => {
+  const { data } = await api.post('/auth/resend-verify', { email });
+  return data;
+};
+
+const forgotPassword = async (email) => {
+  const { data } = await api.post('/auth/forgot', { email });
+  return data;
+};
+
+const resetPassword = async (token, newPassword, confirmNewPassword) => {
+  const { data } = await api.post(`/auth/reset?token=${token}`, {
+    newPassword,
+    confirmNewPassword,
+  });
+  return data;
+};
+
+export default {
+  registration,
+  login,
+  logout,
+  refreshAccessToken,
+  resendVerifyEmail,
+  forgotPassword,
+  resetPassword,
+};

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
-import { Box, Link, Avatar } from '@mui/material';
+import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Box, Link, Avatar, Tooltip, Button } from '@mui/material';
 import {
   Info,
   CalendarToday,
@@ -11,6 +11,7 @@ import {
   AssignmentInd,
 } from '@mui/icons-material';
 // ==============================================================
+import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 import { BASE_URL } from '../../constants';
 // ==============================================================
@@ -20,6 +21,7 @@ import DetailRow from '../../components/DetailRow/DetailRow';
 
 function UserViewPage({ handleModalClose }) {
   const { uuid } = useParams();
+  const navigate = useNavigate();
   const {
     entity: userToCRUD,
     isLoading,
@@ -35,6 +37,24 @@ function UserViewPage({ handleModalClose }) {
     userToCRUD || {};
 
   const { createdAt, updatedAt } = creation || {};
+
+  const handleResendVerification = async (email) => {
+    try {
+      const response = await restController.resendVerifyEmail(email);
+      navigate(
+        `/notification?type=${encodeURIComponent(
+          response.type
+        )}&title=${encodeURIComponent(
+          response.title
+        )}&message=${encodeURIComponent(response.message)}`
+      );
+    } catch (error) {
+      console.error(
+        'Помилка надсилання повторного електронного листа для підтвердження:',
+        error.message
+      );
+    }
+  };
 
   const statusIcon = (() => {
     switch (emailVerificationStatus) {
@@ -108,11 +128,36 @@ function UserViewPage({ handleModalClose }) {
                 />
               )}
               {emailVerificationStatus && (
-                <DetailRow
-                  icon={() => statusIcon}
-                  label='Обліковий запис'
-                  value={emailVerificationStatus}
-                />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <DetailRow
+                    icon={() => statusIcon}
+                    label='Обліковий запис'
+                    value={emailVerificationStatus}
+                  />
+                  {emailVerificationStatus === 'Очікує веріфікації' && (
+                    <Tooltip title='Повторно відправити email'>
+                      <Button
+                        variant='text'
+                        size='small'
+                        sx={{
+                          fontSize: '1.8rem',
+                          padding: 0,
+                          minWidth: 'auto',
+                          lineHeight: 1,
+                        }}
+                        onClick={() => handleResendVerification(email)}
+                      >
+                        ⟳
+                      </Button>
+                    </Tooltip>
+                  )}
+                </Box>
               )}
               {createdAt && (
                 <DetailRow

@@ -52,6 +52,12 @@ const URL_RESOURCE_NULLABLE_SCHEME = yup
   .url('Введіть коректний URL')
   .nullable();
 
+const TOKEN_REQUIRED_VALIDATION_SCHEME = yup
+  .string('Токен має бути рядком')
+  .trim('Токен не може містити пробіли на початку або в кінці')
+  .length(36, 'Токен має бути довжиною 36 символів')
+  .required('Токен є обовʼязковим');
+
 const EMAIL_REQUIRED_VALIDATION_SCHEME = yup
   .string('Це поле має бути рядком')
   .email('Введіть коректний e-mail')
@@ -87,8 +93,18 @@ const LOGIN_VALIDATION_SCHEME = yup.object().shape({
   password: PASSWORD_REQUIRED_SCHEME,
 });
 
+const RESEND_VERIFY_VALIDATION_SCHEME = yup.object().shape({
+  email: EMAIL_REQUIRED_VALIDATION_SCHEME,
+});
+
 const FORGOT_PASSWORD_VALIDATION_SCHEME = yup.object().shape({
   email: EMAIL_REQUIRED_VALIDATION_SCHEME,
+});
+
+const RESET_PASSWORD_VALIDATION_SCHEME = yup.object().shape({
+  token: TOKEN_REQUIRED_VALIDATION_SCHEME,
+  newPassword: PASSWORD_REQUIRED_SCHEME,
+  confirmNewPassword: PASSWORD_REQUIRED_CONFIRM_SCHEME,
 });
 
 const CHANGE_PASSWORD_VALIDATION_SCHEME = yup.object().shape({
@@ -156,7 +172,9 @@ module.exports = {
   PAGINATION_SCHEME,
   REGISTRATION_VALIDATION_SCHEME,
   LOGIN_VALIDATION_SCHEME,
+  RESEND_VERIFY_VALIDATION_SCHEME,
   FORGOT_PASSWORD_VALIDATION_SCHEME,
+  RESET_PASSWORD_VALIDATION_SCHEME,
   CHANGE_PASSWORD_VALIDATION_SCHEME,
   USER_VALIDATION_SCHEME,
   ROLE_VALIDATION_SCHEME,

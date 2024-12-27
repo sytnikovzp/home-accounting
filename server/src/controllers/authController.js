@@ -9,6 +9,7 @@ const {
   login,
   refresh,
   verifyEmail,
+  resendVerifyEmail,
   forgotPassword,
   resetPassword,
 } = require('../services/authService');
@@ -62,7 +63,7 @@ class AuthController {
     }
   }
 
-  async verification(req, res, next) {
+  async verifyEmail(req, res, next) {
     try {
       const { token } = req.query;
       await verifyEmail(token);
@@ -77,11 +78,32 @@ class AuthController {
     }
   }
 
+  async resendVerifyEmail(req, res, next) {
+    try {
+      const { email } = req.body;
+      await resendVerifyEmail(email);
+      res.status(200).json({
+        type: 'success',
+        title: 'Підтвердження email',
+        message:
+          'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
+      });
+    } catch (error) {
+      console.error('Resend verification email error: ', error.message);
+      next(error);
+    }
+  }
+
   async forgotPassword(req, res, next) {
     try {
       const { email } = req.body;
       await forgotPassword(email);
-      res.status(200).json({ message: 'Password reset link sent to email.' });
+      res.status(200).json({
+        type: 'success',
+        title: 'Зміна паролю',
+        message:
+          'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
+      });
     } catch (error) {
       console.error('Password reset error: ', error.message);
       next(error);
@@ -93,10 +115,11 @@ class AuthController {
       const { token } = req.query;
       const { newPassword, confirmNewPassword } = req.body;
       await resetPassword(token, newPassword, confirmNewPassword);
-      // return res.redirect(`${URL}`);
-      res
-        .status(200)
-        .json({ message: 'Password has been reset successfully.' });
+      res.status(200).json({
+        type: 'success',
+        title: 'Зміна паролю',
+        message: 'Ваш пароль успішно змінено',
+      });
     } catch (error) {
       console.error('Password reset error: ', error.message);
       next(error);

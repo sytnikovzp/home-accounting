@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 // ==============================================================
@@ -14,10 +14,6 @@ function NotificationPage() {
   const type = params.get('type') || 'info';
   const title = params.get('title') || 'Повідомлення';
   const message = params.get('message') || 'Невідоме повідомлення';
-
-  useEffect(() => {
-    document.title = title;
-  }, [title]);
 
   const handleClose = () => {
     setIsOpen(false);

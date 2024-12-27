@@ -1,7 +1,9 @@
 const {
   REGISTRATION_VALIDATION_SCHEME,
   LOGIN_VALIDATION_SCHEME,
+  RESEND_VERIFY_VALIDATION_SCHEME,
   FORGOT_PASSWORD_VALIDATION_SCHEME,
+  RESET_PASSWORD_VALIDATION_SCHEME,
   CHANGE_PASSWORD_VALIDATION_SCHEME,
   USER_VALIDATION_SCHEME,
   ROLE_VALIDATION_SCHEME,
@@ -30,7 +32,9 @@ const validateSchema = (schema) => async (req, res, next) => {
 module.exports = {
   validateRegistration: validateSchema(REGISTRATION_VALIDATION_SCHEME),
   validateLogin: validateSchema(LOGIN_VALIDATION_SCHEME),
+  validateResendVerify: validateSchema(RESEND_VERIFY_VALIDATION_SCHEME),
   validateForgotPassword: validateSchema(FORGOT_PASSWORD_VALIDATION_SCHEME),
+  validateResetPassword: validateSchema(RESET_PASSWORD_VALIDATION_SCHEME),
   validateChangePassword: validateSchema(CHANGE_PASSWORD_VALIDATION_SCHEME),
   validateUser: validateSchema(USER_VALIDATION_SCHEME),
   validateRole: validateSchema(ROLE_VALIDATION_SCHEME),

@@ -21,8 +21,16 @@ Content-Type: application/json
 }
 
 ### Verification new user email
-GET http://localhost:5000/api/auth/verification?token=2b9465c2-e897-41d6-a802-5e98e61d324f HTTP/1.1
+GET http://localhost:5000/api/auth/verify?token=fd74cee5-32dd-4655-a820-145df19bcc88 HTTP/1.1
 Content-Type: application/json
+
+### Resend verification new user email
+POST http://localhost:5000/api/auth/resend-verify HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "nepushkin93@Gmail.com"
+}
 
 // ==============================================================
 
