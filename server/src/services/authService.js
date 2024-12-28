@@ -91,8 +91,6 @@ class AuthService {
 
   async verifyEmail(token) {
     const tokenRecord = await VerificationToken.findOne({ token });
-    if (!tokenRecord || tokenRecord.expiresAt < Date.now())
-      throw badRequest('Невірний токен, або закінчився його термін дії');
     const foundUser = await User.findOne({ uuid: tokenRecord.userUuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
     foundUser.emailVerificationStatus = 'verified';
@@ -154,16 +152,12 @@ class AuthService {
     });
     await mailService.sendResetPasswordEmail(
       foundUser.email,
-      `http://${HOST}:${PORT}/api/auth/reset?token=${resetToken.token}`
+      `http://${HOST}:${PORT}/api/auth/reset-password?token=${resetToken.token}`
     );
   }
 
   async resetPassword(token, newPassword, confirmNewPassword) {
     const resetToken = await PasswordResetToken.findOne({ token });
-    if (!resetToken)
-      throw badRequest('Невірний токен, або закінчився його термін дії');
-    if (resetToken.expiresAt < Date.now())
-      throw badRequest('Термін дії токену закінчився');
     if (newPassword !== confirmNewPassword)
       throw badRequest('Новий пароль та підтвердження пароля не збігаються');
     const foundUser = await User.findOne({ uuid: resetToken.userUuid });

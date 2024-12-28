@@ -6,9 +6,9 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import PasswordForm from '../../components/Forms/PasswordForm/PasswordForm';
+import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
 
-function UserPasswordPage({
+function UserChangePasswordPage({
   handleModalClose,
   fetchUsers,
   crudError,
@@ -51,11 +51,11 @@ function UserPasswordPage({
       showCloseButton
       title='Зміна паролю...'
       content={
-        isLoading ? <Preloader /> : <PasswordForm onSubmit={handleSubmitUser} />
+        isLoading ? <Preloader /> : <ChangePasswordForm onSubmit={handleSubmitUser} />
       }
       error={errorMessage || crudError}
     />
   );
 }
 
-export default UserPasswordPage;
+export default UserChangePasswordPage;

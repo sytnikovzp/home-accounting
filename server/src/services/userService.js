@@ -1,13 +1,17 @@
-const { v4: uuidv4 } = require('uuid');
-// ==============================================================
 const {
   configs: {
     SERVER: { HOST, PORT },
+    TOKEN_LIFETIME: { VERIFICATION },
   },
   dataMapping: { userVerificationMapping },
 } = require('../constants');
 // ==============================================================
-const { User, Role, Permission } = require('../db/dbMongo/models');
+const {
+  User,
+  Role,
+  Permission,
+  VerificationToken,
+} = require('../db/dbMongo/models');
 // ==============================================================
 const {
   hashPassword,
@@ -152,12 +156,14 @@ class UserService {
       if (existingEmail)
         throw badRequest('Ця електронна адреса вже використовується');
       updateData.email = newEmail;
-      const newVerificationLink = uuidv4();
+      const verificationToken = await VerificationToken.create({
+        userUuid: foundUser.uuid,
+        expiresAt: new Date(Date.now() + VERIFICATION),
+      });
       updateData.emailVerificationStatus = 'pending';
-      updateData.verificationLink = newVerificationLink;
       await mailService.sendEmailChangeVerification(
         newEmail,
-        `http://${HOST}:${PORT}/api/auth/verify/${newVerificationLink}`
+        `http://${HOST}:${PORT}/api/auth/verify?token=${verificationToken.token}`
       );
     }
     if (role && role !== foundRole.title) {

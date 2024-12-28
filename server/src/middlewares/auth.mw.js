@@ -23,7 +23,7 @@ module.exports.authHandler = async (req, res, next) => {
       return next(unAuthorizedError('Користувача не знайдено'));
     }
     if (foundUser.tokenVersion !== userData.tokenVersion) {
-      return next(unAuthorizedError('Токен більше не дійсний'));
+      return next(unAuthorizedError('Токен доступу більше не дійсний'));
     }
     req.user = userData;
     next();

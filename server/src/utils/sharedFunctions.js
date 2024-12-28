@@ -9,7 +9,13 @@ const {
   },
 } = require('../constants');
 // ==============================================================
-const { User, Role, Permission } = require('../db/dbMongo/models');
+const {
+  User,
+  Role,
+  Permission,
+  PasswordResetToken,
+  VerificationToken,
+} = require('../db/dbMongo/models');
 // ==============================================================
 const { notFound, badRequest } = require('../errors/generalErrors');
 
@@ -132,6 +138,21 @@ const convertToUAH = async (amount, currencyCode) => {
   return amountInUAH;
 };
 
+const checkToken = async (token, type = 'reset') => {
+  let checkedToken;
+  if (type === 'reset') {
+    checkedToken = await PasswordResetToken.findOne({ token });
+  } else if (type === 'verify') {
+    checkedToken = await VerificationToken.findOne({ token });
+  } else {
+    throw badRequest('Невідомий тип токена');
+  }
+  if (!checkedToken) throw badRequest('Невірний токен або він вже не дійсний');
+  if (checkedToken.expiresAt < Date.now())
+    throw badRequest('Термін дії токену закінчився');
+  return checkedToken;
+};
+
 module.exports = {
   hashPassword,
   verifyPassword,
@@ -147,4 +168,5 @@ module.exports = {
   getUserDetailsByEmail,
   mapValue,
   convertToUAH,
+  checkToken,
 };

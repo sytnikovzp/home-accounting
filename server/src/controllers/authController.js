@@ -14,7 +14,10 @@ const {
   resetPassword,
 } = require('../services/authService');
 // ==============================================================
-const { setRefreshTokenCookie } = require('../utils/sharedFunctions');
+const {
+  setRefreshTokenCookie,
+  checkToken,
+} = require('../utils/sharedFunctions');
 
 class AuthController {
   async registration(req, res, next) {
@@ -66,10 +69,11 @@ class AuthController {
   async verifyEmail(req, res, next) {
     try {
       const { token } = req.query;
+      await checkToken(token, 'verify');
       await verifyEmail(token);
       res.redirect(
         `${URL}/notification?type=success&title=${encodeURIComponent(
-          'Підтвердження email'
+          'Веріфікація облікового запису'
         )}&message=${encodeURIComponent('Ваш email успішно підтверджений')}`
       );
     } catch (error) {
@@ -84,7 +88,7 @@ class AuthController {
       await resendVerifyEmail(email);
       res.status(200).json({
         type: 'success',
-        title: 'Підтвердження email',
+        title: 'Веріфікація облікового запису...',
         message:
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
       });
@@ -100,7 +104,7 @@ class AuthController {
       await forgotPassword(email);
       res.status(200).json({
         type: 'success',
-        title: 'Зміна паролю',
+        title: 'Зміна паролю...',
         message:
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
       });
@@ -110,14 +114,27 @@ class AuthController {
     }
   }
 
+  async getResetPasswordPage(req, res, next) {
+    try {
+      const { token } = req.query;
+      await checkToken(token, 'reset');
+      res.redirect(`${URL}/reset-password?token=${token}`);
+    } catch (error) {
+      console.error('Error while checking reset token: ', error.message);
+      res.status(400).json({ message: error.message });
+      next(error);
+    }
+  }
+
   async resetPassword(req, res, next) {
     try {
       const { token } = req.query;
+      await checkToken(token, 'reset');
       const { newPassword, confirmNewPassword } = req.body;
       await resetPassword(token, newPassword, confirmNewPassword);
       res.status(200).json({
         type: 'success',
-        title: 'Зміна паролю',
+        title: 'Зміна паролю...',
         message: 'Ваш пароль успішно змінено',
       });
     } catch (error) {

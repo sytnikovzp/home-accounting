@@ -1,8 +1,8 @@
-import { CHANGE_PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import { PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 
-function PasswordForm({ onSubmit }) {
+function ChangePasswordForm({ onSubmit }) {
   const initialValues = {
     newPassword: '',
     confirmNewPassword: '',
@@ -12,22 +12,24 @@ function PasswordForm({ onSubmit }) {
     {
       name: 'newPassword',
       label: 'Новий пароль',
-      placeholder: 'Qwerty1234',
+      placeholder: 'Qwerty12',
       type: 'password',
+      required: true,
       autoFocus: true,
     },
     {
       name: 'confirmNewPassword',
       label: 'Повтор нового паролю',
-      placeholder: 'Qwerty1234',
+      placeholder: 'Qwerty12',
       type: 'password',
+      required: true,
     },
   ];
 
   return (
     <BaseForm
       initialValues={initialValues}
-      validationSchema={CHANGE_PASSWORD_VALIDATION_SCHEME}
+      validationSchema={PASSWORD_VALIDATION_SCHEME}
       onSubmit={onSubmit}
       fields={fields}
       submitButtonText='Змінити пароль'
@@ -35,4 +37,4 @@ function PasswordForm({ onSubmit }) {
   );
 }
 
-export default PasswordForm;
+export default ChangePasswordForm;

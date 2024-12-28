@@ -12,7 +12,7 @@ const {
 } = require('../controllers/userController');
 const {
   auth: { authHandler },
-  validation: { validateUser, validateChangePassword },
+  validation: { validateUser, validatePassword },
   pagination: { paginateElements },
   upload: { uploadUserPhotos },
 } = require('../middlewares');
@@ -29,7 +29,7 @@ userRouter
 
 userRouter
   .route('/change-password/:userUuid')
-  .patch(authHandler, validateChangePassword, changePassword);
+  .patch(authHandler, validatePassword, changePassword);
 
 userRouter
   .route('/update-photo/:userUuid')

@@ -8,7 +8,7 @@ import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 // ==============================================================
 import UserEditPage from './UserEditPage';
-import UserPasswordPage from './UserPasswordPage';
+import UserChangePasswordPage from './UserChangePasswordPage';
 import UserDeletePage from './UserDeletePage';
 import UserViewPage from './UserViewPage';
 // ==============================================================
@@ -120,7 +120,7 @@ function UsersPage() {
       <Route
         path='password/:uuid'
         element={
-          <UserPasswordPage
+          <UserChangePasswordPage
             handleModalClose={handleModalClose}
             fetchUsers={fetchUsers}
             crudError={crudError}

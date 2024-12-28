@@ -24,9 +24,10 @@ import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
 import UsersPage from './pages/Users/UsersPage';
 import RolesPage from './pages/Roles/RolesPage';
+import UserResetPasswordPage from './pages/Users/UserResetPasswordPage';
 import NotificationPage from './pages/NotificationPage/NotificationPage';
 
-const App = () => {
+function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -126,14 +127,13 @@ const App = () => {
             path='roles/*' 
             element={renderPrivateRoute(<RolesPage />)} 
           />
-          <Route
-            path='notification'
-            element={
-              <NotificationPage
-                isOpen={isAuthModalOpen}
-                onClose={handleCloseAuthModal}
-              />
-            }
+          <Route 
+            path='notification' 
+            element={<NotificationPage />} 
+          />
+          <Route 
+            path='reset-password' 
+            element={<UserResetPasswordPage />} 
           />
           <Route 
             path='*' 
@@ -151,6 +151,6 @@ const App = () => {
       )}
     </Router>
   );
-};
+}
 
 export default App;
