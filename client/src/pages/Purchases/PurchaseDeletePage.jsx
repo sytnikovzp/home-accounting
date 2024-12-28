@@ -32,10 +32,7 @@ function PurchaseDeletePage({
       handleModalClose();
       fetchPurchases();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -51,7 +48,12 @@ function PurchaseDeletePage({
         ) : (
           <Typography
             variant='body1'
-            sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+            sx={{
+              textAlign: 'justify',
+              mt: 2,
+              mb: 2,
+              textIndent: '2em',
+            }}
           >
             Ви впевнені, що хочете видалити покупку «
             {purchaseToCRUD?.product.title}»?

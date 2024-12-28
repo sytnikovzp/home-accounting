@@ -24,17 +24,14 @@ function UserResetPasswordPage() {
         values.confirmNewPassword
       );
       navigate(
-        `/notification?type=${encodeURIComponent(
-          response.type
+        `/notification?severity=${encodeURIComponent(
+          response.severity
         )}&title=${encodeURIComponent(
           response.title
         )}&message=${encodeURIComponent(response.message)}`
       );
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     }
   };
 

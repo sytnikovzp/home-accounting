@@ -9,6 +9,7 @@ import {
   HourglassEmpty,
   AlternateEmail,
   AssignmentInd,
+  Cancel,
 } from '@mui/icons-material';
 // ==============================================================
 import restController from '../../api/rest/restController';
@@ -18,6 +19,14 @@ import { BASE_URL } from '../../constants';
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 import DetailRow from '../../components/DetailRow/DetailRow';
+
+const getStatusIcon = (emailVerificationStatus) => {
+  const icons = {
+    Веріфікований: <CheckCircle color='success' />,
+    'Очікує веріфікації': <HourglassEmpty color='warning' />,
+  };
+  return icons[emailVerificationStatus] || <Cancel color='error' />;
+};
 
 function UserViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -42,8 +51,8 @@ function UserViewPage({ handleModalClose }) {
     try {
       const response = await restController.resendVerifyEmail(email);
       navigate(
-        `/notification?type=${encodeURIComponent(
-          response.type
+        `/notification?severity=${encodeURIComponent(
+          response.severity
         )}&title=${encodeURIComponent(
           response.title
         )}&message=${encodeURIComponent(response.message)}`
@@ -55,17 +64,6 @@ function UserViewPage({ handleModalClose }) {
       );
     }
   };
-
-  const statusIcon = (() => {
-    switch (emailVerificationStatus) {
-      case 'Веріфікований':
-        return <CheckCircle color='success' />;
-      case 'Очікує веріфікації':
-        return <HourglassEmpty color='warning' />;
-      default:
-        return null;
-    }
-  })();
 
   const photoSrc = photo
     ? `${BASE_URL.replace('/api/', '')}/images/users/${photo}`
@@ -136,7 +134,7 @@ function UserViewPage({ handleModalClose }) {
                   }}
                 >
                   <DetailRow
-                    icon={() => statusIcon}
+                    icon={() => getStatusIcon(emailVerificationStatus)}
                     label='Обліковий запис'
                     value={emailVerificationStatus}
                   />
@@ -146,7 +144,7 @@ function UserViewPage({ handleModalClose }) {
                         variant='text'
                         size='small'
                         sx={{
-                          fontSize: '1.8rem',
+                          fontSize: '2rem',
                           padding: 0,
                           minWidth: 'auto',
                           lineHeight: 1,

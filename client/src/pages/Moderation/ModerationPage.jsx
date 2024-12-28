@@ -58,10 +58,7 @@ function ModerationsPage() {
       setModerations(data || []);
       setTotalCount(totalCount);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }

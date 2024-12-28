@@ -20,6 +20,14 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 import DetailRow from '../../components/DetailRow/DetailRow';
 
+const getStatusIcon = (status) => {
+  const icons = {
+    Затверджено: <CheckCircle color='success' />,
+    'Очікує модерації': <HourglassEmpty color='warning' />,
+  };
+  return icons[status] || <Cancel color='error' />;
+};
+
 function ShopViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const {
@@ -38,19 +46,6 @@ function ShopViewPage({ handleModalClose }) {
 
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
-
-  const statusIcon = (() => {
-    switch (status) {
-      case 'Затверджено':
-        return <CheckCircle color='success' />;
-      case 'Очікує модерації':
-        return <HourglassEmpty color='warning' />;
-      case 'Відхилено':
-        return <Cancel color='error' />;
-      default:
-        return null;
-    }
-  })();
 
   const logoSrc = logo
     ? `${BASE_URL.replace('/api/', '')}/images/shops/${logo}`
@@ -101,7 +96,7 @@ function ShopViewPage({ handleModalClose }) {
                 />
               )}
               <DetailRow
-                icon={() => statusIcon}
+                icon={() => getStatusIcon(status)}
                 label='Статус'
                 value={status}
               />
@@ -109,14 +104,18 @@ function ShopViewPage({ handleModalClose }) {
                 icon={Person}
                 label='Автор'
                 value={
-                  <Link
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
+                  creatorFullName ? (
+                    <Link
+                      component={RouterLink}
+                      to={`/users/${creatorUuid}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {creatorFullName}
+                    </Link>
+                  ) : (
+                    '*Дані відсутні*'
+                  )
                 }
               />
               {moderatorFullName && (

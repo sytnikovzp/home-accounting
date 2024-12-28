@@ -54,10 +54,7 @@ function RolesPage() {
       setRoles(data || []);
       setTotalCount(totalCount);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }
@@ -70,10 +67,7 @@ function RolesPage() {
       const { data } = await restController.fetchAllPermissions();
       setPermissionsList(data);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }

@@ -27,8 +27,8 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
         if (authMethod === restController.forgotPassword) {
           onClose();
           navigate(
-            `/notification?type=${encodeURIComponent(
-              response.type
+            `/notification?severity=${encodeURIComponent(
+              response.severity
             )}&title=${encodeURIComponent(
               response.title
             )}&message=${encodeURIComponent(response.message)}`
@@ -39,10 +39,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
         onClose();
         navigate('/');
       } catch (error) {
-        setErrorMessage(
-          error.response?.data?.errors?.[0]?.message ||
-            'Помилка виконання операції'
-        );
+        setErrorMessage(error.response.data);
       }
     },
     [checkAuthentication, navigate, onClose]

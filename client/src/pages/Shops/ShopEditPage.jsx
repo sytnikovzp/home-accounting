@@ -38,10 +38,7 @@ function ShopEditPage({
       handleModalClose();
       fetchShops();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -51,10 +48,7 @@ function ShopEditPage({
       await restController.uploadShopLogo(shopToCRUD.uuid, file);
       fetchEntityByUuid(uuid);
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження логотипу'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -64,10 +58,7 @@ function ShopEditPage({
       await restController.removeShopLogo(shopToCRUD.uuid);
       fetchEntityByUuid(uuid);
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка видалення логотипу'
-      );
+      setCrudError(error.response.data);
     }
   };
 

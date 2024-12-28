@@ -32,10 +32,7 @@ function ProductDeletePage({
       handleModalClose();
       fetchProducts();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -51,7 +48,12 @@ function ProductDeletePage({
         ) : (
           <Typography
             variant='body1'
-            sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+            sx={{
+              textAlign: 'justify',
+              mt: 2,
+              mb: 2,
+              textIndent: '2em',
+            }}
           >
             Ви впевнені, що хочете видалити товар «{productToCRUD?.title}»? Це
             призведе до видалення всіх покупок, що містять цей товар.

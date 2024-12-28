@@ -18,6 +18,14 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 import DetailRow from '../../components/DetailRow/DetailRow';
 
+const getStatusIcon = (status) => {
+  const icons = {
+    Затверджено: <CheckCircle color='success' />,
+    'Очікує модерації': <HourglassEmpty color='warning' />,
+  };
+  return icons[status] || <Cancel color='error' />;
+};
+
 function ProductViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const {
@@ -37,19 +45,6 @@ function ProductViewPage({ handleModalClose }) {
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
   const categoryTitle = category?.title || '*Дані відсутні*';
 
-  const statusIcon = (() => {
-    switch (status) {
-      case 'Затверджено':
-        return <CheckCircle color='success' />;
-      case 'Очікує модерації':
-        return <HourglassEmpty color='warning' />;
-      case 'Відхилено':
-        return <Cancel color='error' />;
-      default:
-        return null;
-    }
-  })();
-
   return (
     <CustomModal
       isOpen
@@ -64,7 +59,7 @@ function ProductViewPage({ handleModalClose }) {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <DetailRow icon={Info} label='Назва' value={title} />
               <DetailRow
-                icon={() => statusIcon}
+                icon={() => getStatusIcon(status)}
                 label='Статус'
                 value={status}
               />
@@ -72,28 +67,36 @@ function ProductViewPage({ handleModalClose }) {
                 icon={Category}
                 label='Категорія'
                 value={
-                  <Link
-                    component={RouterLink}
-                    to={`/categories/${category?.uuid}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {categoryTitle}
-                  </Link>
+                  categoryTitle ? (
+                    <Link
+                      component={RouterLink}
+                      to={`/categories/${category?.uuid}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {categoryTitle}
+                    </Link>
+                  ) : (
+                    '*Дані відсутні*'
+                  )
                 }
               />
               <DetailRow
                 icon={Person}
                 label='Автор'
                 value={
-                  <Link
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
+                  creatorFullName ? (
+                    <Link
+                      component={RouterLink}
+                      to={`/users/${creatorUuid}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {creatorFullName}
+                    </Link>
+                  ) : (
+                    '*Дані відсутні*'
+                  )
                 }
               />
               {moderatorFullName && (

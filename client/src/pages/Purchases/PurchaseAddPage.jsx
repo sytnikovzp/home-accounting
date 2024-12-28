@@ -28,10 +28,7 @@ function PurchaseAddPage({
       handleModalClose();
       fetchPurchases();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 

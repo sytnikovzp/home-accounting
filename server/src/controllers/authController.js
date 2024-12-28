@@ -72,8 +72,10 @@ class AuthController {
       await checkToken(token, 'verify');
       await verifyEmail(token);
       res.redirect(
-        `${URL}/notification?type=success&title=${encodeURIComponent(
-          'Веріфікація облікового запису'
+        `${URL}/notification?severity=${encodeURIComponent(
+          'success'
+        )}&title=${encodeURIComponent(
+          'Веріфікація облікового запису...'
         )}&message=${encodeURIComponent('Ваш email успішно підтверджений')}`
       );
     } catch (error) {
@@ -87,7 +89,7 @@ class AuthController {
       const { email } = req.body;
       await resendVerifyEmail(email);
       res.status(200).json({
-        type: 'success',
+        severity: 'success',
         title: 'Веріфікація облікового запису...',
         message:
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
@@ -103,7 +105,7 @@ class AuthController {
       const { email } = req.body;
       await forgotPassword(email);
       res.status(200).json({
-        type: 'success',
+        severity: 'success',
         title: 'Зміна паролю...',
         message:
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
@@ -133,7 +135,7 @@ class AuthController {
       const { newPassword, confirmNewPassword } = req.body;
       await resetPassword(token, newPassword, confirmNewPassword);
       res.status(200).json({
-        type: 'success',
+        severity: 'success',
         title: 'Зміна паролю...',
         message: 'Ваш пароль успішно змінено',
       });

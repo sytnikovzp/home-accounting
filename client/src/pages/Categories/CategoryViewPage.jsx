@@ -7,8 +7,8 @@ import {
   Person,
   Update,
   CheckCircle,
-  Cancel,
   HourglassEmpty,
+  Cancel,
 } from '@mui/icons-material';
 // ==============================================================
 import useFetchEntity from '../../hooks/useFetchEntity';
@@ -16,6 +16,14 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 import DetailRow from '../../components/DetailRow/DetailRow';
+
+const getStatusIcon = (status) => {
+  const icons = {
+    Затверджено: <CheckCircle color='success' />,
+    'Очікує модерації': <HourglassEmpty color='warning' />,
+  };
+  return icons[status] || <Cancel color='error' />;
+};
 
 function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -34,19 +42,6 @@ function CategoryViewPage({ handleModalClose }) {
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
-  const statusIcon = (() => {
-    switch (status) {
-      case 'Затверджено':
-        return <CheckCircle color='success' />;
-      case 'Очікує модерації':
-        return <HourglassEmpty color='warning' />;
-      case 'Відхилено':
-        return <Cancel color='error' />;
-      default:
-        return null;
-    }
-  })();
-
   return (
     <CustomModal
       isOpen
@@ -61,7 +56,7 @@ function CategoryViewPage({ handleModalClose }) {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <DetailRow icon={Info} label='Назва' value={title} />
               <DetailRow
-                icon={() => statusIcon}
+                icon={() => getStatusIcon(status)}
                 label='Статус'
                 value={status}
               />
@@ -69,14 +64,18 @@ function CategoryViewPage({ handleModalClose }) {
                 icon={Person}
                 label='Автор'
                 value={
-                  <Link
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
+                  creatorFullName ? (
+                    <Link
+                      component={RouterLink}
+                      to={`/users/${creatorUuid}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {creatorFullName}
+                    </Link>
+                  ) : (
+                    '*Дані відсутні*'
+                  )
                 }
               />
               {moderatorFullName && (

@@ -6,7 +6,7 @@ class AuthError extends Error {
   }
 
   static unAuthorizedError() {
-    return new AuthError(401, 'Перевірте облікові дані');
+    return new AuthError(401, 'Перевірте свої облікові дані');
   }
 }
 

@@ -32,10 +32,7 @@ function RoleDeletePage({
       handleModalClose();
       fetchRoles();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -51,7 +48,12 @@ function RoleDeletePage({
         ) : (
           <Typography
             variant='body1'
-            sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+            sx={{
+              textAlign: 'justify',
+              mt: 2,
+              mb: 2,
+              textIndent: '2em',
+            }}
           >
             Ви впевнені, що хочете видалити роль «{roleToCRUD?.title}»?
           </Typography>

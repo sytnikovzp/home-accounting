@@ -59,10 +59,7 @@ function PurchasesPage() {
       setPurchases(data || []);
       setTotalCount(totalCount);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }
@@ -79,10 +76,7 @@ function PurchasesPage() {
       const { data } = await restController.fetchAllProducts(params);
       setProducts(data || []);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }
@@ -99,10 +93,7 @@ function PurchasesPage() {
       const { data } = await restController.fetchAllShops(params);
       setShops(data || []);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }
@@ -119,10 +110,7 @@ function PurchasesPage() {
       const { data } = await restController.fetchAllMeasures(params);
       setMeasures(data || []);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }
@@ -139,10 +127,7 @@ function PurchasesPage() {
       const { data } = await restController.fetchAllCurrencies(params);
       setCurrencies(data || []);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }

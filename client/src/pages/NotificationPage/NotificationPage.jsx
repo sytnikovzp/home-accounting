@@ -11,7 +11,7 @@ function NotificationPage() {
   const [isOpen, setIsOpen] = useState(true);
 
   const params = new URLSearchParams(location.search);
-  const type = params.get('type') || 'info';
+  const severity = params.get('severity') || 'info';
   const title = params.get('title') || 'Повідомлення';
   const message = params.get('message') || 'Невідоме повідомлення';
 
@@ -25,7 +25,7 @@ function NotificationPage() {
       isOpen={isOpen}
       onClose={handleClose}
       title={title}
-      content={<InfoMessage type={type} message={message} />}
+      content={<InfoMessage severity={severity} message={message} />}
       actions={
         <Button
           variant='contained'

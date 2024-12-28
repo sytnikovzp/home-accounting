@@ -65,7 +65,7 @@ class MailService {
           </div>
           <p style="font-size: 14px; color: #666;">Якщо кнопка не працює, скопіюйте та вставте це посилання у Ваш браузер:</p>
           <p style="font-size: 14px; word-break: break-word;"><a href="${newVerificationLink}" style="color: #007BFF;">${newVerificationLink}</a></p>
-          <p style="font-size: 14px; color: #666;">Це посилання буде дійсним протягом 1 години.</p>
+          <p style="font-size: 14px; color: #666;">Це посилання буде дійсним протягом 24 годин.</p>
           <p style="font-size: 14px; color: #666;">Якщо Ви не змінювали електронну адресу, просто ігноруйте це повідомлення.</p>
           <p style="font-size: 14px; text-align: center; color: #999;">З найкращими побажаннями,<br>Команда ${URL}</p>
         </div>

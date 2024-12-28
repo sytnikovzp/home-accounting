@@ -9,20 +9,17 @@ const AuthError = require('../errors/authErrors');
 const GeneralError = require('../errors/generalErrors');
 
 const formatError = (title, message, details = []) => ({
-  errors: [{ title, message, details }],
+  severity: 'error',
+  title,
+  message,
+  details,
 });
 
 module.exports.authErrorHandler = (err, req, res, next) => {
   if (err instanceof AuthError) {
     return res
       .status(err.status)
-      .send(
-        formatError(
-          'Auth Error',
-          `Помилка авторизації: ${err.message}`,
-          err.errors
-        )
-      );
+      .send(formatError('Помилка авторизації', err.message, err.errors));
   }
   next(err);
 };
@@ -31,9 +28,7 @@ module.exports.generalErrorHandler = (err, req, res, next) => {
   if (err instanceof GeneralError) {
     return res
       .status(err.status)
-      .send(
-        formatError('General Error', `Помилка: ${err.message}`, err.errors)
-      );
+      .send(formatError('Сталася помилка', err.message, err.errors));
   }
   next(err);
 };
@@ -42,13 +37,7 @@ module.exports.validationErrorHandler = (err, req, res, next) => {
   if (err instanceof ValidationError) {
     return res
       .status(400)
-      .send(
-        formatError(
-          'Validation Error',
-          `Помилка валідації: ${err.message}`,
-          err.errors
-        )
-      );
+      .send(formatError('Помилка валідації', err.message, err.errors));
   }
   next(err);
 };
@@ -58,11 +47,7 @@ module.exports.sequelizeErrorHandler = (err, req, res, next) => {
     return res
       .status(406)
       .send(
-        formatError(
-          'Sequelize Error',
-          `Помилка операції з базою даних: ${err.message}`,
-          err.errors
-        )
+        formatError('Помилка операції з базою даних', err.message, err.errors)
       );
   }
   next(err);
@@ -72,13 +57,7 @@ module.exports.uploadErrorHandler = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     return res
       .status(400)
-      .send(
-        formatError(
-          'Multer Error',
-          `Помилка завантаження файлу: ${err.message}`,
-          err.errors
-        )
-      );
+      .send(formatError('Помилка завантаження файлу', err.message, err.errors));
   }
   next(err);
 };

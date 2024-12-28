@@ -32,10 +32,7 @@ function MeasureDeletePage({
       handleModalClose();
       fetchMeasures();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -51,7 +48,12 @@ function MeasureDeletePage({
         ) : (
           <Typography
             variant='body1'
-            sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+            sx={{
+              textAlign: 'justify',
+              mt: 2,
+              mb: 2,
+              textIndent: '2em',
+            }}
           >
             Ви впевнені, що хочете видалити одиницю вимірів «
             {measureToCRUD?.title}»? Це призведе до видалення всіх покупок, де

@@ -40,10 +40,7 @@ function UserEditPage({
       handleModalClose();
       fetchUsers();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -53,10 +50,7 @@ function UserEditPage({
       await restController.uploadUserPhoto(userToCRUD.uuid, file);
       fetchEntityByUuid(uuid);
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка завантаження фотографії'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -66,10 +60,7 @@ function UserEditPage({
       await restController.removeUserPhoto(userToCRUD.uuid);
       fetchEntityByUuid(uuid);
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка видалення фотографії'
-      );
+      setCrudError(error.response.data);
     }
   };
 

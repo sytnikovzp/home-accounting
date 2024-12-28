@@ -1,4 +1,12 @@
-import { Modal, Fade, Box, Typography, Alert, IconButton } from '@mui/material';
+import {
+  Modal,
+  Fade,
+  Box,
+  Typography,
+  Alert,
+  IconButton,
+  AlertTitle,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 // ==============================================================
 import { stylesFadeBox, stylesContentBox } from '../../styles/theme';
@@ -49,8 +57,9 @@ function CustomModal({
             </Box>
           )}
           {error && (
-            <Alert severity='error' sx={{ mb: 2 }}>
-              {error}
+            <Alert severity={error.severity || 'error'} sx={{ mb: 1 }}>
+              <AlertTitle>{error.title}:</AlertTitle>
+              {error.message}
             </Alert>
           )}
           <Box id='custom-modal-description' sx={stylesContentBox}>

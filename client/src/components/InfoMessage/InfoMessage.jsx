@@ -1,7 +1,7 @@
 import { Alert } from '@mui/material';
 
-function InfoMessage({ type = 'info', message }) {
-  return <Alert severity={type}>{message}</Alert>;
+function InfoMessage({ severity = 'info', message }) {
+  return <Alert severity={severity}>{message}</Alert>;
 }
 
 export default InfoMessage;

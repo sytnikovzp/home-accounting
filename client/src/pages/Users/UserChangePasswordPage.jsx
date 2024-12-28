@@ -37,10 +37,7 @@ function UserChangePasswordPage({
       handleModalClose();
       fetchUsers();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -51,7 +48,11 @@ function UserChangePasswordPage({
       showCloseButton
       title='Зміна паролю...'
       content={
-        isLoading ? <Preloader /> : <ChangePasswordForm onSubmit={handleSubmitUser} />
+        isLoading ? (
+          <Preloader />
+        ) : (
+          <ChangePasswordForm onSubmit={handleSubmitUser} />
+        )
       }
       error={errorMessage || crudError}
     />

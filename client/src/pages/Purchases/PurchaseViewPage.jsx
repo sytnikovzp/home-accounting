@@ -65,14 +65,18 @@ function PurchaseViewPage({ handleModalClose }) {
                 icon={ShoppingCart}
                 label='Товар'
                 value={
-                  <Link
-                    component={RouterLink}
-                    to={`/products/${product?.uuid}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {productTitle}
-                  </Link>
+                  productTitle ? (
+                    <Link
+                      component={RouterLink}
+                      to={`/products/${product?.uuid}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {productTitle}
+                    </Link>
+                  ) : (
+                    '*Дані відсутні*'
+                  )
                 }
               />
               <DetailRow
@@ -95,28 +99,36 @@ function PurchaseViewPage({ handleModalClose }) {
                 icon={Store}
                 label='Магазин'
                 value={
-                  <Link
-                    component={RouterLink}
-                    to={`/shops/${shop?.uuid}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {shopTitle}
-                  </Link>
+                  shopTitle ? (
+                    <Link
+                      component={RouterLink}
+                      to={`/shops/${shop?.uuid}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {shopTitle}
+                    </Link>
+                  ) : (
+                    '*Дані відсутні*'
+                  )
                 }
               />
               <DetailRow
                 icon={Person}
                 label='Автор'
                 value={
-                  <Link
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
+                  creatorFullName ? (
+                    <Link
+                      component={RouterLink}
+                      to={`/users/${creatorUuid}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {creatorFullName}
+                    </Link>
+                  ) : (
+                    '*Дані відсутні*'
+                  )
                 }
               />
               <DetailRow icon={Shop} label='Дата покупки' value={date} />

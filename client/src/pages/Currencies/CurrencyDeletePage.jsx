@@ -32,10 +32,7 @@ function CurrencyDeletePage({
       handleModalClose();
       fetchCurrencies();
     } catch (error) {
-      setCrudError(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setCrudError(error.response.data);
     }
   };
 
@@ -51,7 +48,12 @@ function CurrencyDeletePage({
         ) : (
           <Typography
             variant='body1'
-            sx={{ textAlign: 'justify', mt: 2, mb: 2 }}
+            sx={{
+              textAlign: 'justify',
+              mt: 2,
+              mb: 2,
+              textIndent: '2em',
+            }}
           >
             Ви впевнені, що хочете видалити валюту «{currencyToCRUD?.title}»?
             Зверніть увагу, що видалення цієї валюти призведе до видалення всіх

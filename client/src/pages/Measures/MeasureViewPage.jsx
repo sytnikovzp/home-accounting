@@ -53,14 +53,18 @@ function MeasureViewPage({ handleModalClose }) {
                 icon={Person}
                 label='Автор'
                 value={
-                  <Link
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    color='primary'
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
+                  creatorFullName ? (
+                    <Link
+                      component={RouterLink}
+                      to={`/users/${creatorUuid}`}
+                      color='primary'
+                      underline='hover'
+                    >
+                      {creatorFullName}
+                    </Link>
+                  ) : (
+                    '*Дані відсутні*'
+                  )
                 }
               />
               <DetailRow

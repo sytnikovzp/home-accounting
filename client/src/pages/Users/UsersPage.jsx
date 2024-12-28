@@ -59,10 +59,7 @@ function UsersPage() {
       setUsers(data || []);
       setTotalCount(totalCount);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }
@@ -79,10 +76,7 @@ function UsersPage() {
       const { data } = await restController.fetchAllRoles(params);
       setRoles(data || []);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.errors?.[0]?.message ||
-          'Помилка виконання операції'
-      );
+      setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }
