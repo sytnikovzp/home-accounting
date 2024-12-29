@@ -131,7 +131,7 @@ function CategoriesPage() {
         alignItems='center'
         mb={2}
       >
-        <Typography variant='h6'>Категорії</Typography>
+        <Typography variant='h6'>Категорії витрат</Typography>
         <Button
           variant='contained'
           color='success'

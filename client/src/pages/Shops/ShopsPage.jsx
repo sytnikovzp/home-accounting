@@ -118,7 +118,7 @@ function ShopsPage() {
   );
 
   if (showPreloader)
-    return <Preloader message='Завантаження списку "Магазинів"...' />;
+    return <Preloader message='Завантаження списку "Закладів"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (
@@ -129,20 +129,20 @@ function ShopsPage() {
         alignItems='center'
         mb={2}
       >
-        <Typography variant='h6'>Магазини</Typography>
+        <Typography variant='h6'>Заклади</Typography>
         <Button
           variant='contained'
           color='success'
           size='small'
           onClick={() => openModal('add')}
         >
-          Додати магазин
+          Додати заклад
         </Button>
       </Box>
       <ListTable
         columns={[
           { field: 'logo', headerName: 'Лого', align: 'center' },
-          { field: 'title', headerName: 'Назва магазину', align: 'left' },
+          { field: 'title', headerName: 'Назва закладу', align: 'left' },
         ]}
         rows={shops}
         onEdit={(shop) => openModal('edit', shop.uuid)}

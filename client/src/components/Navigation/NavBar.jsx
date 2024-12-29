@@ -15,8 +15,8 @@ import { stylesListItemText, stylesNavMenuItems } from '../../styles/theme';
 const navItems = [
   { to: '/', icon: 'Home', label: 'Головна' },
   { to: '/purchases', icon: 'ShoppingCart', label: 'Покупки' },
-  { to: '/shops', icon: 'Store', label: 'Магазини' },
-  { to: '/products', icon: 'Storefront', label: 'Товари' },
+  { to: '/shops', icon: 'Store', label: 'Заклади' },
+  { to: '/products', icon: 'DryCleaning', label: 'Товари' },
   { to: '/categories', icon: 'Category', label: 'Категорії' },
   { to: '/currencies', icon: 'AttachMoney', label: 'Валюти' },
   { to: '/measures', icon: 'SquareFoot', label: 'Одиниці' },

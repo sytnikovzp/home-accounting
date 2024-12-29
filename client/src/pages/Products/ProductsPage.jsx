@@ -141,7 +141,7 @@ function ProductsPage() {
   );
 
   if (showPreloader)
-    return <Preloader message='Завантаження списку "Товарів"...' />;
+    return <Preloader message='Завантаження списку "Товарів та послуг"...' />;
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (
@@ -152,20 +152,20 @@ function ProductsPage() {
         alignItems='center'
         mb={2}
       >
-        <Typography variant='h6'>Товари</Typography>
+        <Typography variant='h6'>Товари та послуги</Typography>
         <Button
           variant='contained'
           color='success'
           size='small'
           onClick={() => openModal('add')}
         >
-          Додати товар
+          Додати товар/послугу
         </Button>
       </Box>
       <ListTable
         columns={[
           { field: 'category', headerName: 'Категорія', align: 'left' },
-          { field: 'title', headerName: 'Назва товару', align: 'left' },
+          { field: 'title', headerName: 'Назва товару/послуги', align: 'left' },
         ]}
         rows={products}
         onEdit={(product) => openModal('edit', product.uuid)}
