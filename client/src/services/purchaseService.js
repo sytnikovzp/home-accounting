@@ -1,12 +1,19 @@
 import api from '../api';
 
 const getAllPurchases = async ({
+  ago = 'allTime',
   page = 1,
   limit = 6,
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({ page, limit, sort, order }).toString();
+  const params = new URLSearchParams({
+    ago,
+    page,
+    limit,
+    sort,
+    order,
+  }).toString();
   try {
     const { data, headers } = await api.get(`/purchases?${params}`);
     const totalCount = parseInt(headers['x-total-count']);

@@ -31,6 +31,7 @@ function PurchasesPage() {
   const [measures, setMeasures] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [selectedPeriod, setSelectedPeriod] = useState('allTime');
   const [sortModel, setSortModel] = useState({ field: 'date', order: 'desc' });
   const [crudError, setCrudError] = useState(null);
 
@@ -50,6 +51,7 @@ function PurchasesPage() {
       const params = {
         page: currentPage,
         limit: pageSize,
+        ago: selectedPeriod,
         sort: sortModel.field,
         order: sortModel.order,
       };
@@ -63,7 +65,7 @@ function PurchasesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, pageSize, sortModel]);
+  }, [currentPage, pageSize, selectedPeriod, sortModel]);
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
@@ -248,6 +250,10 @@ function PurchasesPage() {
         }}
         sortModel={sortModel}
         onSortModelChange={setSortModel}
+        selectedStatus={selectedPeriod}
+        onStatusChange={(event) => setSelectedPeriod(event.target.value)}
+        showStatusDropdown
+        purchasesPage
         linkEntity='purchases'
       />
       {renderRoutes()}

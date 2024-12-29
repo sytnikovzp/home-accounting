@@ -1,5 +1,7 @@
+/* eslint-disable camelcase */
 const { parse, isValid } = require('date-fns');
 const { uk } = require('date-fns/locale');
+const { Op } = require('sequelize');
 // ==============================================================
 const {
   Purchase,
@@ -12,6 +14,7 @@ const {
   formatDate,
   isValidUUID,
   checkPermission,
+  getTime,
   getCurrencyByTitle,
   getRecordByTitle,
   formatDateTime,
@@ -51,7 +54,8 @@ const formatPurchaseData = (purchase) => ({
 });
 
 class PurchaseService {
-  async getAllPurchases(limit, offset, sort, order) {
+  async getAllPurchases(currentUser, ago, limit, offset, sort, order) {
+    const time = getTime(ago);
     const sortableFields = {
       product: [Product, 'title'],
       shop: [Shop, 'title'],
@@ -60,18 +64,21 @@ class PurchaseService {
       ? [...sortableFields[sort], order]
       : [['uuid', 'date'].includes(sort) ? sort : `Purchase.${sort}`, order];
     const foundPurchases = await Purchase.findAll({
-      attributes: ['uuid', 'date'],
+      attributes: ['uuid', 'date', 'creator_uuid'],
       include: [
         { model: Product, attributes: ['title'] },
         { model: Shop, attributes: ['title'] },
       ],
+      where: { creator_uuid: currentUser.uuid, date: { [Op.gte]: time } },
       order: [orderConfig],
       raw: true,
       limit,
       offset,
     });
     if (!foundPurchases.length) throw notFound('Покупки не знайдено');
-    const total = await Purchase.count();
+    const total = await Purchase.count({
+      where: { creator_uuid: currentUser.uuid, date: { [Op.gte]: time } },
+    });
     return {
       allPurchases: foundPurchases.map(
         ({
@@ -90,7 +97,7 @@ class PurchaseService {
     };
   }
 
-  async getPurchaseByUuid(uuid) {
+  async getPurchaseByUuid(uuid, currentUser) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     const foundPurchase = await Purchase.findByPk(uuid, {
       attributes: {
@@ -104,6 +111,8 @@ class PurchaseService {
       ],
     });
     if (!foundPurchase) throw notFound('Покупку не знайдено');
+    if (foundPurchase.creatorUuid !== currentUser.uuid)
+      throw forbidden('У Вас немає дозволу на перегляд цієї покупки');
     return formatPurchaseData(foundPurchase.toJSON());
   }
 

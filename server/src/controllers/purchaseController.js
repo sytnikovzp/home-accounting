@@ -12,8 +12,11 @@ class PurchaseController {
   async getAllPurchases(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { sort = 'uuid', order = 'asc' } = req.query;
+      const { sort = 'uuid', order = 'asc', ago = 'allTime' } = req.query;
+      const currentUser = await getCurrentUser(req.user.email);
       const { allPurchases, total } = await getAllPurchases(
+        currentUser,
+        ago,
         limit,
         offset,
         sort,
@@ -33,7 +36,8 @@ class PurchaseController {
   async getPurchaseByUuid(req, res, next) {
     try {
       const { purchaseUuid } = req.params;
-      const purchase = await getPurchaseByUuid(purchaseUuid);
+      const currentUser = await getCurrentUser(req.user.email);
+      const purchase = await getPurchaseByUuid(purchaseUuid, currentUser);
       if (purchase) {
         res.status(200).json(purchase);
       } else {

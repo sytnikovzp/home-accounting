@@ -202,12 +202,14 @@ const restController = {
 
   // Purchase management
   fetchAllPurchases: async ({
+    ago = 'allTime',
     page = 1,
     limit = 6,
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
     const { data, totalCount } = await purchaseService.getAllPurchases({
+      ago,
       page,
       limit,
       sort,

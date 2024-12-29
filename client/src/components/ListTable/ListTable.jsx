@@ -57,6 +57,7 @@ function ListTable({
   onStatusChange,
   showStatusDropdown = false,
   usersPage = false,
+  purchasesPage = false,
   linkEntity = '',
   isModerationPage = false,
 }) {
@@ -205,7 +206,7 @@ function ListTable({
         alignItems='center'
         m={2}
       >
-        {showStatusDropdown && !usersPage && (
+        {showStatusDropdown && !usersPage && !purchasesPage && (
           <FormControl sx={stylesFormControl}>
             <InputLabel id='status-select-label'>Статус</InputLabel>
             <Select
@@ -234,6 +235,24 @@ function ListTable({
               <MenuItem value='all'>Всі користувачі</MenuItem>
               <MenuItem value='pending'>Очікують веріфікації</MenuItem>
               <MenuItem value='verified'>Веріфіковані</MenuItem>
+            </Select>
+          </FormControl>
+        )}
+        {showStatusDropdown && purchasesPage && (
+          <FormControl sx={stylesFormControl}>
+            <InputLabel id='period-select-label'>Період</InputLabel>
+            <Select
+              labelId='period-select-label'
+              value={selectedStatus}
+              label='Період'
+              size='small'
+              onChange={handleStatusChange}
+            >
+              <MenuItem value='day'>За день</MenuItem>
+              <MenuItem value='week'>За неділю</MenuItem>
+              <MenuItem value='month'>За місяць</MenuItem>
+              <MenuItem value='year'>За рік</MenuItem>
+              <MenuItem value='allTime'>За весь час</MenuItem>
             </Select>
           </FormControl>
         )}
