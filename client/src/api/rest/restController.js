@@ -7,7 +7,7 @@ import {
   currencyService,
   measureService,
   productService,
-  purchaseService,
+  expenseService,
   establishmentService,
   moderationService,
   statisticService,
@@ -200,15 +200,15 @@ const restController = {
     productService.updateProduct(productUuid, title, category),
   removeProduct: (productUuid) => productService.deleteProduct(productUuid),
 
-  // Purchase management
-  fetchAllPurchases: async ({
+  // Expense management
+  fetchAllExpenses: async ({
     ago = 'allTime',
     page = 1,
     limit = 6,
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await purchaseService.getAllPurchases({
+    const { data, totalCount } = await expenseService.getAllExpenses({
       ago,
       page,
       limit,
@@ -220,9 +220,9 @@ const restController = {
       totalCount,
     };
   },
-  fetchPurchaseByUuid: (purchaseUuid) =>
-    purchaseService.getPurchaseByUuid(purchaseUuid),
-  addPurchase: (
+  fetchExpenseByUuid: (expenseUuid) =>
+    expenseService.getExpenseByUuid(expenseUuid),
+  addExpense: (
     product,
     quantity,
     unitPrice,
@@ -231,7 +231,7 @@ const restController = {
     currency,
     date
   ) =>
-    purchaseService.createPurchase(
+    expenseService.createExpense(
       product,
       quantity,
       unitPrice,
@@ -240,8 +240,8 @@ const restController = {
       currency,
       date
     ),
-  editPurchase: (
-    purchaseUuid,
+  editExpense: (
+    expenseUuid,
     product,
     quantity,
     unitPrice,
@@ -250,8 +250,8 @@ const restController = {
     currency,
     date
   ) =>
-    purchaseService.updatePurchase(
-      purchaseUuid,
+    expenseService.updateExpense(
+      expenseUuid,
       product,
       quantity,
       unitPrice,
@@ -260,8 +260,7 @@ const restController = {
       currency,
       date
     ),
-  removePurchase: (purchaseUuid) =>
-    purchaseService.deletePurchase(purchaseUuid),
+  removeExpense: (expenseUuid) => expenseService.deleteExpense(expenseUuid),
 
   // Establishment management
   fetchAllEstablishments: async ({

@@ -1,20 +1,20 @@
 const { sequelize } = require('../db/dbPostgres/models');
 const { getCurrentUser } = require('../services/userService');
 const {
-  getAllPurchases,
-  getPurchaseByUuid,
-  createPurchase,
-  updatePurchase,
-  deletePurchase,
-} = require('../services/purchaseService');
+  getAllExpenses,
+  getExpenseByUuid,
+  createExpense,
+  updateExpense,
+  deleteExpense,
+} = require('../services/expenseService');
 
-class PurchaseController {
-  async getAllPurchases(req, res, next) {
+class ExpenseController {
+  async getAllExpenses(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc', ago = 'allTime' } = req.query;
       const currentUser = await getCurrentUser(req.user.email);
-      const { allPurchases, total } = await getAllPurchases(
+      const { allExpenses, total } = await getAllExpenses(
         currentUser,
         ago,
         limit,
@@ -22,34 +22,34 @@ class PurchaseController {
         sort,
         order
       );
-      if (allPurchases.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allPurchases);
+      if (allExpenses.length > 0) {
+        res.status(200).set('X-Total-Count', total).json(allExpenses);
       } else {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get all purchases error:', error.message);
+      console.error('Get all expenses error:', error.message);
       next(error);
     }
   }
 
-  async getPurchaseByUuid(req, res, next) {
+  async getExpenseByUuid(req, res, next) {
     try {
-      const { purchaseUuid } = req.params;
+      const { expenseUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const purchase = await getPurchaseByUuid(purchaseUuid, currentUser);
-      if (purchase) {
-        res.status(200).json(purchase);
+      const expense = await getExpenseByUuid(expenseUuid, currentUser);
+      if (expense) {
+        res.status(200).json(expense);
       } else {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get purchase by uuid error:', error.message);
+      console.error('Get expense by uuid error:', error.message);
       next(error);
     }
   }
 
-  async createPurchase(req, res, next) {
+  async createExpense(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const {
@@ -62,7 +62,7 @@ class PurchaseController {
         date,
       } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
-      const newPurchase = await createPurchase(
+      const newExpense = await createExpense(
         product,
         quantity,
         unitPrice,
@@ -73,24 +73,24 @@ class PurchaseController {
         currentUser,
         transaction
       );
-      if (newPurchase) {
+      if (newExpense) {
         await transaction.commit();
-        res.status(201).json(newPurchase);
+        res.status(201).json(newExpense);
       } else {
         await transaction.rollback();
         res.status(401);
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Create purchase error:', error.message);
+      console.error('Create expense error:', error.message);
       next(error);
     }
   }
 
-  async updatePurchase(req, res, next) {
+  async updateExpense(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { purchaseUuid } = req.params;
+      const { expenseUuid } = req.params;
       const {
         product,
         quantity,
@@ -101,8 +101,8 @@ class PurchaseController {
         date,
       } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
-      const updatedPurchase = await updatePurchase(
-        purchaseUuid,
+      const updatedExpense = await updateExpense(
+        expenseUuid,
         product,
         quantity,
         unitPrice,
@@ -113,31 +113,31 @@ class PurchaseController {
         currentUser,
         transaction
       );
-      if (updatedPurchase) {
+      if (updatedExpense) {
         await transaction.commit();
-        res.status(200).json(updatedPurchase);
+        res.status(200).json(updatedExpense);
       } else {
         await transaction.rollback();
         res.status(401);
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Update purchase error:', error.message);
+      console.error('Update expense error:', error.message);
       next(error);
     }
   }
 
-  async deletePurchase(req, res, next) {
+  async deleteExpense(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { purchaseUuid } = req.params;
+      const { expenseUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const deletedPurchase = await deletePurchase(
-        purchaseUuid,
+      const deletedExpense = await deleteExpense(
+        expenseUuid,
         currentUser,
         transaction
       );
-      if (deletedPurchase) {
+      if (deletedExpense) {
         await transaction.commit();
         res.sendStatus(res.statusCode);
       } else {
@@ -146,10 +146,10 @@ class PurchaseController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Delete purchase error:', error.message);
+      console.error('Delete expense error:', error.message);
       next(error);
     }
   }
 }
 
-module.exports = new PurchaseController();
+module.exports = new ExpenseController();

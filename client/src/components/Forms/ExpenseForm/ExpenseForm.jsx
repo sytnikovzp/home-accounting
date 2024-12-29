@@ -1,26 +1,26 @@
 import { useMemo } from 'react';
 // ==============================================================
-import { PURCHASE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import { EXPENSE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 
-function PurchaseForm({
-  purchase = null,
+function ExpenseForm({
+  expense = null,
   onSubmit,
   products,
   establishments,
   measures,
   currencies,
 }) {
-  const initialValues = purchase
+  const initialValues = expense
     ? {
-        product: purchase.product.title,
-        quantity: purchase.quantity,
-        unitPrice: purchase.unitPrice,
-        establishment: purchase.establishment.title,
-        measure: purchase.measure.title,
-        currency: purchase.currency.title,
-        date: purchase.date,
+        product: expense.product.title,
+        quantity: expense.quantity,
+        unitPrice: expense.unitPrice,
+        establishment: expense.establishment.title,
+        measure: expense.measure.title,
+        currency: expense.currency.title,
+        date: expense.date,
       }
     : {
         product: '',
@@ -130,13 +130,13 @@ function PurchaseForm({
   return (
     <BaseForm
       initialValues={initialValues}
-      validationSchema={PURCHASE_VALIDATION_SCHEME}
+      validationSchema={EXPENSE_VALIDATION_SCHEME}
       onSubmit={onSubmit}
       fields={fields}
-      submitButtonText={purchase ? 'Зберегти зміни' : 'Додати покупку'}
-      layout='purchase'
+      submitButtonText={expense ? 'Зберегти зміни' : 'Додати витрату'}
+      layout='expense'
     />
   );
 }
 
-export default PurchaseForm;
+export default ExpenseForm;

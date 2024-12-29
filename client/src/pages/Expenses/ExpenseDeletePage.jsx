@@ -8,29 +8,29 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
-function PurchaseDeletePage({
+function ExpenseDeletePage({
   handleModalClose,
-  fetchPurchases,
+  fetchExpenses,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: purchaseToCRUD,
+    entity: expenseToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Purchase');
+  } = useFetchEntity('Expense');
 
   useEffect(() => {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeletePurchase = async () => {
+  const handleDeleteExpense = async () => {
     try {
-      await restController.removePurchase(purchaseToCRUD.uuid);
+      await restController.removeExpense(expenseToCRUD.uuid);
       handleModalClose();
-      fetchPurchases();
+      fetchExpenses();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -55,8 +55,8 @@ function PurchaseDeletePage({
               textIndent: '2em',
             }}
           >
-            Ви впевнені, що хочете видалити покупку «
-            {purchaseToCRUD?.product.title}»?
+            Ви впевнені, що хочете видалити витрату «
+            {expenseToCRUD?.product.title}»?
           </Typography>
         )
       }
@@ -66,7 +66,7 @@ function PurchaseDeletePage({
           variant='contained'
           color='error'
           size='large'
-          onClick={handleDeletePurchase}
+          onClick={handleDeleteExpense}
           fullWidth
         >
           Видалити
@@ -77,4 +77,4 @@ function PurchaseDeletePage({
   );
 }
 
-export default PurchaseDeletePage;
+export default ExpenseDeletePage;

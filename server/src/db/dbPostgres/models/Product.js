@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       });
-      Product.hasMany(models.Purchase, {
+      Product.hasMany(models.Expense, {
         foreignKey: 'productUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',

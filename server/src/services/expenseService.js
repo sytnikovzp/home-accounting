@@ -4,7 +4,7 @@ const { uk } = require('date-fns/locale');
 const { Op } = require('sequelize');
 // ==============================================================
 const {
-  Purchase,
+  Expense,
   Product,
   Establishment,
   Measure,
@@ -22,39 +22,39 @@ const {
 } = require('../utils/sharedFunctions');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
-const formatPurchaseData = (purchase) => ({
-  uuid: purchase.uuid,
+const formatExpenseData = (expense) => ({
+  uuid: expense.uuid,
   product: {
-    uuid: purchase.Product?.uuid || '',
-    title: purchase.Product?.title || '',
+    uuid: expense.Product?.uuid || '',
+    title: expense.Product?.title || '',
   },
-  quantity: purchase.quantity,
-  unitPrice: purchase.unitPrice,
-  totalPrice: purchase.totalPrice,
+  quantity: expense.quantity,
+  unitPrice: expense.unitPrice,
+  totalPrice: expense.totalPrice,
   establishment: {
-    uuid: purchase.Establishment?.uuid || '',
-    title: purchase.Establishment?.title || '',
+    uuid: expense.Establishment?.uuid || '',
+    title: expense.Establishment?.title || '',
   },
   measure: {
-    uuid: purchase.Measure?.uuid || '',
-    title: purchase.Measure?.title || '',
+    uuid: expense.Measure?.uuid || '',
+    title: expense.Measure?.title || '',
   },
   currency: {
-    uuid: purchase.Currency?.uuid || '',
-    title: purchase.Currency?.title || '',
-    code: purchase.Currency?.code || '',
+    uuid: expense.Currency?.uuid || '',
+    title: expense.Currency?.title || '',
+    code: expense.Currency?.code || '',
   },
-  date: formatDate(purchase.date),
+  date: formatDate(expense.date),
   creation: {
-    creatorUuid: purchase.creatorUuid,
-    creatorFullName: purchase.creatorFullName,
-    createdAt: formatDateTime(purchase.createdAt),
-    updatedAt: formatDateTime(purchase.updatedAt),
+    creatorUuid: expense.creatorUuid,
+    creatorFullName: expense.creatorFullName,
+    createdAt: formatDateTime(expense.createdAt),
+    updatedAt: formatDateTime(expense.updatedAt),
   },
 });
 
-class PurchaseService {
-  async getAllPurchases(currentUser, ago, limit, offset, sort, order) {
+class ExpenseService {
+  async getAllExpenses(currentUser, ago, limit, offset, sort, order) {
     const time = getTime(ago);
     const sortableFields = {
       product: [Product, 'title'],
@@ -62,8 +62,8 @@ class PurchaseService {
     };
     const orderConfig = sortableFields[sort]
       ? [...sortableFields[sort], order]
-      : [['uuid', 'date'].includes(sort) ? sort : `Purchase.${sort}`, order];
-    const foundPurchases = await Purchase.findAll({
+      : [['uuid', 'date'].includes(sort) ? sort : `Expense.${sort}`, order];
+    const foundExpenses = await Expense.findAll({
       attributes: ['uuid', 'date', 'creator_uuid'],
       include: [
         { model: Product, attributes: ['title'] },
@@ -75,12 +75,12 @@ class PurchaseService {
       limit,
       offset,
     });
-    if (!foundPurchases.length) throw notFound('Витрати не знайдено');
-    const total = await Purchase.count({
+    if (!foundExpenses.length) throw notFound('Витрати не знайдено');
+    const total = await Expense.count({
       where: { creator_uuid: currentUser.uuid, date: { [Op.gte]: time } },
     });
     return {
-      allPurchases: foundPurchases.map(
+      allExpenses: foundExpenses.map(
         ({
           uuid,
           date,
@@ -97,9 +97,9 @@ class PurchaseService {
     };
   }
 
-  async getPurchaseByUuid(uuid, currentUser) {
+  async getExpenseByUuid(uuid, currentUser) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    const foundPurchase = await Purchase.findByPk(uuid, {
+    const foundExpense = await Expense.findByPk(uuid, {
       attributes: {
         exclude: [
           'productUuid',
@@ -115,13 +115,13 @@ class PurchaseService {
         { model: Currency, attributes: ['uuid', 'title', 'code'] },
       ],
     });
-    if (!foundPurchase) throw notFound('Покупку не знайдено');
-    if (foundPurchase.creatorUuid !== currentUser.uuid)
+    if (!foundExpense) throw notFound('Витрату не знайдено');
+    if (foundExpense.creatorUuid !== currentUser.uuid)
       throw forbidden('У Вас немає дозволу на перегляд цієї витрати');
-    return formatPurchaseData(foundPurchase.toJSON());
+    return formatExpenseData(foundExpense.toJSON());
   }
 
-  async createPurchase(
+  async createExpense(
     product,
     quantityValue,
     priceValue,
@@ -132,7 +132,7 @@ class PurchaseService {
     currentUser,
     transaction
   ) {
-    const hasPermission = await checkPermission(currentUser, 'ADD_PURCHASES');
+    const hasPermission = await checkPermission(currentUser, 'ADD_EXPENSES');
     if (!hasPermission)
       throw forbidden('Ви не маєте дозволу на створення витрат');
     const [
@@ -165,7 +165,7 @@ class PurchaseService {
       ? parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk })
       : null;
     if (dateValue && !isValid(date)) throw badRequest('Невірний формат дати');
-    const newPurchase = await Purchase.create(
+    const newExpense = await Expense.create(
       {
         productUuid: foundProduct.uuid,
         quantity,
@@ -179,30 +179,30 @@ class PurchaseService {
       },
       { transaction, returning: true }
     );
-    if (!newPurchase) throw badRequest('Дані цієї витрати не створено');
+    if (!newExpense) throw badRequest('Дані цієї витрати не створено');
     return {
-      uuid: newPurchase.uuid,
+      uuid: newExpense.uuid,
       product: { uuid: foundProduct.uuid, title: foundProduct.title },
-      quantity: newPurchase.quantity,
-      unitPrice: newPurchase.unitPrice,
-      totalPrice: newPurchase.totalPrice,
+      quantity: newExpense.quantity,
+      unitPrice: newExpense.unitPrice,
+      totalPrice: newExpense.totalPrice,
       establishment: {
         uuid: foundEstablishment.uuid,
         title: foundEstablishment.title,
       },
       measure: { uuid: foundMeasure.uuid, title: foundMeasure.title },
       currency: { uuid: uahCurrency.uuid, title: uahCurrency.title },
-      date: formatDate(newPurchase.date),
+      date: formatDate(newExpense.date),
       creation: {
-        creatorUuid: newPurchase.creatorUuid,
-        creatorFullName: newPurchase.creatorFullName,
-        createdAt: formatDateTime(newPurchase.createdAt),
-        updatedAt: formatDateTime(newPurchase.updatedAt),
+        creatorUuid: newExpense.creatorUuid,
+        creatorFullName: newExpense.creatorFullName,
+        createdAt: formatDateTime(newExpense.createdAt),
+        updatedAt: formatDateTime(newExpense.updatedAt),
       },
     };
   }
 
-  async updatePurchase(
+  async updateExpense(
     uuid,
     product,
     quantityValue,
@@ -215,9 +215,9 @@ class PurchaseService {
     transaction
   ) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    const foundPurchase = await Purchase.findOne({ where: { uuid } });
-    if (!foundPurchase) throw notFound('Покупку не знайдено');
-    const isOwner = currentUser.uuid.toString() === foundPurchase.creatorUuid;
+    const foundExpense = await Expense.findOne({ where: { uuid } });
+    if (!foundExpense) throw notFound('Витрату не знайдено');
+    const isOwner = currentUser.uuid.toString() === foundExpense.creatorUuid;
     if (!isOwner)
       throw forbidden('Ви не маєте дозволу на редагування цієї витрати');
     const [
@@ -246,12 +246,12 @@ class PurchaseService {
     if (foundCurrency.code !== 'UAH') {
       unitPrice = await convertToUAH(unitPrice, foundCurrency.code);
     }
-    let date = foundPurchase.date;
+    let date = foundExpense.date;
     if (dateValue) {
       date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
       if (!isValid(date)) throw badRequest('Невірний формат дати');
     }
-    const [affectedRows, [updatedPurchase]] = await Purchase.update(
+    const [affectedRows, [updatedExpense]] = await Expense.update(
       {
         productUuid: foundProduct.uuid,
         quantity,
@@ -265,41 +265,41 @@ class PurchaseService {
     );
     if (!affectedRows) throw badRequest('Дані цієї витрати не оновлено');
     return {
-      uuid: updatedPurchase.uuid,
+      uuid: updatedExpense.uuid,
       product: { uuid: foundProduct.uuid, title: foundProduct.title },
-      quantity: updatedPurchase.quantity,
-      unitPrice: updatedPurchase.unitPrice,
-      totalPrice: updatedPurchase.totalPrice,
+      quantity: updatedExpense.quantity,
+      unitPrice: updatedExpense.unitPrice,
+      totalPrice: updatedExpense.totalPrice,
       establishment: {
         uuid: foundEstablishment.uuid,
         title: foundEstablishment.title,
       },
       measure: { uuid: foundMeasure.uuid, title: foundMeasure.title },
       currency: { uuid: uahCurrency.uuid, title: uahCurrency.title },
-      date: formatDate(updatedPurchase.date),
+      date: formatDate(updatedExpense.date),
       creation: {
-        creatorUuid: updatedPurchase.creatorUuid,
-        creatorFullName: updatedPurchase.creatorFullName,
-        createdAt: formatDateTime(updatedPurchase.createdAt),
-        updatedAt: formatDateTime(updatedPurchase.updatedAt),
+        creatorUuid: updatedExpense.creatorUuid,
+        creatorFullName: updatedExpense.creatorFullName,
+        createdAt: formatDateTime(updatedExpense.createdAt),
+        updatedAt: formatDateTime(updatedExpense.updatedAt),
       },
     };
   }
 
-  async deletePurchase(uuid, currentUser, transaction) {
+  async deleteExpense(uuid, currentUser, transaction) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    const foundPurchase = await Purchase.findOne({ where: { uuid } });
-    if (!foundPurchase) throw notFound('Покупку не знайдено');
-    const isOwner = currentUser.uuid.toString() === foundPurchase.creatorUuid;
+    const foundExpense = await Expense.findOne({ where: { uuid } });
+    if (!foundExpense) throw notFound('Витрату не знайдено');
+    const isOwner = currentUser.uuid.toString() === foundExpense.creatorUuid;
     if (!isOwner)
       throw forbidden('Ви не маєте дозволу на видалення цієї витрати');
-    const deletedPurchase = await Purchase.destroy({
+    const deletedExpense = await Expense.destroy({
       where: { uuid },
       transaction,
     });
-    if (!deletedPurchase) throw badRequest('Дані цієї витрати не видалено');
-    return deletedPurchase;
+    if (!deletedExpense) throw badRequest('Дані цієї витрати не видалено');
+    return deletedExpense;
   }
 }
 
-module.exports = new PurchaseService();
+module.exports = new ExpenseService();

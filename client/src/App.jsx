@@ -15,7 +15,7 @@ import Layout from './components/Layout/Layout';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import AuthPage from './pages/AuthPage/AuthPage';
 import HomePage from './pages/HomePage/HomePage';
-import PurchasesPage from './pages/Purchases/PurchasesPage';
+import ExpensesPage from './pages/Expenses/ExpensesPage';
 import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import CategoriesPage from './pages/Categories/CategoriesPage';
@@ -92,8 +92,8 @@ function App() {
         >
           <Route index element={<HomePage />} />
           <Route
-            path='purchases/*'
-            element={renderPrivateRoute(<PurchasesPage />)}
+            path='expenses/*'
+            element={renderPrivateRoute(<ExpensesPage />)}
           />
           <Route 
             path='establishments/*' 

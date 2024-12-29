@@ -6,7 +6,7 @@ import {
   Person,
   Update,
   ProductionQuantityLimits,
-  ShoppingCart,
+  DryCleaning,
   AttachMoney,
   Store,
   Shop,
@@ -18,14 +18,14 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 import DetailRow from '../../components/DetailRow/DetailRow';
 
-function PurchaseViewPage({ handleModalClose }) {
+function ExpenseViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const {
-    entity: purchaseToCRUD,
+    entity: expenseToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Purchase');
+  } = useFetchEntity('Expense');
 
   useEffect(() => {
     if (uuid) fetchEntityByUuid(uuid);
@@ -41,7 +41,7 @@ function PurchaseViewPage({ handleModalClose }) {
     currency,
     date,
     creation,
-  } = purchaseToCRUD || {};
+  } = expenseToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   const productTitle = product?.title || '*Дані відсутні*';
@@ -62,7 +62,7 @@ function PurchaseViewPage({ handleModalClose }) {
           <Box sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <DetailRow
-                icon={ShoppingCart}
+                icon={DryCleaning}
                 label='Товар'
                 value={
                   productTitle ? (
@@ -147,4 +147,4 @@ function PurchaseViewPage({ handleModalClose }) {
   );
 }
 
-export default PurchaseViewPage;
+export default ExpenseViewPage;

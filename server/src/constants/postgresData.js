@@ -1862,7 +1862,7 @@ async function postgresData() {
         updated_at: new Date(),
       },
     ],
-    purchases: [
+    expenses: [
       {
         product: 'Кросівки',
         quantity: 1,

@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 // ==============================================================
 const {
-  Purchase,
+  Expense,
   Product,
   Establishment,
   Category,
@@ -20,11 +20,11 @@ class StatisticService {
       attributes: ['uuid'],
       raw: true,
     });
-    const prodUuids = productUuids.map((purchase) => purchase.uuid);
+    const prodUuids = productUuids.map((expense) => expense.uuid);
     if (prodUuids.length === 0) {
       return [{ result: 0 }];
     }
-    const costByCategoryPerPeriod = await Purchase.findAll({
+    const costByCategoryPerPeriod = await Expense.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {
         productUuid: { [Op.in]: prodUuids },
@@ -47,7 +47,7 @@ class StatisticService {
       establishment
     );
     if (!foundEstablishment) throw notFound('Заклад не знайдено');
-    const costByEstablishmentPerPeriod = await Purchase.findAll({
+    const costByEstablishmentPerPeriod = await Expense.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {
         establishmentUuid: foundEstablishment.uuid,
@@ -65,7 +65,7 @@ class StatisticService {
 
   async getCostByCategories(ago) {
     const time = getTime(ago);
-    const result = await Purchase.findAll({
+    const result = await Expense.findAll({
       attributes: [
         'Product->Category.title',
         [sequelize.fn('SUM', sequelize.col('summ')), 'result'],
@@ -94,7 +94,7 @@ class StatisticService {
 
   async getCostByEstablishments(ago) {
     const time = getTime(ago);
-    const result = await Purchase.findAll({
+    const result = await Expense.findAll({
       attributes: [
         'Establishment.title',
         [

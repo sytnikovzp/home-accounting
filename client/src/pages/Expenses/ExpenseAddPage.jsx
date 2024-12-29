@@ -1,11 +1,11 @@
 import restController from '../../api/rest/restController';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
-import PurchaseForm from '../../components/Forms/PurchaseForm/PurchaseForm';
+import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
 
-function PurchaseAddPage({
+function ExpenseAddPage({
   handleModalClose,
-  fetchPurchases,
+  fetchExpenses,
   products,
   establishments,
   measures,
@@ -13,10 +13,10 @@ function PurchaseAddPage({
   crudError,
   setCrudError,
 }) {
-  const handleSubmitPurchase = async (values) => {
+  const handleSubmitExpense = async (values) => {
     setCrudError(null);
     try {
-      await restController.addPurchase(
+      await restController.addExpense(
         values.product,
         values.quantity,
         values.unitPrice,
@@ -26,7 +26,7 @@ function PurchaseAddPage({
         values.date
       );
       handleModalClose();
-      fetchPurchases();
+      fetchExpenses();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -39,8 +39,8 @@ function PurchaseAddPage({
       showCloseButton
       title='Додавання витрати...'
       content={
-        <PurchaseForm
-          onSubmit={handleSubmitPurchase}
+        <ExpenseForm
+          onSubmit={handleSubmitExpense}
           products={products}
           establishments={establishments}
           measures={measures}
@@ -52,4 +52,4 @@ function PurchaseAddPage({
   );
 }
 
-export default PurchaseAddPage;
+export default ExpenseAddPage;

@@ -7,16 +7,16 @@ import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 // ==============================================================
-import PurchaseAddPage from './PurchaseAddPage';
-import PurchaseEditPage from './PurchaseEditPage';
-import PurchaseDeletePage from './PurchaseDeletePage';
-import PurchaseViewPage from './PurchaseViewPage';
+import ExpenseAddPage from './ExpenseAddPage';
+import ExpenseEditPage from './ExpenseEditPage';
+import ExpenseDeletePage from './ExpenseDeletePage';
+import ExpenseViewPage from './ExpenseViewPage';
 // ==============================================================
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 
-function PurchasesPage() {
+function ExpensesPage() {
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
@@ -25,7 +25,7 @@ function PurchasesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [purchases, setPurchases] = useState([]);
+  const [expenses, setExpenses] = useState([]);
   const [products, setProducts] = useState([]);
   const [establishments, setEstablishments] = useState([]);
   const [measures, setMeasures] = useState([]);
@@ -37,14 +37,14 @@ function PurchasesPage() {
 
   const handleModalClose = () => {
     setCrudError(null);
-    navigate('/purchases');
+    navigate('/expenses');
   };
 
   const openModal = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
-  const fetchPurchases = useCallback(async () => {
+  const fetchExpenses = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(null);
     try {
@@ -55,10 +55,10 @@ function PurchasesPage() {
         sort: sortModel.field,
         order: sortModel.order,
       };
-      const { data, totalCount } = await restController.fetchAllPurchases(
+      const { data, totalCount } = await restController.fetchAllExpenses(
         params
       );
-      setPurchases(data || []);
+      setExpenses(data || []);
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(error.response.data);
@@ -136,7 +136,7 @@ function PurchasesPage() {
   }, []);
 
   useEffect(() => {
-    fetchPurchases();
+    fetchExpenses();
     fetchProducts();
     fetchEstablishments();
     fetchMeasures();
@@ -145,7 +145,7 @@ function PurchasesPage() {
     fetchCurrencies,
     fetchMeasures,
     fetchProducts,
-    fetchPurchases,
+    fetchExpenses,
     fetchEstablishments,
   ]);
 
@@ -164,9 +164,9 @@ function PurchasesPage() {
       <Route
         path='add'
         element={
-          <PurchaseAddPage
+          <ExpenseAddPage
             handleModalClose={handleModalClose}
-            fetchPurchases={fetchPurchases}
+            fetchExpenses={fetchExpenses}
             products={products}
             establishments={establishments}
             measures={measures}
@@ -179,9 +179,9 @@ function PurchasesPage() {
       <Route
         path='edit/:uuid'
         element={
-          <PurchaseEditPage
+          <ExpenseEditPage
             handleModalClose={handleModalClose}
-            fetchPurchases={fetchPurchases}
+            fetchExpenses={fetchExpenses}
             products={products}
             establishments={establishments}
             measures={measures}
@@ -194,9 +194,9 @@ function PurchasesPage() {
       <Route
         path='delete/:uuid'
         element={
-          <PurchaseDeletePage
+          <ExpenseDeletePage
             handleModalClose={handleModalClose}
-            fetchPurchases={fetchPurchases}
+            fetchExpenses={fetchExpenses}
             crudError={crudError}
             setCrudError={setCrudError}
           />
@@ -204,7 +204,7 @@ function PurchasesPage() {
       />
       <Route
         path=':uuid'
-        element={<PurchaseViewPage handleModalClose={handleModalClose} />}
+        element={<ExpenseViewPage handleModalClose={handleModalClose} />}
       />
     </Routes>
   );
@@ -228,7 +228,7 @@ function PurchasesPage() {
           size='small'
           onClick={() => openModal('add')}
         >
-          Додати покупку
+          Додати витрату
         </Button>
       </Box>
       <ListTable
@@ -237,9 +237,9 @@ function PurchasesPage() {
           { field: 'product', headerName: 'Товар', align: 'left' },
           { field: 'establishment', headerName: 'Заклад', align: 'left' },
         ]}
-        rows={purchases}
-        onEdit={(purchase) => openModal('edit', purchase.uuid)}
-        onDelete={(purchase) => openModal('delete', purchase.uuid)}
+        rows={expenses}
+        onEdit={(expense) => openModal('edit', expense.uuid)}
+        onDelete={(expense) => openModal('delete', expense.uuid)}
         pagination={{
           totalCount,
           currentPage,
@@ -253,12 +253,12 @@ function PurchasesPage() {
         selectedStatus={selectedPeriod}
         onStatusChange={(event) => setSelectedPeriod(event.target.value)}
         showStatusDropdown
-        purchasesPage
-        linkEntity='purchases'
+        expensesPage
+        linkEntity='expenses'
       />
       {renderRoutes()}
     </>
   );
 }
 
-export default PurchasesPage;
+export default ExpensesPage;

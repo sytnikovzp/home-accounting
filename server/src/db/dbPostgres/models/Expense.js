@@ -2,31 +2,31 @@ const { isBefore, parseISO } = require('date-fns');
 const { Model, Sequelize } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Purchase extends Model {
+  class Expense extends Model {
     static associate(models) {
-      Purchase.belongsTo(models.Product, {
+      Expense.belongsTo(models.Product, {
         foreignKey: 'productUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
-      Purchase.belongsTo(models.Establishment, {
+      Expense.belongsTo(models.Establishment, {
         foreignKey: 'establishmentUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
-      Purchase.belongsTo(models.Measure, {
+      Expense.belongsTo(models.Measure, {
         foreignKey: 'measureUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
-      Purchase.belongsTo(models.Currency, {
+      Expense.belongsTo(models.Currency, {
         foreignKey: 'currencyUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
     }
   }
-  Purchase.init(
+  Expense.init(
     {
       uuid: {
         type: DataTypes.UUID,
@@ -96,11 +96,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Purchase',
-      tableName: 'purchases',
+      modelName: 'Expense',
+      tableName: 'expenses',
       timestamps: true,
       underscored: true,
     }
   );
-  return Purchase;
+  return Expense;
 };

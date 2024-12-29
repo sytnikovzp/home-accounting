@@ -6,11 +6,11 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import PurchaseForm from '../../components/Forms/PurchaseForm/PurchaseForm';
+import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
 
-function PurchaseEditPage({
+function ExpenseEditPage({
   handleModalClose,
-  fetchPurchases,
+  fetchExpenses,
   products,
   establishments,
   measures,
@@ -20,21 +20,21 @@ function PurchaseEditPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: purchaseToCRUD,
+    entity: expenseToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Purchase');
+  } = useFetchEntity('Expense');
 
   useEffect(() => {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const handleSubmitPurchase = async (values) => {
+  const handleSubmitExpense = async (values) => {
     setCrudError(null);
     try {
-      await restController.editPurchase(
-        purchaseToCRUD.uuid,
+      await restController.editExpense(
+        expenseToCRUD.uuid,
         values.product,
         values.quantity,
         values.unitPrice,
@@ -44,7 +44,7 @@ function PurchaseEditPage({
         values.date
       );
       handleModalClose();
-      fetchPurchases();
+      fetchExpenses();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -60,9 +60,9 @@ function PurchaseEditPage({
         isLoading ? (
           <Preloader />
         ) : (
-          <PurchaseForm
-            purchase={purchaseToCRUD}
-            onSubmit={handleSubmitPurchase}
+          <ExpenseForm
+            expense={expenseToCRUD}
+            onSubmit={handleSubmitExpense}
             products={products}
             establishments={establishments}
             measures={measures}
@@ -75,4 +75,4 @@ function PurchaseEditPage({
   );
 }
 
-export default PurchaseEditPage;
+export default ExpenseEditPage;

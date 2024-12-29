@@ -17,7 +17,7 @@ function BaseForm({
   const renderForm = ({ errors, touched, isValid, isSubmitting }) => (
     <Form>
       <Box sx={{ mt: 2 }}>
-        {layout === 'purchase' ? (
+        {layout === 'expense' ? (
           <>
             <Box sx={{ mb: 2 }}>
               <FormField

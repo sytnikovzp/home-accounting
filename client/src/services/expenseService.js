@@ -1,6 +1,6 @@
 import api from '../api';
 
-const getAllPurchases = async ({
+const getAllExpenses = async ({
   ago = 'allTime',
   page = 1,
   limit = 6,
@@ -15,7 +15,7 @@ const getAllPurchases = async ({
     order,
   }).toString();
   try {
-    const { data, headers } = await api.get(`/purchases?${params}`);
+    const { data, headers } = await api.get(`/expenses?${params}`);
     const totalCount = parseInt(headers['x-total-count']);
     return {
       data,
@@ -30,12 +30,12 @@ const getAllPurchases = async ({
   }
 };
 
-const getPurchaseByUuid = async (purchaseUuid) => {
-  const { data } = await api.get(`/purchases/${purchaseUuid}`);
+const getExpenseByUuid = async (expenseUuid) => {
+  const { data } = await api.get(`/expenses/${expenseUuid}`);
   return data;
 };
 
-const createPurchase = async (
+const createExpense = async (
   product,
   quantity,
   unitPrice,
@@ -44,7 +44,7 @@ const createPurchase = async (
   currency,
   date
 ) => {
-  const { data } = await api.post('/purchases', {
+  const { data } = await api.post('/expenses', {
     product,
     quantity,
     unitPrice,
@@ -56,8 +56,8 @@ const createPurchase = async (
   return data;
 };
 
-const updatePurchase = async (
-  purchaseUuid,
+const updateExpense = async (
+  expenseUuid,
   product,
   quantity,
   unitPrice,
@@ -66,7 +66,7 @@ const updatePurchase = async (
   currency,
   date
 ) => {
-  const { data } = await api.patch(`/purchases/${purchaseUuid}`, {
+  const { data } = await api.patch(`/expenses/${expenseUuid}`, {
     product,
     quantity,
     unitPrice,
@@ -78,15 +78,15 @@ const updatePurchase = async (
   return data;
 };
 
-const deletePurchase = async (purchaseUuid) => {
-  const { data } = await api.delete(`/purchases/${purchaseUuid}`);
+const deleteExpense = async (expenseUuid) => {
+  const { data } = await api.delete(`/expenses/${expenseUuid}`);
   return data;
 };
 
 export default {
-  getAllPurchases,
-  getPurchaseByUuid,
-  createPurchase,
-  updatePurchase,
-  deletePurchase,
+  getAllExpenses,
+  getExpenseByUuid,
+  createExpense,
+  updateExpense,
+  deleteExpense,
 };

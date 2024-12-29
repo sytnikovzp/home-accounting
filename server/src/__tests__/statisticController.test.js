@@ -74,10 +74,10 @@ describe('StatisticController', () => {
         .query({ ago: 'month' });
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
-      response.body.forEach((purchase) => {
-        expect(typeof purchase).toBe('object');
-        expect(purchase).toHaveProperty('title');
-        expect(purchase).toHaveProperty('result');
+      response.body.forEach((expense) => {
+        expect(typeof expense).toBe('object');
+        expect(expense).toHaveProperty('title');
+        expect(expense).toHaveProperty('result');
       });
     });
 
@@ -85,10 +85,10 @@ describe('StatisticController', () => {
       const response = await request(app).get('/api/statistics/categories');
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
-      response.body.forEach((purchase) => {
-        expect(typeof purchase).toBe('object');
-        expect(purchase).toHaveProperty('title');
-        expect(purchase).toHaveProperty('result');
+      response.body.forEach((expense) => {
+        expect(typeof expense).toBe('object');
+        expect(expense).toHaveProperty('title');
+        expect(expense).toHaveProperty('result');
       });
     });
   });
@@ -100,12 +100,12 @@ describe('StatisticController', () => {
         .query({ ago: 'month' });
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
-      response.body.forEach((purchase) => {
-        expect(typeof purchase).toBe('object');
-        expect(purchase).toHaveProperty('title');
-        expect(purchase).toHaveProperty('url');
-        expect(purchase).toHaveProperty('logo');
-        expect(purchase).toHaveProperty('result');
+      response.body.forEach((expense) => {
+        expect(typeof expense).toBe('object');
+        expect(expense).toHaveProperty('title');
+        expect(expense).toHaveProperty('url');
+        expect(expense).toHaveProperty('logo');
+        expect(expense).toHaveProperty('result');
       });
     });
 
@@ -113,12 +113,12 @@ describe('StatisticController', () => {
       const response = await request(app).get('/api/statistics/establishments');
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
-      response.body.forEach((purchase) => {
-        expect(typeof purchase).toBe('object');
-        expect(purchase).toHaveProperty('title');
-        expect(purchase).toHaveProperty('url');
-        expect(purchase).toHaveProperty('logo');
-        expect(purchase).toHaveProperty('result');
+      response.body.forEach((expense) => {
+        expect(typeof expense).toBe('object');
+        expect(expense).toHaveProperty('title');
+        expect(expense).toHaveProperty('url');
+        expect(expense).toHaveProperty('logo');
+        expect(expense).toHaveProperty('result');
       });
     });
   });

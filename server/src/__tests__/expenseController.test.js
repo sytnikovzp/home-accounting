@@ -12,8 +12,8 @@ const authData = {
   admin: { uuid: null, accessToken: null },
 };
 
-describe('PurchaseController', () => {
-  let purchaseUuid;
+describe('ExpenseController', () => {
+  let expenseUuid;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
@@ -56,10 +56,10 @@ describe('PurchaseController', () => {
     });
   });
 
-  describe('GET /api/purchases', () => {
-    it('should return list of purchases (default pagination)', async () => {
+  describe('GET /api/expenses', () => {
+    it('should return list of expenses (default pagination)', async () => {
       const response = await request(app)
-        .get('/api/purchases')
+        .get('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -67,9 +67,9 @@ describe('PurchaseController', () => {
       expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of purchases (custom pagination)', async () => {
+    it('should return list of expenses (custom pagination)', async () => {
       const response = await request(app)
-        .get('/api/purchases')
+        .get('/api/expenses')
         .query({ page: 1, limit: 10 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
@@ -79,15 +79,15 @@ describe('PurchaseController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get('/api/purchases');
+      const response = await request(app).get('/api/expenses');
       expect(response.status).toBe(401);
     });
   });
 
-  describe('POST /api/purchases', () => {
-    it('should return 201 for current user having permission to create purchases', async () => {
+  describe('POST /api/expenses', () => {
+    it('should return 201 for current user having permission to create expenses', async () => {
       const response = await request(app)
-        .post('/api/purchases')
+        .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Навушники',
@@ -107,12 +107,12 @@ describe('PurchaseController', () => {
       expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('UAH');
       expect(response.body.creatorUuid).toBeDefined();
-      purchaseUuid = response.body.uuid;
+      expenseUuid = response.body.uuid;
     });
 
     it('should return 404 if you specify establishment that don`t exist', async () => {
       const response = await request(app)
-        .post('/api/purchases')
+        .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -128,7 +128,7 @@ describe('PurchaseController', () => {
 
     it('should return 404 if you specify product that don`t exist', async () => {
       const response = await request(app)
-        .post('/api/purchases')
+        .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбуки',
@@ -144,7 +144,7 @@ describe('PurchaseController', () => {
 
     it('should return 404 if you specify measure that don`t exist', async () => {
       const response = await request(app)
-        .post('/api/purchases')
+        .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -160,7 +160,7 @@ describe('PurchaseController', () => {
 
     it('should return 404 if you specify currency that don`t exist', async () => {
       const response = await request(app)
-        .post('/api/purchases')
+        .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -174,9 +174,9 @@ describe('PurchaseController', () => {
       expect(response.body.errors[0].title).toBe('Currency not found');
     });
 
-    it('should return 403 for current user not having permission to create purchases', async () => {
+    it('should return 403 for current user not having permission to create expenses', async () => {
       const response = await request(app)
-        .post('/api/purchases')
+        .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -193,13 +193,13 @@ describe('PurchaseController', () => {
     });
   });
 
-  describe('GET /api/purchases/:purchaseUuid', () => {
-    it('should get purchase by id', async () => {
+  describe('GET /api/expenses/:expenseUuid', () => {
+    it('should get expense by id', async () => {
       const response = await request(app)
-        .get(`/api/purchases/${purchaseUuid}`)
+        .get(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', purchaseUuid);
+      expect(response.body).toHaveProperty('uuid', expenseUuid);
       expect(response.body.product).toBe('Навушники');
       expect(response.body.quantity).toBe('2.00');
       expect(response.body.unitPrice).toBe('500.00');
@@ -212,24 +212,24 @@ describe('PurchaseController', () => {
       expect(response.body.updatedAt).toBeDefined();
     });
 
-    it('should return 404 for non-existing purchase', async () => {
+    it('should return 404 for non-existing expense', async () => {
       const response = await request(app)
-        .get('/api/purchases/999')
+        .get('/api/expenses/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Покупку не знайдено');
+      expect(response.body.errors[0].title).toBe('Витрату не знайдено');
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/purchases/${purchaseUuid}`);
+      const response = await request(app).get(`/api/expenses/${expenseUuid}`);
       expect(response.status).toBe(401);
     });
   });
 
-  describe('PATCH /api/purchases/:purchaseUuid', () => {
-    it('should return 200 for current user having permission to edit purchases', async () => {
+  describe('PATCH /api/expenses/:expenseUuid', () => {
+    it('should return 200 for current user having permission to edit expenses', async () => {
       const response = await request(app)
-        .patch(`/api/purchases/${purchaseUuid}`)
+        .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -240,7 +240,7 @@ describe('PurchaseController', () => {
           currency: 'USD',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', purchaseUuid);
+      expect(response.body).toHaveProperty('uuid', expenseUuid);
       expect(response.body.product).toBe('Ноутбук');
       expect(response.body.quantity).toBe('1.00');
       expect(response.body.unitPrice).toBe('850.00');
@@ -253,7 +253,7 @@ describe('PurchaseController', () => {
 
     it('should return 404 if you specify establishment that don`t exist', async () => {
       const response = await request(app)
-        .patch(`/api/purchases/${purchaseUuid}`)
+        .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -269,7 +269,7 @@ describe('PurchaseController', () => {
 
     it('should return 404 if you specify product that don`t exist', async () => {
       const response = await request(app)
-        .patch(`/api/purchases/${purchaseUuid}`)
+        .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбуки',
@@ -285,7 +285,7 @@ describe('PurchaseController', () => {
 
     it('should return 404 if you specify measure that don`t exist', async () => {
       const response = await request(app)
-        .patch(`/api/purchases/${purchaseUuid}`)
+        .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -301,7 +301,7 @@ describe('PurchaseController', () => {
 
     it('should return 404 if you specify currency that don`t exist', async () => {
       const response = await request(app)
-        .patch(`/api/purchases/${purchaseUuid}`)
+        .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -315,9 +315,9 @@ describe('PurchaseController', () => {
       expect(response.body.errors[0].title).toBe('Currency not found');
     });
 
-    it('should return 403 for current user not having permission to edit purchases', async () => {
+    it('should return 403 for current user not having permission to edit expenses', async () => {
       const response = await request(app)
-        .patch(`/api/purchases/${purchaseUuid}`)
+        .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -333,9 +333,9 @@ describe('PurchaseController', () => {
       );
     });
 
-    it('should return 404 for non-existing purchase update', async () => {
+    it('should return 404 for non-existing expense update', async () => {
       const response = await request(app)
-        .patch('/api/purchases/999')
+        .patch('/api/expenses/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           product: 'Ноутбук',
@@ -346,14 +346,14 @@ describe('PurchaseController', () => {
           currency: 'USD',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Покупку не знайдено');
+      expect(response.body.errors[0].title).toBe('Витрату не знайдено');
     });
   });
 
-  describe('DELETE /api/purchases/:purchaseUuid', () => {
-    it('should return 403 for current user not having permission to delete purchases', async () => {
+  describe('DELETE /api/expenses/:expenseUuid', () => {
+    it('should return 403 for current user not having permission to delete expenses', async () => {
       const response = await request(app)
-        .delete(`/api/purchases/${purchaseUuid}`)
+        .delete(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -361,19 +361,19 @@ describe('PurchaseController', () => {
       );
     });
 
-    it('should return 200 for current user having permission to delete purchases', async () => {
+    it('should return 200 for current user having permission to delete expenses', async () => {
       const response = await request(app)
-        .delete(`/api/purchases/${purchaseUuid}`)
+        .delete(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
     });
 
-    it('should return 404 for non-existing purchase deletion', async () => {
+    it('should return 404 for non-existing expense deletion', async () => {
       const response = await request(app)
-        .delete('/api/purchases/999')
+        .delete('/api/expenses/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Покупку не знайдено');
+      expect(response.body.errors[0].title).toBe('Витрату не знайдено');
     });
   });
 });

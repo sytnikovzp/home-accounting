@@ -35,7 +35,7 @@ class ProductService {
     };
     const orderConfig = sortableFields[sort]
       ? [...sortableFields[sort], order]
-      : [['uuid', 'title'].includes(sort) ? sort : `Purchase.${sort}`, order];
+      : [['uuid', 'title'].includes(sort) ? sort : `Expense.${sort}`, order];
     const foundProducts = await Product.findAll({
       attributes: ['uuid', 'title'],
       where: { status },

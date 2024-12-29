@@ -48,7 +48,7 @@ module.exports.permissions = [
     description: 'Повний CRUD для одиниць вимірів без модерації',
   },
   {
-    title: 'ADD_PURCHASES',
+    title: 'ADD_EXPENSES',
     description: 'Додавання нових записів про витрати без модерації',
   },
   {
@@ -107,7 +107,7 @@ module.exports.roles = async (permissionUuids) => [
     title: 'User',
     description: 'Використання цього додатку для відстеження витрат',
     permissions: [
-      permissionUuids['ADD_PURCHASES'],
+      permissionUuids['ADD_EXPENSES'],
       permissionUuids['ADD_ESTABLISHMENTS'],
       permissionUuids['ADD_PRODUCTS'],
       permissionUuids['ADD_CATEGORIES'],

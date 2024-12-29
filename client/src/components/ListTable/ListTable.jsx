@@ -57,7 +57,7 @@ function ListTable({
   onStatusChange,
   showStatusDropdown = false,
   usersPage = false,
-  purchasesPage = false,
+  expensesPage = false,
   linkEntity = '',
   isModerationPage = false,
 }) {
@@ -206,7 +206,7 @@ function ListTable({
         alignItems='center'
         m={2}
       >
-        {showStatusDropdown && !usersPage && !purchasesPage && (
+        {showStatusDropdown && !usersPage && !expensesPage && (
           <FormControl sx={stylesFormControl}>
             <InputLabel id='status-select-label'>Статус</InputLabel>
             <Select
@@ -238,7 +238,7 @@ function ListTable({
             </Select>
           </FormControl>
         )}
-        {showStatusDropdown && purchasesPage && (
+        {showStatusDropdown && expensesPage && (
           <FormControl sx={stylesFormControl}>
             <InputLabel id='period-select-label'>Період</InputLabel>
             <Select
