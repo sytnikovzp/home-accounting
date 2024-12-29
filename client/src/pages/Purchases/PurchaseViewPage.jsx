@@ -36,7 +36,7 @@ function PurchaseViewPage({ handleModalClose }) {
     quantity,
     unitPrice,
     totalPrice,
-    shop,
+    establishment,
     measure,
     currency,
     date,
@@ -45,7 +45,7 @@ function PurchaseViewPage({ handleModalClose }) {
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   const productTitle = product?.title || '*Дані відсутні*';
-  const shopTitle = shop?.title || '*Дані відсутні*';
+  const establishmentTitle = establishment?.title || '*Дані відсутні*';
   const measureTitle = measure?.title || '*Дані відсутні*';
   const currencyCode = currency?.code || '*Дані відсутні*';
 
@@ -54,7 +54,7 @@ function PurchaseViewPage({ handleModalClose }) {
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Деталі покупки...'
+      title='Деталі витрати...'
       content={
         isLoading ? (
           <Preloader />
@@ -97,16 +97,16 @@ function PurchaseViewPage({ handleModalClose }) {
               />
               <DetailRow
                 icon={Store}
-                label='Магазин'
+                label='Заклад'
                 value={
-                  shopTitle ? (
+                  establishmentTitle ? (
                     <Link
                       component={RouterLink}
-                      to={`/shops/${shop?.uuid}`}
+                      to={`/establishments/${establishment?.uuid}`}
                       color='primary'
                       underline='hover'
                     >
-                      {shopTitle}
+                      {establishmentTitle}
                     </Link>
                   ) : (
                     '*Дані відсутні*'
@@ -131,7 +131,7 @@ function PurchaseViewPage({ handleModalClose }) {
                   )
                 }
               />
-              <DetailRow icon={Shop} label='Дата покупки' value={date} />
+              <DetailRow icon={Shop} label='Дата витрати' value={date} />
               <DetailRow
                 icon={CalendarToday}
                 label='Створено'

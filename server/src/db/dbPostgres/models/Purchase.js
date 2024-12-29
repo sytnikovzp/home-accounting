@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
-      Purchase.belongsTo(models.Shop, {
-        foreignKey: 'shopUuid',
+      Purchase.belongsTo(models.Establishment, {
+        foreignKey: 'establishmentUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
           return (this.quantity * this.unitPrice).toFixed(2);
         },
       },
-      shopUuid: {
+      establishmentUuid: {
         type: DataTypes.UUID,
         allowNull: false,
       },

@@ -1,4 +1,4 @@
-const { Category, Product, Shop } = require('../db/dbPostgres/models');
+const { Category, Product, Establishment } = require('../db/dbPostgres/models');
 const {
   isValidUUID,
   checkPermission,
@@ -11,7 +11,7 @@ const { statusModerationMapping } = require('../constants/dataMapping');
 const entityModels = {
   categories: Category,
   products: Product,
-  shops: Shop,
+  establishments: Establishment,
 };
 
 const formatAllEntitiesData = {
@@ -27,11 +27,11 @@ const formatAllEntitiesData = {
     contentType: 'Товар',
     path: 'product',
   }),
-  shops: (shop) => ({
-    uuid: shop.uuid,
-    title: shop.title,
-    contentType: 'Магазин',
-    path: 'shop',
+  establishments: (establishment) => ({
+    uuid: establishment.uuid,
+    title: establishment.title,
+    contentType: 'Заклад',
+    path: 'establishment',
   }),
 };
 
@@ -125,19 +125,19 @@ class ModerationService {
     return formatEntityData(moderatedProduct);
   }
 
-  async updateShopStatus(uuid, status, currentUser, transaction) {
+  async updateEstablishmentStatus(uuid, status, currentUser, transaction) {
     if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
     if (!['approved', 'rejected'].includes(status))
       throw badRequest('Недопустимий статус');
     const hasPermission = await checkPermission(
       currentUser,
-      'MODERATION_SHOPS'
+      'MODERATION_ESTABLISHMENTS'
     );
     if (!hasPermission)
-      throw forbidden('Ви не маєте дозволу на модерацію магазинів');
-    const foundShop = await Shop.findOne({ where: { uuid } });
-    if (!foundShop) throw notFound('Магазин не знайдено');
-    const [affectedRows, [moderatedCategory]] = await Shop.update(
+      throw forbidden('Ви не маєте дозволу на модерацію закладів');
+    const foundEstablishment = await Establishment.findOne({ where: { uuid } });
+    if (!foundEstablishment) throw notFound('Заклад не знайдено');
+    const [affectedRows, [moderatedCategory]] = await Establishment.update(
       {
         status,
         moderatorUuid: currentUser.uuid,
@@ -145,7 +145,7 @@ class ModerationService {
       },
       { where: { uuid }, returning: true, transaction }
     );
-    if (!affectedRows) throw badRequest('Магазин не проходить модерацію');
+    if (!affectedRows) throw badRequest('Заклад не проходить модерацію');
     return formatEntityData(moderatedCategory);
   }
 }

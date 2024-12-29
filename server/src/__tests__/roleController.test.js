@@ -142,7 +142,7 @@ describe('RoleController', () => {
         .send({
           title: 'Нова роль користувача',
           description: '',
-          permissions: ['ADD_CATEGORIES', 'ADD_SHOPS', 'ADD_PRODUCTS'],
+          permissions: ['ADD_CATEGORIES', 'ADD_ESTABLISHMENTS', 'ADD_PRODUCTS'],
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
@@ -156,8 +156,8 @@ describe('RoleController', () => {
             description: 'Додавання нових категорій, потребують модерації',
           }),
           expect.objectContaining({
-            title: 'ADD_SHOPS',
-            description: 'Додавання нових магазинів, потребують модерації',
+            title: 'ADD_ESTABLISHMENTS',
+            description: 'Додавання нових закладів, потребують модерації',
           }),
           expect.objectContaining({
             title: 'ADD_PRODUCTS',
@@ -239,8 +239,8 @@ describe('RoleController', () => {
             description: 'Додавання нових категорій, потребують модерації',
           }),
           expect.objectContaining({
-            title: 'ADD_SHOPS',
-            description: 'Додавання нових магазинів, потребують модерації',
+            title: 'ADD_ESTABLISHMENTS',
+            description: 'Додавання нових закладів, потребують модерації',
           }),
           expect.objectContaining({
             title: 'ADD_PRODUCTS',

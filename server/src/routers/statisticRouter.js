@@ -2,9 +2,9 @@ const { Router } = require('express');
 // ==============================================================
 const {
   getCostByCategoryPerPeriod,
-  getCostByShopPerPeriod,
+  getCostByEstablishmentPerPeriod,
   getCostByCategories,
-  getCostByShops,
+  getCostByEstablishments,
 } = require('../controllers/statisticController');
 
 const statisticRouter = new Router();
@@ -14,15 +14,15 @@ statisticRouter
   .get(getCostByCategoryPerPeriod);
 
 statisticRouter
-  .route('/shop-per-period')
-  .get(getCostByShopPerPeriod);
+  .route('/establishment-per-period')
+  .get(getCostByEstablishmentPerPeriod);
 
 statisticRouter
   .route('/categories')
   .get(getCostByCategories);
 
 statisticRouter
-  .route('/shops')
-  .get(getCostByShops);
+  .route('/establishments')
+  .get(getCostByEstablishments);
 
 module.exports = statisticRouter;

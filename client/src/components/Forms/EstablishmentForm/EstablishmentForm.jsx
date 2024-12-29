@@ -1,66 +1,73 @@
 import { useState } from 'react';
 // ==============================================================
-import { SHOP_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import { ESTABLISHMENT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 // ==============================================================
 import BaseForm from '../BaseForm/BaseForm';
 import FileUpload from '../../FileUpload/FileUpload';
 
-function ShopForm({ shop = null, onSubmit, onUploadLogo, onRemoveLogo }) {
+function EstablishmentForm({
+  establishment = null,
+  onSubmit,
+  onUploadLogo,
+  onRemoveLogo,
+}) {
   const [uploading, setUploading] = useState(false);
 
-  const initialValues = shop
+  const initialValues = establishment
     ? {
-        title: shop.title,
-        description: shop.description,
-        url: shop.url,
+        title: establishment.title,
+        description: establishment.description,
+        url: establishment.url,
       }
     : { title: '', description: '', url: '' };
 
   const fields = [
     {
       name: 'title',
-      label: 'Назва магазину',
+      label: 'Назва закладу',
       placeholder: 'Наприклад "АТБ"',
       required: true,
       autoFocus: true,
     },
     {
       name: 'description',
-      label: 'Опис магазину',
+      label: 'Опис закладу',
       placeholder: 'Наприклад "Один із найбільших..."',
     },
     {
       name: 'url',
-      label: 'Веб сайт магазину',
+      label: 'Веб сайт закладу',
       placeholder: 'Наприклад "https://www.atbmarket.com"',
     },
   ];
 
   return (
     <>
-      {shop?.uuid && (
+      {establishment?.uuid && (
         <FileUpload
-          file={shop.logo}
+          file={establishment.logo}
           onUpload={async (file) => {
             setUploading(true);
             await onUploadLogo(file);
             setUploading(false);
           }}
           onRemove={onRemoveLogo}
-          label={shop?.logo ? 'Оновити логотип' : 'Завантажити логотип'}
-          entity='shops'
+          label={
+            establishment?.logo ? 'Оновити логотип' : 'Завантажити логотип'
+          }
+          entity='establishments'
           uploading={uploading}
         />
       )}
       <BaseForm
         initialValues={initialValues}
-        validationSchema={SHOP_VALIDATION_SCHEME}
+        validationSchema={ESTABLISHMENT_VALIDATION_SCHEME}
         onSubmit={onSubmit}
         fields={fields}
-        submitButtonText={shop ? 'Зберегти зміни' : 'Додати магазин'}
+        submitButtonText={establishment ? 'Зберегти зміни' : 'Додати заклад'}
       />
     </>
   );
 }
 
-export default ShopForm;
+export default EstablishmentForm;

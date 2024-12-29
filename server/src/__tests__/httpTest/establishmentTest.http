@@ -1,0 +1,97 @@
+### Get list all establishments (status approved, default pagination, without sort)
+GET http://localhost:5000/api/establishments HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Get list all establishments (status approved, custom pagination, without sort)
+GET http://localhost:5000/api/establishments?page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Get list all establishments (status approved, custom pagination, with sort by title (asc))
+GET http://localhost:5000/api/establishments?sort=title&order=asc&page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Get list all establishments (status approved, custom pagination, with sort by uuid (desc))
+GET http://localhost:5000/api/establishments?sort=uuid&order=desc&page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Get list all establishments (status pending, default pagination, without sort)
+GET http://localhost:5000/api/establishments?status=pending HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Get list all establishments (status pending, custom pagination, without sort)
+GET http://localhost:5000/api/establishments?status=pending&page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Get list all establishments (status rejected, default pagination, without sort)
+GET http://localhost:5000/api/establishments?status=rejected HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Get list all establishments (status rejected, custom pagination, without sort)
+GET http://localhost:5000/api/establishments?status=rejected&page=1&limit=10 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Create establishment
+POST http://localhost:5000/api/establishments HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+{
+  "title": "Новий заклад",
+  "description": "",
+  "url": ""
+}
+
+### Get establishment by uuid
+GET http://localhost:5000/api/establishments/86bd9a03-8836-492d-8ca1-ab6e29a2711e HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+### Update establishment
+PATCH http://localhost:5000/api/establishments/86bd9a03-8836-492d-8ca1-ab6e29a2711e HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+{
+  "title": "Оновлена назва",
+  "description": "Оновлений опис",
+  "url": "https://www.test.com"
+}
+
+### Update establishment logo
+PATCH http://localhost:5000/api/establishments/update-logo/86bd9a03-8836-492d-8ca1-ab6e29a2711e HTTP/1.1
+Content-Type: multipart/form-data; boundary=boundary
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+--boundary
+Content-Disposition: form-data; name="establishmentLogo"; filename="ATB.png"
+Content-Type: image/png
+
+89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52
+00 00 00 10 00 00 00 10 08 06 00 00 00 1F F3 FF
+61 00 00 00 19 74 45 58 74 53 6F 66 74 77 61 72
+65 00 41 64 6F 62 65 20 49 6D 61 67 65 52 65 61
+64 79 71 C9 65 3C 00 00 00 84 49 44 41 54 78 DA
+
+--boundary--
+
+### Remove establishment logo
+PATCH http://localhost:5000/api/establishments/delete-logo/86bd9a03-8836-492d-8ca1-ab6e29a2711e HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI
+
+{
+  "logo": null
+}
+
+### Delete establishment
+DELETE http://localhost:5000/api/establishments/86bd9a03-8836-492d-8ca1-ab6e29a2711e HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTIzYmJmNjUtNWZjZi00YWJiLWI1YTQtMTljZDQ3MGQ5MTBkIiwiZW1haWwiOiJoYW5uYS5zaGV2Y2hlbmtvQGdtYWlsLmNvbSIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzM1NDQwNzQ4LCJleHAiOjE3MzY3MzY3NDh9.b71022qfbNPvPOOlLcQkRMc0Yua_86VCBDlJhjRRreI

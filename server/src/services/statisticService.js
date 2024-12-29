@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 const {
   Purchase,
   Product,
-  Shop,
+  Establishment,
   Category,
   sequelize,
 } = require('../db/dbPostgres/models');
@@ -40,21 +40,26 @@ class StatisticService {
     return totalCost;
   }
 
-  async getCostByShopPerPeriod(shop, ago) {
+  async getCostByEstablishmentPerPeriod(establishment, ago) {
     const time = getTime(ago);
-    const foundShop = await getRecordByTitle(Shop, shop);
-    if (!foundShop) throw notFound('Магазин не знайдено');
-    const costByShopPerPeriod = await Purchase.findAll({
+    const foundEstablishment = await getRecordByTitle(
+      Establishment,
+      establishment
+    );
+    if (!foundEstablishment) throw notFound('Заклад не знайдено');
+    const costByEstablishmentPerPeriod = await Purchase.findAll({
       attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
       where: {
-        shopUuid: foundShop.uuid,
+        establishmentUuid: foundEstablishment.uuid,
         createdAt: { [Op.gte]: time },
       },
       group: ['currency_uuid'],
       raw: true,
     });
     const totalCost =
-      costByShopPerPeriod.length > 0 ? costByShopPerPeriod : [{ result: 0 }];
+      costByEstablishmentPerPeriod.length > 0
+        ? costByEstablishmentPerPeriod
+        : [{ result: 0 }];
     return totalCost;
   }
 
@@ -87,18 +92,24 @@ class StatisticService {
     return totalCost;
   }
 
-  async getCostByShops(ago) {
+  async getCostByEstablishments(ago) {
     const time = getTime(ago);
     const result = await Purchase.findAll({
       attributes: [
-        'Shop.title',
-        [sequelize.fn('COALESCE', sequelize.col('Shop.url'), ''), 'url'],
-        [sequelize.fn('COALESCE', sequelize.col('Shop.logo'), ''), 'logo'],
+        'Establishment.title',
+        [
+          sequelize.fn('COALESCE', sequelize.col('Establishment.url'), ''),
+          'url',
+        ],
+        [
+          sequelize.fn('COALESCE', sequelize.col('Establishment.logo'), ''),
+          'logo',
+        ],
         [sequelize.fn('SUM', sequelize.col('summ')), 'result'],
       ],
-      include: [{ model: Shop, attributes: [] }],
+      include: [{ model: Establishment, attributes: [] }],
       where: { createdAt: { [Op.gte]: time } },
-      group: ['Shop.title', 'Shop.url', 'Shop.logo'],
+      group: ['Establishment.title', 'Establishment.url', 'Establishment.logo'],
       raw: true,
     });
     const totalCost = result.length

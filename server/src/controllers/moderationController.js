@@ -4,7 +4,7 @@ const {
   getPendingItemsFromAllEntities,
   updateCategoryStatus,
   updateProductStatus,
-  updateShopStatus,
+  updateEstablishmentStatus,
 } = require('../services/moderationService');
 
 class ModerationController {
@@ -81,28 +81,28 @@ class ModerationController {
     }
   }
 
-  async moderationShop(req, res, next) {
+  async moderationEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { shopUuid } = req.params;
+      const { establishmentUuid } = req.params;
       const { status } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
-      const updatedShop = await updateShopStatus(
-        shopUuid,
+      const updatedEstablishment = await updateEstablishmentStatus(
+        establishmentUuid,
         status,
         currentUser,
         transaction
       );
-      if (updatedShop) {
+      if (updatedEstablishment) {
         await transaction.commit();
-        res.status(200).json(updatedShop);
+        res.status(200).json(updatedEstablishment);
       } else {
         await transaction.rollback();
         res.status(401);
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Moderation shop error: ', error.message);
+      console.error('Moderation establishment error: ', error.message);
       next(error);
     }
   }

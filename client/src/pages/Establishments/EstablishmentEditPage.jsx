@@ -6,37 +6,37 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import ShopForm from '../../components/Forms/ShopForm/ShopForm';
+import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
 
-function ShopEditPage({
+function EstablishmentEditPage({
   handleModalClose,
-  fetchShops,
+  fetchEstablishments,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: shopToCRUD,
+    entity: establishmentToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Shop');
+  } = useFetchEntity('Establishment');
 
   useEffect(() => {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const handleSubmitShop = async (values) => {
+  const handleSubmitEstablishment = async (values) => {
     setCrudError(null);
     try {
-      await restController.editShop(
-        shopToCRUD.uuid,
+      await restController.editEstablishment(
+        establishmentToCRUD.uuid,
         values.title,
         values.description,
         values.url
       );
       handleModalClose();
-      fetchShops();
+      fetchEstablishments();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -45,7 +45,10 @@ function ShopEditPage({
   const handleUploadLogo = async (file) => {
     setCrudError(null);
     try {
-      await restController.uploadShopLogo(shopToCRUD.uuid, file);
+      await restController.uploadEstablishmentLogo(
+        establishmentToCRUD.uuid,
+        file
+      );
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);
@@ -55,7 +58,7 @@ function ShopEditPage({
   const handleRemoveLogo = async () => {
     setCrudError(null);
     try {
-      await restController.removeShopLogo(shopToCRUD.uuid);
+      await restController.removeEstablishmentLogo(establishmentToCRUD.uuid);
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);
@@ -67,14 +70,14 @@ function ShopEditPage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Редагування магазину...'
+      title='Редагування закладу...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <ShopForm
-            shop={shopToCRUD}
-            onSubmit={handleSubmitShop}
+          <EstablishmentForm
+            establishment={establishmentToCRUD}
+            onSubmit={handleSubmitEstablishment}
             onUploadLogo={handleUploadLogo}
             onRemoveLogo={handleRemoveLogo}
           />
@@ -85,4 +88,4 @@ function ShopEditPage({
   );
 }
 
-export default ShopEditPage;
+export default EstablishmentEditPage;

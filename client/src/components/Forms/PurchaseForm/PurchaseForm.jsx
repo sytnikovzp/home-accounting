@@ -8,7 +8,7 @@ function PurchaseForm({
   purchase = null,
   onSubmit,
   products,
-  shops,
+  establishments,
   measures,
   currencies,
 }) {
@@ -17,7 +17,7 @@ function PurchaseForm({
         product: purchase.product.title,
         quantity: purchase.quantity,
         unitPrice: purchase.unitPrice,
-        shop: purchase.shop.title,
+        establishment: purchase.establishment.title,
         measure: purchase.measure.title,
         currency: purchase.currency.title,
         date: purchase.date,
@@ -26,7 +26,7 @@ function PurchaseForm({
         product: '',
         quantity: '',
         unitPrice: '',
-        shop: '',
+        establishment: '',
         measure: '',
         currency: '',
         date: '',
@@ -83,12 +83,12 @@ function PurchaseForm({
       required: true,
     },
     {
-      name: 'shop',
-      label: 'Магазин',
+      name: 'establishment',
+      label: 'Заклад',
       type: 'select',
       options: [
-        { value: '', label: 'Оберіть магазин:' },
-        ...shops.map((cat) => ({
+        { value: '', label: 'Оберіть заклад:' },
+        ...establishments.map((cat) => ({
           value: cat.title,
           label: cat.title,
         })),
@@ -121,7 +121,7 @@ function PurchaseForm({
     {
       name: 'date',
       type: 'date',
-      label: 'Дата покупки',
+      label: 'Дата витрати',
       placeholder: 'Наприклад "02 грудня 2024"',
       required: true,
     },

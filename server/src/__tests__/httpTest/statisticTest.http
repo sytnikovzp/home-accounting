@@ -16,16 +16,16 @@ Content-Type: application/json
 
 // ==============================================================
 
-### Get cost by shop per period
-GET http://localhost:5000/api/statistics/shop-per-period?shop=Comfy&ago=week HTTP/1.1
+### Get cost by establishment per period
+GET http://localhost:5000/api/statistics/establishment-per-period?establishment=Comfy&ago=week HTTP/1.1
 Content-Type: application/json
 
-### Get cost by shop per all time
-GET http://localhost:5000/api/statistics/shop-per-period?shop=АТБ HTTP/1.1
+### Get cost by establishment per all time
+GET http://localhost:5000/api/statistics/establishment-per-period?establishment=АТБ HTTP/1.1
 Content-Type: application/json
 
-### Get cost by shop (error)
-GET http://localhost:5000/api/statistics/shop-per-period?shop=Ашан HTTP/1.1
+### Get cost by establishment (error)
+GET http://localhost:5000/api/statistics/establishment-per-period?establishment=Ашан HTTP/1.1
 Content-Type: application/json
 
 // ==============================================================
@@ -40,10 +40,10 @@ Content-Type: application/json
 
 // ==============================================================
 
-### Get cost by shops per period
-GET http://localhost:5000/api/statistics/shops?ago=month HTTP/1.1
+### Get cost by establishments per period
+GET http://localhost:5000/api/statistics/establishments?ago=month HTTP/1.1
 Content-Type: application/json
 
-### Get cost by shops per all time
-GET http://localhost:5000/api/statistics/shops HTTP/1.1
+### Get cost by establishments per all time
+GET http://localhost:5000/api/statistics/establishments HTTP/1.1
 Content-Type: application/json

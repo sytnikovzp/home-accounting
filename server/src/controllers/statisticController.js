@@ -1,8 +1,8 @@
 const {
   getCostByCategoryPerPeriod,
-  getCostByShopPerPeriod,
+  getCostByEstablishmentPerPeriod,
   getCostByCategories,
-  getCostByShops,
+  getCostByEstablishments,
 } = require('../services/statisticService');
 
 class StatisticController {
@@ -21,17 +21,20 @@ class StatisticController {
     }
   }
 
-  async getCostByShopPerPeriod(req, res, next) {
+  async getCostByEstablishmentPerPeriod(req, res, next) {
     try {
-      const { shop, ago } = req.query;
-      const result = await getCostByShopPerPeriod(shop, ago);
+      const { establishment, ago } = req.query;
+      const result = await getCostByEstablishmentPerPeriod(establishment, ago);
       if (result.length > 0) {
         res.status(200).json(result);
       } else {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get cost by shop per period error: ', error.message);
+      console.error(
+        'Get cost by establishment per period error: ',
+        error.message
+      );
       next(error);
     }
   }
@@ -51,17 +54,20 @@ class StatisticController {
     }
   }
 
-  async getCostByShops(req, res, next) {
+  async getCostByEstablishments(req, res, next) {
     try {
       const { ago } = req.query;
-      const result = await getCostByShops(ago);
+      const result = await getCostByEstablishments(ago);
       if (result.length > 0) {
         res.status(200).json(result);
       } else {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get cost by shops per period error: ', error.message);
+      console.error(
+        'Get cost by establishments per period error: ',
+        error.message
+      );
       next(error);
     }
   }

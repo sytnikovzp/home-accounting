@@ -10,7 +10,7 @@ const {
   PURCHASE_VALIDATION_SCHEME,
   PRODUCT_VALIDATION_SCHEME,
   CATEGORY_VALIDATION_SCHEME,
-  SHOP_VALIDATION_SCHEME,
+  ESTABLISHMENT_VALIDATION_SCHEME,
   MEASURE_VALIDATION_SCHEME,
   CURRENCY_VALIDATION_SCHEME,
 } = require('../utils/validationSchemes');
@@ -40,7 +40,7 @@ module.exports = {
   validatePurchase: validateSchema(PURCHASE_VALIDATION_SCHEME),
   validateProduct: validateSchema(PRODUCT_VALIDATION_SCHEME),
   validateCategory: validateSchema(CATEGORY_VALIDATION_SCHEME),
-  validateShop: validateSchema(SHOP_VALIDATION_SCHEME),
+  validateEstablishment: validateSchema(ESTABLISHMENT_VALIDATION_SCHEME),
   validateMeasure: validateSchema(MEASURE_VALIDATION_SCHEME),
   validateCurrency: validateSchema(CURRENCY_VALIDATION_SCHEME),
 };

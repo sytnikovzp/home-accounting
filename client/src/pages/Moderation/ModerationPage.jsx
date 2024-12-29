@@ -34,7 +34,7 @@ function ModerationsPage() {
 
   const openModal = (moderation) => {
     const { path, uuid } = moderation;
-    const allowedPaths = ['category', 'product', 'shop'];
+    const allowedPaths = ['category', 'product', 'establishment'];
     if (allowedPaths.includes(path) && uuid) {
       navigate(`/moderation/${path}/${uuid}`);
     } else {

@@ -8,7 +8,7 @@ import {
   measureService,
   productService,
   purchaseService,
-  shopService,
+  establishmentService,
   moderationService,
   statisticService,
 } from '../../services';
@@ -222,12 +222,20 @@ const restController = {
   },
   fetchPurchaseByUuid: (purchaseUuid) =>
     purchaseService.getPurchaseByUuid(purchaseUuid),
-  addPurchase: (product, quantity, unitPrice, shop, measure, currency, date) =>
+  addPurchase: (
+    product,
+    quantity,
+    unitPrice,
+    establishment,
+    measure,
+    currency,
+    date
+  ) =>
     purchaseService.createPurchase(
       product,
       quantity,
       unitPrice,
-      shop,
+      establishment,
       measure,
       currency,
       date
@@ -237,7 +245,7 @@ const restController = {
     product,
     quantity,
     unitPrice,
-    shop,
+    establishment,
     measure,
     currency,
     date
@@ -247,7 +255,7 @@ const restController = {
       product,
       quantity,
       unitPrice,
-      shop,
+      establishment,
       measure,
       currency,
       date
@@ -255,35 +263,47 @@ const restController = {
   removePurchase: (purchaseUuid) =>
     purchaseService.deletePurchase(purchaseUuid),
 
-  // Shop management
-  fetchAllShops: async ({
+  // Establishment management
+  fetchAllEstablishments: async ({
     status = 'approved',
     page = 1,
     limit = 6,
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await shopService.getAllShops({
-      status,
-      page,
-      limit,
-      sort,
-      order,
-    });
+    const { data, totalCount } =
+      await establishmentService.getAllEstablishments({
+        status,
+        page,
+        limit,
+        sort,
+        order,
+      });
     return {
       data,
       totalCount,
     };
   },
-  fetchShopByUuid: (shopUuid) => shopService.getShopByUuid(shopUuid),
-  addShop: (title, description = '', url = '') =>
-    shopService.createShop(title, description, url),
-  editShop: (shopUuid, title, description, url) =>
-    shopService.updateShop(shopUuid, title, description, url),
-  uploadShopLogo: (shopUuid, shopLogo) =>
-    shopService.updateShopLogo(shopUuid, shopLogo),
-  removeShopLogo: (shopUuid) => shopService.removeShopLogo(shopUuid),
-  removeShop: (shopUuid) => shopService.deleteShop(shopUuid),
+  fetchEstablishmentByUuid: (establishmentUuid) =>
+    establishmentService.getEstablishmentByUuid(establishmentUuid),
+  addEstablishment: (title, description = '', url = '') =>
+    establishmentService.createEstablishment(title, description, url),
+  editEstablishment: (establishmentUuid, title, description, url) =>
+    establishmentService.updateEstablishment(
+      establishmentUuid,
+      title,
+      description,
+      url
+    ),
+  uploadEstablishmentLogo: (establishmentUuid, establishmentLogo) =>
+    establishmentService.updateEstablishmentLogo(
+      establishmentUuid,
+      establishmentLogo
+    ),
+  removeEstablishmentLogo: (establishmentUuid) =>
+    establishmentService.removeEstablishmentLogo(establishmentUuid),
+  removeEstablishment: (establishmentUuid) =>
+    establishmentService.deleteEstablishment(establishmentUuid),
 
   // Moderation
   fetchAllPendingItems: async ({
@@ -307,8 +327,8 @@ const restController = {
     moderationService.moderationCategory(categoryUuid, status),
   moderationProduct: (productUuid, status) =>
     moderationService.moderationProduct(productUuid, status),
-  moderationShop: (shopUuid, status) =>
-    moderationService.moderationShop(shopUuid, status),
+  moderationEstablishment: (establishmentUuid, status) =>
+    moderationService.moderationEstablishment(establishmentUuid, status),
 
   // Statistics
   fetchCostByCategoryPerPeriod: async (category, ago = null) => {
@@ -318,16 +338,19 @@ const restController = {
     );
     return data;
   },
-  fetchCostByShopPerPeriod: async (shop, ago = null) => {
-    const data = await statisticService.getCostByShopPerPeriod(shop, ago);
+  fetchCostByEstablishmentPerPeriod: async (establishment, ago = null) => {
+    const data = await statisticService.getCostByEstablishmentPerPeriod(
+      establishment,
+      ago
+    );
     return data;
   },
   fetchCostByCategories: async (ago = null) => {
     const data = await statisticService.getCostByCategories(ago);
     return data;
   },
-  fetchCostByShops: async (ago = null) => {
-    const data = await statisticService.getCostByShops(ago);
+  fetchCostByEstablishments: async (ago = null) => {
+    const data = await statisticService.getCostByEstablishments(ago);
     return data;
   },
 };

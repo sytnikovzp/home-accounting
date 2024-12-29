@@ -60,9 +60,9 @@ function BaseForm({
             </Box>
             <Box sx={{ mb: 2 }}>
               <FormField
-                {...fields.find((field) => field.name === 'shop')}
-                error={errors['shop']}
-                touched={touched['shop']}
+                {...fields.find((field) => field.name === 'establishment')}
+                error={errors['establishment']}
+                touched={touched['establishment']}
               />
             </Box>
             <Box sx={{ mb: 2 }}>

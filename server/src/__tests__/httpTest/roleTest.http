@@ -26,7 +26,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uU
 {
   "title": "Нова роль користувача",
   "description": "",
-  "permissions": ["ADD_CATEGORIES", "ADD_SHOPS", "ADD_PRODUCTS"]
+  "permissions": ["ADD_CATEGORIES", "ADD_ESTABLISHMENTS", "ADD_PRODUCTS"]
 }
 
 ### Get role by id
@@ -42,7 +42,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikl2YW4uU
 {
   "title": "Оновлена назва ролі користувача",
   "description": "Оновлений опис ролі користувача",
-  "permissions": [ "MANAGE_SHOPS"]
+  "permissions": [ "MANAGE_ESTABLISHMENTS"]
   # "permissions": []
 }
 

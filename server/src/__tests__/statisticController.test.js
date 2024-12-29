@@ -41,29 +41,29 @@ describe('StatisticController', () => {
     });
   });
 
-  describe('GET /api/statistics/shop-per-period', () => {
-    it('should return total cost for shop "Comfy" with time filter (week)', async () => {
+  describe('GET /api/statistics/establishment-per-period', () => {
+    it('should return total cost for establishment "Comfy" with time filter (week)', async () => {
       const response = await request(app)
-        .get('/api/statistics/shop-per-period')
-        .query({ shop: 'Comfy', ago: 'week' });
+        .get('/api/statistics/establishment-per-period')
+        .query({ establishment: 'Comfy', ago: 'week' });
       expect(response.status).toBe(200);
       expect(response.body).toEqual([{ result: '49000.00' }]);
     });
 
-    it('should return total cost for shop "АТБ" without time filter', async () => {
+    it('should return total cost for establishment "АТБ" without time filter', async () => {
       const response = await request(app)
-        .get('/api/statistics/shop-per-period')
-        .query({ shop: 'АТБ' });
+        .get('/api/statistics/establishment-per-period')
+        .query({ establishment: 'АТБ' });
       expect(response.status).toBe(200);
       expect(response.body).toEqual([{ result: '44.75' }]);
     });
 
-    it('should return 404 error for non-existing shop "Ашан"', async () => {
+    it('should return 404 error for non-existing establishment "Ашан"', async () => {
       const response = await request(app)
-        .get('/api/statistics/shop-per-period')
-        .query({ shop: 'Ашан' });
+        .get('/api/statistics/establishment-per-period')
+        .query({ establishment: 'Ашан' });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Shop not found');
+      expect(response.body.errors[0].title).toBe('Establishment not found');
     });
   });
 
@@ -93,10 +93,10 @@ describe('StatisticController', () => {
     });
   });
 
-  describe('GET /statistics/shops', () => {
-    it('should return shop statistics with time filter (month)', async () => {
+  describe('GET /statistics/establishments', () => {
+    it('should return establishment statistics with time filter (month)', async () => {
       const response = await request(app)
-        .get('/api/statistics/shops')
+        .get('/api/statistics/establishments')
         .query({ ago: 'month' });
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
@@ -109,8 +109,8 @@ describe('StatisticController', () => {
       });
     });
 
-    it('should return shop statistics without time filter', async () => {
-      const response = await request(app).get('/api/statistics/shops');
+    it('should return establishment statistics without time filter', async () => {
+      const response = await request(app).get('/api/statistics/establishments');
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
       response.body.forEach((purchase) => {

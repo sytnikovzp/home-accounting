@@ -8,29 +8,29 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
-function ShopDeletePage({
+function EstablishmentDeletePage({
   handleModalClose,
-  fetchShops,
+  fetchEstablishments,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: shopToCRUD,
+    entity: establishmentToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Shop');
+  } = useFetchEntity('Establishment');
 
   useEffect(() => {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeleteShop = async () => {
+  const handleDeleteEstablishment = async () => {
     try {
-      await restController.removeShop(shopToCRUD.uuid);
+      await restController.removeEstablishment(establishmentToCRUD.uuid);
       handleModalClose();
-      fetchShops();
+      fetchEstablishments();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -41,7 +41,7 @@ function ShopDeletePage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Видалення магазину...'
+      title='Видалення закладу...'
       content={
         isLoading ? (
           <Preloader />
@@ -55,8 +55,8 @@ function ShopDeletePage({
               textIndent: '2em',
             }}
           >
-            Ви впевнені, що хочете видалити магазин «{shopToCRUD?.title}»? Це
-            призведе до видалення всіх покупок, пов'язаних з цим магазином.
+            Ви впевнені, що хочете видалити заклад «{establishmentToCRUD?.title}
+            »? Це призведе до видалення всіх витрат, пов'язаних з цим закладом.
           </Typography>
         )
       }
@@ -66,7 +66,7 @@ function ShopDeletePage({
           variant='contained'
           color='error'
           size='large'
-          onClick={handleDeleteShop}
+          onClick={handleDeleteEstablishment}
           fullWidth
         >
           Видалити
@@ -77,4 +77,4 @@ function ShopDeletePage({
   );
 }
 
-export default ShopDeletePage;
+export default EstablishmentDeletePage;

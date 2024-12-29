@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const { Product, Shop, Measure, Currency } = require('../models');
+const { Product, Establishment, Measure, Currency } = require('../models');
 const { postgresData } = require('../../../constants');
 
 module.exports = {
@@ -12,11 +12,11 @@ module.exports = {
       if (product) {
         purchase.product_uuid = product.uuid;
       }
-      const shop = await Shop.findOne({
-        where: { title: purchase.shop },
+      const establishment = await Establishment.findOne({
+        where: { title: purchase.establishment },
       });
-      if (shop) {
-        purchase.shop_uuid = shop.uuid;
+      if (establishment) {
+        purchase.establishment_uuid = establishment.uuid;
       }
       const measure = await Measure.findOne({
         where: { title: purchase.measure },
@@ -31,7 +31,7 @@ module.exports = {
         purchase.currency_uuid = currency.uuid;
       }
       delete purchase.product;
-      delete purchase.shop;
+      delete purchase.establishment;
       delete purchase.measure;
       delete purchase.currency;
     }

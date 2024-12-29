@@ -28,27 +28,27 @@ const getStatusIcon = (status) => {
   return icons[status] || <Cancel color='error' />;
 };
 
-function ShopViewPage({ handleModalClose }) {
+function EstablishmentViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const {
-    entity: shopToCRUD,
+    entity: establishmentToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Shop');
+  } = useFetchEntity('Establishment');
 
   useEffect(() => {
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
   const { title, description, url, logo, status, moderation, creation } =
-    shopToCRUD || {};
+    establishmentToCRUD || {};
 
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   const logoSrc = logo
-    ? `${BASE_URL.replace('/api/', '')}/images/shops/${logo}`
+    ? `${BASE_URL.replace('/api/', '')}/images/establishments/${logo}`
     : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
 
   return (
@@ -56,7 +56,7 @@ function ShopViewPage({ handleModalClose }) {
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Деталі магазину...'
+      title='Деталі закладу...'
       content={
         isLoading ? (
           <Preloader />
@@ -72,7 +72,7 @@ function ShopViewPage({ handleModalClose }) {
                 <DetailRow icon={Info} label='Назва' value={title} />
                 <Avatar
                   src={logoSrc}
-                  alt='Логотип магазину'
+                  alt='Логотип закладу'
                   variant='rounded'
                   sx={{ width: 50, height: 50 }}
                 />
@@ -149,4 +149,4 @@ function ShopViewPage({ handleModalClose }) {
   );
 }
 
-export default ShopViewPage;
+export default EstablishmentViewPage;

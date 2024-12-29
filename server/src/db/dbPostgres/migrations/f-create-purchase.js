@@ -32,11 +32,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 0.0,
       },
-      shop_uuid: {
+      establishment_uuid: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'shops',
+          model: 'establishments',
           key: 'uuid',
         },
         onDelete: 'CASCADE',

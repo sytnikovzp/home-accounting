@@ -4,7 +4,7 @@ const {
   getAllPendingItems,
   moderationCategory,
   moderationProduct,
-  moderationShop,
+  moderationEstablishment,
 } = require('../controllers/moderationController');
 const {
   auth: { authHandler },
@@ -27,7 +27,7 @@ moderationRouter
   .patch(authHandler, validateModeration, moderationProduct);
 
 moderationRouter
-  .route('/shops/:shopUuid')
-  .patch(authHandler, validateModeration, moderationShop);
+  .route('/establishments/:establishmentUuid')
+  .patch(authHandler, validateModeration, moderationEstablishment);
 
 module.exports = moderationRouter;

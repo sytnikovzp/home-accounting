@@ -16,7 +16,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import AuthPage from './pages/AuthPage/AuthPage';
 import HomePage from './pages/HomePage/HomePage';
 import PurchasesPage from './pages/Purchases/PurchasesPage';
-import ShopsPage from './pages/Shops/ShopsPage';
+import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import CategoriesPage from './pages/Categories/CategoriesPage';
 import CurrenciesPage from './pages/Currencies/CurrenciesPage';
@@ -96,8 +96,8 @@ function App() {
             element={renderPrivateRoute(<PurchasesPage />)}
           />
           <Route 
-            path='shops/*' 
-            element={renderPrivateRoute(<ShopsPage />)} 
+            path='establishments/*' 
+            element={renderPrivateRoute(<EstablishmentsPage />)} 
           />
           <Route
             path='products/*'

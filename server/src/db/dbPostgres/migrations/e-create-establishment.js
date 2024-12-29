@@ -4,7 +4,7 @@ module.exports = {
     await queryInterface.sequelize.query(
       'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'
     );
-    await queryInterface.createTable('shops', {
+    await queryInterface.createTable('establishments', {
       uuid: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
@@ -63,6 +63,6 @@ module.exports = {
     await queryInterface.sequelize.query(
       'DROP EXTENSION IF EXISTS "uuid-ossp";'
     );
-    await queryInterface.dropTable('shops');
+    await queryInterface.dropTable('establishments');
   },
 };

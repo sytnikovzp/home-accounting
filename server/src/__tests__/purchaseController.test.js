@@ -93,7 +93,7 @@ describe('PurchaseController', () => {
           product: 'Навушники',
           quantity: 2,
           unitPrice: 500,
-          shop: 'Comfy',
+          establishment: 'Comfy',
           measure: 'шт',
           currency: 'UAH',
         });
@@ -103,14 +103,14 @@ describe('PurchaseController', () => {
       expect(response.body.quantity).toBe('2.00');
       expect(response.body.unitPrice).toBe('500.00');
       expect(response.body.summ).toBe('1000.00');
-      expect(response.body.shop).toBe('Comfy');
+      expect(response.body.establishment).toBe('Comfy');
       expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('UAH');
       expect(response.body.creatorUuid).toBeDefined();
       purchaseUuid = response.body.uuid;
     });
 
-    it('should return 404 if you specify shop that don`t exist', async () => {
+    it('should return 404 if you specify establishment that don`t exist', async () => {
       const response = await request(app)
         .post('/api/purchases')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
@@ -118,12 +118,12 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Велика кишеня',
+          establishment: 'Велика кишеня',
           measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Shop not found');
+      expect(response.body.errors[0].title).toBe('Establishment not found');
     });
 
     it('should return 404 if you specify product that don`t exist', async () => {
@@ -134,7 +134,7 @@ describe('PurchaseController', () => {
           product: 'Ноутбуки',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Comfy',
+          establishment: 'Comfy',
           measure: 'шт',
           currency: 'USD',
         });
@@ -150,7 +150,7 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Comfy',
+          establishment: 'Comfy',
           measure: 'літр',
           currency: 'USD',
         });
@@ -166,7 +166,7 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Comfy',
+          establishment: 'Comfy',
           measure: 'шт',
           currency: 'YYY',
         });
@@ -182,13 +182,13 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Comfy',
+          establishment: 'Comfy',
           measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на створення покупок'
+        'Ви не маєте дозволу на створення витрат'
       );
     });
   });
@@ -204,7 +204,7 @@ describe('PurchaseController', () => {
       expect(response.body.quantity).toBe('2.00');
       expect(response.body.unitPrice).toBe('500.00');
       expect(response.body.summ).toBe('1000.00');
-      expect(response.body.shop).toBe('Comfy');
+      expect(response.body.establishment).toBe('Comfy');
       expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('UAH');
       expect(response.body.creatorUuid).toBeDefined();
@@ -235,7 +235,7 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 1,
           unitPrice: 850.0,
-          shop: 'Епіцентр',
+          establishment: 'Епіцентр',
           measure: 'шт',
           currency: 'USD',
         });
@@ -245,13 +245,13 @@ describe('PurchaseController', () => {
       expect(response.body.quantity).toBe('1.00');
       expect(response.body.unitPrice).toBe('850.00');
       expect(response.body.summ).toBe('850.00');
-      expect(response.body.shop).toBe('Епіцентр');
+      expect(response.body.establishment).toBe('Епіцентр');
       expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('USD');
       expect(response.body.creatorUuid).toBeDefined();
     });
 
-    it('should return 404 if you specify shop that don`t exist', async () => {
+    it('should return 404 if you specify establishment that don`t exist', async () => {
       const response = await request(app)
         .patch(`/api/purchases/${purchaseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
@@ -259,12 +259,12 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Велика кишеня',
+          establishment: 'Велика кишеня',
           measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Shop not found');
+      expect(response.body.errors[0].title).toBe('Establishment not found');
     });
 
     it('should return 404 if you specify product that don`t exist', async () => {
@@ -275,7 +275,7 @@ describe('PurchaseController', () => {
           product: 'Ноутбуки',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Comfy',
+          establishment: 'Comfy',
           measure: 'шт',
           currency: 'USD',
         });
@@ -291,7 +291,7 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Comfy',
+          establishment: 'Comfy',
           measure: 'літр',
           currency: 'USD',
         });
@@ -307,7 +307,7 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          shop: 'Comfy',
+          establishment: 'Comfy',
           measure: 'шт',
           currency: 'YYY',
         });
@@ -323,13 +323,13 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 1,
           unitPrice: 850.0,
-          shop: 'Епіцентр',
+          establishment: 'Епіцентр',
           measure: 'шт',
           currency: 'USD',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цієї покупки'
+        'Ви не маєте дозволу на редагування цієї витрати'
       );
     });
 
@@ -341,7 +341,7 @@ describe('PurchaseController', () => {
           product: 'Ноутбук',
           quantity: 1,
           unitPrice: 850.0,
-          shop: 'Епіцентр',
+          establishment: 'Епіцентр',
           measure: 'шт',
           currency: 'USD',
         });
@@ -357,7 +357,7 @@ describe('PurchaseController', () => {
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цієї покупки'
+        'Ви не маєте дозволу на видалення цієї витрати'
       );
     });
 

@@ -65,7 +65,7 @@ function ContentModerationPage({
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   const logoSrc = logo
-    ? `${BASE_URL.replace('/api/', '')}/images/shops/${logo}`
+    ? `${BASE_URL.replace('/api/', '')}/images/establishments/${logo}`
     : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
 
   const pluralizePath = (path) => {
@@ -74,8 +74,8 @@ function ContentModerationPage({
         return 'products';
       case 'category':
         return 'categories';
-      case 'shop':
-        return 'shops';
+      case 'establishment':
+        return 'establishments';
       default:
         return path;
     }
@@ -89,8 +89,8 @@ function ContentModerationPage({
         return restController.moderationProduct;
       case 'category':
         return restController.moderationCategory;
-      case 'shop':
-        return restController.moderationShop;
+      case 'establishment':
+        return restController.moderationEstablishment;
       default:
         return path;
     }

@@ -7,7 +7,7 @@ function PurchaseAddPage({
   handleModalClose,
   fetchPurchases,
   products,
-  shops,
+  establishments,
   measures,
   currencies,
   crudError,
@@ -20,7 +20,7 @@ function PurchaseAddPage({
         values.product,
         values.quantity,
         values.unitPrice,
-        values.shop,
+        values.establishment,
         values.measure,
         values.currency,
         values.date
@@ -37,12 +37,12 @@ function PurchaseAddPage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Додавання покупки...'
+      title='Додавання витрати...'
       content={
         <PurchaseForm
           onSubmit={handleSubmitPurchase}
           products={products}
-          shops={shops}
+          establishments={establishments}
           measures={measures}
           currencies={currencies}
         />

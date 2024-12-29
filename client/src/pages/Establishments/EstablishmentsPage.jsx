@@ -7,16 +7,16 @@ import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 // ==============================================================
-import ShopAddPage from './ShopAddPage';
-import ShopEditPage from './ShopEditPage';
-import ShopDeletePage from './ShopDeletePage';
-import ShopViewPage from './ShopViewPage';
+import EstablishmentAddPage from './EstablishmentAddPage';
+import EstablishmentEditPage from './EstablishmentEditPage';
+import EstablishmentDeletePage from './EstablishmentDeletePage';
+import EstablishmentViewPage from './EstablishmentViewPage';
 // ==============================================================
 import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 
-function ShopsPage() {
+function EstablishmentsPage() {
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
@@ -25,7 +25,7 @@ function ShopsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [shops, setShops] = useState([]);
+  const [establishments, setEstablishments] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState('approved');
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
@@ -33,14 +33,14 @@ function ShopsPage() {
 
   const handleModalClose = () => {
     setCrudError(null);
-    navigate('/shops');
+    navigate('/establishments');
   };
 
   const openModal = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
-  const fetchShops = useCallback(async () => {
+  const fetchEstablishments = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(null);
     try {
@@ -51,8 +51,10 @@ function ShopsPage() {
         sort: sortModel.field,
         order: sortModel.order,
       };
-      const { data, totalCount } = await restController.fetchAllShops(params);
-      setShops(data || []);
+      const { data, totalCount } = await restController.fetchAllEstablishments(
+        params
+      );
+      setEstablishments(data || []);
       setTotalCount(totalCount);
     } catch (error) {
       setErrorMessage(error.response.data);
@@ -62,8 +64,8 @@ function ShopsPage() {
   }, [currentPage, pageSize, selectedStatus, sortModel]);
 
   useEffect(() => {
-    fetchShops();
-  }, [fetchShops]);
+    fetchEstablishments();
+  }, [fetchEstablishments]);
 
   useEffect(() => {
     let timeout;
@@ -80,9 +82,9 @@ function ShopsPage() {
       <Route
         path='add'
         element={
-          <ShopAddPage
+          <EstablishmentAddPage
             handleModalClose={handleModalClose}
-            fetchShops={fetchShops}
+            fetchEstablishments={fetchEstablishments}
             crudError={crudError}
             setCrudError={setCrudError}
           />
@@ -91,9 +93,9 @@ function ShopsPage() {
       <Route
         path='edit/:uuid'
         element={
-          <ShopEditPage
+          <EstablishmentEditPage
             handleModalClose={handleModalClose}
-            fetchShops={fetchShops}
+            fetchEstablishments={fetchEstablishments}
             crudError={crudError}
             setCrudError={setCrudError}
           />
@@ -102,9 +104,9 @@ function ShopsPage() {
       <Route
         path='delete/:uuid'
         element={
-          <ShopDeletePage
+          <EstablishmentDeletePage
             handleModalClose={handleModalClose}
-            fetchShops={fetchShops}
+            fetchEstablishments={fetchEstablishments}
             crudError={crudError}
             setCrudError={setCrudError}
           />
@@ -112,7 +114,7 @@ function ShopsPage() {
       />
       <Route
         path=':uuid'
-        element={<ShopViewPage handleModalClose={handleModalClose} />}
+        element={<EstablishmentViewPage handleModalClose={handleModalClose} />}
       />
     </Routes>
   );
@@ -144,9 +146,9 @@ function ShopsPage() {
           { field: 'logo', headerName: 'Лого', align: 'center' },
           { field: 'title', headerName: 'Назва закладу', align: 'left' },
         ]}
-        rows={shops}
-        onEdit={(shop) => openModal('edit', shop.uuid)}
-        onDelete={(shop) => openModal('delete', shop.uuid)}
+        rows={establishments}
+        onEdit={(establishment) => openModal('edit', establishment.uuid)}
+        onDelete={(establishment) => openModal('delete', establishment.uuid)}
         pagination={{
           totalCount,
           currentPage,
@@ -160,11 +162,11 @@ function ShopsPage() {
         selectedStatus={selectedStatus}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
         showStatusDropdown
-        linkEntity='shops'
+        linkEntity='establishments'
       />
       {renderRoutes()}
     </>
   );
 }
 
-export default ShopsPage;
+export default EstablishmentsPage;

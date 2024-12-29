@@ -42,8 +42,11 @@ const moderationProduct = async (productUuid, status) => {
   return data;
 };
 
-const moderationShop = async (shopUuid, status) => {
-  const { data } = await api.patch(`/moderation/shops/${shopUuid}`, { status });
+const moderationEstablishment = async (establishmentUuid, status) => {
+  const { data } = await api.patch(
+    `/moderation/establishments/${establishmentUuid}`,
+    { status }
+  );
   return data;
 };
 
@@ -51,5 +54,5 @@ export default {
   getAllPendingItems,
   moderationCategory,
   moderationProduct,
-  moderationShop,
+  moderationEstablishment,
 };

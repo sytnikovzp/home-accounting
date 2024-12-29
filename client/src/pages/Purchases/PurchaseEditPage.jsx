@@ -12,7 +12,7 @@ function PurchaseEditPage({
   handleModalClose,
   fetchPurchases,
   products,
-  shops,
+  establishments,
   measures,
   currencies,
   crudError,
@@ -38,7 +38,7 @@ function PurchaseEditPage({
         values.product,
         values.quantity,
         values.unitPrice,
-        values.shop,
+        values.establishment,
         values.measure,
         values.currency,
         values.date
@@ -55,7 +55,7 @@ function PurchaseEditPage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Редагування покупки...'
+      title='Редагування витрати...'
       content={
         isLoading ? (
           <Preloader />
@@ -64,7 +64,7 @@ function PurchaseEditPage({
             purchase={purchaseToCRUD}
             onSubmit={handleSubmitPurchase}
             products={products}
-            shops={shops}
+            establishments={establishments}
             measures={measures}
             currencies={currencies}
           />

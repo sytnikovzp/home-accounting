@@ -36,8 +36,8 @@ module.exports.permissions = [
     description: 'Повний CRUD для товарів без модерації',
   },
   {
-    title: 'MANAGE_SHOPS',
-    description: 'Повний CRUD для магазинів без модерації',
+    title: 'MANAGE_ESTABLISHMENTS',
+    description: 'Повний CRUD для закладів без модерації',
   },
   {
     title: 'MANAGE_CURRENCIES',
@@ -49,15 +49,15 @@ module.exports.permissions = [
   },
   {
     title: 'ADD_PURCHASES',
-    description: 'Додавання нових записів про покупки без модерації',
+    description: 'Додавання нових записів про витрати без модерації',
   },
   {
-    title: 'ADD_SHOPS',
-    description: 'Додавання нових магазинів, потребують модерації',
+    title: 'ADD_ESTABLISHMENTS',
+    description: 'Додавання нових закладів, потребують модерації',
   },
   {
-    title: 'MODERATION_SHOPS',
-    description: 'Перегляд та зміна статусу публікації для магазинів',
+    title: 'MODERATION_ESTABLISHMENTS',
+    description: 'Перегляд та зміна статусу публікації для закладів',
   },
   {
     title: 'ADD_PRODUCTS',
@@ -94,21 +94,21 @@ module.exports.roles = async (permissionUuids) => [
     permissions: [
       permissionUuids['MANAGE_CATEGORIES'],
       permissionUuids['MANAGE_PRODUCTS'],
-      permissionUuids['MANAGE_SHOPS'],
+      permissionUuids['MANAGE_ESTABLISHMENTS'],
       permissionUuids['MANAGE_CURRENCIES'],
       permissionUuids['MANAGE_MEASURES'],
       permissionUuids['MODERATION_CATEGORIES'],
       permissionUuids['MODERATION_PRODUCTS'],
-      permissionUuids['MODERATION_SHOPS'],
+      permissionUuids['MODERATION_ESTABLISHMENTS'],
       permissionUuids['LIMITED_PROFILE_VIEWER'],
     ],
   },
   {
     title: 'User',
-    description: 'Використання цього додатку для відстеження покупок',
+    description: 'Використання цього додатку для відстеження витрат',
     permissions: [
       permissionUuids['ADD_PURCHASES'],
-      permissionUuids['ADD_SHOPS'],
+      permissionUuids['ADD_ESTABLISHMENTS'],
       permissionUuids['ADD_PRODUCTS'],
       permissionUuids['ADD_CATEGORIES'],
       permissionUuids['LIMITED_PROFILE_VIEWER'],

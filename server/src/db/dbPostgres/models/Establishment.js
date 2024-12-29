@@ -1,16 +1,16 @@
 const { Model, Sequelize } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Shop extends Model {
+  class Establishment extends Model {
     static associate(models) {
-      Shop.hasMany(models.Purchase, {
-        foreignKey: 'shopUuid',
+      Establishment.hasMany(models.Purchase, {
+        foreignKey: 'establishmentUuid',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       });
     }
   }
-  Shop.init(
+  Establishment.init(
     {
       uuid: {
         type: DataTypes.UUID,
@@ -67,11 +67,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Shop',
-      tableName: 'shops',
+      modelName: 'Establishment',
+      tableName: 'establishments',
       timestamps: true,
       underscored: true,
     }
   );
-  return Shop;
+  return Establishment;
 };

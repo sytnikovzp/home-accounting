@@ -52,14 +52,21 @@ class PurchaseController {
   async createPurchase(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { product, quantity, unitPrice, shop, measure, currency, date } =
-        req.body;
+      const {
+        product,
+        quantity,
+        unitPrice,
+        establishment,
+        measure,
+        currency,
+        date,
+      } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const newPurchase = await createPurchase(
         product,
         quantity,
         unitPrice,
-        shop,
+        establishment,
         measure,
         currency,
         date,
@@ -84,15 +91,22 @@ class PurchaseController {
     const transaction = await sequelize.transaction();
     try {
       const { purchaseUuid } = req.params;
-      const { product, quantity, unitPrice, shop, measure, currency, date } =
-        req.body;
+      const {
+        product,
+        quantity,
+        unitPrice,
+        establishment,
+        measure,
+        currency,
+        date,
+      } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
       const updatedPurchase = await updatePurchase(
         purchaseUuid,
         product,
         quantity,
         unitPrice,
-        shop,
+        establishment,
         measure,
         currency,
         date,

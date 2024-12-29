@@ -1,166 +1,170 @@
 const { sequelize } = require('../db/dbPostgres/models');
 const { getCurrentUser } = require('../services/userService');
 const {
-  getAllShops,
-  getShopByUuid,
-  createShop,
-  updateShop,
-  deleteShop,
-  updateShopLogo,
-  removeShopLogo,
-} = require('../services/shopService');
+  getAllEstablishments,
+  getEstablishmentByUuid,
+  createEstablishment,
+  updateEstablishment,
+  deleteEstablishment,
+  updateEstablishmentLogo,
+  removeEstablishmentLogo,
+} = require('../services/establishmentService');
 
-class ShopController {
-  async getAllShops(req, res, next) {
+class EstablishmentController {
+  async getAllEstablishments(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
-      const { allShops, total } = await getAllShops(
+      const { allEstablishments, total } = await getAllEstablishments(
         status,
         limit,
         offset,
         sort,
         order
       );
-      if (allShops.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allShops);
+      if (allEstablishments.length > 0) {
+        res.status(200).set('X-Total-Count', total).json(allEstablishments);
       } else {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get all shops error: ', error.message);
+      console.error('Get all establishments error: ', error.message);
       next(error);
     }
   }
 
-  async getShopByUuid(req, res, next) {
+  async getEstablishmentByUuid(req, res, next) {
     try {
-      const { shopUuid } = req.params;
-      const shop = await getShopByUuid(shopUuid);
-      if (shop) {
-        res.status(200).json(shop);
+      const { establishmentUuid } = req.params;
+      const establishment = await getEstablishmentByUuid(establishmentUuid);
+      if (establishment) {
+        res.status(200).json(establishment);
       } else {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get shop by uuid error: ', error.message);
+      console.error('Get establishment by uuid error: ', error.message);
       next(error);
     }
   }
 
-  async createShop(req, res, next) {
+  async createEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { title, description, url } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
-      const newShop = await createShop(
+      const newEstablishment = await createEstablishment(
         title,
         description,
         url,
         currentUser,
         transaction
       );
-      if (newShop) {
+      if (newEstablishment) {
         await transaction.commit();
-        res.status(201).json(newShop);
+        res.status(201).json(newEstablishment);
       } else {
         await transaction.rollback();
         res.status(401);
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Create shop error: ', error.message);
+      console.error('Create establishment error: ', error.message);
       next(error);
     }
   }
 
-  async updateShop(req, res, next) {
+  async updateEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { shopUuid } = req.params;
+      const { establishmentUuid } = req.params;
       const { title, description, url } = req.body;
       const currentUser = await getCurrentUser(req.user.email);
-      const updatedShop = await updateShop(
-        shopUuid,
+      const updatedEstablishment = await updateEstablishment(
+        establishmentUuid,
         title,
         description,
         url,
         currentUser,
         transaction
       );
-      if (updatedShop) {
+      if (updatedEstablishment) {
         await transaction.commit();
-        res.status(200).json(updatedShop);
+        res.status(200).json(updatedEstablishment);
       } else {
         await transaction.rollback();
         res.status(401);
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Update shop error: ', error.message);
+      console.error('Update establishment error: ', error.message);
       next(error);
     }
   }
 
-  async updateShopLogo(req, res, next) {
+  async updateEstablishmentLogo(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const {
-        params: { shopUuid },
+        params: { establishmentUuid },
         file: { filename },
       } = req;
       const currentUser = await getCurrentUser(req.user.email);
-      const updatedLogoShop = await updateShopLogo(
-        shopUuid,
+      const updatedLogoEstablishment = await updateEstablishmentLogo(
+        establishmentUuid,
         filename,
         currentUser,
         transaction
       );
-      if (updatedLogoShop) {
+      if (updatedLogoEstablishment) {
         await transaction.commit();
-        res.status(200).json(updatedLogoShop);
+        res.status(200).json(updatedLogoEstablishment);
       } else {
         await transaction.rollback();
         res.status(401);
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Update logo shop error: ', error.message);
+      console.error('Update logo establishment error: ', error.message);
       next(error);
     }
   }
 
-  async removeShopLogo(req, res, next) {
+  async removeEstablishmentLogo(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { shopUuid } = req.params;
+      const { establishmentUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const updatedShop = await removeShopLogo(
-        shopUuid,
+      const updatedEstablishment = await removeEstablishmentLogo(
+        establishmentUuid,
         currentUser,
         transaction
       );
-      if (updatedShop) {
+      if (updatedEstablishment) {
         await transaction.commit();
-        res.status(200).json(updatedShop);
+        res.status(200).json(updatedEstablishment);
       } else {
         await transaction.rollback();
         res.status(401);
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Remove logo shop error: ', error.message);
+      console.error('Remove logo establishment error: ', error.message);
       next(error);
     }
   }
 
-  async deleteShop(req, res, next) {
+  async deleteEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { shopUuid } = req.params;
+      const { establishmentUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.email);
-      const deletedShop = await deleteShop(shopUuid, currentUser, transaction);
-      if (deletedShop) {
+      const deletedEstablishment = await deleteEstablishment(
+        establishmentUuid,
+        currentUser,
+        transaction
+      );
+      if (deletedEstablishment) {
         await transaction.commit();
         res.sendStatus(res.statusCode);
       } else {
@@ -169,10 +173,10 @@ class ShopController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Delete shop error: ', error.message);
+      console.error('Delete establishment error: ', error.message);
       next(error);
     }
   }
 }
 
-module.exports = new ShopController();
+module.exports = new EstablishmentController();

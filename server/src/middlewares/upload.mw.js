@@ -58,8 +58,8 @@ const createUploader = (subfolder, mimeRegexp, fileExtensions, maxSize) => {
   });
 };
 
-module.exports.uploadShopLogos = createUploader(
-  'shops',
+module.exports.uploadEstablishmentLogos = createUploader(
+  'establishments',
   IMAGE_MIMETYPE,
   IMAGE_EXTENSIONS,
   MAX_FILE_SIZE

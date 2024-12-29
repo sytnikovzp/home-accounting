@@ -86,13 +86,13 @@ function ListTable({
             src={
               row[col.field]
                 ? `${BASE_URL.replace('/api/', '')}/images/${
-                    col.field === 'logo' ? 'shops' : 'users'
+                    col.field === 'logo' ? 'establishments' : 'users'
                   }/${row[col.field]}`
                 : col.field === 'logo'
                 ? `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
                 : undefined
             }
-            alt={col.field === 'logo' ? 'Логотип магазину' : 'Фото користувача'}
+            alt={col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
             variant='rounded'
             sx={{ width: 40, height: 40 }}
           />

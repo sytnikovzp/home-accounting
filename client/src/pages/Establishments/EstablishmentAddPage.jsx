@@ -1,24 +1,24 @@
 import restController from '../../api/rest/restController';
 // ==============================================================
 import CustomModal from '../../components/CustomModal/CustomModal';
-import ShopForm from '../../components/Forms/ShopForm/ShopForm';
+import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
 
-function ShopAddPage({
+function EstablishmentAddPage({
   handleModalClose,
-  fetchShops,
+  fetchEstablishments,
   crudError,
   setCrudError,
 }) {
-  const handleSubmitShop = async (values) => {
+  const handleSubmitEstablishment = async (values) => {
     setCrudError(null);
     try {
-      await restController.addShop(
+      await restController.addEstablishment(
         values.title,
         values.description,
         values.url
       );
       handleModalClose();
-      fetchShops();
+      fetchEstablishments();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -29,11 +29,11 @@ function ShopAddPage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Додавання магазину...'
-      content={<ShopForm onSubmit={handleSubmitShop} />}
+      title='Додавання закладу...'
+      content={<EstablishmentForm onSubmit={handleSubmitEstablishment} />}
       error={crudError}
     />
   );
 }
 
-export default ShopAddPage;
+export default EstablishmentAddPage;

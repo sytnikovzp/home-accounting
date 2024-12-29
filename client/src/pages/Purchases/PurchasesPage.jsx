@@ -27,7 +27,7 @@ function PurchasesPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [purchases, setPurchases] = useState([]);
   const [products, setProducts] = useState([]);
-  const [shops, setShops] = useState([]);
+  const [establishments, setEstablishments] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -84,7 +84,7 @@ function PurchasesPage() {
     }
   }, []);
 
-  const fetchShops = useCallback(async () => {
+  const fetchEstablishments = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(null);
     try {
@@ -92,8 +92,8 @@ function PurchasesPage() {
         page: 1,
         limit: 500,
       };
-      const { data } = await restController.fetchAllShops(params);
-      setShops(data || []);
+      const { data } = await restController.fetchAllEstablishments(params);
+      setEstablishments(data || []);
     } catch (error) {
       setErrorMessage(error.response.data);
     } finally {
@@ -138,7 +138,7 @@ function PurchasesPage() {
   useEffect(() => {
     fetchPurchases();
     fetchProducts();
-    fetchShops();
+    fetchEstablishments();
     fetchMeasures();
     fetchCurrencies();
   }, [
@@ -146,7 +146,7 @@ function PurchasesPage() {
     fetchMeasures,
     fetchProducts,
     fetchPurchases,
-    fetchShops,
+    fetchEstablishments,
   ]);
 
   useEffect(() => {
@@ -168,7 +168,7 @@ function PurchasesPage() {
             handleModalClose={handleModalClose}
             fetchPurchases={fetchPurchases}
             products={products}
-            shops={shops}
+            establishments={establishments}
             measures={measures}
             currencies={currencies}
             crudError={crudError}
@@ -183,7 +183,7 @@ function PurchasesPage() {
             handleModalClose={handleModalClose}
             fetchPurchases={fetchPurchases}
             products={products}
-            shops={shops}
+            establishments={establishments}
             measures={measures}
             currencies={currencies}
             crudError={crudError}
@@ -221,7 +221,7 @@ function PurchasesPage() {
         alignItems='center'
         mb={2}
       >
-        <Typography variant='h6'>Покупки</Typography>
+        <Typography variant='h6'>Витрати</Typography>
         <Button
           variant='contained'
           color='success'
@@ -235,7 +235,7 @@ function PurchasesPage() {
         columns={[
           { field: 'date', headerName: 'Дата', align: 'left' },
           { field: 'product', headerName: 'Товар', align: 'left' },
-          { field: 'shop', headerName: 'Магазин', align: 'left' },
+          { field: 'establishment', headerName: 'Заклад', align: 'left' },
         ]}
         rows={purchases}
         onEdit={(purchase) => openModal('edit', purchase.uuid)}

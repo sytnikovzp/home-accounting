@@ -41,7 +41,7 @@ function PurchaseDeletePage({
       isOpen
       onClose={handleModalClose}
       showCloseButton
-      title='Видалення покупки...'
+      title='Видалення витрати...'
       content={
         isLoading ? (
           <Preloader />
