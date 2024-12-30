@@ -15,7 +15,6 @@ class TokenService {
   generateTokens(user) {
     const payload = {
       uuid: user.uuid,
-      email: user.email,
       tokenVersion: user.tokenVersion,
     };
     const accessToken = jwt.sign(payload, ACCESS_SECRET, {

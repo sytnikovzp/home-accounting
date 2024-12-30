@@ -34,7 +34,7 @@ class ModerationController {
     try {
       const { categoryUuid } = req.params;
       const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedCategory = await updateCategoryStatus(
         categoryUuid,
         status,
@@ -60,7 +60,7 @@ class ModerationController {
     try {
       const { productUuid } = req.params;
       const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedProduct = await updateProductStatus(
         productUuid,
         status,
@@ -86,7 +86,7 @@ class ModerationController {
     try {
       const { establishmentUuid } = req.params;
       const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedEstablishment = await updateEstablishmentStatus(
         establishmentUuid,
         status,

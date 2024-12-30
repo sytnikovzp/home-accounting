@@ -22,7 +22,7 @@ const getAllEstablishments = async ({
       totalCount,
     };
   } catch (error) {
-    console.error(error.response.data.errors[0].title);
+    console.error(error.response.data);
     return {
       data: [],
       totalCount: 0,

@@ -119,9 +119,8 @@ class AuthService {
     if (!refreshToken) throw unAuthorizedError();
     const data = validateRefreshToken(refreshToken);
     if (!data) throw unAuthorizedError();
-    const { email } = data;
-    const emailToLower = emailToLowerCase(email);
-    const foundUser = await User.findOne({ email: emailToLower });
+    const { uuid } = data;
+    const foundUser = await User.findOne({ uuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
     const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!foundRole) throw notFound('Роль для користувача не знайдено');

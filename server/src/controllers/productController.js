@@ -50,7 +50,7 @@ class ProductController {
     const transaction = await sequelize.transaction();
     try {
       const { title, category } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const newProduct = await createProduct(
         title,
         category,
@@ -76,7 +76,7 @@ class ProductController {
     try {
       const { productUuid } = req.params;
       const { title, category } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedProduct = await updateProduct(
         productUuid,
         title,
@@ -102,7 +102,7 @@ class ProductController {
     const transaction = await sequelize.transaction();
     try {
       const { productUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const deletedProduct = await deleteProduct(
         productUuid,
         currentUser,

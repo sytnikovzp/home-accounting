@@ -52,7 +52,7 @@ class EstablishmentController {
     const transaction = await sequelize.transaction();
     try {
       const { title, description, url } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const newEstablishment = await createEstablishment(
         title,
         description,
@@ -79,7 +79,7 @@ class EstablishmentController {
     try {
       const { establishmentUuid } = req.params;
       const { title, description, url } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedEstablishment = await updateEstablishment(
         establishmentUuid,
         title,
@@ -109,7 +109,7 @@ class EstablishmentController {
         params: { establishmentUuid },
         file: { filename },
       } = req;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedLogoEstablishment = await updateEstablishmentLogo(
         establishmentUuid,
         filename,
@@ -134,7 +134,7 @@ class EstablishmentController {
     const transaction = await sequelize.transaction();
     try {
       const { establishmentUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedEstablishment = await removeEstablishmentLogo(
         establishmentUuid,
         currentUser,
@@ -158,7 +158,7 @@ class EstablishmentController {
     const transaction = await sequelize.transaction();
     try {
       const { establishmentUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const deletedEstablishment = await deleteEstablishment(
         establishmentUuid,
         currentUser,

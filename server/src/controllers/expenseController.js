@@ -13,7 +13,7 @@ class ExpenseController {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc', ago = 'allTime' } = req.query;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const { allExpenses, total } = await getAllExpenses(
         currentUser,
         ago,
@@ -36,7 +36,7 @@ class ExpenseController {
   async getExpenseByUuid(req, res, next) {
     try {
       const { expenseUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const expense = await getExpenseByUuid(expenseUuid, currentUser);
       if (expense) {
         res.status(200).json(expense);
@@ -61,7 +61,7 @@ class ExpenseController {
         currency,
         date,
       } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const newExpense = await createExpense(
         product,
         quantity,
@@ -100,7 +100,7 @@ class ExpenseController {
         currency,
         date,
       } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedExpense = await updateExpense(
         expenseUuid,
         product,
@@ -131,7 +131,7 @@ class ExpenseController {
     const transaction = await sequelize.transaction();
     try {
       const { expenseUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const deletedExpense = await deleteExpense(
         expenseUuid,
         currentUser,

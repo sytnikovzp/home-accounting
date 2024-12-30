@@ -49,7 +49,7 @@ class CurrencyController {
     const transaction = await sequelize.transaction();
     try {
       const { title, code } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const newCurrency = await createCurrency(
         title,
         code,
@@ -75,7 +75,7 @@ class CurrencyController {
     try {
       const { currencyUuid } = req.params;
       const { title, code } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedCurrency = await updateCurrency(
         currencyUuid,
         title,
@@ -101,7 +101,7 @@ class CurrencyController {
     const transaction = await sequelize.transaction();
     try {
       const { currencyUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const deletedCurrency = await deleteCurrency(
         currencyUuid,
         currentUser,

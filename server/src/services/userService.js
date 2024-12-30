@@ -15,7 +15,6 @@ const {
 // ==============================================================
 const {
   hashPassword,
-  emailToLowerCase,
   formatDateTime,
   isValidUUID,
   checkPermission,
@@ -101,10 +100,9 @@ class UserService {
     }
   }
 
-  async getCurrentUser(email) {
-    if (!email) throw badRequest('Email відсутній');
-    const emailToLower = emailToLowerCase(email);
-    const foundUser = await User.findOne({ email: emailToLower });
+  async getCurrentUser(uuid) {
+    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    const foundUser = await User.findOne({ uuid });
     if (!foundUser) throw notFound('Користувача не знайдено');
     const role = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!role) throw notFound('Роль для користувача не знайдено');
@@ -156,11 +154,12 @@ class UserService {
       if (existingEmail)
         throw badRequest('Ця електронна адреса вже використовується');
       updateData.email = newEmail;
+      updateData.emailVerificationStatus = 'pending';
+      updateData.tokenVersion = foundUser.tokenVersion + 1;
       const verificationToken = await VerificationToken.create({
         userUuid: foundUser.uuid,
         expiresAt: new Date(Date.now() + VERIFICATION),
       });
-      updateData.emailVerificationStatus = 'pending';
       await mailService.sendEmailChangeVerification(
         newEmail,
         `http://${HOST}:${PORT}/api/auth/verify?token=${verificationToken.token}`

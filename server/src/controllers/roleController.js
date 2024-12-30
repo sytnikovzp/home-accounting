@@ -57,7 +57,7 @@ class RoleController {
   async createRole(req, res, next) {
     try {
       const { title, description, permissions } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const newRole = await createRole(
         title,
         description,
@@ -79,7 +79,7 @@ class RoleController {
     try {
       const { roleUuid } = req.params;
       const { title, description, permissions } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedRole = await updateRole(
         roleUuid,
         title,
@@ -101,7 +101,7 @@ class RoleController {
   async deleteRole(req, res, next) {
     try {
       const { roleUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const deletedRole = await deleteRole(roleUuid, currentUser);
       if (deletedRole) {
         res.sendStatus(res.statusCode);

@@ -50,7 +50,7 @@ class CategoryController {
     const transaction = await sequelize.transaction();
     try {
       const { title } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const newCategory = await createCategory(title, currentUser, transaction);
       if (newCategory) {
         await transaction.commit();
@@ -71,7 +71,7 @@ class CategoryController {
     try {
       const { categoryUuid } = req.params;
       const { title } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedCategory = await updateCategory(
         categoryUuid,
         title,
@@ -96,7 +96,7 @@ class CategoryController {
     const transaction = await sequelize.transaction();
     try {
       const { categoryUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const deletedCategory = await deleteCategory(
         categoryUuid,
         currentUser,

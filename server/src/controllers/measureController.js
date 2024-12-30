@@ -49,7 +49,7 @@ class MeasureController {
     const transaction = await sequelize.transaction();
     try {
       const { title, description } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const newMeasure = await createMeasure(
         title,
         description,
@@ -75,7 +75,7 @@ class MeasureController {
     try {
       const { measureUuid } = req.params;
       const { title, description } = req.body;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const updatedMeasure = await updateMeasure(
         measureUuid,
         title,
@@ -101,7 +101,7 @@ class MeasureController {
     const transaction = await sequelize.transaction();
     try {
       const { measureUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.email);
+      const currentUser = await getCurrentUser(req.user.uuid);
       const deletedMeasure = await deleteMeasure(
         measureUuid,
         currentUser,
