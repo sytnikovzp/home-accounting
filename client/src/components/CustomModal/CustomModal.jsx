@@ -7,7 +7,7 @@ import {
   IconButton,
   AlertTitle,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Close } from '@mui/icons-material';
 // ==============================================================
 import { stylesFadeBox, stylesContentBox } from '../../styles/theme';
 
@@ -42,7 +42,7 @@ function CustomModal({
                 color: (theme) => theme.palette.grey[700],
               }}
             >
-              <CloseIcon />
+              <Close />
             </IconButton>
           )}
           {title && (

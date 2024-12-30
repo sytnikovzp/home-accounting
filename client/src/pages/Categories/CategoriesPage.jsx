@@ -154,7 +154,7 @@ function CategoriesPage() {
           pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
-          rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
+          rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
         sortModel={sortModel}
         onSortModelChange={setSortModel}

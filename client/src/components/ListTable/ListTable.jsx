@@ -19,12 +19,9 @@ import {
   Avatar,
   useMediaQuery,
 } from '@mui/material';
+import { Edit, Delete, Task } from '@mui/icons-material';
 // ==============================================================
 import { BASE_URL } from '../../constants';
-// ==============================================================
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import TaskIcon from '@mui/icons-material/Task';
 // ==============================================================
 import {
   cellStyle,
@@ -49,7 +46,7 @@ function ListTable({
     pageSize,
     onPageChange,
     onRowsPerPageChange,
-    rowsPerPageOptions = [6, 10, 25, 50],
+    rowsPerPageOptions = [6, 15, 20, 25],
   },
   sortModel,
   onSortModelChange,
@@ -79,7 +76,15 @@ function ListTable({
   const memoizedRows = useMemo(() => rows, [rows]);
 
   const renderTableCell = (col, row) => (
-    <TableCell key={col.field} align={col.align || 'center'} sx={cellStyle}>
+    <TableCell
+      key={col.field}
+      align={col.align || 'center'}
+      sx={{
+        borderRight: '1px solid #ccc',
+        padding: '8px 16px',
+        borderBottom: '1px solid #ccc',
+      }}
+    >
       {['logo', 'photo'].includes(col.field) ? (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Avatar
@@ -109,7 +114,18 @@ function ListTable({
           <Typography
             variant='body1'
             component='span'
-            sx={stylesTableTypography}
+            sx={{
+              fontSize: '0.875rem',
+              color: 'common.black',
+              padding: '5px 10px',
+              borderRadius: '5px',
+              boxShadow: '0 3px 4px rgba(0, 0, 0, 0.1)',
+              transition: 'all 0.3s ease-in-out',
+              '&:hover': {
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                transform: 'translateY(-2px)',
+              },
+            }}
           >
             {row[col.field]}
           </Typography>
@@ -123,7 +139,16 @@ function ListTable({
   );
 
   return (
-    <TableContainer sx={stylesTableContainer}>
+    <TableContainer
+      sx={{
+        width: '100%',
+        overflowX: 'auto',
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        mb: 2,
+      }}
+    >
       <Table sx={{ width: '100%', borderCollapse: 'collapse' }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: 'success.main' }}>
@@ -132,7 +157,10 @@ function ListTable({
                 key={col.field}
                 align={col.align || 'center'}
                 sx={{
-                  ...headCellStyle,
+                  fontWeight: 'bold',
+                  color: 'common.white',
+                  borderBottom: '1px solid #ccc',
+                  cursor: 'pointer',
                   borderRight:
                     index < memoizedColumns.length - 1
                       ? '1px solid darkgreen'
@@ -149,7 +177,15 @@ function ListTable({
               </TableCell>
             ))}
             {!isMobile && (
-              <TableCell align='center' sx={stylesActionsHeadTableCell}>
+              <TableCell
+                align='center'
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'common.white',
+                  borderLeft: '1px solid darkgreen',
+                  borderBottom: '1px solid #ccc',
+                }}
+              >
                 {isModerationPage ? 'Модерувати' : 'Редаг./Видал.'}
               </TableCell>
             )}
@@ -158,28 +194,42 @@ function ListTable({
         <TableBody>
           {memoizedRows.length > 0 ? (
             memoizedRows.map((row) => (
-              <TableRow key={row.uuid} sx={stylesTableRow}>
+              <TableRow
+                key={row.uuid}
+                sx={{
+                  '&:nth-of-type(2n)': { backgroundColor: 'action.hover' },
+                  '&:hover': { backgroundColor: 'action.selected' },
+                }}
+              >
                 {memoizedColumns.map((col, index) =>
                   renderTableCell(col, row, index)
                 )}
                 {!isMobile && (
-                  <TableCell align='center' sx={stylesActionsBodyTableCell}>
+                  <TableCell
+                    align='center'
+                    sx={{
+                      padding: '8px 16px',
+                      borderBottom: '1px solid #ccc',
+                      borderLeft: '1px solid #ccc',
+                      width: '140px',
+                    }}
+                  >
                     {isModerationPage ? (
                       <Tooltip title='Модерувати'>
                         <IconButton onClick={() => onModerate(row)}>
-                          <TaskIcon />
+                          <Task />
                         </IconButton>
                       </Tooltip>
                     ) : (
                       <>
                         <Tooltip title='Редагувати'>
                           <IconButton onClick={() => onEdit(row)}>
-                            <EditIcon />
+                            <Edit />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title='Видалити'>
                           <IconButton onClick={() => onDelete(row)}>
-                            <DeleteIcon />
+                            <Delete />
                           </IconButton>
                         </Tooltip>
                       </>
@@ -197,6 +247,20 @@ function ListTable({
               </TableCell>
             </TableRow>
           )}
+          {Array.from(
+            { length: pageSize - memoizedRows.length },
+            (_, index) => (
+              <TableRow key={`empty-row-${index}`} sx={{ height: 57 }}>
+                {memoizedColumns.map((col, colIndex) => (
+                  <TableCell
+                    key={`empty-cell-${index}-${colIndex}`}
+                    sx={{ borderBottom: 'none' }}
+                  />
+                ))}
+                {!isMobile && <TableCell sx={{ borderBottom: 'none' }} />}
+              </TableRow>
+            )
+          )}
         </TableBody>
       </Table>
       <Box
@@ -207,7 +271,13 @@ function ListTable({
         m={2}
       >
         {showStatusDropdown && !usersPage && !expensesPage && (
-          <FormControl sx={stylesFormControl}>
+          <FormControl
+            sx={{
+              flexGrow: 1,
+              minWidth: 120,
+              maxWidth: '365px',
+            }}
+          >
             <InputLabel id='status-select-label'>Статус</InputLabel>
             <Select
               labelId='status-select-label'
@@ -223,7 +293,13 @@ function ListTable({
           </FormControl>
         )}
         {showStatusDropdown && usersPage && (
-          <FormControl sx={stylesFormControl}>
+          <FormControl
+            sx={{
+              flexGrow: 1,
+              minWidth: 120,
+              maxWidth: '365px',
+            }}
+          >
             <InputLabel id='status-select-label'>Статус</InputLabel>
             <Select
               labelId='status-select-label'
@@ -239,7 +315,13 @@ function ListTable({
           </FormControl>
         )}
         {showStatusDropdown && expensesPage && (
-          <FormControl sx={stylesFormControl}>
+          <FormControl
+            sx={{
+              flexGrow: 1,
+              minWidth: 120,
+              maxWidth: '365px',
+            }}
+          >
             <InputLabel id='period-select-label'>Період</InputLabel>
             <Select
               labelId='period-select-label'

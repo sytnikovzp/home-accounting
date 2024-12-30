@@ -7,10 +7,9 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-// ==============================================================
+
 function PermissionsSwitches({ permissionsList }) {
   const { values } = useFormikContext();
-
   return (
     <Box
       sx={{

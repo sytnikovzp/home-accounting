@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 // ==============================================================
 import { Box, Typography, Button, Avatar } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { LockOutlined } from '@mui/icons-material';
 // ==============================================================
 import restController from '../../api/rest/restController';
 // ==============================================================
@@ -70,7 +70,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
                 : 'warning.main',
           }}
         >
-          <LockOutlinedIcon />
+          <LockOutlined />
         </Avatar>
         <Typography variant='h6' sx={stylesAuthTitle}>
           {titles[authMode]}

@@ -8,21 +8,32 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import * as Icons from '@mui/icons-material';
+import {
+  Home,
+  ShoppingCart,
+  Store,
+  DryCleaning,
+  Category,
+  AttachMoney,
+  SquareFoot,
+  Gavel,
+  People,
+  ManageAccounts,
+} from '@mui/icons-material';
 // ==============================================================
 import { stylesListItemText, stylesNavMenuItems } from '../../styles/theme';
 
 const navItems = [
-  { to: '/', icon: 'Home', label: 'Головна' },
-  { to: '/expenses', icon: 'ShoppingCart', label: 'Витрати' },
-  { to: '/establishments', icon: 'Store', label: 'Заклади' },
-  { to: '/products', icon: 'DryCleaning', label: 'Товари' },
-  { to: '/categories', icon: 'Category', label: 'Категорії' },
-  { to: '/currencies', icon: 'AttachMoney', label: 'Валюти' },
-  { to: '/measures', icon: 'SquareFoot', label: 'Одиниці' },
-  { to: '/moderation', icon: 'Gavel', label: 'Модерація' },
-  { to: '/users', icon: 'People', label: 'Користувачі' },
-  { to: '/roles', icon: 'ManageAccounts', label: 'Ролі' },
+  { to: '/', icon: Home, label: 'Головна' },
+  { to: '/expenses', icon: ShoppingCart, label: 'Витрати' },
+  { to: '/establishments', icon: Store, label: 'Заклади' },
+  { to: '/products', icon: DryCleaning, label: 'Товари' },
+  { to: '/categories', icon: Category, label: 'Категорії' },
+  { to: '/currencies', icon: AttachMoney, label: 'Валюти' },
+  { to: '/measures', icon: SquareFoot, label: 'Одиниці' },
+  { to: '/moderation', icon: Gavel, label: 'Модерація' },
+  { to: '/users', icon: People, label: 'Користувачі' },
+  { to: '/roles', icon: ManageAccounts, label: 'Ролі' },
 ];
 
 function NavBar({ onClose }) {
@@ -34,25 +45,22 @@ function NavBar({ onClose }) {
 
   const renderNavItems = (items) => (
     <List>
-      {items.map(({ to, icon, label }) => {
-        const IconComponent = Icons[icon];
-        return (
-          <ListItem
-            disablePadding
-            key={label}
-            component={RouterLink}
-            to={to}
-            onClick={handleItemClick}
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                <IconComponent />
-              </ListItemIcon>
-              <ListItemText sx={stylesListItemText} primary={label} />
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
+      {items.map(({ to, icon: IconComponent, label }) => (
+        <ListItem
+          disablePadding
+          key={label}
+          component={RouterLink}
+          to={to}
+          onClick={handleItemClick}
+        >
+          <ListItemButton>
+            <ListItemIcon>
+              <IconComponent />
+            </ListItemIcon>
+            <ListItemText sx={stylesListItemText} primary={label} />
+          </ListItemButton>
+        </ListItem>
+      ))}
     </List>
   );
 

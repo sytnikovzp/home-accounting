@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, IconButton, LinearProgress } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
+import { Clear } from '@mui/icons-material';
 // ==============================================================
 import { BASE_URL } from '../../constants';
 
@@ -67,7 +67,7 @@ function FileUpload({ file, onUpload, onRemove, label, entity, uploading }) {
               },
             }}
           >
-            <ClearIcon fontSize='small' />
+            <Clear fontSize='small' />
           </IconButton>
         )}
       </Box>
