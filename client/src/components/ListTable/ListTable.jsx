@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
@@ -22,17 +22,6 @@ import {
 import { Edit, Delete, Task } from '@mui/icons-material';
 // ==============================================================
 import { BASE_URL } from '../../constants';
-// ==============================================================
-import {
-  cellStyle,
-  headCellStyle,
-  stylesActionsBodyTableCell,
-  stylesActionsHeadTableCell,
-  stylesFormControl,
-  stylesTableContainer,
-  stylesTableRow,
-  stylesTableTypography,
-} from '../../styles/theme';
 
 function ListTable({
   columns,
@@ -58,20 +47,19 @@ function ListTable({
   linkEntity = '',
   isModerationPage = false,
 }) {
-  const handleSort = (field) => {
-    const newSortModel =
-      sortModel.field === field
-        ? { field, order: sortModel.order === 'asc' ? 'desc' : 'asc' }
-        : { field, order: 'asc' };
-    onSortModelChange(newSortModel);
-  };
-
-  const handleStatusChange = (event) => {
-    onStatusChange(event);
-    onPageChange(1);
-  };
-
   const isMobile = useMediaQuery('(max-width:600px)');
+
+  const handleSort = useCallback(
+    (field) => {
+      const newSortModel =
+        sortModel.field === field
+          ? { field, order: sortModel.order === 'asc' ? 'desc' : 'asc' }
+          : { field, order: 'asc' };
+      onSortModelChange(newSortModel);
+    },
+    [sortModel, onSortModelChange]
+  );
+
   const memoizedColumns = useMemo(() => columns, [columns]);
   const memoizedRows = useMemo(() => rows, [rows]);
 
@@ -137,6 +125,50 @@ function ListTable({
       )}
     </TableCell>
   );
+
+  const renderStatusDropdown = () => {
+    const statusOptions = usersPage
+      ? [
+          { value: 'all', label: 'Всі користувачі' },
+          { value: 'pending', label: 'Очікують веріфікації' },
+          { value: 'verified', label: 'Веріфіковані' },
+        ]
+      : expensesPage
+      ? [
+          { value: 'day', label: 'За день' },
+          { value: 'week', label: 'За неділю' },
+          { value: 'month', label: 'За місяць' },
+          { value: 'year', label: 'За рік' },
+          { value: 'allTime', label: 'За весь час' },
+        ]
+      : [
+          { value: 'pending', label: 'Очікує модерації' },
+          { value: 'approved', label: 'Затверджено' },
+          { value: 'rejected', label: 'Відхилено' },
+        ];
+
+    return (
+      <FormControl sx={{ flexGrow: 1, minWidth: 120, maxWidth: '365px' }}>
+        <InputLabel id='status-select-label'>Статус</InputLabel>
+        <Select
+          labelId='status-select-label'
+          value={selectedStatus}
+          label='Статус'
+          size='small'
+          onChange={(e) => {
+            onStatusChange(e);
+            onPageChange(1);
+          }}
+        >
+          {statusOptions.map(({ value, label }) => (
+            <MenuItem key={value} value={value}>
+              {label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    );
+  };
 
   return (
     <TableContainer
@@ -270,74 +302,7 @@ function ListTable({
         alignItems='center'
         m={2}
       >
-        {showStatusDropdown && !usersPage && !expensesPage && (
-          <FormControl
-            sx={{
-              flexGrow: 1,
-              minWidth: 120,
-              maxWidth: '365px',
-            }}
-          >
-            <InputLabel id='status-select-label'>Статус</InputLabel>
-            <Select
-              labelId='status-select-label'
-              value={selectedStatus}
-              label='Статус'
-              size='small'
-              onChange={handleStatusChange}
-            >
-              <MenuItem value='pending'>Очікує модерації</MenuItem>
-              <MenuItem value='approved'>Затверджено</MenuItem>
-              <MenuItem value='rejected'>Відхилено</MenuItem>
-            </Select>
-          </FormControl>
-        )}
-        {showStatusDropdown && usersPage && (
-          <FormControl
-            sx={{
-              flexGrow: 1,
-              minWidth: 120,
-              maxWidth: '365px',
-            }}
-          >
-            <InputLabel id='status-select-label'>Статус</InputLabel>
-            <Select
-              labelId='status-select-label'
-              value={selectedStatus}
-              label='Статус'
-              size='small'
-              onChange={handleStatusChange}
-            >
-              <MenuItem value='all'>Всі користувачі</MenuItem>
-              <MenuItem value='pending'>Очікують веріфікації</MenuItem>
-              <MenuItem value='verified'>Веріфіковані</MenuItem>
-            </Select>
-          </FormControl>
-        )}
-        {showStatusDropdown && expensesPage && (
-          <FormControl
-            sx={{
-              flexGrow: 1,
-              minWidth: 120,
-              maxWidth: '365px',
-            }}
-          >
-            <InputLabel id='period-select-label'>Період</InputLabel>
-            <Select
-              labelId='period-select-label'
-              value={selectedStatus}
-              label='Період'
-              size='small'
-              onChange={handleStatusChange}
-            >
-              <MenuItem value='day'>За день</MenuItem>
-              <MenuItem value='week'>За неділю</MenuItem>
-              <MenuItem value='month'>За місяць</MenuItem>
-              <MenuItem value='year'>За рік</MenuItem>
-              <MenuItem value='allTime'>За весь час</MenuItem>
-            </Select>
-          </FormControl>
-        )}
+        {showStatusDropdown && renderStatusDropdown()}
         <TablePagination
           component='div'
           count={totalCount}
