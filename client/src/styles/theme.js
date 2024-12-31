@@ -189,16 +189,42 @@ export const stylesPreloaderTitle = {
 // ==============================================================
 // ListTable component
 
-export const headCellStyle = {
+export const stylesHeadCell = {
   fontWeight: 'bold',
   color: 'common.white',
   borderBottom: '1px solid #ccc',
   cursor: 'pointer',
 };
-export const cellStyle = {
+export const stylesCell = {
   borderRight: '1px solid #ccc',
   padding: '8px 16px',
   borderBottom: '1px solid #ccc',
+};
+
+export const stylesTableAvatarBox = {
+  display: 'flex',
+  justifyContent: 'center',
+};
+
+export const stylesTableAvatarSize = {
+  width: 40,
+  height: 40,
+};
+
+export const stylesTableHeadBackgroundColor = {
+  backgroundColor: 'success.main',
+};
+
+export const stylesTableTextColor = {
+  color: 'common.black',
+};
+
+export const stylesTableHeightEmptyRow = {
+  height: 57,
+};
+
+export const stylesTableBorderEmptyRow = {
+  borderBottom: 'none',
 };
 
 export const stylesTableContainer = {
@@ -208,6 +234,11 @@ export const stylesTableContainer = {
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   mb: 2,
+};
+
+export const stylesTable = {
+  width: '100%',
+  borderCollapse: 'collapse',
 };
 
 export const stylesActionsHeadTableCell = {
@@ -236,6 +267,9 @@ export const stylesTableTypography = {
   borderRadius: '5px',
   boxShadow: '0 3px 4px rgba(0, 0, 0, 0.1)',
   transition: 'all 0.3s ease-in-out',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
   '&:hover': {
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
     transform: 'translateY(-2px)',

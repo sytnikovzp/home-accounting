@@ -156,6 +156,9 @@ class UserController {
       const currentUser = await getCurrentUser(req.user.uuid);
       const deletedUser = await deleteUser(userUuid, currentUser);
       if (deletedUser) {
+        if (currentUser.uuid === userUuid) {
+          res.clearCookie('refreshToken');
+        }
         res.sendStatus(res.statusCode);
       } else {
         res.status(401);

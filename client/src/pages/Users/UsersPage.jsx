@@ -16,7 +16,7 @@ import Preloader from '../../components/Preloader/Preloader';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 
-function UsersPage() {
+function UsersPage({ currentUser, setIsAuthenticated }) {
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
@@ -130,6 +130,8 @@ function UsersPage() {
             fetchUsers={fetchUsers}
             crudError={crudError}
             setCrudError={setCrudError}
+            currentUser={currentUser}
+            setIsAuthenticated={setIsAuthenticated}
           />
         }
       />

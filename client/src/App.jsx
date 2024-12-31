@@ -95,9 +95,9 @@ function App() {
             path='expenses/*'
             element={renderPrivateRoute(<ExpensesPage />)}
           />
-          <Route 
-            path='establishments/*' 
-            element={renderPrivateRoute(<EstablishmentsPage />)} 
+          <Route
+            path='establishments/*'
+            element={renderPrivateRoute(<EstablishmentsPage />)}
           />
           <Route
             path='products/*'
@@ -119,9 +119,14 @@ function App() {
             path='moderation/*'
             element={renderPrivateRoute(<ModerationPage />)}
           />
-          <Route 
-            path='users/*' 
-            element={renderPrivateRoute(<UsersPage />)} 
+          <Route
+            path='users/*'
+            element={renderPrivateRoute(
+              <UsersPage
+                currentUser={currentUser}
+                setIsAuthenticated={setIsAuthenticated}
+              />
+            )}
           />
           <Route 
             path='roles/*' 

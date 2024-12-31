@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 // ==============================================================
 import restController from '../../api/rest/restController';
@@ -13,8 +13,11 @@ function UserDeletePage({
   fetchUsers,
   crudError,
   setCrudError,
+  currentUser,
+  setIsAuthenticated,
 }) {
   const { uuid } = useParams();
+  const navigate = useNavigate();
   const {
     entity: userToCRUD,
     isLoading,
@@ -26,11 +29,25 @@ function UserDeletePage({
     if (uuid) fetchEntityByUuid(uuid);
   }, [uuid, fetchEntityByUuid]);
 
+  const handleLogout = async () => {
+    try {
+      await restController.logout();
+      setIsAuthenticated(false);
+      navigate('/');
+    } catch (error) {
+      console.error('Помилка виходу із системи:', error.message);
+    }
+  };
+
   const handleDeleteUser = async () => {
     try {
       await restController.removeUser(userToCRUD.uuid);
-      handleModalClose();
-      fetchUsers();
+      if (userToCRUD.uuid === currentUser.uuid) {
+        await handleLogout();
+      } else {
+        handleModalClose();
+        fetchUsers();
+      }
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -55,8 +72,9 @@ function UserDeletePage({
               textIndent: '2em',
             }}
           >
-            Ви впевнені, що хочете видалити користувача «{userToCRUD?.fullName}
-            »?
+            {userToCRUD?.uuid === currentUser.uuid
+              ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
+              : `Ви впевнені, що хочете видалити користувача «${userToCRUD?.fullName}»?`}
           </Typography>
         )
       }

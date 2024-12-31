@@ -22,6 +22,23 @@ import {
 import { Edit, Delete, Task } from '@mui/icons-material';
 // ==============================================================
 import { BASE_URL } from '../../constants';
+import {
+  stylesCell,
+  stylesHeadCell,
+  stylesActionsBodyTableCell,
+  stylesActionsHeadTableCell,
+  stylesFormControl,
+  stylesTableContainer,
+  stylesTableRow,
+  stylesTableTypography,
+  stylesTableAvatarBox,
+  stylesTableAvatarSize,
+  stylesTableTextColor,
+  stylesTable,
+  stylesTableHeadBackgroundColor,
+  stylesTableHeightEmptyRow,
+  stylesTableBorderEmptyRow,
+} from '../../styles/theme';
 
 function ListTable({
   columns,
@@ -64,17 +81,9 @@ function ListTable({
   const memoizedRows = useMemo(() => rows, [rows]);
 
   const renderTableCell = (col, row) => (
-    <TableCell
-      key={col.field}
-      align={col.align || 'center'}
-      sx={{
-        borderRight: '1px solid #ccc',
-        padding: '8px 16px',
-        borderBottom: '1px solid #ccc',
-      }}
-    >
+    <TableCell key={col.field} align={col.align || 'center'} sx={stylesCell}>
       {['logo', 'photo'].includes(col.field) ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={stylesTableAvatarBox}>
           <Avatar
             src={
               row[col.field]
@@ -87,11 +96,11 @@ function ListTable({
             }
             alt={col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
             variant='rounded'
-            sx={{ width: 40, height: 40 }}
+            sx={stylesTableAvatarSize}
           />
         </Box>
       ) : col.field === 'title' && isModerationPage ? (
-        <Typography variant='body1' sx={{ color: 'common.black' }}>
+        <Typography variant='body1' sx={stylesTableTextColor}>
           {row[col.field]}
         </Typography>
       ) : ['title', 'product', 'fullName'].includes(col.field) ? (
@@ -102,24 +111,13 @@ function ListTable({
           <Typography
             variant='body1'
             component='span'
-            sx={{
-              fontSize: '0.875rem',
-              color: 'common.black',
-              padding: '5px 10px',
-              borderRadius: '5px',
-              boxShadow: '0 3px 4px rgba(0, 0, 0, 0.1)',
-              transition: 'all 0.3s ease-in-out',
-              '&:hover': {
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                transform: 'translateY(-2px)',
-              },
-            }}
+            sx={stylesTableTypography}
           >
             {row[col.field]}
           </Typography>
         </RouterLink>
       ) : (
-        <Typography variant='body1' sx={{ color: 'common.black' }}>
+        <Typography variant='body1' sx={stylesTableTextColor}>
           {row[col.field]}
         </Typography>
       )}
@@ -148,7 +146,7 @@ function ListTable({
         ];
 
     return (
-      <FormControl sx={{ flexGrow: 1, minWidth: 120, maxWidth: '365px' }}>
+      <FormControl sx={stylesFormControl}>
         <InputLabel id='status-select-label'>Статус</InputLabel>
         <Select
           labelId='status-select-label'
@@ -171,28 +169,16 @@ function ListTable({
   };
 
   return (
-    <TableContainer
-      sx={{
-        width: '100%',
-        overflowX: 'auto',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        mb: 2,
-      }}
-    >
-      <Table sx={{ width: '100%', borderCollapse: 'collapse' }}>
+    <TableContainer sx={stylesTableContainer}>
+      <Table sx={stylesTable}>
         <TableHead>
-          <TableRow sx={{ backgroundColor: 'success.main' }}>
+          <TableRow sx={stylesTableHeadBackgroundColor}>
             {memoizedColumns.map((col, index) => (
               <TableCell
                 key={col.field}
                 align={col.align || 'center'}
                 sx={{
-                  fontWeight: 'bold',
-                  color: 'common.white',
-                  borderBottom: '1px solid #ccc',
-                  cursor: 'pointer',
+                  ...stylesHeadCell,
                   borderRight:
                     index < memoizedColumns.length - 1
                       ? '1px solid darkgreen'
@@ -209,15 +195,7 @@ function ListTable({
               </TableCell>
             ))}
             {!isMobile && (
-              <TableCell
-                align='center'
-                sx={{
-                  fontWeight: 'bold',
-                  color: 'common.white',
-                  borderLeft: '1px solid darkgreen',
-                  borderBottom: '1px solid #ccc',
-                }}
-              >
+              <TableCell align='center' sx={stylesActionsHeadTableCell}>
                 {isModerationPage ? 'Модерувати' : 'Редаг./Видал.'}
               </TableCell>
             )}
@@ -226,26 +204,12 @@ function ListTable({
         <TableBody>
           {memoizedRows.length > 0 ? (
             memoizedRows.map((row) => (
-              <TableRow
-                key={row.uuid}
-                sx={{
-                  '&:nth-of-type(2n)': { backgroundColor: 'action.hover' },
-                  '&:hover': { backgroundColor: 'action.selected' },
-                }}
-              >
+              <TableRow key={row.uuid} sx={stylesTableRow}>
                 {memoizedColumns.map((col, index) =>
                   renderTableCell(col, row, index)
                 )}
                 {!isMobile && (
-                  <TableCell
-                    align='center'
-                    sx={{
-                      padding: '8px 16px',
-                      borderBottom: '1px solid #ccc',
-                      borderLeft: '1px solid #ccc',
-                      width: '140px',
-                    }}
-                  >
+                  <TableCell align='center' sx={stylesActionsBodyTableCell}>
                     {isModerationPage ? (
                       <Tooltip title='Модерувати'>
                         <IconButton onClick={() => onModerate(row)}>
@@ -282,14 +246,17 @@ function ListTable({
           {Array.from(
             { length: pageSize - memoizedRows.length },
             (_, index) => (
-              <TableRow key={`empty-row-${index}`} sx={{ height: 57 }}>
+              <TableRow
+                key={`empty-row-${index}`}
+                sx={stylesTableHeightEmptyRow}
+              >
                 {memoizedColumns.map((col, colIndex) => (
                   <TableCell
                     key={`empty-cell-${index}-${colIndex}`}
-                    sx={{ borderBottom: 'none' }}
+                    sx={stylesTableBorderEmptyRow}
                   />
                 ))}
-                {!isMobile && <TableCell sx={{ borderBottom: 'none' }} />}
+                {!isMobile && <TableCell sx={stylesTableBorderEmptyRow} />}
               </TableRow>
             )
           )}

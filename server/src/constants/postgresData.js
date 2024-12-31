@@ -714,7 +714,7 @@ async function postgresData() {
       {
         title: 'Таксі 838',
         url: 'https://taxi838.ua/',
-        logo: null,
+        logo: '1735603619759-taxi-838.jpg',
         description:
           'Сервіс виклику таксі, що надає послуги перевезення пасажирів у багатьох містах України.',
         status: 'approved',
@@ -728,7 +728,7 @@ async function postgresData() {
       {
         title: 'Shark-Таксі',
         url: 'https://shark-taxi.ua/',
-        logo: null,
+        logo: '1735604239254-shark.png',
         description:
           'Сучасна служба таксі з вигідними тарифами та зручним мобільним додатком.',
         status: 'approved',
@@ -742,7 +742,7 @@ async function postgresData() {
       {
         title: 'Діасервіс',
         url: 'https://www.dia.zp.ua/',
-        logo: null,
+        logo: '1735603921652-diaservis.png',
         description:
           'Медична лабораторія, що надає широкий спектр діагностичних послуг.',
         status: 'approved',
@@ -756,7 +756,7 @@ async function postgresData() {
       {
         title: 'Synevo',
         url: 'https://www.synevo.ua/',
-        logo: null,
+        logo: '1735604206175-synevo.png',
         description:
           'Одна з провідних медичних лабораторій в Україні з великою мережею відділень.',
         status: 'approved',
@@ -770,7 +770,7 @@ async function postgresData() {
       {
         title: 'Unimed',
         url: 'https://unimed.zp.ua/',
-        logo: null,
+        logo: '1735604137188-unimed.jpeg',
         description:
           'Приватний медичний центр, що пропонує послуги комплексної діагностики та лікування.',
         status: 'approved',
@@ -784,7 +784,7 @@ async function postgresData() {
       {
         title: 'Клініка Святого Миколая',
         url: 'https://ksm-clinic.com.ua/',
-        logo: null,
+        logo: '1735603796556-KSM.png',
         description:
           'Сучасна багатопрофільна клініка, що пропонує широкий спектр медичних послуг.',
         status: 'approved',
@@ -798,7 +798,7 @@ async function postgresData() {
       {
         title: 'Центр стоматології МК',
         url: 'https://mkeramika.com.ua/',
-        logo: null,
+        logo: '1735603574934-MK.png',
         description:
           'Стоматологічний центр, що спеціалізується на лікуванні та протезуванні зубів.',
         status: 'approved',
@@ -812,7 +812,7 @@ async function postgresData() {
       {
         title: 'Дентал студіо',
         url: 'https://dentalstudio.in.ua/',
-        logo: null,
+        logo: '1735603957112-dental.png',
         description:
           'Клініка естетичної стоматології з індивідуальним підходом до кожного пацієнта.',
         status: 'approved',
@@ -826,7 +826,7 @@ async function postgresData() {
       {
         title: 'КП "Водоканал"',
         url: 'https://vodokanal.zp.ua/',
-        logo: null,
+        logo: '1735603881246-vodokanal.jpeg',
         description:
           'Комунальне підприємство, що забезпечує водопостачання та водовідведення у місті.',
         status: 'approved',
@@ -840,7 +840,7 @@ async function postgresData() {
       {
         title: 'ПАТ "Обленерго"',
         url: 'https://www.zoe.com.ua/',
-        logo: null,
+        logo: '1735603704985-zoe.jpg',
         description:
           'Енергопостачальна компанія, що надає послуги з постачання електроенергії.',
         status: 'approved',
@@ -854,7 +854,7 @@ async function postgresData() {
       {
         title: 'ГК «Нафтогаз України»',
         url: 'https://gas.ua/',
-        logo: null,
+        logo: '1735604001598-naftogas.jpg',
         description:
           'Група компаній, що займається постачанням природного газу та енергетичними послугами.',
         status: 'approved',
@@ -868,7 +868,7 @@ async function postgresData() {
       {
         title: '«Міські теплові мережі»',
         url: 'https://teploseti.zp.ua/',
-        logo: null,
+        logo: '1735604051168-MTM.png',
         description:
           'Комунальне підприємство, що забезпечує теплопостачання у міській зоні.',
         status: 'approved',
@@ -882,7 +882,7 @@ async function postgresData() {
       {
         title: 'Цифрал сервіс',
         url: 'http://www.cyfral.net.ua/',
-        logo: null,
+        logo: '1735603531361-cyfral.jpg',
         description:
           'Компанія, що надає послуги з обслуговування домофонних систем.',
         status: 'approved',
@@ -896,7 +896,7 @@ async function postgresData() {
       {
         title: '"Домофон Візит"',
         url: 'https://domofon.zp.ua/',
-        logo: null,
+        logo: '1735603432838-vizit.gif',
         description:
           'Компанія, що спеціалізується на встановленні та обслуговуванні домофонних систем.',
         status: 'approved',
@@ -910,7 +910,7 @@ async function postgresData() {
       {
         title: 'DiaNet',
         url: 'https://dianet.online/',
-        logo: null,
+        logo: '1735604272708-dianet.png',
         description:
           'Інтернет-провайдер, що забезпечує стабільний доступ до мережі Інтернет.',
         status: 'approved',
@@ -924,7 +924,7 @@ async function postgresData() {
       {
         title: 'Triolan',
         url: 'https://triolan.com/',
-        logo: null,
+        logo: '1735604173242-triolan.jpg',
         description:
           'Популярний інтернет-провайдер, що надає послуги кабельного телебачення та Інтернету.',
         status: 'approved',
@@ -938,7 +938,7 @@ async function postgresData() {
       {
         title: 'Киівстар',
         url: 'https://kyivstar.ua/',
-        logo: null,
+        logo: '1735603841712-KS.png',
         description:
           'Один із найбільших телекомунікаційних операторів України, що надає послуги зв’язку та Інтернету.',
         status: 'approved',
