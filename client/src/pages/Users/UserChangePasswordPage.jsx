@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// ==============================================================
+
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
-import Preloader from '../../components/Preloader/Preloader';
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
+import Preloader from '../../components/Preloader/Preloader';
 
 function UserChangePasswordPage({
   handleModalClose,

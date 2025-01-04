@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Box, Button } from '@mui/material';
-// ==============================================================
+
 import { USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
-// ==============================================================
-import BaseForm from '../BaseForm/BaseForm';
+
 import FileUpload from '../../FileUpload/FileUpload';
+import BaseForm from '../BaseForm/BaseForm';
+
+import { stylesUserFormPasswordButton } from '../../../styles';
 
 function UserForm({
   user = null,
@@ -69,7 +71,7 @@ function UserForm({
           uploading={uploading}
         />
       )}
-      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+      <Box sx={stylesUserFormPasswordButton}>
         {user?.uuid && (
           <Button
             variant='contained'

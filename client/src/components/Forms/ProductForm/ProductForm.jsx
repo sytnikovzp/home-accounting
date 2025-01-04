@@ -1,5 +1,5 @@
 import { PRODUCT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
-// ==============================================================
+
 import BaseForm from '../BaseForm/BaseForm';
 
 function ProductForm({ product = null, onSubmit, categories }) {

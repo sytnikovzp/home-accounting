@@ -1,11 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
-// ==============================================================
+
 import { BASE_URL } from '../constants';
-// ==============================================================
-import restController from './rest/restController';
-// ==============================================================
 import { getAccessToken, removeAccessToken } from '../utils/sharedFunctions';
+import restController from './rest/restController';
 
 const api = axios.create({
   baseURL: BASE_URL,

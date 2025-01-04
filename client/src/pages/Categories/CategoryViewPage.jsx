@@ -1,21 +1,23 @@
 import { useEffect } from 'react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Box, Link } from '@mui/material';
 import {
-  Info,
   CalendarToday,
-  Person,
-  Update,
+  Cancel,
   CheckCircle,
   HourglassEmpty,
-  Cancel,
+  Info,
+  Person,
+  Update,
 } from '@mui/icons-material';
-// ==============================================================
+
 import useFetchEntity from '../../hooks/useFetchEntity';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import DetailRow from '../../components/DetailRow/DetailRow';
+import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+
+import { stylesViewPageBox } from '../../styles';
 
 const getStatusIcon = (status) => {
   const icons = {
@@ -52,55 +54,53 @@ function CategoryViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 1, mb: 1 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='Назва' value={title} />
-              <DetailRow
-                icon={() => getStatusIcon(status)}
-                label='Статус'
-                value={status}
-              />
-              <DetailRow
+          <Box sx={stylesViewPageBox}>
+            <ViewDetailRow icon={Info} label='Назва' value={title} />
+            <ViewDetailRow
+              icon={() => getStatusIcon(status)}
+              label='Статус'
+              value={status}
+            />
+            <ViewDetailRow
+              icon={Person}
+              label='Автор'
+              value={
+                creatorFullName ? (
+                  <Link
+                    component={RouterLink}
+                    to={`/users/${creatorUuid}`}
+                    color='primary'
+                    underline='hover'
+                  >
+                    {creatorFullName}
+                  </Link>
+                ) : (
+                  '*Дані відсутні*'
+                )
+              }
+            />
+            {moderatorFullName && (
+              <ViewDetailRow
                 icon={Person}
-                label='Автор'
+                label='Модератор'
                 value={
-                  creatorFullName ? (
-                    <Link
-                      component={RouterLink}
-                      to={`/users/${creatorUuid}`}
-                      color='primary'
-                      underline='hover'
-                    >
-                      {creatorFullName}
-                    </Link>
-                  ) : (
-                    '*Дані відсутні*'
-                  )
+                  <Link
+                    component={RouterLink}
+                    to={`/users/${moderatorUuid}`}
+                    color='primary'
+                    underline='hover'
+                  >
+                    {moderatorFullName}
+                  </Link>
                 }
               />
-              {moderatorFullName && (
-                <DetailRow
-                  icon={Person}
-                  label='Модератор'
-                  value={
-                    <Link
-                      component={RouterLink}
-                      to={`/users/${moderatorUuid}`}
-                      color='primary'
-                      underline='hover'
-                    >
-                      {moderatorFullName}
-                    </Link>
-                  }
-                />
-              )}
-              <DetailRow
-                icon={CalendarToday}
-                label='Створено'
-                value={createdAt}
-              />
-              <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
-            </Box>
+            )}
+            <ViewDetailRow
+              icon={CalendarToday}
+              label='Створено'
+              value={createdAt}
+            />
+            <ViewDetailRow icon={Update} label='Редаговано' value={updatedAt} />
           </Box>
         )
       }

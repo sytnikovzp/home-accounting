@@ -1,5 +1,5 @@
 import { ROLE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
-// ==============================================================
+
 import BaseForm from '../BaseForm/BaseForm';
 import PermissionsSwitches from '../PermissionsSwitches/PermissionsSwitches';
 

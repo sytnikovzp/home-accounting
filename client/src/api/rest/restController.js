@@ -1,16 +1,16 @@
 import { CURRENCY_CODES } from '../../constants';
 import {
   authService,
-  userService,
-  roleService,
   categoryService,
   currencyService,
-  measureService,
-  productService,
-  expenseService,
   establishmentService,
+  expenseService,
+  measureService,
   moderationService,
+  productService,
+  roleService,
   statisticService,
+  userService,
 } from '../../services';
 
 const restController = {

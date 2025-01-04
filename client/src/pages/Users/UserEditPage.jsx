@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-// ==============================================================
+import { useNavigate, useParams } from 'react-router-dom';
+
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
-import Preloader from '../../components/Preloader/Preloader';
 import UserForm from '../../components/Forms/UserForm/UserForm';
+import Preloader from '../../components/Preloader/Preloader';
 
 function UserEditPage({
   handleModalClose,

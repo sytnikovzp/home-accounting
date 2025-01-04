@@ -1,44 +1,45 @@
 import { useCallback, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
+  Avatar,
   Box,
-  Tooltip,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TablePagination,
+  FormControl,
   IconButton,
+  InputLabel,
   MenuItem,
   Select,
-  InputLabel,
-  FormControl,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Tooltip,
   Typography,
-  Avatar,
   useMediaQuery,
 } from '@mui/material';
-import { Edit, Delete, Task } from '@mui/icons-material';
-// ==============================================================
+import { Delete, Edit, Task } from '@mui/icons-material';
+
 import { BASE_URL } from '../../constants';
+
 import {
-  stylesCell,
-  stylesHeadCell,
-  stylesActionsBodyTableCell,
-  stylesActionsHeadTableCell,
-  stylesFormControl,
-  stylesTableContainer,
-  stylesTableRow,
-  stylesTableTypography,
-  stylesTableAvatarBox,
-  stylesTableAvatarSize,
-  stylesTableTextColor,
-  stylesTable,
-  stylesTableHeadBackgroundColor,
-  stylesTableHeightEmptyRow,
-  stylesTableBorderEmptyRow,
-} from '../../styles/theme';
+  stylesListTableActionsBodyTableCell,
+  stylesListTableActionsHeadTableCell,
+  stylesListTableAvatarBox,
+  stylesListTableAvatarSize,
+  stylesListTableBorderEmptyRow,
+  stylesListTableCell,
+  stylesListTableContainer,
+  stylesListTableFormControl,
+  stylesListTableHeadBackgroundColor,
+  stylesListTableHeadCell,
+  stylesListTableHeightEmptyRow,
+  stylesListTableTable,
+  stylesListTableTableRow,
+  stylesListTableTableTypography,
+  stylesListTableTextColor,
+} from '../../styles';
 
 function ListTable({
   columns,
@@ -81,9 +82,13 @@ function ListTable({
   const memoizedRows = useMemo(() => rows, [rows]);
 
   const renderTableCell = (col, row) => (
-    <TableCell key={col.field} align={col.align || 'center'} sx={stylesCell}>
+    <TableCell
+      key={col.field}
+      align={col.align || 'center'}
+      sx={stylesListTableCell}
+    >
       {['logo', 'photo'].includes(col.field) ? (
-        <Box sx={stylesTableAvatarBox}>
+        <Box sx={stylesListTableAvatarBox}>
           <Avatar
             src={
               row[col.field]
@@ -91,16 +96,16 @@ function ListTable({
                     col.field === 'logo' ? 'establishments' : 'users'
                   }/${row[col.field]}`
                 : col.field === 'logo'
-                ? `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
-                : undefined
+                  ? `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
+                  : undefined
             }
             alt={col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
             variant='rounded'
-            sx={stylesTableAvatarSize}
+            sx={stylesListTableAvatarSize}
           />
         </Box>
       ) : col.field === 'title' && isModerationPage ? (
-        <Typography variant='body1' sx={stylesTableTextColor}>
+        <Typography variant='body1' sx={stylesListTableTextColor}>
           {row[col.field]}
         </Typography>
       ) : ['title', 'product', 'fullName'].includes(col.field) ? (
@@ -111,13 +116,13 @@ function ListTable({
           <Typography
             variant='body1'
             component='span'
-            sx={stylesTableTypography}
+            sx={stylesListTableTableTypography}
           >
             {row[col.field]}
           </Typography>
         </RouterLink>
       ) : (
-        <Typography variant='body1' sx={stylesTableTextColor}>
+        <Typography variant='body1' sx={stylesListTableTextColor}>
           {row[col.field]}
         </Typography>
       )}
@@ -132,21 +137,21 @@ function ListTable({
           { value: 'verified', label: 'Веріфіковані' },
         ]
       : expensesPage
-      ? [
-          { value: 'day', label: 'За день' },
-          { value: 'week', label: 'За неділю' },
-          { value: 'month', label: 'За місяць' },
-          { value: 'year', label: 'За рік' },
-          { value: 'allTime', label: 'За весь час' },
-        ]
-      : [
-          { value: 'pending', label: 'Очікує модерації' },
-          { value: 'approved', label: 'Затверджено' },
-          { value: 'rejected', label: 'Відхилено' },
-        ];
+        ? [
+            { value: 'day', label: 'За день' },
+            { value: 'week', label: 'За неділю' },
+            { value: 'month', label: 'За місяць' },
+            { value: 'year', label: 'За рік' },
+            { value: 'allTime', label: 'За весь час' },
+          ]
+        : [
+            { value: 'pending', label: 'Очікує модерації' },
+            { value: 'approved', label: 'Затверджено' },
+            { value: 'rejected', label: 'Відхилено' },
+          ];
 
     return (
-      <FormControl sx={stylesFormControl}>
+      <FormControl sx={stylesListTableFormControl}>
         <InputLabel id='status-select-label'>Статус</InputLabel>
         <Select
           labelId='status-select-label'
@@ -169,16 +174,16 @@ function ListTable({
   };
 
   return (
-    <TableContainer sx={stylesTableContainer}>
-      <Table sx={stylesTable}>
+    <TableContainer sx={stylesListTableContainer}>
+      <Table sx={stylesListTableTable}>
         <TableHead>
-          <TableRow sx={stylesTableHeadBackgroundColor}>
+          <TableRow sx={stylesListTableHeadBackgroundColor}>
             {memoizedColumns.map((col, index) => (
               <TableCell
                 key={col.field}
                 align={col.align || 'center'}
                 sx={{
-                  ...stylesHeadCell,
+                  ...stylesListTableHeadCell,
                   borderRight:
                     index < memoizedColumns.length - 1
                       ? '1px solid darkgreen'
@@ -195,7 +200,10 @@ function ListTable({
               </TableCell>
             ))}
             {!isMobile && (
-              <TableCell align='center' sx={stylesActionsHeadTableCell}>
+              <TableCell
+                align='center'
+                sx={stylesListTableActionsHeadTableCell}
+              >
                 {isModerationPage ? 'Модерувати' : 'Редаг./Видал.'}
               </TableCell>
             )}
@@ -204,12 +212,15 @@ function ListTable({
         <TableBody>
           {memoizedRows.length > 0 ? (
             memoizedRows.map((row) => (
-              <TableRow key={row.uuid} sx={stylesTableRow}>
+              <TableRow key={row.uuid} sx={stylesListTableTableRow}>
                 {memoizedColumns.map((col, index) =>
                   renderTableCell(col, row, index)
                 )}
                 {!isMobile && (
-                  <TableCell align='center' sx={stylesActionsBodyTableCell}>
+                  <TableCell
+                    align='center'
+                    sx={stylesListTableActionsBodyTableCell}
+                  >
                     {isModerationPage ? (
                       <Tooltip title='Модерувати'>
                         <IconButton onClick={() => onModerate(row)}>
@@ -248,15 +259,15 @@ function ListTable({
             (_, index) => (
               <TableRow
                 key={`empty-row-${index}`}
-                sx={stylesTableHeightEmptyRow}
+                sx={stylesListTableHeightEmptyRow}
               >
                 {memoizedColumns.map((col, colIndex) => (
                   <TableCell
                     key={`empty-cell-${index}-${colIndex}`}
-                    sx={stylesTableBorderEmptyRow}
+                    sx={stylesListTableBorderEmptyRow}
                   />
                 ))}
-                {!isMobile && <TableCell sx={stylesTableBorderEmptyRow} />}
+                {!isMobile && <TableCell sx={stylesListTableBorderEmptyRow} />}
               </TableRow>
             )
           )}

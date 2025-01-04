@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-// ==============================================================
+import { useCallback, useState } from 'react';
+
 import restController from '../api/rest/restController';
 
 function useFetchEntity(entityType) {

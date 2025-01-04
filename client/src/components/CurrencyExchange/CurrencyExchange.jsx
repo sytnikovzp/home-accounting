@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
-// ==============================================================
 import {
   Box,
   Table,
-  TableHead,
   TableBody,
-  TableRow,
   TableCell,
   TableContainer,
+  TableHead,
+  TableRow,
   Typography,
 } from '@mui/material';
-// ==============================================================
+
 import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
-// ==============================================================
-import Preloader from '../Preloader/Preloader';
+
 import Error from '../Error/Error';
+import Preloader from '../Preloader/Preloader';
+
+import { stylesCurrencyExchangeBox } from '../../styles';
 
 function CurrencyExchange() {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,14 +56,7 @@ function CurrencyExchange() {
   if (errorMessage) return <Error error={errorMessage} />;
 
   return (
-    <Box
-      sx={{
-        flexGrow: { sm: 1, md: 0 },
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
+    <Box sx={stylesCurrencyExchangeBox}>
       <Typography variant='h6' sx={{ mt: 1 }}>
         Курси Національного Банку
       </Typography>

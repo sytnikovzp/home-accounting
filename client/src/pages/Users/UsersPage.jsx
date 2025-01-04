@@ -1,20 +1,20 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react';
-import { Typography, Box } from '@mui/material';
-// ==============================================================
+import { useCallback, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
+
 import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
-// ==============================================================
-import UserEditPage from './UserEditPage';
-import UserChangePasswordPage from './UserChangePasswordPage';
-import UserDeletePage from './UserDeletePage';
-import UserViewPage from './UserViewPage';
-// ==============================================================
-import Preloader from '../../components/Preloader/Preloader';
+
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
+import Preloader from '../../components/Preloader/Preloader';
+
+import UserChangePasswordPage from './UserChangePasswordPage';
+import UserDeletePage from './UserDeletePage';
+import UserEditPage from './UserEditPage';
+import UserViewPage from './UserViewPage';
 
 function UsersPage({ currentUser, setIsAuthenticated }) {
   const itemsPerPage = useItemsPerPage();

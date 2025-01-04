@@ -1,7 +1,9 @@
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import { Box, Button, Typography } from '@mui/material';
-// ==============================================================
-import FormField from '../FormField/FormField';
+
+import FormFields from '../FormFields/FormFields';
+
+import { stylesBaseFormButtomBox } from '../../../styles';
 
 function BaseForm({
   initialValues,
@@ -20,7 +22,7 @@ function BaseForm({
         {layout === 'expense' ? (
           <>
             <Box sx={{ mb: 2 }}>
-              <FormField
+              <FormFields
                 {...fields.find((field) => field.name === 'product')}
                 error={errors['product']}
                 touched={touched['product']}
@@ -28,14 +30,14 @@ function BaseForm({
             </Box>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Box sx={{ width: '40%' }}>
-                <FormField
+                <FormFields
                   {...fields.find((field) => field.name === 'quantity')}
                   error={errors['quantity']}
                   touched={touched['quantity']}
                 />
               </Box>
               <Box sx={{ flex: 1 }}>
-                <FormField
+                <FormFields
                   {...fields.find((field) => field.name === 'measure')}
                   error={errors['measure']}
                   touched={touched['measure']}
@@ -44,14 +46,14 @@ function BaseForm({
             </Box>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Box sx={{ width: '40%' }}>
-                <FormField
+                <FormFields
                   {...fields.find((field) => field.name === 'unitPrice')}
                   error={errors['unitPrice']}
                   touched={touched['unitPrice']}
                 />
               </Box>
               <Box sx={{ flex: 1 }}>
-                <FormField
+                <FormFields
                   {...fields.find((field) => field.name === 'currency')}
                   error={errors['currency']}
                   touched={touched['currency']}
@@ -59,14 +61,14 @@ function BaseForm({
               </Box>
             </Box>
             <Box sx={{ mb: 2 }}>
-              <FormField
+              <FormFields
                 {...fields.find((field) => field.name === 'establishment')}
                 error={errors['establishment']}
                 touched={touched['establishment']}
               />
             </Box>
             <Box sx={{ mb: 2 }}>
-              <FormField
+              <FormFields
                 {...fields.find((field) => field.name === 'date')}
                 error={errors['date']}
                 touched={touched['date']}
@@ -84,7 +86,7 @@ function BaseForm({
               type,
               options,
             }) => (
-              <FormField
+              <FormFields
                 key={name}
                 name={name}
                 label={label}
@@ -106,7 +108,7 @@ function BaseForm({
           {generalError}
         </Typography>
       )}
-      <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
+      <Box sx={stylesBaseFormButtomBox}>
         <Button
           type='submit'
           variant='contained'

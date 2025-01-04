@@ -1,9 +1,9 @@
 import { useState } from 'react';
-// ==============================================================
+
 import { ESTABLISHMENT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
-// ==============================================================
-import BaseForm from '../BaseForm/BaseForm';
+
 import FileUpload from '../../FileUpload/FileUpload';
+import BaseForm from '../BaseForm/BaseForm';
 
 function EstablishmentForm({
   establishment = null,

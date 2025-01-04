@@ -1,24 +1,32 @@
 import { useEffect } from 'react';
-import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Box, Link, Avatar, Tooltip, Button } from '@mui/material';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { Avatar, Box, Button, Link, Tooltip } from '@mui/material';
 import {
-  Info,
-  CalendarToday,
-  Update,
-  CheckCircle,
-  HourglassEmpty,
   AlternateEmail,
   AssignmentInd,
+  CalendarToday,
   Cancel,
+  CheckCircle,
+  HourglassEmpty,
+  Info,
+  Update,
 } from '@mui/icons-material';
-// ==============================================================
+
+import { BASE_URL } from '../../constants';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
-import { BASE_URL } from '../../constants';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import DetailRow from '../../components/DetailRow/DetailRow';
+import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+
+import {
+  stylesUserViewPageEmailBox,
+  stylesUserViewPageEmailBoxButton,
+  stylesViewPageAvatarSize,
+  stylesViewPageBox,
+  stylesViewPageBoxWithAvatar,
+} from '../../styles';
 
 const getStatusIcon = (emailVerificationStatus) => {
   const icons = {
@@ -79,95 +87,81 @@ function UserViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 1, mb: 1 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <DetailRow icon={Info} label='Повне ім’я' value={fullName} />
-                <Avatar
-                  src={photoSrc}
-                  alt='Фото користувача'
-                  variant='rounded'
-                  sx={{ width: 50, height: 50 }}
-                />
-              </Box>
-              <DetailRow
-                icon={AssignmentInd}
-                label='Роль'
+          <Box sx={stylesViewPageBox}>
+            <Box sx={stylesViewPageBoxWithAvatar}>
+              <ViewDetailRow icon={Info} label='Повне ім’я' value={fullName} />
+              <Avatar
+                src={photoSrc}
+                alt='Фото користувача'
+                variant='rounded'
+                sx={stylesViewPageAvatarSize}
+              />
+            </Box>
+            <ViewDetailRow
+              icon={AssignmentInd}
+              label='Роль'
+              value={
+                <Link
+                  component={RouterLink}
+                  to={`/roles/${role?.uuid}`}
+                  color='primary'
+                  underline='hover'
+                >
+                  {role?.title}
+                </Link>
+              }
+            />
+            {email && (
+              <ViewDetailRow
+                icon={AlternateEmail}
+                label='Email'
                 value={
                   <Link
                     component={RouterLink}
-                    to={`/roles/${role?.uuid}`}
+                    to={`mailto:${email}`}
                     color='primary'
                     underline='hover'
                   >
-                    {role?.title}
+                    {email}
                   </Link>
                 }
               />
-              {email && (
-                <DetailRow
-                  icon={AlternateEmail}
-                  label='Email'
-                  value={
-                    <Link
-                      component={RouterLink}
-                      to={`mailto:${email}`}
-                      color='primary'
-                      underline='hover'
+            )}
+            {emailVerificationStatus && (
+              <Box sx={stylesUserViewPageEmailBox}>
+                <ViewDetailRow
+                  icon={() => getStatusIcon(emailVerificationStatus)}
+                  label='Обліковий запис'
+                  value={emailVerificationStatus}
+                />
+                {emailVerificationStatus === 'Очікує веріфікації' && (
+                  <Tooltip title='Повторно відправити email'>
+                    <Button
+                      variant='text'
+                      size='small'
+                      sx={stylesUserViewPageEmailBoxButton}
+                      onClick={() => handleResendVerification(email)}
                     >
-                      {email}
-                    </Link>
-                  }
-                />
-              )}
-              {emailVerificationStatus && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
-                  <DetailRow
-                    icon={() => getStatusIcon(emailVerificationStatus)}
-                    label='Обліковий запис'
-                    value={emailVerificationStatus}
-                  />
-                  {emailVerificationStatus === 'Очікує веріфікації' && (
-                    <Tooltip title='Повторно відправити email'>
-                      <Button
-                        variant='text'
-                        size='small'
-                        sx={{
-                          fontSize: '2rem',
-                          padding: 0,
-                          minWidth: 'auto',
-                          lineHeight: 1,
-                        }}
-                        onClick={() => handleResendVerification(email)}
-                      >
-                        ⟳
-                      </Button>
-                    </Tooltip>
-                  )}
-                </Box>
-              )}
-              {createdAt && (
-                <DetailRow
-                  icon={CalendarToday}
-                  label='Створено'
-                  value={createdAt}
-                />
-              )}
-              {updatedAt && (
-                <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
-              )}
-            </Box>
+                      ⟳
+                    </Button>
+                  </Tooltip>
+                )}
+              </Box>
+            )}
+            {createdAt && (
+              <ViewDetailRow
+                icon={CalendarToday}
+                label='Створено'
+                value={createdAt}
+              />
+            )}
+            {updatedAt && (
+              <ViewDetailRow
+                icon={Update}
+                label='Редаговано'
+                value={updatedAt}
+              />
+            )}
           </Box>
         )
       }

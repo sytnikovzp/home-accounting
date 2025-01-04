@@ -1,5 +1,4 @@
 import { Link as RouterLink } from 'react-router-dom';
-// ==============================================================
 import {
   Box,
   List,
@@ -9,19 +8,19 @@ import {
   ListItemText,
 } from '@mui/material';
 import {
-  Home,
-  ShoppingCart,
-  Store,
-  DryCleaning,
-  Category,
   AttachMoney,
-  SquareFoot,
+  Category,
+  DryCleaning,
   Gavel,
-  People,
+  Home,
   ManageAccounts,
+  People,
+  ShoppingCart,
+  SquareFoot,
+  Store,
 } from '@mui/icons-material';
-// ==============================================================
-import { stylesListItemText, stylesNavMenuItems } from '../../styles/theme';
+
+import { stylesNavBarListItemText, stylesNavBarMenuItems } from '../../styles';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Головна' },
@@ -57,7 +56,7 @@ function NavBar({ onClose }) {
             <ListItemIcon>
               <IconComponent />
             </ListItemIcon>
-            <ListItemText sx={stylesListItemText} primary={label} />
+            <ListItemText sx={stylesNavBarListItemText} primary={label} />
           </ListItemButton>
         </ListItem>
       ))}
@@ -65,7 +64,11 @@ function NavBar({ onClose }) {
   );
 
   return (
-    <Box component='nav' aria-label='main menu items' sx={stylesNavMenuItems}>
+    <Box
+      component='nav'
+      aria-label='main menu items'
+      sx={stylesNavBarMenuItems}
+    >
       {renderNavItems(navItems)}
     </Box>
   );

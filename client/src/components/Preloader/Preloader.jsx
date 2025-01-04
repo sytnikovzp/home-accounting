@@ -1,6 +1,6 @@
 import { Box, LinearProgress, Typography } from '@mui/material';
-// ==============================================================
-import { stylesPreloaderTitle } from '../../styles/theme';
+
+import { stylesPreloaderMargin, stylesPreloaderTitle } from '../../styles';
 
 function Preloader({ message = 'Завантаження даних...' }) {
   return (
@@ -9,7 +9,7 @@ function Preloader({ message = 'Завантаження даних...' }) {
       flexDirection='column'
       alignItems='center'
       justifyContent='center'
-      sx={{ m: 2 }}
+      sx={stylesPreloaderMargin}
     >
       <Typography variant='h5' style={stylesPreloaderTitle}>
         {message}

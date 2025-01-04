@@ -1,27 +1,33 @@
 import { useEffect } from 'react';
-import { useParams, Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Box, Link, Avatar, Button } from '@mui/material';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { Avatar, Box, Button, Link } from '@mui/material';
 import {
-  Info,
   CalendarToday,
+  Cancel,
+  Category,
+  CheckCircle,
+  ContentPasteSearch,
+  Description,
+  HourglassEmpty,
+  Info,
+  Link as LinkIcon,
   Person,
   Update,
-  Description,
-  CheckCircle,
-  HourglassEmpty,
-  Cancel,
-  Link as LinkIcon,
-  Category,
-  ContentPasteSearch,
 } from '@mui/icons-material';
-// ==============================================================
+
 import { BASE_URL } from '../../constants';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import DetailRow from '../../components/DetailRow/DetailRow';
+import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+
+import {
+  stylesViewPageAvatarSize,
+  stylesViewPageBox,
+  stylesViewPageBoxWithAvatar,
+} from '../../styles';
 
 const getStatusIcon = (status) => {
   const icons = {
@@ -137,93 +143,86 @@ function ContentModerationPage({
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 1, mb: 1 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <DetailRow icon={Info} label='Назва' value={title} />
-                {logo && (
-                  <Avatar
-                    src={logoSrc}
-                    alt='Логотип'
-                    variant='rounded'
-                    sx={{ width: 50, height: 50 }}
-                  />
-                )}
-              </Box>
-              <DetailRow
-                icon={ContentPasteSearch}
-                label='Тип контенту'
-                value={contentType}
+          <Box sx={stylesViewPageBox}>
+            <Box sx={stylesViewPageBoxWithAvatar}>
+              <ViewDetailRow icon={Info} label='Назва' value={title} />
+              {logo && (
+                <Avatar
+                  src={logoSrc}
+                  alt='Логотип'
+                  variant='rounded'
+                  sx={stylesViewPageAvatarSize}
+                />
+              )}
+            </Box>
+            <ViewDetailRow
+              icon={ContentPasteSearch}
+              label='Тип контенту'
+              value={contentType}
+            />
+            {description && (
+              <ViewDetailRow
+                icon={Description}
+                label='Опис'
+                value={description}
               />
-              {description && (
-                <DetailRow
-                  icon={Description}
-                  label='Опис'
-                  value={description}
-                />
-              )}
-              {url && (
-                <DetailRow
-                  icon={LinkIcon}
-                  label='Посилання'
-                  value={
-                    <Link href={url} target='_blank' rel='noopener noreferrer'>
-                      {url}
-                    </Link>
-                  }
-                />
-              )}
-              {category && (
-                <DetailRow
-                  icon={Category}
-                  label='Категорія'
-                  value={
-                    <Link
-                      component={RouterLink}
-                      to={`/categories/${category.uuid}`}
-                      color='primary'
-                      underline='hover'
-                    >
-                      {category.title}
-                    </Link>
-                  }
-                />
-              )}
-              <DetailRow
-                icon={() => getStatusIcon(status)}
-                label='Статус'
-                value={status}
-              />
-              <DetailRow
-                icon={Person}
-                label='Автор'
+            )}
+            {url && (
+              <ViewDetailRow
+                icon={LinkIcon}
+                label='Посилання'
                 value={
-                  creatorFullName ? (
-                    <Link
-                      component={RouterLink}
-                      to={`/users/${creatorUuid}`}
-                      color='primary'
-                      underline='hover'
-                    >
-                      {creatorFullName}
-                    </Link>
-                  ) : (
-                    '*Дані відсутні*'
-                  )
+                  <Link href={url} target='_blank' rel='noopener noreferrer'>
+                    {url}
+                  </Link>
                 }
               />
-              <DetailRow
-                icon={CalendarToday}
-                label='Створено'
-                value={createdAt}
+            )}
+            {category && (
+              <ViewDetailRow
+                icon={Category}
+                label='Категорія'
+                value={
+                  <Link
+                    component={RouterLink}
+                    to={`/categories/${category.uuid}`}
+                    color='primary'
+                    underline='hover'
+                  >
+                    {category.title}
+                  </Link>
+                }
               />
-              <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
-            </Box>
+            )}
+            <ViewDetailRow
+              icon={() => getStatusIcon(status)}
+              label='Статус'
+              value={status}
+            />
+            <ViewDetailRow
+              icon={Person}
+              label='Автор'
+              value={
+                creatorFullName ? (
+                  <Link
+                    component={RouterLink}
+                    to={`/users/${creatorUuid}`}
+                    color='primary'
+                    underline='hover'
+                  >
+                    {creatorFullName}
+                  </Link>
+                ) : (
+                  '*Дані відсутні*'
+                )
+              }
+            />
+            <ViewDetailRow
+              icon={CalendarToday}
+              label='Створено'
+              value={createdAt}
+            />
+            <ViewDetailRow icon={Update} label='Редаговано' value={updatedAt} />
           </Box>
         )
       }

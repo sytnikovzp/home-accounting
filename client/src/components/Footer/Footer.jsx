@@ -1,7 +1,7 @@
 import { Box, Container, Link, Typography } from '@mui/material';
 import { GitHub, LinkedIn } from '@mui/icons-material';
-// ==============================================================
-import { stylesFooterBox, stylesFooterIcon } from '../../styles/theme';
+
+import { stylesFooterBox, stylesFooterIcon } from '../../styles';
 
 function Footer() {
   return (

@@ -8,17 +8,17 @@ import {
   Typography,
 } from '@mui/material';
 
+import {
+  stylesPermissionsSwitchesFontDescription,
+  stylesPermissionsSwitchesFontTitle,
+  stylesPermissionsSwitchesListItem,
+  stylesPermissionsSwitchesMainBox,
+} from '../../../styles';
+
 function PermissionsSwitches({ permissionsList }) {
   const { values } = useFormikContext();
   return (
-    <Box
-      sx={{
-        maxHeight: '250px',
-        overflowY: 'auto',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
-      }}
-    >
+    <Box sx={stylesPermissionsSwitchesMainBox}>
       <Typography variant='h6' gutterBottom>
         Дозволи (Permissions):
       </Typography>
@@ -32,12 +32,7 @@ function PermissionsSwitches({ permissionsList }) {
                 <ListItem
                   key={permission.uuid}
                   disableGutters
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    ml: 1,
-                    borderBottom: '1px solid #ddd',
-                  }}
+                  sx={stylesPermissionsSwitchesListItem}
                 >
                   <FormControlLabel
                     control={
@@ -57,12 +52,15 @@ function PermissionsSwitches({ permissionsList }) {
                     }
                     label={
                       <Box>
-                        <Typography variant='body1' sx={{ fontWeight: 'bold' }}>
+                        <Typography
+                          variant='body1'
+                          sx={stylesPermissionsSwitchesFontTitle}
+                        >
                           {permission.title}
                         </Typography>
                         <Typography
                           variant='body2'
-                          sx={{ color: 'text.secondary' }}
+                          sx={stylesPermissionsSwitchesFontDescription}
                         >
                           {permission.description || '*Опис відсутній*'}
                         </Typography>

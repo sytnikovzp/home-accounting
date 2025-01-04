@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-// ==============================================================
-import InfoMessage from '../../components/InfoMessage/InfoMessage';
+
 import CustomModal from '../../components/CustomModal/CustomModal';
+import InfoMessage from '../../components/InfoMessage/InfoMessage';
 
 function NotificationPage() {
   const location = useLocation();

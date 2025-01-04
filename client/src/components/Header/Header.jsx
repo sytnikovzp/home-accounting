@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-// ==============================================================
 import {
   AppBar,
-  Box,
-  Container,
-  Toolbar,
   Avatar,
+  Box,
+  Button,
+  Container,
+  Divider,
+  IconButton,
+  Menu,
+  Toolbar,
   Tooltip,
   Typography,
-  Menu,
-  IconButton,
-  Button,
-  Divider,
 } from '@mui/material';
 import {
   AdminPanelSettings,
@@ -21,25 +20,26 @@ import {
   Password,
   Portrait,
 } from '@mui/icons-material';
-// ==============================================================
-import {
-  stylesAppBar,
-  stylesHeaderIcon,
-  stylesHeaderTitleDesktop,
-  stylesBoxLogoDesktop,
-  stylesToolbar,
-  stylesBoxLogoMobile,
-  stylesHeaderTitleMobile,
-  stylesUserMenu,
-} from '../../styles/theme';
-// ==============================================================
+
 import { BASE_URL } from '../../constants';
 import { stringAvatar } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
-// ==============================================================
+
 import NavBar from '../Navigation/NavBar';
 import UserMenu from '../UserMenu/UserMenu';
+
 import accountingIcon from '../../assets/accounting.png';
+import {
+  stylesHeaderAppBar,
+  stylesHeaderBoxLogoDesktop,
+  stylesHeaderBoxLogoMobile,
+  stylesHeaderIcon,
+  stylesHeaderTitleDesktop,
+  stylesHeaderTitleMobile,
+  stylesHeaderToolbar,
+  stylesHeaderUserMenu,
+  stylesHeaderWelcomeBlock,
+} from '../../styles';
 
 const menuItemsData = [
   {
@@ -100,10 +100,10 @@ function Header({
   };
 
   return (
-    <AppBar position='sticky' sx={stylesAppBar}>
+    <AppBar position='sticky' sx={stylesHeaderAppBar}>
       <Container maxWidth='xl'>
-        <Toolbar disableGutters sx={stylesToolbar}>
-          <Box component={RouterLink} to='/' sx={stylesBoxLogoDesktop}>
+        <Toolbar disableGutters sx={stylesHeaderToolbar}>
+          <Box component={RouterLink} to='/' sx={stylesHeaderBoxLogoDesktop}>
             <img
               src={accountingIcon}
               alt='Home Accounting'
@@ -113,7 +113,7 @@ function Header({
               Home Accounting
             </Typography>
           </Box>
-          <Box sx={stylesBoxLogoMobile}>
+          <Box sx={stylesHeaderBoxLogoMobile}>
             <img
               src={accountingIcon}
               alt='Home Accounting'
@@ -132,13 +132,7 @@ function Header({
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {isAuthenticated ? (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box
-                  sx={{
-                    display: { xs: 'none', sm: 'block' },
-                    alignItems: 'center',
-                    marginRight: 2,
-                  }}
-                >
+                <Box sx={stylesHeaderWelcomeBlock}>
                   <Typography variant='body1'>
                     Привіт, {currentUser.fullName}!
                   </Typography>
@@ -176,7 +170,7 @@ function Header({
                   slotProps={{
                     paper: {
                       elevation: 0,
-                      sx: stylesUserMenu,
+                      sx: stylesHeaderUserMenu,
                     },
                   }}
                   transformOrigin={{

@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
-// ==============================================================
+
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+
+import { stylesDeletePageTypography } from '../../styles';
 
 function MeasureDeletePage({
   handleModalClose,
@@ -46,15 +48,7 @@ function MeasureDeletePage({
         isLoading ? (
           <Preloader />
         ) : (
-          <Typography
-            variant='body1'
-            sx={{
-              textAlign: 'justify',
-              mt: 2,
-              mb: 2,
-              textIndent: '2em',
-            }}
-          >
+          <Typography variant='body1' sx={stylesDeletePageTypography}>
             Ви впевнені, що хочете видалити одиницю вимірів «
             {measureToCRUD?.title}»? Це призведе до видалення всіх витрат, де
             вона використовується.

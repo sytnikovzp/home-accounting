@@ -1,20 +1,20 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react';
-import { Typography, Button, Box } from '@mui/material';
-// ==============================================================
+import { useCallback, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+
 import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
-// ==============================================================
-import EstablishmentAddPage from './EstablishmentAddPage';
-import EstablishmentEditPage from './EstablishmentEditPage';
-import EstablishmentDeletePage from './EstablishmentDeletePage';
-import EstablishmentViewPage from './EstablishmentViewPage';
-// ==============================================================
-import Preloader from '../../components/Preloader/Preloader';
+
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
+import Preloader from '../../components/Preloader/Preloader';
+
+import EstablishmentAddPage from './EstablishmentAddPage';
+import EstablishmentDeletePage from './EstablishmentDeletePage';
+import EstablishmentEditPage from './EstablishmentEditPage';
+import EstablishmentViewPage from './EstablishmentViewPage';
 
 function EstablishmentsPage() {
   const itemsPerPage = useItemsPerPage();
@@ -51,9 +51,8 @@ function EstablishmentsPage() {
         sort: sortModel.field,
         order: sortModel.order,
       };
-      const { data, totalCount } = await restController.fetchAllEstablishments(
-        params
-      );
+      const { data, totalCount } =
+        await restController.fetchAllEstablishments(params);
       setEstablishments(data || []);
       setTotalCount(totalCount);
     } catch (error) {

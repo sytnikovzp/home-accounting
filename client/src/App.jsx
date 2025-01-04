@@ -1,31 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
-  Routes,
-  Route,
   Navigate,
+  Route,
+  Routes,
 } from 'react-router-dom';
-// ==============================================================
-import restController from './api/rest/restController';
+
 import { getAccessToken } from './utils/sharedFunctions';
-// ==============================================================
+import restController from './api/rest/restController';
+
 import CustomModal from './components/CustomModal/CustomModal';
-import Preloader from './components/Preloader/Preloader';
 import Layout from './components/Layout/Layout';
+import Preloader from './components/Preloader/Preloader';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+
 import AuthPage from './pages/AuthPage/AuthPage';
-import HomePage from './pages/HomePage/HomePage';
-import ExpensesPage from './pages/Expenses/ExpensesPage';
-import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
-import ProductsPage from './pages/Products/ProductsPage';
 import CategoriesPage from './pages/Categories/CategoriesPage';
 import CurrenciesPage from './pages/Currencies/CurrenciesPage';
+import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
+import ExpensesPage from './pages/Expenses/ExpensesPage';
+import HomePage from './pages/HomePage/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
-import UsersPage from './pages/Users/UsersPage';
+import NotificationPage from './pages/NotificationPage/NotificationPage';
+import ProductsPage from './pages/Products/ProductsPage';
 import RolesPage from './pages/Roles/RolesPage';
 import UserResetPasswordPage from './pages/Users/UserResetPasswordPage';
-import NotificationPage from './pages/NotificationPage/NotificationPage';
+import UsersPage from './pages/Users/UsersPage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -128,22 +129,10 @@ function App() {
               />
             )}
           />
-          <Route 
-            path='roles/*' 
-            element={renderPrivateRoute(<RolesPage />)} 
-          />
-          <Route 
-            path='notification' 
-            element={<NotificationPage />} 
-          />
-          <Route 
-            path='reset-password' 
-            element={<UserResetPasswordPage />} 
-          />
-          <Route 
-            path='*' 
-            element={<Navigate to='/' replace />} 
-          />
+          <Route path='roles/*' element={renderPrivateRoute(<RolesPage />)} />
+          <Route path='notification' element={<NotificationPage />} />
+          <Route path='reset-password' element={<UserResetPasswordPage />} />
+          <Route path='*' element={<Navigate to='/' replace />} />
         </Route>
       </Routes>
 

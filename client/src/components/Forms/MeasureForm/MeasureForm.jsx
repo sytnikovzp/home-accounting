@@ -1,5 +1,5 @@
 import { MEASURE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
-// ==============================================================
+
 import BaseForm from '../BaseForm/BaseForm';
 
 function MeasureForm({ measure = null, onSubmit }) {

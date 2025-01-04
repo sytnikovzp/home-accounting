@@ -1,28 +1,33 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// ==============================================================
 import {
   Box,
-  Typography,
   Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 import {
-  Info,
   CalendarToday,
-  Update,
   Description,
+  Info,
   Lock,
+  Update,
 } from '@mui/icons-material';
-// ==============================================================
+
 import useFetchEntity from '../../hooks/useFetchEntity';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import DetailRow from '../../components/DetailRow/DetailRow';
+import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+
+import {
+  stylesRoleViewPageBoxPermission,
+  stylesRoleViewPageBoxPermissionEmpty,
+  stylesViewPageBox,
+} from '../../styles';
 
 function RoleViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -55,30 +60,31 @@ function RoleViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 1, mb: 1 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='Назва' value={title} />
-              <DetailRow icon={Description} label='Опис' value={description} />
-              <DetailRow
+          <>
+            <Box sx={stylesViewPageBox}>
+              <ViewDetailRow icon={Info} label='Назва' value={title} />
+              <ViewDetailRow
+                icon={Description}
+                label='Опис'
+                value={description}
+              />
+              <ViewDetailRow
                 icon={CalendarToday}
                 label='Створено'
                 value={createdAt}
               />
-              <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
+              <ViewDetailRow
+                icon={Update}
+                label='Редаговано'
+                value={updatedAt}
+              />
             </Box>
             <Divider sx={{ my: 2 }} />
             <Box>
               <Typography variant='h6' sx={{ mb: 2 }}>
                 Дозволи (Permissions):
               </Typography>
-              <Box
-                sx={{
-                  maxHeight: '250px',
-                  overflowY: 'auto',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                }}
-              >
+              <Box sx={stylesRoleViewPageBoxPermission}>
                 <List dense>
                   {permissions.length > 0 ? (
                     permissions.map((permission) => (
@@ -103,14 +109,7 @@ function RoleViewPage({ handleModalClose }) {
                       </ListItem>
                     ))
                   ) : (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        p: 2,
-                        color: 'grey.600',
-                      }}
-                    >
+                    <Box sx={stylesRoleViewPageBoxPermissionEmpty}>
                       <Lock color='disabled' sx={{ mr: 1 }} />
                       <Typography>*Дозволи відсутні*</Typography>
                     </Box>
@@ -118,7 +117,7 @@ function RoleViewPage({ handleModalClose }) {
                 </List>
               </Box>
             </Box>
-          </Box>
+          </>
         )
       }
       error={errorMessage}

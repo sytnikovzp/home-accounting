@@ -1,15 +1,19 @@
 import {
-  Modal,
-  Fade,
-  Box,
-  Typography,
   Alert,
-  IconButton,
   AlertTitle,
+  Box,
+  Fade,
+  IconButton,
+  Modal,
+  Typography,
 } from '@mui/material';
 import { Close } from '@mui/icons-material';
-// ==============================================================
-import { stylesFadeBox, stylesContentBox } from '../../styles/theme';
+
+import {
+  stylesCustomModalContentBox,
+  stylesCustomModalFadeBox,
+  stylesCustomModalIconButton,
+} from '../../styles';
 
 function CustomModal({
   isOpen,
@@ -30,17 +34,12 @@ function CustomModal({
       aria-describedby='custom-modal-description'
     >
       <Fade in={isOpen}>
-        <Box sx={stylesFadeBox} position='relative'>
+        <Box sx={stylesCustomModalFadeBox} position='relative'>
           {showCloseButton && (
             <IconButton
               aria-label='Закрити'
               onClick={onClose}
-              sx={{
-                position: 'absolute',
-                top: 12,
-                right: 12,
-                color: (theme) => theme.palette.grey[700],
-              }}
+              sx={stylesCustomModalIconButton}
             >
               <Close />
             </IconButton>
@@ -62,7 +61,7 @@ function CustomModal({
               {error.message}
             </Alert>
           )}
-          <Box id='custom-modal-description' sx={stylesContentBox}>
+          <Box id='custom-modal-description' sx={stylesCustomModalContentBox}>
             {content}
           </Box>
           {actions && (

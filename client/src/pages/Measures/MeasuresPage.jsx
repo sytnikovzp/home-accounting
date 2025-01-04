@@ -1,20 +1,20 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react';
-import { Typography, Button, Box } from '@mui/material';
-// ==============================================================
+import { useCallback, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+
 import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
-// ==============================================================
-import MeasureAddPage from './MeasureAddPage';
-import MeasureEditPage from './MeasureEditPage';
-import MeasureDeletePage from './MeasureDeletePage';
-import MeasureViewPage from './MeasureViewPage';
-// ==============================================================
-import Preloader from '../../components/Preloader/Preloader';
+
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
+import Preloader from '../../components/Preloader/Preloader';
+
+import MeasureAddPage from './MeasureAddPage';
+import MeasureDeletePage from './MeasureDeletePage';
+import MeasureEditPage from './MeasureEditPage';
+import MeasureViewPage from './MeasureViewPage';
 
 function MeasuresPage() {
   const itemsPerPage = useItemsPerPage();
@@ -49,9 +49,8 @@ function MeasuresPage() {
         sort: sortModel.field,
         order: sortModel.order,
       };
-      const { data, totalCount } = await restController.fetchAllMeasures(
-        params
-      );
+      const { data, totalCount } =
+        await restController.fetchAllMeasures(params);
       setMeasures(data || []);
       setTotalCount(totalCount);
     } catch (error) {

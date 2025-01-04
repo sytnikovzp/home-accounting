@@ -1,20 +1,20 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react';
-import { Typography, Button, Box } from '@mui/material';
-// ==============================================================
+import { useCallback, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+
 import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
-// ==============================================================
-import ExpenseAddPage from './ExpenseAddPage';
-import ExpenseEditPage from './ExpenseEditPage';
-import ExpenseDeletePage from './ExpenseDeletePage';
-import ExpenseViewPage from './ExpenseViewPage';
-// ==============================================================
-import Preloader from '../../components/Preloader/Preloader';
+
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
+import Preloader from '../../components/Preloader/Preloader';
+
+import ExpenseAddPage from './ExpenseAddPage';
+import ExpenseDeletePage from './ExpenseDeletePage';
+import ExpenseEditPage from './ExpenseEditPage';
+import ExpenseViewPage from './ExpenseViewPage';
 
 function ExpensesPage() {
   const itemsPerPage = useItemsPerPage();
@@ -55,9 +55,8 @@ function ExpensesPage() {
         sort: sortModel.field,
         order: sortModel.order,
       };
-      const { data, totalCount } = await restController.fetchAllExpenses(
-        params
-      );
+      const { data, totalCount } =
+        await restController.fetchAllExpenses(params);
       setExpenses(data || []);
       setTotalCount(totalCount);
     } catch (error) {

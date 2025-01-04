@@ -1,23 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-// ==============================================================
-import { Box, Grid2, Container } from '@mui/material';
-// ==============================================================
-import {
-  stylesBoxLayout,
-  stylesGridContainer,
-  stylesXLContainer,
-  stylesGridXLContainer,
-  stylesNavBarDesktop,
-  stylesNavBarMobile,
-  stylesOutlet,
-  stylesServiceBlock,
-} from '../../styles/theme';
-// ==============================================================
+import { Box, Container, Grid2 } from '@mui/material';
+
+import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import NavBar from '../Navigation/NavBar';
 import ServiceBlock from '../ServiceBlock/ServiceBlock';
-import Footer from '../Footer/Footer';
+
+import {
+  stylesLayoutBox,
+  stylesLayoutGridContainer,
+  stylesLayoutGridXLContainer,
+  stylesLayoutNavBarDesktop,
+  stylesLayoutNavBarMobile,
+  stylesLayoutOutlet,
+  stylesLayoutServiceBlock,
+  stylesLayoutXLContainer,
+} from '../../styles';
 
 function Layout({
   isAuthenticated,
@@ -46,12 +45,12 @@ function Layout({
   }, []);
 
   return (
-    <Box sx={stylesBoxLayout}>
+    <Box sx={stylesLayoutBox}>
       <Grid2
         container
         direction='column'
         rowSpacing={2}
-        sx={stylesGridContainer}
+        sx={stylesLayoutGridContainer}
       >
         <Grid2>
           <Header
@@ -61,18 +60,18 @@ function Layout({
             setAuthModalOpen={setAuthModalOpen}
           />
         </Grid2>
-        <Container maxWidth='xl' sx={stylesXLContainer}>
-          <Grid2 container columnSpacing={2} sx={stylesGridXLContainer}>
-            <Grid2 xs={12} md={2} sx={stylesNavBarDesktop}>
+        <Container maxWidth='xl' sx={stylesLayoutXLContainer}>
+          <Grid2 container columnSpacing={2} sx={stylesLayoutGridXLContainer}>
+            <Grid2 xs={12} md={2} sx={stylesLayoutNavBarDesktop}>
               <NavBar />
             </Grid2>
-            <Grid2 sx={stylesNavBarMobile}>
+            <Grid2 sx={stylesLayoutNavBarMobile}>
               {isNavBarOpen && <NavBar onClose={handleCloseNavBar} />}
             </Grid2>
-            <Grid2 sx={stylesOutlet}>
+            <Grid2 sx={stylesLayoutOutlet}>
               <Outlet />
             </Grid2>
-            <Grid2 xs={12} md='auto' sx={stylesServiceBlock}>
+            <Grid2 xs={12} md='auto' sx={stylesLayoutServiceBlock}>
               <ServiceBlock />
             </Grid2>
           </Grid2>

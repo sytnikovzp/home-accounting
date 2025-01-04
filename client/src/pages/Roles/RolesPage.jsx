@@ -1,20 +1,20 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react';
-import { Typography, Button, Box } from '@mui/material';
-// ==============================================================
+import { useCallback, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+
 import { DELAY_SHOW_PRELOADER } from '../../constants';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
-// ==============================================================
-import RoleAddPage from './RoleAddPage';
-import RoleEditPage from './RoleEditPage';
-import RoleDeletePage from './RoleDeletePage';
-import RoleViewPage from './RoleViewPage';
-// ==============================================================
-import Preloader from '../../components/Preloader/Preloader';
+
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
+import Preloader from '../../components/Preloader/Preloader';
+
+import RoleAddPage from './RoleAddPage';
+import RoleDeletePage from './RoleDeletePage';
+import RoleEditPage from './RoleEditPage';
+import RoleViewPage from './RoleViewPage';
 
 function RolesPage() {
   const itemsPerPage = useItemsPerPage();

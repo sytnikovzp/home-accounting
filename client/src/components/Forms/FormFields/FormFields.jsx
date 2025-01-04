@@ -1,23 +1,25 @@
 import { useState } from 'react';
-import { Field } from 'formik';
-import { parse, format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { uk } from 'date-fns/locale';
+import { Field } from 'formik';
 import {
-  TextField,
-  InputAdornment,
+  Autocomplete,
+  FormControl,
+  FormHelperText,
   IconButton,
+  InputAdornment,
+  InputLabel,
   MenuItem,
   Select,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-  Autocomplete,
+  TextField,
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-function FormField({
+import { stylesFormFieldsHeight } from '../../../styles';
+
+function FormFields({
   name,
   label,
   placeholder,
@@ -141,12 +143,7 @@ function FormField({
       required={required}
       autoFocus={autoFocus}
       type={type === 'password' && showPassword ? 'text' : type}
-      sx={{
-        mb: 2,
-        '& .MuiFormHelperText-root': {
-          minHeight: '20px',
-        },
-      }}
+      sx={stylesFormFieldsHeight}
       InputProps={{
         endAdornment:
           type === 'password' ? (
@@ -170,4 +167,4 @@ function FormField({
   );
 }
 
-export default FormField;
+export default FormFields;

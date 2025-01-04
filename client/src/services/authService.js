@@ -1,6 +1,5 @@
+import { removeAccessToken, saveAccessToken } from '../utils/sharedFunctions';
 import api from '../api';
-// ==============================================================
-import { saveAccessToken, removeAccessToken } from '../utils/sharedFunctions';
 
 const registration = async (fullName, email, password) => {
   const { data } = await api.post('/auth/registration', {

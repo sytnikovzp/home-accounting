@@ -1,17 +1,16 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// ==============================================================
-import { Box, Typography, Button, Avatar } from '@mui/material';
+import { Avatar, Box, Button, Typography } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
-// ==============================================================
+
 import restController from '../../api/rest/restController';
-// ==============================================================
-import { stylesAuthTitle, stylesAuthAvatar } from '../../styles/theme';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
-import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm/ForgotPasswordForm';
+import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
+
+import { stylesAuthPageAvatar, stylesAuthPageTitle } from '../../styles';
 
 function AuthPage({ isOpen, onClose, checkAuthentication }) {
   const [authMode, setAuthMode] = useState('login');
@@ -61,18 +60,18 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
       <Box display='flex' flexDirection='column' alignItems='center'>
         <Avatar
           sx={{
-            ...stylesAuthAvatar,
+            ...stylesAuthPageAvatar,
             bgcolor:
               authMode === 'login'
                 ? 'success.light'
                 : authMode === 'register'
-                ? 'success.main'
-                : 'warning.main',
+                  ? 'success.main'
+                  : 'warning.main',
           }}
         >
           <LockOutlined />
         </Avatar>
-        <Typography variant='h6' sx={stylesAuthTitle}>
+        <Typography variant='h6' sx={stylesAuthPageTitle}>
           {titles[authMode]}
         </Typography>
       </Box>

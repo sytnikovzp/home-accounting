@@ -1,19 +1,21 @@
 import { useEffect } from 'react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Box, Link } from '@mui/material';
 import {
-  Info,
   CalendarToday,
+  Description,
+  Info,
   Person,
   Update,
-  Description,
 } from '@mui/icons-material';
-// ==============================================================
+
 import useFetchEntity from '../../hooks/useFetchEntity';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
-import DetailRow from '../../components/DetailRow/DetailRow';
+import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+
+import { stylesViewPageBox } from '../../styles';
 
 function MeasureViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -41,39 +43,37 @@ function MeasureViewPage({ handleModalClose }) {
         isLoading ? (
           <Preloader />
         ) : (
-          <Box sx={{ mt: 1, mb: 1 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <DetailRow icon={Info} label='Назва' value={title} />
-              <DetailRow
-                icon={Description}
-                label='Опис'
-                value={description || '*Дані відсутні*'}
-              />
-              <DetailRow
-                icon={Person}
-                label='Автор'
-                value={
-                  creatorFullName ? (
-                    <Link
-                      component={RouterLink}
-                      to={`/users/${creatorUuid}`}
-                      color='primary'
-                      underline='hover'
-                    >
-                      {creatorFullName}
-                    </Link>
-                  ) : (
-                    '*Дані відсутні*'
-                  )
-                }
-              />
-              <DetailRow
-                icon={CalendarToday}
-                label='Створено'
-                value={createdAt}
-              />
-              <DetailRow icon={Update} label='Редаговано' value={updatedAt} />
-            </Box>
+          <Box sx={stylesViewPageBox}>
+            <ViewDetailRow icon={Info} label='Назва' value={title} />
+            <ViewDetailRow
+              icon={Description}
+              label='Опис'
+              value={description || '*Дані відсутні*'}
+            />
+            <ViewDetailRow
+              icon={Person}
+              label='Автор'
+              value={
+                creatorFullName ? (
+                  <Link
+                    component={RouterLink}
+                    to={`/users/${creatorUuid}`}
+                    color='primary'
+                    underline='hover'
+                  >
+                    {creatorFullName}
+                  </Link>
+                ) : (
+                  '*Дані відсутні*'
+                )
+              }
+            />
+            <ViewDetailRow
+              icon={CalendarToday}
+              label='Створено'
+              value={createdAt}
+            />
+            <ViewDetailRow icon={Update} label='Редаговано' value={updatedAt} />
           </Box>
         )
       }

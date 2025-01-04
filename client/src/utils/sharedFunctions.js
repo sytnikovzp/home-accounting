@@ -1,4 +1,4 @@
-import { stylesHeaderUserAvatar } from '../styles/theme';
+import { stylesHeaderUserAvatar } from '../styles';
 
 const getAccessToken = () => {
   return localStorage.getItem('accessToken');
@@ -38,4 +38,4 @@ const stringAvatar = (fullName) => {
   };
 };
 
-export { getAccessToken, saveAccessToken, removeAccessToken, stringAvatar };
+export { getAccessToken, removeAccessToken, saveAccessToken, stringAvatar };

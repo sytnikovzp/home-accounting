@@ -1,5 +1,5 @@
 import restController from '../../api/rest/restController';
-// ==============================================================
+
 import CustomModal from '../../components/CustomModal/CustomModal';
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
 

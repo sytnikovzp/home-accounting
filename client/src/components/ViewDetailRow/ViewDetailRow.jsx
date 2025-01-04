@@ -1,17 +1,16 @@
 import { Link as RouterLink } from 'react-router-dom';
-// ==============================================================
-import { Box, Typography, Link } from '@mui/material';
-// ==============================================================
-import {
-  stylesRowContainerStyles,
-  stylesViewTextStyles,
-} from '../../styles/theme';
+import { Box, Link, Typography } from '@mui/material';
 
-function DetailRow({ icon: Icon, label, value, linkTo }) {
+import {
+  stylesViewDetailRowContainerStyles,
+  stylesViewDetailRowTextStyles,
+} from '../../styles';
+
+function ViewDetailRow({ icon: Icon, label, value, linkTo }) {
   return (
-    <Box sx={stylesRowContainerStyles}>
+    <Box sx={stylesViewDetailRowContainerStyles}>
       <Icon color='primary' />
-      <Typography variant='body1' sx={stylesViewTextStyles}>
+      <Typography variant='body1' sx={stylesViewDetailRowTextStyles}>
         <strong>{label}: </strong>
         {linkTo ? (
           <Link
@@ -30,4 +29,4 @@ function DetailRow({ icon: Icon, label, value, linkTo }) {
   );
 }
 
-export default DetailRow;
+export default ViewDetailRow;

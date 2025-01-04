@@ -1,6 +1,6 @@
-import * as yup from 'yup';
-import { parse, isValid } from 'date-fns';
+import { isValid, parse } from 'date-fns';
 import { uk } from 'date-fns/locale';
+import * as yup from 'yup';
 
 const parseDateString = (value, originalValue) => {
   if (typeof originalValue === 'string') {
@@ -68,8 +68,6 @@ const DATE_REQUIRED_SCHEME = yup
   .typeError('Некоректний формат дати')
   .max(new Date(), 'Дата не може бути у майбутньому')
   .required('Оберіть дату');
-
-// ==============================================================
 
 const PAGINATION_SCHEME = yup.object().shape({
   limit: yup.number().min(1).max(500).required(),
@@ -157,19 +155,19 @@ const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
 });
 
 export {
-  PAGINATION_SCHEME,
-  REGISTRATION_VALIDATION_SCHEME,
-  LOGIN_VALIDATION_SCHEME,
-  RESEND_VERIFY_VALIDATION_SCHEME,
-  FORGOT_PASSWORD_VALIDATION_SCHEME,
-  PASSWORD_VALIDATION_SCHEME,
-  USER_VALIDATION_SCHEME,
-  ROLE_VALIDATION_SCHEME,
-  MODERATION_VALIDATION_SCHEME,
-  EXPENSE_VALIDATION_SCHEME,
-  PRODUCT_VALIDATION_SCHEME,
   CATEGORY_VALIDATION_SCHEME,
-  ESTABLISHMENT_VALIDATION_SCHEME,
-  MEASURE_VALIDATION_SCHEME,
   CURRENCY_VALIDATION_SCHEME,
+  ESTABLISHMENT_VALIDATION_SCHEME,
+  EXPENSE_VALIDATION_SCHEME,
+  FORGOT_PASSWORD_VALIDATION_SCHEME,
+  LOGIN_VALIDATION_SCHEME,
+  MEASURE_VALIDATION_SCHEME,
+  MODERATION_VALIDATION_SCHEME,
+  PAGINATION_SCHEME,
+  PASSWORD_VALIDATION_SCHEME,
+  PRODUCT_VALIDATION_SCHEME,
+  REGISTRATION_VALIDATION_SCHEME,
+  RESEND_VERIFY_VALIDATION_SCHEME,
+  ROLE_VALIDATION_SCHEME,
+  USER_VALIDATION_SCHEME,
 };
