@@ -14,11 +14,6 @@ import Preloader from '../../components/Preloader/Preloader';
 import ContentModerationPage from './ContentModerationPage';
 
 function ModerationsPage() {
-  const itemsPerPage = useItemsPerPage();
-  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
-    usePagination(itemsPerPage);
-  const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -26,6 +21,11 @@ function ModerationsPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [crudError, setCrudError] = useState(null);
+
+  const itemsPerPage = useItemsPerPage();
+  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
+    usePagination(itemsPerPage);
+  const navigate = useNavigate();
 
   const handleModalClose = () => {
     setCrudError(null);

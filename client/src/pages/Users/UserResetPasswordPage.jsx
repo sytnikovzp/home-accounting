@@ -7,13 +7,13 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
 
 function UserResetPasswordPage() {
+  const [isOpen, setIsOpen] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const token = params.get('token');
-
-  const [isOpen, setIsOpen] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
 
   const handleSubmitResetPassword = async (values) => {
     setErrorMessage(null);

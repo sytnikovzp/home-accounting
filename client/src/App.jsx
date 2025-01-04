@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Navigate,
@@ -36,7 +36,7 @@ function App() {
 
   const handleCloseAuthModal = () => setAuthModalOpen(false);
 
-  const checkAuthentication = async () => {
+  const checkAuthentication = useCallback(async () => {
     try {
       const currentUser = await restController.fetchUserProfile();
       setUserProfile(currentUser);
@@ -46,7 +46,7 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const token = getAccessToken();
@@ -55,7 +55,7 @@ function App() {
     } else {
       setIsLoading(false);
     }
-  }, []);
+  }, [checkAuthentication]);
 
   if (isLoading) {
     return (

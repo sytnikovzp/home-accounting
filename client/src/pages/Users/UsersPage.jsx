@@ -17,11 +17,6 @@ import UserEditPage from './UserEditPage';
 import UserViewPage from './UserViewPage';
 
 function UsersPage({ currentUser, setIsAuthenticated }) {
-  const itemsPerPage = useItemsPerPage();
-  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
-    usePagination(itemsPerPage);
-  const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -34,6 +29,11 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
     order: 'asc',
   });
   const [crudError, setCrudError] = useState(null);
+
+  const itemsPerPage = useItemsPerPage();
+  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
+    usePagination(itemsPerPage);
+  const navigate = useNavigate();
 
   const handleModalClose = () => {
     setCrudError(null);

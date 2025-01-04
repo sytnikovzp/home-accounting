@@ -17,6 +17,7 @@ import {
 
 function PermissionsSwitches({ permissionsList }) {
   const { values } = useFormikContext();
+
   return (
     <Box sx={stylesPermissionsSwitchesMainBox}>
       <Typography gutterBottom variant='h6'>

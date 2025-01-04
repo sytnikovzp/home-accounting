@@ -66,6 +66,7 @@ function FormFields({
           const selectedOption = flattenedOptions.find(
             (item) => item.value === field.value
           );
+
           return (
             <Autocomplete
               getOptionLabel={(option) => option.label}
@@ -133,6 +134,7 @@ function FormFields({
       </LocalizationProvider>
     );
   }
+
   return (
     <Field
       fullWidth

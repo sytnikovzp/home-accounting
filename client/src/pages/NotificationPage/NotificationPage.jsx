@@ -6,9 +6,10 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import InfoMessage from '../../components/InfoMessage/InfoMessage';
 
 function NotificationPage() {
+  const [isOpen, setIsOpen] = useState(true);
+
   const location = useLocation();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(true);
 
   const params = new URLSearchParams(location.search);
   const severity = params.get('severity') || 'info';

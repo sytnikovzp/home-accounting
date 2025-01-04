@@ -17,11 +17,6 @@ import ExpenseEditPage from './ExpenseEditPage';
 import ExpenseViewPage from './ExpenseViewPage';
 
 function ExpensesPage() {
-  const itemsPerPage = useItemsPerPage();
-  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
-    usePagination(itemsPerPage);
-  const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -34,6 +29,11 @@ function ExpensesPage() {
   const [selectedPeriod, setSelectedPeriod] = useState('allTime');
   const [sortModel, setSortModel] = useState({ field: 'date', order: 'desc' });
   const [crudError, setCrudError] = useState(null);
+
+  const itemsPerPage = useItemsPerPage();
+  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
+    usePagination(itemsPerPage);
+  const navigate = useNavigate();
 
   const handleModalClose = () => {
     setCrudError(null);

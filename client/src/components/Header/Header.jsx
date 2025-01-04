@@ -76,14 +76,14 @@ function Header({
   setIsAuthenticated,
   setAuthModalOpen,
 }) {
+  const [openNavBar, setOpenNavBar] = useState(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
+
   const navigate = useNavigate();
   const navigateTo = (path) => navigate(path);
   const handleToggleNavBar = () => setOpenNavBar((prev) => !prev);
   const toggleUserMenu = (event) => setOpenUserMenu(event.currentTarget);
   const closeMenu = () => setOpenUserMenu(false);
-
-  const [openNavBar, setOpenNavBar] = useState(false);
-  const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const openAuthModal = () => {
     setAuthModalOpen(true);

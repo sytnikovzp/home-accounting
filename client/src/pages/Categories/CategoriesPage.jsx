@@ -17,11 +17,6 @@ import CategoryEditPage from './CategoryEditPage';
 import CategoryViewPage from './CategoryViewPage';
 
 function CategoriesPage() {
-  const itemsPerPage = useItemsPerPage();
-  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
-    usePagination(itemsPerPage);
-  const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -30,6 +25,11 @@ function CategoriesPage() {
   const [selectedStatus, setSelectedStatus] = useState('approved');
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [crudError, setCrudError] = useState(null);
+
+  const itemsPerPage = useItemsPerPage();
+  const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
+    usePagination(itemsPerPage);
+  const navigate = useNavigate();
 
   const handleModalClose = () => {
     setCrudError(null);
