@@ -157,9 +157,7 @@ describe('MeasureController', () => {
         .get('/api/measures/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe(
-        'Одиницю вимірів не знайдено'
-      );
+      expect(response.body.errors[0].title).toBe('Одиницю вимірів не знайдено');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -180,9 +178,7 @@ describe('MeasureController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', measureUuid);
       expect(response.body.title).toBe('Оновлена назва одиниці вимірів');
-      expect(response.body.description).toBe(
-        'Оновлений опис одиниці вимірів'
-      );
+      expect(response.body.description).toBe('Оновлений опис одиниці вимірів');
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -220,9 +216,7 @@ describe('MeasureController', () => {
           title: 'Оновлена назва одиниці вимірів',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe(
-        'Одиницю вимірів не знайдено'
-      );
+      expect(response.body.errors[0].title).toBe('Одиницю вимірів не знайдено');
     });
   });
 
@@ -249,9 +243,7 @@ describe('MeasureController', () => {
         .delete('/api/measures/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe(
-        'Одиницю вимірів не знайдено'
-      );
+      expect(response.body.errors[0].title).toBe('Одиницю вимірів не знайдено');
     });
   });
 });

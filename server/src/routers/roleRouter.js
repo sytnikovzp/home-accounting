@@ -21,9 +21,7 @@ roleRouter
   .get(authHandler, paginateElements, getAllRoles)
   .post(authHandler, validateRole, createRole);
 
-roleRouter
-  .route('/permissions')
-  .get(authHandler, getAllPermissions);
+roleRouter.route('/permissions').get(authHandler, getAllPermissions);
 
 roleRouter
   .route('/:roleUuid')

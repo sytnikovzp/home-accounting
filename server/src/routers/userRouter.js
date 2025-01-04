@@ -19,13 +19,9 @@ const {
 
 const userRouter = new Router();
 
-userRouter
-  .route('/')
-  .get(authHandler, paginateElements, getAllUsers);
+userRouter.route('/').get(authHandler, paginateElements, getAllUsers);
 
-userRouter
-  .route('/profile')
-  .get(authHandler, getCurrentUserProfile);
+userRouter.route('/profile').get(authHandler, getCurrentUserProfile);
 
 userRouter
   .route('/change-password/:userUuid')
@@ -35,9 +31,7 @@ userRouter
   .route('/update-photo/:userUuid')
   .patch(authHandler, uploadUserPhotos.single('userPhoto'), updateUserPhoto);
 
-userRouter
-  .route('/delete-photo/:userUuid')
-  .patch(authHandler, removeUserPhoto);
+userRouter.route('/delete-photo/:userUuid').patch(authHandler, removeUserPhoto);
 
 userRouter
   .route('/:userUuid')

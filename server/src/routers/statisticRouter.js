@@ -9,20 +9,14 @@ const {
 
 const statisticRouter = new Router();
 
-statisticRouter
-  .route('/category-per-period')
-  .get(getCostByCategoryPerPeriod);
+statisticRouter.route('/category-per-period').get(getCostByCategoryPerPeriod);
 
 statisticRouter
   .route('/establishment-per-period')
   .get(getCostByEstablishmentPerPeriod);
 
-statisticRouter
-  .route('/categories')
-  .get(getCostByCategories);
+statisticRouter.route('/categories').get(getCostByCategories);
 
-statisticRouter
-  .route('/establishments')
-  .get(getCostByEstablishments);
+statisticRouter.route('/establishments').get(getCostByEstablishments);
 
 module.exports = statisticRouter;

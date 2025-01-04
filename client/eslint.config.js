@@ -99,7 +99,7 @@ export default [
       ],
       'simple-import-sort/exports': 'warn',
       'import/first': 'error',
-      'import/newline-after-import': 'error',
+      'import/newline-after-import': 'warn',
       'import/no-duplicates': 'error',
       'prettier/prettier': 'warn',
       'react/sort-comp': [
