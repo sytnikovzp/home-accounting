@@ -54,15 +54,15 @@ function Layout({
       >
         <Grid2>
           <Header
-            isAuthenticated={isAuthenticated}
             currentUser={currentUser}
-            setIsAuthenticated={setIsAuthenticated}
+            isAuthenticated={isAuthenticated}
             setAuthModalOpen={setAuthModalOpen}
+            setIsAuthenticated={setIsAuthenticated}
           />
         </Grid2>
         <Container maxWidth='xl' sx={stylesLayoutXLContainer}>
           <Grid2 container columnSpacing={2} sx={stylesLayoutGridXLContainer}>
-            <Grid2 xs={12} md={2} sx={stylesLayoutNavBarDesktop}>
+            <Grid2 md={2} sx={stylesLayoutNavBarDesktop} xs={12}>
               <NavBar />
             </Grid2>
             <Grid2 sx={stylesLayoutNavBarMobile}>
@@ -71,7 +71,7 @@ function Layout({
             <Grid2 sx={stylesLayoutOutlet}>
               <Outlet />
             </Grid2>
-            <Grid2 xs={12} md='auto' sx={stylesLayoutServiceBlock}>
+            <Grid2 md='auto' sx={stylesLayoutServiceBlock} xs={12}>
               <ServiceBlock />
             </Grid2>
           </Grid2>

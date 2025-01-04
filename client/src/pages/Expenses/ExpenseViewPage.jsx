@@ -54,9 +54,7 @@ function ExpenseViewPage({ handleModalClose }) {
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Деталі витрати...'
       content={
         isLoading ? (
           <Preloader />
@@ -68,9 +66,9 @@ function ExpenseViewPage({ handleModalClose }) {
               value={
                 productTitle ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/products/${product?.uuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {productTitle}
@@ -92,9 +90,9 @@ function ExpenseViewPage({ handleModalClose }) {
             />
             <ViewDetailRow
               icon={AttachMoney}
+              iconColor='secondary'
               label='Сума'
               value={`${totalPrice} ${currencyCode}`}
-              iconColor='secondary'
             />
             <ViewDetailRow
               icon={Store}
@@ -102,9 +100,9 @@ function ExpenseViewPage({ handleModalClose }) {
               value={
                 establishmentTitle ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/establishments/${establishment?.uuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {establishmentTitle}
@@ -120,9 +118,9 @@ function ExpenseViewPage({ handleModalClose }) {
               value={
                 creatorFullName ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {creatorFullName}
@@ -143,6 +141,8 @@ function ExpenseViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
+      title='Деталі витрати...'
+      onClose={handleModalClose}
     />
   );
 }

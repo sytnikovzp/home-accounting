@@ -22,7 +22,7 @@ export default [
         sourceType: 'module',
       },
     },
-    settings: { react: { version: '18.3' } },
+    settings: { react: { version: '18' } },
     plugins: {
       react,
       'react-hooks': reactHooks,
@@ -52,8 +52,8 @@ export default [
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react/prop-types': 'off',
-      'no-undef': 'warn',
-      'no-unused-vars': 'warn',
+      'no-undef': 'error',
+      'no-unused-vars': 'error',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
@@ -102,6 +102,52 @@ export default [
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'error',
       'prettier/prettier': 'warn',
+      'react/sort-comp': [
+        'warn',
+        {
+          order: [
+            'type-annotations',
+            'static-methods',
+            'lifecycle',
+            'render',
+            'everything-else',
+          ],
+        },
+      ],
+      'react/jsx-sort-props': [
+        'warn',
+        {
+          ignoreCase: true,
+          callbacksLast: true,
+          shorthandFirst: true,
+          reservedFirst: true,
+        },
+      ],
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react/jsx-no-undef': 'error',
+      'sort-vars': [
+        'warn',
+        {
+          ignoreCase: false,
+        },
+      ],
+      'no-else-return': ['error', { allowElseIf: false }],
+      'lines-between-class-members': [
+        'error',
+        'always',
+        { exceptAfterSingleLine: true },
+      ],
+      'import/extensions': [
+        'warn',
+        'never',
+        { json: 'always', css: 'always', scss: 'always' },
+      ],
+      'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+      'react/function-component-definition': [
+        'error',
+        { namedComponents: 'function-declaration' },
+      ],
     },
   },
 ];

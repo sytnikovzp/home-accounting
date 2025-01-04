@@ -45,21 +45,21 @@ function ProductEditPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Редагування товару...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
           <ProductForm
+            categories={categories}
             product={productToCRUD}
             onSubmit={handleSubmitProduct}
-            categories={categories}
           />
         )
       }
       error={errorMessage || crudError}
+      title='Редагування товару...'
+      onClose={handleModalClose}
     />
   );
 }

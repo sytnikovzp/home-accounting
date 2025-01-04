@@ -7,21 +7,21 @@ function Footer() {
   return (
     <Box component='footer' sx={stylesFooterBox}>
       <Container maxWidth='xl' sx={{ textAlign: 'center' }}>
-        <Typography variant='body1' sx={{ color: '#555' }}>
+        <Typography sx={{ color: '#555' }} variant='body1'>
           Designed by Alexandr Sytnikov © {new Date().getFullYear()}
         </Typography>
         <Box sx={{ mt: 1 }}>
           <Link
             href='https://github.com/sytnikovzp'
-            target='_blank'
             sx={stylesFooterIcon}
+            target='_blank'
           >
             <GitHub />
           </Link>
           <Link
             href='https://www.linkedin.com/in/sytnikovzp'
-            target='_blank'
             sx={stylesFooterIcon}
+            target='_blank'
           >
             <LinkedIn />
           </Link>

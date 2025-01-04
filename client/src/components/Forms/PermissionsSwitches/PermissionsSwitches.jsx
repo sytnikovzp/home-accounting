@@ -19,7 +19,7 @@ function PermissionsSwitches({ permissionsList }) {
   const { values } = useFormikContext();
   return (
     <Box sx={stylesPermissionsSwitchesMainBox}>
-      <Typography variant='h6' gutterBottom>
+      <Typography gutterBottom variant='h6'>
         Дозволи (Permissions):
       </Typography>
       <FieldArray
@@ -53,14 +53,14 @@ function PermissionsSwitches({ permissionsList }) {
                     label={
                       <Box>
                         <Typography
-                          variant='body1'
                           sx={stylesPermissionsSwitchesFontTitle}
+                          variant='body1'
                         >
                           {permission.title}
                         </Typography>
                         <Typography
-                          variant='body2'
                           sx={stylesPermissionsSwitchesFontDescription}
+                          variant='body2'
                         >
                           {permission.description || '*Опис відсутній*'}
                         </Typography>

@@ -76,14 +76,14 @@ function Header({
   setIsAuthenticated,
   setAuthModalOpen,
 }) {
-  const [openNavBar, setOpenNavBar] = useState(false);
-  const [openUserMenu, setOpenUserMenu] = useState(false);
-
   const navigate = useNavigate();
   const navigateTo = (path) => navigate(path);
   const handleToggleNavBar = () => setOpenNavBar((prev) => !prev);
   const toggleUserMenu = (event) => setOpenUserMenu(event.currentTarget);
   const closeMenu = () => setOpenUserMenu(false);
+
+  const [openNavBar, setOpenNavBar] = useState(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const openAuthModal = () => {
     setAuthModalOpen(true);
@@ -103,28 +103,28 @@ function Header({
     <AppBar position='sticky' sx={stylesHeaderAppBar}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters sx={stylesHeaderToolbar}>
-          <Box component={RouterLink} to='/' sx={stylesHeaderBoxLogoDesktop}>
+          <Box component={RouterLink} sx={stylesHeaderBoxLogoDesktop} to='/'>
             <img
-              src={accountingIcon}
               alt='Home Accounting'
+              src={accountingIcon}
               style={stylesHeaderIcon}
             />
-            <Typography variant='h6' noWrap sx={stylesHeaderTitleDesktop}>
+            <Typography noWrap sx={stylesHeaderTitleDesktop} variant='h6'>
               Home Accounting
             </Typography>
           </Box>
           <Box sx={stylesHeaderBoxLogoMobile}>
             <img
-              src={accountingIcon}
               alt='Home Accounting'
-              onClick={handleToggleNavBar}
+              src={accountingIcon}
               style={stylesHeaderIcon}
+              onClick={handleToggleNavBar}
             />
             <Typography
-              variant='h6'
               noWrap
-              onClick={handleToggleNavBar}
               sx={stylesHeaderTitleMobile}
+              variant='h6'
+              onClick={handleToggleNavBar}
             >
               Home Accounting
             </Typography>
@@ -136,18 +136,18 @@ function Header({
                   <Typography variant='body1'>
                     Привіт, {currentUser.fullName}!
                   </Typography>
-                  <Typography variant='body2' color='text.secondary'>
+                  <Typography color='text.secondary' variant='body2'>
                     Ваша роль на сайті: {currentUser.role.title}
                   </Typography>
                 </Box>
                 <Tooltip title='Обліковий запис'>
                   <IconButton
-                    size='small'
-                    onClick={toggleUserMenu}
-                    sx={{ ml: 2 }}
                     aria-controls={openUserMenu ? 'account-menu' : undefined}
-                    aria-haspopup='true'
                     aria-expanded={openUserMenu ? 'true' : undefined}
+                    aria-haspopup='true'
+                    size='small'
+                    sx={{ ml: 2 }}
+                    onClick={toggleUserMenu}
                   >
                     <Avatar
                       alt={currentUser.fullName}
@@ -164,9 +164,12 @@ function Header({
                 </Tooltip>
                 <Menu
                   anchorEl={openUserMenu}
+                  anchorOrigin={{
+                    horizontal: 'right',
+                    vertical: 'bottom',
+                  }}
                   id='account-menu'
                   open={Boolean(openUserMenu)}
-                  onClose={closeMenu}
                   slotProps={{
                     paper: {
                       elevation: 0,
@@ -177,24 +180,21 @@ function Header({
                     horizontal: 'right',
                     vertical: 'top',
                   }}
-                  anchorOrigin={{
-                    horizontal: 'right',
-                    vertical: 'bottom',
-                  }}
+                  onClose={closeMenu}
                 >
                   <UserMenu
-                    menuItems={menuItemsData}
-                    currentUser={currentUser}
-                    navigateTo={navigateTo}
                     closeMenu={closeMenu}
+                    currentUser={currentUser}
                     handleLogout={handleLogout}
+                    menuItems={menuItemsData}
+                    navigateTo={navigateTo}
                   />
                 </Menu>
               </Box>
             ) : (
               <Button
-                variant='contained'
                 color='success'
+                variant='contained'
                 onClick={openAuthModal}
               >
                 Увійти

@@ -77,41 +77,41 @@ function CurrenciesPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path='add'
         element={
           <CurrencyAddPage
-            handleModalClose={handleModalClose}
-            fetchCurrencies={fetchCurrencies}
             crudError={crudError}
+            fetchCurrencies={fetchCurrencies}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='add'
       />
       <Route
-        path='edit/:uuid'
         element={
           <CurrencyEditPage
-            handleModalClose={handleModalClose}
-            fetchCurrencies={fetchCurrencies}
             crudError={crudError}
+            fetchCurrencies={fetchCurrencies}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='edit/:uuid'
       />
       <Route
-        path='delete/:uuid'
         element={
           <CurrencyDeletePage
-            handleModalClose={handleModalClose}
-            fetchCurrencies={fetchCurrencies}
             crudError={crudError}
+            fetchCurrencies={fetchCurrencies}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='delete/:uuid'
       />
       <Route
-        path=':uuid'
         element={<CurrencyViewPage handleModalClose={handleModalClose} />}
+        path=':uuid'
       />
     </Routes>
   );
@@ -123,16 +123,16 @@ function CurrenciesPage() {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Валюти</Typography>
         <Button
-          variant='contained'
           color='success'
           size='small'
+          variant='contained'
           onClick={() => openModal('add')}
         >
           Додати валюту
@@ -142,9 +142,7 @@ function CurrenciesPage() {
         columns={[
           { field: 'title', headerName: 'Назва валюти', align: 'left' },
         ]}
-        rows={currencies}
-        onEdit={(currency) => openModal('edit', currency.uuid)}
-        onDelete={(currency) => openModal('delete', currency.uuid)}
+        linkEntity='currencies'
         pagination={{
           totalCount,
           currentPage,
@@ -153,9 +151,11 @@ function CurrenciesPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
+        rows={currencies}
         sortModel={sortModel}
+        onDelete={(currency) => openModal('delete', currency.uuid)}
+        onEdit={(currency) => openModal('edit', currency.uuid)}
         onSortModelChange={setSortModel}
-        linkEntity='currencies'
       />
       {renderRoutes()}
     </>

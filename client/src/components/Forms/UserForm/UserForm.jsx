@@ -59,23 +59,23 @@ function UserForm({
     <>
       {user?.uuid && (
         <FileUpload
+          entity='users'
           file={user.photo}
+          label={user?.photo ? 'Оновити фото' : 'Завантажити фото'}
+          uploading={uploading}
+          onRemove={onRemovePhoto}
           onUpload={async (file) => {
             setUploading(true);
             await onUploadPhoto(file);
             setUploading(false);
           }}
-          onRemove={onRemovePhoto}
-          label={user?.photo ? 'Оновити фото' : 'Завантажити фото'}
-          entity='users'
-          uploading={uploading}
         />
       )}
       <Box sx={stylesUserFormPasswordButton}>
         {user?.uuid && (
           <Button
-            variant='contained'
             color='success'
+            variant='contained'
             onClick={onChangePassword}
           >
             Змінити пароль
@@ -83,11 +83,11 @@ function UserForm({
         )}
       </Box>
       <BaseForm
+        fields={fields}
         initialValues={initialValues}
+        submitButtonText={'Зберегти зміни'}
         validationSchema={USER_VALIDATION_SCHEME}
         onSubmit={onSubmit}
-        fields={fields}
-        submitButtonText={'Зберегти зміни'}
       />
     </>
   );

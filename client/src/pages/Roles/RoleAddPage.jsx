@@ -28,16 +28,16 @@ function RoleAddPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Додавання ролі...'
       content={
         <RoleForm
-          onSubmit={handleSubmitRole}
           permissionsList={permissionsList}
+          onSubmit={handleSubmitRole}
         />
       }
       error={crudError}
+      title='Додавання ролі...'
+      onClose={handleModalClose}
     />
   );
 }

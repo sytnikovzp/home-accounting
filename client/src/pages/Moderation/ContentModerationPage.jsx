@@ -136,9 +136,39 @@ function ContentModerationPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Модерація контенту...'
+      actions={[
+        <Button
+          key='approve'
+          fullWidth
+          color='success'
+          size='large'
+          variant='contained'
+          onClick={handleApprove}
+        >
+          Затвердити
+        </Button>,
+        <Button
+          key='edit'
+          fullWidth
+          color='warning'
+          size='large'
+          variant='contained'
+          onClick={handleEditAndApprove}
+        >
+          Редагувати та затвердити
+        </Button>,
+        <Button
+          key='reject'
+          fullWidth
+          color='error'
+          size='large'
+          variant='contained'
+          onClick={handleReject}
+        >
+          Відхилити
+        </Button>,
+      ]}
       content={
         isLoading ? (
           <Preloader />
@@ -148,10 +178,10 @@ function ContentModerationPage({
               <ViewDetailRow icon={Info} label='Назва' value={title} />
               {logo && (
                 <Avatar
-                  src={logoSrc}
                   alt='Логотип'
-                  variant='rounded'
+                  src={logoSrc}
                   sx={stylesViewPageAvatarSize}
+                  variant='rounded'
                 />
               )}
             </Box>
@@ -172,7 +202,7 @@ function ContentModerationPage({
                 icon={LinkIcon}
                 label='Посилання'
                 value={
-                  <Link href={url} target='_blank' rel='noopener noreferrer'>
+                  <Link href={url} rel='noopener noreferrer' target='_blank'>
                     {url}
                   </Link>
                 }
@@ -184,9 +214,9 @@ function ContentModerationPage({
                 label='Категорія'
                 value={
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/categories/${category.uuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {category.title}
@@ -205,9 +235,9 @@ function ContentModerationPage({
               value={
                 creatorFullName ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {creatorFullName}
@@ -226,39 +256,9 @@ function ContentModerationPage({
           </Box>
         )
       }
-      actions={[
-        <Button
-          key='approve'
-          variant='contained'
-          color='success'
-          size='large'
-          onClick={handleApprove}
-          fullWidth
-        >
-          Затвердити
-        </Button>,
-        <Button
-          key='edit'
-          variant='contained'
-          color='warning'
-          size='large'
-          onClick={handleEditAndApprove}
-          fullWidth
-        >
-          Редагувати та затвердити
-        </Button>,
-        <Button
-          key='reject'
-          variant='contained'
-          color='error'
-          size='large'
-          onClick={handleReject}
-          fullWidth
-        >
-          Відхилити
-        </Button>,
-      ]}
       error={errorMessage || crudError}
+      title='Модерація контенту...'
+      onClose={handleModalClose}
     />
   );
 }

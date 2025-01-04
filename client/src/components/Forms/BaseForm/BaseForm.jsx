@@ -88,15 +88,15 @@ function BaseForm({
             }) => (
               <FormFields
                 key={name}
-                name={name}
+                autoFocus={autoFocus}
+                error={errors[name]}
                 label={label}
+                name={name}
+                options={options}
                 placeholder={placeholder}
                 required={required}
-                autoFocus={autoFocus}
-                type={type}
-                options={options}
-                error={errors[name]}
                 touched={touched[name]}
+                type={type}
               />
             )
           )
@@ -110,12 +110,12 @@ function BaseForm({
       )}
       <Box sx={stylesBaseFormButtomBox}>
         <Button
+          fullWidth
+          color='success'
+          disabled={!isValid || isSubmitting}
+          size='large'
           type='submit'
           variant='contained'
-          color='success'
-          size='large'
-          fullWidth
-          disabled={!isValid || isSubmitting}
         >
           {submitButtonText}
         </Button>
@@ -126,6 +126,7 @@ function BaseForm({
 
   return (
     <Formik
+      validateOnMount
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={async (values, actions) => {
@@ -138,7 +139,6 @@ function BaseForm({
           }
         }
       }}
-      validateOnMount
     >
       {renderForm}
     </Formik>

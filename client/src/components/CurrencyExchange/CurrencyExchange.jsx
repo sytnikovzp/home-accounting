@@ -57,7 +57,7 @@ function CurrencyExchange() {
 
   return (
     <Box sx={stylesCurrencyExchangeBox}>
-      <Typography variant='h6' sx={{ mt: 1 }}>
+      <Typography sx={{ mt: 1 }} variant='h6'>
         Курси Національного Банку
       </Typography>
       <TableContainer sx={{ margin: '0 auto' }}>

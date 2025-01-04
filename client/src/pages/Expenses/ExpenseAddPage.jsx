@@ -35,19 +35,19 @@ function ExpenseAddPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Додавання витрати...'
       content={
         <ExpenseForm
-          onSubmit={handleSubmitExpense}
-          products={products}
+          currencies={currencies}
           establishments={establishments}
           measures={measures}
-          currencies={currencies}
+          products={products}
+          onSubmit={handleSubmitExpense}
         />
       }
       error={crudError}
+      title='Додавання витрати...'
+      onClose={handleModalClose}
     />
   );
 }

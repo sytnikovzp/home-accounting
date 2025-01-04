@@ -68,22 +68,22 @@ function EstablishmentEditPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Редагування закладу...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
           <EstablishmentForm
             establishment={establishmentToCRUD}
+            onRemoveLogo={handleRemoveLogo}
             onSubmit={handleSubmitEstablishment}
             onUploadLogo={handleUploadLogo}
-            onRemoveLogo={handleRemoveLogo}
           />
         )
       }
       error={errorMessage || crudError}
+      title='Редагування закладу...'
+      onClose={handleModalClose}
     />
   );
 }

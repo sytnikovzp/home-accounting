@@ -41,33 +41,33 @@ function CurrencyDeletePage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Видалення категорії...'
+      actions={[
+        <Button
+          key='delete'
+          fullWidth
+          color='error'
+          size='large'
+          variant='contained'
+          onClick={handleDeleteCurrency}
+        >
+          Видалити
+        </Button>,
+      ]}
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <Typography variant='body1' sx={stylesDeletePageTypography}>
+          <Typography sx={stylesDeletePageTypography} variant='body1'>
             Ви впевнені, що хочете видалити валюту «{currencyToCRUD?.title}»?
             Зверніть увагу, що видалення цієї валюти призведе до видалення всіх
             витрат, у яких вона використовується.
           </Typography>
         )
       }
-      actions={[
-        <Button
-          key='delete'
-          variant='contained'
-          color='error'
-          size='large'
-          onClick={handleDeleteCurrency}
-          fullWidth
-        >
-          Видалити
-        </Button>,
-      ]}
       error={errorMessage || crudError}
+      title='Видалення категорії...'
+      onClose={handleModalClose}
     />
   );
 }

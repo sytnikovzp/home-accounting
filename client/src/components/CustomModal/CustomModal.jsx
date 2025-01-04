@@ -27,19 +27,19 @@ function CustomModal({
 }) {
   return (
     <Modal
-      open={isOpen}
       closeAfterTransition
-      onClose={disableBackdropClick ? null : onClose}
-      aria-labelledby={title ? 'custom-modal-title' : undefined}
       aria-describedby='custom-modal-description'
+      aria-labelledby={title ? 'custom-modal-title' : undefined}
+      open={isOpen}
+      onClose={disableBackdropClick ? null : onClose}
     >
       <Fade in={isOpen}>
-        <Box sx={stylesCustomModalFadeBox} position='relative'>
+        <Box position='relative' sx={stylesCustomModalFadeBox}>
           {showCloseButton && (
             <IconButton
               aria-label='Закрити'
-              onClick={onClose}
               sx={stylesCustomModalIconButton}
+              onClick={onClose}
             >
               <Close />
             </IconButton>
@@ -66,11 +66,11 @@ function CustomModal({
           </Box>
           {actions && (
             <Box
-              mt={2}
               display='flex'
               flexDirection='column'
-              justifyContent='center'
               gap={2}
+              justifyContent='center'
+              mt={2}
             >
               {actions}
             </Box>

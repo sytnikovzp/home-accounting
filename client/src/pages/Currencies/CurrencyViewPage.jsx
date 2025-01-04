@@ -36,9 +36,7 @@ function CurrencyViewPage({ handleModalClose }) {
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Деталі валюти...'
       content={
         isLoading ? (
           <Preloader />
@@ -56,9 +54,9 @@ function CurrencyViewPage({ handleModalClose }) {
               value={
                 creatorFullName ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {creatorFullName}
@@ -78,6 +76,8 @@ function CurrencyViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
+      title='Деталі валюти...'
+      onClose={handleModalClose}
     />
   );
 }

@@ -23,11 +23,11 @@ function CurrencyAddPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Додавання валюти...'
       content={<CurrencyForm onSubmit={handleSubmitCurrency} />}
       error={crudError}
+      title='Додавання валюти...'
+      onClose={handleModalClose}
     />
   );
 }

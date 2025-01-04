@@ -44,9 +44,7 @@ function CurrencyEditPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Редагування валюти...'
       content={
         isLoading ? (
           <Preloader />
@@ -58,6 +56,8 @@ function CurrencyEditPage({
         )
       }
       error={errorMessage || crudError}
+      title='Редагування валюти...'
+      onClose={handleModalClose}
     />
   );
 }

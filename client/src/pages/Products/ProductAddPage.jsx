@@ -24,13 +24,13 @@ function ProductAddPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Додавання товару...'
       content={
-        <ProductForm onSubmit={handleSubmitProduct} categories={categories} />
+        <ProductForm categories={categories} onSubmit={handleSubmitProduct} />
       }
       error={crudError}
+      title='Додавання товару...'
+      onClose={handleModalClose}
     />
   );
 }

@@ -42,12 +42,12 @@ function UserResetPasswordPage() {
 
   return (
     <CustomModal
-      isOpen={isOpen}
-      onClose={handleClose}
       showCloseButton
-      title='Скидання паролю...'
       content={<ChangePasswordForm onSubmit={handleSubmitResetPassword} />}
       error={errorMessage}
+      isOpen={isOpen}
+      title='Скидання паролю...'
+      onClose={handleClose}
     />
   );
 }

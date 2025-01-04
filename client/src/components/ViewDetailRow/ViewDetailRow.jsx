@@ -10,13 +10,13 @@ function ViewDetailRow({ icon: Icon, label, value, linkTo }) {
   return (
     <Box sx={stylesViewDetailRowContainerStyles}>
       <Icon color='primary' />
-      <Typography variant='body1' sx={stylesViewDetailRowTextStyles}>
+      <Typography sx={stylesViewDetailRowTextStyles} variant='body1'>
         <strong>{label}: </strong>
         {linkTo ? (
           <Link
+            color='primary'
             component={RouterLink}
             to={linkTo}
-            color='primary'
             underline='hover'
           >
             {value}

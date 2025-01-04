@@ -18,11 +18,11 @@ function ForgotPasswordForm({ onSubmit }) {
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText='Запросити зміну паролю'
       validationSchema={FORGOT_PASSWORD_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText='Запросити зміну паролю'
     />
   );
 }

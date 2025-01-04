@@ -23,11 +23,11 @@ function MeasureAddPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Додавання одиниці...'
       content={<MeasureForm onSubmit={handleSubmitMeasure} />}
       error={crudError}
+      title='Додавання одиниці...'
+      onClose={handleModalClose}
     />
   );
 }

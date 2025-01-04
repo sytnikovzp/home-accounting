@@ -79,41 +79,41 @@ function CategoriesPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path='add'
         element={
           <CategoryAddPage
-            handleModalClose={handleModalClose}
-            fetchCategories={fetchCategories}
             crudError={crudError}
+            fetchCategories={fetchCategories}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='add'
       />
       <Route
-        path='edit/:uuid'
         element={
           <CategoryEditPage
-            handleModalClose={handleModalClose}
-            fetchCategories={fetchCategories}
             crudError={crudError}
+            fetchCategories={fetchCategories}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='edit/:uuid'
       />
       <Route
-        path='delete/:uuid'
         element={
           <CategoryDeletePage
-            handleModalClose={handleModalClose}
-            fetchCategories={fetchCategories}
             crudError={crudError}
+            fetchCategories={fetchCategories}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='delete/:uuid'
       />
       <Route
-        path=':uuid'
         element={<CategoryViewPage handleModalClose={handleModalClose} />}
+        path=':uuid'
       />
     </Routes>
   );
@@ -125,28 +125,27 @@ function CategoriesPage() {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Категорії витрат</Typography>
         <Button
-          variant='contained'
           color='success'
           size='small'
+          variant='contained'
           onClick={() => openModal('add')}
         >
           Додати категорію
         </Button>
       </Box>
       <ListTable
+        showStatusDropdown
         columns={[
           { field: 'title', headerName: 'Назва категорії', align: 'left' },
         ]}
-        rows={categories}
-        onEdit={(category) => openModal('edit', category.uuid)}
-        onDelete={(category) => openModal('delete', category.uuid)}
+        linkEntity='categories'
         pagination={{
           totalCount,
           currentPage,
@@ -155,12 +154,13 @@ function CategoriesPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
+        rows={categories}
         selectedStatus={selectedStatus}
+        sortModel={sortModel}
+        onDelete={(category) => openModal('delete', category.uuid)}
+        onEdit={(category) => openModal('edit', category.uuid)}
+        onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
-        showStatusDropdown
-        linkEntity='categories'
       />
       {renderRoutes()}
     </>

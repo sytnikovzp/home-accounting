@@ -60,10 +60,10 @@ function App() {
   if (isLoading) {
     return (
       <CustomModal
-        isOpen={true}
-        onClose={null}
         content={<Preloader message='Welcome to Home Accounting...' />}
         disableBackdropClick={true}
+        isOpen={true}
+        onClose={null}
       />
     );
   }
@@ -81,66 +81,66 @@ function App() {
     <Router>
       <Routes>
         <Route
-          path='/'
           element={
             <Layout
-              isAuthenticated={isAuthenticated}
               currentUser={currentUser}
-              setIsAuthenticated={setIsAuthenticated}
+              isAuthenticated={isAuthenticated}
               setAuthModalOpen={setAuthModalOpen}
+              setIsAuthenticated={setIsAuthenticated}
             />
           }
+          path='/'
         >
           <Route index element={<HomePage />} />
           <Route
-            path='expenses/*'
             element={renderPrivateRoute(<ExpensesPage />)}
+            path='expenses/*'
           />
           <Route
-            path='establishments/*'
             element={renderPrivateRoute(<EstablishmentsPage />)}
+            path='establishments/*'
           />
           <Route
-            path='products/*'
             element={renderPrivateRoute(<ProductsPage />)}
+            path='products/*'
           />
           <Route
-            path='categories/*'
             element={renderPrivateRoute(<CategoriesPage />)}
+            path='categories/*'
           />
           <Route
-            path='currencies/*'
             element={renderPrivateRoute(<CurrenciesPage />)}
+            path='currencies/*'
           />
           <Route
-            path='measures/*'
             element={renderPrivateRoute(<MeasuresPage />)}
+            path='measures/*'
           />
           <Route
-            path='moderation/*'
             element={renderPrivateRoute(<ModerationPage />)}
+            path='moderation/*'
           />
           <Route
-            path='users/*'
             element={renderPrivateRoute(
               <UsersPage
                 currentUser={currentUser}
                 setIsAuthenticated={setIsAuthenticated}
               />
             )}
+            path='users/*'
           />
-          <Route path='roles/*' element={renderPrivateRoute(<RolesPage />)} />
-          <Route path='notification' element={<NotificationPage />} />
-          <Route path='reset-password' element={<UserResetPasswordPage />} />
-          <Route path='*' element={<Navigate to='/' replace />} />
+          <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
+          <Route element={<NotificationPage />} path='notification' />
+          <Route element={<UserResetPasswordPage />} path='reset-password' />
+          <Route element={<Navigate replace to='/' />} path='*' />
         </Route>
       </Routes>
 
       {isAuthModalOpen && !isAuthenticated && (
         <AuthPage
+          checkAuthentication={checkAuthentication}
           isOpen={isAuthModalOpen}
           onClose={handleCloseAuthModal}
-          checkAuthentication={checkAuthentication}
         />
       )}
     </Router>

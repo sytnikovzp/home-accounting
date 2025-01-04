@@ -45,26 +45,26 @@ function EstablishmentForm({
     <>
       {establishment?.uuid && (
         <FileUpload
+          entity='establishments'
           file={establishment.logo}
+          label={
+            establishment?.logo ? 'Оновити логотип' : 'Завантажити логотип'
+          }
+          uploading={uploading}
+          onRemove={onRemoveLogo}
           onUpload={async (file) => {
             setUploading(true);
             await onUploadLogo(file);
             setUploading(false);
           }}
-          onRemove={onRemoveLogo}
-          label={
-            establishment?.logo ? 'Оновити логотип' : 'Завантажити логотип'
-          }
-          entity='establishments'
-          uploading={uploading}
         />
       )}
       <BaseForm
+        fields={fields}
         initialValues={initialValues}
+        submitButtonText={establishment ? 'Зберегти зміни' : 'Додати заклад'}
         validationSchema={ESTABLISHMENT_VALIDATION_SCHEME}
         onSubmit={onSubmit}
-        fields={fields}
-        submitButtonText={establishment ? 'Зберегти зміни' : 'Додати заклад'}
       />
     </>
   );

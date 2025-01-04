@@ -46,21 +46,21 @@ function RoleEditPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Редагування ролі...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
           <RoleForm
+            permissionsList={permissionsList}
             role={roleToCRUD}
             onSubmit={handleSubmitRole}
-            permissionsList={permissionsList}
           />
         )
       }
       error={errorMessage || crudError}
+      title='Редагування ролі...'
+      onClose={handleModalClose}
     />
   );
 }

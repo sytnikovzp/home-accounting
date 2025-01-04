@@ -23,11 +23,11 @@ function CategoryAddPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Додавання категорії...'
       content={<CategoryForm onSubmit={handleSubmitCategory} />}
       error={crudError}
+      title='Додавання категорії...'
+      onClose={handleModalClose}
     />
   );
 }

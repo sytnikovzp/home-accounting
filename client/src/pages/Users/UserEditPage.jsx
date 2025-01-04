@@ -71,24 +71,24 @@ function UserEditPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Редагування користувача...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
           <UserForm
-            user={userToCRUD}
-            onSubmit={handleSubmitUser}
             roles={roles}
-            onUploadPhoto={handleUploadPhoto}
-            onRemovePhoto={handleRemovePhoto}
+            user={userToCRUD}
             onChangePassword={handleChangePassword}
+            onRemovePhoto={handleRemovePhoto}
+            onSubmit={handleSubmitUser}
+            onUploadPhoto={handleUploadPhoto}
           />
         )
       }
       error={errorMessage || crudError}
+      title='Редагування користувача...'
+      onClose={handleModalClose}
     />
   );
 }

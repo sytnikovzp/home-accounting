@@ -77,41 +77,41 @@ function MeasuresPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path='add'
         element={
           <MeasureAddPage
-            handleModalClose={handleModalClose}
-            fetchMeasures={fetchMeasures}
             crudError={crudError}
+            fetchMeasures={fetchMeasures}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='add'
       />
       <Route
-        path='edit/:uuid'
         element={
           <MeasureEditPage
-            handleModalClose={handleModalClose}
-            fetchMeasures={fetchMeasures}
             crudError={crudError}
+            fetchMeasures={fetchMeasures}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='edit/:uuid'
       />
       <Route
-        path='delete/:uuid'
         element={
           <MeasureDeletePage
-            handleModalClose={handleModalClose}
-            fetchMeasures={fetchMeasures}
             crudError={crudError}
+            fetchMeasures={fetchMeasures}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='delete/:uuid'
       />
       <Route
-        path=':uuid'
         element={<MeasureViewPage handleModalClose={handleModalClose} />}
+        path=':uuid'
       />
     </Routes>
   );
@@ -123,16 +123,16 @@ function MeasuresPage() {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Одиниці вимірів</Typography>
         <Button
-          variant='contained'
           color='success'
           size='small'
+          variant='contained'
           onClick={() => openModal('add')}
         >
           Додати одиницю
@@ -142,9 +142,7 @@ function MeasuresPage() {
         columns={[
           { field: 'title', headerName: 'Назва одиниці', align: 'left' },
         ]}
-        rows={measures}
-        onEdit={(measure) => openModal('edit', measure.uuid)}
-        onDelete={(measure) => openModal('delete', measure.uuid)}
+        linkEntity='measures'
         pagination={{
           totalCount,
           currentPage,
@@ -153,9 +151,11 @@ function MeasuresPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
+        rows={measures}
         sortModel={sortModel}
+        onDelete={(measure) => openModal('delete', measure.uuid)}
+        onEdit={(measure) => openModal('edit', measure.uuid)}
         onSortModelChange={setSortModel}
-        linkEntity='measures'
       />
       {renderRoutes()}
     </>

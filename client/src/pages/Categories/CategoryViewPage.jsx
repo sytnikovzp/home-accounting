@@ -47,9 +47,7 @@ function CategoryViewPage({ handleModalClose }) {
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Деталі категорії...'
       content={
         isLoading ? (
           <Preloader />
@@ -67,9 +65,9 @@ function CategoryViewPage({ handleModalClose }) {
               value={
                 creatorFullName ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {creatorFullName}
@@ -85,9 +83,9 @@ function CategoryViewPage({ handleModalClose }) {
                 label='Модератор'
                 value={
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${moderatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {moderatorFullName}
@@ -105,6 +103,8 @@ function CategoryViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
+      title='Деталі категорії...'
+      onClose={handleModalClose}
     />
   );
 }

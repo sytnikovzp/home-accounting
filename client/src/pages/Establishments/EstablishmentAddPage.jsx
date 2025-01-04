@@ -27,11 +27,11 @@ function EstablishmentAddPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Додавання закладу...'
       content={<EstablishmentForm onSubmit={handleSubmitEstablishment} />}
       error={crudError}
+      title='Додавання закладу...'
+      onClose={handleModalClose}
     />
   );
 }

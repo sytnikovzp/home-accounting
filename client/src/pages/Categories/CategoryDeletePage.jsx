@@ -41,31 +41,31 @@ function CategoryDeletePage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Видалення категорії...'
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Typography variant='body1' sx={stylesDeletePageTypography}>
-            Ви впевнені, що хочете видалити категорію «{categoryToCRUD?.title}»?
-          </Typography>
-        )
-      }
       actions={[
         <Button
           key='delete'
-          variant='contained'
+          fullWidth
           color='error'
           size='large'
+          variant='contained'
           onClick={handleDeleteCategory}
-          fullWidth
         >
           Видалити
         </Button>,
       ]}
+      content={
+        isLoading ? (
+          <Preloader />
+        ) : (
+          <Typography sx={stylesDeletePageTypography} variant='body1'>
+            Ви впевнені, що хочете видалити категорію «{categoryToCRUD?.title}»?
+          </Typography>
+        )
+      }
       error={errorMessage || crudError}
+      title='Видалення категорії...'
+      onClose={handleModalClose}
     />
   );
 }

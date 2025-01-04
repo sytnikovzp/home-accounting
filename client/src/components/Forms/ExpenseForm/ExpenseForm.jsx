@@ -129,12 +129,12 @@ function ExpenseForm({
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      layout='expense'
+      submitButtonText={expense ? 'Зберегти зміни' : 'Додати витрату'}
       validationSchema={EXPENSE_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText={expense ? 'Зберегти зміни' : 'Додати витрату'}
-      layout='expense'
     />
   );
 }

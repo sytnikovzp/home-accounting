@@ -41,32 +41,32 @@ function ExpenseDeletePage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Видалення витрати...'
+      actions={[
+        <Button
+          key='delete'
+          fullWidth
+          color='error'
+          size='large'
+          variant='contained'
+          onClick={handleDeleteExpense}
+        >
+          Видалити
+        </Button>,
+      ]}
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <Typography variant='body1' sx={stylesDeletePageTypography}>
+          <Typography sx={stylesDeletePageTypography} variant='body1'>
             Ви впевнені, що хочете видалити витрату «
             {expenseToCRUD?.product.title}»?
           </Typography>
         )
       }
-      actions={[
-        <Button
-          key='delete'
-          variant='contained'
-          color='error'
-          size='large'
-          onClick={handleDeleteExpense}
-          fullWidth
-        >
-          Видалити
-        </Button>,
-      ]}
       error={errorMessage || crudError}
+      title='Видалення витрати...'
+      onClose={handleModalClose}
     />
   );
 }

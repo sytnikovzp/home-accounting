@@ -50,9 +50,7 @@ function ProductViewPage({ handleModalClose }) {
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Деталі товару...'
       content={
         isLoading ? (
           <Preloader />
@@ -70,9 +68,9 @@ function ProductViewPage({ handleModalClose }) {
               value={
                 categoryTitle ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/categories/${category?.uuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {categoryTitle}
@@ -88,9 +86,9 @@ function ProductViewPage({ handleModalClose }) {
               value={
                 creatorFullName ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {creatorFullName}
@@ -106,9 +104,9 @@ function ProductViewPage({ handleModalClose }) {
                 label='Модератор'
                 value={
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${moderatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {moderatorFullName}
@@ -126,6 +124,8 @@ function ProductViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
+      title='Деталі товару...'
+      onClose={handleModalClose}
     />
   );
 }

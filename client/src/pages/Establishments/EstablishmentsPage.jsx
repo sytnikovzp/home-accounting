@@ -79,41 +79,41 @@ function EstablishmentsPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path='add'
         element={
           <EstablishmentAddPage
-            handleModalClose={handleModalClose}
-            fetchEstablishments={fetchEstablishments}
             crudError={crudError}
+            fetchEstablishments={fetchEstablishments}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='add'
       />
       <Route
-        path='edit/:uuid'
         element={
           <EstablishmentEditPage
-            handleModalClose={handleModalClose}
-            fetchEstablishments={fetchEstablishments}
             crudError={crudError}
+            fetchEstablishments={fetchEstablishments}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='edit/:uuid'
       />
       <Route
-        path='delete/:uuid'
         element={
           <EstablishmentDeletePage
-            handleModalClose={handleModalClose}
-            fetchEstablishments={fetchEstablishments}
             crudError={crudError}
+            fetchEstablishments={fetchEstablishments}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='delete/:uuid'
       />
       <Route
-        path=':uuid'
         element={<EstablishmentViewPage handleModalClose={handleModalClose} />}
+        path=':uuid'
       />
     </Routes>
   );
@@ -125,29 +125,28 @@ function EstablishmentsPage() {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Заклади</Typography>
         <Button
-          variant='contained'
           color='success'
           size='small'
+          variant='contained'
           onClick={() => openModal('add')}
         >
           Додати заклад
         </Button>
       </Box>
       <ListTable
+        showStatusDropdown
         columns={[
           { field: 'logo', headerName: 'Лого', align: 'center' },
           { field: 'title', headerName: 'Назва закладу', align: 'left' },
         ]}
-        rows={establishments}
-        onEdit={(establishment) => openModal('edit', establishment.uuid)}
-        onDelete={(establishment) => openModal('delete', establishment.uuid)}
+        linkEntity='establishments'
         pagination={{
           totalCount,
           currentPage,
@@ -156,12 +155,13 @@ function EstablishmentsPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
+        rows={establishments}
         selectedStatus={selectedStatus}
+        sortModel={sortModel}
+        onDelete={(establishment) => openModal('delete', establishment.uuid)}
+        onEdit={(establishment) => openModal('edit', establishment.uuid)}
+        onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
-        showStatusDropdown
-        linkEntity='establishments'
       />
       {renderRoutes()}
     </>

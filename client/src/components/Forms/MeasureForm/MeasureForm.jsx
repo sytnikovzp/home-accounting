@@ -25,11 +25,11 @@ function MeasureForm({ measure = null, onSubmit }) {
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText={measure ? 'Зберегти зміни' : 'Додати одиницю'}
       validationSchema={MEASURE_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText={measure ? 'Зберегти зміни' : 'Додати одиницю'}
     />
   );
 }

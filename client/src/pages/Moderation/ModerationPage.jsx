@@ -80,15 +80,15 @@ function ModerationsPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path=':path/:uuid'
         element={
           <ContentModerationPage
-            handleModalClose={handleModalClose}
-            fetchModerations={fetchModerations}
             crudError={crudError}
+            fetchModerations={fetchModerations}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path=':path/:uuid'
       />
     </Routes>
   );
@@ -100,21 +100,21 @@ function ModerationsPage() {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Підлягають модерації</Typography>
       </Box>
       <ListTable
+        disableClickableTitles
         columns={[
           { field: 'contentType', headerName: 'Тип контенту', align: 'left' },
           { field: 'title', headerName: 'Назва', align: 'left' },
         ]}
-        rows={moderations}
-        onModerate={openModal}
-        disableClickableTitles
+        isModerationPage={true}
+        linkEntity='moderations'
         pagination={{
           totalCount,
           currentPage,
@@ -123,10 +123,10 @@ function ModerationsPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
+        rows={moderations}
         sortModel={sortModel}
+        onModerate={openModal}
         onSortModelChange={setSortModel}
-        linkEntity='moderations'
-        isModerationPage={true}
       />
       {renderRoutes()}
     </>

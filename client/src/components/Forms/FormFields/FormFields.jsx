@@ -39,8 +39,8 @@ function FormFields({
         {({ field }) => (
           <FormControl
             fullWidth
-            required={required}
             error={Boolean(touched && error)}
+            required={required}
           >
             <InputLabel>{label}</InputLabel>
             <Select {...field} label={label}>
@@ -68,27 +68,27 @@ function FormFields({
           );
           return (
             <Autocomplete
-              value={selectedOption || null}
-              options={flattenedOptions}
-              groupBy={(option) => option.group}
               getOptionLabel={(option) => option.label}
+              groupBy={(option) => option.group}
               isOptionEqualToValue={(option, value) =>
                 option.value === value.value
               }
+              options={flattenedOptions}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  error={Boolean(touched && error)}
+                  helperText={touched && error ? error : ' '}
+                  label={label}
+                  placeholder={placeholder}
+                  required={required}
+                />
+              )}
+              value={selectedOption || null}
               onChange={(event, value) => {
                 form.setFieldTouched(name, true);
                 form.setFieldValue(name, value?.value || '');
               }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={label}
-                  placeholder={placeholder}
-                  required={required}
-                  error={Boolean(touched && error)}
-                  helperText={touched && error ? error : ' '}
-                />
-              )}
             />
           );
         }}
@@ -97,12 +97,19 @@ function FormFields({
   }
   if (type === 'date') {
     return (
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={uk}>
+      <LocalizationProvider adapterLocale={uk} dateAdapter={AdapterDateFns}>
         <Field name={name}>
           {({ field, form }) => (
             <FormControl fullWidth error={Boolean(touched && error)}>
               <DatePicker
                 label={label}
+                maxDate={new Date()}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    required,
+                  },
+                }}
                 value={
                   field.value
                     ? parse(field.value, 'dd MMMM yyyy', new Date(), {
@@ -118,13 +125,6 @@ function FormFields({
                     date ? format(date, 'dd MMMM yyyy', { locale: uk }) : ''
                   );
                 }}
-                maxDate={new Date()}
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    required,
-                  },
-                }}
               />
               <FormHelperText>{touched && error ? error : ' '}</FormHelperText>
             </FormControl>
@@ -135,15 +135,11 @@ function FormFields({
   }
   return (
     <Field
-      name={name}
-      as={TextField}
-      label={label}
-      placeholder={placeholder}
       fullWidth
-      required={required}
+      as={TextField}
       autoFocus={autoFocus}
-      type={type === 'password' && showPassword ? 'text' : type}
-      sx={stylesFormFieldsHeight}
+      error={Boolean(touched && error)}
+      helperText={touched && error ? error : ' '}
       InputProps={{
         endAdornment:
           type === 'password' ? (
@@ -152,17 +148,21 @@ function FormFields({
                 aria-label={
                   showPassword ? 'Приховати пароль' : 'Показати пароль'
                 }
+                edge='end'
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
-                edge='end'
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>
           ) : null,
       }}
-      error={Boolean(touched && error)}
-      helperText={touched && error ? error : ' '}
+      label={label}
+      name={name}
+      placeholder={placeholder}
+      required={required}
+      sx={stylesFormFieldsHeight}
+      type={type === 'password' && showPassword ? 'text' : type}
     />
   );
 }

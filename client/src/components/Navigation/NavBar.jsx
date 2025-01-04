@@ -46,8 +46,8 @@ function NavBar({ onClose }) {
     <List>
       {items.map(({ to, icon: IconComponent, label }) => (
         <ListItem
-          disablePadding
           key={label}
+          disablePadding
           component={RouterLink}
           to={to}
           onClick={handleItemClick}
@@ -56,7 +56,7 @@ function NavBar({ onClose }) {
             <ListItemIcon>
               <IconComponent />
             </ListItemIcon>
-            <ListItemText sx={stylesNavBarListItemText} primary={label} />
+            <ListItemText primary={label} sx={stylesNavBarListItemText} />
           </ListItemButton>
         </ListItem>
       ))}
@@ -65,8 +65,8 @@ function NavBar({ onClose }) {
 
   return (
     <Box
-      component='nav'
       aria-label='main menu items'
+      component='nav'
       sx={stylesNavBarMenuItems}
     >
       {renderNavItems(navItems)}

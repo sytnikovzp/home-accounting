@@ -25,11 +25,11 @@ function CurrencyForm({ currency = null, onSubmit }) {
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText={currency ? 'Зберегти зміни' : 'Додати валюту'}
       validationSchema={CURRENCY_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText={currency ? 'Зберегти зміни' : 'Додати валюту'}
     />
   );
 }

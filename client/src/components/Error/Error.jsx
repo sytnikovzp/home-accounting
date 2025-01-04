@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 
 function Error({ error }) {
   return (
-    <Typography variant='h6' color='error' align='center' sx={{ m: 2 }}>
+    <Typography align='center' color='error' sx={{ m: 2 }} variant='h6'>
       {error}
     </Typography>
   );

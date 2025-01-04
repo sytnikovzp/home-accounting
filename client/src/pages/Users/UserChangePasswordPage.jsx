@@ -44,9 +44,7 @@ function UserChangePasswordPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Зміна паролю...'
       content={
         isLoading ? (
           <Preloader />
@@ -55,6 +53,8 @@ function UserChangePasswordPage({
         )
       }
       error={errorMessage || crudError}
+      title='Зміна паролю...'
+      onClose={handleModalClose}
     />
   );
 }

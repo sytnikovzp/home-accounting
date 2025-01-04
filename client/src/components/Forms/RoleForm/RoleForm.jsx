@@ -45,12 +45,12 @@ function RoleForm({ role = null, onSubmit, permissionsList = [] }) {
 
   return (
     <BaseForm
+      customContent={<PermissionsSwitches permissionsList={permissionsList} />}
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText={role ? 'Зберегти зміни' : 'Додати роль'}
       validationSchema={ROLE_VALIDATION_SCHEME}
       onSubmit={handleSubmit}
-      fields={fields}
-      submitButtonText={role ? 'Зберегти зміни' : 'Додати роль'}
-      customContent={<PermissionsSwitches permissionsList={permissionsList} />}
     />
   );
 }

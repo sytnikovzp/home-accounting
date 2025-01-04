@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 function Calendar() {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={uk}>
+    <LocalizationProvider adapterLocale={uk} dateAdapter={AdapterDateFns}>
       <DateCalendar />
     </LocalizationProvider>
   );

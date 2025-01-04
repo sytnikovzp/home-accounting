@@ -22,20 +22,20 @@ function NotificationPage() {
 
   return (
     <CustomModal
-      isOpen={isOpen}
-      onClose={handleClose}
-      title={title}
-      content={<InfoMessage severity={severity} message={message} />}
       actions={
         <Button
-          variant='contained'
-          color='success'
           fullWidth
+          color='success'
+          variant='contained'
           onClick={handleClose}
         >
           На головну
         </Button>
       }
+      content={<InfoMessage message={message} severity={severity} />}
+      isOpen={isOpen}
+      title={title}
+      onClose={handleClose}
     />
   );
 }

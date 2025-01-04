@@ -36,9 +36,7 @@ function MeasureViewPage({ handleModalClose }) {
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Деталі одиниці...'
       content={
         isLoading ? (
           <Preloader />
@@ -56,9 +54,9 @@ function MeasureViewPage({ handleModalClose }) {
               value={
                 creatorFullName ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {creatorFullName}
@@ -78,6 +76,8 @@ function MeasureViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
+      title='Деталі одиниці...'
+      onClose={handleModalClose}
     />
   );
 }

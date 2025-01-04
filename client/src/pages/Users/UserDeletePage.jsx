@@ -58,33 +58,33 @@ function UserDeletePage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Видалення користувача...'
+      actions={[
+        <Button
+          key='delete'
+          fullWidth
+          color='error'
+          size='large'
+          variant='contained'
+          onClick={handleDeleteUser}
+        >
+          Видалити
+        </Button>,
+      ]}
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <Typography variant='body1' sx={stylesDeletePageTypography}>
+          <Typography sx={stylesDeletePageTypography} variant='body1'>
             {userToCRUD?.uuid === currentUser.uuid
               ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
               : `Ви впевнені, що хочете видалити користувача «${userToCRUD?.fullName}»?`}
           </Typography>
         )
       }
-      actions={[
-        <Button
-          key='delete'
-          variant='contained'
-          color='error'
-          size='large'
-          onClick={handleDeleteUser}
-          fullWidth
-        >
-          Видалити
-        </Button>,
-      ]}
       error={errorMessage || crudError}
+      title='Видалення користувача...'
+      onClose={handleModalClose}
     />
   );
 }

@@ -161,49 +161,49 @@ function ExpensesPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path='add'
         element={
           <ExpenseAddPage
-            handleModalClose={handleModalClose}
-            fetchExpenses={fetchExpenses}
-            products={products}
-            establishments={establishments}
-            measures={measures}
-            currencies={currencies}
             crudError={crudError}
+            currencies={currencies}
+            establishments={establishments}
+            fetchExpenses={fetchExpenses}
+            handleModalClose={handleModalClose}
+            measures={measures}
+            products={products}
             setCrudError={setCrudError}
           />
         }
+        path='add'
       />
       <Route
-        path='edit/:uuid'
         element={
           <ExpenseEditPage
-            handleModalClose={handleModalClose}
-            fetchExpenses={fetchExpenses}
-            products={products}
-            establishments={establishments}
-            measures={measures}
-            currencies={currencies}
             crudError={crudError}
+            currencies={currencies}
+            establishments={establishments}
+            fetchExpenses={fetchExpenses}
+            handleModalClose={handleModalClose}
+            measures={measures}
+            products={products}
             setCrudError={setCrudError}
           />
         }
+        path='edit/:uuid'
       />
       <Route
-        path='delete/:uuid'
         element={
           <ExpenseDeletePage
-            handleModalClose={handleModalClose}
-            fetchExpenses={fetchExpenses}
             crudError={crudError}
+            fetchExpenses={fetchExpenses}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='delete/:uuid'
       />
       <Route
-        path=':uuid'
         element={<ExpenseViewPage handleModalClose={handleModalClose} />}
+        path=':uuid'
       />
     </Routes>
   );
@@ -215,30 +215,30 @@ function ExpensesPage() {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Витрати</Typography>
         <Button
-          variant='contained'
           color='success'
           size='small'
+          variant='contained'
           onClick={() => openModal('add')}
         >
           Додати витрату
         </Button>
       </Box>
       <ListTable
+        expensesPage
+        showStatusDropdown
         columns={[
           { field: 'date', headerName: 'Дата', align: 'left' },
           { field: 'product', headerName: 'Товар', align: 'left' },
           { field: 'establishment', headerName: 'Заклад', align: 'left' },
         ]}
-        rows={expenses}
-        onEdit={(expense) => openModal('edit', expense.uuid)}
-        onDelete={(expense) => openModal('delete', expense.uuid)}
+        linkEntity='expenses'
         pagination={{
           totalCount,
           currentPage,
@@ -247,13 +247,13 @@ function ExpensesPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 10, 25, 50],
         }}
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
+        rows={expenses}
         selectedStatus={selectedPeriod}
+        sortModel={sortModel}
+        onDelete={(expense) => openModal('delete', expense.uuid)}
+        onEdit={(expense) => openModal('edit', expense.uuid)}
+        onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedPeriod(event.target.value)}
-        showStatusDropdown
-        expensesPage
-        linkEntity='expenses'
       />
       {renderRoutes()}
     </>

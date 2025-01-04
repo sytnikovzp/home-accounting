@@ -60,9 +60,7 @@ function EstablishmentViewPage({ handleModalClose }) {
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Деталі закладу...'
       content={
         isLoading ? (
           <Preloader />
@@ -71,10 +69,10 @@ function EstablishmentViewPage({ handleModalClose }) {
             <Box sx={stylesViewPageBoxWithAvatar}>
               <ViewDetailRow icon={Info} label='Назва' value={title} />
               <Avatar
-                src={logoSrc}
                 alt='Логотип закладу'
-                variant='rounded'
+                src={logoSrc}
                 sx={stylesViewPageAvatarSize}
+                variant='rounded'
               />
             </Box>
             {description && (
@@ -89,7 +87,7 @@ function EstablishmentViewPage({ handleModalClose }) {
                 icon={LinkIcon}
                 label='Посилання'
                 value={
-                  <Link href={url} target='_blank' rel='noopener noreferrer'>
+                  <Link href={url} rel='noopener noreferrer' target='_blank'>
                     {url}
                   </Link>
                 }
@@ -106,9 +104,9 @@ function EstablishmentViewPage({ handleModalClose }) {
               value={
                 creatorFullName ? (
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${creatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {creatorFullName}
@@ -124,9 +122,9 @@ function EstablishmentViewPage({ handleModalClose }) {
                 label='Модератор'
                 value={
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`/users/${moderatorUuid}`}
-                    color='primary'
                     underline='hover'
                   >
                     {moderatorFullName}
@@ -144,6 +142,8 @@ function EstablishmentViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
+      title='Деталі закладу...'
+      onClose={handleModalClose}
     />
   );
 }

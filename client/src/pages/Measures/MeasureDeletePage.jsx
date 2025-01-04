@@ -41,33 +41,33 @@ function MeasureDeletePage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Видалення одиниці...'
+      actions={[
+        <Button
+          key='delete'
+          fullWidth
+          color='error'
+          size='large'
+          variant='contained'
+          onClick={handleDeleteMeasure}
+        >
+          Видалити
+        </Button>,
+      ]}
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <Typography variant='body1' sx={stylesDeletePageTypography}>
+          <Typography sx={stylesDeletePageTypography} variant='body1'>
             Ви впевнені, що хочете видалити одиницю вимірів «
             {measureToCRUD?.title}»? Це призведе до видалення всіх витрат, де
             вона використовується.
           </Typography>
         )
       }
-      actions={[
-        <Button
-          key='delete'
-          variant='contained'
-          color='error'
-          size='large'
-          onClick={handleDeleteMeasure}
-          fullWidth
-        >
-          Видалити
-        </Button>,
-      ]}
       error={errorMessage || crudError}
+      title='Видалення одиниці...'
+      onClose={handleModalClose}
     />
   );
 }

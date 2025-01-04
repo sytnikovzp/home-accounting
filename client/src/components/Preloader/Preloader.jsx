@@ -5,13 +5,13 @@ import { stylesPreloaderMargin, stylesPreloaderTitle } from '../../styles';
 function Preloader({ message = 'Завантаження даних...' }) {
   return (
     <Box
+      alignItems='center'
       display='flex'
       flexDirection='column'
-      alignItems='center'
       justifyContent='center'
       sx={stylesPreloaderMargin}
     >
-      <Typography variant='h5' style={stylesPreloaderTitle}>
+      <Typography style={stylesPreloaderTitle} variant='h5'>
         {message}
       </Typography>
       <Box width='100%'>

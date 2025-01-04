@@ -41,31 +41,31 @@ function RoleDeletePage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Видалення ролі...'
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Typography variant='body1' sx={stylesDeletePageTypography}>
-            Ви впевнені, що хочете видалити роль «{roleToCRUD?.title}»?
-          </Typography>
-        )
-      }
       actions={[
         <Button
           key='delete'
-          variant='contained'
+          fullWidth
           color='error'
           size='large'
+          variant='contained'
           onClick={handleDeleteRole}
-          fullWidth
         >
           Видалити
         </Button>,
       ]}
+      content={
+        isLoading ? (
+          <Preloader />
+        ) : (
+          <Typography sx={stylesDeletePageTypography} variant='body1'>
+            Ви впевнені, що хочете видалити роль «{roleToCRUD?.title}»?
+          </Typography>
+        )
+      }
       error={errorMessage || crudError}
+      title='Видалення ролі...'
+      onClose={handleModalClose}
     />
   );
 }

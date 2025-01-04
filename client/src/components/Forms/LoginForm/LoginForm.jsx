@@ -25,11 +25,11 @@ function LoginForm({ onSubmit }) {
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText='Увійти'
       validationSchema={LOGIN_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText='Увійти'
     />
   );
 }

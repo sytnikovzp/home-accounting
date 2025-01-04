@@ -100,44 +100,44 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path='edit/:uuid'
         element={
           <UserEditPage
-            handleModalClose={handleModalClose}
-            fetchUsers={fetchUsers}
-            roles={roles}
             crudError={crudError}
+            fetchUsers={fetchUsers}
+            handleModalClose={handleModalClose}
+            roles={roles}
             setCrudError={setCrudError}
           />
         }
+        path='edit/:uuid'
       />
       <Route
-        path='password/:uuid'
         element={
           <UserChangePasswordPage
-            handleModalClose={handleModalClose}
-            fetchUsers={fetchUsers}
             crudError={crudError}
+            fetchUsers={fetchUsers}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='password/:uuid'
       />
       <Route
-        path='delete/:uuid'
         element={
           <UserDeletePage
-            handleModalClose={handleModalClose}
-            fetchUsers={fetchUsers}
             crudError={crudError}
-            setCrudError={setCrudError}
             currentUser={currentUser}
+            fetchUsers={fetchUsers}
+            handleModalClose={handleModalClose}
+            setCrudError={setCrudError}
             setIsAuthenticated={setIsAuthenticated}
           />
         }
+        path='delete/:uuid'
       />
       <Route
-        path=':uuid'
         element={<UserViewPage handleModalClose={handleModalClose} />}
+        path=':uuid'
       />
     </Routes>
   );
@@ -149,21 +149,21 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Користувачі</Typography>
       </Box>
       <ListTable
+        showStatusDropdown
+        usersPage
         columns={[
           { field: 'photo', headerName: 'Фото', align: 'center' },
           { field: 'fullName', headerName: 'Повне ім`я', align: 'left' },
         ]}
-        rows={users}
-        onEdit={(user) => openModal('edit', user.uuid)}
-        onDelete={(user) => openModal('delete', user.uuid)}
+        linkEntity='users'
         pagination={{
           totalCount,
           currentPage,
@@ -172,15 +172,15 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
+        rows={users}
         selectedStatus={emailVerificationStatus}
+        sortModel={sortModel}
+        onDelete={(user) => openModal('delete', user.uuid)}
+        onEdit={(user) => openModal('edit', user.uuid)}
+        onSortModelChange={setSortModel}
         onStatusChange={(event) =>
           setEmailVerificationStatus(event.target.value)
         }
-        showStatusDropdown
-        usersPage
-        linkEntity='users'
       />
       {renderRoutes()}
     </>

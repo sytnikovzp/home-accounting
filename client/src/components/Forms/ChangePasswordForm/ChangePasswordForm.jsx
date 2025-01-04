@@ -28,11 +28,11 @@ function ChangePasswordForm({ onSubmit }) {
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText='Змінити пароль'
       validationSchema={PASSWORD_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText='Змінити пароль'
     />
   );
 }

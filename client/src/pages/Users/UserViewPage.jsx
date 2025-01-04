@@ -80,9 +80,7 @@ function UserViewPage({ handleModalClose }) {
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Деталі користувача...'
       content={
         isLoading ? (
           <Preloader />
@@ -91,10 +89,10 @@ function UserViewPage({ handleModalClose }) {
             <Box sx={stylesViewPageBoxWithAvatar}>
               <ViewDetailRow icon={Info} label='Повне ім’я' value={fullName} />
               <Avatar
-                src={photoSrc}
                 alt='Фото користувача'
-                variant='rounded'
+                src={photoSrc}
                 sx={stylesViewPageAvatarSize}
+                variant='rounded'
               />
             </Box>
             <ViewDetailRow
@@ -102,9 +100,9 @@ function UserViewPage({ handleModalClose }) {
               label='Роль'
               value={
                 <Link
+                  color='primary'
                   component={RouterLink}
                   to={`/roles/${role?.uuid}`}
-                  color='primary'
                   underline='hover'
                 >
                   {role?.title}
@@ -117,9 +115,9 @@ function UserViewPage({ handleModalClose }) {
                 label='Email'
                 value={
                   <Link
+                    color='primary'
                     component={RouterLink}
                     to={`mailto:${email}`}
-                    color='primary'
                     underline='hover'
                   >
                     {email}
@@ -137,9 +135,9 @@ function UserViewPage({ handleModalClose }) {
                 {emailVerificationStatus === 'Очікує веріфікації' && (
                   <Tooltip title='Повторно відправити email'>
                     <Button
-                      variant='text'
                       size='small'
                       sx={stylesUserViewPageEmailBoxButton}
+                      variant='text'
                       onClick={() => handleResendVerification(email)}
                     >
                       ⟳
@@ -166,6 +164,8 @@ function UserViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
+      title='Деталі користувача...'
+      onClose={handleModalClose}
     />
   );
 }

@@ -31,11 +31,11 @@ function RegistrationForm({ onSubmit }) {
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText='Зареєструватися та увійти'
       validationSchema={REGISTRATION_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText='Зареєструватися та увійти'
     />
   );
 }

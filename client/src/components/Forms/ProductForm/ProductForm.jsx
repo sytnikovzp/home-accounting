@@ -33,11 +33,11 @@ function ProductForm({ product = null, onSubmit, categories }) {
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText={product ? 'Зберегти зміни' : 'Додати товар'}
       validationSchema={PRODUCT_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText={product ? 'Зберегти зміни' : 'Додати товар'}
     />
   );
 }

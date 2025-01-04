@@ -17,11 +17,11 @@ function CategoryForm({ category = null, onSubmit }) {
 
   return (
     <BaseForm
+      fields={fields}
       initialValues={initialValues}
+      submitButtonText={category ? 'Зберегти зміни' : 'Додати категорію'}
       validationSchema={CATEGORY_VALIDATION_SCHEME}
       onSubmit={onSubmit}
-      fields={fields}
-      submitButtonText={category ? 'Зберегти зміни' : 'Додати категорію'}
     />
   );
 }

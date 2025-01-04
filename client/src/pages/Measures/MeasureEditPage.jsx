@@ -44,9 +44,7 @@ function MeasureEditPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Редагування одиниці...'
       content={
         isLoading ? (
           <Preloader />
@@ -55,6 +53,8 @@ function MeasureEditPage({
         )
       }
       error={errorMessage || crudError}
+      title='Редагування одиниці...'
+      onClose={handleModalClose}
     />
   );
 }

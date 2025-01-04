@@ -53,9 +53,7 @@ function RoleViewPage({ handleModalClose }) {
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Деталі ролі...'
       content={
         isLoading ? (
           <Preloader />
@@ -81,7 +79,7 @@ function RoleViewPage({ handleModalClose }) {
             </Box>
             <Divider sx={{ my: 2 }} />
             <Box>
-              <Typography variant='h6' sx={{ mb: 2 }}>
+              <Typography sx={{ mb: 2 }} variant='h6'>
                 Дозволи (Permissions):
               </Typography>
               <Box sx={stylesRoleViewPageBoxPermission}>
@@ -90,8 +88,8 @@ function RoleViewPage({ handleModalClose }) {
                     permissions.map((permission) => (
                       <ListItem
                         key={permission.uuid}
-                        sx={{ ml: 3 }}
                         disableGutters
+                        sx={{ ml: 3 }}
                       >
                         <ListItemIcon>
                           <Lock color='primary' />
@@ -121,6 +119,8 @@ function RoleViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
+      title='Деталі ролі...'
+      onClose={handleModalClose}
     />
   );
 }

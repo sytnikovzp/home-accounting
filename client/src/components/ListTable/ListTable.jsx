@@ -90,6 +90,7 @@ function ListTable({
       {['logo', 'photo'].includes(col.field) ? (
         <Box sx={stylesListTableAvatarBox}>
           <Avatar
+            alt={col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
             src={
               row[col.field]
                 ? `${BASE_URL.replace('/api/', '')}/images/${
@@ -99,30 +100,29 @@ function ListTable({
                   ? `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
                   : undefined
             }
-            alt={col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
-            variant='rounded'
             sx={stylesListTableAvatarSize}
+            variant='rounded'
           />
         </Box>
       ) : col.field === 'title' && isModerationPage ? (
-        <Typography variant='body1' sx={stylesListTableTextColor}>
+        <Typography sx={stylesListTableTextColor} variant='body1'>
           {row[col.field]}
         </Typography>
       ) : ['title', 'product', 'fullName'].includes(col.field) ? (
         <RouterLink
-          to={`/${linkEntity}/${row.uuid}`}
           style={{ textDecoration: 'none' }}
+          to={`/${linkEntity}/${row.uuid}`}
         >
           <Typography
-            variant='body1'
             component='span'
             sx={stylesListTableTableTypography}
+            variant='body1'
           >
             {row[col.field]}
           </Typography>
         </RouterLink>
       ) : (
-        <Typography variant='body1' sx={stylesListTableTextColor}>
+        <Typography sx={stylesListTableTextColor} variant='body1'>
           {row[col.field]}
         </Typography>
       )}
@@ -154,10 +154,10 @@ function ListTable({
       <FormControl sx={stylesListTableFormControl}>
         <InputLabel id='status-select-label'>Статус</InputLabel>
         <Select
-          labelId='status-select-label'
-          value={selectedStatus}
           label='Статус'
+          labelId='status-select-label'
           size='small'
+          value={selectedStatus}
           onChange={(e) => {
             onStatusChange(e);
             onPageChange(1);
@@ -247,7 +247,7 @@ function ListTable({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={memoizedColumns.length + 1} align='center'>
+              <TableCell align='center' colSpan={memoizedColumns.length + 1}>
                 <Typography variant='body1'>
                   Немає даних для відображення
                 </Typography>
@@ -274,31 +274,31 @@ function ListTable({
         </TableBody>
       </Table>
       <Box
+        alignItems='center'
         display='flex'
         flexWrap='wrap'
         justifyContent={showStatusDropdown ? 'space-between' : 'flex-end'}
-        alignItems='center'
         m={2}
       >
         {showStatusDropdown && renderStatusDropdown()}
         <TablePagination
           component='div'
           count={totalCount}
-          page={currentPage - 1}
-          rowsPerPage={pageSize}
-          rowsPerPageOptions={isMobile ? [] : rowsPerPageOptions}
-          onPageChange={(event, page) => onPageChange(page + 1)}
-          onRowsPerPageChange={(event) =>
-            onRowsPerPageChange(parseInt(event.target.value))
-          }
           labelDisplayedRows={({ from, to, count }) =>
             `${from}-${to} из ${count}`
           }
+          page={currentPage - 1}
+          rowsPerPage={pageSize}
+          rowsPerPageOptions={isMobile ? [] : rowsPerPageOptions}
           sx={{
             '& .MuiTablePagination-toolbar': {
               flexWrap: isMobile ? 'wrap' : 'nowrap',
             },
           }}
+          onPageChange={(event, page) => onPageChange(page + 1)}
+          onRowsPerPageChange={(event) =>
+            onRowsPerPageChange(parseInt(event.target.value))
+          }
         />
       </Box>
     </TableContainer>

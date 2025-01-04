@@ -53,24 +53,24 @@ function ExpenseEditPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Редагування витрати...'
       content={
         isLoading ? (
           <Preloader />
         ) : (
           <ExpenseForm
-            expense={expenseToCRUD}
-            onSubmit={handleSubmitExpense}
-            products={products}
-            establishments={establishments}
-            measures={measures}
             currencies={currencies}
+            establishments={establishments}
+            expense={expenseToCRUD}
+            measures={measures}
+            products={products}
+            onSubmit={handleSubmitExpense}
           />
         )
       }
       error={errorMessage || crudError}
+      title='Редагування витрати...'
+      onClose={handleModalClose}
     />
   );
 }

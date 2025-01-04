@@ -40,9 +40,7 @@ function CategoryEditPage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Редагування категорії...'
       content={
         isLoading ? (
           <Preloader />
@@ -54,6 +52,8 @@ function CategoryEditPage({
         )
       }
       error={errorMessage || crudError}
+      title='Редагування категорії...'
+      onClose={handleModalClose}
     />
   );
 }

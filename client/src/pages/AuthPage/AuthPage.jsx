@@ -57,7 +57,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
     };
 
     return (
-      <Box display='flex' flexDirection='column' alignItems='center'>
+      <Box alignItems='center' display='flex' flexDirection='column'>
         <Avatar
           sx={{
             ...stylesAuthPageAvatar,
@@ -71,7 +71,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
         >
           <LockOutlined />
         </Avatar>
-        <Typography variant='h6' sx={stylesAuthPageTitle}>
+        <Typography sx={stylesAuthPageTitle} variant='h6'>
           {titles[authMode]}
         </Typography>
       </Box>
@@ -89,10 +89,10 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
               }
             />
             <Button
-              variant='text'
-              color='secondary'
               fullWidth
+              color='secondary'
               sx={{ mt: 2 }}
+              variant='text'
               onClick={() => toggleAuthMode('forgotPassword')}
             >
               Забули пароль?
@@ -124,10 +124,10 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
     if (authMode === 'forgotPassword') {
       return (
         <Button
-          onClick={() => toggleAuthMode('login')}
-          variant='text'
-          color='secondary'
           fullWidth
+          color='secondary'
+          variant='text'
+          onClick={() => toggleAuthMode('login')}
         >
           Повернутися до авторизації
         </Button>
@@ -136,12 +136,12 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
 
     return (
       <Button
+        fullWidth
+        color='secondary'
+        variant='text'
         onClick={() =>
           toggleAuthMode(authMode === 'login' ? 'register' : 'login')
         }
-        variant='text'
-        color='secondary'
-        fullWidth
       >
         {authMode === 'login'
           ? 'Перейти до реєстрації'
@@ -152,15 +152,15 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
 
   return (
     <CustomModal
+      actions={renderActions()}
+      content={renderContent()}
+      error={errorMessage}
       isOpen={isOpen}
+      title={renderTitle()}
       onClose={() => {
         onClose();
         navigate('/');
       }}
-      title={renderTitle()}
-      content={renderContent()}
-      actions={renderActions()}
-      error={errorMessage}
     />
   );
 }

@@ -41,32 +41,32 @@ function EstablishmentDeletePage({
   return (
     <CustomModal
       isOpen
-      onClose={handleModalClose}
       showCloseButton
-      title='Видалення закладу...'
+      actions={[
+        <Button
+          key='delete'
+          fullWidth
+          color='error'
+          size='large'
+          variant='contained'
+          onClick={handleDeleteEstablishment}
+        >
+          Видалити
+        </Button>,
+      ]}
       content={
         isLoading ? (
           <Preloader />
         ) : (
-          <Typography variant='body1' sx={stylesDeletePageTypography}>
+          <Typography sx={stylesDeletePageTypography} variant='body1'>
             Ви впевнені, що хочете видалити заклад «{establishmentToCRUD?.title}
             »? Це призведе до видалення всіх витрат, пов'язаних з цим закладом.
           </Typography>
         )
       }
-      actions={[
-        <Button
-          key='delete'
-          variant='contained'
-          color='error'
-          size='large'
-          onClick={handleDeleteEstablishment}
-          fullWidth
-        >
-          Видалити
-        </Button>,
-      ]}
       error={errorMessage || crudError}
+      title='Видалення закладу...'
+      onClose={handleModalClose}
     />
   );
 }

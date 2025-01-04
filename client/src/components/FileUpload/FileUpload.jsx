@@ -23,6 +23,7 @@ function FileUpload({ file, onUpload, onRemove, label, entity, uploading }) {
     <Box sx={stylesFileUploadMainBox}>
       <Box sx={stylesFileUploadAvatarBox}>
         <Avatar
+          alt={file ? 'Файл завантажений' : 'Файл не завантажений'}
           src={
             file
               ? `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`
@@ -30,28 +31,27 @@ function FileUpload({ file, onUpload, onRemove, label, entity, uploading }) {
                 ? undefined
                 : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
           }
-          alt={file ? 'Файл завантажений' : 'Файл не завантажений'}
-          variant='rounded'
           sx={stylesFileUploadAvatar}
+          variant='rounded'
         />
         {file && (
           <IconButton
-            size='small'
             color='error'
-            onClick={onRemove}
+            size='small'
             sx={stylesFileUploadIconButton}
+            onClick={onRemove}
           >
             <Clear fontSize='small' />
           </IconButton>
         )}
       </Box>
       {uploading && <LinearProgress sx={stylesFileUploadLinearProgress} />}
-      <Button variant='contained' color='success' component='label'>
+      <Button color='success' component='label' variant='contained'>
         {label}
         <input
-          type='file'
-          accept='image/*'
           hidden
+          accept='image/*'
+          type='file'
           onChange={handleFileChange}
         />
       </Button>

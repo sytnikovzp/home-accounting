@@ -91,43 +91,43 @@ function RolesPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path='add'
         element={
           <RoleAddPage
-            handleModalClose={handleModalClose}
-            fetchRoles={fetchRoles}
-            permissionsList={permissionsList}
             crudError={crudError}
+            fetchRoles={fetchRoles}
+            handleModalClose={handleModalClose}
+            permissionsList={permissionsList}
             setCrudError={setCrudError}
           />
         }
+        path='add'
       />
       <Route
-        path='edit/:uuid'
         element={
           <RoleEditPage
-            handleModalClose={handleModalClose}
-            fetchRoles={fetchRoles}
-            permissionsList={permissionsList}
             crudError={crudError}
+            fetchRoles={fetchRoles}
+            handleModalClose={handleModalClose}
+            permissionsList={permissionsList}
             setCrudError={setCrudError}
           />
         }
+        path='edit/:uuid'
       />
       <Route
-        path='delete/:uuid'
         element={
           <RoleDeletePage
-            handleModalClose={handleModalClose}
-            fetchRoles={fetchRoles}
             crudError={crudError}
+            fetchRoles={fetchRoles}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='delete/:uuid'
       />
       <Route
-        path=':uuid'
         element={<RoleViewPage handleModalClose={handleModalClose} />}
+        path=':uuid'
       />
     </Routes>
   );
@@ -139,16 +139,16 @@ function RolesPage() {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Ролі користувачів</Typography>
         <Button
-          variant='contained'
           color='success'
           size='small'
+          variant='contained'
           onClick={() => openModal('add')}
         >
           Додати роль
@@ -156,9 +156,7 @@ function RolesPage() {
       </Box>
       <ListTable
         columns={[{ field: 'title', headerName: 'Назва ролі', align: 'left' }]}
-        rows={roles}
-        onEdit={(role) => openModal('edit', role.uuid)}
-        onDelete={(role) => openModal('delete', role.uuid)}
+        linkEntity='roles'
         pagination={{
           totalCount,
           currentPage,
@@ -167,9 +165,11 @@ function RolesPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
+        rows={roles}
         sortModel={sortModel}
+        onDelete={(role) => openModal('delete', role.uuid)}
+        onEdit={(role) => openModal('edit', role.uuid)}
         onSortModelChange={setSortModel}
-        linkEntity='roles'
       />
       {renderRoutes()}
     </>

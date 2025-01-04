@@ -98,43 +98,43 @@ function ProductsPage() {
   const renderRoutes = () => (
     <Routes>
       <Route
-        path='add'
         element={
           <ProductAddPage
-            handleModalClose={handleModalClose}
-            fetchProducts={fetchProducts}
             categories={categories}
             crudError={crudError}
+            fetchProducts={fetchProducts}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='add'
       />
       <Route
-        path='edit/:uuid'
         element={
           <ProductEditPage
-            handleModalClose={handleModalClose}
-            fetchProducts={fetchProducts}
             categories={categories}
             crudError={crudError}
+            fetchProducts={fetchProducts}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='edit/:uuid'
       />
       <Route
-        path='delete/:uuid'
         element={
           <ProductDeletePage
-            handleModalClose={handleModalClose}
-            fetchProducts={fetchProducts}
             crudError={crudError}
+            fetchProducts={fetchProducts}
+            handleModalClose={handleModalClose}
             setCrudError={setCrudError}
           />
         }
+        path='delete/:uuid'
       />
       <Route
-        path=':uuid'
         element={<ProductViewPage handleModalClose={handleModalClose} />}
+        path=':uuid'
       />
     </Routes>
   );
@@ -146,29 +146,28 @@ function ProductsPage() {
   return (
     <>
       <Box
+        alignItems='center'
         display='flex'
         justifyContent='space-between'
-        alignItems='center'
         mb={2}
       >
         <Typography variant='h6'>Товари та послуги</Typography>
         <Button
-          variant='contained'
           color='success'
           size='small'
+          variant='contained'
           onClick={() => openModal('add')}
         >
           Додати товар/послугу
         </Button>
       </Box>
       <ListTable
+        showStatusDropdown
         columns={[
           { field: 'category', headerName: 'Категорія', align: 'left' },
           { field: 'title', headerName: 'Назва товару/послуги', align: 'left' },
         ]}
-        rows={products}
-        onEdit={(product) => openModal('edit', product.uuid)}
-        onDelete={(product) => openModal('delete', product.uuid)}
+        linkEntity='products'
         pagination={{
           totalCount,
           currentPage,
@@ -177,12 +176,13 @@ function ProductsPage() {
           onRowsPerPageChange: handleRowsPerPageChange,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
         }}
-        sortModel={sortModel}
-        onSortModelChange={setSortModel}
+        rows={products}
         selectedStatus={selectedStatus}
+        sortModel={sortModel}
+        onDelete={(product) => openModal('delete', product.uuid)}
+        onEdit={(product) => openModal('edit', product.uuid)}
+        onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
-        showStatusDropdown
-        linkEntity='products'
       />
       {renderRoutes()}
     </>
