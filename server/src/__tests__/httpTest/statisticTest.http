@@ -7,7 +7,7 @@ GET http://localhost:5000/api/statistics/category-per-period?category=Побут
 Content-Type: application/json
 
 ### Get cost by category per all time ("result": 0)
-GET http://localhost:5000/api/statistics/category-per-period?category=Одяг HTTP/1.1
+GET http://localhost:5000/api/statistics/category-per-period?category=Ліки HTTP/1.1
 Content-Type: application/json
 
 ### Get cost by category (error)
@@ -25,7 +25,21 @@ GET http://localhost:5000/api/statistics/establishment-per-period?establishment=
 Content-Type: application/json
 
 ### Get cost by establishment (error)
-GET http://localhost:5000/api/statistics/establishment-per-period?establishment=Ашан HTTP/1.1
+GET http://localhost:5000/api/statistics/establishment-per-period?establishment=Test HTTP/1.1
+Content-Type: application/json
+
+// ==============================================================
+
+### Get cost by product per period
+GET http://localhost:5000/api/statistics/product-per-period?product=Гриби&ago=week HTTP/1.1
+Content-Type: application/json
+
+### Get cost by product per all time
+GET http://localhost:5000/api/statistics/product-per-period?product=Риба HTTP/1.1
+Content-Type: application/json
+
+### Get cost by product (error)
+GET http://localhost:5000/api/statistics/product-per-period?product=Test HTTP/1.1
 Content-Type: application/json
 
 // ==============================================================
@@ -46,4 +60,14 @@ Content-Type: application/json
 
 ### Get cost by establishments per all time
 GET http://localhost:5000/api/statistics/establishments HTTP/1.1
+Content-Type: application/json
+
+// ==============================================================
+
+### Get cost by products per period
+GET http://localhost:5000/api/statistics/products?ago=month HTTP/1.1
+Content-Type: application/json
+
+### Get cost by products per all time
+GET http://localhost:5000/api/statistics/products HTTP/1.1
 Content-Type: application/json

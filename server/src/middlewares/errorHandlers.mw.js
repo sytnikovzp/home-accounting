@@ -8,11 +8,10 @@ const {
 const AuthError = require('../errors/authErrors');
 const GeneralError = require('../errors/generalErrors');
 
-const formatError = (title, message, details = []) => ({
+const formatError = (title, message) => ({
   severity: 'error',
   title,
   message,
-  details,
 });
 
 module.exports.authErrorHandler = (err, req, res, next) => {

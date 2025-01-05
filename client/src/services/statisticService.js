@@ -17,6 +17,12 @@ const getCostByEstablishmentPerPeriod = async (establishment, ago = null) => {
   return data;
 };
 
+const getCostByProductPerPeriod = async (product, ago = null) => {
+  const params = new URLSearchParams(product, ...(ago && { ago })).toString();
+  const { data } = await api.get(`/statistics/product-per-period?${params}`);
+  return data;
+};
+
 const getCostByCategories = async (ago = null) => {
   const params = new URLSearchParams(...(ago && { ago })).toString();
   const { data } = await api.get(`/statistics/categories?${params}`);
@@ -29,9 +35,17 @@ const getCostByEstablishments = async (ago = null) => {
   return data;
 };
 
+const getCostByProducts = async (ago = null) => {
+  const params = new URLSearchParams(...(ago && { ago })).toString();
+  const { data } = await api.get(`/statistics/products?${params}`);
+  return data;
+};
+
 export default {
   getCostByCategoryPerPeriod,
   getCostByEstablishmentPerPeriod,
+  getCostByProductPerPeriod,
   getCostByCategories,
   getCostByEstablishments,
+  getCostByProducts,
 };

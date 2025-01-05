@@ -344,12 +344,20 @@ const restController = {
     );
     return data;
   },
+  fetchCostByProductPerPeriod: async (product, ago = null) => {
+    const data = await statisticService.getCostByProductPerPeriod(product, ago);
+    return data;
+  },
   fetchCostByCategories: async (ago = null) => {
     const data = await statisticService.getCostByCategories(ago);
     return data;
   },
   fetchCostByEstablishments: async (ago = null) => {
     const data = await statisticService.getCostByEstablishments(ago);
+    return data;
+  },
+  fetchCostByProducts: async (ago = null) => {
+    const data = await statisticService.getCostByProducts(ago);
     return data;
   },
 };

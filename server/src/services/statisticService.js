@@ -8,39 +8,50 @@ const {
   sequelize,
 } = require('../db/dbPostgres/models');
 const { getTime, getRecordByTitle } = require('../utils/sharedFunctions');
-const { notFound } = require('../errors/generalErrors');
+const { notFound, badRequest } = require('../errors/generalErrors');
 
 class StatisticService {
   async getCostByCategoryPerPeriod(category, ago) {
+    if (!category) throw badRequest('Необхідний параметр: category');
     const time = getTime(ago);
     const foundCategory = await getRecordByTitle(Category, category);
     if (!foundCategory) throw notFound('Категорію не знайдено');
-    const productUuids = await Product.findAll({
-      where: { categoryUuid: foundCategory.uuid },
-      attributes: ['uuid'],
-      raw: true,
-    });
-    const prodUuids = productUuids.map((expense) => expense.uuid);
-    if (prodUuids.length === 0) {
-      return [{ result: 0 }];
-    }
     const costByCategoryPerPeriod = await Expense.findAll({
-      attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
+      attributes: [
+        [sequelize.col('Product->Category.title'), 'title'],
+        [
+          sequelize.literal('ROUND(SUM("quantity" * "unit_price"), 2)'),
+          'result',
+        ],
+      ],
       where: {
-        productUuid: { [Op.in]: prodUuids },
         createdAt: { [Op.gte]: time },
       },
-      group: ['currency_uuid'],
+      include: [
+        {
+          model: Product,
+          attributes: [],
+          where: { categoryUuid: foundCategory.uuid },
+          include: [
+            {
+              model: Category,
+              attributes: [],
+            },
+          ],
+        },
+      ],
+      group: ['Product->Category.title'],
       raw: true,
     });
     const totalCost =
       costByCategoryPerPeriod.length > 0
         ? costByCategoryPerPeriod
-        : [{ result: 0 }];
+        : [{ title: category, result: 0 }];
     return totalCost;
   }
 
   async getCostByEstablishmentPerPeriod(establishment, ago) {
+    if (!establishment) throw badRequest('Необхідний параметр: establishment');
     const time = getTime(ago);
     const foundEstablishment = await getRecordByTitle(
       Establishment,
@@ -48,12 +59,24 @@ class StatisticService {
     );
     if (!foundEstablishment) throw notFound('Заклад не знайдено');
     const costByEstablishmentPerPeriod = await Expense.findAll({
-      attributes: [[sequelize.fn('SUM', sequelize.col('summ')), 'result']],
+      attributes: [
+        [sequelize.col('Establishment.title'), 'title'],
+        [
+          sequelize.literal('ROUND(SUM("quantity" * "unit_price"), 2)'),
+          'result',
+        ],
+      ],
       where: {
         establishmentUuid: foundEstablishment.uuid,
         createdAt: { [Op.gte]: time },
       },
-      group: ['currency_uuid'],
+      include: [
+        {
+          model: Establishment,
+          attributes: [],
+        },
+      ],
+      group: ['currency_uuid', 'Establishment.title'],
       raw: true,
     });
     const totalCost =
@@ -63,12 +86,48 @@ class StatisticService {
     return totalCost;
   }
 
+  async getCostByProductPerPeriod(product, ago) {
+    if (!product) throw badRequest('Необхідний параметр: product');
+    const time = getTime(ago);
+    const foundProduct = await getRecordByTitle(Product, product);
+    if (!foundProduct) throw notFound('Товар не знайдено');
+    const costByProductPerPeriod = await Expense.findAll({
+      attributes: [
+        [sequelize.col('Product.title'), 'title'],
+        [
+          sequelize.literal('ROUND(SUM("quantity" * "unit_price"), 2)'),
+          'result',
+        ],
+      ],
+      where: {
+        productUuid: foundProduct.uuid,
+        createdAt: { [Op.gte]: time },
+      },
+      include: [
+        {
+          model: Product,
+          attributes: [],
+        },
+      ],
+      group: ['currency_uuid', 'Product.title'],
+      raw: true,
+    });
+    const totalCost =
+      costByProductPerPeriod.length > 0
+        ? costByProductPerPeriod
+        : [{ result: 0 }];
+    return totalCost;
+  }
+
   async getCostByCategories(ago) {
     const time = getTime(ago);
     const result = await Expense.findAll({
       attributes: [
         'Product->Category.title',
-        [sequelize.fn('SUM', sequelize.col('summ')), 'result'],
+        [
+          sequelize.literal('ROUND(SUM("quantity" * "unit_price"), 2)'),
+          'result',
+        ],
       ],
       include: [
         {
@@ -98,18 +157,34 @@ class StatisticService {
       attributes: [
         'Establishment.title',
         [
-          sequelize.fn('COALESCE', sequelize.col('Establishment.url'), ''),
-          'url',
+          sequelize.literal('ROUND(SUM("quantity" * "unit_price"), 2)'),
+          'result',
         ],
-        [
-          sequelize.fn('COALESCE', sequelize.col('Establishment.logo'), ''),
-          'logo',
-        ],
-        [sequelize.fn('SUM', sequelize.col('summ')), 'result'],
       ],
       include: [{ model: Establishment, attributes: [] }],
       where: { createdAt: { [Op.gte]: time } },
-      group: ['Establishment.title', 'Establishment.url', 'Establishment.logo'],
+      group: ['Establishment.title'],
+      raw: true,
+    });
+    const totalCost = result.length
+      ? result
+      : [{ title: 'No data', result: '0' }];
+    return totalCost;
+  }
+
+  async getCostByProducts(ago) {
+    const time = getTime(ago);
+    const result = await Expense.findAll({
+      attributes: [
+        'Product.title',
+        [
+          sequelize.literal('ROUND(SUM("quantity" * "unit_price"), 2)'),
+          'result',
+        ],
+      ],
+      include: [{ model: Product, attributes: [] }],
+      where: { createdAt: { [Op.gte]: time } },
+      group: ['Product.title'],
       raw: true,
     });
     const totalCost = result.length
