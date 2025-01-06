@@ -7,8 +7,8 @@ const {
 class StatisticController {
   async getCostByCategories(req, res, next) {
     try {
-      const { ago = 'allTime' } = req.query;
-      const result = await getCostByCategories(ago);
+      const { ago = 'allTime', creatorUuid = null } = req.query;
+      const result = await getCostByCategories(ago, creatorUuid);
       if (result.length > 0) {
         res.status(200).json(result);
       } else {
@@ -22,8 +22,8 @@ class StatisticController {
 
   async getCostByEstablishments(req, res, next) {
     try {
-      const { ago = 'allTime' } = req.query;
-      const result = await getCostByEstablishments(ago);
+      const { ago = 'allTime', creatorUuid = null } = req.query;
+      const result = await getCostByEstablishments(ago, creatorUuid);
       if (result.length > 0) {
         res.status(200).json(result);
       } else {
@@ -40,8 +40,8 @@ class StatisticController {
 
   async getCostByProducts(req, res, next) {
     try {
-      const { ago = 'allTime' } = req.query;
-      const result = await getCostByProducts(ago);
+      const { ago = 'allTime', creatorUuid = null } = req.query;
+      const result = await getCostByProducts(ago, creatorUuid);
       if (result.length > 0) {
         res.status(200).json(result);
       } else {

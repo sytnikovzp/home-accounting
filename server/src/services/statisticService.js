@@ -7,11 +7,18 @@ const {
   Category,
   sequelize,
 } = require('../db/dbPostgres/models');
-const { getTime } = require('../utils/sharedFunctions');
+const { getTime, isValidUUID } = require('../utils/sharedFunctions');
+const { badRequest } = require('../errors/generalErrors');
 
 class StatisticService {
-  async getCostByCategories(ago) {
+  async getCostByCategories(ago, creatorUuid) {
+    if (creatorUuid && !isValidUUID(creatorUuid))
+      throw badRequest('Невірний формат UUID');
     const time = getTime(ago);
+    const whereCondition = {
+      date: { [Op.gte]: time },
+      ...(creatorUuid && { creatorUuid }),
+    };
     const result = await Expense.findAll({
       attributes: [
         'Product->Category.title',
@@ -32,18 +39,21 @@ class StatisticService {
           ],
         },
       ],
-      where: { date: { [Op.gte]: time } },
+      where: whereCondition,
       group: ['Product->Category.uuid'],
       raw: true,
     });
-    const totalCost = result.length
-      ? result
-      : [{ title: 'Немає даних', result: '0' }];
-    return totalCost;
+    return result.length ? result : [{ title: 'Немає даних', result: '0' }];
   }
 
-  async getCostByEstablishments(ago) {
+  async getCostByEstablishments(ago, creatorUuid) {
+    if (creatorUuid && !isValidUUID(creatorUuid))
+      throw badRequest('Невірний формат UUID');
     const time = getTime(ago);
+    const whereCondition = {
+      date: { [Op.gte]: time },
+      ...(creatorUuid && { creatorUuid }),
+    };
     const result = await Expense.findAll({
       attributes: [
         'Establishment.title',
@@ -53,18 +63,21 @@ class StatisticService {
         ],
       ],
       include: [{ model: Establishment, attributes: [] }],
-      where: { date: { [Op.gte]: time } },
+      where: whereCondition,
       group: ['Establishment.title'],
       raw: true,
     });
-    const totalCost = result.length
-      ? result
-      : [{ title: 'Немає даних', result: '0' }];
-    return totalCost;
+    return result.length ? result : [{ title: 'Немає даних', result: '0' }];
   }
 
-  async getCostByProducts(ago) {
+  async getCostByProducts(ago, creatorUuid) {
+    if (creatorUuid && !isValidUUID(creatorUuid))
+      throw badRequest('Невірний формат UUID');
     const time = getTime(ago);
+    const whereCondition = {
+      date: { [Op.gte]: time },
+      ...(creatorUuid && { creatorUuid }),
+    };
     const result = await Expense.findAll({
       attributes: [
         'Product.title',
@@ -74,14 +87,11 @@ class StatisticService {
         ],
       ],
       include: [{ model: Product, attributes: [] }],
-      where: { date: { [Op.gte]: time } },
+      where: whereCondition,
       group: ['Product.title'],
       raw: true,
     });
-    const totalCost = result.length
-      ? result
-      : [{ title: 'Немає даних', result: '0' }];
-    return totalCost;
+    return result.length ? result : [{ title: 'Немає даних', result: '0' }];
   }
 }
 

@@ -330,16 +330,34 @@ const restController = {
     moderationService.moderationEstablishment(establishmentUuid, status),
 
   // Statistics
-  fetchCostByCategories: async ({ ago = 'allTime' } = {}) => {
-    const { data } = await statisticService.getCostByCategories({ ago });
+  fetchCostByCategories: async ({
+    ago = 'allTime',
+    creatorUuid = null,
+  } = {}) => {
+    const params = {
+      ago,
+      ...(creatorUuid ? { creatorUuid } : {}),
+    };
+    const { data } = await statisticService.getCostByCategories(params);
     return { data };
   },
-  fetchCostByEstablishments: async ({ ago = 'allTime' } = {}) => {
-    const { data } = await statisticService.getCostByEstablishments({ ago });
+  fetchCostByEstablishments: async ({
+    ago = 'allTime',
+    creatorUuid = null,
+  } = {}) => {
+    const params = {
+      ago,
+      ...(creatorUuid ? { creatorUuid } : {}),
+    };
+    const { data } = await statisticService.getCostByEstablishments(params);
     return { data };
   },
-  fetchCostByProducts: async ({ ago = 'allTime' } = {}) => {
-    const { data } = await statisticService.getCostByProducts({ ago });
+  fetchCostByProducts: async ({ ago = 'allTime', creatorUuid = null } = {}) => {
+    const params = {
+      ago,
+      ...(creatorUuid ? { creatorUuid } : {}),
+    };
+    const { data } = await statisticService.getCostByProducts(params);
     return { data };
   },
 };

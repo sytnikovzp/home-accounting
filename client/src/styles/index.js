@@ -15,4 +15,5 @@ export * from './components/serviceBlock';
 export * from './components/viewDetailRow';
 export * from './pages/authPage';
 export * from './pages/deletePages';
+export * from './pages/homePage';
 export * from './pages/viewPages';

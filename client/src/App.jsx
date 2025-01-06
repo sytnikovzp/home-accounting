@@ -91,7 +91,7 @@ function App() {
           }
           path='/'
         >
-          <Route index element={<HomePage />} />
+          <Route index element={<HomePage currentUser={currentUser} />} />
           <Route
             element={renderPrivateRoute(<ExpensesPage />)}
             path='expenses/*'

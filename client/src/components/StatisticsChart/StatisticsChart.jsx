@@ -30,7 +30,7 @@ function StatisticsChart({ data }) {
       labels: titles,
       datasets: [
         {
-          label: 'Вартість',
+          label: 'Витрати',
           data: results,
           backgroundColor: ['#4caf50', '#66bb6a', '#81c784', '#a5d6a7'],
           borderColor: '#2e7d32',

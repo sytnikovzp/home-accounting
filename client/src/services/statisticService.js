@@ -1,9 +1,14 @@
 import api from '../api';
 
-const getCostByCategories = async ({ ago = 'allTime' } = {}) => {
-  const params = new URLSearchParams({ ago }).toString();
+const getCostByCategories = async ({ ago = 'allTime', creatorUuid } = {}) => {
+  const params = new URLSearchParams({ ago });
+  if (creatorUuid) {
+    params.append('creatorUuid', creatorUuid);
+  }
   try {
-    const { data } = await api.get(`/statistics/categories?${params}`);
+    const { data } = await api.get(
+      `/statistics/categories?${params.toString()}`
+    );
     return { data };
   } catch (error) {
     console.error(error.response.data);
@@ -13,10 +18,18 @@ const getCostByCategories = async ({ ago = 'allTime' } = {}) => {
   }
 };
 
-const getCostByEstablishments = async ({ ago = 'allTime' } = {}) => {
-  const params = new URLSearchParams({ ago }).toString();
+const getCostByEstablishments = async ({
+  ago = 'allTime',
+  creatorUuid,
+} = {}) => {
+  const params = new URLSearchParams({ ago });
+  if (creatorUuid) {
+    params.append('creatorUuid', creatorUuid);
+  }
   try {
-    const { data } = await api.get(`/statistics/establishments?${params}`);
+    const { data } = await api.get(
+      `/statistics/establishments?${params.toString()}`
+    );
     return { data };
   } catch (error) {
     console.error(error.response.data);
@@ -26,10 +39,13 @@ const getCostByEstablishments = async ({ ago = 'allTime' } = {}) => {
   }
 };
 
-const getCostByProducts = async ({ ago = 'allTime' } = {}) => {
-  const params = new URLSearchParams({ ago }).toString();
+const getCostByProducts = async ({ ago = 'allTime', creatorUuid } = {}) => {
+  const params = new URLSearchParams({ ago });
+  if (creatorUuid) {
+    params.append('creatorUuid', creatorUuid);
+  }
   try {
-    const { data } = await api.get(`/statistics/products?${params}`);
+    const { data } = await api.get(`/statistics/products?${params.toString()}`);
     return { data };
   } catch (error) {
     console.error(error.response.data);

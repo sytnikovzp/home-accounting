@@ -18,9 +18,9 @@ import StatisticsChart from '../../components/StatisticsChart/StatisticsChart';
 import {
   stylesHomePageCriteriaSelect,
   stylesHomePagePeriodSelect,
-} from '../../styles/pages/homePage';
+} from '../../styles';
 
-function HomePage() {
+function HomePage({ currentUser }) {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -32,28 +32,24 @@ function HomePage() {
     setIsLoading(true);
     setErrorMessage(null);
     try {
-      const params = { ago };
-      let response;
-      switch (criteria) {
-        case 'byCategories':
-          response = await restController.fetchCostByCategories(params);
-          break;
-        case 'byEstablishments':
-          response = await restController.fetchCostByEstablishments(params);
-          break;
-        case 'byProducts':
-          response = await restController.fetchCostByProducts(params);
-          break;
-        default:
-          throw new Error(`Невідомий критерій: ${criteria}`);
-      }
+      const params = {
+        ago,
+        ...(currentUser ? { creatorUuid: currentUser.uuid } : {}),
+      };
+      const fetchMethod = {
+        byCategories: restController.fetchCostByCategories,
+        byEstablishments: restController.fetchCostByEstablishments,
+        byProducts: restController.fetchCostByProducts,
+      }[criteria];
+      if (!fetchMethod) throw new Error(`Невідомий критерій: ${criteria}`);
+      const response = await fetchMethod(params);
       setData(response.data || []);
     } catch (error) {
       setErrorMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }
-  }, [ago, criteria]);
+  }, [ago, criteria, currentUser]);
 
   useEffect(() => {
     fetchData();
@@ -104,7 +100,7 @@ function HomePage() {
               onChange={(e) => setAgo(e.target.value)}
             >
               <MenuItem value='day'>За день</MenuItem>
-              <MenuItem value='week'>За неділю</MenuItem>
+              <MenuItem value='week'>За тиждень</MenuItem>
               <MenuItem value='month'>За місяць</MenuItem>
               <MenuItem value='year'>За рік</MenuItem>
               <MenuItem value='allTime'>За весь час</MenuItem>

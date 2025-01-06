@@ -139,7 +139,7 @@ function ListTable({
       : expensesPage
         ? [
             { value: 'day', label: 'За день' },
-            { value: 'week', label: 'За неділю' },
+            { value: 'week', label: 'За тиждень' },
             { value: 'month', label: 'За місяць' },
             { value: 'year', label: 'За рік' },
             { value: 'allTime', label: 'За весь час' },
