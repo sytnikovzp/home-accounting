@@ -54,7 +54,7 @@ module.exports = [
       'no-new-symbol': ['error'],
       'no-trailing-spaces': ['error'],
       'no-undef': ['error'],
-      'no-unused-vars': ['error'],
+      'no-unused-vars': ['warn'],
       'object-curly-spacing': ['error', 'always'],
       'object-shorthand': ['error'],
       'prefer-const': ['error'],

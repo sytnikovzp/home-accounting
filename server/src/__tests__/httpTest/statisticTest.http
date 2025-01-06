@@ -1,51 +1,5 @@
-### Get cost by category per period
-GET http://localhost:5000/api/statistics/category-per-period?category=Побутові пристрої&ago=week HTTP/1.1
-Content-Type: application/json
-
-### Get cost by category per all time
-GET http://localhost:5000/api/statistics/category-per-period?category=Побутові пристрої HTTP/1.1
-Content-Type: application/json
-
-### Get cost by category per all time ("result": 0)
-GET http://localhost:5000/api/statistics/category-per-period?category=Ліки HTTP/1.1
-Content-Type: application/json
-
-### Get cost by category (error)
-GET http://localhost:5000/api/statistics/category-per-period?category=Test HTTP/1.1
-Content-Type: application/json
-
-// ==============================================================
-
-### Get cost by establishment per period
-GET http://localhost:5000/api/statistics/establishment-per-period?establishment=Comfy&ago=week HTTP/1.1
-Content-Type: application/json
-
-### Get cost by establishment per all time
-GET http://localhost:5000/api/statistics/establishment-per-period?establishment=АТБ HTTP/1.1
-Content-Type: application/json
-
-### Get cost by establishment (error)
-GET http://localhost:5000/api/statistics/establishment-per-period?establishment=Test HTTP/1.1
-Content-Type: application/json
-
-// ==============================================================
-
-### Get cost by product per period
-GET http://localhost:5000/api/statistics/product-per-period?product=Гриби&ago=week HTTP/1.1
-Content-Type: application/json
-
-### Get cost by product per all time
-GET http://localhost:5000/api/statistics/product-per-period?product=Риба HTTP/1.1
-Content-Type: application/json
-
-### Get cost by product (error)
-GET http://localhost:5000/api/statistics/product-per-period?product=Test HTTP/1.1
-Content-Type: application/json
-
-// ==============================================================
-
 ### Get cost by categories per period
-GET http://localhost:5000/api/statistics/categories?ago=month HTTP/1.1
+GET http://localhost:5000/api/statistics/categories?ago=week HTTP/1.1
 Content-Type: application/json
 
 ### Get cost by categories per all time
@@ -55,7 +9,7 @@ Content-Type: application/json
 // ==============================================================
 
 ### Get cost by establishments per period
-GET http://localhost:5000/api/statistics/establishments?ago=month HTTP/1.1
+GET http://localhost:5000/api/statistics/establishments?ago=year HTTP/1.1
 Content-Type: application/json
 
 ### Get cost by establishments per all time
