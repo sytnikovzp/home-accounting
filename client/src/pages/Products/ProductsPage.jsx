@@ -16,6 +16,12 @@ import ProductDeletePage from './ProductDeletePage';
 import ProductEditPage from './ProductEditPage';
 import ProductViewPage from './ProductViewPage';
 
+import {
+  stylesEntityPageBox,
+  stylesEntityPageButton,
+  stylesEntityPageTypography,
+} from '../../styles';
+
 function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
@@ -148,13 +154,16 @@ function ProductsPage() {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography variant='h6'>Товари та послуги</Typography>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Товари та послуги
+        </Typography>
         <Button
           color='success'
-          size='small'
+          sx={stylesEntityPageButton}
           variant='contained'
           onClick={() => openModal('add')}
         >

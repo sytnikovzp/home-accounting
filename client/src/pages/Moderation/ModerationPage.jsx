@@ -13,6 +13,8 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import ContentModerationPage from './ContentModerationPage';
 
+import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
+
 function ModerationsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
@@ -102,10 +104,13 @@ function ModerationsPage() {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography variant='h6'>Підлягають модерації</Typography>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Підлягають модерації
+        </Typography>
       </Box>
       <ListTable
         disableClickableTitles

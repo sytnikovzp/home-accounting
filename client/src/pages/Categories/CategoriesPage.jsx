@@ -16,6 +16,12 @@ import CategoryDeletePage from './CategoryDeletePage';
 import CategoryEditPage from './CategoryEditPage';
 import CategoryViewPage from './CategoryViewPage';
 
+import {
+  stylesEntityPageBox,
+  stylesEntityPageButton,
+  stylesEntityPageTypography,
+} from '../../styles';
+
 function CategoriesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
@@ -127,13 +133,16 @@ function CategoriesPage() {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography variant='h6'>Категорії витрат</Typography>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Категорії витрат
+        </Typography>
         <Button
           color='success'
-          size='small'
+          sx={stylesEntityPageButton}
           variant='contained'
           onClick={() => openModal('add')}
         >

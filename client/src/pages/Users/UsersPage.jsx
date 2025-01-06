@@ -16,6 +16,8 @@ import UserDeletePage from './UserDeletePage';
 import UserEditPage from './UserEditPage';
 import UserViewPage from './UserViewPage';
 
+import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
+
 function UsersPage({ currentUser, setIsAuthenticated }) {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
@@ -151,10 +153,13 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography variant='h6'>Користувачі</Typography>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Користувачі
+        </Typography>
       </Box>
       <ListTable
         showStatusDropdown

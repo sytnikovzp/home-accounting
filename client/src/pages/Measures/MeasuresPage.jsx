@@ -16,6 +16,12 @@ import MeasureDeletePage from './MeasureDeletePage';
 import MeasureEditPage from './MeasureEditPage';
 import MeasureViewPage from './MeasureViewPage';
 
+import {
+  stylesEntityPageBox,
+  stylesEntityPageButton,
+  stylesEntityPageTypography,
+} from '../../styles';
+
 function MeasuresPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
@@ -125,13 +131,16 @@ function MeasuresPage() {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography variant='h6'>Одиниці вимірів</Typography>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Одиниці вимірів
+        </Typography>
         <Button
           color='success'
-          size='small'
+          sx={stylesEntityPageButton}
           variant='contained'
           onClick={() => openModal('add')}
         >

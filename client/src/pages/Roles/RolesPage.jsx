@@ -16,6 +16,12 @@ import RoleDeletePage from './RoleDeletePage';
 import RoleEditPage from './RoleEditPage';
 import RoleViewPage from './RoleViewPage';
 
+import {
+  stylesEntityPageBox,
+  stylesEntityPageButton,
+  stylesEntityPageTypography,
+} from '../../styles';
+
 function RolesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
@@ -141,13 +147,16 @@ function RolesPage() {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography variant='h6'>Ролі користувачів</Typography>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Ролі користувачів
+        </Typography>
         <Button
           color='success'
-          size='small'
+          sx={stylesEntityPageButton}
           variant='contained'
           onClick={() => openModal('add')}
         >

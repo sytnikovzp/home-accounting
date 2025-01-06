@@ -16,6 +16,12 @@ import CurrencyDeletePage from './CurrencyDeletePage';
 import CurrencyEditPage from './CurrencyEditPage';
 import CurrencyViewPage from './CurrencyViewPage';
 
+import {
+  stylesEntityPageBox,
+  stylesEntityPageButton,
+  stylesEntityPageTypography,
+} from '../../styles';
+
 function CurrenciesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
@@ -125,13 +131,16 @@ function CurrenciesPage() {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography variant='h6'>Валюти</Typography>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Валюти
+        </Typography>
         <Button
           color='success'
-          size='small'
+          sx={stylesEntityPageButton}
           variant='contained'
           onClick={() => openModal('add')}
         >

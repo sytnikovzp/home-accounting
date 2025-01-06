@@ -16,6 +16,8 @@ import Preloader from '../../components/Preloader/Preloader';
 import StatisticsChart from '../../components/StatisticsChart/StatisticsChart';
 
 import {
+  stylesEntityPageBox,
+  stylesEntityPageTypography,
   stylesHomePageCriteriaSelect,
   stylesHomePagePeriodSelect,
 } from '../../styles';
@@ -74,11 +76,14 @@ function HomePage({ currentUser }) {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
-        mb={10}
+        mb={2}
       >
-        <Typography variant='h6'>Статистика витрат</Typography>
-        <Box display='flex' gap={2}>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Статистика витрат
+        </Typography>
+        <Box display='flex' flexDirection={stylesEntityPageBox} gap={2}>
           <FormControl size='small' sx={stylesHomePageCriteriaSelect}>
             <InputLabel>Критерій</InputLabel>
             <Select

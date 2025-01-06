@@ -1,25 +1,53 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
+  ArcElement,
   BarElement,
   CategoryScale,
   Chart as ChartJS,
   Legend,
   LinearScale,
+  RadialLinearScale,
   Title,
   Tooltip,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Doughnut, Pie, PolarArea } from 'react-chartjs-2';
+import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
+import {
+  BarChart as BarChartIcon,
+  PieChart as PieChartIcon,
+  Radar as RadarIcon,
+} from '@mui/icons-material';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import {
+  stylesStatisticsChartBackgroundColor,
+  stylesStatisticsChartBorderColor,
+  stylesStatisticsChartBox,
+  stylesStatisticsChartButton,
+  stylesStatisticsChartHoverBackgroundColor,
+  stylesStatisticsChartHoverBorderColor,
+  stylesStatisticsChartStackButton,
+  stylesStatisticsChartStackDirection,
+} from '../../styles';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  ArcElement,
+  RadialLinearScale,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartDataLabels
 );
 
 function StatisticsChart({ data }) {
+  const [chartType, setChartType] = useState('doughnut');
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const chartData = useMemo(() => {
     if (!data || data.length === 0) return null;
 
@@ -32,11 +60,11 @@ function StatisticsChart({ data }) {
         {
           label: 'Витрати',
           data: results,
-          backgroundColor: ['#4caf50', '#66bb6a', '#81c784', '#a5d6a7'],
-          borderColor: '#2e7d32',
+          backgroundColor: stylesStatisticsChartBackgroundColor,
+          borderColor: stylesStatisticsChartBorderColor,
           borderWidth: 1,
-          hoverBackgroundColor: '#2e7d32',
-          hoverBorderColor: '#1b5e20',
+          hoverBackgroundColor: stylesStatisticsChartHoverBackgroundColor,
+          hoverBorderColor: stylesStatisticsChartHoverBorderColor,
         },
       ],
     };
@@ -44,24 +72,101 @@ function StatisticsChart({ data }) {
 
   if (!chartData) return <p>Немає даних для відображення.</p>;
 
-  return (
-    <Bar
-      data={chartData}
-      options={{
-        responsive: true,
-        plugins: {
-          title: {
-            display: false,
-            text: 'Статистика витрат',
-          },
-          tooltip: {
-            callbacks: {
-              label: (context) => `Вартість: ${context.raw} грн`,
-            },
-          },
+  const renderChart = () => {
+    switch (chartType) {
+      case 'doughnut':
+        return <Doughnut data={chartData} options={chartOptions} />;
+      case 'pie':
+        return <Pie data={chartData} options={chartOptions} />;
+      case 'bar':
+        return <Bar data={chartData} options={chartOptions} />;
+      case 'polar':
+        return <PolarArea data={chartData} options={chartOptions} />;
+      default:
+        return <Bar data={chartData} options={chartOptions} />;
+    }
+  };
+
+  const chartOptions = {
+    indexAxis: isMobile ? 'x' : 'y',
+    responsive: true,
+    plugins: {
+      title: {
+        display: false,
+        text: 'Статистика витрат',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Вартість: ${context.raw} грн`,
         },
-      }}
-    />
+      },
+      legend: {
+        display: chartType !== 'bar',
+        position: 'left',
+      },
+      datalabels: {
+        display: true,
+        color: 'black',
+        formatter: (value, context) => {
+          const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+          const percentage = ((value / total) * 100).toFixed(0);
+          return `${percentage}%`;
+        },
+      },
+    },
+  };
+
+  return (
+    <>
+      <Box sx={stylesStatisticsChartBox}>{renderChart()}</Box>
+      <Stack
+        direction={stylesStatisticsChartStackDirection}
+        justifyContent='center'
+        spacing={2}
+        sx={stylesStatisticsChartStackButton}
+      >
+        <Button
+          color='default'
+          size='small'
+          startIcon={<PieChartIcon />}
+          sx={stylesStatisticsChartButton}
+          variant='contained'
+          onClick={() => setChartType('doughnut')}
+        >
+          Донат-діаграма
+        </Button>
+        <Button
+          color='default'
+          size='small'
+          startIcon={<PieChartIcon />}
+          sx={stylesStatisticsChartButton}
+          variant='contained'
+          onClick={() => setChartType('pie')}
+        >
+          Пірогова діаграма
+        </Button>
+        <Button
+          color='default'
+          size='small'
+          startIcon={<BarChartIcon />}
+          sx={stylesStatisticsChartButton}
+          variant='contained'
+          onClick={() => setChartType('bar')}
+        >
+          Бар-діаграма
+        </Button>
+        <Button
+          color='default'
+          size='small'
+          startIcon={<RadarIcon />}
+          sx={stylesStatisticsChartButton}
+          variant='contained'
+          onClick={() => setChartType('polar')}
+        >
+          Полярна діаграма
+        </Button>
+      </Stack>
+    </>
   );
 }
 

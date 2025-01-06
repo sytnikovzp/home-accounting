@@ -16,6 +16,12 @@ import ExpenseDeletePage from './ExpenseDeletePage';
 import ExpenseEditPage from './ExpenseEditPage';
 import ExpenseViewPage from './ExpenseViewPage';
 
+import {
+  stylesEntityPageBox,
+  stylesEntityPageButton,
+  stylesEntityPageTypography,
+} from '../../styles';
+
 function ExpensesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPreloader, setShowPreloader] = useState(false);
@@ -217,13 +223,16 @@ function ExpensesPage() {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography variant='h6'>Витрати</Typography>
+        <Typography component='h2' sx={stylesEntityPageTypography}>
+          Витрати
+        </Typography>
         <Button
           color='success'
-          size='small'
+          sx={stylesEntityPageButton}
           variant='contained'
           onClick={() => openModal('add')}
         >

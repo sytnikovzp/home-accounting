@@ -1,13 +1,17 @@
 import { Box, Container, Link, Typography } from '@mui/material';
 import { GitHub, LinkedIn } from '@mui/icons-material';
 
-import { stylesFooterBox, stylesFooterIcon } from '../../styles';
+import {
+  stylesFooterBox,
+  stylesFooterIcon,
+  stylesFooterTypography,
+} from '../../styles';
 
 function Footer() {
   return (
     <Box component='footer' sx={stylesFooterBox}>
       <Container maxWidth='xl' sx={{ textAlign: 'center' }}>
-        <Typography sx={{ color: '#555' }} variant='body1'>
+        <Typography sx={stylesFooterTypography} variant='body1'>
           Designed by Alexandr Sytnikov © {new Date().getFullYear()}
         </Typography>
         <Box sx={{ mt: 1 }}>

@@ -8,6 +8,10 @@ export const stylesFooterBox = {
   borderTop: '1px solid rgba(0, 0, 0, 0.1)',
 };
 
+export const stylesFooterTypography = {
+  color: '#555',
+};
+
 export const stylesFooterIcon = {
   mx: 1,
   color: '#555',

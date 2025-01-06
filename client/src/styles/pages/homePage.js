@@ -5,5 +5,5 @@ export const stylesHomePageCriteriaSelect = {
 
 export const stylesHomePagePeriodSelect = {
   mt: 2,
-  width: 140,
+  width: { xs: 260, sm: 140 },
 };
