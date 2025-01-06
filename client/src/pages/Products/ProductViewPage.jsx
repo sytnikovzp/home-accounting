@@ -45,7 +45,7 @@ function ProductViewPage({ handleModalClose }) {
 
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
-  const categoryTitle = category?.title || '*Дані відсутні*';
+  const categoryTitle = category?.title || '*Немає даних*';
 
   return (
     <CustomModal
@@ -76,7 +76,7 @@ function ProductViewPage({ handleModalClose }) {
                     {categoryTitle}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />
@@ -94,7 +94,7 @@ function ProductViewPage({ handleModalClose }) {
                     {creatorFullName}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />

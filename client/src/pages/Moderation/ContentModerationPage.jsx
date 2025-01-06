@@ -243,7 +243,7 @@ function ContentModerationPage({
                     {creatorFullName}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />

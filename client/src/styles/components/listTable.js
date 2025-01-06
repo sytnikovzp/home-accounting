@@ -89,5 +89,5 @@ export const stylesListTableTableTypography = {
 export const stylesListTableFormControl = {
   flexGrow: 1,
   minWidth: 120,
-  maxWidth: '365px',
+  maxWidth: 265,
 };

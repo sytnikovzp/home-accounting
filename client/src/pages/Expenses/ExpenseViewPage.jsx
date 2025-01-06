@@ -46,10 +46,10 @@ function ExpenseViewPage({ handleModalClose }) {
   } = expenseToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
-  const productTitle = product?.title || '*Дані відсутні*';
-  const establishmentTitle = establishment?.title || '*Дані відсутні*';
-  const measureTitle = measure?.title || '*Дані відсутні*';
-  const currencyCode = currency?.code || '*Дані відсутні*';
+  const productTitle = product?.title || '*Немає даних*';
+  const establishmentTitle = establishment?.title || '*Немає даних*';
+  const measureTitle = measure?.title || '*Немає даних*';
+  const currencyCode = currency?.code || '*Немає даних*';
 
   return (
     <CustomModal
@@ -74,7 +74,7 @@ function ExpenseViewPage({ handleModalClose }) {
                     {productTitle}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />
@@ -108,7 +108,7 @@ function ExpenseViewPage({ handleModalClose }) {
                     {establishmentTitle}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />
@@ -126,7 +126,7 @@ function ExpenseViewPage({ handleModalClose }) {
                     {creatorFullName}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />

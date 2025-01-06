@@ -112,7 +112,7 @@ function EstablishmentViewPage({ handleModalClose }) {
                     {creatorFullName}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />

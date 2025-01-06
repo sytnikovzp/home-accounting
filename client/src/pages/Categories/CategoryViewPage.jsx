@@ -73,7 +73,7 @@ function CategoryViewPage({ handleModalClose }) {
                     {creatorFullName}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />

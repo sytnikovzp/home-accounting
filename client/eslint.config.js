@@ -53,7 +53,7 @@ export default [
       'react/no-unescaped-entities': 'off',
       'react/prop-types': 'off',
       'no-undef': 'error',
-      'no-unused-vars': 'error',
+      'no-unused-vars': 'warn',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },

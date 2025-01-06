@@ -22,7 +22,7 @@ function ViewDetailRow({ icon: Icon, label, value, linkTo }) {
             {value}
           </Link>
         ) : (
-          value || '*Дані відсутні*'
+          value || '*Немає даних*'
         )}
       </Typography>
     </Box>

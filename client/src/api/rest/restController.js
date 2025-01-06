@@ -330,35 +330,17 @@ const restController = {
     moderationService.moderationEstablishment(establishmentUuid, status),
 
   // Statistics
-  fetchCostByCategoryPerPeriod: async (category, ago = null) => {
-    const data = await statisticService.getCostByCategoryPerPeriod(
-      category,
-      ago
-    );
-    return data;
+  fetchCostByCategories: async ({ ago = 'allTime' } = {}) => {
+    const { data } = await statisticService.getCostByCategories({ ago });
+    return { data };
   },
-  fetchCostByEstablishmentPerPeriod: async (establishment, ago = null) => {
-    const data = await statisticService.getCostByEstablishmentPerPeriod(
-      establishment,
-      ago
-    );
-    return data;
+  fetchCostByEstablishments: async ({ ago = 'allTime' } = {}) => {
+    const { data } = await statisticService.getCostByEstablishments({ ago });
+    return { data };
   },
-  fetchCostByProductPerPeriod: async (product, ago = null) => {
-    const data = await statisticService.getCostByProductPerPeriod(product, ago);
-    return data;
-  },
-  fetchCostByCategories: async (ago = null) => {
-    const data = await statisticService.getCostByCategories(ago);
-    return data;
-  },
-  fetchCostByEstablishments: async (ago = null) => {
-    const data = await statisticService.getCostByEstablishments(ago);
-    return data;
-  },
-  fetchCostByProducts: async (ago = null) => {
-    const data = await statisticService.getCostByProducts(ago);
-    return data;
+  fetchCostByProducts: async ({ ago = 'allTime' } = {}) => {
+    const { data } = await statisticService.getCostByProducts({ ago });
+    return { data };
   },
 };
 

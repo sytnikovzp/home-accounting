@@ -62,7 +62,7 @@ function CurrencyViewPage({ handleModalClose }) {
                     {creatorFullName}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />

@@ -46,7 +46,7 @@ function MeasureViewPage({ handleModalClose }) {
             <ViewDetailRow
               icon={Description}
               label='Опис'
-              value={description || '*Дані відсутні*'}
+              value={description || '*Немає даних*'}
             />
             <ViewDetailRow
               icon={Person}
@@ -62,7 +62,7 @@ function MeasureViewPage({ handleModalClose }) {
                     {creatorFullName}
                   </Link>
                 ) : (
-                  '*Дані відсутні*'
+                  '*Немає даних*'
                 )
               }
             />
