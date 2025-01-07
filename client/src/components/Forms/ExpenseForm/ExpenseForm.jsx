@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { format } from 'date-fns';
+import { uk } from 'date-fns/locale';
 
 import { EXPENSE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
@@ -28,8 +30,8 @@ function ExpenseForm({
         unitPrice: '',
         establishment: '',
         measure: '',
-        currency: '',
-        date: '',
+        currency: 'Українська гривня',
+        date: format(new Date(), 'dd MMMM yyyy', { locale: uk }),
       };
 
   const groupedProducts = useMemo(() => {
@@ -60,6 +62,29 @@ function ExpenseForm({
       }, {});
   }, [currencies]);
 
+  const groupedEstablishments = useMemo(() => {
+    return establishments
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .reduce((acc, establishment) => {
+        const firstLetter = establishment.title[0].toUpperCase();
+        if (!acc[firstLetter]) acc[firstLetter] = [];
+        acc[firstLetter].push({
+          label: establishment.title,
+          value: establishment.title,
+        });
+        return acc;
+      }, {});
+  }, [establishments]);
+
+  const sortedMeasures = useMemo(() => {
+    return measures
+      .sort((a, b) => a.description.localeCompare(b.description))
+      .map((measure) => ({
+        value: measure.title,
+        label: measure.description,
+      }));
+  }, [measures]);
+
   const fields = [
     {
       name: 'product',
@@ -85,14 +110,8 @@ function ExpenseForm({
     {
       name: 'establishment',
       label: 'Заклад',
-      type: 'select',
-      options: [
-        { value: '', label: 'Оберіть заклад:' },
-        ...establishments.map((cat) => ({
-          value: cat.title,
-          label: cat.title,
-        })),
-      ],
+      type: 'autocomplete',
+      options: groupedEstablishments,
       placeholder: 'Наприклад "АТБ"',
       required: true,
     },
@@ -100,13 +119,7 @@ function ExpenseForm({
       name: 'measure',
       label: 'Одиниця вимірів',
       type: 'select',
-      options: [
-        { value: '', label: 'Оберіть одиницю:' },
-        ...measures.map((cat) => ({
-          value: cat.title,
-          label: cat.description,
-        })),
-      ],
+      options: sortedMeasures,
       placeholder: 'Наприклад "кг"',
       required: true,
     },

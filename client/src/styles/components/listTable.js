@@ -6,6 +6,7 @@ export const stylesListTableHeadCell = {
 };
 
 export const stylesListTableCell = {
+  height: '55px',
   borderRight: '1px solid #ccc',
   padding: '8px 16px',
   borderBottom: '1px solid #ccc',

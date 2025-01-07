@@ -10,14 +10,12 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Bar, Doughnut, Pie, PolarArea } from 'react-chartjs-2';
 import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
-import {
-  BarChart as BarChartIcon,
-  PieChart as PieChartIcon,
-  Radar as RadarIcon,
-} from '@mui/icons-material';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { BarChart, PieChart, Radar } from '@mui/icons-material';
+
+import Error from '../../components/Error/Error';
 
 import {
   stylesStatisticsChartBackgroundColor,
@@ -49,7 +47,12 @@ function StatisticsChart({ data }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const chartData = useMemo(() => {
-    if (!data || data.length === 0) return null;
+    if (
+      !data ||
+      data.length === 0 ||
+      (data.length === 1 && data[0].result === '0')
+    )
+      return null;
 
     const titles = data.map((item) => item.title);
     const results = data.map((item) => parseFloat(item.result));
@@ -70,7 +73,7 @@ function StatisticsChart({ data }) {
     };
   }, [data]);
 
-  if (!chartData) return <p>Немає даних для відображення.</p>;
+  if (!chartData) return <Error error={'Немає даних для відображення'} />;
 
   const renderChart = () => {
     switch (chartType) {
@@ -109,7 +112,8 @@ function StatisticsChart({ data }) {
         color: 'black',
         formatter: (value, context) => {
           const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
-          const percentage = ((value / total) * 100).toFixed(0);
+          const percentage =
+            value === 0 ? '0' : ((value / total) * 100).toFixed(0);
           return `${percentage}%`;
         },
       },
@@ -128,7 +132,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<PieChartIcon />}
+          startIcon={<PieChart />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={() => setChartType('doughnut')}
@@ -138,7 +142,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<PieChartIcon />}
+          startIcon={<PieChart />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={() => setChartType('pie')}
@@ -148,7 +152,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<BarChartIcon />}
+          startIcon={<BarChart />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={() => setChartType('bar')}
@@ -158,7 +162,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<RadarIcon />}
+          startIcon={<Radar />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={() => setChartType('polar')}

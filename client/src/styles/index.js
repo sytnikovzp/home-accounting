@@ -1,5 +1,6 @@
 export * from './components/currencyExchange';
 export * from './components/customModal';
+export * from './components/error';
 export * from './components/fileUpload';
 export * from './components/footer';
 export * from './components/forms/baseForm';

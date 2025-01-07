@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { PRODUCT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
@@ -6,6 +8,20 @@ function ProductForm({ product = null, onSubmit, categories }) {
   const initialValues = product
     ? { title: product.title, category: product.category.title }
     : { title: '', category: '' };
+
+  const groupedCategories = useMemo(() => {
+    return categories
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .reduce((acc, category) => {
+        const firstLetter = category.title[0].toUpperCase();
+        if (!acc[firstLetter]) acc[firstLetter] = [];
+        acc[firstLetter].push({
+          label: category.title,
+          value: category.title,
+        });
+        return acc;
+      }, {});
+  }, [categories]);
 
   const fields = [
     {
@@ -18,14 +34,8 @@ function ProductForm({ product = null, onSubmit, categories }) {
     {
       name: 'category',
       label: 'Категорія товару',
-      type: 'select',
-      options: [
-        { value: '', label: 'Оберіть категорію:' },
-        ...categories.map((cat) => ({
-          value: cat.title,
-          label: cat.title,
-        })),
-      ],
+      type: 'autocomplete',
+      options: groupedCategories,
       placeholder: 'Наприклад "Одяг"',
       required: true,
     },

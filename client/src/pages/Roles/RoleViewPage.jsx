@@ -89,7 +89,7 @@ function RoleViewPage({ handleModalClose }) {
                       <ListItem
                         key={permission.uuid}
                         disableGutters
-                        sx={{ ml: 3 }}
+                        sx={{ ml: 2 }}
                       >
                         <ListItemIcon>
                           <Lock color='primary' />

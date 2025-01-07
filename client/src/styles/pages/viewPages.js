@@ -19,6 +19,7 @@ export const stylesViewPageAvatarSize = {
 export const stylesRoleViewPageBoxPermission = {
   maxHeight: '250px',
   overflowY: 'auto',
+  overflowX: 'hidden',
   border: '1px solid #ddd',
   borderRadius: '4px',
 };

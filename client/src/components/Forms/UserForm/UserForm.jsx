@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Box, Button } from '@mui/material';
 
 import { USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
@@ -25,6 +25,15 @@ function UserForm({
       }
     : { fullName: '', email: '', role: '' };
 
+  const sortedRoles = useMemo(() => {
+    return roles
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .map((role) => ({
+        value: role.title,
+        label: role.title,
+      }));
+  }, [roles]);
+
   const fields = [
     {
       name: 'fullName',
@@ -43,13 +52,7 @@ function UserForm({
       name: 'role',
       label: 'Роль',
       type: 'select',
-      options: [
-        { value: '', label: 'Оберіть роль:' },
-        ...roles.map((role) => ({
-          value: role.title,
-          label: role.title,
-        })),
-      ],
+      options: sortedRoles,
       placeholder: 'Наприклад "User"',
       required: true,
     },

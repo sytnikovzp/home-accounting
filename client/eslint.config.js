@@ -71,6 +71,7 @@ export default [
               '^redux-logger',
               '^axios',
               '^chart.js',
+              '^chartjs-plugin-datalabels',
               '^react-chartjs-2',
               '^date-fns',
               '^formik',
