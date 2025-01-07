@@ -3,7 +3,11 @@ const {
     CLIENT: { URL },
   },
 } = require('../constants');
-// ==============================================================
+const {
+  setRefreshTokenCookie,
+  checkToken,
+} = require('../utils/sharedFunctions');
+
 const {
   registration,
   login,
@@ -13,11 +17,6 @@ const {
   forgotPassword,
   resetPassword,
 } = require('../services/authService');
-// ==============================================================
-const {
-  setRefreshTokenCookie,
-  checkToken,
-} = require('../utils/sharedFunctions');
 
 class AuthController {
   async registration(req, res, next) {

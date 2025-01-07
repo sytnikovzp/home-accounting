@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-// ==============================================================
+
 const {
   configs: {
     CLIENT: { URL },

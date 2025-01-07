@@ -1,14 +1,13 @@
 const { Op } = require('sequelize');
-// ==============================================================
+
 const { Currency } = require('../db/dbPostgres/models');
-// ==============================================================
+
+const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {
   formatDateTime,
   isValidUUID,
   checkPermission,
 } = require('../utils/sharedFunctions');
-// ==============================================================
-const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatCurrencyData = (currency) => ({
   uuid: currency.uuid,

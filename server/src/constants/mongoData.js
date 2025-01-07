@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-// ==============================================================
+
 const {
   configs: {
     HASH: { SALT_ROUNDS },

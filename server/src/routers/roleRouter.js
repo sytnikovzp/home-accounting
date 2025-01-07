@@ -1,5 +1,11 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  auth: { authHandler },
+  validation: { validateRole },
+  pagination: { paginateElements },
+} = require('../middlewares');
+
 const {
   getAllPermissions,
   getAllRoles,
@@ -8,11 +14,6 @@ const {
   updateRole,
   deleteRole,
 } = require('../controllers/roleController');
-const {
-  auth: { authHandler },
-  validation: { validateRole },
-  pagination: { paginateElements },
-} = require('../middlewares');
 
 const roleRouter = new Router();
 

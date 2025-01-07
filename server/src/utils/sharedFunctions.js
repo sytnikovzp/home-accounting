@@ -1,14 +1,8 @@
 const axios = require('axios');
 const bcrypt = require('bcrypt');
-const { uk } = require('date-fns/locale');
 const { format } = require('date-fns');
-// ==============================================================
-const {
-  configs: {
-    HASH: { SALT_ROUNDS },
-  },
-} = require('../constants');
-// ==============================================================
+const { uk } = require('date-fns/locale');
+
 const {
   User,
   Role,
@@ -16,7 +10,12 @@ const {
   PasswordResetToken,
   VerificationToken,
 } = require('../db/dbMongo/models');
-// ==============================================================
+
+const {
+  configs: {
+    HASH: { SALT_ROUNDS },
+  },
+} = require('../constants');
 const { notFound, badRequest } = require('../errors/generalErrors');
 
 const hashPassword = async function (password) {

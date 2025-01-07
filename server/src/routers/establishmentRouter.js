@@ -1,5 +1,12 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  auth: { authHandler },
+  validation: { validateEstablishment },
+  pagination: { paginateElements },
+  upload: { uploadEstablishmentLogos },
+} = require('../middlewares');
+
 const {
   getAllEstablishments,
   getEstablishmentByUuid,
@@ -9,12 +16,6 @@ const {
   removeEstablishmentLogo,
   deleteEstablishment,
 } = require('../controllers/establishmentController');
-const {
-  auth: { authHandler },
-  validation: { validateEstablishment },
-  pagination: { paginateElements },
-  upload: { uploadEstablishmentLogos },
-} = require('../middlewares');
 
 const establishmentRouter = new Router();
 

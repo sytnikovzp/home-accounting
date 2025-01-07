@@ -1,5 +1,11 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  auth: { authHandler },
+  validation: { validateExpense },
+  pagination: { paginateElements },
+} = require('../middlewares');
+
 const {
   getAllExpenses,
   getExpenseByUuid,
@@ -7,11 +13,6 @@ const {
   updateExpense,
   deleteExpense,
 } = require('../controllers/expenseController');
-const {
-  auth: { authHandler },
-  validation: { validateExpense },
-  pagination: { paginateElements },
-} = require('../middlewares');
 
 const expenseRouter = new Router();
 

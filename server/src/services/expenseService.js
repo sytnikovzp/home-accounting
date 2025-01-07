@@ -2,7 +2,7 @@
 const { parse, isValid } = require('date-fns');
 const { uk } = require('date-fns/locale');
 const { Op } = require('sequelize');
-// ==============================================================
+
 const {
   Expense,
   Product,
@@ -10,6 +10,8 @@ const {
   Measure,
   Currency,
 } = require('../db/dbPostgres/models');
+
+const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {
   formatDate,
   isValidUUID,
@@ -20,7 +22,6 @@ const {
   formatDateTime,
   convertToUAH,
 } = require('../utils/sharedFunctions');
-const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatExpenseData = (expense) => ({
   uuid: expense.uuid,

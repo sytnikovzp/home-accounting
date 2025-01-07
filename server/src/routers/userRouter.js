@@ -1,5 +1,12 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  auth: { authHandler },
+  validation: { validateUser, validatePassword },
+  pagination: { paginateElements },
+  upload: { uploadUserPhotos },
+} = require('../middlewares');
+
 const {
   getAllUsers,
   getUserByUuid,
@@ -10,12 +17,6 @@ const {
   removeUserPhoto,
   deleteUser,
 } = require('../controllers/userController');
-const {
-  auth: { authHandler },
-  validation: { validateUser, validatePassword },
-  pagination: { paginateElements },
-  upload: { uploadUserPhotos },
-} = require('../middlewares');
 
 const userRouter = new Router();
 

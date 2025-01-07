@@ -1,18 +1,18 @@
 const {
+  User,
+  Role,
+  Permission,
+  VerificationToken,
+} = require('../db/dbMongo/models');
+
+const {
   configs: {
     SERVER: { HOST, PORT },
     TOKEN_LIFETIME: { VERIFICATION },
   },
   dataMapping: { userVerificationMapping },
 } = require('../constants');
-// ==============================================================
-const {
-  User,
-  Role,
-  Permission,
-  VerificationToken,
-} = require('../db/dbMongo/models');
-// ==============================================================
+const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 const {
   hashPassword,
   formatDateTime,
@@ -20,11 +20,9 @@ const {
   checkPermission,
   mapValue,
 } = require('../utils/sharedFunctions');
-// ==============================================================
-const { generateTokens } = require('./tokenService');
-// ==============================================================
-const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
+
 const mailService = require('./mailService');
+const { generateTokens } = require('./tokenService');
 
 class UserService {
   async getAllUsers(emailVerificationStatus, limit, offset, sort, order) {

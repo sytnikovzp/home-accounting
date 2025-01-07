@@ -1,5 +1,11 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  auth: { authHandler },
+  validation: { validateCurrency },
+  pagination: { paginateElements },
+} = require('../middlewares');
+
 const {
   getAllCurrencies,
   getCurrencyByUuid,
@@ -7,11 +13,6 @@ const {
   updateCurrency,
   deleteCurrency,
 } = require('../controllers/currencyController');
-const {
-  auth: { authHandler },
-  validation: { validateCurrency },
-  pagination: { paginateElements },
-} = require('../middlewares');
 
 const currencyRouter = new Router();
 

@@ -1,5 +1,5 @@
 const { sequelize } = require('../db/dbPostgres/models');
-const { getCurrentUser } = require('../services/userService');
+
 const {
   getAllCurrencies,
   getCurrencyByUuid,
@@ -7,6 +7,7 @@ const {
   updateCurrency,
   deleteCurrency,
 } = require('../services/currencyService');
+const { getCurrentUser } = require('../services/userService');
 
 class CurrencyController {
   async getAllCurrencies(req, res, next) {

@@ -1,9 +1,9 @@
 const js = require('@eslint/js');
+const importPlugin = require('eslint-plugin-import');
+const prettier = require('eslint-plugin-prettier');
 const promise = require('eslint-plugin-promise');
 const security = require('eslint-plugin-security');
 const sequelize = require('eslint-plugin-sequelize');
-const importPlugin = require('eslint-plugin-import');
-const prettier = require('eslint-plugin-prettier');
 
 module.exports = [
   js.configs.recommended,
@@ -70,6 +70,39 @@ module.exports = [
       'import/first': ['error'],
       'import/newline-after-import': ['warn'],
       'import/no-duplicates': ['error'],
+      'import/order': [
+        'warn',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            ['sibling', 'index'],
+          ],
+          pathGroups: [
+            {
+              pattern: '{.,..,../..,../../..}/{app,config,db,models}{,/**}',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern:
+                '{.,..,../..,../../..}/{constants,utils,errors,middlewares}{,/**}',
+              group: 'internal',
+              position: 'after',
+            },
+            {
+              pattern:
+                '{.,..,../..,../../..}/{routers,controllers,services}{,/**}',
+              group: 'internal',
+              position: 'after',
+            },
+          ],
+          'newlines-between': 'always',
+          alphabetize: { order: 'asc', caseInsensitive: true },
+        },
+      ],
     },
   },
 ];

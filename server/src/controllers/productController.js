@@ -1,5 +1,5 @@
 const { sequelize } = require('../db/dbPostgres/models');
-const { getCurrentUser } = require('../services/userService');
+
 const {
   getAllProducts,
   getProductByUuid,
@@ -7,6 +7,7 @@ const {
   updateProduct,
   deleteProduct,
 } = require('../services/productService');
+const { getCurrentUser } = require('../services/userService');
 
 class ProductController {
   async getAllProducts(req, res, next) {

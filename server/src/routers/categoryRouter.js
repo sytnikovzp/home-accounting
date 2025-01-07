@@ -1,5 +1,11 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  auth: { authHandler },
+  validation: { validateCategory },
+  pagination: { paginateElements },
+} = require('../middlewares');
+
 const {
   getAllCategories,
   getCategoryByUuid,
@@ -7,11 +13,6 @@ const {
   updateCategory,
   deleteCategory,
 } = require('../controllers/categoryController');
-const {
-  auth: { authHandler },
-  validation: { validateCategory },
-  pagination: { paginateElements },
-} = require('../middlewares');
 
 const categoryRouter = new Router();
 

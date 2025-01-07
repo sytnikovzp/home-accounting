@@ -1,5 +1,5 @@
 const { sequelize } = require('../db/dbPostgres/models');
-const { getCurrentUser } = require('../services/userService');
+
 const {
   getAllCategories,
   getCategoryByUuid,
@@ -7,6 +7,7 @@ const {
   updateCategory,
   deleteCategory,
 } = require('../services/categoryService');
+const { getCurrentUser } = require('../services/userService');
 
 class CategoryController {
   async getAllCategories(req, res, next) {

@@ -1,5 +1,5 @@
 const { sequelize } = require('../db/dbPostgres/models');
-const { getCurrentUser } = require('../services/userService');
+
 const {
   getAllExpenses,
   getExpenseByUuid,
@@ -7,6 +7,7 @@ const {
   updateExpense,
   deleteExpense,
 } = require('../services/expenseService');
+const { getCurrentUser } = require('../services/userService');
 
 class ExpenseController {
   async getAllExpenses(req, res, next) {

@@ -1,18 +1,16 @@
 const path = require('path');
-const express = require('express');
-const cors = require('cors');
+
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const express = require('express');
 const morgan = require('morgan');
-// ==============================================================
-const router = require('./routers');
-// ==============================================================
+
 const {
   configs: {
     CLIENT: { URL },
     STATIC: { PATH },
   },
 } = require('./constants');
-// ==============================================================
 const {
   time: { getTime, showTime },
 } = require('./middlewares');
@@ -26,6 +24,8 @@ const {
     errorHandler,
   },
 } = require('./middlewares');
+
+const router = require('./routers');
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', '..', PATH, 'images');

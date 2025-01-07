@@ -1,5 +1,11 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  auth: { authHandler },
+  validation: { validateProduct },
+  pagination: { paginateElements },
+} = require('../middlewares');
+
 const {
   getAllProducts,
   getProductByUuid,
@@ -7,11 +13,6 @@ const {
   updateProduct,
   deleteProduct,
 } = require('../controllers/productController');
-const {
-  auth: { authHandler },
-  validation: { validateProduct },
-  pagination: { paginateElements },
-} = require('../middlewares');
 
 const productRouter = new Router();
 

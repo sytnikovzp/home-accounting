@@ -1,6 +1,6 @@
-const yup = require('yup');
 const { parse, isValid } = require('date-fns');
 const { uk } = require('date-fns/locale');
+const yup = require('yup');
 
 const parseDateString = (value, originalValue) => {
   if (typeof originalValue === 'string') {
@@ -68,8 +68,6 @@ const DATE_REQUIRED_SCHEME = yup
   .typeError('Некоректний формат дати')
   .max(new Date(), 'Дата не може бути у майбутньому')
   .required('Оберіть дату');
-
-// ==============================================================
 
 const PAGINATION_SCHEME = yup.object().shape({
   limit: yup.number().min(1).max(500).required(),

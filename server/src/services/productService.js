@@ -1,7 +1,9 @@
 const { Product, Category } = require('../db/dbPostgres/models');
+
 const {
   dataMapping: { statusModerationMapping },
 } = require('../constants');
+const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {
   formatDateTime,
   isValidUUID,
@@ -9,7 +11,6 @@ const {
   mapValue,
   getRecordByTitle,
 } = require('../utils/sharedFunctions');
-const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 
 const formatProductData = (product) => ({
   uuid: product.uuid,

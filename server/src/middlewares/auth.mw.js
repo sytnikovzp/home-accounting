@@ -1,8 +1,8 @@
 const { User } = require('../db/dbMongo/models');
-// ==============================================================
-const tokenService = require('../services/tokenService');
-// ==============================================================
+
 const { unAuthorizedError } = require('../errors/authErrors');
+
+const tokenService = require('../services/tokenService');
 
 module.exports.authHandler = async (req, res, next) => {
   try {

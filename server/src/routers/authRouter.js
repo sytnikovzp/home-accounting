@@ -1,5 +1,15 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  validation: {
+    validateRegistration,
+    validateLogin,
+    validateResendVerify,
+    validateForgotPassword,
+    validatePassword,
+  },
+} = require('../middlewares');
+
 const {
   registration,
   login,
@@ -11,15 +21,6 @@ const {
   getResetPasswordPage,
   resetPassword,
 } = require('../controllers/authController');
-const {
-  validation: {
-    validateRegistration,
-    validateLogin,
-    validateResendVerify,
-    validateForgotPassword,
-    validatePassword,
-  },
-} = require('../middlewares');
 
 const authRouter = new Router();
 

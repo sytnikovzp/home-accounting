@@ -1,5 +1,5 @@
 const { sequelize } = require('../db/dbPostgres/models');
-const { getCurrentUser } = require('../services/userService');
+
 const {
   getAllMeasures,
   getMeasureByUuid,
@@ -7,6 +7,7 @@ const {
   updateMeasure,
   deleteMeasure,
 } = require('../services/measureService');
+const { getCurrentUser } = require('../services/userService');
 
 class MeasureController {
   async getAllMeasures(req, res, next) {

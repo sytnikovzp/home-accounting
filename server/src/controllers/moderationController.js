@@ -1,11 +1,12 @@
 const { sequelize } = require('../db/dbPostgres/models');
-const { getCurrentUser } = require('../services/userService');
+
 const {
   getPendingItemsFromAllEntities,
   updateCategoryStatus,
   updateProductStatus,
   updateEstablishmentStatus,
 } = require('../services/moderationService');
+const { getCurrentUser } = require('../services/userService');
 
 class ModerationController {
   async getAllPendingItems(req, res, next) {

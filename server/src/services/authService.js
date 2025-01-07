@@ -1,30 +1,28 @@
 const {
+  User,
+  Role,
+  VerificationToken,
+  PasswordResetToken,
+} = require('../db/dbMongo/models');
+
+const {
   configs: {
     SERVER: { HOST, PORT },
     TOKEN_LIFETIME: { VERIFICATION, RESET_PASSWORD },
   },
   dataMapping: { userVerificationMapping },
 } = require('../constants');
-// ==============================================================
-const {
-  User,
-  Role,
-  VerificationToken,
-  PasswordResetToken,
-} = require('../db/dbMongo/models');
-// ==============================================================
+const { unAuthorizedError } = require('../errors/authErrors');
+const { badRequest, notFound } = require('../errors/generalErrors');
 const {
   hashPassword,
   verifyPassword,
   emailToLowerCase,
   mapValue,
 } = require('../utils/sharedFunctions');
-// ==============================================================
+
 const mailService = require('./mailService');
 const { generateTokens, validateRefreshToken } = require('./tokenService');
-// ==============================================================
-const { unAuthorizedError } = require('../errors/authErrors');
-const { badRequest, notFound } = require('../errors/generalErrors');
 
 class AuthService {
   async registration(fullName, email, password) {

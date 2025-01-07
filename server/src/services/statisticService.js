@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-// ==============================================================
+
 const {
   Expense,
   Product,
@@ -7,8 +7,9 @@ const {
   Category,
   sequelize,
 } = require('../db/dbPostgres/models');
-const { getTime, isValidUUID } = require('../utils/sharedFunctions');
+
 const { badRequest } = require('../errors/generalErrors');
+const { getTime, isValidUUID } = require('../utils/sharedFunctions');
 
 class StatisticService {
   async getCostByCategories(ago, creatorUuid) {

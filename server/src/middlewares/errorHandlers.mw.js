@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-const { ValidationError } = require('yup');
 const multer = require('multer');
+const { ValidationError } = require('yup');
+
 const {
   Sequelize: { BaseError },
 } = require('../db/dbPostgres/models');
-// ==============================================================
+
 const AuthError = require('../errors/authErrors');
 const GeneralError = require('../errors/generalErrors');
 

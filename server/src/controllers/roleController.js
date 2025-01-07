@@ -1,4 +1,3 @@
-const { getCurrentUser } = require('../services/userService');
 const {
   getAllPermissions,
   getAllRoles,
@@ -7,6 +6,7 @@ const {
   updateRole,
   deleteRole,
 } = require('../services/roleService');
+const { getCurrentUser } = require('../services/userService');
 
 class RoleController {
   async getAllPermissions(req, res, next) {

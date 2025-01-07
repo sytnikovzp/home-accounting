@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 const { Category } = require('../models');
+
 const { postgresData } = require('../../../constants');
 
 module.exports = {

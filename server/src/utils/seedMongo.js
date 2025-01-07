@@ -1,12 +1,12 @@
 const path = require('path');
-// ==============================================================
+
 const mongoose = require('mongoose');
-// ==============================================================
+
+const { User, Role, Permission } = require('../db/dbMongo/models');
+
 const {
   mongoData: { roles, users, permissions },
 } = require('../constants');
-// ==============================================================
-const { User, Role, Permission } = require('../db/dbMongo/models');
 
 const env = process.env.NODE_ENV || 'development';
 const configPath = path.resolve('src', 'config', 'mongoConfig.js');

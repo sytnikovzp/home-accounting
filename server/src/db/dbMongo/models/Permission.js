@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = require('uuid');
 const { Schema, model } = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 const permissionsSchema = new Schema(
   {

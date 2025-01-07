@@ -1,7 +1,10 @@
 /* eslint-disable no-undef */
 const path = require('path');
+
 const request = require('supertest');
+
 const app = require('../app');
+
 const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
 
 beforeAll(initializeDatabase);

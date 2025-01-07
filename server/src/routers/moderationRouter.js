@@ -1,16 +1,17 @@
 const { Router } = require('express');
-// ==============================================================
+
+const {
+  auth: { authHandler },
+  validation: { validateModeration },
+  pagination: { paginateElements },
+} = require('../middlewares');
+
 const {
   getAllPendingItems,
   moderationCategory,
   moderationProduct,
   moderationEstablishment,
 } = require('../controllers/moderationController');
-const {
-  auth: { authHandler },
-  validation: { validateModeration },
-  pagination: { paginateElements },
-} = require('../middlewares');
 
 const moderationRouter = new Router();
 

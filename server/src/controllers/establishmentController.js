@@ -1,5 +1,5 @@
 const { sequelize } = require('../db/dbPostgres/models');
-const { getCurrentUser } = require('../services/userService');
+
 const {
   getAllEstablishments,
   getEstablishmentByUuid,
@@ -9,6 +9,7 @@ const {
   updateEstablishmentLogo,
   removeEstablishmentLogo,
 } = require('../services/establishmentService');
+const { getCurrentUser } = require('../services/userService');
 
 class EstablishmentController {
   async getAllEstablishments(req, res, next) {

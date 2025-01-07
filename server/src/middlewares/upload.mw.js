@@ -1,15 +1,15 @@
-const path = require('path');
 const fs = require('fs');
-// ==============================================================
+const path = require('path');
+
 const multer = require('multer');
-// ==============================================================
-const { badRequest } = require('../errors/generalErrors');
+
 const {
   configs: {
     STATIC: { PATH },
     FILES: { IMAGE_MIMETYPE, IMAGE_EXTENSIONS, MAX_FILE_SIZE },
   },
 } = require('../constants');
+const { badRequest } = require('../errors/generalErrors');
 
 const createStorage = (subfolder) =>
   multer.diskStorage({

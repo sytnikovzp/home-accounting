@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 const { Product, Establishment, Measure, Currency } = require('../models');
+
 const { postgresData } = require('../../../constants');
 
 module.exports = {
