@@ -709,6 +709,30 @@ async function postgresData() {
         created_at: new Date(),
         updated_at: new Date(),
       },
+      {
+        title: 'м3',
+        description: 'кубічний метр',
+        creator_uuid: moderatorDetails.uuid,
+        creator_full_name: moderatorDetails.fullName,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        title: 'кВт',
+        description: 'кіловатт',
+        creator_uuid: moderatorDetails.uuid,
+        creator_full_name: moderatorDetails.fullName,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        title: 'сеанс',
+        description: 'сеанс (візит)',
+        creator_uuid: moderatorDetails.uuid,
+        creator_full_name: moderatorDetails.fullName,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
     ],
     establishments: [
       {
@@ -866,7 +890,7 @@ async function postgresData() {
         updated_at: new Date(),
       },
       {
-        title: '«Міські теплові мережі»',
+        title: 'Міські теплові мережі',
         url: 'https://teploseti.zp.ua/',
         logo: '1735604051168-MTM.png',
         description:
@@ -894,7 +918,7 @@ async function postgresData() {
         updated_at: new Date(),
       },
       {
-        title: '"Домофон Візит"',
+        title: 'Домофон Візит',
         url: 'https://domofon.zp.ua/',
         logo: '1735603432838-vizit.gif',
         description:

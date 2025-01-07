@@ -1,5 +1,5 @@
 ### Get cost by categories per period
-GET http://localhost:5000/api/statistics/categories?ago=month&creatorUuid=32918830-4048-4772-9a1e-b846b4c9b468 HTTP/1.1
+GET http://localhost:5000/api/statistics/categories?ago=month&creatorUuid=9cc2ec13-1953-45ff-9247-2f9dea5a7a2c HTTP/1.1
 Content-Type: application/json
 
 ### Get cost by categories per all time

@@ -58,7 +58,7 @@ function ProductEditPage({
         )
       }
       error={errorMessage || crudError}
-      title='Редагування товару...'
+      title='Редагування товару/послуги...'
       onClose={handleModalClose}
     />
   );

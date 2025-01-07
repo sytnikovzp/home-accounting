@@ -29,7 +29,7 @@ function ProductAddPage({
         <ProductForm categories={categories} onSubmit={handleSubmitProduct} />
       }
       error={crudError}
-      title='Додавання товару...'
+      title='Додавання товару/послуги...'
       onClose={handleModalClose}
     />
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 
@@ -8,18 +8,29 @@ import InfoMessage from '../../components/InfoMessage/InfoMessage';
 function NotificationPage() {
   const [isOpen, setIsOpen] = useState(true);
 
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const params = new URLSearchParams(location.search);
   const severity = params.get('severity') || 'info';
   const title = params.get('title') || 'Повідомлення';
   const message = params.get('message') || 'Невідоме повідомлення';
 
-  const handleClose = () => {
+  const handleModalClose = () => {
     setIsOpen(false);
     navigate('/');
   };
+
+  const pageTitles = useMemo(
+    () => ({
+      default: 'Повідомлення | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    document.title = pageTitles.default;
+  }, [location, pageTitles]);
 
   return (
     <CustomModal
@@ -28,7 +39,7 @@ function NotificationPage() {
           fullWidth
           color='success'
           variant='contained'
-          onClick={handleClose}
+          onClick={handleModalClose}
         >
           На головну
         </Button>
@@ -36,7 +47,7 @@ function NotificationPage() {
       content={<InfoMessage message={message} severity={severity} />}
       isOpen={isOpen}
       title={title}
-      onClose={handleClose}
+      onClose={handleModalClose}
     />
   );
 }

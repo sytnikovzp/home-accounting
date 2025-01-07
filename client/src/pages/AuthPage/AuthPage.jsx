@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Typography } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
@@ -77,6 +77,16 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
       </Box>
     );
   };
+
+  useEffect(() => {
+    const pageTitles = {
+      login: 'Авторизація | Моя бухгалтерія',
+      register: 'Реєстрація | Моя бухгалтерія',
+      forgotPassword: 'Відновлення паролю | Моя бухгалтерія',
+    };
+
+    document.title = pageTitles[authMode];
+  }, [authMode]);
 
   const renderContent = () => {
     switch (authMode) {

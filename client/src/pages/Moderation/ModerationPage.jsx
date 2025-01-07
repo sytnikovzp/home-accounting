@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
+import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -28,13 +29,14 @@ function ModerationsPage() {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleModalClose = () => {
     setCrudError(null);
     navigate('/moderation');
   };
 
-  const openModal = (moderation) => {
+  const handleModalOpen = (moderation) => {
     const { path, uuid } = moderation;
     const allowedPaths = ['category', 'product', 'establishment'];
     if (allowedPaths.includes(path) && uuid) {
@@ -64,6 +66,24 @@ function ModerationsPage() {
       setIsLoading(false);
     }
   }, [currentPage, pageSize, sortModel]);
+
+  const pageTitles = useMemo(
+    () => ({
+      view: 'Модерація контенту | Моя бухгалтерія',
+      default: 'Підлягають модерації | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const pathKey = Object.keys(pageTitles).find((key) =>
+      location.pathname.includes(key)
+    );
+    const isUuid = uuidPattern.test(location.pathname);
+    document.title = isUuid
+      ? pageTitles.view
+      : pageTitles[pathKey] || pageTitles.default;
+  }, [location, pageTitles]);
 
   useEffect(() => {
     fetchModerations();
@@ -130,7 +150,7 @@ function ModerationsPage() {
         }}
         rows={moderations}
         sortModel={sortModel}
-        onModerate={openModal}
+        onModerate={handleModalOpen}
         onSortModelChange={setSortModel}
       />
       {renderRoutes()}

@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
+import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -36,13 +37,14 @@ function CategoriesPage() {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleModalClose = () => {
     setCrudError(null);
     navigate('/categories');
   };
 
-  const openModal = (mode, uuid = null) => {
+  const handleModalOpen = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
@@ -67,6 +69,31 @@ function CategoriesPage() {
       setIsLoading(false);
     }
   }, [currentPage, pageSize, selectedStatus, sortModel]);
+
+  const pageTitles = useMemo(
+    () => ({
+      view: 'Деталі категорії | Моя бухгалтерія',
+      add: 'Додавання категорії | Моя бухгалтерія',
+      edit: 'Редагування категорії | Моя бухгалтерія',
+      delete: 'Видалення категорії | Моя бухгалтерія',
+      default: 'Категорії витрат | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const pathKey = Object.keys(pageTitles).find((key) =>
+      location.pathname.includes(key)
+    );
+    const isUuid = uuidPattern.test(location.pathname);
+    const isEditOrDelete =
+      location.pathname.includes('edit') ||
+      location.pathname.includes('delete');
+    document.title =
+      isUuid && !isEditOrDelete
+        ? pageTitles.view
+        : pageTitles[pathKey] || pageTitles.default;
+  }, [location, pageTitles]);
 
   useEffect(() => {
     fetchCategories();
@@ -144,7 +171,7 @@ function CategoriesPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => openModal('add')}
+          onClick={() => handleModalOpen('add')}
         >
           Додати категорію
         </Button>
@@ -166,8 +193,8 @@ function CategoriesPage() {
         rows={categories}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={(category) => openModal('delete', category.uuid)}
-        onEdit={(category) => openModal('edit', category.uuid)}
+        onDelete={(category) => handleModalOpen('delete', category.uuid)}
+        onEdit={(category) => handleModalOpen('edit', category.uuid)}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
       />

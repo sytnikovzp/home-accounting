@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Box,
   FormControl,
@@ -30,6 +31,8 @@ function HomePage({ currentUser }) {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
 
+  const location = useLocation();
+
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(null);
@@ -52,6 +55,17 @@ function HomePage({ currentUser }) {
       setIsLoading(false);
     }
   }, [ago, criteria, currentUser]);
+
+  const pageTitles = useMemo(
+    () => ({
+      default: 'Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    document.title = pageTitles.default;
+  }, [location, pageTitles]);
 
   useEffect(() => {
     fetchData();

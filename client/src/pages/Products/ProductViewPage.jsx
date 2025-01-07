@@ -124,7 +124,7 @@ function ProductViewPage({ handleModalClose }) {
         )
       }
       error={errorMessage}
-      title='Деталі товару...'
+      title='Деталі товару/послуги...'
       onClose={handleModalClose}
     />
   );

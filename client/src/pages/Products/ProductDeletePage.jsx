@@ -65,7 +65,7 @@ function ProductDeletePage({
         )
       }
       error={errorMessage || crudError}
-      title='Видалення товару...'
+      title='Видалення товару/послуги...'
       onClose={handleModalClose}
     />
   );

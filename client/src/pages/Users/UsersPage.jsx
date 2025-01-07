@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
+import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -36,13 +37,14 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleModalClose = () => {
     setCrudError(null);
     navigate('/users');
   };
 
-  const openModal = (mode, uuid = null) => {
+  const handleModalOpen = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
@@ -66,6 +68,32 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
       setIsLoading(false);
     }
   }, [currentPage, pageSize, emailVerificationStatus, sortModel]);
+
+  const pageTitles = useMemo(
+    () => ({
+      view: 'Деталі користувача | Моя бухгалтерія',
+      edit: 'Редагування користувача | Моя бухгалтерія',
+      delete: 'Видалення користувача | Моя бухгалтерія',
+      password: 'Зміна паролю | Моя бухгалтерія',
+      default: 'Користувачі | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const pathKey = Object.keys(pageTitles).find((key) =>
+      location.pathname.includes(key)
+    );
+    const isUuid = uuidPattern.test(location.pathname);
+    const isEditOrDelete =
+      location.pathname.includes('password') ||
+      location.pathname.includes('edit') ||
+      location.pathname.includes('delete');
+    document.title =
+      isUuid && !isEditOrDelete
+        ? pageTitles.view
+        : pageTitles[pathKey] || pageTitles.default;
+  }, [location, pageTitles]);
 
   const fetchRoles = useCallback(async () => {
     setIsLoading(true);
@@ -180,8 +208,8 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
         rows={users}
         selectedStatus={emailVerificationStatus}
         sortModel={sortModel}
-        onDelete={(user) => openModal('delete', user.uuid)}
-        onEdit={(user) => openModal('edit', user.uuid)}
+        onDelete={(user) => handleModalOpen('delete', user.uuid)}
+        onEdit={(user) => handleModalOpen('edit', user.uuid)}
         onSortModelChange={setSortModel}
         onStatusChange={(event) =>
           setEmailVerificationStatus(event.target.value)

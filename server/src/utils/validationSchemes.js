@@ -40,7 +40,8 @@ const PASSWORD_REQUIRED_CONFIRM_SCHEME = yup
   .required('Підтвердження паролю є обов’язковим');
 
 const NUMBER_REQUIRED_SCHEME = yup
-  .number('Це поле має бути числом')
+  .number()
+  .typeError('Це поле має бути числом')
   .required('Це поле є обовʼязкове');
 
 const ARRAY_OF_STRING_NULLABLE_SCHEME = yup

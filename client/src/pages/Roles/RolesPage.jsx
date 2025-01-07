@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
+import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -36,13 +37,14 @@ function RolesPage() {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleModalClose = () => {
     setCrudError(null);
     navigate('/roles');
   };
 
-  const openModal = (mode, uuid = null) => {
+  const handleModalOpen = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
@@ -65,6 +67,31 @@ function RolesPage() {
       setIsLoading(false);
     }
   }, [currentPage, pageSize, sortModel]);
+
+  const pageTitles = useMemo(
+    () => ({
+      view: 'Деталі ролі | Моя бухгалтерія',
+      add: 'Додавання ролі | Моя бухгалтерія',
+      edit: 'Редагування ролі | Моя бухгалтерія',
+      delete: 'Видалення ролі | Моя бухгалтерія',
+      default: 'Ролі користувачів | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const pathKey = Object.keys(pageTitles).find((key) =>
+      location.pathname.includes(key)
+    );
+    const isUuid = uuidPattern.test(location.pathname);
+    const isEditOrDelete =
+      location.pathname.includes('edit') ||
+      location.pathname.includes('delete');
+    document.title =
+      isUuid && !isEditOrDelete
+        ? pageTitles.view
+        : pageTitles[pathKey] || pageTitles.default;
+  }, [location, pageTitles]);
 
   const fetchPermissions = useCallback(async () => {
     setIsLoading(true);
@@ -158,7 +185,7 @@ function RolesPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => openModal('add')}
+          onClick={() => handleModalOpen('add')}
         >
           Додати роль
         </Button>
@@ -176,8 +203,8 @@ function RolesPage() {
         }}
         rows={roles}
         sortModel={sortModel}
-        onDelete={(role) => openModal('delete', role.uuid)}
-        onEdit={(role) => openModal('edit', role.uuid)}
+        onDelete={(role) => handleModalOpen('delete', role.uuid)}
+        onEdit={(role) => handleModalOpen('edit', role.uuid)}
         onSortModelChange={setSortModel}
       />
       {renderRoutes()}

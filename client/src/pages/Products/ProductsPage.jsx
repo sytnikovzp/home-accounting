@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
+import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -37,13 +38,14 @@ function ProductsPage() {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleModalClose = () => {
     setCrudError(null);
     navigate('/products');
   };
 
-  const openModal = (mode, uuid = null) => {
+  const handleModalOpen = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
@@ -68,6 +70,31 @@ function ProductsPage() {
       setIsLoading(false);
     }
   }, [currentPage, pageSize, selectedStatus, sortModel]);
+
+  const pageTitles = useMemo(
+    () => ({
+      view: 'Деталі товару/послуги | Моя бухгалтерія',
+      add: 'Додавання товару/послуги | Моя бухгалтерія',
+      edit: 'Редагування товару/послуги | Моя бухгалтерія',
+      delete: 'Видалення товару/послуги | Моя бухгалтерія',
+      default: 'Товари та послуги | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const pathKey = Object.keys(pageTitles).find((key) =>
+      location.pathname.includes(key)
+    );
+    const isUuid = uuidPattern.test(location.pathname);
+    const isEditOrDelete =
+      location.pathname.includes('edit') ||
+      location.pathname.includes('delete');
+    document.title =
+      isUuid && !isEditOrDelete
+        ? pageTitles.view
+        : pageTitles[pathKey] || pageTitles.default;
+  }, [location, pageTitles]);
 
   const fetchCategories = useCallback(async () => {
     setIsLoading(true);
@@ -165,7 +192,7 @@ function ProductsPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => openModal('add')}
+          onClick={() => handleModalOpen('add')}
         >
           Додати товар/послугу
         </Button>
@@ -188,8 +215,8 @@ function ProductsPage() {
         rows={products}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={(product) => openModal('delete', product.uuid)}
-        onEdit={(product) => openModal('edit', product.uuid)}
+        onDelete={(product) => handleModalOpen('delete', product.uuid)}
+        onEdit={(product) => handleModalOpen('edit', product.uuid)}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
       />

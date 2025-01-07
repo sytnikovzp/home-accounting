@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
+import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -35,13 +36,14 @@ function CurrenciesPage() {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleModalClose = () => {
     setCrudError(null);
     navigate('/currencies');
   };
 
-  const openModal = (mode, uuid = null) => {
+  const handleModalOpen = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
@@ -65,6 +67,31 @@ function CurrenciesPage() {
       setIsLoading(false);
     }
   }, [currentPage, pageSize, sortModel]);
+
+  const pageTitles = useMemo(
+    () => ({
+      view: 'Деталі валюти | Моя бухгалтерія',
+      add: 'Додавання валюти | Моя бухгалтерія',
+      edit: 'Редагування валюти | Моя бухгалтерія',
+      delete: 'Видалення валюти | Моя бухгалтерія',
+      default: 'Валюти | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const pathKey = Object.keys(pageTitles).find((key) =>
+      location.pathname.includes(key)
+    );
+    const isUuid = uuidPattern.test(location.pathname);
+    const isEditOrDelete =
+      location.pathname.includes('edit') ||
+      location.pathname.includes('delete');
+    document.title =
+      isUuid && !isEditOrDelete
+        ? pageTitles.view
+        : pageTitles[pathKey] || pageTitles.default;
+  }, [location, pageTitles]);
 
   useEffect(() => {
     fetchCurrencies();
@@ -142,7 +169,7 @@ function CurrenciesPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => openModal('add')}
+          onClick={() => handleModalOpen('add')}
         >
           Додати валюту
         </Button>
@@ -162,8 +189,8 @@ function CurrenciesPage() {
         }}
         rows={currencies}
         sortModel={sortModel}
-        onDelete={(currency) => openModal('delete', currency.uuid)}
-        onEdit={(currency) => openModal('edit', currency.uuid)}
+        onDelete={(currency) => handleModalOpen('delete', currency.uuid)}
+        onEdit={(currency) => handleModalOpen('edit', currency.uuid)}
         onSortModelChange={setSortModel}
       />
       {renderRoutes()}

@@ -12,6 +12,8 @@ const removeAccessToken = () => {
   return localStorage.removeItem('accessToken');
 };
 
+const uuidPattern = /[0-9a-fA-F-]{36}/;
+
 const stringToColor = (string) => {
   let hash = 0;
   for (let i = 0; i < string.length; i += 1) {
@@ -38,4 +40,10 @@ const stringAvatar = (fullName) => {
   };
 };
 
-export { getAccessToken, removeAccessToken, saveAccessToken, stringAvatar };
+export {
+  getAccessToken,
+  removeAccessToken,
+  saveAccessToken,
+  stringAvatar,
+  uuidPattern,
+};

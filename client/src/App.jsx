@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import {
   BrowserRouter as Router,
   Navigate,
@@ -78,72 +79,74 @@ function App() {
   );
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          element={
-            <Layout
-              currentUser={currentUser}
-              isAuthenticated={isAuthenticated}
-              setAuthModalOpen={setAuthModalOpen}
-              setIsAuthenticated={setIsAuthenticated}
-            />
-          }
-          path='/'
-        >
-          <Route index element={<HomePage currentUser={currentUser} />} />
+    <HelmetProvider>
+      <Router>
+        <Routes>
           <Route
-            element={renderPrivateRoute(<ExpensesPage />)}
-            path='expenses/*'
-          />
-          <Route
-            element={renderPrivateRoute(<EstablishmentsPage />)}
-            path='establishments/*'
-          />
-          <Route
-            element={renderPrivateRoute(<ProductsPage />)}
-            path='products/*'
-          />
-          <Route
-            element={renderPrivateRoute(<CategoriesPage />)}
-            path='categories/*'
-          />
-          <Route
-            element={renderPrivateRoute(<CurrenciesPage />)}
-            path='currencies/*'
-          />
-          <Route
-            element={renderPrivateRoute(<MeasuresPage />)}
-            path='measures/*'
-          />
-          <Route
-            element={renderPrivateRoute(<ModerationPage />)}
-            path='moderation/*'
-          />
-          <Route
-            element={renderPrivateRoute(
-              <UsersPage
+            element={
+              <Layout
                 currentUser={currentUser}
+                isAuthenticated={isAuthenticated}
+                setAuthModalOpen={setAuthModalOpen}
                 setIsAuthenticated={setIsAuthenticated}
               />
-            )}
-            path='users/*'
-          />
-          <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
-          <Route element={<NotificationPage />} path='notification' />
-          <Route element={<UserResetPasswordPage />} path='reset-password' />
-          <Route element={<Navigate replace to='/' />} path='*' />
-        </Route>
-      </Routes>
+            }
+            path='/'
+          >
+            <Route index element={<HomePage currentUser={currentUser} />} />
+            <Route
+              element={renderPrivateRoute(<ExpensesPage />)}
+              path='expenses/*'
+            />
+            <Route
+              element={renderPrivateRoute(<EstablishmentsPage />)}
+              path='establishments/*'
+            />
+            <Route
+              element={renderPrivateRoute(<ProductsPage />)}
+              path='products/*'
+            />
+            <Route
+              element={renderPrivateRoute(<CategoriesPage />)}
+              path='categories/*'
+            />
+            <Route
+              element={renderPrivateRoute(<CurrenciesPage />)}
+              path='currencies/*'
+            />
+            <Route
+              element={renderPrivateRoute(<MeasuresPage />)}
+              path='measures/*'
+            />
+            <Route
+              element={renderPrivateRoute(<ModerationPage />)}
+              path='moderation/*'
+            />
+            <Route
+              element={renderPrivateRoute(
+                <UsersPage
+                  currentUser={currentUser}
+                  setIsAuthenticated={setIsAuthenticated}
+                />
+              )}
+              path='users/*'
+            />
+            <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
+            <Route element={<NotificationPage />} path='notification' />
+            <Route element={<UserResetPasswordPage />} path='reset-password' />
+            <Route element={<Navigate replace to='/' />} path='*' />
+          </Route>
+        </Routes>
 
-      {isAuthModalOpen && !isAuthenticated && (
-        <AuthPage
-          checkAuthentication={checkAuthentication}
-          isOpen={isAuthModalOpen}
-          onClose={handleCloseAuthModal}
-        />
-      )}
-    </Router>
+        {isAuthModalOpen && !isAuthenticated && (
+          <AuthPage
+            checkAuthentication={checkAuthentication}
+            isOpen={isAuthModalOpen}
+            onClose={handleCloseAuthModal}
+          />
+        )}
+      </Router>
+    </HelmetProvider>
   );
 }
 

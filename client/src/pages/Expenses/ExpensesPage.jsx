@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
+import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -40,13 +41,14 @@ function ExpensesPage() {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleModalClose = () => {
     setCrudError(null);
     navigate('/expenses');
   };
 
-  const openModal = (mode, uuid = null) => {
+  const handleModalOpen = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
@@ -139,6 +141,31 @@ function ExpensesPage() {
       setIsLoading(false);
     }
   }, []);
+
+  const pageTitles = useMemo(
+    () => ({
+      view: 'Деталі витрати | Моя бухгалтерія',
+      add: 'Додавання витрати | Моя бухгалтерія',
+      edit: 'Редагування витрати | Моя бухгалтерія',
+      delete: 'Видалення витрати | Моя бухгалтерія',
+      default: 'Витрати | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const pathKey = Object.keys(pageTitles).find((key) =>
+      location.pathname.includes(key)
+    );
+    const isUuid = uuidPattern.test(location.pathname);
+    const isEditOrDelete =
+      location.pathname.includes('edit') ||
+      location.pathname.includes('delete');
+    document.title =
+      isUuid && !isEditOrDelete
+        ? pageTitles.view
+        : pageTitles[pathKey] || pageTitles.default;
+  }, [location, pageTitles]);
 
   useEffect(() => {
     fetchExpenses();
@@ -234,7 +261,7 @@ function ExpensesPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => openModal('add')}
+          onClick={() => handleModalOpen('add')}
         >
           Додати витрату
         </Button>
@@ -259,8 +286,8 @@ function ExpensesPage() {
         rows={expenses}
         selectedStatus={selectedPeriod}
         sortModel={sortModel}
-        onDelete={(expense) => openModal('delete', expense.uuid)}
-        onEdit={(expense) => openModal('edit', expense.uuid)}
+        onDelete={(expense) => handleModalOpen('delete', expense.uuid)}
+        onEdit={(expense) => handleModalOpen('edit', expense.uuid)}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedPeriod(event.target.value)}
       />

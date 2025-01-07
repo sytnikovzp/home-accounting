@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
+import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
@@ -36,13 +37,14 @@ function EstablishmentsPage() {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleModalClose = () => {
     setCrudError(null);
     navigate('/establishments');
   };
 
-  const openModal = (mode, uuid = null) => {
+  const handleModalOpen = (mode, uuid = null) => {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
@@ -67,6 +69,31 @@ function EstablishmentsPage() {
       setIsLoading(false);
     }
   }, [currentPage, pageSize, selectedStatus, sortModel]);
+
+  const pageTitles = useMemo(
+    () => ({
+      view: 'Деталі закладу | Моя бухгалтерія',
+      add: 'Додавання закладу | Моя бухгалтерія',
+      edit: 'Редагування закладу | Моя бухгалтерія',
+      delete: 'Видалення закладу | Моя бухгалтерія',
+      default: 'Заклади | Моя бухгалтерія',
+    }),
+    []
+  );
+
+  useEffect(() => {
+    const pathKey = Object.keys(pageTitles).find((key) =>
+      location.pathname.includes(key)
+    );
+    const isUuid = uuidPattern.test(location.pathname);
+    const isEditOrDelete =
+      location.pathname.includes('edit') ||
+      location.pathname.includes('delete');
+    document.title =
+      isUuid && !isEditOrDelete
+        ? pageTitles.view
+        : pageTitles[pathKey] || pageTitles.default;
+  }, [location, pageTitles]);
 
   useEffect(() => {
     fetchEstablishments();
@@ -144,7 +171,7 @@ function EstablishmentsPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => openModal('add')}
+          onClick={() => handleModalOpen('add')}
         >
           Додати заклад
         </Button>
@@ -167,8 +194,10 @@ function EstablishmentsPage() {
         rows={establishments}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={(establishment) => openModal('delete', establishment.uuid)}
-        onEdit={(establishment) => openModal('edit', establishment.uuid)}
+        onDelete={(establishment) =>
+          handleModalOpen('delete', establishment.uuid)
+        }
+        onEdit={(establishment) => handleModalOpen('edit', establishment.uuid)}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
       />
