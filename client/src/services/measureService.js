@@ -1,4 +1,4 @@
-import api from '../api';
+import { requestHandler } from '../utils/sharedFunctions';
 
 const getAllMeasures = async ({
   page = 1,
@@ -6,44 +6,47 @@ const getAllMeasures = async ({
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({ page, limit, sort, order }).toString();
-  try {
-    const { data, headers } = await api.get(`/measures?${params}`);
-    const totalCount = parseInt(headers['x-total-count']);
-    return {
-      data,
-      totalCount,
-    };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-      totalCount: 0,
-    };
-  }
+  const params = { page, limit, sort, order };
+  const response = await requestHandler({
+    url: '/measures',
+    method: 'GET',
+    params,
+  });
+  return response;
 };
 
 const getMeasureByUuid = async (measureUuid) => {
-  const { data } = await api.get(`/measures/${measureUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/measures/${measureUuid}`,
+    method: 'GET',
+  });
+  return response;
 };
 
 const createMeasure = async (title, description = '') => {
-  const { data } = await api.post('/measures', { title, description });
-  return data;
+  const response = await requestHandler({
+    url: '/measures',
+    method: 'POST',
+    data: { title, description },
+  });
+  return response;
 };
 
 const updateMeasure = async (measureUuid, title, description) => {
-  const { data } = await api.patch(`/measures/${measureUuid}`, {
-    title,
-    description,
+  const response = await requestHandler({
+    url: `/measures/${measureUuid}`,
+    method: 'PATCH',
+    data: { title, description },
   });
-  return data;
+  return response;
 };
 
 const deleteMeasure = async (measureUuid) => {
-  const { data } = await api.delete(`/measures/${measureUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/measures/${measureUuid}`,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 export default {

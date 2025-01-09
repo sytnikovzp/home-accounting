@@ -1,4 +1,4 @@
-import api from '../api';
+import { requestHandler } from '../utils/sharedFunctions';
 
 const getAllEstablishments = async ({
   status = 'approved',
@@ -7,41 +7,30 @@ const getAllEstablishments = async ({
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({
-    status,
-    page,
-    limit,
-    sort,
-    order,
-  }).toString();
-  try {
-    const { data, headers } = await api.get(`/establishments?${params}`);
-    const totalCount = parseInt(headers['x-total-count']);
-    return {
-      data,
-      totalCount,
-    };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-      totalCount: 0,
-    };
-  }
+  const params = { status, page, limit, sort, order };
+  const response = await requestHandler({
+    url: '/establishments',
+    method: 'GET',
+    params,
+  });
+  return response;
 };
 
 const getEstablishmentByUuid = async (establishmentUuid) => {
-  const { data } = await api.get(`/establishments/${establishmentUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/establishments/${establishmentUuid}`,
+    method: 'GET',
+  });
+  return response;
 };
 
 const createEstablishment = async (title, description = '', url = '') => {
-  const { data } = await api.post('/establishments', {
-    title,
-    description,
-    url,
+  const response = await requestHandler({
+    url: '/establishments',
+    method: 'POST',
+    data: { title, description, url },
   });
-  return data;
+  return response;
 };
 
 const updateEstablishment = async (
@@ -50,12 +39,12 @@ const updateEstablishment = async (
   description,
   url
 ) => {
-  const { data } = await api.patch(`/establishments/${establishmentUuid}`, {
-    title,
-    description,
-    url,
+  const response = await requestHandler({
+    url: `/establishments/${establishmentUuid}`,
+    method: 'PATCH',
+    data: { title, description, url },
   });
-  return data;
+  return response;
 };
 
 const updateEstablishmentLogo = async (
@@ -64,31 +53,29 @@ const updateEstablishmentLogo = async (
 ) => {
   const formData = new FormData();
   formData.append('establishmentLogo', establishmentLogo);
-  const { data } = await api.patch(
-    `/establishments/update-logo/${establishmentUuid}`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-  );
-  return data;
+  const response = await requestHandler({
+    url: `/establishments/update-logo/${establishmentUuid}`,
+    method: 'PATCH',
+    data: formData,
+  });
+  return response;
 };
 
 const removeEstablishmentLogo = async (establishmentUuid) => {
-  const { data } = await api.patch(
-    `/establishments/delete-logo/${establishmentUuid}`,
-    {
-      logo: null,
-    }
-  );
-  return data;
+  const response = await requestHandler({
+    url: `/establishments/delete-logo/${establishmentUuid}`,
+    method: 'PATCH',
+    data: { logo: null },
+  });
+  return response;
 };
 
 const deleteEstablishment = async (establishmentUuid) => {
-  const { data } = await api.delete(`/establishments/${establishmentUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/establishments/${establishmentUuid}`,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 export default {

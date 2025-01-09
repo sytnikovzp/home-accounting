@@ -1,4 +1,4 @@
-import api from '../api';
+import { requestHandler } from '../utils/sharedFunctions';
 
 const getAllProducts = async ({
   status = 'approved',
@@ -7,50 +7,47 @@ const getAllProducts = async ({
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({
-    status,
-    page,
-    limit,
-    sort,
-    order,
-  }).toString();
-  try {
-    const { data, headers } = await api.get(`/products?${params}`);
-    const totalCount = parseInt(headers['x-total-count']);
-    return {
-      data,
-      totalCount,
-    };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-      totalCount: 0,
-    };
-  }
+  const params = { status, page, limit, sort, order };
+  const response = await requestHandler({
+    url: '/products',
+    method: 'GET',
+    params,
+  });
+  return response;
 };
 
 const getProductByUuid = async (productUuid) => {
-  const { data } = await api.get(`/products/${productUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/products/${productUuid}`,
+    method: 'GET',
+  });
+  return response;
 };
 
 const createProduct = async (title, category = '') => {
-  const { data } = await api.post('/products', { title, category });
-  return data;
+  const response = await requestHandler({
+    url: '/products',
+    method: 'POST',
+    data: { title, category },
+  });
+  return response;
 };
 
 const updateProduct = async (productUuid, title, category) => {
-  const { data } = await api.patch(`/products/${productUuid}`, {
-    title,
-    category,
+  const response = await requestHandler({
+    url: `/products/${productUuid}`,
+    method: 'PATCH',
+    data: { title, category },
   });
-  return data;
+  return response;
 };
 
 const deleteProduct = async (productUuid) => {
-  const { data } = await api.delete(`/products/${productUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/products/${productUuid}`,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 export default {

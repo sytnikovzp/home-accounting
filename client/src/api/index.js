@@ -39,6 +39,10 @@ api.interceptors.response.use(
           console.warn('Access token expired and refresh failed.');
           removeAccessToken();
         }
+        if (err.response?.status === 404) {
+          console.warn('User not found. Removing access token.');
+          removeAccessToken();
+        }
         return Promise.reject(err);
       }
     }

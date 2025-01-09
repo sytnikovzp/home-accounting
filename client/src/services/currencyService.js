@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import api from '../api';
+import { requestHandler } from '../utils/sharedFunctions';
 
 const getNBURates = async () => {
   const { data } = await axios.get(
@@ -15,47 +15,47 @@ const getAllCurrencies = async ({
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({ page, limit, sort, order }).toString();
-  try {
-    const { data, headers } = await api.get(`/currencies?${params}`);
-    const totalCount = parseInt(headers['x-total-count']);
-    return {
-      data,
-      totalCount,
-    };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-      totalCount: 0,
-    };
-  }
+  const params = { page, limit, sort, order };
+  const response = await requestHandler({
+    url: '/currencies',
+    method: 'GET',
+    params,
+  });
+  return response;
 };
 
 const getCurrencyByUuid = async (currencyUuid) => {
-  const { data } = await api.get(`/currencies/${currencyUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/currencies/${currencyUuid}`,
+    method: 'GET',
+  });
+  return response;
 };
 
 const createCurrency = async (title, code) => {
-  const { data } = await api.post('/currencies', {
-    title,
-    code,
+  const response = await requestHandler({
+    url: '/currencies',
+    method: 'POST',
+    data: { title, code },
   });
-  return data;
+  return response;
 };
 
 const updateCurrency = async (currencyUuid, title, code) => {
-  const { data } = await api.patch(`/currencies/${currencyUuid}`, {
-    title,
-    code,
+  const response = await requestHandler({
+    url: `/currencies/${currencyUuid}`,
+    method: 'PATCH',
+    data: { title, code },
   });
-  return data;
+  return response;
 };
 
 const deleteCurrency = async (currencyUuid) => {
-  const { data } = await api.delete(`/currencies/${currencyUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/currencies/${currencyUuid}`,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 export default {

@@ -1,58 +1,48 @@
-import api from '../api';
+import { requestHandler } from '../utils/sharedFunctions';
 
 const getCostByCategories = async ({ ago = 'allTime', creatorUuid } = {}) => {
-  const params = new URLSearchParams({ ago });
+  const params = { ago };
   if (creatorUuid) {
-    params.append('creatorUuid', creatorUuid);
+    params.creatorUuid = creatorUuid;
   }
-  try {
-    const { data } = await api.get(
-      `/statistics/categories?${params.toString()}`
-    );
-    return { data };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-    };
-  }
+  const response = await requestHandler({
+    url: '/statistics/categories',
+    method: 'GET',
+    params,
+  });
+  const data = Array.isArray(response) ? { data: response } : response;
+  return data;
 };
 
 const getCostByEstablishments = async ({
   ago = 'allTime',
   creatorUuid,
 } = {}) => {
-  const params = new URLSearchParams({ ago });
+  const params = { ago };
   if (creatorUuid) {
-    params.append('creatorUuid', creatorUuid);
+    params.creatorUuid = creatorUuid;
   }
-  try {
-    const { data } = await api.get(
-      `/statistics/establishments?${params.toString()}`
-    );
-    return { data };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-    };
-  }
+  const response = await requestHandler({
+    url: '/statistics/establishments',
+    method: 'GET',
+    params,
+  });
+  const data = Array.isArray(response) ? { data: response } : response;
+  return data;
 };
 
 const getCostByProducts = async ({ ago = 'allTime', creatorUuid } = {}) => {
-  const params = new URLSearchParams({ ago });
+  const params = { ago };
   if (creatorUuid) {
-    params.append('creatorUuid', creatorUuid);
+    params.creatorUuid = creatorUuid;
   }
-  try {
-    const { data } = await api.get(`/statistics/products?${params.toString()}`);
-    return { data };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-    };
-  }
+  const response = await requestHandler({
+    url: '/statistics/products',
+    method: 'GET',
+    params,
+  });
+  const data = Array.isArray(response) ? { data: response } : response;
+  return data;
 };
 
 export default {

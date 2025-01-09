@@ -1,17 +1,12 @@
-import api from '../api';
+import { requestHandler } from '../utils/sharedFunctions';
 
 const getAllPermissions = async () => {
-  try {
-    const { data } = await api.get(`/roles/permissions`);
-    return {
-      data,
-    };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-    };
-  }
+  const response = await requestHandler({
+    url: '/roles/permissions',
+    method: 'GET',
+  });
+  const data = Array.isArray(response) ? { data: response } : response;
+  return data;
 };
 
 const getAllRoles = async ({
@@ -20,49 +15,47 @@ const getAllRoles = async ({
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({ page, limit, sort, order }).toString();
-  try {
-    const { data, headers } = await api.get(`/roles?${params}`);
-    const totalCount = parseInt(headers['x-total-count']);
-    return {
-      data,
-      totalCount,
-    };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-      totalCount: 0,
-    };
-  }
+  const params = { page, limit, sort, order };
+  const response = await requestHandler({
+    url: '/roles',
+    method: 'GET',
+    params,
+  });
+  return response;
 };
 
 const getRoleByUuid = async (roleUuid) => {
-  const { data } = await api.get(`/roles/${roleUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/roles/${roleUuid}`,
+    method: 'GET',
+  });
+  return response;
 };
 
 const createRole = async (title, description = '', permissions = []) => {
-  const { data } = await api.post('/roles', {
-    title,
-    description,
-    permissions,
+  const response = await requestHandler({
+    url: '/roles',
+    method: 'POST',
+    data: { title, description, permissions },
   });
-  return data;
+  return response;
 };
 
 const updateRole = async (roleUuid, title, description, permissions) => {
-  const { data } = await api.patch(`/roles/${roleUuid}`, {
-    title,
-    description,
-    permissions,
+  const response = await requestHandler({
+    url: `/roles/${roleUuid}`,
+    method: 'PATCH',
+    data: { title, description, permissions },
   });
-  return data;
+  return response;
 };
 
 const deleteRole = async (roleUuid) => {
-  const { data } = await api.delete(`/roles/${roleUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/roles/${roleUuid}`,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 export default {

@@ -59,7 +59,7 @@ const restController = {
 
   // Role and Permission management
   fetchAllPermissions: async () => {
-    const { data } = await roleService.getAllPermissions();
+    const { data } = await roleService.getAllPermissions({});
     return { data };
   },
   fetchAllRoles: async ({

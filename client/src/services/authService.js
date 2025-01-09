@@ -1,49 +1,71 @@
-import { removeAccessToken, saveAccessToken } from '../utils/sharedFunctions';
-import api from '../api';
+import {
+  removeAccessToken,
+  requestHandler,
+  saveAccessToken,
+} from '../utils/sharedFunctions';
 
 const registration = async (fullName, email, password) => {
-  const { data } = await api.post('/auth/registration', {
-    fullName,
-    email,
-    password,
+  const response = await requestHandler({
+    url: '/auth/registration',
+    method: 'POST',
+    data: { fullName, email, password },
   });
-  saveAccessToken(data.accessToken);
-  return data;
+  saveAccessToken(response.accessToken);
+  return response;
 };
 
 const login = async (email, password) => {
-  const { data } = await api.post('/auth/login', { email, password });
-  saveAccessToken(data.accessToken);
-  return data;
+  const response = await requestHandler({
+    url: '/auth/login',
+    method: 'POST',
+    data: { email, password },
+  });
+  saveAccessToken(response.accessToken);
+  return response;
 };
 
 const logout = async () => {
-  await api.get('/auth/logout');
+  await requestHandler({
+    url: '/auth/logout',
+    method: 'GET',
+  });
   removeAccessToken();
 };
 
 const refreshAccessToken = async () => {
-  const { data } = await api.get('/auth/refresh');
-  saveAccessToken(data.accessToken);
-  return data;
+  const response = await requestHandler({
+    url: '/auth/refresh',
+    method: 'GET',
+  });
+  saveAccessToken(response.accessToken);
+  return response;
 };
 
 const resendVerifyEmail = async (email) => {
-  const { data } = await api.post('/auth/resend-verify', { email });
-  return data;
+  const response = await requestHandler({
+    url: '/auth/resend-verify',
+    method: 'POST',
+    data: { email },
+  });
+  return response;
 };
 
 const forgotPassword = async (email) => {
-  const { data } = await api.post('/auth/forgot', { email });
-  return data;
+  const response = await requestHandler({
+    url: '/auth/forgot',
+    method: 'POST',
+    data: { email },
+  });
+  return response;
 };
 
 const resetPassword = async (token, newPassword, confirmNewPassword) => {
-  const { data } = await api.post(`/auth/reset?token=${token}`, {
-    newPassword,
-    confirmNewPassword,
+  const response = await requestHandler({
+    url: `/auth/reset?token=${token}`,
+    method: 'POST',
+    data: { newPassword, confirmNewPassword },
   });
-  return data;
+  return response;
 };
 
 export default {

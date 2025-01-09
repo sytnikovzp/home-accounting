@@ -1,4 +1,4 @@
-import api from '../api';
+import { requestHandler } from '../utils/sharedFunctions';
 
 const getAllExpenses = async ({
   ago = 'allTime',
@@ -7,32 +7,21 @@ const getAllExpenses = async ({
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({
-    ago,
-    page,
-    limit,
-    sort,
-    order,
-  }).toString();
-  try {
-    const { data, headers } = await api.get(`/expenses?${params}`);
-    const totalCount = parseInt(headers['x-total-count']);
-    return {
-      data,
-      totalCount,
-    };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-      totalCount: 0,
-    };
-  }
+  const params = { ago, page, limit, sort, order };
+  const response = await requestHandler({
+    url: '/expenses',
+    method: 'GET',
+    params,
+  });
+  return response;
 };
 
 const getExpenseByUuid = async (expenseUuid) => {
-  const { data } = await api.get(`/expenses/${expenseUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/expenses/${expenseUuid}`,
+    method: 'GET',
+  });
+  return response;
 };
 
 const createExpense = async (
@@ -44,16 +33,20 @@ const createExpense = async (
   currency,
   date
 ) => {
-  const { data } = await api.post('/expenses', {
-    product,
-    quantity,
-    unitPrice,
-    establishment,
-    measure,
-    currency,
-    date,
+  const response = await requestHandler({
+    url: '/expenses',
+    method: 'POST',
+    data: {
+      product,
+      quantity,
+      unitPrice,
+      establishment,
+      measure,
+      currency,
+      date,
+    },
   });
-  return data;
+  return response;
 };
 
 const updateExpense = async (
@@ -66,21 +59,28 @@ const updateExpense = async (
   currency,
   date
 ) => {
-  const { data } = await api.patch(`/expenses/${expenseUuid}`, {
-    product,
-    quantity,
-    unitPrice,
-    establishment,
-    measure,
-    currency,
-    date,
+  const response = await requestHandler({
+    url: `/expenses/${expenseUuid}`,
+    method: 'PATCH',
+    data: {
+      product,
+      quantity,
+      unitPrice,
+      establishment,
+      measure,
+      currency,
+      date,
+    },
   });
-  return data;
+  return response;
 };
 
 const deleteExpense = async (expenseUuid) => {
-  const { data } = await api.delete(`/expenses/${expenseUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/expenses/${expenseUuid}`,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 export default {

@@ -50,9 +50,14 @@ const requestHandler = async ({
 }) => {
   try {
     const queryParams = new URLSearchParams(params).toString();
+    const headers =
+      url.includes('update-logo') || url.includes('update-photo')
+        ? { 'Content-Type': 'multipart/form-data' }
+        : {};
     const response = await api({
       url: `${url}${queryParams ? '?' + queryParams : ''}`,
       method,
+      headers,
       ...(method === 'GET' || method === 'DELETE' ? {} : { data }),
     });
     if (method === 'GET' && response.headers['x-total-count']) {
