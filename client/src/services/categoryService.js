@@ -1,4 +1,4 @@
-import api from '../api';
+import { requestHandler } from '../utils/sharedFunctions';
 
 const getAllCategories = async ({
   status = 'approved',
@@ -7,47 +7,53 @@ const getAllCategories = async ({
   sort = 'uuid',
   order = 'asc',
 } = {}) => {
-  const params = new URLSearchParams({
+  const params = {
     status,
     page,
     limit,
     sort,
     order,
-  }).toString();
-  try {
-    const { data, headers } = await api.get(`/categories?${params}`);
-    const totalCount = parseInt(headers['x-total-count']);
-    return {
-      data,
-      totalCount,
-    };
-  } catch (error) {
-    console.error(error.response.data);
-    return {
-      data: [],
-      totalCount: 0,
-    };
-  }
+  };
+  const response = await requestHandler({
+    url: '/categories',
+    method: 'GET',
+    params,
+  });
+  return response;
 };
 
 const getCategoryByUuid = async (categoryUuid) => {
-  const { data } = await api.get(`/categories/${categoryUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/categories/${categoryUuid}`,
+    method: 'GET',
+  });
+  return response;
 };
 
 const createCategory = async (title) => {
-  const { data } = await api.post('/categories', { title });
-  return data;
+  const response = await requestHandler({
+    url: '/categories',
+    method: 'POST',
+    data: { title },
+  });
+  return response;
 };
 
 const updateCategory = async (categoryUuid, title) => {
-  const { data } = await api.patch(`/categories/${categoryUuid}`, { title });
-  return data;
+  const response = await requestHandler({
+    url: `/categories/${categoryUuid}`,
+    method: 'PATCH',
+    data: { title },
+  });
+  return response;
 };
 
 const deleteCategory = async (categoryUuid) => {
-  const { data } = await api.delete(`/categories/${categoryUuid}`);
-  return data;
+  const response = await requestHandler({
+    url: `/categories/${categoryUuid}`,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 export default {

@@ -45,7 +45,7 @@ export default [
       'no-underscore-dangle': [
         'error',
         {
-          allow: ['_id'],
+          allow: ['_id', '_retry'],
         },
       ],
       camelcase: ['warn', { properties: 'always' }],
@@ -91,6 +91,7 @@ export default [
               '^.*\\/services($|\\/.*$)',
             ],
             ['^.*\\/components($|\\/.*$)'],
+            ['^.*\\/App\\.jsx$'],
             ['^.*\\/pages($|\\/.*$)'],
             ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
             ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],

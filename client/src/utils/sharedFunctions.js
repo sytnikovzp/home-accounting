@@ -1,3 +1,5 @@
+import api from '../api';
+
 import { stylesHeaderUserAvatar } from '../styles';
 
 const getAccessToken = () => {
@@ -40,9 +42,42 @@ const stringAvatar = (fullName) => {
   };
 };
 
+const requestHandler = async ({
+  url,
+  method = 'GET',
+  data = {},
+  params = {},
+}) => {
+  try {
+    const queryParams = new URLSearchParams(params).toString();
+    const response = await api({
+      url: `${url}${queryParams ? '?' + queryParams : ''}`,
+      method,
+      ...(method === 'GET' || method === 'DELETE' ? {} : { data }),
+    });
+    if (method === 'GET' && response.headers['x-total-count']) {
+      const totalCount = parseInt(response.headers['x-total-count']);
+      return {
+        data: response.data,
+        totalCount,
+      };
+    }
+    return response.data;
+  } catch (error) {
+    if (method === 'GET') {
+      return {
+        data: [],
+        totalCount: 0,
+      };
+    }
+    throw error;
+  }
+};
+
 export {
   getAccessToken,
   removeAccessToken,
+  requestHandler,
   saveAccessToken,
   stringAvatar,
   uuidPattern,
