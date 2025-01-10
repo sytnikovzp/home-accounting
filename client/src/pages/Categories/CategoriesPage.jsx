@@ -1,16 +1,26 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
 import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
+
+import {
+  selectCategories,
+  selectCategoriesError,
+  selectCategoriesLoading,
+  selectCategoriesShowPreloader,
+  selectCategoriesTotalCount,
+} from '../../store/selectors/categoriesSelectors';
+import { resetState } from '../../store/slices/categoriesSlice';
+import { fetchCategories } from '../../store/thunks/categoriesThunks';
 
 import CategoryAddPage from './CategoryAddPage';
 import CategoryDeletePage from './CategoryDeletePage';
@@ -24,23 +34,26 @@ import {
 } from '../../styles';
 
 function CategoriesPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showPreloader, setShowPreloader] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [selectedStatus, setSelectedStatus] = useState('approved');
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-  const [crudError, setCrudError] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState('approved');
+  const [timeoutReached, setTimeoutReached] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const categories = useSelector(selectCategories);
+  const totalCount = useSelector(selectCategoriesTotalCount);
+  const loading = useSelector(selectCategoriesLoading);
+  const error = useSelector(selectCategoriesError);
+  const showPreloader = useSelector(selectCategoriesShowPreloader);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const handleModalClose = () => {
-    setCrudError(null);
+    dispatch(resetState());
     navigate('/categories');
   };
 
@@ -48,27 +61,17 @@ function CategoriesPage() {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
-  const fetchCategories = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
+  const fetchCategoriesList = useCallback(() => {
+    dispatch(
+      fetchCategories({
         page: currentPage,
         limit: pageSize,
         status: selectedStatus,
         sort: sortModel.field,
         order: sortModel.order,
-      };
-      const { data, totalCount } =
-        await restController.fetchAllCategories(params);
-      setCategories(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, selectedStatus, sortModel]);
+      })
+    );
+  }, [dispatch, currentPage, pageSize, selectedStatus, sortModel]);
 
   const pageTitles = useMemo(
     () => ({
@@ -96,28 +99,26 @@ function CategoriesPage() {
   }, [location, pageTitles]);
 
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    fetchCategoriesList();
+  }, [fetchCategoriesList]);
 
   useEffect(() => {
     let timeout;
-    if (isLoading) {
-      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
+    if (loading) {
+      timeout = setTimeout(() => setTimeoutReached(true), DELAY_SHOW_PRELOADER);
     } else {
-      setShowPreloader(false);
+      setTimeoutReached(false);
     }
     return () => clearTimeout(timeout);
-  }, [isLoading]);
+  }, [loading]);
 
   const renderRoutes = () => (
     <Routes>
       <Route
         element={
           <CategoryAddPage
-            crudError={crudError}
-            fetchCategories={fetchCategories}
+            fetchCategoriesList={fetchCategoriesList}
             handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
           />
         }
         path='add'
@@ -125,10 +126,8 @@ function CategoriesPage() {
       <Route
         element={
           <CategoryEditPage
-            crudError={crudError}
-            fetchCategories={fetchCategories}
+            fetchCategoriesList={fetchCategoriesList}
             handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
           />
         }
         path='edit/:uuid'
@@ -136,10 +135,8 @@ function CategoriesPage() {
       <Route
         element={
           <CategoryDeletePage
-            crudError={crudError}
-            fetchCategories={fetchCategories}
+            fetchCategoriesList={fetchCategoriesList}
             handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
           />
         }
         path='delete/:uuid'
@@ -150,10 +147,9 @@ function CategoriesPage() {
       />
     </Routes>
   );
-
-  if (showPreloader)
+  if (showPreloader || timeoutReached)
     return <Preloader message='Завантаження списку "Категорій"...' />;
-  if (errorMessage) return <Error error={errorMessage} />;
+  if (error) return <Error error={error} />;
 
   return (
     <>

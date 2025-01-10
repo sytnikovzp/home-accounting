@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Box, Link } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box } from '@mui/material';
 import {
   CalendarToday,
   Cancel,
@@ -11,11 +12,17 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import useFetchEntity from '../../hooks/useFetchEntity';
-
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import UserLink from '../../components/UserLink/UserLink';
 import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+
+import {
+  selectCategoriesError,
+  selectCategoriesLoading,
+  selectCategoryByUuid,
+} from '../../store/selectors/categoriesSelectors';
+import { fetchCategoryByUuid } from '../../store/thunks/categoriesThunks';
 
 import { stylesViewPageBox } from '../../styles';
 
@@ -29,16 +36,19 @@ const getStatusIcon = (status) => {
 
 function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: categoryToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Category');
+  const dispatch = useDispatch();
+
+  const categoryToCRUD = useSelector((state) =>
+    selectCategoryByUuid(state, uuid)
+  );
+  const isLoading = useSelector(selectCategoriesLoading);
+  const errorMessage = useSelector(selectCategoriesError);
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
-  }, [uuid, fetchEntityByUuid]);
+    if (uuid) {
+      dispatch(fetchCategoryByUuid(uuid));
+    }
+  }, [uuid, dispatch]);
 
   const { title, status, moderation, creation } = categoryToCRUD || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};
@@ -63,18 +73,10 @@ function CategoryViewPage({ handleModalClose }) {
               icon={Person}
               label='Автор'
               value={
-                creatorFullName ? (
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
-                ) : (
-                  '*Немає даних*'
-                )
+                <UserLink
+                  userFullName={creatorFullName}
+                  userUuid={creatorUuid}
+                />
               }
             />
             {moderatorFullName && (
@@ -82,14 +84,10 @@ function CategoryViewPage({ handleModalClose }) {
                 icon={Person}
                 label='Модератор'
                 value={
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/users/${moderatorUuid}`}
-                    underline='hover'
-                  >
-                    {moderatorFullName}
-                  </Link>
+                  <UserLink
+                    userFullName={moderatorFullName}
+                    userUuid={moderatorUuid}
+                  />
                 }
               />
             )}
