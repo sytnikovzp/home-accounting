@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
@@ -19,8 +19,10 @@ import {
 import { stylesDeletePageTypography } from '../../styles';
 
 function CategoryDeletePage({ handleModalClose }) {
-  const { uuid } = useParams();
+  const [deleted, setDeleted] = useState(false);
+
   const dispatch = useDispatch();
+  const { uuid } = useParams();
 
   const categoryToCRUD = useSelector((state) =>
     selectCategoryByUuid(state, uuid)
@@ -29,14 +31,17 @@ function CategoryDeletePage({ handleModalClose }) {
   const error = useSelector(selectCategoriesError);
 
   useEffect(() => {
-    if (uuid && !categoryToCRUD) {
+    if (!deleted && uuid && !categoryToCRUD) {
       dispatch(fetchCategoryByUuid(uuid));
     }
-  }, [uuid, dispatch, categoryToCRUD]);
+  }, [uuid, dispatch, categoryToCRUD, deleted]);
+
+  if (!categoryToCRUD) return null;
 
   const handleDeleteCategory = async () => {
     try {
       await dispatch(deleteCategory(categoryToCRUD.uuid)).unwrap();
+      setDeleted(true);
       handleModalClose();
     } catch (error) {
       console.error(error.message);
