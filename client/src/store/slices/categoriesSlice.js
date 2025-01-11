@@ -9,7 +9,7 @@ import {
 } from '../thunks/categoriesThunks';
 
 const initialState = {
-  data: [],
+  list: [],
   current: null,
   totalCount: 0,
   loading: false,
@@ -34,7 +34,7 @@ const categoriesSlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.data = payload.data;
+        state.list = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchCategories.rejected, (state, { payload }) => {
@@ -50,12 +50,6 @@ const categoriesSlice = createSlice({
       .addCase(fetchCategoryByUuid.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.current = payload;
-        const index = state.data.findIndex((cat) => cat.uuid === payload.uuid);
-        if (index !== -1) {
-          state.data[index] = payload;
-        } else {
-          state.data.push(payload);
-        }
       })
       .addCase(fetchCategoryByUuid.rejected, (state, { payload }) => {
         state.loading = false;
@@ -64,7 +58,7 @@ const categoriesSlice = createSlice({
 
       // Create Category
       .addCase(createCategory.fulfilled, (state, { payload }) => {
-        state.data.push(payload);
+        state.list.push(payload);
       })
       .addCase(createCategory.rejected, (state, { payload }) => {
         state.error = payload;
@@ -72,9 +66,11 @@ const categoriesSlice = createSlice({
 
       // Update Category
       .addCase(updateCategory.fulfilled, (state, { payload }) => {
-        const index = state.data.findIndex((cat) => cat.uuid === payload.uuid);
+        const index = state.list.findIndex(
+          (category) => category.uuid === payload.uuid
+        );
         if (index !== -1) {
-          state.data[index] = payload;
+          state.list[index] = payload;
         }
       })
       .addCase(updateCategory.rejected, (state, { payload }) => {
@@ -83,7 +79,7 @@ const categoriesSlice = createSlice({
 
       // Delete Category
       .addCase(deleteCategory.fulfilled, (state, { payload }) => {
-        state.data = state.data.filter((cat) => cat.uuid !== payload);
+        state.list = state.list.filter((category) => category.uuid !== payload);
       })
       .addCase(deleteCategory.rejected, (state, { payload }) => {
         state.error = payload;

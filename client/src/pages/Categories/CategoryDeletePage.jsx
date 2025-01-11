@@ -1,59 +1,82 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
-
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
 
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
 
+import {
+  selectCategoriesError,
+  selectCategoriesLoading,
+  selectCategoryByUuid,
+} from '../../store/selectors/categoriesSelectors';
+import {
+  deleteCategory,
+  fetchCategoryByUuid,
+} from '../../store/thunks/categoriesThunks';
+
 import { stylesDeletePageTypography } from '../../styles';
 
-function CategoryDeletePage({
-  handleModalClose,
-  fetchCategories,
-  crudError,
-  setCrudError,
-}) {
+function CategoryDeletePage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: categoryToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Category');
+  const dispatch = useDispatch();
+
+  const categoryToCRUD = useSelector((state) =>
+    selectCategoryByUuid(state, uuid)
+  );
+  const isLoading = useSelector(selectCategoriesLoading);
+  const error = useSelector(selectCategoriesError);
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
-  }, [uuid, fetchEntityByUuid]);
+    if (uuid && !categoryToCRUD) {
+      dispatch(fetchCategoryByUuid(uuid));
+    }
+  }, [uuid, dispatch, categoryToCRUD]);
 
   const handleDeleteCategory = async () => {
     try {
-      await restController.removeCategory(categoryToCRUD.uuid);
+      await dispatch(deleteCategory(categoryToCRUD.uuid)).unwrap();
       handleModalClose();
-      fetchCategories();
     } catch (error) {
-      setCrudError(error.response.data);
+      console.error(error.message);
     }
+  };
+
+  const renderActions = () => {
+    if (error) {
+      return (
+        <Button
+          key='close'
+          fullWidth
+          color='error'
+          size='large'
+          variant='contained'
+          onClick={handleModalClose}
+        >
+          Закрити
+        </Button>
+      );
+    }
+    return (
+      <Button
+        key='delete'
+        fullWidth
+        color='error'
+        size='large'
+        variant='contained'
+        onClick={handleDeleteCategory}
+      >
+        Видалити
+      </Button>
+    );
   };
 
   return (
     <CustomModal
       isOpen
       showCloseButton
-      actions={[
-        <Button
-          key='delete'
-          fullWidth
-          color='error'
-          size='large'
-          variant='contained'
-          onClick={handleDeleteCategory}
-        >
-          Видалити
-        </Button>,
-      ]}
+      actions={renderActions()}
       content={
         isLoading ? (
           <Preloader />
@@ -63,7 +86,7 @@ function CategoryDeletePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error}
       title='Видалення категорії...'
       onClose={handleModalClose}
     />

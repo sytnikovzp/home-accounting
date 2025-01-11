@@ -25,6 +25,18 @@ function CustomModal({
   error,
   disableBackdropClick = false,
 }) {
+  const renderContent = () => {
+    if (error) {
+      return (
+        <Alert severity={error.severity || 'error'} sx={{ mb: 1 }}>
+          <AlertTitle>{error.title}:</AlertTitle>
+          {error.message}
+        </Alert>
+      );
+    }
+    return content;
+  };
+
   return (
     <Modal
       closeAfterTransition
@@ -55,14 +67,8 @@ function CustomModal({
               )}
             </Box>
           )}
-          {error && (
-            <Alert severity={error.severity || 'error'} sx={{ mb: 1 }}>
-              <AlertTitle>{error.title}:</AlertTitle>
-              {error.message}
-            </Alert>
-          )}
           <Box id='custom-modal-description' sx={stylesCustomModalContentBox}>
-            {content}
+            {renderContent()}
           </Box>
           {actions && (
             <Box

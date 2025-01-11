@@ -8,13 +8,11 @@ import { uuidPattern } from '../../utils/sharedFunctions';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
-import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import {
   selectCategories,
-  selectCategoriesError,
   selectCategoriesLoading,
   selectCategoriesShowPreloader,
   selectCategoriesTotalCount,
@@ -45,21 +43,11 @@ function CategoriesPage() {
   const categories = useSelector(selectCategories);
   const totalCount = useSelector(selectCategoriesTotalCount);
   const loading = useSelector(selectCategoriesLoading);
-  const error = useSelector(selectCategoriesError);
   const showPreloader = useSelector(selectCategoriesShowPreloader);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-
-  const handleModalClose = () => {
-    dispatch(resetState());
-    navigate('/categories');
-  };
-
-  const handleModalOpen = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
-  };
 
   const fetchCategoriesList = useCallback(() => {
     dispatch(
@@ -83,6 +71,16 @@ function CategoriesPage() {
     }),
     []
   );
+
+  const handleModalClose = () => {
+    dispatch(resetState());
+    fetchCategoriesList();
+    navigate('/categories');
+  };
+
+  const handleModalOpen = (mode, uuid = null) => {
+    navigate(uuid ? `${mode}/${uuid}` : mode);
+  };
 
   useEffect(() => {
     const pathKey = Object.keys(pageTitles).find((key) =>
@@ -133,12 +131,7 @@ function CategoriesPage() {
         path='edit/:uuid'
       />
       <Route
-        element={
-          <CategoryDeletePage
-            fetchCategoriesList={fetchCategoriesList}
-            handleModalClose={handleModalClose}
-          />
-        }
+        element={<CategoryDeletePage handleModalClose={handleModalClose} />}
         path='delete/:uuid'
       />
       <Route
@@ -147,9 +140,9 @@ function CategoriesPage() {
       />
     </Routes>
   );
+
   if (showPreloader || timeoutReached)
     return <Preloader message='Завантаження списку "Категорій"...' />;
-  if (error) return <Error error={error} />;
 
   return (
     <>

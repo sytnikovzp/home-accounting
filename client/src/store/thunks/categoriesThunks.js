@@ -6,8 +6,7 @@ export const fetchCategories = createAsyncThunk(
   'categories/fetch',
   async (params, { rejectWithValue }) => {
     try {
-      const response = await categoryService.getAllCategories(params);
-      return response;
+      return await categoryService.getAllCategories(params);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -51,8 +50,7 @@ export const deleteCategory = createAsyncThunk(
   'categories/delete',
   async (uuid, { rejectWithValue }) => {
     try {
-      await categoryService.deleteCategory(uuid);
-      return uuid;
+      return await categoryService.deleteCategory(uuid);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
