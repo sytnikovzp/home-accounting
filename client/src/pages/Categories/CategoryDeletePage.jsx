@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
@@ -19,8 +19,6 @@ import {
 import { stylesDeletePageTypography } from '../../styles';
 
 function CategoryDeletePage({ handleModalClose }) {
-  const [deleted, setDeleted] = useState(false);
-
   const dispatch = useDispatch();
   const { uuid } = useParams();
 
@@ -31,17 +29,14 @@ function CategoryDeletePage({ handleModalClose }) {
   const error = useSelector(selectCategoriesError);
 
   useEffect(() => {
-    if (!deleted && uuid && !categoryToCRUD) {
+    if (uuid && !categoryToCRUD) {
       dispatch(fetchCategoryByUuid(uuid));
     }
-  }, [uuid, dispatch, categoryToCRUD, deleted]);
-
-  if (!categoryToCRUD) return null;
+  }, [uuid, dispatch, categoryToCRUD]);
 
   const handleDeleteCategory = async () => {
     try {
       await dispatch(deleteCategory(categoryToCRUD.uuid)).unwrap();
-      setDeleted(true);
       handleModalClose();
     } catch (error) {
       console.error(error.message);
@@ -77,19 +72,39 @@ function CategoryDeletePage({ handleModalClose }) {
     );
   };
 
+  if (!categoryToCRUD || isLoading) {
+    return (
+      <CustomModal
+        isOpen
+        showCloseButton
+        actions={
+          <Button
+            fullWidth
+            color='error'
+            size='large'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        }
+        content={isLoading ? <Preloader /> : null}
+        error={error}
+        title='Видалення категорії...'
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <CustomModal
       isOpen
       showCloseButton
       actions={renderActions()}
       content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити категорію «{categoryToCRUD?.title}»?
-          </Typography>
-        )
+        <Typography sx={stylesDeletePageTypography} variant='body1'>
+          Ви впевнені, що хочете видалити категорію «{categoryToCRUD.title}»?
+        </Typography>
       }
       error={error}
       title='Видалення категорії...'

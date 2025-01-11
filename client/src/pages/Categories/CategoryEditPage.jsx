@@ -8,12 +8,7 @@ import CustomModal from '../../components/CustomModal/CustomModal';
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 import Preloader from '../../components/Preloader/Preloader';
 
-function CategoryEditPage({
-  handleModalClose,
-  fetchCategories,
-  crudError,
-  setCrudError,
-}) {
+function CategoryEditPage({ handleModalClose, crudError, setCrudError }) {
   const { uuid } = useParams();
   const {
     entity: categoryToCRUD,
@@ -31,7 +26,6 @@ function CategoryEditPage({
     try {
       await restController.editCategory(categoryToCRUD.uuid, values.title);
       handleModalClose();
-      fetchCategories();
     } catch (error) {
       setCrudError(error.response.data);
     }

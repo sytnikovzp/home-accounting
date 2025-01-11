@@ -9,7 +9,7 @@ export const selectCurrentCategory = (state) =>
   selectCategoriesState(state).current;
 
 export const selectCategoriesLoading = (state) =>
-  selectCategoriesState(state).loading;
+  selectCategoriesState(state).isLoading;
 
 export const selectCategoriesError = (state) =>
   selectCategoriesState(state).error;

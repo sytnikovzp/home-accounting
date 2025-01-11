@@ -130,7 +130,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
     }
   };
 
-  const renderActions = () => {
+  const renderActionButton = () => {
     if (authMode === 'forgotPassword') {
       return (
         <Button
@@ -162,7 +162,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
 
   return (
     <CustomModal
-      actions={renderActions()}
+      actions={renderActionButton()}
       content={renderContent()}
       error={errorMessage}
       isOpen={isOpen}

@@ -42,7 +42,7 @@ function CategoriesPage() {
 
   const categories = useSelector(selectCategories);
   const totalCount = useSelector(selectCategoriesTotalCount);
-  const loading = useSelector(selectCategoriesLoading);
+  const isLoading = useSelector(selectCategoriesLoading);
   const showPreloader = useSelector(selectCategoriesShowPreloader);
 
   const itemsPerPage = useItemsPerPage();
@@ -102,32 +102,22 @@ function CategoriesPage() {
 
   useEffect(() => {
     let timeout;
-    if (loading) {
+    if (isLoading) {
       timeout = setTimeout(() => setTimeoutReached(true), DELAY_SHOW_PRELOADER);
     } else {
       setTimeoutReached(false);
     }
     return () => clearTimeout(timeout);
-  }, [loading]);
+  }, [isLoading]);
 
   const renderRoutes = () => (
     <Routes>
       <Route
-        element={
-          <CategoryAddPage
-            fetchCategoriesList={fetchCategoriesList}
-            handleModalClose={handleModalClose}
-          />
-        }
+        element={<CategoryAddPage handleModalClose={handleModalClose} />}
         path='add'
       />
       <Route
-        element={
-          <CategoryEditPage
-            fetchCategoriesList={fetchCategoriesList}
-            handleModalClose={handleModalClose}
-          />
-        }
+        element={<CategoryEditPage handleModalClose={handleModalClose} />}
         path='edit/:uuid'
       />
       <Route

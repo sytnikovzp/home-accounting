@@ -1,9 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { CATEGORIES_SLICE_NAME } from '../../constants';
 import categoryService from '../../services/categoryService';
 
 export const fetchCategories = createAsyncThunk(
-  'categories/fetch',
+  `${CATEGORIES_SLICE_NAME}/fetch`,
   async (params, { rejectWithValue }) => {
     try {
       return await categoryService.getAllCategories(params);
@@ -14,7 +15,7 @@ export const fetchCategories = createAsyncThunk(
 );
 
 export const fetchCategoryByUuid = createAsyncThunk(
-  'categories/fetchByUuid',
+  `${CATEGORIES_SLICE_NAME}/fetchByUuid`,
   async (uuid, { rejectWithValue }) => {
     try {
       return await categoryService.getCategoryByUuid(uuid);
@@ -25,7 +26,7 @@ export const fetchCategoryByUuid = createAsyncThunk(
 );
 
 export const createCategory = createAsyncThunk(
-  'categories/create',
+  `${CATEGORIES_SLICE_NAME}/create`,
   async (title, { rejectWithValue }) => {
     try {
       return await categoryService.createCategory(title);
@@ -35,8 +36,8 @@ export const createCategory = createAsyncThunk(
   }
 );
 
-export const updateCategory = createAsyncThunk(
-  'categories/update',
+export const editCategory = createAsyncThunk(
+  `${CATEGORIES_SLICE_NAME}/edit`,
   async ({ uuid, title }, { rejectWithValue }) => {
     try {
       return await categoryService.updateCategory(uuid, title);
@@ -47,7 +48,7 @@ export const updateCategory = createAsyncThunk(
 );
 
 export const deleteCategory = createAsyncThunk(
-  'categories/delete',
+  `${CATEGORIES_SLICE_NAME}/delete`,
   async (uuid, { rejectWithValue }) => {
     try {
       return await categoryService.deleteCategory(uuid);
