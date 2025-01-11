@@ -1,51 +1,97 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@mui/material';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  selectCategoriesError,
+  selectCategoriesLoading,
+  selectCategoryByUuid,
+} from '../../store/selectors/categoriesSelectors';
+import {
+  editCategory,
+  fetchCategoryByUuid,
+} from '../../store/thunks/categoriesThunks';
 
 import CustomModal from '../../components/CustomModal/CustomModal';
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 import Preloader from '../../components/Preloader/Preloader';
 
-function CategoryEditPage({ handleModalClose, crudError, setCrudError }) {
+function CategoryEditPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: categoryToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Category');
+  const dispatch = useDispatch();
+
+  const categoryToCRUD = useSelector((state) =>
+    selectCategoryByUuid(state, uuid)
+  );
+  const isLoading = useSelector(selectCategoriesLoading);
+  const error = useSelector(selectCategoriesError);
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
-  }, [uuid, fetchEntityByUuid]);
+    if (uuid && !categoryToCRUD) {
+      dispatch(fetchCategoryByUuid(uuid));
+    }
+  }, [uuid, dispatch, categoryToCRUD]);
 
-  const handleSubmitCategory = async (values) => {
-    setCrudError(null);
+  const handleEditCategory = async (values) => {
     try {
-      await restController.editCategory(categoryToCRUD.uuid, values.title);
+      await dispatch(editCategory({ uuid, title: values.title })).unwrap();
       handleModalClose();
     } catch (error) {
-      setCrudError(error.response.data);
+      console.error(error.message);
     }
   };
+
+  const renderActions = () => {
+    if (error) {
+      return (
+        <Button
+          key='close'
+          fullWidth
+          color='error'
+          size='large'
+          variant='contained'
+          onClick={handleModalClose}
+        >
+          Закрити
+        </Button>
+      );
+    }
+  };
+
+  if (!categoryToCRUD || isLoading) {
+    return (
+      <CustomModal
+        isOpen
+        showCloseButton
+        actions={
+          <Button
+            fullWidth
+            color='error'
+            size='large'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        }
+        content={isLoading ? <Preloader /> : null}
+        error={error}
+        title='Видалення категорії...'
+        onClose={handleModalClose}
+      />
+    );
+  }
 
   return (
     <CustomModal
       isOpen
       showCloseButton
+      actions={renderActions()}
       content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <CategoryForm
-            category={categoryToCRUD}
-            onSubmit={handleSubmitCategory}
-          />
-        )
+        <CategoryForm category={categoryToCRUD} onSubmit={handleEditCategory} />
       }
-      error={errorMessage || crudError}
+      error={error}
       title='Редагування категорії...'
       onClose={handleModalClose}
     />

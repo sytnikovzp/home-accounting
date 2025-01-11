@@ -2,20 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
-import {
-  CalendarToday,
-  Cancel,
-  CheckCircle,
-  HourglassEmpty,
-  Info,
-  Person,
-  Update,
-} from '@mui/icons-material';
-
-import CustomModal from '../../components/CustomModal/CustomModal';
-import Preloader from '../../components/Preloader/Preloader';
-import UserLink from '../../components/UserLink/UserLink';
-import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+import { CalendarToday, Info, Person, Update } from '@mui/icons-material';
 
 import {
   selectCategoriesError,
@@ -24,15 +11,13 @@ import {
 } from '../../store/selectors/categoriesSelectors';
 import { fetchCategoryByUuid } from '../../store/thunks/categoriesThunks';
 
-import { stylesViewPageBox } from '../../styles';
+import CustomModal from '../../components/CustomModal/CustomModal';
+import Preloader from '../../components/Preloader/Preloader';
+import StatusIcon from '../../components/StatusIcon/StatusIcon';
+import UserLink from '../../components/UserLink/UserLink';
+import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
 
-const getStatusIcon = (status) => {
-  const icons = {
-    Затверджено: <CheckCircle color='success' />,
-    'Очікує модерації': <HourglassEmpty color='warning' />,
-  };
-  return icons[status] || <Cancel color='error' />;
-};
+import { stylesViewPageBox } from '../../styles';
 
 function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -65,7 +50,7 @@ function CategoryViewPage({ handleModalClose }) {
           <Box sx={stylesViewPageBox}>
             <ViewDetailRow icon={Info} label='Назва' value={title} />
             <ViewDetailRow
-              icon={() => getStatusIcon(status)}
+              icon={() => <StatusIcon status={status} />}
               label='Статус'
               value={status}
             />

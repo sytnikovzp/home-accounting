@@ -79,11 +79,23 @@ const requestHandler = async ({
   }
 };
 
+const setErrorState = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
+};
+
+const setLoadingState = (state) => {
+  state.isLoading = true;
+  state.error = null;
+};
+
 export {
   getAccessToken,
   removeAccessToken,
   requestHandler,
   saveAccessToken,
+  setErrorState,
+  setLoadingState,
   stringAvatar,
   uuidPattern,
 };

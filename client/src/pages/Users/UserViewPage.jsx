@@ -5,9 +5,6 @@ import {
   AlternateEmail,
   AssignmentInd,
   CalendarToday,
-  Cancel,
-  CheckCircle,
-  HourglassEmpty,
   Info,
   Update,
 } from '@mui/icons-material';
@@ -18,6 +15,7 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
 
 import {
@@ -27,14 +25,6 @@ import {
   stylesViewPageBox,
   stylesViewPageBoxWithAvatar,
 } from '../../styles';
-
-const getStatusIcon = (emailVerificationStatus) => {
-  const icons = {
-    Веріфікований: <CheckCircle color='success' />,
-    'Очікує веріфікації': <HourglassEmpty color='warning' />,
-  };
-  return icons[emailVerificationStatus] || <Cancel color='error' />;
-};
 
 function UserViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -128,7 +118,7 @@ function UserViewPage({ handleModalClose }) {
             {emailVerificationStatus && (
               <Box sx={stylesUserViewPageEmailBox}>
                 <ViewDetailRow
-                  icon={() => getStatusIcon(emailVerificationStatus)}
+                  icon={() => <StatusIcon status={emailVerificationStatus} />}
                   label='Обліковий запис'
                   value={emailVerificationStatus}
                 />

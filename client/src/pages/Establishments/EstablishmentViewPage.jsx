@@ -3,10 +3,7 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Avatar, Box, Link } from '@mui/material';
 import {
   CalendarToday,
-  Cancel,
-  CheckCircle,
   Description,
-  HourglassEmpty,
   Info,
   Link as LinkIcon,
   Person,
@@ -18,6 +15,7 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
 
 import {
@@ -25,14 +23,6 @@ import {
   stylesViewPageBox,
   stylesViewPageBoxWithAvatar,
 } from '../../styles';
-
-const getStatusIcon = (status) => {
-  const icons = {
-    Затверджено: <CheckCircle color='success' />,
-    'Очікує модерації': <HourglassEmpty color='warning' />,
-  };
-  return icons[status] || <Cancel color='error' />;
-};
 
 function EstablishmentViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -94,7 +84,7 @@ function EstablishmentViewPage({ handleModalClose }) {
               />
             )}
             <ViewDetailRow
-              icon={() => getStatusIcon(status)}
+              icon={() => <StatusIcon status={status} />}
               label='Статус'
               value={status}
             />

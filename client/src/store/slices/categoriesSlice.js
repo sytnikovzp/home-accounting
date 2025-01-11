@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { CATEGORIES_SLICE_NAME } from '../../constants';
+import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
 
 import {
   createCategory,
@@ -22,7 +23,7 @@ const categoriesSlice = createSlice({
   name: CATEGORIES_SLICE_NAME,
   initialState,
   reducers: {
-    resetState(state) {
+    clearCurrent(state) {
       state.current = null;
     },
   },
@@ -62,51 +63,21 @@ const categoriesSlice = createSlice({
       })
 
       // Pending
-      .addCase(fetchCategories.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(fetchCategoryByUuid.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(createCategory.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(editCategory.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(deleteCategory.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
+      .addCase(fetchCategories.pending, setLoadingState)
+      .addCase(fetchCategoryByUuid.pending, setLoadingState)
+      .addCase(createCategory.pending, setLoadingState)
+      .addCase(editCategory.pending, setLoadingState)
+      .addCase(deleteCategory.pending, setLoadingState)
 
       // Rejected
-      .addCase(fetchCategories.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload;
-      })
-      .addCase(fetchCategoryByUuid.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload;
-      })
-      .addCase(createCategory.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload;
-      })
-      .addCase(editCategory.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload;
-      })
-      .addCase(deleteCategory.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload;
-      });
+      .addCase(fetchCategories.rejected, setErrorState)
+      .addCase(fetchCategoryByUuid.rejected, setErrorState)
+      .addCase(createCategory.rejected, setErrorState)
+      .addCase(editCategory.rejected, setErrorState)
+      .addCase(deleteCategory.rejected, setErrorState);
   },
 });
 
-export const { resetState } = categoriesSlice.actions;
+export const { clearCurrent } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

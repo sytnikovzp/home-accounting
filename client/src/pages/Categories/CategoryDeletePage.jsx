@@ -3,9 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
-import Preloader from '../../components/Preloader/Preloader';
-
 import {
   selectCategoriesError,
   selectCategoriesLoading,
@@ -16,11 +13,14 @@ import {
   fetchCategoryByUuid,
 } from '../../store/thunks/categoriesThunks';
 
+import CustomModal from '../../components/CustomModal/CustomModal';
+import Preloader from '../../components/Preloader/Preloader';
+
 import { stylesDeletePageTypography } from '../../styles';
 
 function CategoryDeletePage({ handleModalClose }) {
-  const dispatch = useDispatch();
   const { uuid } = useParams();
+  const dispatch = useDispatch();
 
   const categoryToCRUD = useSelector((state) =>
     selectCategoryByUuid(state, uuid)

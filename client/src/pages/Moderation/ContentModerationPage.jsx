@@ -3,12 +3,9 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Avatar, Box, Button, Link } from '@mui/material';
 import {
   CalendarToday,
-  Cancel,
   Category,
-  CheckCircle,
   ContentPasteSearch,
   Description,
-  HourglassEmpty,
   Info,
   Link as LinkIcon,
   Person,
@@ -21,6 +18,7 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
 
 import {
@@ -28,14 +26,6 @@ import {
   stylesViewPageBox,
   stylesViewPageBoxWithAvatar,
 } from '../../styles';
-
-const getStatusIcon = (status) => {
-  const icons = {
-    Затверджено: <CheckCircle color='success' />,
-    'Очікує модерації': <HourglassEmpty color='warning' />,
-  };
-  return icons[status] || <Cancel color='error' />;
-};
 
 function ContentModerationPage({
   handleModalClose,
@@ -225,7 +215,7 @@ function ContentModerationPage({
               />
             )}
             <ViewDetailRow
-              icon={() => getStatusIcon(status)}
+              icon={() => <StatusIcon status={status} />}
               label='Статус'
               value={status}
             />

@@ -8,17 +8,17 @@ import { uuidPattern } from '../../utils/sharedFunctions';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
-import ListTable from '../../components/ListTable/ListTable';
-import Preloader from '../../components/Preloader/Preloader';
-
 import {
   selectCategories,
   selectCategoriesLoading,
   selectCategoriesShowPreloader,
   selectCategoriesTotalCount,
 } from '../../store/selectors/categoriesSelectors';
-import { resetState } from '../../store/slices/categoriesSlice';
+import { clearCurrent } from '../../store/slices/categoriesSlice';
 import { fetchCategories } from '../../store/thunks/categoriesThunks';
+
+import ListTable from '../../components/ListTable/ListTable';
+import Preloader from '../../components/Preloader/Preloader';
 
 import CategoryAddPage from './CategoryAddPage';
 import CategoryDeletePage from './CategoryDeletePage';
@@ -73,7 +73,7 @@ function CategoriesPage() {
   );
 
   const handleModalClose = () => {
-    dispatch(resetState());
+    dispatch(clearCurrent());
     fetchCategoriesList();
     navigate('/categories');
   };

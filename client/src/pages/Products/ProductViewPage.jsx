@@ -3,10 +3,7 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Box, Link } from '@mui/material';
 import {
   CalendarToday,
-  Cancel,
   Category,
-  CheckCircle,
-  HourglassEmpty,
   Info,
   Person,
   Update,
@@ -16,17 +13,10 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 
 import CustomModal from '../../components/CustomModal/CustomModal';
 import Preloader from '../../components/Preloader/Preloader';
+import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
 
 import { stylesViewPageBox } from '../../styles';
-
-const getStatusIcon = (status) => {
-  const icons = {
-    Затверджено: <CheckCircle color='success' />,
-    'Очікує модерації': <HourglassEmpty color='warning' />,
-  };
-  return icons[status] || <Cancel color='error' />;
-};
 
 function ProductViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -58,7 +48,7 @@ function ProductViewPage({ handleModalClose }) {
           <Box sx={stylesViewPageBox}>
             <ViewDetailRow icon={Info} label='Назва' value={title} />
             <ViewDetailRow
-              icon={() => getStatusIcon(status)}
+              icon={() => <StatusIcon status={status} />}
               label='Статус'
               value={status}
             />
