@@ -49,8 +49,8 @@ export default [
         },
       ],
       camelcase: ['warn', { properties: 'always' }],
-      'react/jsx-no-target-blank': 'off',
-      'react/no-unescaped-entities': 'off',
+      'react/jsx-no-target-blank': ['warn', { allowReferrer: false }],
+      'react/no-unescaped-entities': 'warn',
       'react/prop-types': 'off',
       'no-undef': 'error',
       'no-unused-vars': 'warn',
@@ -137,7 +137,7 @@ export default [
       'sort-vars': [
         'warn',
         {
-          ignoreCase: false,
+          ignoreCase: true,
         },
       ],
       'no-else-return': ['error', { allowElseIf: false }],

@@ -60,7 +60,7 @@ function EstablishmentDeletePage({
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
             Ви впевнені, що хочете видалити заклад «{establishmentToCRUD?.title}
-            »? Це призведе до видалення всіх витрат, пов'язаних з цим закладом.
+            »? Це призведе до видалення всіх витрат, пов`язаних з цим закладом.
           </Typography>
         )
       }
