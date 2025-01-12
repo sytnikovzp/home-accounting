@@ -90,7 +90,7 @@ function ModerationsPage() {
   }, [fetchModerations]);
 
   useEffect(() => {
-    let timeout;
+    let timeout = null;
     if (isLoading) {
       timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
     } else {
@@ -115,9 +115,12 @@ function ModerationsPage() {
     </Routes>
   );
 
-  if (showPreloader)
+  if (showPreloader) {
     return <Preloader message='Завантаження списку "Модерацій"...' />;
-  if (errorMessage) return <Error error={errorMessage} />;
+  }
+  if (errorMessage) {
+    return <Error error={errorMessage} />;
+  }
 
   return (
     <>

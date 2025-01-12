@@ -2,29 +2,23 @@ import api from '../api';
 
 import { stylesHeaderUserAvatar } from '../styles';
 
-const getAccessToken = () => {
-  return localStorage.getItem('accessToken');
-};
+const getAccessToken = () => localStorage.getItem('accessToken');
 
-const saveAccessToken = (token) => {
-  return localStorage.setItem('accessToken', token);
-};
+const saveAccessToken = (token) => localStorage.setItem('accessToken', token);
 
-const removeAccessToken = () => {
-  return localStorage.removeItem('accessToken');
-};
+const removeAccessToken = () => localStorage.removeItem('accessToken');
 
 const uuidPattern = /[0-9a-fA-F-]{36}/;
 
 const stringToColor = (string) => {
   let hash = 0;
   for (let i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    hash = string.charCodeAt(i) + hash * 31;
   }
   let color = '#';
   for (let i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.slice(-2);
+    const value = (hash / Math.pow(256, i)) % 256;
+    color += `00${Math.floor(value).toString(16)}`.slice(-2);
   }
   return color;
 };
@@ -55,7 +49,7 @@ const requestHandler = async ({
         ? { 'Content-Type': 'multipart/form-data' }
         : {};
     const response = await api({
-      url: `${url}${queryParams ? '?' + queryParams : ''}`,
+      url: `${url}${queryParams && `?${queryParams}`}`,
       method,
       headers,
       ...(method === 'GET' || method === 'DELETE' ? {} : { data }),

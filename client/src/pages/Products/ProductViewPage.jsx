@@ -28,7 +28,9 @@ function ProductViewPage({ handleModalClose }) {
   } = useFetchEntity('Product');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const { title, status, moderation, creation, category } = productToCRUD || {};

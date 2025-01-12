@@ -27,7 +27,9 @@ function ExpenseEditPage({
   } = useFetchEntity('Expense');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitExpense = async (values) => {

@@ -9,19 +9,23 @@ function ProductForm({ product = null, onSubmit, categories }) {
     ? { title: product.title, category: product.category.title }
     : { title: '', category: '' };
 
-  const groupedCategories = useMemo(() => {
-    return categories
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .reduce((acc, category) => {
-        const firstLetter = category.title[0].toUpperCase();
-        if (!acc[firstLetter]) acc[firstLetter] = [];
-        acc[firstLetter].push({
-          label: category.title,
-          value: category.title,
-        });
-        return acc;
-      }, {});
-  }, [categories]);
+  const groupedCategories = useMemo(
+    () =>
+      categories
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .reduce((acc, category) => {
+          const firstLetter = category.title[0].toUpperCase();
+          if (!acc[firstLetter]) {
+            acc[firstLetter] = [];
+          }
+          acc[firstLetter].push({
+            label: category.title,
+            value: category.title,
+          });
+          return acc;
+        }, {}),
+    [categories]
+  );
 
   const fields = [
     {

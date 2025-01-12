@@ -25,7 +25,9 @@ function RoleDeletePage({
   } = useFetchEntity('Role');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteRole = async () => {

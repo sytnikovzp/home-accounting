@@ -43,7 +43,7 @@ function CurrencyExchange() {
   }, []);
 
   useEffect(() => {
-    let timeout;
+    let timeout = null;
     if (isLoading) {
       timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
     } else {
@@ -52,8 +52,12 @@ function CurrencyExchange() {
     return () => clearTimeout(timeout);
   }, [isLoading]);
 
-  if (showPreloader) return <Preloader message='Завантаження валют...' />;
-  if (errorMessage) return <Error error={errorMessage} />;
+  if (showPreloader) {
+    return <Preloader message='Завантаження валют...' />;
+  }
+  if (errorMessage) {
+    return <Error error={errorMessage} />;
+  }
 
   return (
     <Box sx={stylesCurrencyExchangeBox}>

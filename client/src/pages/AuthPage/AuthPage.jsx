@@ -61,12 +61,16 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
         <Avatar
           sx={{
             ...stylesAuthPageAvatar,
-            bgcolor:
-              authMode === 'login'
-                ? 'success.light'
-                : authMode === 'register'
-                  ? 'success.main'
-                  : 'warning.main',
+            bgcolor: (() => {
+              switch (authMode) {
+                case 'login':
+                  return 'success.light';
+                case 'register':
+                  return 'success.main';
+                default:
+                  return 'warning.main';
+              }
+            })(),
           }}
         >
           <LockOutlined />

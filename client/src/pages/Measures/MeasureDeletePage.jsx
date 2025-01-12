@@ -25,7 +25,9 @@ function MeasureDeletePage({
   } = useFetchEntity('Measure');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteMeasure = async () => {

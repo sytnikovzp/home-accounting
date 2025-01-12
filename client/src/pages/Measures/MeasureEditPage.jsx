@@ -23,7 +23,9 @@ function MeasureEditPage({
   } = useFetchEntity('Measure');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitMeasure = async (values) => {

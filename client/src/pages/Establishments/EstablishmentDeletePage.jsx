@@ -25,7 +25,9 @@ function EstablishmentDeletePage({
   } = useFetchEntity('Establishment');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteEstablishment = async () => {

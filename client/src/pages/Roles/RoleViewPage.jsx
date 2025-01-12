@@ -39,7 +39,9 @@ function RoleViewPage({ handleModalClose }) {
   } = useFetchEntity('Role');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const {

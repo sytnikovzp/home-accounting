@@ -13,24 +13,28 @@ import {
 
 function FileUpload({ file, onUpload, onRemove, label, entity, uploading }) {
   const handleFileChange = async (event) => {
-    const selectedFile = event.target.files[0];
+    const [selectedFile] = event.target.files;
     if (selectedFile && onUpload) {
       await onUpload(selectedFile);
     }
   };
+
+  let avatarSrc = null;
+
+  if (file) {
+    avatarSrc = `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`;
+  } else if (entity === 'users') {
+    avatarSrc = null;
+  } else {
+    avatarSrc = `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
+  }
 
   return (
     <Box sx={stylesFileUploadMainBox}>
       <Box sx={stylesFileUploadAvatarBox}>
         <Avatar
           alt={file ? 'Файл завантажений' : 'Файл не завантажений'}
-          src={
-            file
-              ? `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`
-              : entity === 'users'
-                ? undefined
-                : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
-          }
+          src={avatarSrc}
           sx={stylesFileUploadAvatar}
           variant='rounded'
         />

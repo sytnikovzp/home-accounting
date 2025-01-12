@@ -37,7 +37,9 @@ function UserViewPage({ handleModalClose }) {
   } = useFetchEntity('User');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const { fullName, role, photo, email, emailVerificationStatus, creation } =
@@ -65,7 +67,7 @@ function UserViewPage({ handleModalClose }) {
 
   const photoSrc = photo
     ? `${BASE_URL.replace('/api/', '')}/images/users/${photo}`
-    : undefined;
+    : null;
 
   return (
     <CustomModal

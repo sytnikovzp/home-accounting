@@ -46,7 +46,9 @@ function HomePage({ currentUser }) {
         byEstablishments: restController.fetchCostByEstablishments,
         byProducts: restController.fetchCostByProducts,
       }[criteria];
-      if (!fetchMethod) throw new Error(`Невідомий критерій: ${criteria}`);
+      if (!fetchMethod) {
+        throw new Error(`Невідомий критерій: ${criteria}`);
+      }
       const response = await fetchMethod(params);
       setData(response.data || []);
     } catch (error) {
@@ -72,7 +74,7 @@ function HomePage({ currentUser }) {
   }, [fetchData]);
 
   useEffect(() => {
-    let timeout;
+    let timeout = null;
     if (isLoading) {
       timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
     } else {
@@ -81,9 +83,12 @@ function HomePage({ currentUser }) {
     return () => clearTimeout(timeout);
   }, [isLoading]);
 
-  if (showPreloader)
+  if (showPreloader) {
     return <Preloader message='Завантаження даних статистики...' />;
-  if (errorMessage) return <Error error={errorMessage} />;
+  }
+  if (errorMessage) {
+    return <Error error={errorMessage} />;
+  }
 
   return (
     <>

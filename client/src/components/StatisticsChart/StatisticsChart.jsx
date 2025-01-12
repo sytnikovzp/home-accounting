@@ -51,8 +51,9 @@ function StatisticsChart({ data }) {
       !data ||
       data.length === 0 ||
       (data.length === 1 && data[0].result === '0')
-    )
+    ) {
       return null;
+    }
 
     const titles = data.map((item) => item.title);
     const results = data.map((item) => parseFloat(item.result));
@@ -73,22 +74,9 @@ function StatisticsChart({ data }) {
     };
   }, [data]);
 
-  if (!chartData) return <Error error={'Немає даних для відображення'} />;
-
-  const renderChart = () => {
-    switch (chartType) {
-      case 'doughnut':
-        return <Doughnut data={chartData} options={chartOptions} />;
-      case 'pie':
-        return <Pie data={chartData} options={chartOptions} />;
-      case 'bar':
-        return <Bar data={chartData} options={chartOptions} />;
-      case 'polar':
-        return <PolarArea data={chartData} options={chartOptions} />;
-      default:
-        return <Bar data={chartData} options={chartOptions} />;
-    }
-  };
+  if (!chartData) {
+    return <Error error={'Немає даних для відображення'} />;
+  }
 
   const chartOptions = {
     indexAxis: isMobile ? 'x' : 'y',
@@ -118,6 +106,21 @@ function StatisticsChart({ data }) {
         },
       },
     },
+  };
+
+  const renderChart = () => {
+    switch (chartType) {
+      case 'doughnut':
+        return <Doughnut data={chartData} options={chartOptions} />;
+      case 'pie':
+        return <Pie data={chartData} options={chartOptions} />;
+      case 'bar':
+        return <Bar data={chartData} options={chartOptions} />;
+      case 'polar':
+        return <PolarArea data={chartData} options={chartOptions} />;
+      default:
+        return <Bar data={chartData} options={chartOptions} />;
+    }
   };
 
   return (

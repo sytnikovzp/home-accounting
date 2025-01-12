@@ -19,9 +19,7 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (config) => {
-    return config;
-  },
+  (config) => config,
   async (error) => {
     const originalRequest = error.config;
     const token = getAccessToken();

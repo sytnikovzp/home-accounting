@@ -41,7 +41,7 @@ function CustomModal({
     <Modal
       closeAfterTransition
       aria-describedby='custom-modal-description'
-      aria-labelledby={title ? 'custom-modal-title' : undefined}
+      aria-labelledby={title ? 'custom-modal-title' : null}
       open={isOpen}
       onClose={disableBackdropClick ? null : onClose}
     >

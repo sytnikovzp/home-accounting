@@ -23,7 +23,9 @@ function CurrencyEditPage({
   } = useFetchEntity('Currency');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitCurrency = async (values) => {

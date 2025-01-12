@@ -27,7 +27,9 @@ function MeasureViewPage({ handleModalClose }) {
   } = useFetchEntity('Measure');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const { title, description, creation } = measureToCRUD || {};

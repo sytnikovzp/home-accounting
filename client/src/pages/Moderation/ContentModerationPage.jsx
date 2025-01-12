@@ -45,7 +45,9 @@ function ContentModerationPage({
   } = useFetchEntity(capitalizedPath);
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, path, fetchEntityByUuid]);
 
   const {

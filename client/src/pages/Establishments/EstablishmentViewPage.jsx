@@ -34,7 +34,9 @@ function EstablishmentViewPage({ handleModalClose }) {
   } = useFetchEntity('Establishment');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const { title, description, url, logo, status, moderation, creation } =

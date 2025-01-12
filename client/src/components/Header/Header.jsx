@@ -142,8 +142,8 @@ function Header({
                 </Box>
                 <Tooltip title='Обліковий запис'>
                   <IconButton
-                    aria-controls={openUserMenu ? 'account-menu' : undefined}
-                    aria-expanded={openUserMenu ? 'true' : undefined}
+                    aria-controls={openUserMenu ? 'account-menu' : null}
+                    aria-expanded={openUserMenu ? 'true' : null}
                     aria-haspopup='true'
                     size='small'
                     sx={{ ml: 2 }}
@@ -157,7 +157,7 @@ function Header({
                           ? `${BASE_URL.replace('/api/', '')}/images/users/${
                               currentUser.photo
                             }`
-                          : undefined
+                          : null
                       }
                     />
                   </IconButton>

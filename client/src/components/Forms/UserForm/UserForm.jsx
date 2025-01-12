@@ -25,14 +25,16 @@ function UserForm({
       }
     : { fullName: '', email: '', role: '' };
 
-  const sortedRoles = useMemo(() => {
-    return roles
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .map((role) => ({
-        value: role.title,
-        label: role.title,
-      }));
-  }, [roles]);
+  const sortedRoles = useMemo(
+    () =>
+      roles
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .map((role) => ({
+          value: role.title,
+          label: role.title,
+        })),
+    [roles]
+  );
 
   const fields = [
     {

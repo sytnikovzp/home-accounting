@@ -28,7 +28,9 @@ function UserDeletePage({
   } = useFetchEntity('User');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleLogout = async () => {

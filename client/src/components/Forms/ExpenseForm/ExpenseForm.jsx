@@ -34,56 +34,70 @@ function ExpenseForm({
         date: format(new Date(), 'dd MMMM yyyy', { locale: uk }),
       };
 
-  const groupedProducts = useMemo(() => {
-    return products
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .reduce((acc, product) => {
-        const firstLetter = product.title[0].toUpperCase();
-        if (!acc[firstLetter]) acc[firstLetter] = [];
-        acc[firstLetter].push({
-          label: product.title,
-          value: product.title,
-        });
-        return acc;
-      }, {});
-  }, [products]);
+  const groupedProducts = useMemo(
+    () =>
+      products
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .reduce((acc, product) => {
+          const firstLetter = product.title[0].toUpperCase();
+          if (!acc[firstLetter]) {
+            acc[firstLetter] = [];
+          }
+          acc[firstLetter].push({
+            label: product.title,
+            value: product.title,
+          });
+          return acc;
+        }, {}),
+    [products]
+  );
 
-  const groupedCurrencies = useMemo(() => {
-    return currencies
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .reduce((acc, currency) => {
-        const firstLetter = currency.title[0].toUpperCase();
-        if (!acc[firstLetter]) acc[firstLetter] = [];
-        acc[firstLetter].push({
-          label: currency.title,
-          value: currency.title,
-        });
-        return acc;
-      }, {});
-  }, [currencies]);
+  const groupedCurrencies = useMemo(
+    () =>
+      currencies
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .reduce((acc, currency) => {
+          const firstLetter = currency.title[0].toUpperCase();
+          if (!acc[firstLetter]) {
+            acc[firstLetter] = [];
+          }
+          acc[firstLetter].push({
+            label: currency.title,
+            value: currency.title,
+          });
+          return acc;
+        }, {}),
+    [currencies]
+  );
 
-  const groupedEstablishments = useMemo(() => {
-    return establishments
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .reduce((acc, establishment) => {
-        const firstLetter = establishment.title[0].toUpperCase();
-        if (!acc[firstLetter]) acc[firstLetter] = [];
-        acc[firstLetter].push({
-          label: establishment.title,
-          value: establishment.title,
-        });
-        return acc;
-      }, {});
-  }, [establishments]);
+  const groupedEstablishments = useMemo(
+    () =>
+      establishments
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .reduce((acc, establishment) => {
+          const firstLetter = establishment.title[0].toUpperCase();
+          if (!acc[firstLetter]) {
+            acc[firstLetter] = [];
+          }
+          acc[firstLetter].push({
+            label: establishment.title,
+            value: establishment.title,
+          });
+          return acc;
+        }, {}),
+    [establishments]
+  );
 
-  const sortedMeasures = useMemo(() => {
-    return measures
-      .sort((a, b) => a.description.localeCompare(b.description))
-      .map((measure) => ({
-        value: measure.title,
-        label: measure.description,
-      }));
-  }, [measures]);
+  const sortedMeasures = useMemo(
+    () =>
+      measures
+        .sort((a, b) => a.description.localeCompare(b.description))
+        .map((measure) => ({
+          value: measure.title,
+          label: measure.description,
+        })),
+    [measures]
+  );
 
   const fields = [
     {

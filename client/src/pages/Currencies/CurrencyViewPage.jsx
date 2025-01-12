@@ -27,7 +27,9 @@ function CurrencyViewPage({ handleModalClose }) {
   } = useFetchEntity('Currency');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const { title, code, creation } = currencyToCRUD || {};

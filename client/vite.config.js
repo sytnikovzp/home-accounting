@@ -17,10 +17,10 @@ export default defineConfig(({ mode }) => {
     envPrefix: 'ACCOUNTING_',
     plugins: [react(), envCompatible({ path: '../' })],
     server: {
-      port: parseInt(env.VITE_PORT) || 3000,
-      strictPort: true,
       host: true,
       open: true,
+      port: parseInt(env.VITE_PORT) || 3000,
+      strictPort: true,
     },
   };
 });

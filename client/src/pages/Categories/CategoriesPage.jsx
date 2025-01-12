@@ -101,7 +101,7 @@ function CategoriesPage() {
   }, [fetchCategoriesList]);
 
   useEffect(() => {
-    let timeout;
+    let timeout = null;
     if (isLoading) {
       timeout = setTimeout(() => setTimeoutReached(true), DELAY_SHOW_PRELOADER);
     } else {
@@ -131,8 +131,9 @@ function CategoriesPage() {
     </Routes>
   );
 
-  if (showPreloader || timeoutReached)
+  if (showPreloader || timeoutReached) {
     return <Preloader message='Завантаження списку "Категорій"...' />;
+  }
 
   return (
     <>

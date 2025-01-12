@@ -4,5 +4,7 @@
   "trailingComma": "es5",
   "jsxSingleQuote": true,
   "tabWidth": 2,
-  "printWidth": 80
+  "printWidth": 80,
+  "arrowParens": "always",
+  "embeddedLanguageFormatting": "auto"
 }

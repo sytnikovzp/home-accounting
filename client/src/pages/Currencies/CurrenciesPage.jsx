@@ -98,7 +98,7 @@ function CurrenciesPage() {
   }, [fetchCurrencies]);
 
   useEffect(() => {
-    let timeout;
+    let timeout = null;
     if (isLoading) {
       timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
     } else {
@@ -149,9 +149,12 @@ function CurrenciesPage() {
     </Routes>
   );
 
-  if (showPreloader)
+  if (showPreloader) {
     return <Preloader message='Завантаження списку "Валют"...' />;
-  if (errorMessage) return <Error error={errorMessage} />;
+  }
+  if (errorMessage) {
+    return <Error error={errorMessage} />;
+  }
 
   return (
     <>

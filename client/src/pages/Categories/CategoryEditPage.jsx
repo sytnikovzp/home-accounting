@@ -57,6 +57,7 @@ function CategoryEditPage({ handleModalClose }) {
         </Button>
       );
     }
+    return null;
   };
 
   if (!categoryToCRUD || isLoading) {

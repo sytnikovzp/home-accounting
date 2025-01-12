@@ -87,68 +87,86 @@ function ListTable({
       align={col.align || 'center'}
       sx={stylesListTableCell}
     >
-      {['logo', 'photo'].includes(col.field) ? (
-        <Box sx={stylesListTableAvatarBox}>
-          <Avatar
-            alt={col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
-            src={
-              row[col.field]
-                ? `${BASE_URL.replace('/api/', '')}/images/${
-                    col.field === 'logo' ? 'establishments' : 'users'
-                  }/${row[col.field]}`
-                : col.field === 'logo'
-                  ? `${BASE_URL.replace('/api/', '')}/images/noLogo.png`
-                  : undefined
-            }
-            sx={stylesListTableAvatarSize}
-            variant='rounded'
-          />
-        </Box>
-      ) : col.field === 'title' && isModerationPage ? (
-        <Typography sx={stylesListTableTextColor} variant='body1'>
-          {row[col.field]}
-        </Typography>
-      ) : ['title', 'product', 'fullName'].includes(col.field) ? (
-        <RouterLink
-          style={{ textDecoration: 'none' }}
-          to={`/${linkEntity}/${row.uuid}`}
-        >
-          <Typography
-            component='span'
-            sx={stylesListTableTableTypography}
-            variant='body1'
-          >
+      {(() => {
+        if (['logo', 'photo'].includes(col.field)) {
+          return (
+            <Box sx={stylesListTableAvatarBox}>
+              <Avatar
+                alt={
+                  col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'
+                }
+                src={(() => {
+                  if (row[col.field]) {
+                    return `${BASE_URL.replace('/api/', '')}/images/${
+                      col.field === 'logo' ? 'establishments' : 'users'
+                    }/${row[col.field]}`;
+                  }
+                  if (col.field === 'logo') {
+                    return `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
+                  }
+                  return null;
+                })()}
+                sx={stylesListTableAvatarSize}
+                variant='rounded'
+              />
+            </Box>
+          );
+        }
+        if (col.field === 'title' && isModerationPage) {
+          return (
+            <Typography sx={stylesListTableTextColor} variant='body1'>
+              {row[col.field]}
+            </Typography>
+          );
+        }
+        if (['title', 'product', 'fullName'].includes(col.field)) {
+          return (
+            <RouterLink
+              style={{ textDecoration: 'none' }}
+              to={`/${linkEntity}/${row.uuid}`}
+            >
+              <Typography
+                component='span'
+                sx={stylesListTableTableTypography}
+                variant='body1'
+              >
+                {row[col.field]}
+              </Typography>
+            </RouterLink>
+          );
+        }
+        return (
+          <Typography sx={stylesListTableTextColor} variant='body1'>
             {row[col.field]}
           </Typography>
-        </RouterLink>
-      ) : (
-        <Typography sx={stylesListTableTextColor} variant='body1'>
-          {row[col.field]}
-        </Typography>
-      )}
+        );
+      })()}
     </TableCell>
   );
 
   const renderStatusDropdown = () => {
-    const statusOptions = usersPage
-      ? [
-          { value: 'all', label: 'Всі користувачі' },
-          { value: 'pending', label: 'Очікують веріфікації' },
-          { value: 'verified', label: 'Веріфіковані' },
-        ]
-      : expensesPage
-        ? [
-            { value: 'day', label: 'За день' },
-            { value: 'week', label: 'За тиждень' },
-            { value: 'month', label: 'За місяць' },
-            { value: 'year', label: 'За рік' },
-            { value: 'allTime', label: 'За весь час' },
-          ]
-        : [
-            { value: 'pending', label: 'Очікує модерації' },
-            { value: 'approved', label: 'Затверджено' },
-            { value: 'rejected', label: 'Відхилено' },
-          ];
+    let statusOptions = [];
+    if (usersPage) {
+      statusOptions = [
+        { value: 'all', label: 'Всі користувачі' },
+        { value: 'pending', label: 'Очікують веріфікації' },
+        { value: 'verified', label: 'Веріфіковані' },
+      ];
+    } else if (expensesPage) {
+      statusOptions = [
+        { value: 'day', label: 'За день' },
+        { value: 'week', label: 'За тиждень' },
+        { value: 'month', label: 'За місяць' },
+        { value: 'year', label: 'За рік' },
+        { value: 'allTime', label: 'За весь час' },
+      ];
+    } else {
+      statusOptions = [
+        { value: 'pending', label: 'Очікує модерації' },
+        { value: 'approved', label: 'Затверджено' },
+        { value: 'rejected', label: 'Відхилено' },
+      ];
+    }
 
     return (
       <FormControl sx={stylesListTableFormControl}>

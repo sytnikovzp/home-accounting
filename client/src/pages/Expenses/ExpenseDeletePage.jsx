@@ -25,7 +25,9 @@ function ExpenseDeletePage({
   } = useFetchEntity('Expense');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteExpense = async () => {

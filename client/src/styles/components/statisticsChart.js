@@ -18,10 +18,10 @@ export const stylesStatisticsChartStackButton = {
 };
 
 export const stylesStatisticsChartButton = {
-  backgroundImage: 'linear-gradient(to top, #c1e1a6, #a5d6a7)', // Очень светлый и пастельный зеленый
+  backgroundImage: 'linear-gradient(to top, #c1e1a6, #a5d6a7)',
   color: 'black',
   '&:hover': {
-    backgroundImage: 'linear-gradient(to top, #a5d6a7, #81c784)', // Еще более мягкий и светлый зеленый
+    backgroundImage: 'linear-gradient(to top, #a5d6a7, #81c784)',
   },
 };
 

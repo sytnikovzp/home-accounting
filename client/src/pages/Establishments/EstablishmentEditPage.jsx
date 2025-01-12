@@ -23,7 +23,9 @@ function EstablishmentEditPage({
   } = useFetchEntity('Establishment');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitEstablishment = async (values) => {

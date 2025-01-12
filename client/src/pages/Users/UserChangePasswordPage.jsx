@@ -23,7 +23,9 @@ function UserChangePasswordPage({
   } = useFetchEntity('User');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitUser = async (values) => {

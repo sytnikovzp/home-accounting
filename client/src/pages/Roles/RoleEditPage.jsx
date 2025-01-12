@@ -24,7 +24,9 @@ function RoleEditPage({
   } = useFetchEntity('Role');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitRole = async (values) => {

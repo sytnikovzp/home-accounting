@@ -25,7 +25,9 @@ function ProductDeletePage({
   } = useFetchEntity('Product');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleDeleteProduct = async () => {

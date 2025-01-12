@@ -24,7 +24,9 @@ function ProductEditPage({
   } = useFetchEntity('Product');
 
   useEffect(() => {
-    if (uuid) fetchEntityByUuid(uuid);
+    if (uuid) {
+      fetchEntityByUuid(uuid);
+    }
   }, [uuid, fetchEntityByUuid]);
 
   const handleSubmitProduct = async (values) => {
