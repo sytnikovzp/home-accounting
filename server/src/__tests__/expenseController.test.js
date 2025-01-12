@@ -15,7 +15,7 @@ const authData = {
 };
 
 describe('ExpenseController', () => {
-  let expenseUuid;
+  let expenseUuid = null;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {

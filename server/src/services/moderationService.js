@@ -53,43 +53,68 @@ const formatEntityData = (entity) => ({
 });
 
 class ModerationService {
-  async getPendingItemsFromAllEntities(limit, offset, sort, order) {
+  static async getPendingItemsFromAllEntities(limit, offset, sort, order) {
     const pendingStatus = 'pending';
     let total = 0;
     const allItems = [];
-    for (const [entity, Model] of Object.entries(entityModels)) {
-      const foundItems = await Model.findAll({
-        where: { status: pendingStatus },
-        raw: true,
-      });
-      total += await Model.count({ where: { status: pendingStatus } });
-      const formattedItems = foundItems.map(formatAllEntitiesData[entity]);
-      allItems.push(...formattedItems);
-    }
+    const entityPromises = Object.entries(entityModels).map(
+      async ([entity, Model]) => {
+        const foundItems = await Model.findAll({
+          where: { status: pendingStatus },
+          raw: true,
+        });
+        const formattedItems = foundItems.map(formatAllEntitiesData[entity]);
+        allItems.push(...formattedItems);
+        return Model.count({ where: { status: pendingStatus } });
+      }
+    );
+    const entityCounts = await Promise.all(entityPromises);
+    total = entityCounts.reduce((acc, count) => acc + count, 0);
     allItems.sort((a, b) => {
-      if (order === 'asc') {
-        return a[sort] > b[sort] ? 1 : a[sort] < b[sort] ? -1 : 0;
-      } else {
-        return a[sort] < b[sort] ? 1 : a[sort] > b[sort] ? -1 : 0;
+      switch (order) {
+        case 'asc':
+          if (a[sort] > b[sort]) {
+            return 1;
+          }
+          if (a[sort] < b[sort]) {
+            return -1;
+          }
+          return 0;
+        default:
+          if (a[sort] < b[sort]) {
+            return 1;
+          }
+          if (a[sort] > b[sort]) {
+            return -1;
+          }
+          return 0;
       }
     });
     const paginatedItems = allItems.slice(offset, offset + limit);
-    if (!paginatedItems.length) throw notFound('Елементи не знайдено');
+    if (!paginatedItems.length) {
+      throw notFound('Елементи не знайдено');
+    }
     return { allItems: paginatedItems, total };
   }
 
-  async updateCategoryStatus(uuid, status, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    if (!['approved', 'rejected'].includes(status))
+  static async updateCategoryStatus(uuid, status, currentUser, transaction) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
+    if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
+    }
     const hasPermission = await checkPermission(
       currentUser,
       'MODERATION_CATEGORIES'
     );
-    if (!hasPermission)
+    if (!hasPermission) {
       throw forbidden('Ви не маєте дозволу на модерацію категорій');
+    }
     const foundCategory = await Category.findOne({ where: { uuid } });
-    if (!foundCategory) throw notFound('Категорію не знайдено');
+    if (!foundCategory) {
+      throw notFound('Категорію не знайдено');
+    }
     const [affectedRows, [moderatedCategory]] = await Category.update(
       {
         status,
@@ -98,22 +123,30 @@ class ModerationService {
       },
       { where: { uuid }, returning: true, transaction }
     );
-    if (!affectedRows) throw badRequest('Категорія не проходить модерацію');
+    if (!affectedRows) {
+      throw badRequest('Категорія не проходить модерацію');
+    }
     return formatEntityData(moderatedCategory);
   }
 
-  async updateProductStatus(uuid, status, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    if (!['approved', 'rejected'].includes(status))
+  static async updateProductStatus(uuid, status, currentUser, transaction) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
+    if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
+    }
     const hasPermission = await checkPermission(
       currentUser,
       'MODERATION_PRODUCTS'
     );
-    if (!hasPermission)
+    if (!hasPermission) {
       throw forbidden('Ви не маєте дозволу на модерацію товарів');
+    }
     const foundProduct = await Product.findOne({ where: { uuid } });
-    if (!foundProduct) throw notFound('Товар не знайдено');
+    if (!foundProduct) {
+      throw notFound('Товар не знайдено');
+    }
     const [affectedRows, [moderatedProduct]] = await Product.update(
       {
         status,
@@ -122,22 +155,35 @@ class ModerationService {
       },
       { where: { uuid }, returning: true, transaction }
     );
-    if (!affectedRows) throw badRequest('Товар не проходить модерацію');
+    if (!affectedRows) {
+      throw badRequest('Товар не проходить модерацію');
+    }
     return formatEntityData(moderatedProduct);
   }
 
-  async updateEstablishmentStatus(uuid, status, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    if (!['approved', 'rejected'].includes(status))
+  static async updateEstablishmentStatus(
+    uuid,
+    status,
+    currentUser,
+    transaction
+  ) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
+    if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
+    }
     const hasPermission = await checkPermission(
       currentUser,
       'MODERATION_ESTABLISHMENTS'
     );
-    if (!hasPermission)
+    if (!hasPermission) {
       throw forbidden('Ви не маєте дозволу на модерацію закладів');
+    }
     const foundEstablishment = await Establishment.findOne({ where: { uuid } });
-    if (!foundEstablishment) throw notFound('Заклад не знайдено');
+    if (!foundEstablishment) {
+      throw notFound('Заклад не знайдено');
+    }
     const [affectedRows, [moderatedCategory]] = await Establishment.update(
       {
         status,
@@ -146,9 +192,11 @@ class ModerationService {
       },
       { where: { uuid }, returning: true, transaction }
     );
-    if (!affectedRows) throw badRequest('Заклад не проходить модерацію');
+    if (!affectedRows) {
+      throw badRequest('Заклад не проходить модерацію');
+    }
     return formatEntityData(moderatedCategory);
   }
 }
 
-module.exports = new ModerationService();
+module.exports = ModerationService;

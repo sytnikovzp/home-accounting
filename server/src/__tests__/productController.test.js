@@ -15,7 +15,7 @@ const authData = {
 };
 
 describe('ProductController', () => {
-  let productUuid;
+  let productUuid = null;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {

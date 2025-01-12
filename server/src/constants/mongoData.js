@@ -77,7 +77,7 @@ module.exports.permissions = [
   },
 ];
 
-module.exports.roles = async (permissionUuids) => [
+module.exports.roles = (permissionUuids) => [
   {
     title: 'Administrator',
     description: 'Має повний доступ до керування користувачами та ролями',

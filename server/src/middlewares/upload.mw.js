@@ -45,18 +45,18 @@ const createFileFilter =
       const errorMessage = `Неприпустимий формат файлу. Дозволені формати файлів: ${allowedExtensions.join(
         ', '
       )}`;
-      return cb(badRequest(errorMessage), false);
+      cb(badRequest(errorMessage), false);
+      return;
     }
     cb(null, true);
   };
 
-const createUploader = (subfolder, mimeRegexp, fileExtensions, maxSize) => {
-  return multer({
+const createUploader = (subfolder, mimeRegexp, fileExtensions, maxSize) =>
+  multer({
     storage: createStorage(subfolder),
     fileFilter: createFileFilter(mimeRegexp, fileExtensions),
     limits: { fileSize: maxSize },
   });
-};
 
 module.exports.uploadEstablishmentLogos = createUploader(
   'establishments',

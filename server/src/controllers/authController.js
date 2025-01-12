@@ -19,7 +19,7 @@ const {
 } = require('../services/authService');
 
 class AuthController {
-  async registration(req, res, next) {
+  static async registration(req, res, next) {
     try {
       const { fullName, email, password } = req.body;
       const authData = await registration(fullName, email, password);
@@ -31,7 +31,7 @@ class AuthController {
     }
   }
 
-  async login(req, res, next) {
+  static async login(req, res, next) {
     try {
       const { email, password } = req.body;
       const authData = await login(email, password);
@@ -43,7 +43,7 @@ class AuthController {
     }
   }
 
-  async logout(req, res, next) {
+  static logout(req, res, next) {
     try {
       res.clearCookie('refreshToken');
       res.sendStatus(res.statusCode);
@@ -53,7 +53,7 @@ class AuthController {
     }
   }
 
-  async refresh(req, res, next) {
+  static async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
       const authData = await refresh(refreshToken);
@@ -65,7 +65,7 @@ class AuthController {
     }
   }
 
-  async verifyEmail(req, res, next) {
+  static async verifyEmail(req, res, next) {
     try {
       const { token } = req.query;
       await checkToken(token, 'verify');
@@ -83,7 +83,7 @@ class AuthController {
     }
   }
 
-  async resendVerifyEmail(req, res, next) {
+  static async resendVerifyEmail(req, res, next) {
     try {
       const { email } = req.body;
       await resendVerifyEmail(email);
@@ -99,7 +99,7 @@ class AuthController {
     }
   }
 
-  async forgotPassword(req, res, next) {
+  static async forgotPassword(req, res, next) {
     try {
       const { email } = req.body;
       await forgotPassword(email);
@@ -115,7 +115,7 @@ class AuthController {
     }
   }
 
-  async getResetPasswordPage(req, res, next) {
+  static async getResetPasswordPage(req, res, next) {
     try {
       const { token } = req.query;
       await checkToken(token, 'reset');
@@ -127,7 +127,7 @@ class AuthController {
     }
   }
 
-  async resetPassword(req, res, next) {
+  static async resetPassword(req, res, next) {
     try {
       const { token } = req.query;
       await checkToken(token, 'reset');
@@ -145,4 +145,4 @@ class AuthController {
   }
 }
 
-module.exports = new AuthController();
+module.exports = AuthController;

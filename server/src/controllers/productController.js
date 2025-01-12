@@ -10,7 +10,7 @@ const {
 const { getCurrentUser } = require('../services/userService');
 
 class ProductController {
-  async getAllProducts(req, res, next) {
+  static async getAllProducts(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
@@ -32,7 +32,7 @@ class ProductController {
     }
   }
 
-  async getProductByUuid(req, res, next) {
+  static async getProductByUuid(req, res, next) {
     try {
       const { productUuid } = req.params;
       const product = await getProductByUuid(productUuid);
@@ -47,7 +47,7 @@ class ProductController {
     }
   }
 
-  async createProduct(req, res, next) {
+  static async createProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { title, category } = req.body;
@@ -72,7 +72,7 @@ class ProductController {
     }
   }
 
-  async updateProduct(req, res, next) {
+  static async updateProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { productUuid } = req.params;
@@ -99,7 +99,7 @@ class ProductController {
     }
   }
 
-  async deleteProduct(req, res, next) {
+  static async deleteProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { productUuid } = req.params;
@@ -124,4 +124,4 @@ class ProductController {
   }
 }
 
-module.exports = new ProductController();
+module.exports = ProductController;

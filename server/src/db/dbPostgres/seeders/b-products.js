@@ -6,16 +6,22 @@ const { postgresData } = require('../../../constants');
 module.exports = {
   async up(queryInterface) {
     const { products } = await postgresData();
-    for (const product of products) {
-      const category = await Category.findOne({
-        where: { title: product.category },
-      });
-      if (category) {
-        product.category_uuid = category.uuid;
+    const categories = await Category.findAll({
+      attributes: ['uuid', 'title'],
+    });
+    const categoryMap = categories.reduce((acc, category) => {
+      acc[category.title] = category.uuid;
+      return acc;
+    }, {});
+    const updatedProducts = products.map((product) => {
+      const categoryUuid = categoryMap[product.category];
+      if (categoryUuid) {
+        product.category_uuid = categoryUuid;
       }
       delete product.category;
-    }
-    await queryInterface.bulkInsert('products', products, {});
+      return product;
+    });
+    await queryInterface.bulkInsert('products', updatedProducts, {});
   },
   async down(queryInterface) {
     await queryInterface.bulkDelete('products', null, {});

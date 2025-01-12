@@ -5,7 +5,7 @@ const {
 } = require('../services/statisticService');
 
 class StatisticController {
-  async getCostByCategories(req, res, next) {
+  static async getCostByCategories(req, res, next) {
     try {
       const { ago = 'allTime', creatorUuid = null } = req.query;
       const result = await getCostByCategories(ago, creatorUuid);
@@ -20,7 +20,7 @@ class StatisticController {
     }
   }
 
-  async getCostByEstablishments(req, res, next) {
+  static async getCostByEstablishments(req, res, next) {
     try {
       const { ago = 'allTime', creatorUuid = null } = req.query;
       const result = await getCostByEstablishments(ago, creatorUuid);
@@ -38,7 +38,7 @@ class StatisticController {
     }
   }
 
-  async getCostByProducts(req, res, next) {
+  static async getCostByProducts(req, res, next) {
     try {
       const { ago = 'allTime', creatorUuid = null } = req.query;
       const result = await getCostByProducts(ago, creatorUuid);
@@ -54,4 +54,4 @@ class StatisticController {
   }
 }
 
-module.exports = new StatisticController();
+module.exports = StatisticController;

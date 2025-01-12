@@ -10,7 +10,7 @@ const {
 const { getCurrentUser } = require('../services/userService');
 
 class CategoryController {
-  async getAllCategories(req, res, next) {
+  static async getAllCategories(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
@@ -32,7 +32,7 @@ class CategoryController {
     }
   }
 
-  async getCategoryByUuid(req, res, next) {
+  static async getCategoryByUuid(req, res, next) {
     try {
       const { categoryUuid } = req.params;
       const category = await getCategoryByUuid(categoryUuid);
@@ -47,7 +47,7 @@ class CategoryController {
     }
   }
 
-  async createCategory(req, res, next) {
+  static async createCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { title } = req.body;
@@ -67,7 +67,7 @@ class CategoryController {
     }
   }
 
-  async updateCategory(req, res, next) {
+  static async updateCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { categoryUuid } = req.params;
@@ -93,7 +93,7 @@ class CategoryController {
     }
   }
 
-  async deleteCategory(req, res, next) {
+  static async deleteCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { categoryUuid } = req.params;
@@ -118,4 +118,4 @@ class CategoryController {
   }
 }
 
-module.exports = new CategoryController();
+module.exports = CategoryController;

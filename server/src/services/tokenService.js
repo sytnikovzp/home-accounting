@@ -12,7 +12,7 @@ const {
 } = require('../constants');
 
 class TokenService {
-  generateTokens(user) {
+  static generateTokens(user) {
     const payload = {
       uuid: user.uuid,
       tokenVersion: user.tokenVersion,
@@ -29,7 +29,7 @@ class TokenService {
     };
   }
 
-  async validateAccessToken(token) {
+  static validateAccessToken(token) {
     try {
       const payload = jwt.verify(token, ACCESS_SECRET);
       return payload;
@@ -39,7 +39,7 @@ class TokenService {
     }
   }
 
-  validateRefreshToken(token) {
+  static validateRefreshToken(token) {
     try {
       const payload = jwt.verify(token, REFRESH_SECRET);
       return payload;
@@ -50,4 +50,4 @@ class TokenService {
   }
 }
 
-module.exports = new TokenService();
+module.exports = TokenService;

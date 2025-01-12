@@ -32,7 +32,7 @@ const formatEstablishmentData = (establishment) => ({
 });
 
 class EstablishmentService {
-  async getAllEstablishments(status, limit, offset, sort, order) {
+  static async getAllEstablishments(status, limit, offset, sort, order) {
     const foundEstablishments = await Establishment.findAll({
       attributes: ['uuid', 'title', 'logo'],
       where: { status },
@@ -41,22 +41,39 @@ class EstablishmentService {
       limit,
       offset,
     });
-    if (!foundEstablishments.length) throw notFound('Заклади не знайдені');
+    if (!foundEstablishments.length) {
+      throw notFound('Заклади не знайдені');
+    }
+    const allEstablishments = foundEstablishments.map((establishment) => ({
+      uuid: establishment.uuid,
+      title: establishment.title,
+      logo: establishment.logo || '',
+    }));
     const total = await Establishment.count({ where: { status } });
     return {
-      allEstablishments: foundEstablishments,
+      allEstablishments,
       total,
     };
   }
 
-  async getEstablishmentByUuid(uuid) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async getEstablishmentByUuid(uuid) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const foundEstablishment = await Establishment.findOne({ where: { uuid } });
-    if (!foundEstablishment) throw notFound('Заклад не знайдено');
+    if (!foundEstablishment) {
+      throw notFound('Заклад не знайдено');
+    }
     return formatEstablishmentData(foundEstablishment.toJSON());
   }
 
-  async createEstablishment(title, description, url, currentUser, transaction) {
+  static async createEstablishment(
+    title,
+    description,
+    url,
+    currentUser,
+    transaction
+  ) {
     const canAddEstablishments = await checkPermission(
       currentUser,
       'ADD_ESTABLISHMENTS'
@@ -65,12 +82,15 @@ class EstablishmentService {
       currentUser,
       'MANAGE_ESTABLISHMENTS'
     );
-    if (!canAddEstablishments && !canManageEstablishments)
+    if (!canAddEstablishments && !canManageEstablishments) {
       throw forbidden('Ви не маєте дозволу на створення закладів');
-    if (await Establishment.findOne({ where: { title } }))
+    }
+    if (await Establishment.findOne({ where: { title } })) {
       throw badRequest('Цей заклад вже існує');
-    if (await Establishment.findOne({ where: { url } }))
+    }
+    if (await Establishment.findOne({ where: { url } })) {
       throw badRequest('Цей URL вже використовується');
+    }
     const newEstablishment = await Establishment.create(
       {
         title,
@@ -86,11 +106,13 @@ class EstablishmentService {
       },
       { transaction, returning: true }
     );
-    if (!newEstablishment) throw badRequest('Дані цього закладу не створено');
+    if (!newEstablishment) {
+      throw badRequest('Дані цього закладу не створено');
+    }
     return formatEstablishmentData(newEstablishment);
   }
 
-  async updateEstablishment(
+  static async updateEstablishment(
     uuid,
     title,
     description,
@@ -98,25 +120,34 @@ class EstablishmentService {
     currentUser,
     transaction
   ) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const foundEstablishment = await Establishment.findOne({ where: { uuid } });
-    if (!foundEstablishment) throw notFound('Заклад не знайдено');
+    if (!foundEstablishment) {
+      throw notFound('Заклад не знайдено');
+    }
     const isOwner = currentUser.uuid === foundEstablishment.creatorUuid;
     const canManageEstablishments = await checkPermission(
       currentUser,
       'MANAGE_ESTABLISHMENTS'
     );
-    if (!isOwner && !canManageEstablishments)
+    if (!isOwner && !canManageEstablishments) {
       throw forbidden('Ви не маєте дозволу на редагування цього закладу');
+    }
     if (title && title !== foundEstablishment.title) {
       const duplicateEstablishment = await Establishment.findOne({
         where: { title },
       });
-      if (duplicateEstablishment) throw badRequest('Цей заклад вже існує');
+      if (duplicateEstablishment) {
+        throw badRequest('Цей заклад вже існує');
+      }
     }
     if (url && url !== foundEstablishment.url) {
       const duplicateUrl = await Establishment.findOne({ where: { url } });
-      if (duplicateUrl) throw badRequest('Цей URL вже використовується');
+      if (duplicateUrl) {
+        throw badRequest('Цей URL вже використовується');
+      }
     }
     const [affectedRows, [updatedEstablishment]] = await Establishment.update(
       {
@@ -131,24 +162,38 @@ class EstablishmentService {
       },
       { where: { uuid }, returning: true, transaction }
     );
-    if (!affectedRows) throw badRequest('Дані цього закладу не оновлено');
+    if (!affectedRows) {
+      throw badRequest('Дані цього закладу не оновлено');
+    }
     return formatEstablishmentData(updatedEstablishment);
   }
 
-  async updateEstablishmentLogo(uuid, filename, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
-    if (!filename) throw badRequest('Файл не завантажено');
+  static async updateEstablishmentLogo(
+    uuid,
+    filename,
+    currentUser,
+    transaction
+  ) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
+    if (!filename) {
+      throw badRequest('Файл не завантажено');
+    }
     const foundEstablishment = await Establishment.findOne({ where: { uuid } });
-    if (!foundEstablishment) throw notFound('Заклад не знайдено');
+    if (!foundEstablishment) {
+      throw notFound('Заклад не знайдено');
+    }
     const isOwner = currentUser.uuid === foundEstablishment.creatorUuid;
     const canManageEstablishments = await checkPermission(
       currentUser,
       'MANAGE_ESTABLISHMENTS'
     );
-    if (!isOwner && !canManageEstablishments)
+    if (!isOwner && !canManageEstablishments) {
       throw forbidden(
         'Ви не маєте дозволу на оновлення логотипу цього закладу'
       );
+    }
     const [affectedRows, [updatedEstablishmentLogo]] =
       await Establishment.update(
         {
@@ -161,23 +206,30 @@ class EstablishmentService {
         },
         { where: { uuid }, returning: true, transaction }
       );
-    if (!affectedRows) throw badRequest('Логотип закладу не оновлено');
+    if (!affectedRows) {
+      throw badRequest('Логотип закладу не оновлено');
+    }
     return formatEstablishmentData(updatedEstablishmentLogo);
   }
 
-  async removeEstablishmentLogo(uuid, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async removeEstablishmentLogo(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const foundEstablishment = await Establishment.findOne({ where: { uuid } });
-    if (!foundEstablishment) throw notFound('Заклад не знайдено');
+    if (!foundEstablishment) {
+      throw notFound('Заклад не знайдено');
+    }
     const isOwner = currentUser.uuid === foundEstablishment.creatorUuid;
     const canManageEstablishments = await checkPermission(
       currentUser,
       'MANAGE_ESTABLISHMENTS'
     );
-    if (!isOwner && !canManageEstablishments)
+    if (!isOwner && !canManageEstablishments) {
       throw forbidden(
         'Ви не маєте дозволу на видалення логотипу цього закладу'
       );
+    }
     const [affectedRows, [removedEstablishmentLogo]] =
       await Establishment.update(
         {
@@ -190,28 +242,36 @@ class EstablishmentService {
         },
         { where: { uuid }, returning: true, transaction }
       );
-    if (!affectedRows) throw badRequest('Логотип закладу не видалено');
+    if (!affectedRows) {
+      throw badRequest('Логотип закладу не видалено');
+    }
     return formatEstablishmentData(removedEstablishmentLogo);
   }
 
-  async deleteEstablishment(uuid, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async deleteEstablishment(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const canManageEstablishments = await checkPermission(
       currentUser,
       'MANAGE_ESTABLISHMENTS'
     );
-    if (!canManageEstablishments)
+    if (!canManageEstablishments) {
       throw forbidden('Ви не маєте дозволу на видалення цього закладу');
+    }
     const foundEstablishment = await Establishment.findOne({ where: { uuid } });
-    if (!foundEstablishment) throw notFound('Заклад не знайдено');
+    if (!foundEstablishment) {
+      throw notFound('Заклад не знайдено');
+    }
     const deletedEstablishment = await Establishment.destroy({
       where: { uuid },
       transaction,
     });
-    if (!deletedEstablishment)
+    if (!deletedEstablishment) {
       throw badRequest('Дані цього закладу не видалено');
+    }
     return deletedEstablishment;
   }
 }
 
-module.exports = new EstablishmentService();
+module.exports = EstablishmentService;

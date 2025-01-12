@@ -10,7 +10,7 @@ const {
 const { getCurrentUser } = require('../services/userService');
 
 class CurrencyController {
-  async getAllCurrencies(req, res, next) {
+  static async getAllCurrencies(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;
@@ -31,7 +31,7 @@ class CurrencyController {
     }
   }
 
-  async getCurrencyByUuid(req, res, next) {
+  static async getCurrencyByUuid(req, res, next) {
     try {
       const { currencyUuid } = req.params;
       const currency = await getCurrencyByUuid(currencyUuid);
@@ -46,7 +46,7 @@ class CurrencyController {
     }
   }
 
-  async createCurrency(req, res, next) {
+  static async createCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { title, code } = req.body;
@@ -71,7 +71,7 @@ class CurrencyController {
     }
   }
 
-  async updateCurrency(req, res, next) {
+  static async updateCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { currencyUuid } = req.params;
@@ -98,7 +98,7 @@ class CurrencyController {
     }
   }
 
-  async deleteCurrency(req, res, next) {
+  static async deleteCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { currencyUuid } = req.params;
@@ -123,4 +123,4 @@ class CurrencyController {
   }
 }
 
-module.exports = new CurrencyController();
+module.exports = CurrencyController;

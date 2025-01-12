@@ -15,7 +15,7 @@ const authData = {
 };
 
 describe('RoleController', () => {
-  let roleUuid;
+  let roleUuid = null;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {

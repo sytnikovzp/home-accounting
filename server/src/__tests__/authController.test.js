@@ -9,7 +9,7 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 describe('AuthController', () => {
-  let refreshToken;
+  let refreshToken = null;
 
   describe('POST /api/auth/registration', () => {
     it('should register a new user', async () => {

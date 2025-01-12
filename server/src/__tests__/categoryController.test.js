@@ -15,7 +15,7 @@ const authData = {
 };
 
 describe('CategoryController', () => {
-  let categoryUuid;
+  let categoryUuid = null;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {

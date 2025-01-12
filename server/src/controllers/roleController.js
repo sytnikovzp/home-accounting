@@ -9,7 +9,7 @@ const {
 const { getCurrentUser } = require('../services/userService');
 
 class RoleController {
-  async getAllPermissions(req, res, next) {
+  static async getAllPermissions(req, res, next) {
     try {
       const { allPermissions } = await getAllPermissions();
       if (allPermissions.length > 0) {
@@ -23,7 +23,7 @@ class RoleController {
     }
   }
 
-  async getAllRoles(req, res, next) {
+  static async getAllRoles(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;
@@ -39,7 +39,7 @@ class RoleController {
     }
   }
 
-  async getRoleByUuid(req, res, next) {
+  static async getRoleByUuid(req, res, next) {
     try {
       const { roleUuid } = req.params;
       const role = await getRoleByUuid(roleUuid);
@@ -54,7 +54,7 @@ class RoleController {
     }
   }
 
-  async createRole(req, res, next) {
+  static async createRole(req, res, next) {
     try {
       const { title, description, permissions } = req.body;
       const currentUser = await getCurrentUser(req.user.uuid);
@@ -75,7 +75,7 @@ class RoleController {
     }
   }
 
-  async updateRole(req, res, next) {
+  static async updateRole(req, res, next) {
     try {
       const { roleUuid } = req.params;
       const { title, description, permissions } = req.body;
@@ -98,7 +98,7 @@ class RoleController {
     }
   }
 
-  async deleteRole(req, res, next) {
+  static async deleteRole(req, res, next) {
     try {
       const { roleUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.uuid);
@@ -115,4 +115,4 @@ class RoleController {
   }
 }
 
-module.exports = new RoleController();
+module.exports = RoleController;

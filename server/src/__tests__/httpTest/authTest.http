@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
   # "email": "neW.useR@gmaiL.com",
-  "email": "nepushkin939@Gmail.com",
+  "email": "nepushkin93@Gmail.com",
   "password": "Qwerty12"
   # "password": "Qwerty1234567"
 }
@@ -81,7 +81,7 @@ Content-Type: application/json
 }
 
 ### Reset password with valid token
-POST http://localhost:5000/api/auth/reset?token=9a4075bf-2544-4ec9-b80d-0c189ebc15af HTTP/1.1
+POST http://localhost:5000/api/auth/reset?token=e889fcff-1a16-4318-be32-894d8b1cbcac HTTP/1.1
 Content-Type: application/json
 
 {

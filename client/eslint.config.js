@@ -3,6 +3,7 @@ import { builtinModules } from 'module';
 import js from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import prettier from 'eslint-plugin-prettier';
+import promise from 'eslint-plugin-promise';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
@@ -30,6 +31,7 @@ export default [
       'simple-import-sort': simpleImportSort,
       import: importPlugin,
       prettier,
+      promise,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -160,7 +162,6 @@ export default [
       'react/jsx-no-constructed-context-values': 'error',
       'react/jsx-no-useless-fragment': ['warn', { allowExpressions: true }],
       'react/no-danger': 'error',
-      'no-console': 'off', // Need!
       eqeqeq: 'error',
       'no-unused-expressions': [
         'error',
@@ -175,7 +176,7 @@ export default [
       'no-throw-literal': 'error',
       'no-undefined': 'warn',
       'import/no-absolute-path': 'error',
-      'capitalized-comments': ['error', 'always'],
+      'capitalized-comments': ['off', 'always'],
       curly: ['warn', 'all'],
       'no-await-in-loop': 'error',
       'no-template-curly-in-string': 'error',
@@ -183,6 +184,7 @@ export default [
       'prefer-promise-reject-errors': 'error',
       'no-useless-concat': 'error',
       'no-useless-return': 'error',
+      'no-multiple-empty-lines': ['error', { max: 1 }],
       'prefer-object-spread': 'error',
       'prefer-destructuring': [
         'warn',
@@ -237,7 +239,6 @@ export default [
       'no-unmodified-loop-condition': 'error',
       'no-sequences': 'error',
       'no-warning-comments': 'warn',
-      'no-inline-comments': 'off',
       'no-unneeded-ternary': 'error',
       'spaced-comment': 'error',
       'wrap-regex': 'warn',
@@ -260,7 +261,7 @@ export default [
       'init-declarations': ['warn', 'always'],
       'no-label-var': 'error',
       'no-undef-init': 'error',
-      'new-cap': 'error',
+      'new-cap': 'off',
       'new-parens': 'error',
       'no-bitwise': 'warn',
       'no-negated-condition': 'error',
@@ -292,7 +293,7 @@ export default [
       'block-scoped-var': 'error',
       'array-bracket-newline': ['warn', 'consistent'],
       'block-spacing': ['warn', 'always'],
-      'max-nested-callbacks': ['error', 4],
+      'max-nested-callbacks': ['error', 5],
       'no-duplicate-imports': 'error',
       'no-empty-function': 'error',
       'no-extra-parens': ['error', 'functions'],
@@ -318,7 +319,7 @@ export default [
       'for-direction': 'error',
       'func-call-spacing': 'error',
       'generator-star-spacing': 'error',
-      'global-require': 'error',
+      'global-require': 'off',
       'no-mixed-requires': 'error',
       'no-restricted-globals': 'error',
       'one-var-declaration-per-line': ['error', 'always'],
@@ -370,6 +371,23 @@ export default [
             'Please use import() instead. More info: https://facebook.github.io/create-react-app/docs/code-splitting',
         },
       ],
+      'comma-dangle': ['off', 'always-multiline'],
+      'comma-spacing': [
+        'warn',
+        {
+          before: false,
+          after: true,
+        },
+      ],
+      'eol-last': ['error', 'always'],
+      'object-curly-spacing': ['warn', 'always'],
+      'space-in-parens': ['error', 'never'],
+      'promise/always-return': 'warn',
+      'promise/no-return-wrap': 'error',
+      'promise/catch-or-return': 'warn',
+      'promise/prefer-await-to-then': 'warn',
+      'no-console': 'off',
+      'no-inline-comments': 'warn',
     },
   },
 ];

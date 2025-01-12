@@ -30,7 +30,7 @@ const formatProductData = (product) => ({
 });
 
 class ProductService {
-  async getAllProducts(status, limit, offset, sort, order) {
+  static async getAllProducts(status, limit, offset, sort, order) {
     const sortableFields = {
       category: [Category, 'title'],
     };
@@ -46,7 +46,9 @@ class ProductService {
       limit,
       offset,
     });
-    if (!foundProducts.length) throw notFound('Товарів не знайдено');
+    if (!foundProducts.length) {
+      throw notFound('Товарів не знайдено');
+    }
     const total = await Product.count({ where: { status } });
     return {
       allProducts: foundProducts.map(
@@ -60,14 +62,18 @@ class ProductService {
     };
   }
 
-  async getProductByUuid(uuid) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async getProductByUuid(uuid) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const foundProduct = await Product.findOne({
       where: { uuid },
       attributes: { exclude: ['categoryUuid'] },
       include: [{ model: Category, attributes: ['uuid', 'title'] }],
     });
-    if (!foundProduct) throw notFound('Товар не знайдено');
+    if (!foundProduct) {
+      throw notFound('Товар не знайдено');
+    }
     const productData = {
       ...foundProduct.toJSON(),
       categoryUuid: foundProduct.Category?.uuid || '',
@@ -82,14 +88,15 @@ class ProductService {
     };
   }
 
-  async createProduct(title, category, currentUser, transaction) {
+  static async createProduct(title, category, currentUser, transaction) {
     const canAddProducts = await checkPermission(currentUser, 'ADD_PRODUCTS');
     const canManageProducts = await checkPermission(
       currentUser,
       'MANAGE_PRODUCTS'
     );
-    if (!canAddProducts && !canManageProducts)
+    if (!canAddProducts && !canManageProducts) {
       throw forbidden('Ви не маєте дозволу на створення товарів');
+    }
     if (await Product.findOne({ where: { title } })) {
       throw badRequest('Цей товар вже існує');
     }
@@ -108,24 +115,33 @@ class ProductService {
       },
       { transaction, returning: true }
     );
-    if (!newProduct) throw badRequest('Дані цього товару не створено');
+    if (!newProduct) {
+      throw badRequest('Дані цього товару не створено');
+    }
     return formatProductData(newProduct);
   }
 
-  async updateProduct(uuid, title, category, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async updateProduct(uuid, title, category, currentUser, transaction) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const foundProduct = await Product.findOne({ where: { uuid } });
-    if (!foundProduct) throw notFound('Товар не знайдено');
+    if (!foundProduct) {
+      throw notFound('Товар не знайдено');
+    }
     const isOwner = currentUser.uuid === foundProduct.creatorUuid;
     const canManageProducts = await checkPermission(
       currentUser,
       'MANAGE_PRODUCTS'
     );
-    if (!isOwner && !canManageProducts)
+    if (!isOwner && !canManageProducts) {
       throw forbidden('Ви не маєте дозволу на редагування цього товару');
+    }
     if (title && title !== foundProduct.title) {
       const duplicateProduct = await Product.findOne({ where: { title } });
-      if (duplicateProduct) throw badRequest('Цей товар вже існує');
+      if (duplicateProduct) {
+        throw badRequest('Цей товар вже існує');
+      }
     }
     const categoryRecord = category
       ? await getRecordByTitle(Category, category)
@@ -140,27 +156,36 @@ class ProductService {
       },
       { where: { uuid }, returning: true, transaction }
     );
-    if (!affectedRows) throw badRequest('Дані цього товару не оновлено');
+    if (!affectedRows) {
+      throw badRequest('Дані цього товару не оновлено');
+    }
     return formatProductData(updatedProduct);
   }
 
-  async deleteProduct(uuid, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async deleteProduct(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const canManageProducts = await checkPermission(
       currentUser,
       'MANAGE_PRODUCTS'
     );
-    if (!canManageProducts)
+    if (!canManageProducts) {
       throw forbidden('Ви не маєте дозволу на видалення цього товару');
+    }
     const foundProduct = await Product.findOne({ where: { uuid } });
-    if (!foundProduct) throw notFound('Товар не знайдено');
+    if (!foundProduct) {
+      throw notFound('Товар не знайдено');
+    }
     const deletedProduct = await Product.destroy({
       where: { uuid },
       transaction,
     });
-    if (!deletedProduct) throw badRequest('Дані цього товару не видалено');
+    if (!deletedProduct) {
+      throw badRequest('Дані цього товару не видалено');
+    }
     return deletedProduct;
   }
 }
 
-module.exports = new ProductService();
+module.exports = ProductService;

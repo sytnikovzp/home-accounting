@@ -12,9 +12,10 @@ const { badRequest } = require('../errors/generalErrors');
 const { getTime, isValidUUID } = require('../utils/sharedFunctions');
 
 class StatisticService {
-  async getCostByCategories(ago, creatorUuid) {
-    if (creatorUuid && !isValidUUID(creatorUuid))
+  static async getCostByCategories(ago, creatorUuid) {
+    if (creatorUuid && !isValidUUID(creatorUuid)) {
       throw badRequest('Невірний формат UUID');
+    }
     const time = getTime(ago);
     const whereCondition = {
       date: { [Op.gte]: time },
@@ -47,9 +48,10 @@ class StatisticService {
     return result.length ? result : [{ title: 'Немає даних', result: '0' }];
   }
 
-  async getCostByEstablishments(ago, creatorUuid) {
-    if (creatorUuid && !isValidUUID(creatorUuid))
+  static async getCostByEstablishments(ago, creatorUuid) {
+    if (creatorUuid && !isValidUUID(creatorUuid)) {
       throw badRequest('Невірний формат UUID');
+    }
     const time = getTime(ago);
     const whereCondition = {
       date: { [Op.gte]: time },
@@ -71,9 +73,10 @@ class StatisticService {
     return result.length ? result : [{ title: 'Немає даних', result: '0' }];
   }
 
-  async getCostByProducts(ago, creatorUuid) {
-    if (creatorUuid && !isValidUUID(creatorUuid))
+  static async getCostByProducts(ago, creatorUuid) {
+    if (creatorUuid && !isValidUUID(creatorUuid)) {
       throw badRequest('Невірний формат UUID');
+    }
     const time = getTime(ago);
     const whereCondition = {
       date: { [Op.gte]: time },
@@ -96,4 +99,4 @@ class StatisticService {
   }
 }
 
-module.exports = new StatisticService();
+module.exports = StatisticService;

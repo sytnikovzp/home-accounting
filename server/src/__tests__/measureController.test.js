@@ -15,7 +15,7 @@ const authData = {
 };
 
 describe('MeasureController', () => {
-  let measureUuid;
+  let measureUuid = null;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {

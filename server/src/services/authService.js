@@ -25,12 +25,16 @@ const mailService = require('./mailService');
 const { generateTokens, validateRefreshToken } = require('./tokenService');
 
 class AuthService {
-  async registration(fullName, email, password) {
+  static async registration(fullName, email, password) {
     const emailToLower = emailToLowerCase(email);
     const duplicateUser = await User.findOne({ email: emailToLower });
-    if (duplicateUser) throw badRequest('Цей користувач вже існує');
+    if (duplicateUser) {
+      throw badRequest('Цей користувач вже існує');
+    }
     const foundRole = await Role.findOne({ title: 'User' });
-    if (!foundRole) throw notFound('Роль для користувача не знайдено');
+    if (!foundRole) {
+      throw notFound('Роль для користувача не знайдено');
+    }
     const hashedPassword = await hashPassword(password);
     const user = await User.create({
       fullName,
@@ -38,7 +42,9 @@ class AuthService {
       password: hashedPassword,
       roleUuid: foundRole.uuid,
     });
-    if (!user) throw badRequest('Користувач не зареєстрований');
+    if (!user) {
+      throw badRequest('Користувач не зареєстрований');
+    }
     const verificationToken = await VerificationToken.create({
       userUuid: user.uuid,
       expiresAt: new Date(Date.now() + VERIFICATION),
@@ -63,14 +69,20 @@ class AuthService {
     };
   }
 
-  async login(email, password) {
+  static async login(email, password) {
     const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
-    if (!foundUser) throw unAuthorizedError();
+    if (!foundUser) {
+      throw unAuthorizedError();
+    }
     const isPasswordValid = await verifyPassword(password, foundUser.password);
-    if (!isPasswordValid) throw unAuthorizedError();
+    if (!isPasswordValid) {
+      throw unAuthorizedError();
+    }
     const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
-    if (!foundRole) throw notFound('Роль для користувача не знайдено');
+    if (!foundRole) {
+      throw notFound('Роль для користувача не знайдено');
+    }
     const tokens = generateTokens(foundUser);
     return {
       ...tokens,
@@ -87,21 +99,26 @@ class AuthService {
     };
   }
 
-  async verifyEmail(token) {
+  static async verifyEmail(token) {
     const tokenRecord = await VerificationToken.findOne({ token });
     const foundUser = await User.findOne({ uuid: tokenRecord.userUuid });
-    if (!foundUser) throw notFound('Користувача не знайдено');
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
     foundUser.emailVerificationStatus = 'verified';
     await foundUser.save();
     await VerificationToken.deleteOne({ token });
   }
 
-  async resendVerifyEmail(email) {
+  static async resendVerifyEmail(email) {
     const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
-    if (!foundUser) throw notFound('Користувача не знайдено');
-    if (foundUser.emailVerificationStatus === 'verified')
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
+    if (foundUser.emailVerificationStatus === 'verified') {
       throw badRequest('Цей email вже підтверджений');
+    }
     await VerificationToken.deleteMany({ userUuid: foundUser.uuid });
     const verificationToken = await VerificationToken.create({
       userUuid: foundUser.uuid,
@@ -113,15 +130,23 @@ class AuthService {
     );
   }
 
-  async refresh(refreshToken) {
-    if (!refreshToken) throw unAuthorizedError();
+  static async refresh(refreshToken) {
+    if (!refreshToken) {
+      throw unAuthorizedError();
+    }
     const data = validateRefreshToken(refreshToken);
-    if (!data) throw unAuthorizedError();
+    if (!data) {
+      throw unAuthorizedError();
+    }
     const { uuid } = data;
     const foundUser = await User.findOne({ uuid });
-    if (!foundUser) throw notFound('Користувача не знайдено');
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
     const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
-    if (!foundRole) throw notFound('Роль для користувача не знайдено');
+    if (!foundRole) {
+      throw notFound('Роль для користувача не знайдено');
+    }
     const tokens = generateTokens(foundUser);
     return {
       ...tokens,
@@ -138,10 +163,12 @@ class AuthService {
     };
   }
 
-  async forgotPassword(email) {
+  static async forgotPassword(email) {
     const emailToLower = email.toLowerCase();
     const foundUser = await User.findOne({ email: emailToLower });
-    if (!foundUser) throw notFound('Користувача не знайдено');
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
     await PasswordResetToken.deleteMany({ userUuid: foundUser.uuid });
     const resetToken = await PasswordResetToken.create({
       userUuid: foundUser.uuid,
@@ -153,19 +180,24 @@ class AuthService {
     );
   }
 
-  async resetPassword(token, newPassword, confirmNewPassword) {
+  static async resetPassword(token, newPassword, confirmNewPassword) {
     const resetToken = await PasswordResetToken.findOne({ token });
-    if (newPassword !== confirmNewPassword)
+    if (newPassword !== confirmNewPassword) {
       throw badRequest('Новий пароль та підтвердження пароля не збігаються');
+    }
     const foundUser = await User.findOne({ uuid: resetToken.userUuid });
-    if (!foundUser) throw notFound('Користувача не знайдено');
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
     const hashedNewPassword = await hashPassword(newPassword);
     foundUser.password = hashedNewPassword;
     foundUser.tokenVersion += 1;
     const updatedUser = await foundUser.save();
-    if (!updatedUser) throw badRequest('Пароль цього користувача не оновлено');
+    if (!updatedUser) {
+      throw badRequest('Пароль цього користувача не оновлено');
+    }
     await PasswordResetToken.deleteOne({ token });
   }
 }
 
-module.exports = new AuthService();
+module.exports = AuthService;

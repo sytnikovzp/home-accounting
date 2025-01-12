@@ -12,7 +12,7 @@ const {
 const { getCurrentUser } = require('../services/userService');
 
 class EstablishmentController {
-  async getAllEstablishments(req, res, next) {
+  static async getAllEstablishments(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
@@ -34,7 +34,7 @@ class EstablishmentController {
     }
   }
 
-  async getEstablishmentByUuid(req, res, next) {
+  static async getEstablishmentByUuid(req, res, next) {
     try {
       const { establishmentUuid } = req.params;
       const establishment = await getEstablishmentByUuid(establishmentUuid);
@@ -49,7 +49,7 @@ class EstablishmentController {
     }
   }
 
-  async createEstablishment(req, res, next) {
+  static async createEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { title, description, url } = req.body;
@@ -75,7 +75,7 @@ class EstablishmentController {
     }
   }
 
-  async updateEstablishment(req, res, next) {
+  static async updateEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { establishmentUuid } = req.params;
@@ -103,7 +103,7 @@ class EstablishmentController {
     }
   }
 
-  async updateEstablishmentLogo(req, res, next) {
+  static async updateEstablishmentLogo(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const {
@@ -131,7 +131,7 @@ class EstablishmentController {
     }
   }
 
-  async removeEstablishmentLogo(req, res, next) {
+  static async removeEstablishmentLogo(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { establishmentUuid } = req.params;
@@ -155,7 +155,7 @@ class EstablishmentController {
     }
   }
 
-  async deleteEstablishment(req, res, next) {
+  static async deleteEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { establishmentUuid } = req.params;
@@ -180,4 +180,4 @@ class EstablishmentController {
   }
 }
 
-module.exports = new EstablishmentController();
+module.exports = EstablishmentController;

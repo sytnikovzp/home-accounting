@@ -10,7 +10,7 @@ const {
 const { getCurrentUser } = require('../services/userService');
 
 class MeasureController {
-  async getAllMeasures(req, res, next) {
+  static async getAllMeasures(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;
@@ -31,7 +31,7 @@ class MeasureController {
     }
   }
 
-  async getMeasureByUuid(req, res, next) {
+  static async getMeasureByUuid(req, res, next) {
     try {
       const { measureUuid } = req.params;
       const measure = await getMeasureByUuid(measureUuid);
@@ -46,7 +46,7 @@ class MeasureController {
     }
   }
 
-  async createMeasure(req, res, next) {
+  static async createMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { title, description } = req.body;
@@ -71,7 +71,7 @@ class MeasureController {
     }
   }
 
-  async updateMeasure(req, res, next) {
+  static async updateMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { measureUuid } = req.params;
@@ -98,7 +98,7 @@ class MeasureController {
     }
   }
 
-  async deleteMeasure(req, res, next) {
+  static async deleteMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { measureUuid } = req.params;
@@ -123,4 +123,4 @@ class MeasureController {
   }
 }
 
-module.exports = new MeasureController();
+module.exports = MeasureController;

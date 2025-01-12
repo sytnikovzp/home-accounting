@@ -21,7 +21,7 @@ module.exports.authErrorHandler = (err, req, res, next) => {
       .status(err.status)
       .send(formatError('Помилка авторизації', err.message, err.errors));
   }
-  next(err);
+  return next(err);
 };
 
 module.exports.generalErrorHandler = (err, req, res, next) => {
@@ -30,7 +30,7 @@ module.exports.generalErrorHandler = (err, req, res, next) => {
       .status(err.status)
       .send(formatError('Сталася помилка', err.message, err.errors));
   }
-  next(err);
+  return next(err);
 };
 
 module.exports.validationErrorHandler = (err, req, res, next) => {
@@ -39,7 +39,7 @@ module.exports.validationErrorHandler = (err, req, res, next) => {
       .status(400)
       .send(formatError('Помилка валідації', err.message, err.errors));
   }
-  next(err);
+  return next(err);
 };
 
 module.exports.sequelizeErrorHandler = (err, req, res, next) => {
@@ -50,7 +50,7 @@ module.exports.sequelizeErrorHandler = (err, req, res, next) => {
         formatError('Помилка операції з базою даних', err.message, err.errors)
       );
   }
-  next(err);
+  return next(err);
 };
 
 module.exports.uploadErrorHandler = (err, req, res, next) => {
@@ -59,7 +59,7 @@ module.exports.uploadErrorHandler = (err, req, res, next) => {
       .status(400)
       .send(formatError('Помилка завантаження файлу', err.message, err.errors));
   }
-  next(err);
+  return next(err);
 };
 
 module.exports.errorHandler = (err, req, res, next) => {

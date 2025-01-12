@@ -9,7 +9,7 @@ const {
 const { getCurrentUser } = require('../services/userService');
 
 class ModerationController {
-  async getAllPendingItems(req, res, next) {
+  static async getAllPendingItems(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;
@@ -30,7 +30,7 @@ class ModerationController {
     }
   }
 
-  async moderationCategory(req, res, next) {
+  static async moderationCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { categoryUuid } = req.params;
@@ -56,7 +56,7 @@ class ModerationController {
     }
   }
 
-  async moderationProduct(req, res, next) {
+  static async moderationProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { productUuid } = req.params;
@@ -82,7 +82,7 @@ class ModerationController {
     }
   }
 
-  async moderationEstablishment(req, res, next) {
+  static async moderationEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { establishmentUuid } = req.params;
@@ -109,4 +109,4 @@ class ModerationController {
   }
 }
 
-module.exports = new ModerationController();
+module.exports = ModerationController;

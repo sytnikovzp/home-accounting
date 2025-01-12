@@ -10,7 +10,7 @@ const {
 const { getCurrentUser } = require('../services/userService');
 
 class ExpenseController {
-  async getAllExpenses(req, res, next) {
+  static async getAllExpenses(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc', ago = 'allTime' } = req.query;
@@ -34,7 +34,7 @@ class ExpenseController {
     }
   }
 
-  async getExpenseByUuid(req, res, next) {
+  static async getExpenseByUuid(req, res, next) {
     try {
       const { expenseUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.uuid);
@@ -50,7 +50,7 @@ class ExpenseController {
     }
   }
 
-  async createExpense(req, res, next) {
+  static async createExpense(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const {
@@ -88,7 +88,7 @@ class ExpenseController {
     }
   }
 
-  async updateExpense(req, res, next) {
+  static async updateExpense(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { expenseUuid } = req.params;
@@ -128,7 +128,7 @@ class ExpenseController {
     }
   }
 
-  async deleteExpense(req, res, next) {
+  static async deleteExpense(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { expenseUuid } = req.params;
@@ -153,4 +153,4 @@ class ExpenseController {
   }
 }
 
-module.exports = new ExpenseController();
+module.exports = ExpenseController;

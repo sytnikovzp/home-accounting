@@ -18,12 +18,12 @@ const {
 } = require('../constants');
 const { notFound, badRequest } = require('../errors/generalErrors');
 
-const hashPassword = async function (password) {
-  return await bcrypt.hash(password, SALT_ROUNDS);
+const hashPassword = function (password) {
+  return bcrypt.hash(password, SALT_ROUNDS);
 };
 
-const verifyPassword = async function (password, userPassword) {
-  return await bcrypt.compare(password, userPassword);
+const verifyPassword = function (password, userPassword) {
+  return bcrypt.compare(password, userPassword);
 };
 
 const setRefreshTokenCookie = function (res, refreshToken) {
@@ -42,6 +42,7 @@ const formatDate = function (date) {
 };
 
 const getTime = function (ago = 'allTime') {
+  const timeAgo = new Date();
   const intervals = {
     day: () => timeAgo.setDate(timeAgo.getDate() - 1),
     week: () => timeAgo.setDate(timeAgo.getDate() - 7),
@@ -49,7 +50,6 @@ const getTime = function (ago = 'allTime') {
     year: () => timeAgo.setFullYear(timeAgo.getFullYear() - 1),
     allTime: () => new Date(0),
   };
-  const timeAgo = new Date();
   return (intervals[ago] || intervals.allTime)();
 };
 
@@ -65,9 +65,13 @@ const isValidUUID = function (uuid) {
 
 const checkPermission = async function (user, requiredPermission) {
   const foundRole = await Role.findOne({ title: user.role.title });
-  if (!foundRole) throw notFound('Роль для користувача не знайдено');
+  if (!foundRole) {
+    throw notFound('Роль для користувача не знайдено');
+  }
   const permission = await Permission.findOne({ title: requiredPermission });
-  if (!permission) throw notFound('Необхідного дозволу не знайдено');
+  if (!permission) {
+    throw notFound('Необхідного дозволу не знайдено');
+  }
   const requiredPermissionUUID = permission.uuid.toString();
   const permissionUUIDs = foundRole.permissions.map((permission) => {
     const hex = permission.toString('hex');
@@ -85,30 +89,40 @@ const checkPermission = async function (user, requiredPermission) {
 };
 
 const getRecordByTitle = async function (Model, title) {
-  if (!title) return null;
+  if (!title) {
+    return null;
+  }
   const record = await Model.findOne({
     where: { title },
     attributes: ['uuid', 'title'],
     raw: true,
   });
-  if (!record) throw notFound(`${Model.name} not found`);
+  if (!record) {
+    throw notFound(`${Model.name} not found`);
+  }
   return record;
 };
 
 const getCurrencyByTitle = async function (Model, title) {
-  if (!title) return null;
+  if (!title) {
+    return null;
+  }
   const record = await Model.findOne({
     where: { title },
     attributes: ['uuid', 'title', 'code'],
     raw: true,
   });
-  if (!record) throw notFound(`${Model.name} not found`);
+  if (!record) {
+    throw notFound(`${Model.name} not found`);
+  }
   return record;
 };
 
 const getUserDetailsByEmail = async function (email) {
   const user = await User.findOne({ email });
-  if (!user) return null;
+  if (!user) {
+    return null;
+  }
   return {
     uuid: user.uuid,
     fullName: user.fullName,
@@ -138,7 +152,7 @@ const convertToUAH = async (amount, currencyCode) => {
 };
 
 const checkToken = async (token, type = 'reset') => {
-  let checkedToken;
+  let checkedToken = null;
   if (type === 'reset') {
     checkedToken = await PasswordResetToken.findOne({ token });
   } else if (type === 'verify') {
@@ -146,9 +160,12 @@ const checkToken = async (token, type = 'reset') => {
   } else {
     throw badRequest('Невідомий тип токена');
   }
-  if (!checkedToken) throw badRequest('Невірний токен або він вже не дійсний');
-  if (checkedToken.expiresAt < Date.now())
+  if (!checkedToken) {
+    throw badRequest('Невірний токен або він вже не дійсний');
+  }
+  if (checkedToken.expiresAt < Date.now()) {
     throw badRequest('Термін дії токену закінчився');
+  }
   return checkedToken;
 };
 

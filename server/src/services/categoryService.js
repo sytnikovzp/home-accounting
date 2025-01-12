@@ -29,7 +29,7 @@ const formatCategoryData = (category) => ({
 });
 
 class CategoryService {
-  async getAllCategories(status, limit, offset, sort, order) {
+  static async getAllCategories(status, limit, offset, sort, order) {
     const foundCategories = await Category.findAll({
       attributes: ['uuid', 'title'],
       where: { status },
@@ -38,7 +38,9 @@ class CategoryService {
       limit,
       offset,
     });
-    if (!foundCategories.length) throw notFound('Категорії не знайдено');
+    if (!foundCategories.length) {
+      throw notFound('Категорії не знайдено');
+    }
     const total = await Category.count({ where: { status } });
     return {
       allCategories: foundCategories,
@@ -46,14 +48,18 @@ class CategoryService {
     };
   }
 
-  async getCategoryByUuid(uuid) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async getCategoryByUuid(uuid) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const foundCategory = await Category.findOne({ where: { uuid } });
-    if (!foundCategory) throw notFound('Категорію не знайдено');
+    if (!foundCategory) {
+      throw notFound('Категорію не знайдено');
+    }
     return formatCategoryData(foundCategory);
   }
 
-  async createCategory(title, currentUser, transaction) {
+  static async createCategory(title, currentUser, transaction) {
     const canAddCategories = await checkPermission(
       currentUser,
       'ADD_CATEGORIES'
@@ -62,10 +68,12 @@ class CategoryService {
       currentUser,
       'MANAGE_CATEGORIES'
     );
-    if (!canAddCategories && !canManageCategories)
+    if (!canAddCategories && !canManageCategories) {
       throw forbidden('Ви не маєте дозволу на створення категорій');
-    if (await Category.findOne({ where: { title } }))
+    }
+    if (await Category.findOne({ where: { title } })) {
       throw badRequest('Ця категорія вже існує');
+    }
     const newCategory = await Category.create(
       {
         title,
@@ -77,24 +85,33 @@ class CategoryService {
       },
       { transaction, returning: true }
     );
-    if (!newCategory) throw badRequest('Дані цієї категорії не створено');
+    if (!newCategory) {
+      throw badRequest('Дані цієї категорії не створено');
+    }
     return formatCategoryData(newCategory);
   }
 
-  async updateCategory(uuid, title, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async updateCategory(uuid, title, currentUser, transaction) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const foundCategory = await Category.findOne({ where: { uuid } });
-    if (!foundCategory) throw notFound('Категорію не знайдено');
+    if (!foundCategory) {
+      throw notFound('Категорію не знайдено');
+    }
     const isOwner = currentUser.uuid === foundCategory.creatorUuid;
     const canManageCategories = await checkPermission(
       currentUser,
       'MANAGE_CATEGORIES'
     );
-    if (!isOwner && !canManageCategories)
+    if (!isOwner && !canManageCategories) {
       throw forbidden('Ви не маєте дозволу на редагування цієї категорії');
+    }
     if (title && title !== foundCategory.title) {
       const duplicateCategory = await Category.findOne({ where: { title } });
-      if (duplicateCategory) throw badRequest('Ця категорія вже існує');
+      if (duplicateCategory) {
+        throw badRequest('Ця категорія вже існує');
+      }
     }
     const [affectedRows, [updatedCategory]] = await Category.update(
       {
@@ -105,27 +122,36 @@ class CategoryService {
       },
       { where: { uuid }, returning: true, transaction }
     );
-    if (!affectedRows) throw badRequest('Дані цієї категорії не оновлено');
+    if (!affectedRows) {
+      throw badRequest('Дані цієї категорії не оновлено');
+    }
     return formatCategoryData(updatedCategory);
   }
 
-  async deleteCategory(uuid, currentUser, transaction) {
-    if (!isValidUUID(uuid)) throw badRequest('Невірний формат UUID');
+  static async deleteCategory(uuid, currentUser, transaction) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
     const canManageCategories = await checkPermission(
       currentUser,
       'MANAGE_CATEGORIES'
     );
-    if (!canManageCategories)
+    if (!canManageCategories) {
       throw forbidden('Ви не маєте дозволу на видалення цієї категорії');
+    }
     const foundCategory = await Category.findOne({ where: { uuid } });
-    if (!foundCategory) throw notFound('Категорію не знайдено');
+    if (!foundCategory) {
+      throw notFound('Категорію не знайдено');
+    }
     const deletedCategory = await Category.destroy({
       where: { uuid },
       transaction,
     });
-    if (!deletedCategory) throw badRequest('Дані цієї категорії не видалено');
+    if (!deletedCategory) {
+      throw badRequest('Дані цієї категорії не видалено');
+    }
     return deletedCategory;
   }
 }
 
-module.exports = new CategoryService();
+module.exports = CategoryService;

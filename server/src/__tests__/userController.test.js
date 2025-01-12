@@ -173,7 +173,9 @@ describe('UserController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Charlie Updated');
       expect(response.body.user.role).toBe('User');
-      authData.user.accessToken = response.body.accessToken;
+      if (response.body.accessToken !== authData.user.accessToken) {
+        authData.user.accessToken = response.body.accessToken;
+      }
     });
 
     it('should update other user data with change role', async () => {

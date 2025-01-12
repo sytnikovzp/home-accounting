@@ -10,7 +10,7 @@ const {
 } = require('../services/userService');
 
 class UserController {
-  async getAllUsers(req, res, next) {
+  static async getAllUsers(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
       const {
@@ -36,7 +36,7 @@ class UserController {
     }
   }
 
-  async getUserByUuid(req, res, next) {
+  static async getUserByUuid(req, res, next) {
     try {
       const { userUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.uuid);
@@ -52,7 +52,7 @@ class UserController {
     }
   }
 
-  async getCurrentUserProfile(req, res, next) {
+  static async getCurrentUserProfile(req, res, next) {
     try {
       const currentUser = await getCurrentUser(req.user.uuid);
       if (currentUser) {
@@ -66,7 +66,7 @@ class UserController {
     }
   }
 
-  async updateUser(req, res, next) {
+  static async updateUser(req, res, next) {
     try {
       const { userUuid } = req.params;
       const { fullName, email, role } = req.body;
@@ -89,7 +89,7 @@ class UserController {
     }
   }
 
-  async changePassword(req, res, next) {
+  static async changePassword(req, res, next) {
     try {
       const { userUuid } = req.params;
       const { newPassword, confirmNewPassword } = req.body;
@@ -111,7 +111,7 @@ class UserController {
     }
   }
 
-  async updateUserPhoto(req, res, next) {
+  static async updateUserPhoto(req, res, next) {
     try {
       const {
         params: { userUuid },
@@ -134,7 +134,7 @@ class UserController {
     }
   }
 
-  async removeUserPhoto(req, res, next) {
+  static async removeUserPhoto(req, res, next) {
     try {
       const { userUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.uuid);
@@ -150,7 +150,7 @@ class UserController {
     }
   }
 
-  async deleteUser(req, res, next) {
+  static async deleteUser(req, res, next) {
     try {
       const { userUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.uuid);
@@ -170,4 +170,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController();
+module.exports = UserController;
