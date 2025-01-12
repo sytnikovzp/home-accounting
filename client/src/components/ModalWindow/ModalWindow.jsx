@@ -15,7 +15,7 @@ import {
   stylesCustomModalIconButton,
 } from '../../styles';
 
-function CustomModal({
+function ModalWindow({
   isOpen,
   onClose,
   showCloseButton = false,
@@ -87,4 +87,4 @@ function CustomModal({
   );
 }
 
-export default CustomModal;
+export default ModalWindow;

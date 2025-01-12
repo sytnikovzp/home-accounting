@@ -11,7 +11,7 @@ import {
 
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
 
@@ -36,7 +36,7 @@ function CurrencyViewPage({ handleModalClose }) {
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

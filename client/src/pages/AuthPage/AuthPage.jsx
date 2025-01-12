@@ -5,10 +5,10 @@ import { LockOutlined } from '@mui/icons-material';
 
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm/ForgotPasswordForm';
 import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 import { stylesAuthPageAvatar, stylesAuthPageTitle } from '../../styles';
 
@@ -165,7 +165,7 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       actions={renderActionButton()}
       content={renderContent()}
       error={errorMessage}

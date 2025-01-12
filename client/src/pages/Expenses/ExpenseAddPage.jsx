@@ -1,7 +1,7 @@
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function ExpenseAddPage({
   handleModalClose,
@@ -33,7 +33,7 @@ function ExpenseAddPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

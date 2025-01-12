@@ -1,7 +1,7 @@
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import ProductForm from '../../components/Forms/ProductForm/ProductForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function ProductAddPage({
   handleModalClose,
@@ -22,7 +22,7 @@ function ProductAddPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

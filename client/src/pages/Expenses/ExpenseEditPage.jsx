@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 function ExpenseEditPage({
@@ -53,7 +53,7 @@ function ExpenseEditPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

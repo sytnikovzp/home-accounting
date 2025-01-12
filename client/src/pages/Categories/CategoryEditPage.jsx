@@ -13,8 +13,8 @@ import {
   fetchCategoryByUuid,
 } from '../../store/thunks/categoriesThunks';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 function CategoryEditPage({ handleModalClose }) {
@@ -62,7 +62,7 @@ function CategoryEditPage({ handleModalClose }) {
 
   if (!categoryToCRUD || isLoading) {
     return (
-      <CustomModal
+      <ModalWindow
         isOpen
         showCloseButton
         actions={
@@ -85,7 +85,7 @@ function CategoryEditPage({ handleModalClose }) {
   }
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       actions={renderActions()}

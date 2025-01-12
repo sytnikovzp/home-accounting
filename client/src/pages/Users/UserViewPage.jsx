@@ -13,7 +13,7 @@ import { BASE_URL } from '../../constants';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
@@ -70,7 +70,7 @@ function UserViewPage({ handleModalClose }) {
     : null;
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

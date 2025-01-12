@@ -1,7 +1,7 @@
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function EstablishmentAddPage({
   handleModalClose,
@@ -25,7 +25,7 @@ function EstablishmentAddPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={<EstablishmentForm onSubmit={handleSubmitEstablishment} />}

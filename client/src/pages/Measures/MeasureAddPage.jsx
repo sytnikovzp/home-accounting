@@ -1,7 +1,7 @@
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function MeasureAddPage({
   handleModalClose,
@@ -21,7 +21,7 @@ function MeasureAddPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={<MeasureForm onSubmit={handleSubmitMeasure} />}

@@ -5,7 +5,7 @@ import { Button, Typography } from '@mui/material';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
@@ -41,7 +41,7 @@ function ExpenseDeletePage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       actions={[

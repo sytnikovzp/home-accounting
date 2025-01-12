@@ -1,7 +1,7 @@
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function CategoryAddPage({ handleModalClose, crudError, setCrudError }) {
   const handleSubmitCategory = async (values) => {
@@ -15,7 +15,7 @@ function CategoryAddPage({ handleModalClose, crudError, setCrudError }) {
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={<CategoryForm onSubmit={handleSubmitCategory} />}

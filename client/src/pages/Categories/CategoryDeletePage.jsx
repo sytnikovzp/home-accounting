@@ -13,7 +13,7 @@ import {
   fetchCategoryByUuid,
 } from '../../store/thunks/categoriesThunks';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
@@ -74,7 +74,7 @@ function CategoryDeletePage({ handleModalClose }) {
 
   if (!categoryToCRUD || isLoading) {
     return (
-      <CustomModal
+      <ModalWindow
         isOpen
         showCloseButton
         actions={
@@ -97,7 +97,7 @@ function CategoryDeletePage({ handleModalClose }) {
   }
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       actions={renderActions()}

@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function UserResetPasswordPage() {
   const [isOpen, setIsOpen] = useState(true);
@@ -41,7 +41,7 @@ function UserResetPasswordPage() {
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       showCloseButton
       content={<ChangePasswordForm onSubmit={handleSubmitResetPassword} />}
       error={errorMessage}

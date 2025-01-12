@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import RoleForm from '../../components/Forms/RoleForm/RoleForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 function RoleEditPage({
@@ -46,7 +46,7 @@ function RoleEditPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

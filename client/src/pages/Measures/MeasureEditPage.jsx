@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 function MeasureEditPage({
@@ -44,7 +44,7 @@ function MeasureEditPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

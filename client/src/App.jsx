@@ -10,8 +10,8 @@ import {
 import { getAccessToken } from './utils/sharedFunctions';
 import restController from './api/rest/restController';
 
-import CustomModal from './components/CustomModal/CustomModal';
 import Layout from './components/Layout/Layout';
+import ModalWindow from './components/ModalWindow/ModalWindow';
 import Preloader from './components/Preloader/Preloader';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
@@ -60,7 +60,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <CustomModal
+      <ModalWindow
         content={<Preloader message='Welcome to Home Accounting...' />}
         disableBackdropClick={true}
         isOpen={true}

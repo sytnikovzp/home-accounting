@@ -1,7 +1,7 @@
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import RoleForm from '../../components/Forms/RoleForm/RoleForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function RoleAddPage({
   handleModalClose,
@@ -26,7 +26,7 @@ function RoleAddPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

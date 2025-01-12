@@ -14,7 +14,7 @@ import {
 
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
 
@@ -54,7 +54,7 @@ function ExpenseViewPage({ handleModalClose }) {
   const currencyCode = currency?.code || '*Немає даних*';
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

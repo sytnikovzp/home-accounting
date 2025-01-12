@@ -1,7 +1,7 @@
 import restController from '../../api/rest/restController';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function CurrencyAddPage({
   handleModalClose,
@@ -21,7 +21,7 @@ function CurrencyAddPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={<CurrencyForm onSubmit={handleSubmitCurrency} />}

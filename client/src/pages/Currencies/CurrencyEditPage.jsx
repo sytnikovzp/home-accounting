@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 function CurrencyEditPage({
@@ -44,7 +44,7 @@ function CurrencyEditPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

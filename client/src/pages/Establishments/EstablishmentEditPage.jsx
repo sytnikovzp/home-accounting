@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 function EstablishmentEditPage({
@@ -68,7 +68,7 @@ function EstablishmentEditPage({
   };
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={

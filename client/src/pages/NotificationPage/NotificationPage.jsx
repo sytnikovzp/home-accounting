@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
 import InfoMessage from '../../components/InfoMessage/InfoMessage';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function NotificationPage() {
   const [isOpen, setIsOpen] = useState(true);
@@ -33,7 +33,7 @@ function NotificationPage() {
   }, [location, pageTitles]);
 
   return (
-    <CustomModal
+    <ModalWindow
       actions={
         <Button
           fullWidth

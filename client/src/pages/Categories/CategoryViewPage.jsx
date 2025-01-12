@@ -11,7 +11,7 @@ import {
 } from '../../store/selectors/categoriesSelectors';
 import { fetchCategoryByUuid } from '../../store/thunks/categoriesThunks';
 
-import CustomModal from '../../components/CustomModal/CustomModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import UserLink from '../../components/UserLink/UserLink';
@@ -40,7 +40,7 @@ function CategoryViewPage({ handleModalClose }) {
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   return (
-    <CustomModal
+    <ModalWindow
       isOpen
       showCloseButton
       content={
