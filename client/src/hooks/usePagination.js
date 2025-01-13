@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const usePagination = (initialPageSize, totalPages = 0) => {
+function usePagination(initialPageSize, totalPages = 0) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(initialPageSize);
 
@@ -21,6 +21,6 @@ const usePagination = (initialPageSize, totalPages = 0) => {
     handlePageChange,
     handleRowsPerPageChange,
   };
-};
+}
 
 export default usePagination;
