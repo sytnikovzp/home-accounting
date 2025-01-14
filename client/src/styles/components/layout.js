@@ -15,7 +15,7 @@ export const stylesLayoutXLContainer = {
   flexDirection: 'column',
 };
 
-export const stylesLayoutGridXLContainer = {
+export const stylesLayoutXLGridContainer = {
   flexGrow: 1,
   flexWrap: 'nowrap',
 };

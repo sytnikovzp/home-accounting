@@ -1,12 +1,5 @@
-import { Link as RouterLink } from 'react-router-dom';
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
+import { useCallback } from 'react';
+import { Box, List } from '@mui/material';
 import {
   AttachMoney,
   Category,
@@ -20,7 +13,9 @@ import {
   Store,
 } from '@mui/icons-material';
 
-import { stylesNavBarListItemText, stylesNavBarMenuItems } from '../../styles';
+import NavItem from './NavItem';
+
+import { stylesNavBarBox } from '../../styles';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Головна' },
@@ -36,40 +31,25 @@ const navItems = [
 ];
 
 function NavBar({ onClose }) {
-  const handleItemClick = () => {
+  const handleItemClick = useCallback(() => {
     if (onClose) {
       onClose();
     }
-  };
-
-  const renderNavItems = (items) => (
-    <List>
-      {items.map(({ to, icon: IconComponent, label }) => (
-        <ListItem
-          key={label}
-          disablePadding
-          component={RouterLink}
-          to={to}
-          onClick={handleItemClick}
-        >
-          <ListItemButton>
-            <ListItemIcon>
-              <IconComponent />
-            </ListItemIcon>
-            <ListItemText primary={label} sx={stylesNavBarListItemText} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  );
+  }, [onClose]);
 
   return (
-    <Box
-      aria-label='main menu items'
-      component='nav'
-      sx={stylesNavBarMenuItems}
-    >
-      {renderNavItems(navItems)}
+    <Box aria-label='main menu items' component='nav' sx={stylesNavBarBox}>
+      <List>
+        {navItems.map(({ to, icon, label }) => (
+          <NavItem
+            key={label}
+            icon={icon}
+            label={label}
+            to={to}
+            onClick={handleItemClick}
+          />
+        ))}
+      </List>
     </Box>
   );
 }

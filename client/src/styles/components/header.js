@@ -9,35 +9,35 @@ export const stylesHeaderToolbar = {
   py: 0.5,
 };
 
-export const stylesHeaderIcon = {
+export const stylesLogoIcon = {
   width: '36px',
   height: '36px',
   marginRight: '16px',
   display: 'flex',
 };
 
-export const stylesHeaderBoxLogoDesktop = {
+export const stylesLogoBoxDesktop = {
   display: { xs: 'none', md: 'flex' },
   alignItems: 'center',
   textDecoration: 'none',
   color: 'inherit',
 };
 
-export const stylesHeaderTitleDesktop = {
+export const stylesLogoTypographyDesktop = {
   mr: 2,
   fontFamily: 'Roboto, sans-serif',
   fontWeight: 600,
   letterSpacing: '.3rem',
   color: 'white',
+};
+
+export const stylesLogoBoxMobile = {
+  display: { xs: 'flex', md: 'none' },
+  alignItems: 'center',
   textDecoration: 'none',
 };
 
-export const stylesHeaderBoxLogoMobile = {
-  display: { xs: 'flex', md: 'none' },
-  alignItems: 'center',
-};
-
-export const stylesHeaderTitleMobile = {
+export const stylesLogoTypographyMobile = {
   fontFamily: 'Roboto, sans-serif',
   fontWeight: 600,
   letterSpacing: '.05rem',
@@ -53,7 +53,7 @@ export const stylesHeaderUserAvatar = {
   height: { xs: 40, sm: 45 },
 };
 
-export const stylesHeaderUserMenu = {
+export const stylesAuthenticatedMenu = {
   overflow: 'visible',
   filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
   mt: 1.5,
@@ -71,7 +71,7 @@ export const stylesHeaderUserMenu = {
   },
 };
 
-export const stylesHeaderWelcomeBlock = {
+export const stylesWelcomeBlockBox = {
   display: { xs: 'none', sm: 'block' },
   alignItems: 'center',
   marginRight: 2,

@@ -1,8 +1,8 @@
-export const stylesNavBarListItemText = {
+export const stylesNavItemText = {
   color: 'text.primary',
 };
 
-export const stylesNavBarMenuItems = {
+export const stylesNavBarBox = {
   position: { md: 'sticky', xs: 'static' },
   top: 0,
   minHeight: { md: '75vh', xs: 'auto' },

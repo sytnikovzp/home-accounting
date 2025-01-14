@@ -1,74 +1,22 @@
 import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   Container,
   Divider,
-  IconButton,
-  Menu,
   Toolbar,
-  Tooltip,
-  Typography,
 } from '@mui/material';
-import {
-  AdminPanelSettings,
-  ListAlt,
-  Logout,
-  Password,
-  Portrait,
-} from '@mui/icons-material';
 
-import { BASE_URL } from '../../constants';
-import { stringAvatar } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
 
 import NavBar from '../Navigation/NavBar';
-import UserMenu from '../UserMenu/UserMenu';
 
-import accountingIcon from '../../assets/accounting.png';
-import {
-  stylesHeaderAppBar,
-  stylesHeaderBoxLogoDesktop,
-  stylesHeaderBoxLogoMobile,
-  stylesHeaderIcon,
-  stylesHeaderTitleDesktop,
-  stylesHeaderTitleMobile,
-  stylesHeaderToolbar,
-  stylesHeaderUserMenu,
-  stylesHeaderWelcomeBlock,
-} from '../../styles';
+import AuthenticatedMenu from './AuthenticatedMenu';
+import Logo from './Logo';
 
-const menuItemsData = [
-  {
-    label: 'Переглянути профіль',
-    icon: <Portrait fontSize='small' />,
-    action: (currentUser) => `/users/${currentUser.uuid}`,
-  },
-  {
-    label: 'Редагувати профіль',
-    icon: <ListAlt fontSize='small' />,
-    action: (currentUser) => `/users/edit/${currentUser.uuid}`,
-  },
-  {
-    label: 'Переглянути права',
-    icon: <AdminPanelSettings fontSize='small' />,
-    action: (currentUser) => `/roles/${currentUser.role.uuid}`,
-  },
-  {
-    label: 'Змінити пароль',
-    icon: <Password fontSize='small' />,
-    action: (currentUser) => `/users/password/${currentUser.uuid}`,
-  },
-  {
-    label: 'Вийти',
-    icon: <Logout fontSize='small' />,
-    action: 'handleLogout',
-    isLogout: true,
-  },
-];
+import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 
 function Header({
   isAuthenticated,
@@ -85,9 +33,7 @@ function Header({
   const toggleUserMenu = (event) => setOpenUserMenu(event.currentTarget);
   const closeMenu = () => setOpenUserMenu(false);
 
-  const openAuthModal = () => {
-    setAuthModalOpen(true);
-  };
+  const openAuthModal = () => setAuthModalOpen(true);
 
   const handleLogout = async () => {
     try {
@@ -103,94 +49,18 @@ function Header({
     <AppBar position='sticky' sx={stylesHeaderAppBar}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters sx={stylesHeaderToolbar}>
-          <Box component={RouterLink} sx={stylesHeaderBoxLogoDesktop} to='/'>
-            <img
-              alt='Home Accounting'
-              src={accountingIcon}
-              style={stylesHeaderIcon}
-            />
-            <Typography noWrap sx={stylesHeaderTitleDesktop} variant='h6'>
-              Home Accounting
-            </Typography>
-          </Box>
-          <Box sx={stylesHeaderBoxLogoMobile}>
-            <img
-              alt='Home Accounting'
-              src={accountingIcon}
-              style={stylesHeaderIcon}
-              onClick={handleToggleNavBar}
-            />
-            <Typography
-              noWrap
-              sx={stylesHeaderTitleMobile}
-              variant='h6'
-              onClick={handleToggleNavBar}
-            >
-              Home Accounting
-            </Typography>
-          </Box>
+          <Logo isMobile={false} />
+          <Logo isMobile onClick={handleToggleNavBar} />
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {isAuthenticated ? (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={stylesHeaderWelcomeBlock}>
-                  <Typography variant='body1'>
-                    Привіт, {currentUser.fullName}!
-                  </Typography>
-                  <Typography color='text.secondary' variant='body2'>
-                    Ваша роль на сайті: {currentUser.role.title}
-                  </Typography>
-                </Box>
-                <Tooltip title='Обліковий запис'>
-                  <IconButton
-                    aria-controls={openUserMenu ? 'account-menu' : null}
-                    aria-expanded={openUserMenu ? 'true' : null}
-                    aria-haspopup='true'
-                    size='small'
-                    sx={{ ml: 2 }}
-                    onClick={toggleUserMenu}
-                  >
-                    <Avatar
-                      alt={currentUser.fullName}
-                      {...stringAvatar(currentUser.fullName)}
-                      src={
-                        currentUser?.photo
-                          ? `${BASE_URL.replace('/api/', '')}/images/users/${
-                              currentUser.photo
-                            }`
-                          : null
-                      }
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  anchorEl={openUserMenu}
-                  anchorOrigin={{
-                    horizontal: 'right',
-                    vertical: 'bottom',
-                  }}
-                  id='account-menu'
-                  open={Boolean(openUserMenu)}
-                  slotProps={{
-                    paper: {
-                      elevation: 0,
-                      sx: stylesHeaderUserMenu,
-                    },
-                  }}
-                  transformOrigin={{
-                    horizontal: 'right',
-                    vertical: 'top',
-                  }}
-                  onClose={closeMenu}
-                >
-                  <UserMenu
-                    closeMenu={closeMenu}
-                    currentUser={currentUser}
-                    handleLogout={handleLogout}
-                    menuItems={menuItemsData}
-                    navigateTo={navigateTo}
-                  />
-                </Menu>
-              </Box>
+              <AuthenticatedMenu
+                closeMenu={closeMenu}
+                currentUser={currentUser}
+                handleLogout={handleLogout}
+                navigateTo={navigateTo}
+                openUserMenu={openUserMenu}
+                toggleUserMenu={toggleUserMenu}
+              />
             ) : (
               <Button
                 color='success'

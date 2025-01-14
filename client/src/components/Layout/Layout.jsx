@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box, Container, Grid2 } from '@mui/material';
+import { Box, Container, Grid2, useMediaQuery } from '@mui/material';
 
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -10,12 +10,12 @@ import ServiceBlock from '../ServiceBlock/ServiceBlock';
 import {
   stylesLayoutBox,
   stylesLayoutGridContainer,
-  stylesLayoutGridXLContainer,
   stylesLayoutNavBarDesktop,
   stylesLayoutNavBarMobile,
   stylesLayoutOutlet,
   stylesLayoutServiceBlock,
   stylesLayoutXLContainer,
+  stylesLayoutXLGridContainer,
 } from '../../styles';
 
 function Layout({
@@ -25,24 +25,17 @@ function Layout({
   setAuthModalOpen,
 }) {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
-  const handleCloseNavBar = () => {
-    setIsNavBarOpen(false);
-  };
-
-  const handleResize = () => {
-    if (window.innerWidth <= 600) {
-      setIsNavBarOpen(false);
-    }
-  };
+  const handleToggleNavBar = useCallback(() => {
+    setIsNavBarOpen((prev) => !prev);
+  }, []);
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+    if (!isMobile) {
+      setIsNavBarOpen(false);
+    }
+  }, [isMobile]);
 
   return (
     <Box sx={stylesLayoutBox}>
@@ -61,13 +54,17 @@ function Layout({
           />
         </Grid2>
         <Container maxWidth='xl' sx={stylesLayoutXLContainer}>
-          <Grid2 container columnSpacing={2} sx={stylesLayoutGridXLContainer}>
-            <Grid2 md={2} sx={stylesLayoutNavBarDesktop} xs={12}>
-              <NavBar />
-            </Grid2>
-            <Grid2 sx={stylesLayoutNavBarMobile}>
-              {isNavBarOpen && <NavBar onClose={handleCloseNavBar} />}
-            </Grid2>
+          <Grid2 container columnSpacing={2} sx={stylesLayoutXLGridContainer}>
+            {!isMobile && (
+              <Grid2 md={2} sx={stylesLayoutNavBarDesktop}>
+                <NavBar />
+              </Grid2>
+            )}
+            {isMobile && isNavBarOpen && (
+              <Grid2 sx={stylesLayoutNavBarMobile}>
+                <NavBar onClose={handleToggleNavBar} />
+              </Grid2>
+            )}
             <Grid2 sx={stylesLayoutOutlet}>
               <Outlet />
             </Grid2>
