@@ -24,6 +24,15 @@ const stringToColor = (string) => {
 };
 
 const stringAvatar = (fullName) => {
+  if (!fullName || typeof fullName !== 'string') {
+    return {
+      sx: {
+        ...stylesHeaderUserAvatar,
+        backgroundColor: stringToColor(''),
+      },
+      children: '',
+    };
+  }
   const words = fullName.trim().split(' ');
   const firstLetter = words[0] ? words[0][0].toUpperCase() : '';
   const secondLetter = words[1] ? words[1][0].toUpperCase() : '';

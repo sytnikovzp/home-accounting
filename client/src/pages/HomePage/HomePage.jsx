@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   FormControl,
@@ -10,7 +11,13 @@ import {
 } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
-import restController from '../../api/rest/restController';
+
+import {
+  selectStatisticsData,
+  selectStatisticsError,
+  selectStatisticsLoading,
+} from '../../store/selectors/statisticsSelectors';
+import { fetchStatisticsByCriteria } from '../../store/thunks/statisticsThunks';
 
 import Error from '../../components/Error/Error';
 import Preloader from '../../components/Preloader/Preloader';
@@ -24,39 +31,15 @@ import {
 } from '../../styles';
 
 function HomePage({ currentUser }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showPreloader, setShowPreloader] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const data = useSelector(selectStatisticsData);
+  const isLoading = useSelector(selectStatisticsLoading);
+  const errorMessage = useSelector(selectStatisticsError);
+
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
-
-  const location = useLocation();
-
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        ago,
-        ...(currentUser ? { creatorUuid: currentUser.uuid } : {}),
-      };
-      const fetchMethod = {
-        byCategories: restController.fetchCostByCategories,
-        byEstablishments: restController.fetchCostByEstablishments,
-        byProducts: restController.fetchCostByProducts,
-      }[criteria];
-      if (!fetchMethod) {
-        throw new Error(`Невідомий критерій: ${criteria}`);
-      }
-      const response = await fetchMethod(params);
-      setData(response.data || []);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [ago, criteria, currentUser]);
+  const [showPreloader, setShowPreloader] = useState(false);
 
   const pageTitles = useMemo(
     () => ({
@@ -70,8 +53,9 @@ function HomePage({ currentUser }) {
   }, [location, pageTitles]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    const creatorUuid = currentUser?.uuid || null;
+    dispatch(fetchStatisticsByCriteria({ ago, criteria, creatorUuid }));
+  }, [dispatch, ago, criteria, currentUser]);
 
   useEffect(() => {
     let timeout = null;
@@ -86,6 +70,7 @@ function HomePage({ currentUser }) {
   if (showPreloader) {
     return <Preloader message='Завантаження даних статистики...' />;
   }
+
   if (errorMessage) {
     return <Error error={errorMessage} />;
   }

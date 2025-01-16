@@ -33,14 +33,14 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setUserProfile] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const handleCloseAuthModal = () => setAuthModalOpen(false);
 
   const checkAuthentication = useCallback(async () => {
     try {
       const currentUser = await restController.fetchUserProfile();
-      setUserProfile(currentUser);
+      setCurrentUser(currentUser);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Не вдалося завантажити дані користувача:', error.message);
