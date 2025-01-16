@@ -1,18 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { STATISTICS_SLICE_NAME } from '../../constants';
-import statisticsService from '../../services/statisticService';
+import {
+  getCostByCategories,
+  getCostByEstablishments,
+  getCostByProducts,
+} from '../../services/statisticsService';
 
 export const fetchStatisticsByCriteria = createAsyncThunk(
   `${STATISTICS_SLICE_NAME}/fetch`,
   async ({ ago, criteria, creatorUuid }, { rejectWithValue }) => {
     try {
       const serviceMap = {
-        byCategories: statisticsService.getCostByCategories,
-        byEstablishments: statisticsService.getCostByEstablishments,
-        byProducts: statisticsService.getCostByProducts,
+        byCategories: getCostByCategories,
+        byEstablishments: getCostByEstablishments,
+        byProducts: getCostByProducts,
       };
-
       const service = serviceMap[criteria];
       if (!service) {
         throw new Error(`Unknown criteria: ${criteria}`);

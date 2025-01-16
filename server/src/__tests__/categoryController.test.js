@@ -14,7 +14,7 @@ const authData = {
   admin: { uuid: null, accessToken: null },
 };
 
-describe('CategoryController', () => {
+describe('CategoriesController', () => {
   let categoryUuid = null;
 
   describe('POST /api/auth/login', () => {

@@ -60,7 +60,7 @@ function EstablishmentEditPage({
   const handleRemoveLogo = async () => {
     setCrudError(null);
     try {
-      await restController.removeEstablishmentLogo(establishmentToCRUD.uuid);
+      await restController.deleteEstablishmentLogo(establishmentToCRUD.uuid);
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);

@@ -68,12 +68,12 @@ const resetPassword = async (token, newPassword, confirmNewPassword) => {
   return response;
 };
 
-export default {
-  registration,
+export {
+  forgotPassword,
   login,
   logout,
   refreshAccessToken,
+  registration,
   resendVerifyEmail,
-  forgotPassword,
   resetPassword,
 };

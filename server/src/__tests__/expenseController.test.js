@@ -14,7 +14,7 @@ const authData = {
   admin: { uuid: null, accessToken: null },
 };
 
-describe('ExpenseController', () => {
+describe('ExpensesController', () => {
   let expenseUuid = null;
 
   describe('POST /api/auth/login', () => {

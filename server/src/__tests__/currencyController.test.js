@@ -14,7 +14,7 @@ const authData = {
   admin: { uuid: null, accessToken: null },
 };
 
-describe('CurrencyController', () => {
+describe('CurrenciesController', () => {
   let currencyUuid = null;
 
   describe('POST /api/auth/login', () => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Table,
@@ -11,7 +12,13 @@ import {
 } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
-import restController from '../../api/rest/restController';
+
+import {
+  selectError,
+  selectIsLoading,
+  selectNBURates,
+} from '../../store/selectors/nbuExchangesSelectors';
+import { fetchNBURates } from '../../store/thunks/nbuExchangesThunks';
 
 import Error from '../Error/Error';
 import Preloader from '../Preloader/Preloader';
@@ -19,28 +26,17 @@ import Preloader from '../Preloader/Preloader';
 import { stylesCurrencyExchangeBox } from '../../styles';
 
 function CurrencyExchange() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showPreloader, setShowPreloader] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [rates, setRates] = useState([]);
+  const dispatch = useDispatch();
 
-  const fetchRates = async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const filteredRates = await restController.fetchFilteredRates();
-      setRates(filteredRates);
-    } catch (error) {
-      console.error('Не вдалося завантажити курси валют:', error.message);
-      setErrorMessage('Помилка завантаження валют');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const rates = useSelector(selectNBURates);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
+  const [showPreloader, setShowPreloader] = useState(false);
 
   useEffect(() => {
-    fetchRates();
-  }, []);
+    dispatch(fetchNBURates());
+  }, [dispatch]);
 
   useEffect(() => {
     let timeout = null;
@@ -55,8 +51,9 @@ function CurrencyExchange() {
   if (showPreloader) {
     return <Preloader message='Завантаження валют...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (

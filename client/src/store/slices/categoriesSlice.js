@@ -4,11 +4,11 @@ import { CATEGORIES_SLICE_NAME } from '../../constants';
 import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
 
 import {
-  createCategory,
-  deleteCategory,
+  addCategory,
   editCategory,
   fetchCategories,
   fetchCategoryByUuid,
+  removeCategory,
 } from '../thunks/categoriesThunks';
 
 const initialState = {
@@ -41,7 +41,7 @@ const categoriesSlice = createSlice({
         state.error = null;
         state.current = payload;
       })
-      .addCase(createCategory.fulfilled, (state, { payload }) => {
+      .addCase(addCategory.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
         state.list.push(payload);
@@ -56,7 +56,7 @@ const categoriesSlice = createSlice({
           state.list[index] = payload;
         }
       })
-      .addCase(deleteCategory.fulfilled, (state, { payload }) => {
+      .addCase(removeCategory.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
         state.list = state.list.filter((category) => category.uuid !== payload);
@@ -65,16 +65,16 @@ const categoriesSlice = createSlice({
       // Pending
       .addCase(fetchCategories.pending, setLoadingState)
       .addCase(fetchCategoryByUuid.pending, setLoadingState)
-      .addCase(createCategory.pending, setLoadingState)
+      .addCase(addCategory.pending, setLoadingState)
       .addCase(editCategory.pending, setLoadingState)
-      .addCase(deleteCategory.pending, setLoadingState)
+      .addCase(removeCategory.pending, setLoadingState)
 
       // Rejected
       .addCase(fetchCategories.rejected, setErrorState)
       .addCase(fetchCategoryByUuid.rejected, setErrorState)
-      .addCase(createCategory.rejected, setErrorState)
+      .addCase(addCategory.rejected, setErrorState)
       .addCase(editCategory.rejected, setErrorState)
-      .addCase(deleteCategory.rejected, setErrorState);
+      .addCase(removeCategory.rejected, setErrorState);
   },
 });
 

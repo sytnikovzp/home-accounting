@@ -9,8 +9,8 @@ import {
   selectCategoryByUuid,
 } from '../../store/selectors/categoriesSelectors';
 import {
-  deleteCategory,
   fetchCategoryByUuid,
+  removeCategory,
 } from '../../store/thunks/categoriesThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
@@ -36,7 +36,7 @@ function CategoryDeletePage({ handleModalClose }) {
 
   const handleDeleteCategory = async () => {
     try {
-      await dispatch(deleteCategory(categoryToCRUD.uuid)).unwrap();
+      await dispatch(removeCategory(categoryToCRUD.uuid)).unwrap();
       handleModalClose();
     } catch (error) {
       console.error(error.message);

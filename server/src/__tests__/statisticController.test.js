@@ -8,7 +8,7 @@ const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
 beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
-describe('StatisticController', () => {
+describe('StatisticsController', () => {
   describe('GET /api/statistics/category-per-period', () => {
     it('should return cost for category with time filter (month)', async () => {
       const response = await request(app)

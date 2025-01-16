@@ -16,7 +16,7 @@ const authData = {
   admin: { uuid: null, accessToken: null },
 };
 
-describe('EstablishmentController', () => {
+describe('EstablishmentsController', () => {
   let establishmentUuid = null;
 
   describe('POST /api/auth/login', () => {

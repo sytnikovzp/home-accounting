@@ -1,12 +1,20 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
 import { DELAY_SHOW_PRELOADER } from '../../constants';
 import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
+
+import {
+  selectCurrencies,
+  selectError,
+  selectIsLoading,
+  selectTotalCount,
+} from '../../store/selectors/currenciesSelectors';
+import { fetchCurrencies } from '../../store/thunks/currenciesThunks';
 
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
@@ -24,13 +32,15 @@ import {
 } from '../../styles';
 
 function CurrenciesPage() {
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const currencies = useSelector(selectCurrencies);
+  const totalCount = useSelector(selectTotalCount);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+
   const [showPreloader, setShowPreloader] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [currencies, setCurrencies] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
+
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-  const [crudError, setCrudError] = useState(null);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -39,7 +49,6 @@ function CurrenciesPage() {
   const location = useLocation();
 
   const handleModalClose = () => {
-    setCrudError(null);
     navigate('/currencies');
   };
 
@@ -47,26 +56,16 @@ function CurrenciesPage() {
     navigate(uuid ? `${mode}/${uuid}` : mode);
   };
 
-  const fetchCurrencies = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
+  useEffect(() => {
+    dispatch(
+      fetchCurrencies({
         page: currentPage,
         limit: pageSize,
         sort: sortModel.field,
         order: sortModel.order,
-      };
-      const { data, totalCount } =
-        await restController.fetchAllCurrencies(params);
-      setCurrencies(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, sortModel]);
+      })
+    );
+  }, [currentPage, dispatch, pageSize, sortModel]);
 
   const pageTitles = useMemo(
     () => ({
@@ -94,10 +93,6 @@ function CurrenciesPage() {
   }, [location, pageTitles]);
 
   useEffect(() => {
-    fetchCurrencies();
-  }, [fetchCurrencies]);
-
-  useEffect(() => {
     let timeout = null;
     if (isLoading) {
       timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
@@ -112,10 +107,8 @@ function CurrenciesPage() {
       <Route
         element={
           <CurrencyAddPage
-            crudError={crudError}
             fetchCurrencies={fetchCurrencies}
             handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
           />
         }
         path='add'
@@ -123,10 +116,8 @@ function CurrenciesPage() {
       <Route
         element={
           <CurrencyEditPage
-            crudError={crudError}
             fetchCurrencies={fetchCurrencies}
             handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
           />
         }
         path='edit/:uuid'
@@ -134,10 +125,8 @@ function CurrenciesPage() {
       <Route
         element={
           <CurrencyDeletePage
-            crudError={crudError}
             fetchCurrencies={fetchCurrencies}
             handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
           />
         }
         path='delete/:uuid'
@@ -152,8 +141,9 @@ function CurrenciesPage() {
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Валют"...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (

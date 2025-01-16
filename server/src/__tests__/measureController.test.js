@@ -14,7 +14,7 @@ const authData = {
   admin: { uuid: null, accessToken: null },
 };
 
-describe('MeasureController', () => {
+describe('MeasuresController', () => {
   let measureUuid = null;
 
   describe('POST /api/auth/login', () => {

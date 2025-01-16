@@ -1,3 +1,7 @@
+node_modules/
+.vs_code/
+.env
+
 client/node_modules/
 client/.vs_code/
 
@@ -6,5 +10,3 @@ server/.vs_code/
 server/.env
 server/sequelize-meta.json
 server/sequelize-data.json
-
-.env

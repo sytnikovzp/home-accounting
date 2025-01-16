@@ -1,30 +1,85 @@
-import { CURRENCY_CODES } from '../../constants';
 import {
-  authService,
-  categoryService,
-  currencyService,
-  establishmentService,
-  expenseService,
-  measureService,
-  moderationService,
-  productService,
-  roleService,
-  statisticService,
-  userService,
-} from '../../services';
+  forgotPassword,
+  login,
+  logout,
+  refreshAccessToken,
+  registration,
+  resendVerifyEmail,
+  resetPassword,
+} from '../../services/authService';
+import {
+  createCategory,
+  deleteCategory,
+  getAllCategories,
+  getCategoryByUuid,
+  updateCategory,
+} from '../../services/categoriesService';
+import {
+  createEstablishment,
+  deleteEstablishment,
+  deleteEstablishmentLogo,
+  getAllEstablishments,
+  getEstablishmentByUuid,
+  updateEstablishment,
+  updateEstablishmentLogo,
+} from '../../services/establishmentsService';
+import {
+  createExpense,
+  deleteExpense,
+  getAllExpenses,
+  getExpenseByUuid,
+  updateExpense,
+} from '../../services/expensesService';
+import {
+  createMeasure,
+  deleteMeasure,
+  getAllMeasures,
+  getMeasureByUuid,
+  updateMeasure,
+} from '../../services/measuresService';
+import {
+  getAllPendingItems,
+  moderationCategory,
+  moderationEstablishment,
+  moderationProduct,
+} from '../../services/moderationsService';
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getProductByUuid,
+  updateProduct,
+} from '../../services/productsService';
+import {
+  createRole,
+  deleteRole,
+  getAllPermissions,
+  getAllRoles,
+  getRoleByUuid,
+  updateRole,
+} from '../../services/rolesService';
+import {
+  changePassword,
+  deleteUser,
+  deleteUserPhoto,
+  getAllUsers,
+  getUserByUuid,
+  getUserProfile,
+  updateUser,
+  updateUserPhoto,
+} from '../../services/usersService';
 
 const restController = {
   // Authentication
   registration: (fullName, email, password) =>
-    authService.registration(fullName, email, password),
-  login: (email, password) => authService.login(email, password),
-  logout: () => authService.logout(),
-  refreshAccessToken: (originalRequest) =>
-    authService.refreshAccessToken(originalRequest),
-  resendVerifyEmail: (email) => authService.resendVerifyEmail(email),
-  forgotPassword: (email) => authService.forgotPassword(email),
+    registration(fullName, email, password),
+  login: (email, password) => login(email, password),
+  logout: () => logout(),
+  refreshAccessToken: (originalRequest) => refreshAccessToken(originalRequest),
+  resendVerifyEmail: (email) => resendVerifyEmail(email),
+  forgotPassword: (email) => forgotPassword(email),
   resetPassword: (token, newPassword, confirmNewPassword) =>
-    authService.resetPassword(token, newPassword, confirmNewPassword),
+    resetPassword(token, newPassword, confirmNewPassword),
 
   // User management
   fetchAllUsers: async ({
@@ -34,7 +89,7 @@ const restController = {
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await userService.getAllUsers({
+    const { data, totalCount } = await getAllUsers({
       emailVerificationStatus,
       page,
       limit,
@@ -46,20 +101,20 @@ const restController = {
       totalCount,
     };
   },
-  fetchUserProfile: () => userService.getUserProfile(),
-  fetchUserByUuid: (userUuid) => userService.getUserByUuid(userUuid),
+  fetchUserProfile: () => getUserProfile(),
+  fetchUserByUuid: (userUuid) => getUserByUuid(userUuid),
   editUser: (userUuid, fullName, email, role) =>
-    userService.updateUser(userUuid, fullName, email, role),
+    updateUser(userUuid, fullName, email, role),
   changePassword: (userUuid, newPassword, confirmNewPassword) =>
-    userService.changePassword(userUuid, newPassword, confirmNewPassword),
+    changePassword(userUuid, newPassword, confirmNewPassword),
   uploadUserPhoto: (userUuid, userPhoto) =>
-    userService.updateUserPhoto(userUuid, userPhoto),
-  removeUserPhoto: (userUuid) => userService.removeUserPhoto(userUuid),
-  removeUser: (userUuid) => userService.deleteUser(userUuid),
+    updateUserPhoto(userUuid, userPhoto),
+  deleteUserPhoto: (userUuid) => deleteUserPhoto(userUuid),
+  removeUser: (userUuid) => deleteUser(userUuid),
 
   // Role and Permission management
   fetchAllPermissions: async () => {
-    const { data } = await roleService.getAllPermissions({});
+    const { data } = await getAllPermissions({});
     return { data };
   },
   fetchAllRoles: async ({
@@ -68,7 +123,7 @@ const restController = {
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await roleService.getAllRoles({
+    const { data, totalCount } = await getAllRoles({
       page,
       limit,
       sort,
@@ -79,12 +134,12 @@ const restController = {
       totalCount,
     };
   },
-  fetchRoleByUuid: (roleUuid) => roleService.getRoleByUuid(roleUuid),
+  fetchRoleByUuid: (roleUuid) => getRoleByUuid(roleUuid),
   addRole: (title, description, permissions) =>
-    roleService.createRole(title, description, permissions),
+    createRole(title, description, permissions),
   editRole: (roleUuid, title, description, permissions) =>
-    roleService.updateRole(roleUuid, title, description, permissions),
-  removeRole: (roleUuid) => roleService.deleteRole(roleUuid),
+    updateRole(roleUuid, title, description, permissions),
+  removeRole: (roleUuid) => deleteRole(roleUuid),
 
   // Category management
   fetchAllCategories: async ({
@@ -94,7 +149,7 @@ const restController = {
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await categoryService.getAllCategories({
+    const { data, totalCount } = await getAllCategories({
       status,
       page,
       limit,
@@ -106,45 +161,36 @@ const restController = {
       totalCount,
     };
   },
-  fetchCategoryByUuid: (categoryUuid) =>
-    categoryService.getCategoryByUuid(categoryUuid),
-  addCategory: (title) => categoryService.createCategory(title),
-  editCategory: (categoryUuid, title) =>
-    categoryService.updateCategory(categoryUuid, title),
-  removeCategory: (categoryUuid) =>
-    categoryService.deleteCategory(categoryUuid),
-
-  // Currency rates
-  fetchFilteredRates: async () => {
-    const allRates = await currencyService.getNBURates();
-    return allRates.filter(({ cc }) => CURRENCY_CODES.includes(cc));
-  },
+  fetchCategoryByUuid: (categoryUuid) => getCategoryByUuid(categoryUuid),
+  addCategory: (title) => createCategory(title),
+  editCategory: (categoryUuid, title) => updateCategory(categoryUuid, title),
+  removeCategory: (categoryUuid) => deleteCategory(categoryUuid),
 
   // Currency management
-  fetchAllCurrencies: async ({
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await currencyService.getAllCurrencies({
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
-  fetchCurrencyByUuid: (currencyUuid) =>
-    currencyService.getCurrencyByUuid(currencyUuid),
-  addCurrency: (title, code) => currencyService.createCurrency(title, code),
-  editCurrency: (currencyUuid, title, code) =>
-    currencyService.updateCurrency(currencyUuid, title, code),
-  removeCurrency: (currencyUuid) =>
-    currencyService.deleteCurrency(currencyUuid),
+  // fetchAllCurrencies: async ({
+  //   page = 1,
+  //   limit = 6,
+  //   sort = 'uuid',
+  //   order = 'asc',
+  // } = {}) => {
+  //   const { data, totalCount } = await getAllCurrencies({
+  //     page,
+  //     limit,
+  //     sort,
+  //     order,
+  //   });
+  //   return {
+  //     data,
+  //     totalCount,
+  //   };
+  // },
+  // fetchCurrencyByUuid: (currencyUuid) =>
+  //   getCurrencyByUuid(currencyUuid),
+  // addCurrency: (title, code) => createCurrency(title, code),
+  // editCurrency: (currencyUuid, title, code) =>
+  //   updateCurrency(currencyUuid, title, code),
+  // removeCurrency: (currencyUuid) =>
+  //   deleteCurrency(currencyUuid),
 
   // Measure management
   fetchAllMeasures: async ({
@@ -153,7 +199,7 @@ const restController = {
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await measureService.getAllMeasures({
+    const { data, totalCount } = await getAllMeasures({
       page,
       limit,
       sort,
@@ -164,13 +210,11 @@ const restController = {
       totalCount,
     };
   },
-  fetchMeasureByUuid: (measureUuid) =>
-    measureService.getMeasureByUuid(measureUuid),
-  addMeasure: (title, description = '') =>
-    measureService.createMeasure(title, description),
+  fetchMeasureByUuid: (measureUuid) => getMeasureByUuid(measureUuid),
+  addMeasure: (title, description = '') => createMeasure(title, description),
   editMeasure: (measureUuid, title, description) =>
-    measureService.updateMeasure(measureUuid, title, description),
-  removeMeasure: (measureUuid) => measureService.deleteMeasure(measureUuid),
+    updateMeasure(measureUuid, title, description),
+  removeMeasure: (measureUuid) => deleteMeasure(measureUuid),
 
   // Product management
   fetchAllProducts: async ({
@@ -180,7 +224,7 @@ const restController = {
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await productService.getAllProducts({
+    const { data, totalCount } = await getAllProducts({
       status,
       page,
       limit,
@@ -192,13 +236,11 @@ const restController = {
       totalCount,
     };
   },
-  fetchProductByUuid: (productUuid) =>
-    productService.getProductByUuid(productUuid),
-  addProduct: (title, category = '') =>
-    productService.createProduct(title, category),
+  fetchProductByUuid: (productUuid) => getProductByUuid(productUuid),
+  addProduct: (title, category = '') => createProduct(title, category),
   editProduct: (productUuid, title, category) =>
-    productService.updateProduct(productUuid, title, category),
-  removeProduct: (productUuid) => productService.deleteProduct(productUuid),
+    updateProduct(productUuid, title, category),
+  removeProduct: (productUuid) => deleteProduct(productUuid),
 
   // Expense management
   fetchAllExpenses: async ({
@@ -208,7 +250,7 @@ const restController = {
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await expenseService.getAllExpenses({
+    const { data, totalCount } = await getAllExpenses({
       ago,
       page,
       limit,
@@ -220,8 +262,7 @@ const restController = {
       totalCount,
     };
   },
-  fetchExpenseByUuid: (expenseUuid) =>
-    expenseService.getExpenseByUuid(expenseUuid),
+  fetchExpenseByUuid: (expenseUuid) => getExpenseByUuid(expenseUuid),
   addExpense: (
     product,
     quantity,
@@ -231,7 +272,7 @@ const restController = {
     currency,
     date
   ) =>
-    expenseService.createExpense(
+    createExpense(
       product,
       quantity,
       unitPrice,
@@ -250,7 +291,7 @@ const restController = {
     currency,
     date
   ) =>
-    expenseService.updateExpense(
+    updateExpense(
       expenseUuid,
       product,
       quantity,
@@ -260,7 +301,7 @@ const restController = {
       currency,
       date
     ),
-  removeExpense: (expenseUuid) => expenseService.deleteExpense(expenseUuid),
+  removeExpense: (expenseUuid) => deleteExpense(expenseUuid),
 
   // Establishment management
   fetchAllEstablishments: async ({
@@ -270,39 +311,30 @@ const restController = {
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } =
-      await establishmentService.getAllEstablishments({
-        status,
-        page,
-        limit,
-        sort,
-        order,
-      });
+    const { data, totalCount } = await getAllEstablishments({
+      status,
+      page,
+      limit,
+      sort,
+      order,
+    });
     return {
       data,
       totalCount,
     };
   },
   fetchEstablishmentByUuid: (establishmentUuid) =>
-    establishmentService.getEstablishmentByUuid(establishmentUuid),
+    getEstablishmentByUuid(establishmentUuid),
   addEstablishment: (title, description = '', url = '') =>
-    establishmentService.createEstablishment(title, description, url),
+    createEstablishment(title, description, url),
   editEstablishment: (establishmentUuid, title, description, url) =>
-    establishmentService.updateEstablishment(
-      establishmentUuid,
-      title,
-      description,
-      url
-    ),
+    updateEstablishment(establishmentUuid, title, description, url),
   uploadEstablishmentLogo: (establishmentUuid, establishmentLogo) =>
-    establishmentService.updateEstablishmentLogo(
-      establishmentUuid,
-      establishmentLogo
-    ),
-  removeEstablishmentLogo: (establishmentUuid) =>
-    establishmentService.removeEstablishmentLogo(establishmentUuid),
+    updateEstablishmentLogo(establishmentUuid, establishmentLogo),
+  deleteEstablishmentLogo: (establishmentUuid) =>
+    deleteEstablishmentLogo(establishmentUuid),
   removeEstablishment: (establishmentUuid) =>
-    establishmentService.deleteEstablishment(establishmentUuid),
+    deleteEstablishment(establishmentUuid),
 
   // Moderation
   fetchAllPendingItems: async ({
@@ -311,7 +343,7 @@ const restController = {
     sort = 'uuid',
     order = 'asc',
   } = {}) => {
-    const { data, totalCount } = await moderationService.getAllPendingItems({
+    const { data, totalCount } = await getAllPendingItems({
       page,
       limit,
       sort,
@@ -323,43 +355,11 @@ const restController = {
     };
   },
   moderationCategory: (categoryUuid, status) =>
-    moderationService.moderationCategory(categoryUuid, status),
+    moderationCategory(categoryUuid, status),
   moderationProduct: (productUuid, status) =>
-    moderationService.moderationProduct(productUuid, status),
+    moderationProduct(productUuid, status),
   moderationEstablishment: (establishmentUuid, status) =>
-    moderationService.moderationEstablishment(establishmentUuid, status),
-
-  // Statistics
-  fetchCostByCategories: async ({
-    ago = 'allTime',
-    creatorUuid = null,
-  } = {}) => {
-    const params = {
-      ago,
-      ...(creatorUuid ? { creatorUuid } : {}),
-    };
-    const { data } = await statisticService.getCostByCategories(params);
-    return { data };
-  },
-  fetchCostByEstablishments: async ({
-    ago = 'allTime',
-    creatorUuid = null,
-  } = {}) => {
-    const params = {
-      ago,
-      ...(creatorUuid ? { creatorUuid } : {}),
-    };
-    const { data } = await statisticService.getCostByEstablishments(params);
-    return { data };
-  },
-  fetchCostByProducts: async ({ ago = 'allTime', creatorUuid = null } = {}) => {
-    const params = {
-      ago,
-      ...(creatorUuid ? { creatorUuid } : {}),
-    };
-    const { data } = await statisticService.getCostByProducts(params);
-    return { data };
-  },
+    moderationEstablishment(establishmentUuid, status),
 };
 
 export default restController;

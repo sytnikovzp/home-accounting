@@ -14,7 +14,7 @@ const authData = {
   admin: { uuid: null, accessToken: null },
 };
 
-describe('RoleController', () => {
+describe('RolesController', () => {
   let roleUuid = null;
 
   describe('POST /api/auth/login', () => {

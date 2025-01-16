@@ -22,8 +22,8 @@ import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
 import ExpensesPage from './pages/Expenses/ExpensesPage';
 import HomePage from './pages/HomePage/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
-import ModerationPage from './pages/Moderation/ModerationPage';
-import NotificationPage from './pages/NotificationPage/NotificationPage';
+import ModerationsPage from './pages/Moderations/ModerationsPage';
+import NotificationsPage from './pages/Notifications/NotificationsPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import RolesPage from './pages/Roles/RolesPage';
 import UserResetPasswordPage from './pages/Users/UserResetPasswordPage';
@@ -119,7 +119,7 @@ function App() {
               path='measures/*'
             />
             <Route
-              element={renderPrivateRoute(<ModerationPage />)}
+              element={renderPrivateRoute(<ModerationsPage />)}
               path='moderation/*'
             />
             <Route
@@ -132,7 +132,7 @@ function App() {
               path='users/*'
             />
             <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
-            <Route element={<NotificationPage />} path='notification' />
+            <Route element={<NotificationsPage />} path='notification' />
             <Route element={<UserResetPasswordPage />} path='reset-password' />
             <Route element={<Navigate replace to='/' />} path='*' />
           </Route>

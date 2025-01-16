@@ -14,7 +14,7 @@ const authData = {
   admin: { uuid: null, accessToken: null },
 };
 
-describe('ProductController', () => {
+describe('ProductsController', () => {
   let productUuid = null;
 
   describe('POST /api/auth/login', () => {
