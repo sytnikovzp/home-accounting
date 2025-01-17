@@ -1,4 +1,4 @@
-const CATEGORY_TITLES = {
+const CATEGORIES_TITLES = {
   view: 'Деталі категорії | Моя бухгалтерія',
   add: 'Додавання категорії | Моя бухгалтерія',
   edit: 'Редагування категорії | Моя бухгалтерія',
@@ -6,4 +6,12 @@ const CATEGORY_TITLES = {
   default: 'Категорії витрат | Моя бухгалтерія',
 };
 
-export { CATEGORY_TITLES };
+const CURRENCIES_TITLES = {
+  view: 'Деталі валюти | Моя бухгалтерія',
+  add: 'Додавання валюти | Моя бухгалтерія',
+  edit: 'Редагування валюти | Моя бухгалтерія',
+  delete: 'Видалення валюти | Моя бухгалтерія',
+  default: 'Валюти | Моя бухгалтерія',
+};
+
+export { CATEGORIES_TITLES, CURRENCIES_TITLES };

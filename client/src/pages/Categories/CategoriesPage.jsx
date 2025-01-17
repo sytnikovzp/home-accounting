@@ -34,9 +34,8 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
-const { CATEGORY_TITLES } = pageTitles;
-
-const categoryPages = [
+const { CATEGORIES_TITLES } = pageTitles;
+const CATEGORIES_PAGES = [
   { path: 'add', Component: CategoryAddPage },
   { path: 'edit/:uuid', Component: CategoryEditPage },
   { path: 'delete/:uuid', Component: CategoryRemovePage },
@@ -44,6 +43,9 @@ const categoryPages = [
 ];
 
 function CategoriesPage() {
+  const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
+  const [selectedStatus, setSelectedStatus] = useState('approved');
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,12 +55,26 @@ function CategoriesPage() {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
-  const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-  const [selectedStatus, setSelectedStatus] = useState('approved');
-
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
+
+  const fetchParams = useMemo(
+    () => ({
+      page: currentPage,
+      limit: pageSize,
+      status: selectedStatus,
+      sort: sortModel.field,
+      order: sortModel.order,
+    }),
+    [currentPage, pageSize, selectedStatus, sortModel]
+  );
+
+  useEffect(() => {
+    dispatch(fetchCategories(fetchParams));
+  }, [dispatch, fetchParams]);
+
+  usePageTitle(location, CATEGORIES_TITLES);
 
   const handleModalClose = useCallback(() => {
     dispatch(clearCurrent());
@@ -80,23 +96,6 @@ function CategoriesPage() {
     (category) => handleModalOpen('edit', category.uuid),
     [handleModalOpen]
   );
-
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      status: selectedStatus,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, selectedStatus, sortModel]
-  );
-
-  useEffect(() => {
-    dispatch(fetchCategories(fetchParams));
-  }, [dispatch, fetchParams]);
-
-  usePageTitle(location, CATEGORY_TITLES);
 
   const showPreloader = useDelayedPreloader(isLoading);
 
@@ -152,7 +151,7 @@ function CategoriesPage() {
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
       />
       <EntityRoutes
-        entityPages={categoryPages}
+        entityPages={CATEGORIES_PAGES}
         fetchEntities={fetchCategories}
         handleModalClose={handleModalClose}
       />
