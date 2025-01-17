@@ -1,7 +1,7 @@
 const { Product, Category } = require('../db/dbPostgres/models');
 
 const {
-  dataMapping: { statusModerationMapping },
+  dataMapping: { STATUS_MODERATION_MAPPING },
 } = require('../constants');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {
@@ -16,7 +16,7 @@ const formatProductData = (product) => ({
   uuid: product.uuid,
   title: product.title,
   contentType: 'Товар',
-  status: mapValue(product.status, statusModerationMapping),
+  status: mapValue(product.status, STATUS_MODERATION_MAPPING),
   moderation: {
     moderatorUuid: product.moderatorUuid || '',
     moderatorFullName: product.moderatorFullName || '',

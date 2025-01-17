@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { STATISTICS_SLICE_NAME } from '../../constants';
+import { sliceNames } from '../../constants';
 import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
 
 import { fetchStatisticsByCriteria } from '../thunks/statisticsThunks';
+
+const { STATISTICS_SLICE_NAME } = sliceNames;
 
 const initialState = {
   data: [],

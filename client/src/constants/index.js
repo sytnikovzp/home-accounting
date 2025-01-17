@@ -1,25 +1,5 @@
-const SERVER = {
-  HOST: import.meta.env.ACCOUNTING_SERVER_HOST,
-  PORT: parseInt(import.meta.env.ACCOUNTING_SERVER_PORT),
-};
+import * as configs from './configs';
+import * as pageTitles from './pageTitles';
+import * as sliceNames from './sliceNames';
 
-const BASE_URL = `http://${SERVER.HOST}:${SERVER.PORT}/api/`;
-
-const CURRENCY_CODES = ['USD', 'EUR', 'GBP'];
-
-const DELAY_SHOW_PRELOADER = 350;
-
-const CATEGORIES_SLICE_NAME = 'categories';
-const STATISTICS_SLICE_NAME = 'statistics';
-const CURRENCIES_SLICE_NAME = 'currencies';
-const NBU_EXCHANGES_SLICE_NAME = 'nbuExchanges';
-
-export {
-  BASE_URL,
-  CATEGORIES_SLICE_NAME,
-  CURRENCIES_SLICE_NAME,
-  CURRENCY_CODES,
-  DELAY_SHOW_PRELOADER,
-  NBU_EXCHANGES_SLICE_NAME,
-  STATISTICS_SLICE_NAME,
-};
+export { configs, pageTitles, sliceNames };

@@ -1,6 +1,6 @@
 const { Category, Product, Establishment } = require('../db/dbPostgres/models');
 
-const { statusModerationMapping } = require('../constants/dataMapping');
+const { STATUS_MODERATION_MAPPING } = require('../constants/dataMapping');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {
   isValidUUID,
@@ -39,7 +39,7 @@ const formatAllEntitiesData = {
 const formatEntityData = (entity) => ({
   uuid: entity.uuid,
   title: entity.title,
-  status: mapValue(entity.status, statusModerationMapping),
+  status: mapValue(entity.status, STATUS_MODERATION_MAPPING),
   moderation: {
     moderatorUuid: entity.moderatorUuid || '',
     moderatorFullName: entity.moderatorFullName || '',

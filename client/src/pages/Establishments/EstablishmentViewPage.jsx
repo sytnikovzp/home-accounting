@@ -10,7 +10,7 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import { BASE_URL } from '../../constants';
+import { configs } from '../../constants';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
@@ -23,6 +23,8 @@ import {
   stylesViewPageBox,
   stylesViewPageBoxWithAvatar,
 } from '../../styles';
+
+const { BASE_URL } = configs;
 
 function EstablishmentViewPage({ handleModalClose }) {
   const { uuid } = useParams();

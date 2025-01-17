@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { CURRENCIES_SLICE_NAME } from '../../constants';
+import { sliceNames } from '../../constants';
 import {
   createCurrency,
   deleteCurrency,
@@ -8,6 +8,8 @@ import {
   getCurrencyByUuid,
   updateCurrency,
 } from '../../services/currenciesService';
+
+const { CURRENCIES_SLICE_NAME } = sliceNames;
 
 export const fetchCurrencies = createAsyncThunk(
   `${CURRENCIES_SLICE_NAME}/fetchAll`,

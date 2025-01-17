@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { CURRENCIES_SLICE_NAME } from '../../constants';
+import { sliceNames } from '../../constants';
 import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
 
 import {
@@ -10,6 +10,8 @@ import {
   fetchCurrencyByUuid,
   removeCurrency,
 } from '../thunks/currenciesThunks';
+
+const { CURRENCIES_SLICE_NAME } = sliceNames;
 
 const initialState = {
   data: [],

@@ -1,7 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { NBU_EXCHANGES_SLICE_NAME } from '../../constants';
+import { sliceNames } from '../../constants';
 import { getNBURates } from '../../services/nbuExchangesService';
+
+const { NBU_EXCHANGES_SLICE_NAME } = sliceNames;
 
 export const fetchNBURates = createAsyncThunk(
   `${NBU_EXCHANGES_SLICE_NAME}/fetch`,

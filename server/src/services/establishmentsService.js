@@ -1,7 +1,7 @@
 const { Establishment } = require('../db/dbPostgres/models');
 
 const {
-  dataMapping: { statusModerationMapping },
+  dataMapping: { STATUS_MODERATION_MAPPING },
 } = require('../constants');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {
@@ -18,7 +18,7 @@ const formatEstablishmentData = (establishment) => ({
   description: establishment.description || '',
   url: establishment.url || '',
   logo: establishment.logo || '',
-  status: mapValue(establishment.status, statusModerationMapping),
+  status: mapValue(establishment.status, STATUS_MODERATION_MAPPING),
   moderation: {
     moderatorUuid: establishment.moderatorUuid || '',
     moderatorFullName: establishment.moderatorFullName || '',

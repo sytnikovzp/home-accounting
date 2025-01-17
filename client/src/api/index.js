@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-import { BASE_URL } from '../constants';
+import { configs } from '../constants';
 import { getAccessToken, removeAccessToken } from '../utils/sharedFunctions';
 import restController from './rest/restController';
+
+const { BASE_URL } = configs;
 
 const api = axios.create({
   baseURL: BASE_URL,

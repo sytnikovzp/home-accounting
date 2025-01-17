@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import { Delete, Edit, Task } from '@mui/icons-material';
 
-import { BASE_URL } from '../../constants';
+import { configs } from '../../constants';
 
 import {
   stylesListTableActionsBodyTableCell,
@@ -40,6 +40,8 @@ import {
   stylesListTableTableTypography,
   stylesListTableTextColor,
 } from '../../styles';
+
+const { BASE_URL } = configs;
 
 function ListTable({
   columns,

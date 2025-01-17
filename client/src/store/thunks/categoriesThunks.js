@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { CATEGORIES_SLICE_NAME } from '../../constants';
+import { sliceNames } from '../../constants';
 import {
   createCategory,
   deleteCategory,
@@ -8,6 +8,8 @@ import {
   getCategoryByUuid,
   updateCategory,
 } from '../../services/categoriesService';
+
+const { CATEGORIES_SLICE_NAME } = sliceNames;
 
 export const fetchCategories = createAsyncThunk(
   `${CATEGORIES_SLICE_NAME}/fetchAll`,

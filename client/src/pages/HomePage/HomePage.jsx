@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { DELAY_SHOW_PRELOADER } from '../../constants';
+import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import {
   selectStatisticsData,
@@ -39,7 +39,6 @@ function HomePage({ currentUser }) {
 
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
-  const [showPreloader, setShowPreloader] = useState(false);
 
   const pageTitles = useMemo(
     () => ({
@@ -57,15 +56,7 @@ function HomePage({ currentUser }) {
     dispatch(fetchStatisticsByCriteria({ ago, criteria, creatorUuid }));
   }, [dispatch, ago, criteria, currentUser]);
 
-  useEffect(() => {
-    let timeout = null;
-    if (isLoading) {
-      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
-    } else {
-      setShowPreloader(false);
-    }
-    return () => clearTimeout(timeout);
-  }, [isLoading]);
+  const showPreloader = useDelayedPreloader(isLoading);
 
   if (showPreloader) {
     return <Preloader message='Завантаження даних статистики...' />;

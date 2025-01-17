@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, IconButton, LinearProgress } from '@mui/material';
 import { Clear } from '@mui/icons-material';
 
-import { BASE_URL } from '../../constants';
+import { configs } from '../../constants';
 
 import {
   stylesFileUploadAvatar,
@@ -10,6 +10,8 @@ import {
   stylesFileUploadLinearProgress,
   stylesFileUploadMainBox,
 } from '../../styles';
+
+const { BASE_URL } = configs;
 
 function FileUpload({ file, onUpload, onRemove, label, entity, uploading }) {
   const handleFileChange = async (event) => {

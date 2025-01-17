@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { DELAY_SHOW_PRELOADER } from '../../constants';
+import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import {
   selectError,
@@ -32,21 +32,11 @@ function CurrencyExchange() {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
-  const [showPreloader, setShowPreloader] = useState(false);
-
   useEffect(() => {
     dispatch(fetchNBURates());
   }, [dispatch]);
 
-  useEffect(() => {
-    let timeout = null;
-    if (isLoading) {
-      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
-    } else {
-      setShowPreloader(false);
-    }
-    return () => clearTimeout(timeout);
-  }, [isLoading]);
+  const showPreloader = useDelayedPreloader(isLoading);
 
   if (showPreloader) {
     return <Preloader message='Завантаження валют...' />;

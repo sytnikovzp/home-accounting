@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-import { CURRENCY_CODES } from '../constants/index';
+import { configs } from '../constants';
+
+const { CURRENCY_CODES } = configs;
 
 const getNBURates = async () => {
   const { data } = await axios.get(

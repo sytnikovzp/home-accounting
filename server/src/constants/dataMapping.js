@@ -1,15 +1,15 @@
-const statusModerationMapping = {
+const STATUS_MODERATION_MAPPING = {
   approved: 'Затверджено',
   pending: 'Очікує модерації',
   rejected: 'Відхилено',
 };
 
-const userVerificationMapping = {
+const USER_VERIFICATION_MAPPING = {
   verified: 'Веріфікований',
   pending: 'Очікує веріфікації',
 };
 
 module.exports = {
-  statusModerationMapping,
-  userVerificationMapping,
+  STATUS_MODERATION_MAPPING,
+  USER_VERIFICATION_MAPPING,
 };

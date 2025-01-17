@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { DELAY_SHOW_PRELOADER } from '../constants';
+import { configs } from '../constants';
+
+const { DELAY_SHOW_PRELOADER } = configs;
 
 function useDelayedPreloader(isLoading) {
   const [showPreloader, setShowPreloader] = useState(false);

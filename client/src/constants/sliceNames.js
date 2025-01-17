@@ -1,0 +1,11 @@
+const CATEGORIES_SLICE_NAME = 'categories';
+const CURRENCIES_SLICE_NAME = 'currencies';
+const NBU_EXCHANGES_SLICE_NAME = 'nbuExchanges';
+const STATISTICS_SLICE_NAME = 'statistics';
+
+export {
+  CATEGORIES_SLICE_NAME,
+  CURRENCIES_SLICE_NAME,
+  NBU_EXCHANGES_SLICE_NAME,
+  STATISTICS_SLICE_NAME,
+};

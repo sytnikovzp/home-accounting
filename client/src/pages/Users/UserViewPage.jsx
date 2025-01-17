@@ -9,7 +9,7 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import { BASE_URL } from '../../constants';
+import { configs } from '../../constants';
 import restController from '../../api/rest/restController';
 import useFetchEntity from '../../hooks/useFetchEntity';
 
@@ -23,6 +23,8 @@ import {
   stylesViewPageAvatarSize,
   stylesViewPageBox,
 } from '../../styles';
+
+const { BASE_URL } = configs;
 
 function UserViewPage({ handleModalClose }) {
   const { uuid } = useParams();

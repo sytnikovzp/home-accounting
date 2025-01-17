@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { NBU_EXCHANGES_SLICE_NAME } from '../../constants';
+import { sliceNames } from '../../constants';
 import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
 
 import { fetchNBURates } from '../thunks/nbuExchangesThunks';
+
+const { NBU_EXCHANGES_SLICE_NAME } = sliceNames;
 
 const initialState = {
   data: [],

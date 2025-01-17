@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { categoryTitles } from '../../constants/pageTitles';
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
@@ -33,6 +33,8 @@ import {
   stylesEntityPageButton,
   stylesEntityPageTypography,
 } from '../../styles';
+
+const { CATEGORY_TITLES } = pageTitles;
 
 const categoryPages = [
   { path: 'add', Component: CategoryAddPage },
@@ -94,7 +96,7 @@ function CategoriesPage() {
     dispatch(fetchCategories(fetchParams));
   }, [dispatch, fetchParams]);
 
-  usePageTitle(location, categoryTitles);
+  usePageTitle(location, CATEGORY_TITLES);
 
   const showPreloader = useDelayedPreloader(isLoading);
 

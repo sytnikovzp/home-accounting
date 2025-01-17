@@ -7,7 +7,7 @@ import {
   Portrait,
 } from '@mui/icons-material';
 
-import { BASE_URL } from '../../constants';
+import { configs } from '../../constants';
 import { stringAvatar } from '../../utils/sharedFunctions';
 
 import UserMenu from './UserMenu/UserMenu';
@@ -43,6 +43,8 @@ const menuItemsData = [
     isLogout: true,
   },
 ];
+
+const { BASE_URL } = configs;
 
 function AuthenticatedMenu({
   closeMenu,

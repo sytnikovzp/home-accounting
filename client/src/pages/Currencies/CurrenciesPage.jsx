@@ -3,8 +3,8 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { DELAY_SHOW_PRELOADER } from '../../constants';
 import { uuidPattern } from '../../utils/sharedFunctions';
+import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
@@ -42,7 +42,6 @@ function CurrenciesPage() {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
-  const [showPreloader, setShowPreloader] = useState(false);
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
 
   const itemsPerPage = useItemsPerPage();
@@ -94,15 +93,7 @@ function CurrenciesPage() {
         : pageTitles[pathKey] || pageTitles.default;
   }, [location, pageTitles]);
 
-  useEffect(() => {
-    let timeout = null;
-    if (isLoading) {
-      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
-    } else {
-      setShowPreloader(false);
-    }
-    return () => clearTimeout(timeout);
-  }, [isLoading]);
+  const showPreloader = useDelayedPreloader(isLoading);
 
   const renderRoutes = () => (
     <Routes>

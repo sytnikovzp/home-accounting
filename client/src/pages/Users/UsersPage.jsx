@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
-import { DELAY_SHOW_PRELOADER } from '../../constants';
 import { uuidPattern } from '../../utils/sharedFunctions';
 import restController from '../../api/rest/restController';
+import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
@@ -21,7 +21,6 @@ import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
 function UsersPage({ currentUser, setIsAuthenticated }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [showPreloader, setShowPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -117,15 +116,7 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
     fetchRoles();
   }, [fetchUsers, fetchRoles]);
 
-  useEffect(() => {
-    let timeout = null;
-    if (isLoading) {
-      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
-    } else {
-      setShowPreloader(false);
-    }
-    return () => clearTimeout(timeout);
-  }, [isLoading]);
+  const showPreloader = useDelayedPreloader(isLoading);
 
   const renderRoutes = () => (
     <Routes>

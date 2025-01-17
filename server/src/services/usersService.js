@@ -10,7 +10,7 @@ const {
     SERVER: { HOST, PORT },
     TOKEN_LIFETIME: { VERIFICATION },
   },
-  dataMapping: { userVerificationMapping },
+  dataMapping: { USER_VERIFICATION_MAPPING },
 } = require('../constants');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 const {
@@ -94,7 +94,7 @@ class UsersService {
       email: foundUser.email,
       emailVerificationStatus: mapValue(
         foundUser.emailVerificationStatus,
-        userVerificationMapping
+        USER_VERIFICATION_MAPPING
       ),
       permissions: permissions.map((permission) => ({
         uuid: permission.uuid,
@@ -139,7 +139,7 @@ class UsersService {
       email: foundUser.email,
       emailVerificationStatus: mapValue(
         foundUser.emailVerificationStatus,
-        userVerificationMapping
+        USER_VERIFICATION_MAPPING
       ),
       creation: {
         createdAt: formatDateTime(foundUser.createdAt),
@@ -232,7 +232,7 @@ class UsersService {
         fullName: updatedUser.fullName,
         emailVerificationStatus: mapValue(
           updatedUser.emailVerificationStatus,
-          userVerificationMapping
+          USER_VERIFICATION_MAPPING
         ),
         role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,
       },
@@ -278,7 +278,7 @@ class UsersService {
         fullName: updatedUser.fullName,
         emailVerificationStatus: mapValue(
           updatedUser.emailVerificationStatus,
-          userVerificationMapping
+          USER_VERIFICATION_MAPPING
         ),
       },
     };

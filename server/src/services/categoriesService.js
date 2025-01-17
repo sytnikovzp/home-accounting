@@ -1,7 +1,7 @@
 const { Category } = require('../db/dbPostgres/models');
 
 const {
-  dataMapping: { statusModerationMapping },
+  dataMapping: { STATUS_MODERATION_MAPPING },
 } = require('../constants');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {
@@ -15,7 +15,7 @@ const formatCategoryData = (category) => ({
   uuid: category.uuid,
   title: category.title,
   contentType: 'Категорія',
-  status: mapValue(category.status, statusModerationMapping),
+  status: mapValue(category.status, STATUS_MODERATION_MAPPING),
   moderation: {
     moderatorUuid: category.moderatorUuid || '',
     moderatorFullName: category.moderatorFullName || '',
