@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
-import { Avatar, Box, Button, Link } from '@mui/material';
+import { useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Avatar, Box, Button } from '@mui/material';
 import {
   CalendarToday,
   Category,
@@ -19,23 +19,17 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
-import {
-  stylesViewPageAvatarSize,
-  stylesViewPageBox,
-  stylesViewPageBoxWithAvatar,
-} from '../../styles';
+import { stylesViewPageAvatarSize, stylesViewPageBox } from '../../styles';
 
-function ContentModerationPage({
-  handleModalClose,
-  fetchModerations,
-  crudError,
-  setCrudError,
-}) {
+function ContentModerationPage({ handleModalClose, fetchModerations }) {
   const { path, uuid } = useParams();
-  const capitalizedPath = path.charAt(0).toUpperCase() + path.slice(1);
   const navigate = useNavigate();
+  const capitalizedPath = useMemo(
+    () => path.charAt(0).toUpperCase() + path.slice(1),
+    [path]
+  );
 
   const {
     entity: moderationToCRUD,
@@ -45,10 +39,10 @@ function ContentModerationPage({
   } = useFetchEntity(capitalizedPath);
 
   useEffect(() => {
-    if (uuid) {
+    if (uuid && !moderationToCRUD) {
       fetchEntityByUuid(uuid);
     }
-  }, [uuid, path, fetchEntityByUuid]);
+  }, [uuid, fetchEntityByUuid, moderationToCRUD]);
 
   const {
     contentType,
@@ -62,9 +56,13 @@ function ContentModerationPage({
   } = moderationToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
-  const logoSrc = logo
-    ? `${BASE_URL.replace('/api/', '')}/images/establishments/${logo}`
-    : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
+  const logoSrc = useMemo(() => {
+    const baseUrl = BASE_URL.replace('/api/', '');
+    if (logo) {
+      return `${baseUrl}/images/establishments/${logo}`;
+    }
+    return `${baseUrl}/images/noLogo.png`;
+  }, [logo]);
 
   const pluralizePath = (path) => {
     switch (path) {
@@ -93,18 +91,15 @@ function ContentModerationPage({
         return path;
     }
   };
-
   const moderationMethod = selectMethod(path);
 
-  const handleApprove = async () => {
-    setCrudError(null);
-    const status = 'approved';
+  const handleModerationAction = async (status) => {
     try {
       await moderationMethod(uuid, status);
       handleModalClose();
       fetchModerations();
     } catch (error) {
-      setCrudError(error.response.data);
+      console.error(error.response.data);
     }
   };
 
@@ -113,17 +108,87 @@ function ContentModerationPage({
     navigate(`/${newPath}/edit/${uuid}`);
   };
 
-  const handleReject = async () => {
-    setCrudError(null);
-    const status = 'rejected';
-    try {
-      await moderationMethod(uuid, status);
-      handleModalClose();
-      fetchModerations();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const data = useMemo(
+    () => [
+      {
+        icon: Info,
+        label: 'Назва',
+        value: title,
+        extra: logo ? (
+          <Avatar
+            alt='Логотип'
+            src={logoSrc}
+            sx={stylesViewPageAvatarSize}
+            variant='rounded'
+          />
+        ) : null,
+      },
+      {
+        icon: ContentPasteSearch,
+        label: 'Тип контенту',
+        value: contentType,
+      },
+      ...(description
+        ? [
+            {
+              icon: Description,
+              label: 'Опис',
+              value: description,
+            },
+          ]
+        : []),
+      ...(url
+        ? [
+            {
+              icon: LinkIcon,
+              label: 'Посилання',
+              value: url || '*Немає даних*',
+              isLink: Boolean(url),
+              linkTo: url ? `${url}` : '',
+            },
+          ]
+        : []),
+      ...(category
+        ? [
+            {
+              icon: Category,
+              label: 'Категорія',
+              value: category?.title || '*Немає даних*',
+              isLink: Boolean(category),
+              linkTo: `/categories/${category?.uuid}`,
+            },
+          ]
+        : []),
+      {
+        icon: () => <StatusIcon status={status} />,
+        label: 'Статус',
+        value: status,
+      },
+      {
+        icon: Person,
+        label: 'Автор',
+        value: creatorFullName,
+        isLink: Boolean(creatorFullName),
+        linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+      },
+      { icon: CalendarToday, label: 'Створено', value: createdAt },
+      { icon: Update, label: 'Редаговано', value: updatedAt },
+    ],
+    [
+      category,
+      contentType,
+      createdAt,
+      creatorFullName,
+      creatorUuid,
+      description,
+      logo,
+      logoSrc,
+      status,
+      title,
+      updatedAt,
+      url,
+    ]
+  );
 
   return (
     <ModalWindow
@@ -136,7 +201,7 @@ function ContentModerationPage({
           color='success'
           size='large'
           variant='contained'
-          onClick={handleApprove}
+          onClick={() => handleModerationAction('approved')}
         >
           Затвердити
         </Button>,
@@ -156,7 +221,7 @@ function ContentModerationPage({
           color='error'
           size='large'
           variant='contained'
-          onClick={handleReject}
+          onClick={() => handleModerationAction('rejected')}
         >
           Відхилити
         </Button>,
@@ -166,89 +231,11 @@ function ContentModerationPage({
           <Preloader />
         ) : (
           <Box sx={stylesViewPageBox}>
-            <Box sx={stylesViewPageBoxWithAvatar}>
-              <ViewDetailRow icon={Info} label='Назва' value={title} />
-              {logo && (
-                <Avatar
-                  alt='Логотип'
-                  src={logoSrc}
-                  sx={stylesViewPageAvatarSize}
-                  variant='rounded'
-                />
-              )}
-            </Box>
-            <ViewDetailRow
-              icon={ContentPasteSearch}
-              label='Тип контенту'
-              value={contentType}
-            />
-            {description && (
-              <ViewDetailRow
-                icon={Description}
-                label='Опис'
-                value={description}
-              />
-            )}
-            {url && (
-              <ViewDetailRow
-                icon={LinkIcon}
-                label='Посилання'
-                value={
-                  <Link href={url} rel='noopener noreferrer' target='_blank'>
-                    {url}
-                  </Link>
-                }
-              />
-            )}
-            {category && (
-              <ViewDetailRow
-                icon={Category}
-                label='Категорія'
-                value={
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/categories/${category.uuid}`}
-                    underline='hover'
-                  >
-                    {category.title}
-                  </Link>
-                }
-              />
-            )}
-            <ViewDetailRow
-              icon={() => <StatusIcon status={status} />}
-              label='Статус'
-              value={status}
-            />
-            <ViewDetailRow
-              icon={Person}
-              label='Автор'
-              value={
-                creatorFullName ? (
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
-                ) : (
-                  '*Немає даних*'
-                )
-              }
-            />
-            <ViewDetailRow
-              icon={CalendarToday}
-              label='Створено'
-              value={createdAt}
-            />
-            <ViewDetailRow icon={Update} label='Редаговано' value={updatedAt} />
+            <ViewDetails data={data} />
           </Box>
         )
       }
-      error={errorMessage || crudError}
+      error={errorMessage}
       title='Модерація контенту...'
       onClose={handleModalClose}
     />

@@ -14,6 +14,7 @@ import {
   selectIsLoading,
   selectTotalCount,
 } from '../../store/selectors/currenciesSelectors';
+import { clearCurrent } from '../../store/slices/currenciesSlice';
 import { fetchCurrencies } from '../../store/thunks/currenciesThunks';
 
 import Error from '../../components/Error/Error';
@@ -33,22 +34,23 @@ import {
 
 function CurrenciesPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const currencies = useSelector(selectCurrencies);
   const totalCount = useSelector(selectTotalCount);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
   const [showPreloader, setShowPreloader] = useState(false);
-
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const handleModalClose = () => {
+    dispatch(clearCurrent());
     navigate('/currencies');
   };
 

@@ -84,6 +84,10 @@ class UsersService {
         title: role.title,
       },
       photo: foundUser.photo || '',
+      creation: {
+        createdAt: formatDateTime(foundUser.createdAt),
+        updatedAt: formatDateTime(foundUser.updatedAt),
+      },
     };
     const fullUserData = {
       ...limitUserData,
@@ -92,10 +96,6 @@ class UsersService {
         foundUser.emailVerificationStatus,
         userVerificationMapping
       ),
-      creation: {
-        createdAt: formatDateTime(foundUser.createdAt),
-        updatedAt: formatDateTime(foundUser.updatedAt),
-      },
       permissions: permissions.map((permission) => ({
         uuid: permission.uuid,
         title: permission.title,

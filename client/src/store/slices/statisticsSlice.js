@@ -14,13 +14,7 @@ const initialState = {
 const statisticsSlice = createSlice({
   name: STATISTICS_SLICE_NAME,
   initialState,
-  reducers: {
-    resetStatisticsState: (state) => {
-      state.data = [];
-      state.isLoading = false;
-      state.error = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Fulfilled
@@ -34,7 +28,5 @@ const statisticsSlice = createSlice({
       .addCase(fetchStatisticsByCriteria.rejected, setErrorState);
   },
 });
-
-export const { resetStatisticsState } = statisticsSlice.actions;
 
 export default statisticsSlice.reducer;

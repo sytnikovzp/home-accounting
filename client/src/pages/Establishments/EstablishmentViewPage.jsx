@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Avatar, Box, Link } from '@mui/material';
+import { useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { Avatar, Box } from '@mui/material';
 import {
   CalendarToday,
   Description,
@@ -16,7 +16,7 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import {
   stylesViewPageAvatarSize,
@@ -34,20 +34,91 @@ function EstablishmentViewPage({ handleModalClose }) {
   } = useFetchEntity('Establishment');
 
   useEffect(() => {
-    if (uuid) {
+    if (uuid && !establishmentToCRUD) {
       fetchEntityByUuid(uuid);
     }
-  }, [uuid, fetchEntityByUuid]);
+  }, [uuid, fetchEntityByUuid, establishmentToCRUD]);
 
   const { title, description, url, logo, status, moderation, creation } =
     establishmentToCRUD || {};
-
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
-  const logoSrc = logo
-    ? `${BASE_URL.replace('/api/', '')}/images/establishments/${logo}`
-    : `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
+  const logoSrc = useMemo(() => {
+    const baseUrl = BASE_URL.replace('/api/', '');
+    if (logo) {
+      return `${baseUrl}/images/establishments/${logo}`;
+    }
+    return `${baseUrl}/images/noLogo.png`;
+  }, [logo]);
+
+  const data = useMemo(
+    () => [
+      {
+        icon: Info,
+        label: 'Назва',
+        value: title,
+        extra: (
+          <Avatar
+            alt='Логотип закладу'
+            src={logoSrc}
+            sx={stylesViewPageAvatarSize}
+            variant='rounded'
+          />
+        ),
+      },
+      {
+        icon: Description,
+        label: 'Опис',
+        value: description || '*Немає даних*',
+      },
+      {
+        icon: LinkIcon,
+        label: 'Посилання',
+        value: url || '*Немає даних*',
+        isLink: Boolean(url),
+        linkTo: url ? `${url}` : '',
+      },
+      {
+        icon: () => <StatusIcon status={status} />,
+        label: 'Статус',
+        value: status,
+      },
+      {
+        icon: Person,
+        label: 'Автор',
+        value: creatorFullName,
+        isLink: Boolean(creatorFullName),
+        linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+      },
+      ...(moderatorFullName
+        ? [
+            {
+              icon: Person,
+              label: 'Модератор',
+              value: moderatorFullName,
+              isLink: Boolean(moderatorFullName),
+              linkTo: moderatorFullName ? `/users/${moderatorUuid}` : '',
+            },
+          ]
+        : []),
+      { icon: CalendarToday, label: 'Створено', value: createdAt },
+      { icon: Update, label: 'Редаговано', value: updatedAt },
+    ],
+    [
+      title,
+      logoSrc,
+      description,
+      url,
+      status,
+      creatorFullName,
+      creatorUuid,
+      moderatorFullName,
+      moderatorUuid,
+      createdAt,
+      updatedAt,
+    ]
+  );
 
   return (
     <ModalWindow
@@ -58,78 +129,10 @@ function EstablishmentViewPage({ handleModalClose }) {
           <Preloader />
         ) : (
           <Box sx={stylesViewPageBox}>
-            <Box sx={stylesViewPageBoxWithAvatar}>
-              <ViewDetailRow icon={Info} label='Назва' value={title} />
-              <Avatar
-                alt='Логотип закладу'
-                src={logoSrc}
-                sx={stylesViewPageAvatarSize}
-                variant='rounded'
-              />
-            </Box>
-            {description && (
-              <ViewDetailRow
-                icon={Description}
-                label='Опис'
-                value={description}
-              />
-            )}
-            {url && (
-              <ViewDetailRow
-                icon={LinkIcon}
-                label='Посилання'
-                value={
-                  <Link href={url} rel='noopener noreferrer' target='_blank'>
-                    {url}
-                  </Link>
-                }
-              />
-            )}
-            <ViewDetailRow
-              icon={() => <StatusIcon status={status} />}
-              label='Статус'
-              value={status}
+            <ViewDetails
+              data={data}
+              extraStyles={stylesViewPageBoxWithAvatar}
             />
-            <ViewDetailRow
-              icon={Person}
-              label='Автор'
-              value={
-                creatorFullName ? (
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
-                ) : (
-                  '*Немає даних*'
-                )
-              }
-            />
-            {moderatorFullName && (
-              <ViewDetailRow
-                icon={Person}
-                label='Модератор'
-                value={
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/users/${moderatorUuid}`}
-                    underline='hover'
-                  >
-                    {moderatorFullName}
-                  </Link>
-                }
-              />
-            )}
-            <ViewDetailRow
-              icon={CalendarToday}
-              label='Створено'
-              value={createdAt}
-            />
-            <ViewDetailRow icon={Update} label='Редаговано' value={updatedAt} />
           </Box>
         )
       }

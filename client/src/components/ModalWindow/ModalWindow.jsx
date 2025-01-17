@@ -10,9 +10,9 @@ import {
 import { Close } from '@mui/icons-material';
 
 import {
-  stylesCustomModalContentBox,
-  stylesCustomModalFadeBox,
-  stylesCustomModalIconButton,
+  stylesModalWindowContentBox,
+  stylesModalWindowFadeBox,
+  stylesModalWindowIconButton,
 } from '../../styles';
 
 function ModalWindow({
@@ -25,18 +25,6 @@ function ModalWindow({
   error,
   disableBackdropClick = false,
 }) {
-  const renderContent = () => {
-    if (error) {
-      return (
-        <Alert severity={error.severity || 'error'} sx={{ mb: 1 }}>
-          <AlertTitle>{error.title}:</AlertTitle>
-          {error.message}
-        </Alert>
-      );
-    }
-    return content;
-  };
-
   return (
     <Modal
       closeAfterTransition
@@ -46,11 +34,11 @@ function ModalWindow({
       onClose={disableBackdropClick ? null : onClose}
     >
       <Fade in={isOpen}>
-        <Box position='relative' sx={stylesCustomModalFadeBox}>
+        <Box position='relative' sx={stylesModalWindowFadeBox}>
           {showCloseButton && (
             <IconButton
               aria-label='Закрити'
-              sx={stylesCustomModalIconButton}
+              sx={stylesModalWindowIconButton}
               onClick={onClose}
             >
               <Close />
@@ -67,8 +55,14 @@ function ModalWindow({
               )}
             </Box>
           )}
-          <Box id='custom-modal-description' sx={stylesCustomModalContentBox}>
-            {renderContent()}
+          {error && (
+            <Alert severity={error?.severity || 'error'} sx={{ mb: 1 }}>
+              <AlertTitle>{error?.title || 'error'}:</AlertTitle>
+              {error?.message || 'error'}
+            </Alert>
+          )}
+          <Box id='custom-modal-description' sx={stylesModalWindowContentBox}>
+            {content}
           </Box>
           {actions && (
             <Box

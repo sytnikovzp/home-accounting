@@ -2,7 +2,14 @@ import api from '../api';
 
 import { stylesHeaderUserAvatar } from '../styles';
 
-const getAccessToken = () => localStorage.getItem('accessToken');
+const getAccessToken = () => {
+  const token = localStorage.getItem('accessToken');
+  if (token === 'undefined') {
+    localStorage.removeItem('accessToken');
+    return null;
+  }
+  return token;
+};
 
 const saveAccessToken = (token) => localStorage.setItem('accessToken', token);
 

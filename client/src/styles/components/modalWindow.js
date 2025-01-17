@@ -1,4 +1,4 @@
-export const stylesCustomModalFadeBox = {
+export const stylesModalWindowFadeBox = {
   display: 'flex',
   flexDirection: 'column',
   position: 'absolute',
@@ -14,14 +14,14 @@ export const stylesCustomModalFadeBox = {
   maxWidth: 600,
 };
 
-export const stylesCustomModalIconButton = {
+export const stylesModalWindowIconButton = {
   position: 'absolute',
   top: 12,
   right: 12,
   color: (theme) => theme.palette.grey[700],
 };
 
-export const stylesCustomModalContentBox = {
+export const stylesModalWindowContentBox = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Box, Link } from '@mui/material';
+import { useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import {
   AttachMoney,
   CalendarToday,
@@ -16,7 +16,7 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
-import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import { stylesViewPageBox } from '../../styles';
 
@@ -30,10 +30,10 @@ function ExpenseViewPage({ handleModalClose }) {
   } = useFetchEntity('Expense');
 
   useEffect(() => {
-    if (uuid) {
+    if (uuid && !expenseToCRUD) {
       fetchEntityByUuid(uuid);
     }
-  }, [uuid, fetchEntityByUuid]);
+  }, [uuid, fetchEntityByUuid, expenseToCRUD]);
 
   const {
     product,
@@ -48,10 +48,64 @@ function ExpenseViewPage({ handleModalClose }) {
   } = expenseToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
-  const productTitle = product?.title || '*Немає даних*';
-  const establishmentTitle = establishment?.title || '*Немає даних*';
-  const measureTitle = measure?.title || '*Немає даних*';
-  const currencyCode = currency?.code || '*Немає даних*';
+  const data = useMemo(
+    () => [
+      {
+        icon: DryCleaning,
+        label: 'Товар',
+        value: product?.title || '*Немає даних*',
+        isLink: Boolean(product),
+        linkTo: establishment ? `/products/${product?.uuid}` : '',
+      },
+      {
+        icon: ProductionQuantityLimits,
+        label: 'Кількість',
+        value: `${quantity || '*Немає даних*'} ${measure?.title || '*Немає даних*'}`,
+      },
+      {
+        icon: AttachMoney,
+        label: 'Ціна за одиницю',
+        value: `${unitPrice || '*Немає даних*'} ${currency?.code || '*Немає даних*'}`,
+      },
+      {
+        icon: AttachMoney,
+        iconColor: 'secondary',
+        label: 'Сума',
+        value: `${totalPrice || '*Немає даних*'} ${currency?.code || '*Немає даних*'}`,
+      },
+      {
+        icon: Store,
+        label: 'Заклад',
+        value: establishment?.title || '*Немає даних*',
+        isLink: Boolean(establishment),
+        linkTo: establishment ? `/establishments/${establishment?.uuid}` : '',
+      },
+      {
+        icon: Person,
+        label: 'Автор',
+        value: creatorFullName,
+        isLink: Boolean(creatorFullName),
+        linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+      },
+      { icon: Shop, label: 'Дата витрати', value: date || '*Немає даних*' },
+      { icon: CalendarToday, label: 'Створено', value: createdAt },
+      { icon: Update, label: 'Редаговано', value: updatedAt },
+    ],
+    [
+      product,
+      quantity,
+      unitPrice,
+      totalPrice,
+      establishment,
+      measure,
+      currency,
+      date,
+      creatorFullName,
+      creatorUuid,
+      createdAt,
+      updatedAt,
+    ]
+  );
 
   return (
     <ModalWindow
@@ -62,83 +116,7 @@ function ExpenseViewPage({ handleModalClose }) {
           <Preloader />
         ) : (
           <Box sx={stylesViewPageBox}>
-            <ViewDetailRow
-              icon={DryCleaning}
-              label='Товар'
-              value={
-                productTitle ? (
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/products/${product?.uuid}`}
-                    underline='hover'
-                  >
-                    {productTitle}
-                  </Link>
-                ) : (
-                  '*Немає даних*'
-                )
-              }
-            />
-            <ViewDetailRow
-              icon={ProductionQuantityLimits}
-              label='Кількість'
-              value={`${quantity} ${measureTitle}`}
-            />
-            <ViewDetailRow
-              icon={AttachMoney}
-              label='Ціна за одиницю'
-              value={`${unitPrice} ${currencyCode}`}
-            />
-            <ViewDetailRow
-              icon={AttachMoney}
-              iconColor='secondary'
-              label='Сума'
-              value={`${totalPrice} ${currencyCode}`}
-            />
-            <ViewDetailRow
-              icon={Store}
-              label='Заклад'
-              value={
-                establishmentTitle ? (
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/establishments/${establishment?.uuid}`}
-                    underline='hover'
-                  >
-                    {establishmentTitle}
-                  </Link>
-                ) : (
-                  '*Немає даних*'
-                )
-              }
-            />
-            <ViewDetailRow
-              icon={Person}
-              label='Автор'
-              value={
-                creatorFullName ? (
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
-                ) : (
-                  '*Немає даних*'
-                )
-              }
-            />
-            <ViewDetailRow icon={Shop} label='Дата витрати' value={date} />
-            <ViewDetailRow
-              icon={CalendarToday}
-              label='Створено'
-              value={createdAt}
-            />
-            <ViewDetailRow icon={Update} label='Редаговано' value={updatedAt} />
+            <ViewDetails data={data} />
           </Box>
         )
       }

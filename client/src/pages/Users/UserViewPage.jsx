@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
-import { Avatar, Box, Button, Link, Tooltip } from '@mui/material';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Avatar, Box, Button, Tooltip } from '@mui/material';
 import {
   AlternateEmail,
   AssignmentInd,
@@ -16,14 +16,12 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import {
-  stylesUserViewPageEmailBox,
-  stylesUserViewPageEmailBoxButton,
+  stylesUserViewPageEmailButton,
   stylesViewPageAvatarSize,
   stylesViewPageBox,
-  stylesViewPageBoxWithAvatar,
 } from '../../styles';
 
 function UserViewPage({ handleModalClose }) {
@@ -37,37 +35,117 @@ function UserViewPage({ handleModalClose }) {
   } = useFetchEntity('User');
 
   useEffect(() => {
-    if (uuid) {
+    if (uuid && !userToCRUD) {
       fetchEntityByUuid(uuid);
     }
-  }, [uuid, fetchEntityByUuid]);
+  }, [uuid, fetchEntityByUuid, userToCRUD]);
 
   const { fullName, role, photo, email, emailVerificationStatus, creation } =
     userToCRUD || {};
-
   const { createdAt, updatedAt } = creation || {};
 
-  const handleResendVerification = async (email) => {
-    try {
-      const response = await restController.resendVerifyEmail(email);
-      navigate(
-        `/notification?severity=${encodeURIComponent(
-          response.severity
-        )}&title=${encodeURIComponent(
-          response.title
-        )}&message=${encodeURIComponent(response.message)}`
-      );
-    } catch (error) {
-      console.error(
-        'Помилка надсилання повторного електронного листа для підтвердження:',
-        error.message
-      );
-    }
-  };
+  const handleResendVerification = useCallback(
+    async (email) => {
+      try {
+        const response = await restController.resendVerifyEmail(email);
+        navigate(
+          `/notification?severity=${encodeURIComponent(
+            response.severity
+          )}&title=${encodeURIComponent(
+            response.title
+          )}&message=${encodeURIComponent(response.message)}`
+        );
+      } catch (error) {
+        console.error('Error sending verification email:', error.message);
+      }
+    },
+    [navigate]
+  );
 
-  const photoSrc = photo
-    ? `${BASE_URL.replace('/api/', '')}/images/users/${photo}`
-    : null;
+  const photoSrc = useMemo(() => {
+    const baseUrl = BASE_URL.replace('/api/', '');
+    if (photo) {
+      return `${baseUrl}/images/users/${photo}`;
+    }
+    return null;
+  }, [photo]);
+
+  const data = useMemo(
+    () => [
+      {
+        icon: Info,
+        label: 'Повне ім’я',
+        value: fullName,
+        extra: (
+          <Avatar
+            alt='Фото користувача'
+            src={photoSrc}
+            sx={stylesViewPageAvatarSize}
+            variant='rounded'
+          />
+        ),
+      },
+      {
+        icon: AssignmentInd,
+        label: 'Роль',
+        value: role?.title || '*Немає даних*',
+        isLink: Boolean(role),
+        linkTo: role ? `/roles/${role?.uuid}` : '',
+      },
+      ...(email
+        ? [
+            {
+              icon: AlternateEmail,
+              label: 'Email',
+              value: email,
+              isLink: true,
+              linkTo: `mailto:${email}`,
+            },
+          ]
+        : []),
+      ...(emailVerificationStatus
+        ? [
+            {
+              icon: () => <StatusIcon status={emailVerificationStatus} />,
+              label: 'Обліковий запис',
+              value: emailVerificationStatus,
+              extra: emailVerificationStatus === 'Очікує веріфікації' && (
+                <Tooltip title='Повторно відправити email'>
+                  <Button
+                    size='small'
+                    sx={stylesUserViewPageEmailButton}
+                    variant='text'
+                    onClick={() => handleResendVerification(email)}
+                  >
+                    ⟳
+                  </Button>
+                </Tooltip>
+              ),
+            },
+          ]
+        : []),
+      {
+        icon: CalendarToday,
+        label: 'Зареєстовано',
+        value: createdAt,
+      },
+      {
+        icon: Update,
+        label: 'Редаговано',
+        value: updatedAt,
+      },
+    ],
+    [
+      fullName,
+      photoSrc,
+      role,
+      email,
+      emailVerificationStatus,
+      createdAt,
+      updatedAt,
+      handleResendVerification,
+    ]
+  );
 
   return (
     <ModalWindow
@@ -78,80 +156,7 @@ function UserViewPage({ handleModalClose }) {
           <Preloader />
         ) : (
           <Box sx={stylesViewPageBox}>
-            <Box sx={stylesViewPageBoxWithAvatar}>
-              <ViewDetailRow icon={Info} label='Повне ім’я' value={fullName} />
-              <Avatar
-                alt='Фото користувача'
-                src={photoSrc}
-                sx={stylesViewPageAvatarSize}
-                variant='rounded'
-              />
-            </Box>
-            <ViewDetailRow
-              icon={AssignmentInd}
-              label='Роль'
-              value={
-                <Link
-                  color='primary'
-                  component={RouterLink}
-                  to={`/roles/${role?.uuid}`}
-                  underline='hover'
-                >
-                  {role?.title}
-                </Link>
-              }
-            />
-            {email && (
-              <ViewDetailRow
-                icon={AlternateEmail}
-                label='Email'
-                value={
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`mailto:${email}`}
-                    underline='hover'
-                  >
-                    {email}
-                  </Link>
-                }
-              />
-            )}
-            {emailVerificationStatus && (
-              <Box sx={stylesUserViewPageEmailBox}>
-                <ViewDetailRow
-                  icon={() => <StatusIcon status={emailVerificationStatus} />}
-                  label='Обліковий запис'
-                  value={emailVerificationStatus}
-                />
-                {emailVerificationStatus === 'Очікує веріфікації' && (
-                  <Tooltip title='Повторно відправити email'>
-                    <Button
-                      size='small'
-                      sx={stylesUserViewPageEmailBoxButton}
-                      variant='text'
-                      onClick={() => handleResendVerification(email)}
-                    >
-                      ⟳
-                    </Button>
-                  </Tooltip>
-                )}
-              </Box>
-            )}
-            {createdAt && (
-              <ViewDetailRow
-                icon={CalendarToday}
-                label='Створено'
-                value={createdAt}
-              />
-            )}
-            {updatedAt && (
-              <ViewDetailRow
-                icon={Update}
-                label='Редаговано'
-                value={updatedAt}
-              />
-            )}
+            <ViewDetails data={data} />
           </Box>
         )
       }

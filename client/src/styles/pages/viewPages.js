@@ -16,28 +16,13 @@ export const stylesViewPageAvatarSize = {
   height: 50,
 };
 
-export const stylesRoleViewPageBoxPermission = {
-  maxHeight: '250px',
-  overflowY: 'auto',
-  overflowX: 'hidden',
-  border: '1px solid #ddd',
-  borderRadius: '4px',
-};
-
-export const stylesRoleViewPageBoxPermissionEmpty = {
-  display: 'flex',
-  alignItems: 'center',
-  p: 2,
-  color: 'grey.600',
-};
-
 export const stylesUserViewPageEmailBox = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
 };
 
-export const stylesUserViewPageEmailBoxButton = {
+export const stylesUserViewPageEmailButton = {
   fontSize: '2rem',
   padding: 0,
   minWidth: 'auto',

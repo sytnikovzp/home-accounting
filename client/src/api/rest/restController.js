@@ -15,6 +15,13 @@ import {
   updateCategory,
 } from '../../services/categoriesService';
 import {
+  createCurrency,
+  deleteCurrency,
+  getAllCurrencies,
+  getCurrencyByUuid,
+  updateCurrency,
+} from '../../services/currenciesService';
+import {
   createEstablishment,
   deleteEstablishment,
   deleteEstablishmentLogo,
@@ -167,30 +174,28 @@ const restController = {
   removeCategory: (categoryUuid) => deleteCategory(categoryUuid),
 
   // Currency management
-  // fetchAllCurrencies: async ({
-  //   page = 1,
-  //   limit = 6,
-  //   sort = 'uuid',
-  //   order = 'asc',
-  // } = {}) => {
-  //   const { data, totalCount } = await getAllCurrencies({
-  //     page,
-  //     limit,
-  //     sort,
-  //     order,
-  //   });
-  //   return {
-  //     data,
-  //     totalCount,
-  //   };
-  // },
-  // fetchCurrencyByUuid: (currencyUuid) =>
-  //   getCurrencyByUuid(currencyUuid),
-  // addCurrency: (title, code) => createCurrency(title, code),
-  // editCurrency: (currencyUuid, title, code) =>
-  //   updateCurrency(currencyUuid, title, code),
-  // removeCurrency: (currencyUuid) =>
-  //   deleteCurrency(currencyUuid),
+  fetchAllCurrencies: async ({
+    page = 1,
+    limit = 6,
+    sort = 'uuid',
+    order = 'asc',
+  } = {}) => {
+    const { data, totalCount } = await getAllCurrencies({
+      page,
+      limit,
+      sort,
+      order,
+    });
+    return {
+      data,
+      totalCount,
+    };
+  },
+  fetchCurrencyByUuid: (currencyUuid) => getCurrencyByUuid(currencyUuid),
+  addCurrency: (title, code) => createCurrency(title, code),
+  editCurrency: (currencyUuid, title, code) =>
+    updateCurrency(currencyUuid, title, code),
+  removeCurrency: (currencyUuid) => deleteCurrency(currencyUuid),
 
   // Measure management
   fetchAllMeasures: async ({

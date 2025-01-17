@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Box, Link } from '@mui/material';
+import { useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import {
   CalendarToday,
   Category,
@@ -14,7 +14,7 @@ import useFetchEntity from '../../hooks/useFetchEntity';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetailRow from '../../components/ViewDetailRow/ViewDetailRow';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import { stylesViewPageBox } from '../../styles';
 
@@ -28,16 +28,63 @@ function ProductViewPage({ handleModalClose }) {
   } = useFetchEntity('Product');
 
   useEffect(() => {
-    if (uuid) {
+    if (uuid && !productToCRUD) {
       fetchEntityByUuid(uuid);
     }
-  }, [uuid, fetchEntityByUuid]);
+  }, [uuid, fetchEntityByUuid, productToCRUD]);
 
   const { title, status, moderation, creation, category } = productToCRUD || {};
-
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
-  const categoryTitle = category?.title || '*Немає даних*';
+
+  const data = useMemo(
+    () => [
+      { icon: Info, label: 'Назва', value: title },
+      {
+        icon: () => <StatusIcon status={status} />,
+        label: 'Статус',
+        value: status,
+      },
+      {
+        icon: Category,
+        label: 'Категорія',
+        value: category?.title || '*Немає даних*',
+        isLink: Boolean(category),
+        linkTo: category ? `/categories/${category?.uuid}` : '',
+      },
+      {
+        icon: Person,
+        label: 'Автор',
+        value: creatorFullName,
+        isLink: Boolean(creatorFullName),
+        linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+      },
+      ...(moderatorFullName
+        ? [
+            {
+              icon: Person,
+              label: 'Модератор',
+              value: moderatorFullName,
+              isLink: Boolean(moderatorFullName),
+              linkTo: moderatorFullName ? `/users/${moderatorUuid}` : '',
+            },
+          ]
+        : []),
+      { icon: CalendarToday, label: 'Створено', value: createdAt },
+      { icon: Update, label: 'Редаговано', value: updatedAt },
+    ],
+    [
+      title,
+      status,
+      category,
+      creatorFullName,
+      creatorUuid,
+      moderatorFullName,
+      moderatorUuid,
+      createdAt,
+      updatedAt,
+    ]
+  );
 
   return (
     <ModalWindow
@@ -48,70 +95,7 @@ function ProductViewPage({ handleModalClose }) {
           <Preloader />
         ) : (
           <Box sx={stylesViewPageBox}>
-            <ViewDetailRow icon={Info} label='Назва' value={title} />
-            <ViewDetailRow
-              icon={() => <StatusIcon status={status} />}
-              label='Статус'
-              value={status}
-            />
-            <ViewDetailRow
-              icon={Category}
-              label='Категорія'
-              value={
-                categoryTitle ? (
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/categories/${category?.uuid}`}
-                    underline='hover'
-                  >
-                    {categoryTitle}
-                  </Link>
-                ) : (
-                  '*Немає даних*'
-                )
-              }
-            />
-            <ViewDetailRow
-              icon={Person}
-              label='Автор'
-              value={
-                creatorFullName ? (
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/users/${creatorUuid}`}
-                    underline='hover'
-                  >
-                    {creatorFullName}
-                  </Link>
-                ) : (
-                  '*Немає даних*'
-                )
-              }
-            />
-            {moderatorFullName && (
-              <ViewDetailRow
-                icon={Person}
-                label='Модератор'
-                value={
-                  <Link
-                    color='primary'
-                    component={RouterLink}
-                    to={`/users/${moderatorUuid}`}
-                    underline='hover'
-                  >
-                    {moderatorFullName}
-                  </Link>
-                }
-              />
-            )}
-            <ViewDetailRow
-              icon={CalendarToday}
-              label='Створено'
-              value={createdAt}
-            />
-            <ViewDetailRow icon={Update} label='Редаговано' value={updatedAt} />
+            <ViewDetails data={data} />
           </Box>
         )
       }

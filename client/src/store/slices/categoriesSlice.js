@@ -12,9 +12,9 @@ import {
 } from '../thunks/categoriesThunks';
 
 const initialState = {
-  list: [],
-  current: null,
+  data: [],
   totalCount: 0,
+  current: null,
   isLoading: false,
   error: null,
 };
@@ -33,7 +33,7 @@ const categoriesSlice = createSlice({
       .addCase(fetchCategories.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.list = payload.data;
+        state.data = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchCategoryByUuid.fulfilled, (state, { payload }) => {
@@ -44,22 +44,22 @@ const categoriesSlice = createSlice({
       .addCase(addCategory.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.list.push(payload);
+        state.data.push(payload);
       })
       .addCase(editCategory.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        const index = state.list.findIndex(
+        const index = state.data.findIndex(
           (category) => category.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.list[index] = payload;
+          state.data[index] = payload;
         }
       })
       .addCase(removeCategory.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.list = state.list.filter((category) => category.uuid !== payload);
+        state.data = state.data.filter((category) => category.uuid !== payload);
       })
 
       // Pending

@@ -32,19 +32,23 @@ const currenciesSlice = createSlice({
       // Fulfilled
       .addCase(fetchCurrencies.fulfilled, (state, { payload }) => {
         state.isLoading = false;
+        state.error = null;
         state.data = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchCurrencyByUuid.fulfilled, (state, { payload }) => {
         state.isLoading = false;
+        state.error = null;
         state.current = payload;
       })
       .addCase(addCurrency.fulfilled, (state, { payload }) => {
         state.isLoading = false;
+        state.error = null;
         state.data.push(payload);
       })
       .addCase(editCurrency.fulfilled, (state, { payload }) => {
         state.isLoading = false;
+        state.error = null;
         const index = state.data.findIndex(
           (currency) => currency.uuid === payload.uuid
         );
@@ -54,6 +58,7 @@ const currenciesSlice = createSlice({
       })
       .addCase(removeCurrency.fulfilled, (state, { payload }) => {
         state.isLoading = false;
+        state.error = null;
         state.data = state.data.filter((currency) => currency.uuid !== payload);
       })
 
