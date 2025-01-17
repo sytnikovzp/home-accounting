@@ -13,8 +13,8 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import EstablishmentAddPage from './EstablishmentAddPage';
-import EstablishmentRemovePage from './EstablishmentRemovePage';
 import EstablishmentEditPage from './EstablishmentEditPage';
+import EstablishmentRemovePage from './EstablishmentRemovePage';
 import EstablishmentViewPage from './EstablishmentViewPage';
 
 import {

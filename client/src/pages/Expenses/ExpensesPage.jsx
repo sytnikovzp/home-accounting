@@ -13,8 +13,8 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import ExpenseAddPage from './ExpenseAddPage';
-import ExpenseRemovePage from './ExpenseRemovePage';
 import ExpenseEditPage from './ExpenseEditPage';
+import ExpenseRemovePage from './ExpenseRemovePage';
 import ExpenseViewPage from './ExpenseViewPage';
 
 import {

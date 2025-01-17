@@ -11,9 +11,17 @@ import {
 
 export const fetchCategories = createAsyncThunk(
   `${CATEGORIES_SLICE_NAME}/fetchAll`,
-  async (params, { rejectWithValue }) => {
+  async (
+    { status = 'approved', page = 1, limit = 6, sort = 'uuid', order = 'asc' },
+    { rejectWithValue }
+  ) => {
     try {
-      return await getAllCategories(params);
+      const params = { status, page, limit, sort, order };
+      const { data, totalCount } = await getAllCategories(params);
+      return {
+        data,
+        totalCount,
+      };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -22,9 +30,10 @@ export const fetchCategories = createAsyncThunk(
 
 export const fetchCategoryByUuid = createAsyncThunk(
   `${CATEGORIES_SLICE_NAME}/fetchByUuid`,
-  async (uuid, { rejectWithValue }) => {
+  async ({ uuid }, { rejectWithValue }) => {
     try {
-      return await getCategoryByUuid(uuid);
+      const { data } = await getCategoryByUuid(uuid);
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -33,9 +42,10 @@ export const fetchCategoryByUuid = createAsyncThunk(
 
 export const addCategory = createAsyncThunk(
   `${CATEGORIES_SLICE_NAME}/add`,
-  async (title, { rejectWithValue }) => {
+  async ({ title }, { rejectWithValue }) => {
     try {
-      return await createCategory(title);
+      const { data } = await createCategory(title);
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -46,7 +56,8 @@ export const editCategory = createAsyncThunk(
   `${CATEGORIES_SLICE_NAME}/edit`,
   async ({ uuid, title }, { rejectWithValue }) => {
     try {
-      return await updateCategory(uuid, title);
+      const { data } = await updateCategory(uuid, title);
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -55,9 +66,10 @@ export const editCategory = createAsyncThunk(
 
 export const removeCategory = createAsyncThunk(
   `${CATEGORIES_SLICE_NAME}/remove`,
-  async (uuid, { rejectWithValue }) => {
+  async ({ uuid }, { rejectWithValue }) => {
     try {
-      return await deleteCategory(uuid);
+      await deleteCategory(uuid);
+      return uuid;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

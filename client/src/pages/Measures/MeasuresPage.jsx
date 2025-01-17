@@ -13,8 +13,8 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import MeasureAddPage from './MeasureAddPage';
-import MeasureRemovePage from './MeasureRemovePage';
 import MeasureEditPage from './MeasureEditPage';
+import MeasureRemovePage from './MeasureRemovePage';
 import MeasureViewPage from './MeasureViewPage';
 
 import {

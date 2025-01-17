@@ -13,8 +13,8 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import ProductAddPage from './ProductAddPage';
-import ProductRemovePage from './ProductRemovePage';
 import ProductEditPage from './ProductEditPage';
+import ProductRemovePage from './ProductRemovePage';
 import ProductViewPage from './ProductViewPage';
 
 import {

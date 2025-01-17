@@ -11,13 +11,16 @@ import {
 
 export const fetchCurrencies = createAsyncThunk(
   `${CURRENCIES_SLICE_NAME}/fetchAll`,
-  async ({ page, limit, sort, order }, { rejectWithValue }) => {
+  async (
+    { page = 1, limit = 6, sort = 'uuid', order = 'asc' },
+    { rejectWithValue }
+  ) => {
     try {
       const params = { page, limit, sort, order };
-      const response = await getAllCurrencies(params);
+      const { data, totalCount } = await getAllCurrencies(params);
       return {
-        data: response.data,
-        totalCount: response.totalCount,
+        data,
+        totalCount,
       };
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -27,10 +30,10 @@ export const fetchCurrencies = createAsyncThunk(
 
 export const fetchCurrencyByUuid = createAsyncThunk(
   `${CURRENCIES_SLICE_NAME}/fetchByUuid`,
-  async (uuid, { rejectWithValue }) => {
+  async ({ uuid }, { rejectWithValue }) => {
     try {
-      const response = await getCurrencyByUuid(uuid);
-      return response.data;
+      const { data } = await getCurrencyByUuid(uuid);
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -41,8 +44,8 @@ export const addCurrency = createAsyncThunk(
   `${CURRENCIES_SLICE_NAME}/add`,
   async ({ title, code }, { rejectWithValue }) => {
     try {
-      const response = await createCurrency(title, code);
-      return response.data;
+      const { data } = await createCurrency(title, code);
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -53,8 +56,8 @@ export const editCurrency = createAsyncThunk(
   `${CURRENCIES_SLICE_NAME}/edit`,
   async ({ uuid, title, code }, { rejectWithValue }) => {
     try {
-      const response = await updateCurrency(uuid, title, code);
-      return response.data;
+      const { data } = await updateCurrency(uuid, title, code);
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -63,7 +66,7 @@ export const editCurrency = createAsyncThunk(
 
 export const removeCurrency = createAsyncThunk(
   `${CURRENCIES_SLICE_NAME}/remove`,
-  async (uuid, { rejectWithValue }) => {
+  async ({ uuid }, { rejectWithValue }) => {
     try {
       await deleteCurrency(uuid);
       return uuid;

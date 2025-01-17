@@ -13,8 +13,8 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import RoleAddPage from './RoleAddPage';
-import RoleRemovePage from './RoleRemovePage';
 import RoleEditPage from './RoleEditPage';
+import RoleRemovePage from './RoleRemovePage';
 import RoleViewPage from './RoleViewPage';
 
 import {

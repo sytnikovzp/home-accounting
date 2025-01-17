@@ -10,14 +10,12 @@ import {
 import {
   createCategory,
   deleteCategory,
-  getAllCategories,
   getCategoryByUuid,
   updateCategory,
 } from '../../services/categoriesService';
 import {
   createCurrency,
   deleteCurrency,
-  getAllCurrencies,
   getCurrencyByUuid,
   updateCurrency,
 } from '../../services/currenciesService';
@@ -149,48 +147,12 @@ const restController = {
   removeRole: (roleUuid) => deleteRole(roleUuid),
 
   // Category management
-  fetchAllCategories: async ({
-    status = 'approved',
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllCategories({
-      status,
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
   fetchCategoryByUuid: (categoryUuid) => getCategoryByUuid(categoryUuid),
   addCategory: (title) => createCategory(title),
   editCategory: (categoryUuid, title) => updateCategory(categoryUuid, title),
   removeCategory: (categoryUuid) => deleteCategory(categoryUuid),
 
   // Currency management
-  fetchAllCurrencies: async ({
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllCurrencies({
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
   fetchCurrencyByUuid: (currencyUuid) => getCurrencyByUuid(currencyUuid),
   addCurrency: (title, code) => createCurrency(title, code),
   editCurrency: (currencyUuid, title, code) =>

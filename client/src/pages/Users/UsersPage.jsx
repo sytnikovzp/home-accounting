@@ -13,8 +13,8 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import UserChangePasswordPage from './UserChangePasswordPage';
-import UserRemovePage from './UserRemovePage';
 import UserEditPage from './UserEditPage';
+import UserRemovePage from './UserRemovePage';
 import UserViewPage from './UserViewPage';
 
 import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';

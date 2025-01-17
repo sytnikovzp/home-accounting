@@ -22,8 +22,8 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import CurrencyAddPage from './CurrencyAddPage';
-import CurrencyRemovePage from './CurrencyRemovePage';
 import CurrencyEditPage from './CurrencyEditPage';
+import CurrencyRemovePage from './CurrencyRemovePage';
 import CurrencyViewPage from './CurrencyViewPage';
 
 import {

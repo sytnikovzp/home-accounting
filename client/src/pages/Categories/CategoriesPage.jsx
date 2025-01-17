@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { DELAY_SHOW_PRELOADER } from '../../constants';
-import { uuidPattern } from '../../utils/sharedFunctions';
+import { categoryTitles } from '../../constants/pageTitles';
+import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
 import {
@@ -17,13 +18,14 @@ import {
 import { clearCurrent } from '../../store/slices/categoriesSlice';
 import { fetchCategories } from '../../store/thunks/categoriesThunks';
 
+import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import CategoryAddPage from './CategoryAddPage';
-import CategoryRemovePage from './CategoryRemovePage';
 import CategoryEditPage from './CategoryEditPage';
+import CategoryRemovePage from './CategoryRemovePage';
 import CategoryViewPage from './CategoryViewPage';
 
 import {
@@ -31,6 +33,13 @@ import {
   stylesEntityPageButton,
   stylesEntityPageTypography,
 } from '../../styles';
+
+const categoryPages = [
+  { path: 'add', Component: CategoryAddPage },
+  { path: 'edit/:uuid', Component: CategoryEditPage },
+  { path: 'delete/:uuid', Component: CategoryRemovePage },
+  { path: ':uuid', Component: CategoryViewPage },
+];
 
 function CategoriesPage() {
   const dispatch = useDispatch();
@@ -42,7 +51,6 @@ function CategoriesPage() {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
-  const [showPreloader, setShowPreloader] = useState(false);
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
 
@@ -50,102 +58,45 @@ function CategoriesPage() {
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     dispatch(clearCurrent());
     navigate('/categories');
-  };
+  }, [dispatch, navigate]);
 
-  const handleModalOpen = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
-  };
+  const handleModalOpen = useCallback(
+    (mode, uuid = null) => {
+      navigate(uuid ? `${mode}/${uuid}` : mode);
+    },
+    [navigate]
+  );
 
-  useEffect(() => {
-    dispatch(
-      fetchCategories({
-        page: currentPage,
-        limit: pageSize,
-        status: selectedStatus,
-        sort: sortModel.field,
-        order: sortModel.order,
-      })
-    );
-  }, [currentPage, dispatch, selectedStatus, pageSize, sortModel]);
+  const handleDelete = useCallback(
+    (category) => handleModalOpen('delete', category.uuid),
+    [handleModalOpen]
+  );
+  const handleEdit = useCallback(
+    (category) => handleModalOpen('edit', category.uuid),
+    [handleModalOpen]
+  );
 
-  const pageTitles = useMemo(
+  const fetchParams = useMemo(
     () => ({
-      view: 'Деталі категорії | Моя бухгалтерія',
-      add: 'Додавання категорії | Моя бухгалтерія',
-      edit: 'Редагування категорії | Моя бухгалтерія',
-      delete: 'Видалення категорії | Моя бухгалтерія',
-      default: 'Категорії витрат | Моя бухгалтерія',
+      page: currentPage,
+      limit: pageSize,
+      status: selectedStatus,
+      sort: sortModel.field,
+      order: sortModel.order,
     }),
-    []
+    [currentPage, pageSize, selectedStatus, sortModel]
   );
 
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    const isEditOrDelete =
-      location.pathname.includes('edit') ||
-      location.pathname.includes('delete');
-    document.title =
-      isUuid && !isEditOrDelete
-        ? pageTitles.view
-        : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    dispatch(fetchCategories(fetchParams));
+  }, [dispatch, fetchParams]);
 
-  useEffect(() => {
-    let timeout = null;
-    if (isLoading) {
-      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
-    } else {
-      setShowPreloader(false);
-    }
-    return () => clearTimeout(timeout);
-  }, [isLoading]);
+  usePageTitle(location, categoryTitles);
 
-  const renderRoutes = () => (
-    <Routes>
-      <Route
-        element={
-          <CategoryAddPage
-            fetchCategories={fetchCategories}
-            handleModalClose={handleModalClose}
-          />
-        }
-        path='add'
-      />
-      <Route
-        element={
-          <CategoryEditPage
-            fetchCategories={fetchCategories}
-            handleModalClose={handleModalClose}
-          />
-        }
-        path='edit/:uuid'
-      />
-      <Route
-        element={
-          <CategoryRemovePage
-            fetchCategories={fetchCategories}
-            handleModalClose={handleModalClose}
-          />
-        }
-        path='delete/:uuid'
-      />
-      <Route
-        element={
-          <CategoryViewPage
-            fetchCategories={fetchCategories}
-            handleModalClose={handleModalClose}
-          />
-        }
-        path=':uuid'
-      />
-    </Routes>
-  );
+  const showPreloader = useDelayedPreloader(isLoading);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Категорій"...' />;
@@ -193,12 +144,16 @@ function CategoriesPage() {
         rows={categories}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={(category) => handleModalOpen('delete', category.uuid)}
-        onEdit={(category) => handleModalOpen('edit', category.uuid)}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
       />
-      {renderRoutes()}
+      <EntityRoutes
+        entityPages={categoryPages}
+        fetchEntities={fetchCategories}
+        handleModalClose={handleModalClose}
+      />
     </>
   );
 }
