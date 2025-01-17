@@ -13,7 +13,7 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import MeasureAddPage from './MeasureAddPage';
-import MeasureDeletePage from './MeasureDeletePage';
+import MeasureRemovePage from './MeasureRemovePage';
 import MeasureEditPage from './MeasureEditPage';
 import MeasureViewPage from './MeasureViewPage';
 
@@ -133,7 +133,7 @@ function MeasuresPage() {
       />
       <Route
         element={
-          <MeasureDeletePage
+          <MeasureRemovePage
             crudError={crudError}
             fetchMeasures={fetchMeasures}
             handleModalClose={handleModalClose}

@@ -10,19 +10,19 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function EstablishmentDeletePage({
+function CategoryRemovePage({
   handleModalClose,
-  fetchEstablishments,
+  fetchCategories,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: establishmentToCRUD,
+    entity: categoryToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Establishment');
+  } = useFetchEntity('Category');
 
   useEffect(() => {
     if (uuid) {
@@ -30,11 +30,11 @@ function EstablishmentDeletePage({
     }
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeleteEstablishment = async () => {
+  const handleDeleteCategory = async () => {
     try {
-      await restController.removeEstablishment(establishmentToCRUD.uuid);
+      await restController.removeCategory(categoryToCRUD.uuid);
       handleModalClose();
-      fetchEstablishments();
+      fetchCategories();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -51,7 +51,7 @@ function EstablishmentDeletePage({
           color='error'
           size='large'
           variant='contained'
-          onClick={handleDeleteEstablishment}
+          onClick={handleDeleteCategory}
         >
           Видалити
         </Button>,
@@ -61,16 +61,15 @@ function EstablishmentDeletePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити заклад «{establishmentToCRUD?.title}
-            »? Це призведе до видалення всіх витрат, пов`язаних з цим закладом.
+            Ви впевнені, що хочете видалити категорію «{categoryToCRUD?.title}»?
           </Typography>
         )
       }
       error={errorMessage || crudError}
-      title='Видалення закладу...'
+      title='Видалення категорії...'
       onClose={handleModalClose}
     />
   );
 }
 
-export default EstablishmentDeletePage;
+export default CategoryRemovePage;

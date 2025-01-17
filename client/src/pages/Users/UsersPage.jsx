@@ -13,7 +13,7 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import UserChangePasswordPage from './UserChangePasswordPage';
-import UserDeletePage from './UserDeletePage';
+import UserRemovePage from './UserRemovePage';
 import UserEditPage from './UserEditPage';
 import UserViewPage from './UserViewPage';
 
@@ -154,7 +154,7 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
       />
       <Route
         element={
-          <UserDeletePage
+          <UserRemovePage
             crudError={crudError}
             currentUser={currentUser}
             fetchUsers={fetchUsers}

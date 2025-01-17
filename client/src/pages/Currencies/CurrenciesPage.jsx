@@ -22,7 +22,7 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import CurrencyAddPage from './CurrencyAddPage';
-import CurrencyDeletePage from './CurrencyDeletePage';
+import CurrencyRemovePage from './CurrencyRemovePage';
 import CurrencyEditPage from './CurrencyEditPage';
 import CurrencyViewPage from './CurrencyViewPage';
 
@@ -126,7 +126,7 @@ function CurrenciesPage() {
       />
       <Route
         element={
-          <CurrencyDeletePage
+          <CurrencyRemovePage
             fetchCurrencies={fetchCurrencies}
             handleModalClose={handleModalClose}
           />

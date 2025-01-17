@@ -13,7 +13,7 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import ProductAddPage from './ProductAddPage';
-import ProductDeletePage from './ProductDeletePage';
+import ProductRemovePage from './ProductRemovePage';
 import ProductEditPage from './ProductEditPage';
 import ProductViewPage from './ProductViewPage';
 
@@ -156,7 +156,7 @@ function ProductsPage() {
       />
       <Route
         element={
-          <ProductDeletePage
+          <ProductRemovePage
             crudError={crudError}
             fetchProducts={fetchProducts}
             handleModalClose={handleModalClose}

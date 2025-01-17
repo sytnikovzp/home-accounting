@@ -10,7 +10,7 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function MeasureDeletePage({
+function MeasureRemovePage({
   handleModalClose,
   fetchMeasures,
   crudError,
@@ -74,4 +74,4 @@ function MeasureDeletePage({
   );
 }
 
-export default MeasureDeletePage;
+export default MeasureRemovePage;

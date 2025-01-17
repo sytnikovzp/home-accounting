@@ -10,19 +10,19 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function RoleDeletePage({
+function CurrencyRemovePage({
   handleModalClose,
-  fetchRoles,
+  fetchCurrencies,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: roleToCRUD,
+    entity: currencyToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Role');
+  } = useFetchEntity('Currency');
 
   useEffect(() => {
     if (uuid) {
@@ -30,11 +30,11 @@ function RoleDeletePage({
     }
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeleteRole = async () => {
+  const handleDeleteCurrency = async () => {
     try {
-      await restController.removeRole(roleToCRUD.uuid);
+      await restController.removeCurrency(currencyToCRUD.uuid);
       handleModalClose();
-      fetchRoles();
+      fetchCurrencies();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -51,7 +51,7 @@ function RoleDeletePage({
           color='error'
           size='large'
           variant='contained'
-          onClick={handleDeleteRole}
+          onClick={handleDeleteCurrency}
         >
           Видалити
         </Button>,
@@ -61,15 +61,17 @@ function RoleDeletePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити роль «{roleToCRUD?.title}»?
+            Ви впевнені, що хочете видалити валюту «{currencyToCRUD?.title}»?
+            Зверніть увагу, що видалення цієї валюти призведе до видалення всіх
+            витрат, у яких вона використовується.
           </Typography>
         )
       }
       error={errorMessage || crudError}
-      title='Видалення ролі...'
+      title='Видалення категорії...'
       onClose={handleModalClose}
     />
   );
 }
 
-export default RoleDeletePage;
+export default CurrencyRemovePage;

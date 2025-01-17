@@ -22,7 +22,7 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import CategoryAddPage from './CategoryAddPage';
-import CategoryDeletePage from './CategoryDeletePage';
+import CategoryRemovePage from './CategoryRemovePage';
 import CategoryEditPage from './CategoryEditPage';
 import CategoryViewPage from './CategoryViewPage';
 
@@ -128,7 +128,7 @@ function CategoriesPage() {
       />
       <Route
         element={
-          <CategoryDeletePage
+          <CategoryRemovePage
             fetchCategories={fetchCategories}
             handleModalClose={handleModalClose}
           />

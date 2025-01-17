@@ -10,19 +10,19 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function CategoryDeletePage({
+function ExpenseRemovePage({
   handleModalClose,
-  fetchCategories,
+  fetchExpenses,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: categoryToCRUD,
+    entity: expenseToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Category');
+  } = useFetchEntity('Expense');
 
   useEffect(() => {
     if (uuid) {
@@ -30,11 +30,11 @@ function CategoryDeletePage({
     }
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeleteCategory = async () => {
+  const handleDeleteExpense = async () => {
     try {
-      await restController.removeCategory(categoryToCRUD.uuid);
+      await restController.removeExpense(expenseToCRUD.uuid);
       handleModalClose();
-      fetchCategories();
+      fetchExpenses();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -51,7 +51,7 @@ function CategoryDeletePage({
           color='error'
           size='large'
           variant='contained'
-          onClick={handleDeleteCategory}
+          onClick={handleDeleteExpense}
         >
           Видалити
         </Button>,
@@ -61,15 +61,16 @@ function CategoryDeletePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити категорію «{categoryToCRUD?.title}»?
+            Ви впевнені, що хочете видалити витрату «
+            {expenseToCRUD?.product.title}»?
           </Typography>
         )
       }
       error={errorMessage || crudError}
-      title='Видалення категорії...'
+      title='Видалення витрати...'
       onClose={handleModalClose}
     />
   );
 }
 
-export default CategoryDeletePage;
+export default ExpenseRemovePage;

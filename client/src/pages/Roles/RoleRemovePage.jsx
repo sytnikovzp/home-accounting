@@ -10,19 +10,19 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function ExpenseDeletePage({
+function RoleRemovePage({
   handleModalClose,
-  fetchExpenses,
+  fetchRoles,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: expenseToCRUD,
+    entity: roleToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Expense');
+  } = useFetchEntity('Role');
 
   useEffect(() => {
     if (uuid) {
@@ -30,11 +30,11 @@ function ExpenseDeletePage({
     }
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeleteExpense = async () => {
+  const handleDeleteRole = async () => {
     try {
-      await restController.removeExpense(expenseToCRUD.uuid);
+      await restController.removeRole(roleToCRUD.uuid);
       handleModalClose();
-      fetchExpenses();
+      fetchRoles();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -51,7 +51,7 @@ function ExpenseDeletePage({
           color='error'
           size='large'
           variant='contained'
-          onClick={handleDeleteExpense}
+          onClick={handleDeleteRole}
         >
           Видалити
         </Button>,
@@ -61,16 +61,15 @@ function ExpenseDeletePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити витрату «
-            {expenseToCRUD?.product.title}»?
+            Ви впевнені, що хочете видалити роль «{roleToCRUD?.title}»?
           </Typography>
         )
       }
       error={errorMessage || crudError}
-      title='Видалення витрати...'
+      title='Видалення ролі...'
       onClose={handleModalClose}
     />
   );
 }
 
-export default ExpenseDeletePage;
+export default RoleRemovePage;

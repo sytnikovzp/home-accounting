@@ -10,19 +10,19 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function CurrencyDeletePage({
+function EstablishmentRemovePage({
   handleModalClose,
-  fetchCurrencies,
+  fetchEstablishments,
   crudError,
   setCrudError,
 }) {
   const { uuid } = useParams();
   const {
-    entity: currencyToCRUD,
+    entity: establishmentToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('Currency');
+  } = useFetchEntity('Establishment');
 
   useEffect(() => {
     if (uuid) {
@@ -30,11 +30,11 @@ function CurrencyDeletePage({
     }
   }, [uuid, fetchEntityByUuid]);
 
-  const handleDeleteCurrency = async () => {
+  const handleDeleteEstablishment = async () => {
     try {
-      await restController.removeCurrency(currencyToCRUD.uuid);
+      await restController.removeEstablishment(establishmentToCRUD.uuid);
       handleModalClose();
-      fetchCurrencies();
+      fetchEstablishments();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -51,7 +51,7 @@ function CurrencyDeletePage({
           color='error'
           size='large'
           variant='contained'
-          onClick={handleDeleteCurrency}
+          onClick={handleDeleteEstablishment}
         >
           Видалити
         </Button>,
@@ -61,17 +61,16 @@ function CurrencyDeletePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити валюту «{currencyToCRUD?.title}»?
-            Зверніть увагу, що видалення цієї валюти призведе до видалення всіх
-            витрат, у яких вона використовується.
+            Ви впевнені, що хочете видалити заклад «{establishmentToCRUD?.title}
+            »? Це призведе до видалення всіх витрат, пов`язаних з цим закладом.
           </Typography>
         )
       }
       error={errorMessage || crudError}
-      title='Видалення категорії...'
+      title='Видалення закладу...'
       onClose={handleModalClose}
     />
   );
 }
 
-export default CurrencyDeletePage;
+export default EstablishmentRemovePage;

@@ -13,7 +13,7 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import RoleAddPage from './RoleAddPage';
-import RoleDeletePage from './RoleDeletePage';
+import RoleRemovePage from './RoleRemovePage';
 import RoleEditPage from './RoleEditPage';
 import RoleViewPage from './RoleViewPage';
 
@@ -149,7 +149,7 @@ function RolesPage() {
       />
       <Route
         element={
-          <RoleDeletePage
+          <RoleRemovePage
             crudError={crudError}
             fetchRoles={fetchRoles}
             handleModalClose={handleModalClose}

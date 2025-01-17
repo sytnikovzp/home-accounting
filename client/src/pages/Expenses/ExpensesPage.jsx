@@ -13,7 +13,7 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import ExpenseAddPage from './ExpenseAddPage';
-import ExpenseDeletePage from './ExpenseDeletePage';
+import ExpenseRemovePage from './ExpenseRemovePage';
 import ExpenseEditPage from './ExpenseEditPage';
 import ExpenseViewPage from './ExpenseViewPage';
 
@@ -225,7 +225,7 @@ function ExpensesPage() {
       />
       <Route
         element={
-          <ExpenseDeletePage
+          <ExpenseRemovePage
             crudError={crudError}
             fetchExpenses={fetchExpenses}
             handleModalClose={handleModalClose}

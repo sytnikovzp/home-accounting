@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
 import restController from '../../api/rest/restController';
@@ -10,22 +10,19 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function UserDeletePage({
+function ProductRemovePage({
   handleModalClose,
-  fetchUsers,
+  fetchProducts,
   crudError,
   setCrudError,
-  currentUser,
-  setIsAuthenticated,
 }) {
   const { uuid } = useParams();
-  const navigate = useNavigate();
   const {
-    entity: userToCRUD,
+    entity: productToCRUD,
     isLoading,
     errorMessage,
     fetchEntityByUuid,
-  } = useFetchEntity('User');
+  } = useFetchEntity('Product');
 
   useEffect(() => {
     if (uuid) {
@@ -33,25 +30,11 @@ function UserDeletePage({
     }
   }, [uuid, fetchEntityByUuid]);
 
-  const handleLogout = async () => {
+  const handleDeleteProduct = async () => {
     try {
-      await restController.logout();
-      setIsAuthenticated(false);
-      navigate('/');
-    } catch (error) {
-      console.error('Помилка виходу із системи:', error.message);
-    }
-  };
-
-  const handleDeleteUser = async () => {
-    try {
-      await restController.removeUser(userToCRUD.uuid);
-      if (userToCRUD.uuid === currentUser.uuid) {
-        await handleLogout();
-      } else {
-        handleModalClose();
-        fetchUsers();
-      }
+      await restController.removeProduct(productToCRUD.uuid);
+      handleModalClose();
+      fetchProducts();
     } catch (error) {
       setCrudError(error.response.data);
     }
@@ -68,7 +51,7 @@ function UserDeletePage({
           color='error'
           size='large'
           variant='contained'
-          onClick={handleDeleteUser}
+          onClick={handleDeleteProduct}
         >
           Видалити
         </Button>,
@@ -78,17 +61,16 @@ function UserDeletePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            {userToCRUD?.uuid === currentUser.uuid
-              ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
-              : `Ви впевнені, що хочете видалити користувача «${userToCRUD?.fullName}»?`}
+            Ви впевнені, що хочете видалити товар «{productToCRUD?.title}»? Це
+            призведе до видалення всіх витрат, що містять цей товар.
           </Typography>
         )
       }
       error={errorMessage || crudError}
-      title='Видалення користувача...'
+      title='Видалення товару/послуги...'
       onClose={handleModalClose}
     />
   );
 }
 
-export default UserDeletePage;
+export default ProductRemovePage;

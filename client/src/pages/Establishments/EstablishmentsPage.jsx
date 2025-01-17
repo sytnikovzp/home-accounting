@@ -13,7 +13,7 @@ import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
 
 import EstablishmentAddPage from './EstablishmentAddPage';
-import EstablishmentDeletePage from './EstablishmentDeletePage';
+import EstablishmentRemovePage from './EstablishmentRemovePage';
 import EstablishmentEditPage from './EstablishmentEditPage';
 import EstablishmentViewPage from './EstablishmentViewPage';
 
@@ -135,7 +135,7 @@ function EstablishmentsPage() {
       />
       <Route
         element={
-          <EstablishmentDeletePage
+          <EstablishmentRemovePage
             crudError={crudError}
             fetchEstablishments={fetchEstablishments}
             handleModalClose={handleModalClose}
