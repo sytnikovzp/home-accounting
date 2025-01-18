@@ -76,11 +76,6 @@ function CategoriesPage() {
 
   usePageTitle(location, CATEGORIES_TITLES);
 
-  const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
-    navigate('/categories');
-  }, [dispatch, navigate]);
-
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
       navigate(uuid ? `${mode}/${uuid}` : mode);
@@ -88,12 +83,18 @@ function CategoriesPage() {
     [navigate]
   );
 
-  const handleDelete = useCallback(
-    (category) => handleModalOpen('delete', category.uuid),
-    [handleModalOpen]
-  );
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/categories');
+  }, [dispatch, navigate]);
+
   const handleEdit = useCallback(
     (category) => handleModalOpen('edit', category.uuid),
+    [handleModalOpen]
+  );
+
+  const handleDelete = useCallback(
+    (category) => handleModalOpen('delete', category.uuid),
     [handleModalOpen]
   );
 

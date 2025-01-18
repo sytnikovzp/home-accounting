@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
+import {
+  selectError,
+  selectIsLoading,
+  selectProducts,
+  selectTotalCount,
+} from '../../store/selectors/productsSelectors';
+import { clearCurrent } from '../../store/slices/productsSlice';
+import { fetchProducts } from '../../store/thunks/productsThunks';
+
+import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
@@ -23,151 +34,78 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
+const { PRODUCTS_TITLES } = pageTitles;
+const PRODUCTS_PAGES = [
+  { path: 'add', Component: ProductAddPage },
+  { path: 'edit/:uuid', Component: ProductEditPage },
+  { path: 'delete/:uuid', Component: ProductRemovePage },
+  { path: ':uuid', Component: ProductViewPage },
+];
+
 function ProductsPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [selectedStatus, setSelectedStatus] = useState('approved');
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-  const [crudError, setCrudError] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState('approved');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const products = useSelector(selectProducts);
+  const totalCount = useSelector(selectTotalCount);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const handleModalClose = () => {
-    setCrudError(null);
-    navigate('/products');
-  };
-
-  const handleModalOpen = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
-  };
-
-  const fetchProducts = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: currentPage,
-        limit: pageSize,
-        status: selectedStatus,
-        sort: sortModel.field,
-        order: sortModel.order,
-      };
-      const { data, totalCount } =
-        await restController.fetchAllProducts(params);
-      setProducts(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, selectedStatus, sortModel]);
-
-  const pageTitles = useMemo(
+  const fetchParams = useMemo(
     () => ({
-      view: 'Деталі товару/послуги | Моя бухгалтерія',
-      add: 'Додавання товару/послуги | Моя бухгалтерія',
-      edit: 'Редагування товару/послуги | Моя бухгалтерія',
-      delete: 'Видалення товару/послуги | Моя бухгалтерія',
-      default: 'Товари та послуги | Моя бухгалтерія',
+      page: currentPage,
+      limit: pageSize,
+      status: selectedStatus,
+      sort: sortModel.field,
+      order: sortModel.order,
     }),
-    []
+    [currentPage, pageSize, selectedStatus, sortModel]
   );
 
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    const isEditOrDelete =
-      location.pathname.includes('edit') ||
-      location.pathname.includes('delete');
-    document.title =
-      isUuid && !isEditOrDelete
-        ? pageTitles.view
-        : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    dispatch(fetchProducts(fetchParams));
+  }, [dispatch, fetchParams]);
 
-  const fetchCategories = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: 1,
-        limit: 500,
-      };
-      const { data } = await restController.fetchAllCategories(params);
-      setCategories(data || []);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  usePageTitle(location, PRODUCTS_TITLES);
 
-  useEffect(() => {
-    fetchProducts();
-    fetchCategories();
-  }, [fetchCategories, fetchProducts]);
+  const handleModalOpen = useCallback(
+    (mode, uuid = null) => {
+      navigate(uuid ? `${mode}/${uuid}` : mode);
+    },
+    [navigate]
+  );
+
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/products');
+  }, [dispatch, navigate]);
+
+  const handleEdit = useCallback(
+    (product) => handleModalOpen('edit', product.uuid),
+    [handleModalOpen]
+  );
+
+  const handleDelete = useCallback(
+    (product) => handleModalOpen('delete', product.uuid),
+    [handleModalOpen]
+  );
 
   const showPreloader = useDelayedPreloader(isLoading);
-
-  const renderRoutes = () => (
-    <Routes>
-      <Route
-        element={
-          <ProductAddPage
-            categories={categories}
-            crudError={crudError}
-            fetchProducts={fetchProducts}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='add'
-      />
-      <Route
-        element={
-          <ProductEditPage
-            categories={categories}
-            crudError={crudError}
-            fetchProducts={fetchProducts}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='edit/:uuid'
-      />
-      <Route
-        element={
-          <ProductRemovePage
-            crudError={crudError}
-            fetchProducts={fetchProducts}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='delete/:uuid'
-      />
-      <Route
-        element={<ProductViewPage handleModalClose={handleModalClose} />}
-        path=':uuid'
-      />
-    </Routes>
-  );
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Товарів та послуг"...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (
@@ -209,12 +147,16 @@ function ProductsPage() {
         rows={products}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={(product) => handleModalOpen('delete', product.uuid)}
-        onEdit={(product) => handleModalOpen('edit', product.uuid)}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
       />
-      {renderRoutes()}
+      <EntityRoutes
+        entityPages={PRODUCTS_PAGES}
+        fetchEntities={fetchProducts}
+        handleModalClose={handleModalClose}
+      />
     </>
   );
 }

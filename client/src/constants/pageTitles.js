@@ -22,4 +22,17 @@ const MEASURES_TITLES = {
   default: 'Одиниці вимірів | Моя бухгалтерія',
 };
 
-export { CATEGORIES_TITLES, CURRENCIES_TITLES, MEASURES_TITLES };
+const PRODUCTS_TITLES = {
+  view: 'Деталі товару/послуги | Моя бухгалтерія',
+  add: 'Додавання товару/послуги | Моя бухгалтерія',
+  edit: 'Редагування товару/послуги | Моя бухгалтерія',
+  delete: 'Видалення товару/послуги | Моя бухгалтерія',
+  default: 'Товари та послуги | Моя бухгалтерія',
+};
+
+export {
+  CATEGORIES_TITLES,
+  CURRENCIES_TITLES,
+  MEASURES_TITLES,
+  PRODUCTS_TITLES,
+};

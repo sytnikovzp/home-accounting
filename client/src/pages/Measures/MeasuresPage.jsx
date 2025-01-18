@@ -74,11 +74,6 @@ function MeasuresPage() {
 
   usePageTitle(location, MEASURES_TITLES);
 
-  const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
-    navigate('/measures');
-  }, [dispatch, navigate]);
-
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
       navigate(uuid ? `${mode}/${uuid}` : mode);
@@ -86,12 +81,18 @@ function MeasuresPage() {
     [navigate]
   );
 
-  const handleDelete = useCallback(
-    (measure) => handleModalOpen('delete', measure.uuid),
-    [handleModalOpen]
-  );
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/measures');
+  }, [dispatch, navigate]);
+
   const handleEdit = useCallback(
     (measure) => handleModalOpen('edit', measure.uuid),
+    [handleModalOpen]
+  );
+
+  const handleDelete = useCallback(
+    (measure) => handleModalOpen('delete', measure.uuid),
     [handleModalOpen]
   );
 

@@ -726,8 +726,8 @@ async function postgresData() {
         updated_at: new Date(),
       },
       {
-        title: 'сеанс',
-        description: 'сеанс (візит)',
+        title: 'сеанс(и)',
+        description: 'сеанс(и) (візит)',
         creator_uuid: moderatorDetails.uuid,
         creator_full_name: moderatorDetails.fullName,
         created_at: new Date(),

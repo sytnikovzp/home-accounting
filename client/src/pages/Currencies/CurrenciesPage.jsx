@@ -74,11 +74,6 @@ function CurrenciesPage() {
 
   usePageTitle(location, CURRENCIES_TITLES);
 
-  const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
-    navigate('/currencies');
-  }, [dispatch, navigate]);
-
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
       navigate(uuid ? `${mode}/${uuid}` : mode);
@@ -86,12 +81,18 @@ function CurrenciesPage() {
     [navigate]
   );
 
-  const handleDelete = useCallback(
-    (currency) => handleModalOpen('delete', currency.uuid),
-    [handleModalOpen]
-  );
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/currencies');
+  }, [dispatch, navigate]);
+
   const handleEdit = useCallback(
     (currency) => handleModalOpen('edit', currency.uuid),
+    [handleModalOpen]
+  );
+
+  const handleDelete = useCallback(
+    (currency) => handleModalOpen('delete', currency.uuid),
     [handleModalOpen]
   );
 
