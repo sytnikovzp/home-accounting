@@ -8,23 +8,6 @@ const {
 } = require('../utils/sharedFunctions');
 
 class RolesService {
-  static async getAllPermissions() {
-    const foundPermissions = await Permission.find().lean();
-    if (foundPermissions.length === 0) {
-      throw notFound('Права доступу не знайдено');
-    }
-    const allPermissions = foundPermissions.map(
-      ({ uuid, title, description }) => ({
-        uuid,
-        title,
-        description,
-      })
-    );
-    return {
-      allPermissions,
-    };
-  }
-
   static async getAllRoles(limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };

@@ -4,7 +4,9 @@ const ESTABLISHMENTS_SLICE_NAME = 'establishments';
 const EXPENSES_SLICE_NAME = 'expenses';
 const MEASURES_SLICE_NAME = 'measures';
 const NBU_EXCHANGES_SLICE_NAME = 'nbuExchanges';
+const PERMISSIONS_SLICE_NAME = 'permissions';
 const PRODUCTS_SLICE_NAME = 'products';
+const ROLES_SLICE_NAME = 'roles';
 const STATISTICS_SLICE_NAME = 'statistics';
 
 export {
@@ -14,6 +16,8 @@ export {
   EXPENSES_SLICE_NAME,
   MEASURES_SLICE_NAME,
   NBU_EXCHANGES_SLICE_NAME,
+  PERMISSIONS_SLICE_NAME,
   PRODUCTS_SLICE_NAME,
+  ROLES_SLICE_NAME,
   STATISTICS_SLICE_NAME,
 };

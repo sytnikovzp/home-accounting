@@ -7,7 +7,6 @@ const {
 } = require('../middlewares');
 
 const {
-  getAllPermissions,
   getAllRoles,
   getRoleByUuid,
   createRole,
@@ -21,8 +20,6 @@ rolesRouter
   .route('/')
   .get(authHandler, paginateElements, getAllRoles)
   .post(authHandler, validateRole, createRole);
-
-rolesRouter.route('/permissions').get(authHandler, getAllPermissions);
 
 rolesRouter
   .route('/:roleUuid')

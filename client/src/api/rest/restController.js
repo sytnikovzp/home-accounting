@@ -46,6 +46,7 @@ import {
   moderationEstablishment,
   moderationProduct,
 } from '../../services/moderationsService';
+import { getAllPermissions } from '../../services/permissionsService';
 import {
   createProduct,
   deleteProduct,
@@ -55,7 +56,6 @@ import {
 import {
   createRole,
   deleteRole,
-  getAllPermissions,
   getAllRoles,
   getRoleByUuid,
   updateRole,
@@ -114,11 +114,13 @@ const restController = {
   deleteUserPhoto: (userUuid) => deleteUserPhoto(userUuid),
   removeUser: (userUuid) => deleteUser(userUuid),
 
-  // Role and Permission management
+  // Permission management
   fetchAllPermissions: async () => {
     const { data } = await getAllPermissions({});
     return { data };
   },
+
+  // Role management
   fetchAllRoles: async ({
     page = 1,
     limit = 6,

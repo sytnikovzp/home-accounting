@@ -1,14 +1,5 @@
 import { requestHandler } from '../utils/sharedFunctions';
 
-const getAllPermissions = async () => {
-  const response = await requestHandler({
-    url: '/roles/permissions',
-    method: 'GET',
-  });
-  const data = Array.isArray(response) ? { data: response } : response;
-  return data;
-};
-
 const getAllRoles = async ({
   page = 1,
   limit = 6,
@@ -58,11 +49,4 @@ const deleteRole = async (roleUuid) => {
   return response;
 };
 
-export {
-  createRole,
-  deleteRole,
-  getAllPermissions,
-  getAllRoles,
-  getRoleByUuid,
-  updateRole,
-};
+export { createRole, deleteRole, getAllRoles, getRoleByUuid, updateRole };

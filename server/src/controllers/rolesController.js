@@ -1,5 +1,4 @@
 const {
-  getAllPermissions,
   getAllRoles,
   getRoleByUuid,
   createRole,
@@ -9,20 +8,6 @@ const {
 const { getCurrentUser } = require('../services/usersService');
 
 class RolesController {
-  static async getAllPermissions(req, res, next) {
-    try {
-      const { allPermissions } = await getAllPermissions();
-      if (allPermissions.length > 0) {
-        res.status(200).json(allPermissions);
-      } else {
-        res.status(401);
-      }
-    } catch (error) {
-      console.error('Get permissions error: ', error.message);
-      next(error);
-    }
-  }
-
   static async getAllRoles(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
