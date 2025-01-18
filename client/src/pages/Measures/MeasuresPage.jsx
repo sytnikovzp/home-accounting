@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
+import {
+  selectError,
+  selectIsLoading,
+  selectMeasures,
+  selectTotalCount,
+} from '../../store/selectors/measuresSelectors';
+import { clearCurrent } from '../../store/slices/measuresSlice';
+import { fetchMeasures } from '../../store/thunks/measuresThunks';
+
+import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
@@ -23,128 +34,75 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
+const { MEASURES_TITLES } = pageTitles;
+const MEASURES_PAGES = [
+  { path: 'add', Component: MeasureAddPage },
+  { path: 'edit/:uuid', Component: MeasureEditPage },
+  { path: 'delete/:uuid', Component: MeasureRemovePage },
+  { path: ':uuid', Component: MeasureViewPage },
+];
+
 function MeasuresPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [measures, setMeasures] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-  const [crudError, setCrudError] = useState(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const measures = useSelector(selectMeasures);
+  const totalCount = useSelector(selectTotalCount);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const handleModalClose = () => {
-    setCrudError(null);
-    navigate('/measures');
-  };
-
-  const handleModalOpen = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
-  };
-
-  const fetchMeasures = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: currentPage,
-        limit: pageSize,
-        sort: sortModel.field,
-        order: sortModel.order,
-      };
-      const { data, totalCount } =
-        await restController.fetchAllMeasures(params);
-      setMeasures(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, sortModel]);
-
-  const pageTitles = useMemo(
+  const fetchParams = useMemo(
     () => ({
-      view: 'Деталі одиниці | Моя бухгалтерія',
-      add: 'Додавання одиниці | Моя бухгалтерія',
-      edit: 'Редагування одиниці | Моя бухгалтерія',
-      delete: 'Видалення одиниці | Моя бухгалтерія',
-      default: 'Одиниці вимірів | Моя бухгалтерія',
+      page: currentPage,
+      limit: pageSize,
+      sort: sortModel.field,
+      order: sortModel.order,
     }),
-    []
+    [currentPage, pageSize, sortModel]
   );
 
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    const isEditOrDelete =
-      location.pathname.includes('edit') ||
-      location.pathname.includes('delete');
-    document.title =
-      isUuid && !isEditOrDelete
-        ? pageTitles.view
-        : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    dispatch(fetchMeasures(fetchParams));
+  }, [dispatch, fetchParams]);
 
-  useEffect(() => {
-    fetchMeasures();
-  }, [fetchMeasures]);
+  usePageTitle(location, MEASURES_TITLES);
+
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/measures');
+  }, [dispatch, navigate]);
+
+  const handleModalOpen = useCallback(
+    (mode, uuid = null) => {
+      navigate(uuid ? `${mode}/${uuid}` : mode);
+    },
+    [navigate]
+  );
+
+  const handleDelete = useCallback(
+    (measure) => handleModalOpen('delete', measure.uuid),
+    [handleModalOpen]
+  );
+  const handleEdit = useCallback(
+    (measure) => handleModalOpen('edit', measure.uuid),
+    [handleModalOpen]
+  );
 
   const showPreloader = useDelayedPreloader(isLoading);
-
-  const renderRoutes = () => (
-    <Routes>
-      <Route
-        element={
-          <MeasureAddPage
-            crudError={crudError}
-            fetchMeasures={fetchMeasures}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='add'
-      />
-      <Route
-        element={
-          <MeasureEditPage
-            crudError={crudError}
-            fetchMeasures={fetchMeasures}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='edit/:uuid'
-      />
-      <Route
-        element={
-          <MeasureRemovePage
-            crudError={crudError}
-            fetchMeasures={fetchMeasures}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='delete/:uuid'
-      />
-      <Route
-        element={<MeasureViewPage handleModalClose={handleModalClose} />}
-        path=':uuid'
-      />
-    </Routes>
-  );
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Одиниць вимірів"...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (
@@ -183,11 +141,15 @@ function MeasuresPage() {
         }}
         rows={measures}
         sortModel={sortModel}
-        onDelete={(measure) => handleModalOpen('delete', measure.uuid)}
-        onEdit={(measure) => handleModalOpen('edit', measure.uuid)}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
         onSortModelChange={setSortModel}
       />
-      {renderRoutes()}
+      <EntityRoutes
+        entityPages={MEASURES_PAGES}
+        fetchEntities={fetchMeasures}
+        handleModalClose={handleModalClose}
+      />
     </>
   );
 }

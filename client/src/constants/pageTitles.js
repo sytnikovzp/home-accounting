@@ -14,4 +14,12 @@ const CURRENCIES_TITLES = {
   default: 'Валюти | Моя бухгалтерія',
 };
 
-export { CATEGORIES_TITLES, CURRENCIES_TITLES };
+const MEASURES_TITLES = {
+  view: 'Деталі одиниці | Моя бухгалтерія',
+  add: 'Додавання одиниці | Моя бухгалтерія',
+  edit: 'Редагування одиниці | Моя бухгалтерія',
+  delete: 'Видалення одиниці | Моя бухгалтерія',
+  default: 'Одиниці вимірів | Моя бухгалтерія',
+};
+
+export { CATEGORIES_TITLES, CURRENCIES_TITLES, MEASURES_TITLES };
