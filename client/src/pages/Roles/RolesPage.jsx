@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
+import {
+  selectError,
+  selectIsLoading,
+  selectRoles,
+  selectTotalCount,
+} from '../../store/selectors/rolesSelectors';
+import { clearCurrent } from '../../store/slices/rolesSlice';
+import { fetchRoles } from '../../store/thunks/rolesThunks';
+
+import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
@@ -23,144 +34,76 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
+const { ROLES_TITLES } = pageTitles;
+const ROLES_PAGES = [
+  { path: 'add', Component: RoleAddPage },
+  { path: 'edit/:uuid', Component: RoleEditPage },
+  { path: 'remove/:uuid', Component: RoleRemovePage },
+  { path: ':uuid', Component: RoleViewPage },
+];
+
 function RolesPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [roles, setRoles] = useState([]);
-  const [permissionsList, setPermissionsList] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-  const [crudError, setCrudError] = useState(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const roles = useSelector(selectRoles);
+  const totalCount = useSelector(selectTotalCount);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const handleModalClose = () => {
-    setCrudError(null);
-    navigate('/roles');
-  };
-
-  const handleModalOpen = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
-  };
-
-  const fetchRoles = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: currentPage,
-        limit: pageSize,
-        sort: sortModel.field,
-        order: sortModel.order,
-      };
-      const { data, totalCount } = await restController.fetchAllRoles(params);
-      setRoles(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, sortModel]);
-
-  const pageTitles = useMemo(
+  const fetchParams = useMemo(
     () => ({
-      view: 'Деталі ролі | Моя бухгалтерія',
-      add: 'Додавання ролі | Моя бухгалтерія',
-      edit: 'Редагування ролі | Моя бухгалтерія',
-      remove: 'Видалення ролі | Моя бухгалтерія',
-      default: 'Ролі користувачів | Моя бухгалтерія',
+      page: currentPage,
+      limit: pageSize,
+      sort: sortModel.field,
+      order: sortModel.order,
     }),
-    []
+    [currentPage, pageSize, sortModel]
   );
 
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    const isEditOrDelete =
-      location.pathname.includes('edit') ||
-      location.pathname.includes('remove');
-    document.title =
-      isUuid && !isEditOrDelete
-        ? pageTitles.view
-        : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    dispatch(fetchRoles(fetchParams));
+  }, [dispatch, fetchParams]);
 
-  const fetchPermissions = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const { data } = await restController.fetchAllPermissions();
-      setPermissionsList(data);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  usePageTitle(location, ROLES_TITLES);
 
-  useEffect(() => {
-    fetchRoles();
-    fetchPermissions();
-  }, [fetchRoles, fetchPermissions]);
+  const handleModalOpen = useCallback(
+    (mode, uuid = null) => {
+      navigate(uuid ? `${mode}/${uuid}` : mode);
+    },
+    [navigate]
+  );
+
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/roles');
+  }, [dispatch, navigate]);
+
+  const handleEdit = useCallback(
+    (role) => handleModalOpen('edit', role.uuid),
+    [handleModalOpen]
+  );
+
+  const handleDelete = useCallback(
+    (role) => handleModalOpen('remove', role.uuid),
+    [handleModalOpen]
+  );
 
   const showPreloader = useDelayedPreloader(isLoading);
-
-  const renderRoutes = () => (
-    <Routes>
-      <Route
-        element={
-          <RoleAddPage
-            crudError={crudError}
-            fetchRoles={fetchRoles}
-            handleModalClose={handleModalClose}
-            permissionsList={permissionsList}
-            setCrudError={setCrudError}
-          />
-        }
-        path='add'
-      />
-      <Route
-        element={
-          <RoleEditPage
-            crudError={crudError}
-            fetchRoles={fetchRoles}
-            handleModalClose={handleModalClose}
-            permissionsList={permissionsList}
-            setCrudError={setCrudError}
-          />
-        }
-        path='edit/:uuid'
-      />
-      <Route
-        element={
-          <RoleRemovePage
-            crudError={crudError}
-            fetchRoles={fetchRoles}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='remove/:uuid'
-      />
-      <Route
-        element={<RoleViewPage handleModalClose={handleModalClose} />}
-        path=':uuid'
-      />
-    </Routes>
-  );
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Ролей користувачів"...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (
@@ -197,11 +140,15 @@ function RolesPage() {
         }}
         rows={roles}
         sortModel={sortModel}
-        onDelete={(role) => handleModalOpen('remove', role.uuid)}
-        onEdit={(role) => handleModalOpen('edit', role.uuid)}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
         onSortModelChange={setSortModel}
       />
-      {renderRoutes()}
+      <EntityRoutes
+        entityPages={ROLES_PAGES}
+        fetchEntities={fetchRoles}
+        handleModalClose={handleModalClose}
+      />
     </>
   );
 }

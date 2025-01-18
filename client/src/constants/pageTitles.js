@@ -46,6 +46,14 @@ const PRODUCTS_TITLES = {
   default: 'Товари та послуги | Моя бухгалтерія',
 };
 
+const ROLES_TITLES = {
+  view: 'Деталі ролі | Моя бухгалтерія',
+  add: 'Додавання ролі | Моя бухгалтерія',
+  edit: 'Редагування ролі | Моя бухгалтерія',
+  remove: 'Видалення ролі | Моя бухгалтерія',
+  default: 'Ролі користувачів | Моя бухгалтерія',
+};
+
 export {
   CATEGORIES_TITLES,
   CURRENCIES_TITLES,
@@ -53,4 +61,5 @@ export {
   EXPENSES_TITLES,
   MEASURES_TITLES,
   PRODUCTS_TITLES,
+  ROLES_TITLES,
 };

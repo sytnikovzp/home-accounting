@@ -35,7 +35,7 @@ const rolesSlice = createSlice({
       .addCase(fetchRoles.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.roles = payload.data;
+        state.data = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchRoleByUuid.fulfilled, (state, { payload }) => {
@@ -46,22 +46,22 @@ const rolesSlice = createSlice({
       .addCase(addRole.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.roles.push(payload);
+        state.data.push(payload);
       })
       .addCase(editRole.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        const index = state.roles.findIndex(
+        const index = state.data.findIndex(
           (role) => role.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.roles[index] = payload;
+          state.data[index] = payload;
         }
       })
       .addCase(removeRole.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.roles = state.roles.filter((role) => role.uuid !== payload);
+        state.data = state.data.filter((role) => role.uuid !== payload);
       })
 
       // Pending
