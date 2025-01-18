@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
+import {
+  selectError,
+  selectExpenses,
+  selectIsLoading,
+  selectTotalCount,
+} from '../../store/selectors/expensesSelectors';
+import { clearCurrent } from '../../store/slices/expensesSlice';
+import { fetchExpenses } from '../../store/thunks/expensesThunks';
+
+import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
@@ -23,220 +34,78 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
+const { EXPENSES_TITLES } = pageTitles;
+const EXPENSES_PAGES = [
+  { path: 'add', Component: ExpenseAddPage },
+  { path: 'edit/:uuid', Component: ExpenseEditPage },
+  { path: 'remove/:uuid', Component: ExpenseRemovePage },
+  { path: ':uuid', Component: ExpenseViewPage },
+];
+
 function ExpensesPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [expenses, setExpenses] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [establishments, setEstablishments] = useState([]);
-  const [measures, setMeasures] = useState([]);
-  const [currencies, setCurrencies] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [selectedPeriod, setSelectedPeriod] = useState('allTime');
   const [sortModel, setSortModel] = useState({ field: 'date', order: 'desc' });
-  const [crudError, setCrudError] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState('allTime');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const expenses = useSelector(selectExpenses);
+  const totalCount = useSelector(selectTotalCount);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const handleModalClose = () => {
-    setCrudError(null);
-    navigate('/expenses');
-  };
-
-  const handleModalOpen = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
-  };
-
-  const fetchExpenses = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: currentPage,
-        limit: pageSize,
-        ago: selectedPeriod,
-        sort: sortModel.field,
-        order: sortModel.order,
-      };
-      const { data, totalCount } =
-        await restController.fetchAllExpenses(params);
-      setExpenses(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, selectedPeriod, sortModel]);
-
-  const fetchProducts = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: 1,
-        limit: 500,
-      };
-      const { data } = await restController.fetchAllProducts(params);
-      setProducts(data || []);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const fetchEstablishments = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: 1,
-        limit: 500,
-      };
-      const { data } = await restController.fetchAllEstablishments(params);
-      setEstablishments(data || []);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const fetchMeasures = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: 1,
-        limit: 500,
-      };
-      const { data } = await restController.fetchAllMeasures(params);
-      setMeasures(data || []);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const fetchCurrencies = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: 1,
-        limit: 500,
-      };
-      const { data } = await restController.fetchAllCurrencies(params);
-      setCurrencies(data || []);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const pageTitles = useMemo(
+  const fetchParams = useMemo(
     () => ({
-      view: 'Деталі витрати | Моя бухгалтерія',
-      add: 'Додавання витрати | Моя бухгалтерія',
-      edit: 'Редагування витрати | Моя бухгалтерія',
-      remove: 'Видалення витрати | Моя бухгалтерія',
-      default: 'Витрати | Моя бухгалтерія',
+      page: currentPage,
+      limit: pageSize,
+      ago: selectedPeriod,
+      sort: sortModel.field,
+      order: sortModel.order,
     }),
-    []
+    [currentPage, pageSize, selectedPeriod, sortModel]
   );
 
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    const isEditOrDelete =
-      location.pathname.includes('edit') ||
-      location.pathname.includes('remove');
-    document.title =
-      isUuid && !isEditOrDelete
-        ? pageTitles.view
-        : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    dispatch(fetchExpenses(fetchParams));
+  }, [dispatch, fetchParams]);
 
-  useEffect(() => {
-    fetchExpenses();
-    fetchProducts();
-    fetchEstablishments();
-    fetchMeasures();
-    fetchCurrencies();
-  }, [
-    fetchCurrencies,
-    fetchMeasures,
-    fetchProducts,
-    fetchExpenses,
-    fetchEstablishments,
-  ]);
+  usePageTitle(location, EXPENSES_TITLES);
+
+  const handleModalOpen = useCallback(
+    (mode, uuid = null) => {
+      navigate(uuid ? `${mode}/${uuid}` : mode);
+    },
+    [navigate]
+  );
+
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/expenses');
+  }, [dispatch, navigate]);
+
+  const handleEdit = useCallback(
+    (expense) => handleModalOpen('edit', expense.uuid),
+    [handleModalOpen]
+  );
+
+  const handleDelete = useCallback(
+    (expense) => handleModalOpen('remove', expense.uuid),
+    [handleModalOpen]
+  );
 
   const showPreloader = useDelayedPreloader(isLoading);
-
-  const renderRoutes = () => (
-    <Routes>
-      <Route
-        element={
-          <ExpenseAddPage
-            crudError={crudError}
-            currencies={currencies}
-            establishments={establishments}
-            fetchExpenses={fetchExpenses}
-            handleModalClose={handleModalClose}
-            measures={measures}
-            products={products}
-            setCrudError={setCrudError}
-          />
-        }
-        path='add'
-      />
-      <Route
-        element={
-          <ExpenseEditPage
-            crudError={crudError}
-            currencies={currencies}
-            establishments={establishments}
-            fetchExpenses={fetchExpenses}
-            handleModalClose={handleModalClose}
-            measures={measures}
-            products={products}
-            setCrudError={setCrudError}
-          />
-        }
-        path='edit/:uuid'
-      />
-      <Route
-        element={
-          <ExpenseRemovePage
-            crudError={crudError}
-            fetchExpenses={fetchExpenses}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='remove/:uuid'
-      />
-      <Route
-        element={<ExpenseViewPage handleModalClose={handleModalClose} />}
-        path=':uuid'
-      />
-    </Routes>
-  );
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Покупок"...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (
@@ -280,12 +149,16 @@ function ExpensesPage() {
         rows={expenses}
         selectedStatus={selectedPeriod}
         sortModel={sortModel}
-        onDelete={(expense) => handleModalOpen('remove', expense.uuid)}
-        onEdit={(expense) => handleModalOpen('edit', expense.uuid)}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedPeriod(event.target.value)}
       />
-      {renderRoutes()}
+      <EntityRoutes
+        entityPages={EXPENSES_PAGES}
+        fetchEntities={fetchExpenses}
+        handleModalClose={handleModalClose}
+      />
     </>
   );
 }

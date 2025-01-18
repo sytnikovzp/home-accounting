@@ -22,6 +22,14 @@ const ESTABLISHMENTS_TITLES = {
   default: 'Заклади | Моя бухгалтерія',
 };
 
+const EXPENSES_TITLES = {
+  view: 'Деталі витрати | Моя бухгалтерія',
+  add: 'Додавання витрати | Моя бухгалтерія',
+  edit: 'Редагування витрати | Моя бухгалтерія',
+  remove: 'Видалення витрати | Моя бухгалтерія',
+  default: 'Витрати | Моя бухгалтерія',
+};
+
 const MEASURES_TITLES = {
   view: 'Деталі одиниці | Моя бухгалтерія',
   add: 'Додавання одиниці | Моя бухгалтерія',
@@ -42,6 +50,7 @@ export {
   CATEGORIES_TITLES,
   CURRENCIES_TITLES,
   ESTABLISHMENTS_TITLES,
+  EXPENSES_TITLES,
   MEASURES_TITLES,
   PRODUCTS_TITLES,
 };
