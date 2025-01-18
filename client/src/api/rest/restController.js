@@ -31,7 +31,6 @@ import {
 import {
   createExpense,
   deleteExpense,
-  getAllExpenses,
   getExpenseByUuid,
   updateExpense,
 } from '../../services/expensesService';
@@ -172,25 +171,6 @@ const restController = {
   removeProduct: (productUuid) => deleteProduct(productUuid),
 
   // Expense management
-  fetchAllExpenses: async ({
-    ago = 'allTime',
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllExpenses({
-      ago,
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
   fetchExpenseByUuid: (expenseUuid) => getExpenseByUuid(expenseUuid),
   addExpense: (
     product,

@@ -4,6 +4,7 @@ import { logger } from 'redux-logger';
 import categoriesReducer from './slices/categoriesSlice';
 import currenciesReducer from './slices/currenciesSlice';
 import establishmentsReducer from './slices/establishmentsSlice';
+import expensesReducer from './slices/expensesSlice';
 import measuresReducer from './slices/measuresSlice';
 import nbuExchangesReducer from './slices/nbuExchangesSlice';
 import productsReducer from './slices/productsSlice';
@@ -14,6 +15,7 @@ const store = configureStore({
     categories: categoriesReducer,
     currencies: currenciesReducer,
     establishments: establishmentsReducer,
+    expenses: expensesReducer,
     measures: measuresReducer,
     nbuExchanges: nbuExchangesReducer,
     products: productsReducer,
