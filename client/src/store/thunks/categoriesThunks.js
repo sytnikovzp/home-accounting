@@ -20,10 +20,7 @@ export const fetchCategories = createAsyncThunk(
     try {
       const params = { status, page, limit, sort, order };
       const { data, totalCount } = await getAllCategories(params);
-      return {
-        data,
-        totalCount,
-      };
+      return { data, totalCount };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

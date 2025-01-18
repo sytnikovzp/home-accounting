@@ -22,8 +22,8 @@ export const fetchStatisticsByCriteria = createAsyncThunk(
       if (!service) {
         throw new Error(`Unknown criteria: ${criteria}`);
       }
-      const response = await service({ ago, creatorUuid });
-      return response.data;
+      const { data } = await service({ ago, creatorUuid });
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

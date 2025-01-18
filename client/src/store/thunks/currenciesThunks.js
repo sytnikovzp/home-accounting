@@ -20,10 +20,7 @@ export const fetchCurrencies = createAsyncThunk(
     try {
       const params = { page, limit, sort, order };
       const { data, totalCount } = await getAllCurrencies(params);
-      return {
-        data,
-        totalCount,
-      };
+      return { data, totalCount };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
