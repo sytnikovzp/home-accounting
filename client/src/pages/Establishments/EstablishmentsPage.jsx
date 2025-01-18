@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
-import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
+import {
+  selectError,
+  selectEstablishments,
+  selectIsLoading,
+  selectTotalCount,
+} from '../../store/selectors/establishmentsSelectors';
+import { clearCurrent } from '../../store/slices/establishmentsSlice';
+import { fetchEstablishments } from '../../store/thunks/establishmentsThunks';
+
+import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
@@ -23,130 +34,78 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
+const { ESTABLISHMENTS_TITLES } = pageTitles;
+const ESTABLISHMENTS_PAGES = [
+  { path: 'add', Component: EstablishmentAddPage },
+  { path: 'edit/:uuid', Component: EstablishmentEditPage },
+  { path: 'remove/:uuid', Component: EstablishmentRemovePage },
+  { path: ':uuid', Component: EstablishmentViewPage },
+];
+
 function EstablishmentsPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [establishments, setEstablishments] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [selectedStatus, setSelectedStatus] = useState('approved');
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-  const [crudError, setCrudError] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState('approved');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const establishments = useSelector(selectEstablishments);
+  const totalCount = useSelector(selectTotalCount);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const handleModalClose = () => {
-    setCrudError(null);
-    navigate('/establishments');
-  };
-
-  const handleModalOpen = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
-  };
-
-  const fetchEstablishments = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: currentPage,
-        limit: pageSize,
-        status: selectedStatus,
-        sort: sortModel.field,
-        order: sortModel.order,
-      };
-      const { data, totalCount } =
-        await restController.fetchAllEstablishments(params);
-      setEstablishments(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, selectedStatus, sortModel]);
-
-  const pageTitles = useMemo(
+  const fetchParams = useMemo(
     () => ({
-      view: 'Деталі закладу | Моя бухгалтерія',
-      add: 'Додавання закладу | Моя бухгалтерія',
-      edit: 'Редагування закладу | Моя бухгалтерія',
-      delete: 'Видалення закладу | Моя бухгалтерія',
-      default: 'Заклади | Моя бухгалтерія',
+      page: currentPage,
+      limit: pageSize,
+      status: selectedStatus,
+      sort: sortModel.field,
+      order: sortModel.order,
     }),
-    []
+    [currentPage, pageSize, selectedStatus, sortModel]
   );
 
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    const isEditOrDelete =
-      location.pathname.includes('edit') ||
-      location.pathname.includes('delete');
-    document.title =
-      isUuid && !isEditOrDelete
-        ? pageTitles.view
-        : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    dispatch(fetchEstablishments(fetchParams));
+  }, [dispatch, fetchParams]);
 
-  useEffect(() => {
-    fetchEstablishments();
-  }, [fetchEstablishments]);
+  usePageTitle(location, ESTABLISHMENTS_TITLES);
+
+  const handleModalOpen = useCallback(
+    (mode, uuid = null) => {
+      navigate(uuid ? `${mode}/${uuid}` : mode);
+    },
+    [navigate]
+  );
+
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/establishments');
+  }, [dispatch, navigate]);
+
+  const handleEdit = useCallback(
+    (establishment) => handleModalOpen('edit', establishment.uuid),
+    [handleModalOpen]
+  );
+
+  const handleDelete = useCallback(
+    (establishment) => handleModalOpen('remove', establishment.uuid),
+    [handleModalOpen]
+  );
 
   const showPreloader = useDelayedPreloader(isLoading);
-
-  const renderRoutes = () => (
-    <Routes>
-      <Route
-        element={
-          <EstablishmentAddPage
-            crudError={crudError}
-            fetchEstablishments={fetchEstablishments}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='add'
-      />
-      <Route
-        element={
-          <EstablishmentEditPage
-            crudError={crudError}
-            fetchEstablishments={fetchEstablishments}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='edit/:uuid'
-      />
-      <Route
-        element={
-          <EstablishmentRemovePage
-            crudError={crudError}
-            fetchEstablishments={fetchEstablishments}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='delete/:uuid'
-      />
-      <Route
-        element={<EstablishmentViewPage handleModalClose={handleModalClose} />}
-        path=':uuid'
-      />
-    </Routes>
-  );
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Закладів"...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (
@@ -188,14 +147,16 @@ function EstablishmentsPage() {
         rows={establishments}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={(establishment) =>
-          handleModalOpen('delete', establishment.uuid)
-        }
-        onEdit={(establishment) => handleModalOpen('edit', establishment.uuid)}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedStatus(event.target.value)}
       />
-      {renderRoutes()}
+      <EntityRoutes
+        entityPages={ESTABLISHMENTS_PAGES}
+        fetchEntities={fetchEstablishments}
+        handleModalClose={handleModalClose}
+      />
     </>
   );
 }

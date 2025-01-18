@@ -38,7 +38,7 @@ const { PRODUCTS_TITLES } = pageTitles;
 const PRODUCTS_PAGES = [
   { path: 'add', Component: ProductAddPage },
   { path: 'edit/:uuid', Component: ProductEditPage },
-  { path: 'delete/:uuid', Component: ProductRemovePage },
+  { path: 'remove/:uuid', Component: ProductRemovePage },
   { path: ':uuid', Component: ProductViewPage },
 ];
 
@@ -94,7 +94,7 @@ function ProductsPage() {
   );
 
   const handleDelete = useCallback(
-    (product) => handleModalOpen('delete', product.uuid),
+    (product) => handleModalOpen('remove', product.uuid),
     [handleModalOpen]
   );
 

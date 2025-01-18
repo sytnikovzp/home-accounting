@@ -146,7 +146,7 @@ function ExpensesPage() {
       view: 'Деталі витрати | Моя бухгалтерія',
       add: 'Додавання витрати | Моя бухгалтерія',
       edit: 'Редагування витрати | Моя бухгалтерія',
-      delete: 'Видалення витрати | Моя бухгалтерія',
+      remove: 'Видалення витрати | Моя бухгалтерія',
       default: 'Витрати | Моя бухгалтерія',
     }),
     []
@@ -159,7 +159,7 @@ function ExpensesPage() {
     const isUuid = uuidPattern.test(location.pathname);
     const isEditOrDelete =
       location.pathname.includes('edit') ||
-      location.pathname.includes('delete');
+      location.pathname.includes('remove');
     document.title =
       isUuid && !isEditOrDelete
         ? pageTitles.view
@@ -223,7 +223,7 @@ function ExpensesPage() {
             setCrudError={setCrudError}
           />
         }
-        path='delete/:uuid'
+        path='remove/:uuid'
       />
       <Route
         element={<ExpenseViewPage handleModalClose={handleModalClose} />}
@@ -280,7 +280,7 @@ function ExpensesPage() {
         rows={expenses}
         selectedStatus={selectedPeriod}
         sortModel={sortModel}
-        onDelete={(expense) => handleModalOpen('delete', expense.uuid)}
+        onDelete={(expense) => handleModalOpen('remove', expense.uuid)}
         onEdit={(expense) => handleModalOpen('edit', expense.uuid)}
         onSortModelChange={setSortModel}
         onStatusChange={(event) => setSelectedPeriod(event.target.value)}

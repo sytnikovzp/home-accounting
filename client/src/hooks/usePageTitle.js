@@ -11,7 +11,7 @@ function usePageTitle(location, pageTitles) {
     const isPasswordOrEditOrDelete =
       location.pathname.includes('password') ||
       location.pathname.includes('edit') ||
-      location.pathname.includes('delete');
+      location.pathname.includes('remove');
     document.title =
       isUuid && !isPasswordOrEditOrDelete
         ? pageTitles.view

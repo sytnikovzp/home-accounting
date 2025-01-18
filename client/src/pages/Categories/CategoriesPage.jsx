@@ -38,7 +38,7 @@ const { CATEGORIES_TITLES } = pageTitles;
 const CATEGORIES_PAGES = [
   { path: 'add', Component: CategoryAddPage },
   { path: 'edit/:uuid', Component: CategoryEditPage },
-  { path: 'delete/:uuid', Component: CategoryRemovePage },
+  { path: 'remove/:uuid', Component: CategoryRemovePage },
   { path: ':uuid', Component: CategoryViewPage },
 ];
 
@@ -94,7 +94,7 @@ function CategoriesPage() {
   );
 
   const handleDelete = useCallback(
-    (category) => handleModalOpen('delete', category.uuid),
+    (category) => handleModalOpen('remove', category.uuid),
     [handleModalOpen]
   );
 

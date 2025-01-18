@@ -46,7 +46,7 @@ function ProductRemovePage({
       showCloseButton
       actions={[
         <Button
-          key='delete'
+          key='remove'
           fullWidth
           color='error'
           size='large'

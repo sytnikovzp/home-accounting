@@ -72,7 +72,7 @@ function RolesPage() {
       view: 'Деталі ролі | Моя бухгалтерія',
       add: 'Додавання ролі | Моя бухгалтерія',
       edit: 'Редагування ролі | Моя бухгалтерія',
-      delete: 'Видалення ролі | Моя бухгалтерія',
+      remove: 'Видалення ролі | Моя бухгалтерія',
       default: 'Ролі користувачів | Моя бухгалтерія',
     }),
     []
@@ -85,7 +85,7 @@ function RolesPage() {
     const isUuid = uuidPattern.test(location.pathname);
     const isEditOrDelete =
       location.pathname.includes('edit') ||
-      location.pathname.includes('delete');
+      location.pathname.includes('remove');
     document.title =
       isUuid && !isEditOrDelete
         ? pageTitles.view
@@ -147,7 +147,7 @@ function RolesPage() {
             setCrudError={setCrudError}
           />
         }
-        path='delete/:uuid'
+        path='remove/:uuid'
       />
       <Route
         element={<RoleViewPage handleModalClose={handleModalClose} />}
@@ -197,7 +197,7 @@ function RolesPage() {
         }}
         rows={roles}
         sortModel={sortModel}
-        onDelete={(role) => handleModalOpen('delete', role.uuid)}
+        onDelete={(role) => handleModalOpen('remove', role.uuid)}
         onEdit={(role) => handleModalOpen('edit', role.uuid)}
         onSortModelChange={setSortModel}
       />

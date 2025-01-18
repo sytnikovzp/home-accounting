@@ -38,7 +38,7 @@ const { MEASURES_TITLES } = pageTitles;
 const MEASURES_PAGES = [
   { path: 'add', Component: MeasureAddPage },
   { path: 'edit/:uuid', Component: MeasureEditPage },
-  { path: 'delete/:uuid', Component: MeasureRemovePage },
+  { path: 'remove/:uuid', Component: MeasureRemovePage },
   { path: ':uuid', Component: MeasureViewPage },
 ];
 
@@ -92,7 +92,7 @@ function MeasuresPage() {
   );
 
   const handleDelete = useCallback(
-    (measure) => handleModalOpen('delete', measure.uuid),
+    (measure) => handleModalOpen('remove', measure.uuid),
     [handleModalOpen]
   );
 

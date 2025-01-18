@@ -38,7 +38,7 @@ const { CURRENCIES_TITLES } = pageTitles;
 const CURRENCIES_PAGES = [
   { path: 'add', Component: CurrencyAddPage },
   { path: 'edit/:uuid', Component: CurrencyEditPage },
-  { path: 'delete/:uuid', Component: CurrencyRemovePage },
+  { path: 'remove/:uuid', Component: CurrencyRemovePage },
   { path: ':uuid', Component: CurrencyViewPage },
 ];
 
@@ -92,7 +92,7 @@ function CurrenciesPage() {
   );
 
   const handleDelete = useCallback(
-    (currency) => handleModalOpen('delete', currency.uuid),
+    (currency) => handleModalOpen('remove', currency.uuid),
     [handleModalOpen]
   );
 

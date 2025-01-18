@@ -72,7 +72,7 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
     () => ({
       view: 'Деталі користувача | Моя бухгалтерія',
       edit: 'Редагування користувача | Моя бухгалтерія',
-      delete: 'Видалення користувача | Моя бухгалтерія',
+      remove: 'Видалення користувача | Моя бухгалтерія',
       password: 'Зміна паролю | Моя бухгалтерія',
       default: 'Користувачі | Моя бухгалтерія',
     }),
@@ -87,7 +87,7 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
     const isEditOrDelete =
       location.pathname.includes('password') ||
       location.pathname.includes('edit') ||
-      location.pathname.includes('delete');
+      location.pathname.includes('remove');
     document.title =
       isUuid && !isEditOrDelete
         ? pageTitles.view
@@ -154,7 +154,7 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
             setIsAuthenticated={setIsAuthenticated}
           />
         }
-        path='delete/:uuid'
+        path='remove/:uuid'
       />
       <Route
         element={<UserViewPage handleModalClose={handleModalClose} />}
@@ -202,7 +202,7 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
         rows={users}
         selectedStatus={emailVerificationStatus}
         sortModel={sortModel}
-        onDelete={(user) => handleModalOpen('delete', user.uuid)}
+        onDelete={(user) => handleModalOpen('remove', user.uuid)}
         onEdit={(user) => handleModalOpen('edit', user.uuid)}
         onSortModelChange={setSortModel}
         onStatusChange={(event) =>
