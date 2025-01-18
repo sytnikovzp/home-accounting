@@ -5,6 +5,7 @@ import categoriesReducer from './slices/categoriesSlice';
 import currenciesReducer from './slices/currenciesSlice';
 import measuresReducer from './slices/measuresSlice';
 import nbuExchangesReducer from './slices/nbuExchangesSlice';
+import productsReducer from './slices/productsSlice';
 import statisticsReducer from './slices/statisticsSlice';
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
     currencies: currenciesReducer,
     measures: measuresReducer,
     nbuExchanges: nbuExchangesReducer,
+    products: productsReducer,
     statistics: statisticsReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),

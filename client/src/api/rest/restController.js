@@ -38,7 +38,6 @@ import {
 import {
   createMeasure,
   deleteMeasure,
-  getAllMeasures,
   getMeasureByUuid,
   updateMeasure,
 } from '../../services/measuresService';
@@ -51,7 +50,6 @@ import {
 import {
   createProduct,
   deleteProduct,
-  getAllProducts,
   getProductByUuid,
   updateProduct,
 } from '../../services/productsService';
@@ -160,23 +158,6 @@ const restController = {
   removeCurrency: (currencyUuid) => deleteCurrency(currencyUuid),
 
   // Measure management
-  fetchAllMeasures: async ({
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllMeasures({
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
   fetchMeasureByUuid: (measureUuid) => getMeasureByUuid(measureUuid),
   addMeasure: (title, description = '') => createMeasure(title, description),
   editMeasure: (measureUuid, title, description) =>
@@ -184,25 +165,6 @@ const restController = {
   removeMeasure: (measureUuid) => deleteMeasure(measureUuid),
 
   // Product management
-  fetchAllProducts: async ({
-    status = 'approved',
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllProducts({
-      status,
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
   fetchProductByUuid: (productUuid) => getProductByUuid(productUuid),
   addProduct: (title, category = '') => createProduct(title, category),
   editProduct: (productUuid, title, category) =>

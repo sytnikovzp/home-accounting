@@ -2,6 +2,7 @@ const CATEGORIES_SLICE_NAME = 'categories';
 const CURRENCIES_SLICE_NAME = 'currencies';
 const MEASURES_SLICE_NAME = 'measures';
 const NBU_EXCHANGES_SLICE_NAME = 'nbuExchanges';
+const PRODUCTS_SLICE_NAME = 'products';
 const STATISTICS_SLICE_NAME = 'statistics';
 
 export {
@@ -9,5 +10,6 @@ export {
   CURRENCIES_SLICE_NAME,
   MEASURES_SLICE_NAME,
   NBU_EXCHANGES_SLICE_NAME,
+  PRODUCTS_SLICE_NAME,
   STATISTICS_SLICE_NAME,
 };
