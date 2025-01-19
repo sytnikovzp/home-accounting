@@ -16,15 +16,17 @@ const {
 
 const expensesRouter = new Router();
 
+expensesRouter.use(authHandler);
+
 expensesRouter
   .route('/')
-  .get(authHandler, paginateElements, getAllExpenses)
-  .post(authHandler, validateExpense, createExpense);
+  .get(paginateElements, getAllExpenses)
+  .post(validateExpense, createExpense);
 
 expensesRouter
   .route('/:expenseUuid')
-  .get(authHandler, getExpenseByUuid)
-  .patch(authHandler, validateExpense, updateExpense)
-  .delete(authHandler, deleteExpense);
+  .get(getExpenseByUuid)
+  .patch(validateExpense, updateExpense)
+  .delete(deleteExpense);
 
 module.exports = expensesRouter;

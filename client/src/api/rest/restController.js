@@ -22,9 +22,9 @@ import { resendVerifyEmail } from '../../services/emailService';
 import {
   createEstablishment,
   deleteEstablishment,
-  deleteEstablishmentLogo,
   getAllEstablishments,
   getEstablishmentByUuid,
+  resetEstablishmentLogo,
   updateEstablishment,
   updateEstablishmentLogo,
 } from '../../services/establishmentsService';
@@ -63,10 +63,10 @@ import {
 import {
   changePassword,
   deleteUser,
-  deleteUserPhoto,
   getAllUsers,
   getUserByUuid,
   getUserProfile,
+  resetUserPhoto,
   updateUser,
   updateUserPhoto,
 } from '../../services/usersService';
@@ -113,7 +113,7 @@ const restController = {
     changePassword(userUuid, newPassword, confirmNewPassword),
   uploadUserPhoto: (userUuid, userPhoto) =>
     updateUserPhoto(userUuid, userPhoto),
-  deleteUserPhoto: (userUuid) => deleteUserPhoto(userUuid),
+  resetUserPhoto: (userUuid) => resetUserPhoto(userUuid),
   removeUser: (userUuid) => deleteUser(userUuid),
 
   // Permission management
@@ -244,8 +244,8 @@ const restController = {
     updateEstablishment(establishmentUuid, title, description, url),
   uploadEstablishmentLogo: (establishmentUuid, establishmentLogo) =>
     updateEstablishmentLogo(establishmentUuid, establishmentLogo),
-  deleteEstablishmentLogo: (establishmentUuid) =>
-    deleteEstablishmentLogo(establishmentUuid),
+  resetEstablishmentLogo: (establishmentUuid) =>
+    resetEstablishmentLogo(establishmentUuid),
   removeEstablishment: (establishmentUuid) =>
     deleteEstablishment(establishmentUuid),
 

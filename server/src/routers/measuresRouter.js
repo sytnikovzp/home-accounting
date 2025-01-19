@@ -16,15 +16,17 @@ const {
 
 const measuresRouter = new Router();
 
+measuresRouter.use(authHandler);
+
 measuresRouter
   .route('/')
-  .get(authHandler, paginateElements, getAllMeasures)
-  .post(authHandler, validateMeasure, createMeasure);
+  .get(paginateElements, getAllMeasures)
+  .post(validateMeasure, createMeasure);
 
 measuresRouter
   .route('/:measureUuid')
-  .get(authHandler, getMeasureByUuid)
-  .patch(authHandler, validateMeasure, updateMeasure)
-  .delete(authHandler, deleteMeasure);
+  .get(getMeasureByUuid)
+  .patch(validateMeasure, updateMeasure)
+  .delete(deleteMeasure);
 
 module.exports = measuresRouter;

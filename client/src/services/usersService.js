@@ -43,7 +43,7 @@ const updateUser = async (userUuid, fullName, email, role) => {
 
 const changePassword = async (userUuid, newPassword, confirmNewPassword) => {
   const response = await requestHandler({
-    url: `/users/change-password/${userUuid}`,
+    url: `/users/${userUuid}/password`,
     method: 'PATCH',
     data: { newPassword, confirmNewPassword },
   });
@@ -54,16 +54,16 @@ const updateUserPhoto = async (userUuid, userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
   const response = await requestHandler({
-    url: `/users/update-photo/${userUuid}`,
+    url: `/users/${userUuid}/photo`,
     method: 'PATCH',
     data: formData,
   });
   return response;
 };
 
-const deleteUserPhoto = async (userUuid) => {
+const resetUserPhoto = async (userUuid) => {
   const response = await requestHandler({
-    url: `/users/delete-photo/${userUuid}`,
+    url: `/users/${userUuid}/photo/reset`,
     method: 'PATCH',
     data: { photo: null },
   });
@@ -81,10 +81,10 @@ const deleteUser = async (userUuid) => {
 export {
   changePassword,
   deleteUser,
-  deleteUserPhoto,
   getAllUsers,
   getUserByUuid,
   getUserProfile,
+  resetUserPhoto,
   updateUser,
   updateUserPhoto,
 };

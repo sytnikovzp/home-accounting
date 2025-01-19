@@ -59,7 +59,7 @@ function UserEditPage({
   const handleRemovePhoto = async () => {
     setCrudError(null);
     try {
-      await restController.deleteUserPhoto(userToCRUD.uuid);
+      await restController.resetUserPhoto(userToCRUD.uuid);
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);

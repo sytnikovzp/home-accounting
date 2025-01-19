@@ -7,7 +7,7 @@ const {
   updateEstablishment,
   deleteEstablishment,
   updateEstablishmentLogo,
-  deleteEstablishmentLogo,
+  resetEstablishmentLogo,
 } = require('../services/establishmentsService');
 const { getCurrentUser } = require('../services/usersService');
 
@@ -131,12 +131,12 @@ class EstablishmentsController {
     }
   }
 
-  static async deleteEstablishmentLogo(req, res, next) {
+  static async resetEstablishmentLogo(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const { establishmentUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const updatedEstablishment = await deleteEstablishmentLogo(
+      const updatedEstablishment = await resetEstablishmentLogo(
         establishmentUuid,
         currentUser,
         transaction

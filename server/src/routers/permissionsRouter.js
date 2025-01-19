@@ -8,6 +8,8 @@ const { getAllPermissions } = require('../controllers/permissionsController');
 
 const rolesRouter = new Router();
 
-rolesRouter.route('/').get(authHandler, getAllPermissions);
+rolesRouter.use(authHandler);
+
+rolesRouter.route('/').get(getAllPermissions);
 
 module.exports = rolesRouter;

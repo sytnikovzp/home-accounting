@@ -5,7 +5,7 @@ const {
   updateUser,
   changePassword,
   updateUserPhoto,
-  deleteUserPhoto,
+  resetUserPhoto,
   deleteUser,
 } = require('../services/usersService');
 
@@ -134,11 +134,11 @@ class UserController {
     }
   }
 
-  static async deleteUserPhoto(req, res, next) {
+  static async resetUserPhoto(req, res, next) {
     try {
       const { userUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const updatedUser = await deleteUserPhoto(userUuid, currentUser);
+      const updatedUser = await resetUserPhoto(userUuid, currentUser);
       if (updatedUser) {
         res.status(200).json(updatedUser);
       } else {

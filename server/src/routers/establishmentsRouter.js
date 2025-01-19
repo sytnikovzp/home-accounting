@@ -13,33 +13,34 @@ const {
   createEstablishment,
   updateEstablishment,
   updateEstablishmentLogo,
-  deleteEstablishmentLogo,
+  resetEstablishmentLogo,
   deleteEstablishment,
 } = require('../controllers/establishmentsController');
 
 const establishmentsRouter = new Router();
 
-establishmentsRouter
-  .route('/')
-  .get(authHandler, paginateElements, getAllEstablishments)
-  .post(authHandler, validateEstablishment, createEstablishment);
+establishmentsRouter.use(authHandler);
 
 establishmentsRouter
-  .route('/update-logo/:establishmentUuid')
+  .route('/')
+  .get(paginateElements, getAllEstablishments)
+  .post(validateEstablishment, createEstablishment);
+
+establishmentsRouter
+  .route('/:establishmentUuid/logo')
   .patch(
-    authHandler,
     uploadEstablishmentLogos.single('establishmentLogo'),
     updateEstablishmentLogo
   );
 
 establishmentsRouter
-  .route('/delete-logo/:establishmentUuid')
-  .patch(authHandler, deleteEstablishmentLogo);
+  .route('/:establishmentUuid/logo/reset')
+  .patch(resetEstablishmentLogo);
 
 establishmentsRouter
   .route('/:establishmentUuid')
-  .get(authHandler, getEstablishmentByUuid)
-  .patch(authHandler, validateEstablishment, updateEstablishment)
-  .delete(authHandler, deleteEstablishment);
+  .get(getEstablishmentByUuid)
+  .patch(validateEstablishment, updateEstablishment)
+  .delete(deleteEstablishment);
 
 module.exports = establishmentsRouter;

@@ -14,32 +14,32 @@ const {
   updateUser,
   changePassword,
   updateUserPhoto,
-  deleteUserPhoto,
+  resetUserPhoto,
   deleteUser,
 } = require('../controllers/usersController');
 
 const usersRouter = new Router();
 
-usersRouter.route('/').get(authHandler, paginateElements, getAllUsers);
+usersRouter.use(authHandler);
 
-usersRouter.route('/profile').get(authHandler, getCurrentUserProfile);
+usersRouter.route('/').get(paginateElements, getAllUsers);
 
-usersRouter
-  .route('/change-password/:userUuid')
-  .patch(authHandler, validatePassword, changePassword);
+usersRouter.route('/profile').get(getCurrentUserProfile);
 
 usersRouter
-  .route('/update-photo/:userUuid')
-  .patch(authHandler, uploadUserPhotos.single('userPhoto'), updateUserPhoto);
+  .route('/:userUuid/password')
+  .patch(validatePassword, changePassword);
 
 usersRouter
-  .route('/delete-photo/:userUuid')
-  .patch(authHandler, deleteUserPhoto);
+  .route('/:userUuid/photo')
+  .patch(uploadUserPhotos.single('userPhoto'), updateUserPhoto);
+
+usersRouter.route('/:userUuid/photo/reset').patch(resetUserPhoto);
 
 usersRouter
   .route('/:userUuid')
-  .get(authHandler, getUserByUuid)
-  .patch(authHandler, validateUser, updateUser)
-  .delete(authHandler, deleteUser);
+  .get(getUserByUuid)
+  .patch(validateUser, updateUser)
+  .delete(deleteUser);
 
 module.exports = usersRouter;

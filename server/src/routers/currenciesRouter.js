@@ -16,15 +16,17 @@ const {
 
 const currenciesRouter = new Router();
 
+currenciesRouter.use(authHandler);
+
 currenciesRouter
   .route('/')
-  .get(authHandler, paginateElements, getAllCurrencies)
-  .post(authHandler, validateCurrency, createCurrency);
+  .get(paginateElements, getAllCurrencies)
+  .post(validateCurrency, createCurrency);
 
 currenciesRouter
   .route('/:currencyUuid')
-  .get(authHandler, getCurrencyByUuid)
-  .patch(authHandler, validateCurrency, updateCurrency)
-  .delete(authHandler, deleteCurrency);
+  .get(getCurrencyByUuid)
+  .patch(validateCurrency, updateCurrency)
+  .delete(deleteCurrency);
 
 module.exports = currenciesRouter;

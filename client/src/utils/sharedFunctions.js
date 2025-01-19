@@ -61,7 +61,7 @@ const requestHandler = async ({
   try {
     const queryParams = new URLSearchParams(params).toString();
     const headers =
-      url.includes('update-logo') || url.includes('update-photo')
+      url.includes('logo') || url.includes('photo')
         ? { 'Content-Type': 'multipart/form-data' }
         : {};
     const response = await api({

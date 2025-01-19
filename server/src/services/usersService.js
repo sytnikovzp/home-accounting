@@ -311,7 +311,7 @@ class UsersService {
     };
   }
 
-  static async deleteUserPhoto(uuid, currentUser) {
+  static async resetUserPhoto(uuid, currentUser) {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }

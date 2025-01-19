@@ -4,9 +4,9 @@ import { sliceNames } from '../../constants';
 import {
   createEstablishment,
   deleteEstablishment,
-  deleteEstablishmentLogo,
   getAllEstablishments,
   getEstablishmentByUuid,
+  resetEstablishmentLogo,
   updateEstablishment,
   updateEstablishmentLogo,
 } from '../../services/establishmentsService';
@@ -81,7 +81,7 @@ export const removeEstablishmentLogo = createAsyncThunk(
   `${ESTABLISHMENTS_SLICE_NAME}/removeLogo`,
   async ({ uuid }, { rejectWithValue }) => {
     try {
-      const { data } = await deleteEstablishmentLogo(uuid);
+      const { data } = await resetEstablishmentLogo(uuid);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

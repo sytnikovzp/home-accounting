@@ -343,10 +343,10 @@ describe('EstablishmentsController', () => {
     });
   });
 
-  describe('PATCH /api/establishments/update-logo/:establishmentUuid', () => {
+  describe('PATCH /api/establishments/:establishmentUuid/logo', () => {
     it('should update establishment logo', async () => {
       const response = await request(app)
-        .patch(`/api/establishments/update-logo/${establishmentUuid}`)
+        .patch(`/api/establishments/${establishmentUuid}/logo`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .attach(
           'establishmentLogo',
@@ -363,13 +363,13 @@ describe('EstablishmentsController', () => {
     });
   });
 
-  describe('PATCH /api/establishments/delete-logo/:establishmentUuid', () => {
+  describe('PATCH /api/establishments/:establishmentUuid/logo/reset', () => {
     it('should remove establishment logo', async () => {
       const updatedEstablishment = {
         logo: null,
       };
       const response = await request(app)
-        .patch(`/api/establishments/delete-logo/${establishmentUuid}`)
+        .patch(`/api/establishments/${establishmentUuid}/logo/reset`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send(updatedEstablishment);
       expect(response.status).toBe(200);

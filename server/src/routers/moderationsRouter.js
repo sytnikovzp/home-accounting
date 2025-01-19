@@ -15,20 +15,20 @@ const {
 
 const moderationsRouter = new Router();
 
-moderationsRouter
-  .route('/')
-  .get(authHandler, paginateElements, getAllPendingItems);
+moderationsRouter.use(authHandler);
+
+moderationsRouter.route('/').get(paginateElements, getAllPendingItems);
 
 moderationsRouter
   .route('/categories/:categoryUuid')
-  .patch(authHandler, validateModeration, moderationCategory);
+  .patch(validateModeration, moderationCategory);
 
 moderationsRouter
   .route('/products/:productUuid')
-  .patch(authHandler, validateModeration, moderationProduct);
+  .patch(validateModeration, moderationProduct);
 
 moderationsRouter
   .route('/establishments/:establishmentUuid')
-  .patch(authHandler, validateModeration, moderationEstablishment);
+  .patch(validateModeration, moderationEstablishment);
 
 module.exports = moderationsRouter;

@@ -212,7 +212,7 @@ class EstablishmentsService {
     return formatEstablishmentData(updatedEstablishmentLogo);
   }
 
-  static async deleteEstablishmentLogo(uuid, currentUser, transaction) {
+  static async resetEstablishmentLogo(uuid, currentUser, transaction) {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }

@@ -16,15 +16,17 @@ const {
 
 const productsRouter = new Router();
 
+productsRouter.use(authHandler);
+
 productsRouter
   .route('/')
-  .get(authHandler, paginateElements, getAllProducts)
-  .post(authHandler, validateProduct, createProduct);
+  .get(paginateElements, getAllProducts)
+  .post(validateProduct, createProduct);
 
 productsRouter
   .route('/:productUuid')
-  .get(authHandler, getProductByUuid)
-  .patch(authHandler, validateProduct, updateProduct)
-  .delete(authHandler, deleteProduct);
+  .get(getProductByUuid)
+  .patch(validateProduct, updateProduct)
+  .delete(deleteProduct);
 
 module.exports = productsRouter;

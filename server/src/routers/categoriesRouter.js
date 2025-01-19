@@ -16,15 +16,17 @@ const {
 
 const categoriesRouter = new Router();
 
+categoriesRouter.use(authHandler);
+
 categoriesRouter
   .route('/')
-  .get(authHandler, paginateElements, getAllCategories)
-  .post(authHandler, validateCategory, createCategory);
+  .get(paginateElements, getAllCategories)
+  .post(validateCategory, createCategory);
 
 categoriesRouter
   .route('/:categoryUuid')
-  .get(authHandler, getCategoryByUuid)
-  .patch(authHandler, validateCategory, updateCategory)
-  .delete(authHandler, deleteCategory);
+  .get(getCategoryByUuid)
+  .patch(validateCategory, updateCategory)
+  .delete(deleteCategory);
 
 module.exports = categoriesRouter;

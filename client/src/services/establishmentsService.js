@@ -54,16 +54,16 @@ const updateEstablishmentLogo = async (
   const formData = new FormData();
   formData.append('establishmentLogo', establishmentLogo);
   const response = await requestHandler({
-    url: `/establishments/update-logo/${establishmentUuid}`,
+    url: `/establishments/${establishmentUuid}/logo`,
     method: 'PATCH',
     data: formData,
   });
   return response;
 };
 
-const deleteEstablishmentLogo = async (establishmentUuid) => {
+const resetEstablishmentLogo = async (establishmentUuid) => {
   const response = await requestHandler({
-    url: `/establishments/delete-logo/${establishmentUuid}`,
+    url: `/establishments/${establishmentUuid}/logo/reset`,
     method: 'PATCH',
     data: { logo: null },
   });
@@ -81,9 +81,9 @@ const deleteEstablishment = async (establishmentUuid) => {
 export {
   createEstablishment,
   deleteEstablishment,
-  deleteEstablishmentLogo,
   getAllEstablishments,
   getEstablishmentByUuid,
+  resetEstablishmentLogo,
   updateEstablishment,
   updateEstablishmentLogo,
 };

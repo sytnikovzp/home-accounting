@@ -16,15 +16,17 @@ const {
 
 const rolesRouter = new Router();
 
+rolesRouter.use(authHandler);
+
 rolesRouter
   .route('/')
-  .get(authHandler, paginateElements, getAllRoles)
-  .post(authHandler, validateRole, createRole);
+  .get(paginateElements, getAllRoles)
+  .post(validateRole, createRole);
 
 rolesRouter
   .route('/:roleUuid')
-  .get(authHandler, getRoleByUuid)
-  .patch(authHandler, validateRole, updateRole)
-  .delete(authHandler, deleteRole);
+  .get(getRoleByUuid)
+  .patch(validateRole, updateRole)
+  .delete(deleteRole);
 
 module.exports = rolesRouter;
