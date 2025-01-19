@@ -41,15 +41,6 @@ const refreshAccessToken = async () => {
   return response;
 };
 
-const resendVerifyEmail = async (email) => {
-  const response = await requestHandler({
-    url: '/auth/resend-verify',
-    method: 'POST',
-    data: { email },
-  });
-  return response;
-};
-
 const forgotPassword = async (email) => {
   const response = await requestHandler({
     url: '/auth/forgot',
@@ -74,6 +65,5 @@ export {
   logout,
   refreshAccessToken,
   registration,
-  resendVerifyEmail,
   resetPassword,
 };

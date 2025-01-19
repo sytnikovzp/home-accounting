@@ -4,7 +4,6 @@ import {
   logout,
   refreshAccessToken,
   registration,
-  resendVerifyEmail,
   resetPassword,
 } from '../../services/authService';
 import {
@@ -19,6 +18,7 @@ import {
   getCurrencyByUuid,
   updateCurrency,
 } from '../../services/currenciesService';
+import { resendVerifyEmail } from '../../services/emailService';
 import {
   createEstablishment,
   deleteEstablishment,
@@ -78,10 +78,12 @@ const restController = {
   login: (email, password) => login(email, password),
   logout: () => logout(),
   refreshAccessToken: (originalRequest) => refreshAccessToken(originalRequest),
-  resendVerifyEmail: (email) => resendVerifyEmail(email),
   forgotPassword: (email) => forgotPassword(email),
   resetPassword: (token, newPassword, confirmNewPassword) =>
     resetPassword(token, newPassword, confirmNewPassword),
+
+  // Email service
+  resendVerifyEmail: (email) => resendVerifyEmail(email),
 
   // User management
   fetchAllUsers: async ({

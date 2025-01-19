@@ -4,7 +4,6 @@ const {
   validation: {
     validateRegistration,
     validateLogin,
-    validateResendVerify,
     validateForgotPassword,
     validatePassword,
   },
@@ -15,8 +14,6 @@ const {
   login,
   logout,
   refresh,
-  verifyEmail,
-  resendVerifyEmail,
   forgotPassword,
   getResetPasswordPage,
   resetPassword,
@@ -28,8 +25,6 @@ authRouter.post('/registration', validateRegistration, registration);
 authRouter.post('/login', validateLogin, login);
 authRouter.get('/logout', logout);
 authRouter.get('/refresh', refresh);
-authRouter.get('/verify', verifyEmail);
-authRouter.post('/resend-verify', validateResendVerify, resendVerifyEmail);
 authRouter.post('/forgot', validateForgotPassword, forgotPassword);
 authRouter.get('/reset-password', getResetPasswordPage);
 authRouter.post('/reset', validatePassword, resetPassword);

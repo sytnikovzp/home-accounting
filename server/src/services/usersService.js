@@ -191,7 +191,7 @@ class UsersService {
       });
       await mailService.sendEmailChangeVerification(
         newEmail,
-        `http://${HOST}:${PORT}/api/auth/verify?token=${verificationToken.token}`
+        `http://${HOST}:${PORT}/api/email/verify?token=${verificationToken.token}`
       );
     }
     if (role && role !== foundRole.title) {

@@ -20,18 +20,6 @@ Content-Type: application/json
   # "password": "Qwerty1234567"
 }
 
-### Verification new user email
-GET http://localhost:5000/api/auth/verify?token=1e9a4906-a77a-45a4-bd79-b41ffcc6b74e HTTP/1.1
-Content-Type: application/json
-
-### Resend verification new user email
-POST http://localhost:5000/api/auth/resend-verify HTTP/1.1
-Content-Type: application/json
-
-{
-  "email": "nepushkin93@Gmail.com"
-}
-
 // ==============================================================
 
 ### Login exists user

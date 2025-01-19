@@ -53,7 +53,6 @@ const changePassword = async (userUuid, newPassword, confirmNewPassword) => {
 const updateUserPhoto = async (userUuid, userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
-
   const response = await requestHandler({
     url: `/users/update-photo/${userUuid}`,
     method: 'PATCH',

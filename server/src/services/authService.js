@@ -51,7 +51,7 @@ class AuthService {
     });
     await mailService.sendVerificationMail(
       email,
-      `http://${HOST}:${PORT}/api/auth/verify?token=${verificationToken.token}`
+      `http://${HOST}:${PORT}/api/email/verify?token=${verificationToken.token}`
     );
     const tokens = generateTokens(user);
     return {
@@ -97,37 +97,6 @@ class AuthService {
         photo: foundUser.photo || '',
       },
     };
-  }
-
-  static async verifyEmail(token) {
-    const tokenRecord = await VerificationToken.findOne({ token });
-    const foundUser = await User.findOne({ uuid: tokenRecord.userUuid });
-    if (!foundUser) {
-      throw notFound('Користувача не знайдено');
-    }
-    foundUser.emailVerificationStatus = 'verified';
-    await foundUser.save();
-    await VerificationToken.deleteOne({ token });
-  }
-
-  static async resendVerifyEmail(email) {
-    const emailToLower = emailToLowerCase(email);
-    const foundUser = await User.findOne({ email: emailToLower });
-    if (!foundUser) {
-      throw notFound('Користувача не знайдено');
-    }
-    if (foundUser.emailVerificationStatus === 'verified') {
-      throw badRequest('Цей email вже підтверджений');
-    }
-    await VerificationToken.deleteMany({ userUuid: foundUser.uuid });
-    const verificationToken = await VerificationToken.create({
-      userUuid: foundUser.uuid,
-      expiresAt: new Date(Date.now() + VERIFICATION),
-    });
-    await mailService.sendVerificationMail(
-      foundUser.email,
-      `http://${HOST}:${PORT}/api/auth/verify?token=${verificationToken.token}`
-    );
   }
 
   static async refresh(refreshToken) {
