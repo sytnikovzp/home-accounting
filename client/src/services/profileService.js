@@ -1,70 +1,54 @@
 import { requestHandler } from '../utils/sharedFunctions';
 
-const getAllUsers = async ({
-  emailVerificationStatus = 'all',
-  page = 1,
-  limit = 6,
-  sort = 'uuid',
-  order = 'asc',
-} = {}) => {
-  const params = { emailVerificationStatus, page, limit, sort, order };
+const getUserProfile = async () => {
   const response = await requestHandler({
-    url: '/users',
-    method: 'GET',
-    params,
-  });
-  return response;
-};
-
-const getUserByUuid = async (userUuid) => {
-  const response = await requestHandler({
-    url: `/users/${userUuid}`,
+    url: '/profile',
     method: 'GET',
   });
   return response;
 };
 
-const changePassword = async (userUuid, newPassword, confirmNewPassword) => {
+const changePassword = async (newPassword, confirmNewPassword) => {
   const response = await requestHandler({
-    url: `/users/${userUuid}/password`,
+    url: `/profile/password`,
     method: 'PATCH',
     data: { newPassword, confirmNewPassword },
   });
   return response;
 };
 
-const updateUser = async (userUuid, fullName, email, role) => {
+const updateUser = async (fullName, email, role) => {
   const response = await requestHandler({
-    url: `/users/${userUuid}`,
+    url: '/profile',
     method: 'PATCH',
     data: { fullName, email, role },
   });
   return response;
 };
 
-const updateUserPhoto = async (userUuid, userPhoto) => {
+const updateUserPhoto = async (userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
   const response = await requestHandler({
-    url: `/users/${userUuid}/photo`,
+    url: `/profile/photo`,
     method: 'PATCH',
     data: formData,
   });
   return response;
 };
 
-const resetUserPhoto = async (userUuid) => {
+const resetUserPhoto = async () => {
   const response = await requestHandler({
-    url: `/users/${userUuid}/photo/reset`,
+    url: `/profile/photo/reset`,
     method: 'PATCH',
     data: { photo: null },
   });
   return response;
 };
 
-const deleteUser = async (userUuid) => {
+const deleteUser = async () => {
   const response = await requestHandler({
-    url: `/users/${userUuid}`,
+    url: '/profile',
     method: 'DELETE',
   });
   return response;
@@ -73,8 +57,7 @@ const deleteUser = async (userUuid) => {
 export {
   changePassword,
   deleteUser,
-  getAllUsers,
-  getUserByUuid,
+  getUserProfile,
   resetUserPhoto,
   updateUser,
   updateUserPhoto,

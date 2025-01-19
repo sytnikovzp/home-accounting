@@ -1,6 +1,4 @@
 const {
-  getAllUsers,
-  getUserByUuid,
   getCurrentUser,
   updateUser,
   changePassword,
@@ -9,40 +7,12 @@ const {
   deleteUser,
 } = require('../services/usersService');
 
-class UserController {
-  static async getAllUsers(req, res, next) {
+class ProfileController {
+  static async getCurrentUserProfile(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const {
-        emailVerificationStatus,
-        sort = 'uuid',
-        order = 'asc',
-      } = req.query;
-      const { allUsers, total } = await getAllUsers(
-        emailVerificationStatus,
-        limit,
-        offset,
-        sort,
-        order
-      );
-      if (allUsers.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allUsers);
-      } else {
-        res.status(401);
-      }
-    } catch (error) {
-      console.error('Get all users error: ', error.message);
-      next(error);
-    }
-  }
-
-  static async getUserByUuid(req, res, next) {
-    try {
-      const { userUuid } = req.params;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const user = await getUserByUuid(userUuid, currentUser);
-      if (user) {
-        res.status(200).json(user);
+      if (currentUser) {
+        res.status(200).json(currentUser);
       } else {
         res.status(401);
       }
@@ -54,11 +24,11 @@ class UserController {
 
   static async changePassword(req, res, next) {
     try {
-      const { userUuid } = req.params;
+      const { uuid } = req.user;
       const { newPassword, confirmNewPassword } = req.body;
       const currentUser = await getCurrentUser(req.user.uuid);
       const updatedUser = await changePassword(
-        userUuid,
+        uuid,
         newPassword,
         confirmNewPassword,
         currentUser
@@ -76,11 +46,11 @@ class UserController {
 
   static async updateUser(req, res, next) {
     try {
-      const { userUuid } = req.params;
+      const { uuid } = req.user;
       const { fullName, email, role } = req.body;
       const currentUser = await getCurrentUser(req.user.uuid);
       const updatedUser = await updateUser(
-        userUuid,
+        uuid,
         fullName,
         email,
         role,
@@ -100,15 +70,11 @@ class UserController {
   static async updateUserPhoto(req, res, next) {
     try {
       const {
-        params: { userUuid },
+        user: { uuid },
         file: { filename },
       } = req;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const updatedUser = await updateUserPhoto(
-        userUuid,
-        filename,
-        currentUser
-      );
+      const updatedUser = await updateUserPhoto(uuid, filename, currentUser);
       if (updatedUser) {
         res.status(200).json(updatedUser);
       } else {
@@ -122,9 +88,9 @@ class UserController {
 
   static async resetUserPhoto(req, res, next) {
     try {
-      const { userUuid } = req.params;
+      const { uuid } = req.user;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const updatedUser = await resetUserPhoto(userUuid, currentUser);
+      const updatedUser = await resetUserPhoto(uuid, currentUser);
       if (updatedUser) {
         res.status(200).json(updatedUser);
       } else {
@@ -138,13 +104,11 @@ class UserController {
 
   static async deleteUser(req, res, next) {
     try {
-      const { userUuid } = req.params;
+      const { uuid } = req.user;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const deletedUser = await deleteUser(userUuid, currentUser);
+      const deletedUser = await deleteUser(uuid, currentUser);
       if (deletedUser) {
-        if (currentUser.uuid === userUuid) {
-          res.clearCookie('refreshToken');
-        }
+        res.clearCookie('refreshToken');
         res.sendStatus(res.statusCode);
       } else {
         res.status(401);
@@ -156,4 +120,4 @@ class UserController {
   }
 }
 
-module.exports = UserController;
+module.exports = ProfileController;

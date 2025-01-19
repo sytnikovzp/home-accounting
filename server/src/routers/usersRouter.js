@@ -10,7 +10,6 @@ const {
 const {
   getAllUsers,
   getUserByUuid,
-  getCurrentUserProfile,
   updateUser,
   changePassword,
   updateUserPhoto,
@@ -23,8 +22,6 @@ const usersRouter = new Router();
 usersRouter.use(authHandler);
 
 usersRouter.route('/').get(paginateElements, getAllUsers);
-
-usersRouter.route('/profile').get(getCurrentUserProfile);
 
 usersRouter
   .route('/:userUuid/password')

@@ -68,8 +68,7 @@ class UsersService {
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    const roleUuidBinary = foundUser.roleUuid;
-    const role = await Role.findOne({ uuid: roleUuidBinary });
+    const role = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!role) {
       throw notFound('Роль для користувача не знайдено');
     }
@@ -152,93 +151,6 @@ class UsersService {
     };
   }
 
-  static async updateUser(uuid, fullName, email, role, currentUser) {
-    if (!isValidUUID(uuid)) {
-      throw badRequest('Невірний формат UUID');
-    }
-    const hasPermission =
-      currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
-    if (!hasPermission) {
-      throw forbidden(
-        'У Вас немає дозволу на оновлення даних цього користувача'
-      );
-    }
-    const foundUser = await User.findOne({ uuid });
-    if (!foundUser) {
-      throw notFound('Користувача не знайдено');
-    }
-    const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
-    if (!foundRole) {
-      throw badRequest('Роль для користувача не знайдено');
-    }
-    const updateData = {};
-    if (fullName) {
-      updateData.fullName = fullName;
-    }
-    if (email && email.toLowerCase() !== foundUser.email.toLowerCase()) {
-      const newEmail = email.toLowerCase();
-      const existingEmail = await User.findOne({ email: newEmail });
-      if (existingEmail) {
-        throw badRequest('Ця електронна адреса вже використовується');
-      }
-      updateData.email = newEmail;
-      updateData.emailVerificationStatus = 'pending';
-      updateData.tokenVersion = foundUser.tokenVersion + 1;
-      const verificationToken = await VerificationToken.create({
-        userUuid: foundUser.uuid,
-        expiresAt: new Date(Date.now() + VERIFICATION),
-      });
-      await mailService.sendEmailChangeVerification(
-        newEmail,
-        `http://${HOST}:${PORT}/api/email/verify?token=${verificationToken.token}`
-      );
-    }
-    if (role && role !== foundRole.title) {
-      const hasPermissionToChangeRole = await checkPermission(
-        currentUser,
-        'ASSIGN_ROLES'
-      );
-      if (!hasPermissionToChangeRole) {
-        throw forbidden(
-          'У Вас немає дозволу на редагування ролі цього користувача'
-        );
-      }
-      if (foundRole.title === 'Administrator') {
-        const adminCount = await User.countDocuments({
-          roleUuid: foundUser.roleUuid,
-        });
-        if (adminCount === 1) {
-          throw forbidden('Змінити роль останнього Адміністратора не можна');
-        }
-      }
-      const newRole = await Role.findOne({ title: role });
-      if (!newRole) {
-        throw notFound('Роль для користувача не знайдено');
-      }
-      updateData.roleUuid = newRole.uuid;
-    }
-    const updatedUser = await User.findOneAndUpdate({ uuid }, updateData, {
-      new: true,
-    });
-    if (!updatedUser) {
-      throw badRequest('Дані цього користувача не оновлено');
-    }
-    const tokens = generateTokens(updatedUser);
-    return {
-      ...tokens,
-      user: {
-        uuid: updatedUser.uuid,
-        fullName: updatedUser.fullName,
-        emailVerificationStatus: mapValue(
-          updatedUser.emailVerificationStatus,
-          USER_VERIFICATION_MAPPING
-        ),
-        role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,
-      },
-    };
-  }
-
   static async changePassword(
     uuid,
     newPassword,
@@ -280,6 +192,93 @@ class UsersService {
           updatedUser.emailVerificationStatus,
           USER_VERIFICATION_MAPPING
         ),
+      },
+    };
+  }
+
+  static async updateUser(uuid, fullName, email, role, currentUser) {
+    if (!isValidUUID(uuid)) {
+      throw badRequest('Невірний формат UUID');
+    }
+    const hasPermission =
+      currentUser.uuid === uuid ||
+      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
+    if (!hasPermission) {
+      throw forbidden(
+        'У Вас немає дозволу на оновлення даних цього користувача'
+      );
+    }
+    const foundUser = await User.findOne({ uuid });
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
+    const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
+    if (!foundRole) {
+      throw badRequest('Роль для користувача не знайдено');
+    }
+    const updateData = {};
+    if (fullName) {
+      updateData.fullName = fullName;
+    }
+    if (role && role !== foundRole.title) {
+      const hasPermissionToChangeRole = await checkPermission(
+        currentUser,
+        'ASSIGN_ROLES'
+      );
+      if (!hasPermissionToChangeRole) {
+        throw forbidden(
+          'У Вас немає дозволу на редагування ролі цього користувача'
+        );
+      }
+      if (foundRole.title === 'Administrator') {
+        const adminCount = await User.countDocuments({
+          roleUuid: foundUser.roleUuid,
+        });
+        if (adminCount === 1) {
+          throw forbidden('Змінити роль останнього Адміністратора не можна');
+        }
+      }
+      const newRole = await Role.findOne({ title: role });
+      if (!newRole) {
+        throw notFound('Роль для користувача не знайдено');
+      }
+      updateData.roleUuid = newRole.uuid;
+    }
+    if (email && email.toLowerCase() !== foundUser.email.toLowerCase()) {
+      const newEmail = email.toLowerCase();
+      const existingEmail = await User.findOne({ email: newEmail });
+      if (existingEmail) {
+        throw badRequest('Ця електронна адреса вже використовується');
+      }
+      updateData.email = newEmail;
+      updateData.emailVerificationStatus = 'pending';
+      updateData.tokenVersion = foundUser.tokenVersion + 1;
+      const verificationToken = await VerificationToken.create({
+        userUuid: foundUser.uuid,
+        expiresAt: new Date(Date.now() + VERIFICATION),
+      });
+      await mailService.sendEmailChangeVerification(
+        newEmail,
+        `http://${HOST}:${PORT}/api/email/verify?token=${verificationToken.token}`
+      );
+    }
+    const updatedUser = await User.findOneAndUpdate({ uuid }, updateData, {
+      new: true,
+    });
+    if (!updatedUser) {
+      throw badRequest('Дані цього користувача не оновлено');
+    }
+    const tokens = generateTokens(updatedUser);
+    return {
+      ...tokens,
+      user: {
+        uuid: updatedUser.uuid,
+        fullName: updatedUser.fullName,
+        emailVerificationStatus: mapValue(
+          updatedUser.emailVerificationStatus,
+          USER_VERIFICATION_MAPPING
+        ),
+        role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,
       },
     };
   }

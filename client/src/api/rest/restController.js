@@ -53,6 +53,7 @@ import {
   getProductByUuid,
   updateProduct,
 } from '../../services/productsService';
+import { getUserProfile } from '../../services/profileService';
 import {
   createRole,
   deleteRole,
@@ -65,7 +66,6 @@ import {
   deleteUser,
   getAllUsers,
   getUserByUuid,
-  getUserProfile,
   resetUserPhoto,
   updateUser,
   updateUserPhoto,

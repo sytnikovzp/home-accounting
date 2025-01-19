@@ -15,6 +15,7 @@ function UserForm({
   onUploadPhoto,
   onRemovePhoto,
   onChangePassword,
+  onDeleteProfile,
 }) {
   const [uploading, setUploading] = useState(false);
   const initialValues = user
@@ -78,13 +79,18 @@ function UserForm({
       )}
       <Box sx={stylesUserFormPasswordButton}>
         {user?.uuid && (
-          <Button
-            color='success'
-            variant='contained'
-            onClick={onChangePassword}
-          >
-            Змінити пароль
-          </Button>
+          <>
+            <Button
+              color='success'
+              variant='contained'
+              onClick={onChangePassword}
+            >
+              Змінити пароль
+            </Button>
+            <Button color='error' variant='contained' onClick={onDeleteProfile}>
+              Видалити профіль
+            </Button>
+          </>
         )}
       </Box>
       <BaseForm

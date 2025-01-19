@@ -2,7 +2,13 @@ const path = require('path');
 
 const mongoose = require('mongoose');
 
-const { User, Role, Permission } = require('../db/dbMongo/models');
+const {
+  User,
+  Role,
+  Permission,
+  PasswordResetToken,
+  VerificationToken,
+} = require('../db/dbMongo/models');
 
 const {
   mongoData: { roles, users, permissions },
@@ -49,6 +55,8 @@ const createUsers = async (roleUuids) => {
 
 const seedDatabase = async () => {
   try {
+    await PasswordResetToken.deleteMany({});
+    await VerificationToken.deleteMany({});
     await User.deleteMany({});
     await Role.deleteMany({});
     await Permission.deleteMany({});
