@@ -1,7 +1,7 @@
 export const stylesViewDetailRowExtraBox = {
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'center',
+  alignItems: 'flex-end',
   justifyContent: 'space-between',
   gap: '8px',
   width: '100%',

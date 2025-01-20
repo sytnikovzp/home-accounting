@@ -16,7 +16,6 @@ function UserRemovePage({
   crudError,
   setCrudError,
   currentUser,
-  setIsAuthenticated,
 }) {
   const { uuid } = useParams();
   const navigate = useNavigate();
@@ -36,7 +35,6 @@ function UserRemovePage({
   const handleLogout = async () => {
     try {
       await restController.logout();
-      setIsAuthenticated(false);
       navigate('/');
     } catch (error) {
       console.error('Помилка виходу із системи:', error.message);

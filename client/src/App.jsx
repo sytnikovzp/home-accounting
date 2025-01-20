@@ -32,8 +32,9 @@ import UsersPage from './pages/Users/UsersPage';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+
+  const isAuthenticated = Boolean(currentUser);
 
   const handleCloseAuthModal = () => setAuthModalOpen(false);
 
@@ -41,7 +42,6 @@ function App() {
     try {
       const currentUser = await restController.fetchUserProfile();
       setCurrentUser(currentUser);
-      setIsAuthenticated(true);
     } catch (error) {
       console.error('Не вдалося завантажити дані користувача:', error.message);
     } finally {
@@ -88,7 +88,6 @@ function App() {
                 currentUser={currentUser}
                 isAuthenticated={isAuthenticated}
                 setAuthModalOpen={setAuthModalOpen}
-                setIsAuthenticated={setIsAuthenticated}
               />
             }
             path='/'
@@ -122,15 +121,7 @@ function App() {
               element={renderPrivateRoute(<ModerationsPage />)}
               path='moderation/*'
             />
-            <Route
-              element={renderPrivateRoute(
-                <UsersPage
-                  currentUser={currentUser}
-                  setIsAuthenticated={setIsAuthenticated}
-                />
-              )}
-              path='users/*'
-            />
+            <Route element={renderPrivateRoute(<UsersPage />)} path='users/*' />
             <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
             <Route element={<NotificationsPage />} path='notification' />
             <Route element={<UserResetPasswordPage />} path='reset-password' />

@@ -79,6 +79,9 @@ const requestHandler = async ({
     }
     return response.data;
   } catch (error) {
+    if (method === 'GET' && url.includes('/profile')) {
+      return {};
+    }
     if (method === 'GET') {
       return {
         data: [],

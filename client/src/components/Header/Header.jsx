@@ -18,12 +18,7 @@ import Logo from './Logo';
 
 import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 
-function Header({
-  isAuthenticated,
-  currentUser,
-  setIsAuthenticated,
-  setAuthModalOpen,
-}) {
+function Header({ isAuthenticated, currentUser, setAuthModalOpen }) {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
@@ -38,7 +33,6 @@ function Header({
   const handleLogout = async () => {
     try {
       await restController.logout();
-      setIsAuthenticated(false);
       navigate('/');
     } catch (error) {
       console.error('Помилка виходу із системи:', error.message);

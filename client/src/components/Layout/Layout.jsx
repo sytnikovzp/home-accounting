@@ -18,12 +18,7 @@ import {
   stylesLayoutXLGridContainer,
 } from '../../styles';
 
-function Layout({
-  isAuthenticated,
-  currentUser,
-  setIsAuthenticated,
-  setAuthModalOpen,
-}) {
+function Layout({ isAuthenticated, currentUser, setAuthModalOpen }) {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -50,7 +45,6 @@ function Layout({
             currentUser={currentUser}
             isAuthenticated={isAuthenticated}
             setAuthModalOpen={setAuthModalOpen}
-            setIsAuthenticated={setIsAuthenticated}
           />
         </Grid2>
         <Container maxWidth='xl' sx={stylesLayoutXLContainer}>

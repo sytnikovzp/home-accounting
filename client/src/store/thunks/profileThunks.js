@@ -13,10 +13,10 @@ import {
 const { PROFILE_SLICE_NAME } = sliceNames;
 
 export const fetchUserProfile = createAsyncThunk(
-  `${PROFILE_SLICE_NAME}/fetchProfile`,
+  `${PROFILE_SLICE_NAME}/fetch`,
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await getUserProfile();
+      const data = await getUserProfile();
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

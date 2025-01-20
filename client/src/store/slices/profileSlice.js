@@ -15,7 +15,7 @@ import {
 const { PROFILE_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  profile: null,
+  data: null,
   isLoading: false,
   error: null,
 };
@@ -30,7 +30,7 @@ const profileSlice = createSlice({
       .addCase(fetchUserProfile.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.profile = payload;
+        state.data = payload;
       })
       .addCase(changeUserPassword.fulfilled, (state) => {
         state.isLoading = false;
@@ -39,28 +39,28 @@ const profileSlice = createSlice({
       .addCase(editUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.profile = payload;
+        state.data = payload;
       })
       .addCase(changePhoto.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.profile = {
-          ...state.profile,
+        state.data = {
+          ...state.data,
           photo: payload.photo,
         };
       })
       .addCase(resetPhoto.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
-        state.profile = {
-          ...state.profile,
+        state.data = {
+          ...state.data,
           photo: null,
         };
       })
       .addCase(removeUser.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
-        state.profile = null;
+        state.data = null;
       })
 
       // Pending
