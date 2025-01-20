@@ -22,7 +22,6 @@ import { resendVerifyEmail } from '../../services/emailService';
 import {
   createEstablishment,
   deleteEstablishment,
-  getAllEstablishments,
   getEstablishmentByUuid,
   resetEstablishmentLogo,
   updateEstablishment,
@@ -46,7 +45,6 @@ import {
   moderationEstablishment,
   moderationProduct,
 } from '../../services/moderationsService';
-import { getAllPermissions } from '../../services/permissionsService';
 import {
   createProduct,
   deleteProduct,
@@ -57,14 +55,12 @@ import { getUserProfile } from '../../services/profileService';
 import {
   createRole,
   deleteRole,
-  getAllRoles,
   getRoleByUuid,
   updateRole,
 } from '../../services/rolesService';
 import {
   changePassword,
   deleteUser,
-  getAllUsers,
   getUserByUuid,
   resetUserPhoto,
   updateUser,
@@ -86,25 +82,6 @@ const restController = {
   resendVerifyEmail: (email) => resendVerifyEmail(email),
 
   // User management
-  fetchAllUsers: async ({
-    emailVerificationStatus = 'all',
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllUsers({
-      emailVerificationStatus,
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
   fetchUserProfile: () => getUserProfile(),
   fetchUserByUuid: (userUuid) => getUserByUuid(userUuid),
   editUser: (userUuid, fullName, email, role) =>
@@ -116,30 +93,7 @@ const restController = {
   resetUserPhoto: (userUuid) => resetUserPhoto(userUuid),
   removeUser: (userUuid) => deleteUser(userUuid),
 
-  // Permission management
-  fetchAllPermissions: async () => {
-    const { data } = await getAllPermissions({});
-    return { data };
-  },
-
   // Role management
-  fetchAllRoles: async ({
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllRoles({
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
   fetchRoleByUuid: (roleUuid) => getRoleByUuid(roleUuid),
   addRole: (title, description, permissions) =>
     createRole(title, description, permissions),
@@ -217,25 +171,6 @@ const restController = {
   removeExpense: (expenseUuid) => deleteExpense(expenseUuid),
 
   // Establishment management
-  fetchAllEstablishments: async ({
-    status = 'approved',
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllEstablishments({
-      status,
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
   fetchEstablishmentByUuid: (establishmentUuid) =>
     getEstablishmentByUuid(establishmentUuid),
   addEstablishment: (title, description = '', url = '') =>

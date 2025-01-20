@@ -54,6 +54,14 @@ const ROLES_TITLES = {
   default: 'Ролі користувачів | Моя бухгалтерія',
 };
 
+const USERS_TITLES = {
+  view: 'Деталі користувача | Моя бухгалтерія',
+  edit: 'Редагування користувача | Моя бухгалтерія',
+  remove: 'Видалення користувача | Моя бухгалтерія',
+  password: 'Зміна паролю | Моя бухгалтерія',
+  default: 'Користувачі | Моя бухгалтерія',
+};
+
 export {
   CATEGORIES_TITLES,
   CURRENCIES_TITLES,
@@ -62,4 +70,5 @@ export {
   MEASURES_TITLES,
   PRODUCTS_TITLES,
   ROLES_TITLES,
+  USERS_TITLES,
 };

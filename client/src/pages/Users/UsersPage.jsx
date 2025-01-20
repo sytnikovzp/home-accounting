@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 
-import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
+import {
+  selectError,
+  selectIsLoading,
+  selectTotalCount,
+  selectUsers,
+} from '../../store/selectors/usersSelectors';
+import { clearCurrent } from '../../store/slices/usersSlice';
+import { fetchUsers } from '../../store/thunks/usersThunks';
+
+import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
@@ -19,155 +30,81 @@ import UserViewPage from './UserViewPage';
 
 import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
-function UsersPage({ currentUser, setIsAuthenticated }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [roles, setRoles] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [emailVerificationStatus, setEmailVerificationStatus] = useState('all');
+const { USERS_TITLES } = pageTitles;
+const USERS_PAGES = [
+  { path: 'password', Component: UserChangePasswordPage },
+  { path: 'edit/:uuid', Component: UserEditPage },
+  { path: 'remove/:uuid', Component: UserRemovePage },
+  { path: ':uuid', Component: UserViewPage },
+];
+
+function UsersPage() {
   const [sortModel, setSortModel] = useState({
     field: 'fullName',
     order: 'asc',
   });
-  const [crudError, setCrudError] = useState(null);
+  const [emailVerificationStatus, setEmailVerificationStatus] = useState('all');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const users = useSelector(selectUsers);
+  const totalCount = useSelector(selectTotalCount);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const handleModalClose = () => {
-    setCrudError(null);
-    navigate('/users');
-  };
-
-  const handleModalOpen = (mode, uuid = null) => {
-    navigate(uuid ? `${mode}/${uuid}` : mode);
-  };
-
-  const fetchUsers = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: currentPage,
-        limit: pageSize,
-        emailVerificationStatus,
-        sort: sortModel.field,
-        order: sortModel.order,
-      };
-      const { data, totalCount } = await restController.fetchAllUsers(params);
-      setUsers(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, emailVerificationStatus, sortModel]);
-
-  const pageTitles = useMemo(
+  const fetchParams = useMemo(
     () => ({
-      view: 'Деталі користувача | Моя бухгалтерія',
-      edit: 'Редагування користувача | Моя бухгалтерія',
-      remove: 'Видалення користувача | Моя бухгалтерія',
-      password: 'Зміна паролю | Моя бухгалтерія',
-      default: 'Користувачі | Моя бухгалтерія',
+      page: currentPage,
+      limit: pageSize,
+      emailVerificationStatus,
+      sort: sortModel.field,
+      order: sortModel.order,
     }),
-    []
+    [currentPage, pageSize, emailVerificationStatus, sortModel]
   );
 
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    const isEditOrDelete =
-      location.pathname.includes('password') ||
-      location.pathname.includes('edit') ||
-      location.pathname.includes('remove');
-    document.title =
-      isUuid && !isEditOrDelete
-        ? pageTitles.view
-        : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    dispatch(fetchUsers(fetchParams));
+  }, [dispatch, fetchParams]);
 
-  const fetchRoles = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: 1,
-        limit: 500,
-      };
-      const { data } = await restController.fetchAllRoles(params);
-      setRoles(data || []);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  usePageTitle(location, USERS_TITLES);
 
-  useEffect(() => {
-    fetchUsers();
-    fetchRoles();
-  }, [fetchUsers, fetchRoles]);
+  const handleModalOpen = useCallback(
+    (mode, uuid = null) => {
+      navigate(uuid ? `${mode}/${uuid}` : mode);
+    },
+    [navigate]
+  );
+
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/users');
+  }, [dispatch, navigate]);
+
+  const handleEdit = useCallback(
+    (user) => handleModalOpen('edit', user.uuid),
+    [handleModalOpen]
+  );
+
+  const handleDelete = useCallback(
+    (user) => handleModalOpen('remove', user.uuid),
+    [handleModalOpen]
+  );
 
   const showPreloader = useDelayedPreloader(isLoading);
-
-  const renderRoutes = () => (
-    <Routes>
-      <Route
-        element={
-          <UserEditPage
-            crudError={crudError}
-            fetchUsers={fetchUsers}
-            handleModalClose={handleModalClose}
-            roles={roles}
-            setCrudError={setCrudError}
-          />
-        }
-        path='edit/:uuid'
-      />
-      <Route
-        element={
-          <UserChangePasswordPage
-            crudError={crudError}
-            fetchUsers={fetchUsers}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path='password/:uuid'
-      />
-      <Route
-        element={
-          <UserRemovePage
-            crudError={crudError}
-            currentUser={currentUser}
-            fetchUsers={fetchUsers}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-            setIsAuthenticated={setIsAuthenticated}
-          />
-        }
-        path='remove/:uuid'
-      />
-      <Route
-        element={<UserViewPage handleModalClose={handleModalClose} />}
-        path=':uuid'
-      />
-    </Routes>
-  );
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Користувачів"...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (
@@ -202,14 +139,18 @@ function UsersPage({ currentUser, setIsAuthenticated }) {
         rows={users}
         selectedStatus={emailVerificationStatus}
         sortModel={sortModel}
-        onDelete={(user) => handleModalOpen('remove', user.uuid)}
-        onEdit={(user) => handleModalOpen('edit', user.uuid)}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
         onSortModelChange={setSortModel}
         onStatusChange={(event) =>
           setEmailVerificationStatus(event.target.value)
         }
       />
-      {renderRoutes()}
+      <EntityRoutes
+        entityPages={USERS_PAGES}
+        fetchEntities={fetchUsers}
+        handleModalClose={handleModalClose}
+      />
     </>
   );
 }

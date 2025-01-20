@@ -4,9 +4,9 @@ import { sliceNames } from '../../constants';
 import {
   changePassword,
   deleteUser,
-  deleteUserPhoto,
   getAllUsers,
   getUserByUuid,
+  resetUserPhoto,
   updateUser,
   updateUserPhoto,
 } from '../../services/usersService';
@@ -91,7 +91,7 @@ export const resetPhoto = createAsyncThunk(
   `${USERS_SLICE_NAME}/resetPhoto`,
   async ({ uuid }, { rejectWithValue }) => {
     try {
-      const { data } = await deleteUserPhoto(uuid);
+      const { data } = await resetUserPhoto(uuid);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
