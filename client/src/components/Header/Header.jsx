@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   AppBar,
   Box,
@@ -11,6 +12,8 @@ import {
 
 import restController from '../../api/rest/restController';
 
+import { selectProfile } from '../../store/selectors/profileSelectors';
+
 import NavBar from '../Navigation/NavBar';
 
 import AuthenticatedMenu from './AuthenticatedMenu';
@@ -18,9 +21,13 @@ import Logo from './Logo';
 
 import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 
-function Header({ isAuthenticated, currentUser, setAuthModalOpen }) {
+function Header({ setAuthModalOpen }) {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
+
+  const currentUser = useSelector(selectProfile);
+
+  const isAuthenticated = Boolean(currentUser);
 
   const navigate = useNavigate();
   const navigateTo = (path) => navigate(path);

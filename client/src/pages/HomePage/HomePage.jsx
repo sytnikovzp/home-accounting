@@ -12,6 +12,7 @@ import {
 
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
+import { selectProfile } from '../../store/selectors/profileSelectors';
 import {
   selectError,
   selectIsLoading,
@@ -30,9 +31,10 @@ import {
   stylesHomePagePeriodSelect,
 } from '../../styles';
 
-function HomePage({ currentUser }) {
+function HomePage() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const currentUser = useSelector(selectProfile);
   const statistics = useSelector(selectStatistics);
   const isLoading = useSelector(selectIsLoading);
   const errorMessage = useSelector(selectError);

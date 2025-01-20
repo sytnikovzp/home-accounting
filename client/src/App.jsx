@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import {
   BrowserRouter as Router,
@@ -6,10 +6,16 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getAccessToken } from './utils/sharedFunctions';
-import restController from './api/rest/restController';
+import {
+  selectError,
+  selectIsLoading,
+  selectProfile,
+} from './store/selectors/profileSelectors';
+import { fetchUserProfile } from './store/thunks/profileThunks';
 
+import Error from './components/Error/Error';
 import Layout from './components/Layout/Layout';
 import ModalWindow from './components/ModalWindow/ModalWindow';
 import Preloader from './components/Preloader/Preloader';
@@ -30,43 +36,33 @@ import UserResetPasswordPage from './pages/Users/UserResetPasswordPage';
 import UsersPage from './pages/Users/UsersPage';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
 
-  const isAuthenticated = Boolean(currentUser);
+  const dispatch = useDispatch();
 
-  const handleCloseAuthModal = () => setAuthModalOpen(false);
-
-  const checkAuthentication = useCallback(async () => {
-    try {
-      const currentUser = await restController.fetchUserProfile();
-      setCurrentUser(currentUser);
-    } catch (error) {
-      console.error('Не вдалося завантажити дані користувача:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const currentUser = useSelector(selectProfile);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
-    const token = getAccessToken();
-    if (token) {
-      checkAuthentication();
-    } else {
-      setIsLoading(false);
-    }
-  }, [checkAuthentication]);
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
+
+  const isAuthenticated = Boolean(currentUser);
+  const handleCloseAuthModal = () => setAuthModalOpen(false);
 
   if (isLoading) {
     return (
       <ModalWindow
+        disableBackdropClick
+        isOpen
         content={<Preloader message='Welcome to Home Accounting...' />}
-        disableBackdropClick={true}
-        isOpen={true}
-        onClose={null}
       />
     );
+  }
+
+  if (error && !isAuthenticated) {
+    return <Error error={error} />;
   }
 
   const renderPrivateRoute = (Component) => (
@@ -83,16 +79,10 @@ function App() {
       <Router>
         <Routes>
           <Route
-            element={
-              <Layout
-                currentUser={currentUser}
-                isAuthenticated={isAuthenticated}
-                setAuthModalOpen={setAuthModalOpen}
-              />
-            }
+            element={<Layout setAuthModalOpen={setAuthModalOpen} />}
             path='/'
           >
-            <Route index element={<HomePage currentUser={currentUser} />} />
+            <Route index element={<HomePage />} />
             <Route
               element={renderPrivateRoute(<ExpensesPage />)}
               path='expenses/*'
@@ -130,11 +120,7 @@ function App() {
         </Routes>
 
         {isAuthModalOpen && !isAuthenticated && (
-          <AuthPage
-            checkAuthentication={checkAuthentication}
-            isOpen={isAuthModalOpen}
-            onClose={handleCloseAuthModal}
-          />
+          <AuthPage isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
         )}
       </Router>
     </HelmetProvider>

@@ -12,7 +12,7 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 import { stylesAuthPageAvatar, stylesAuthPageTitle } from '../../styles';
 
-function AuthPage({ isOpen, onClose, checkAuthentication }) {
+function AuthPage({ isOpen, onClose }) {
   const [authMode, setAuthMode] = useState('login');
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -34,14 +34,13 @@ function AuthPage({ isOpen, onClose, checkAuthentication }) {
           );
           return;
         }
-        checkAuthentication();
         onClose();
         navigate('/');
       } catch (error) {
         setErrorMessage(error.response.data);
       }
     },
-    [checkAuthentication, navigate, onClose]
+    [navigate, onClose]
   );
 
   const toggleAuthMode = (mode) => {
