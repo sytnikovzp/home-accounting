@@ -8,6 +8,7 @@ const PERMISSIONS_SLICE_NAME = 'permissions';
 const PRODUCTS_SLICE_NAME = 'products';
 const ROLES_SLICE_NAME = 'roles';
 const STATISTICS_SLICE_NAME = 'statistics';
+const USERS_SLICE_NAME = 'users';
 
 export {
   CATEGORIES_SLICE_NAME,
@@ -20,4 +21,5 @@ export {
   PRODUCTS_SLICE_NAME,
   ROLES_SLICE_NAME,
   STATISTICS_SLICE_NAME,
+  USERS_SLICE_NAME,
 };

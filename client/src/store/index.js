@@ -11,6 +11,7 @@ import permissionsReducer from './slices/permissionsSlice';
 import productsReducer from './slices/productsSlice';
 import rolesReducer from './slices/rolesSlice';
 import statisticsReducer from './slices/statisticsSlice';
+import usersReducer from './slices/usersSlice';
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     products: productsReducer,
     roles: rolesReducer,
     statistics: statisticsReducer,
+    users: usersReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
