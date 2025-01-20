@@ -47,10 +47,7 @@ function EstablishmentEditPage({
   const handleUploadLogo = async (file) => {
     setCrudError(null);
     try {
-      await restController.uploadEstablishmentLogo(
-        establishmentToCRUD.uuid,
-        file
-      );
+      await restController.changeLogo(establishmentToCRUD.uuid, file);
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);

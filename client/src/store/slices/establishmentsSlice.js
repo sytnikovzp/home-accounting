@@ -5,12 +5,12 @@ import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
 
 import {
   addEstablishment,
+  changeLogo,
   editEstablishment,
   fetchEstablishmentByUuid,
   fetchEstablishments,
   removeEstablishment,
-  removeEstablishmentLogo,
-  uploadEstablishmentLogo,
+  resetLogo,
 } from '../thunks/establishmentsThunks';
 
 const { ESTABLISHMENTS_SLICE_NAME } = sliceNames;
@@ -60,7 +60,7 @@ const establishmentsSlice = createSlice({
           state.data[index] = payload;
         }
       })
-      .addCase(uploadEstablishmentLogo.fulfilled, (state, { payload }) => {
+      .addCase(changeLogo.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
         const index = state.data.findIndex(
@@ -70,7 +70,7 @@ const establishmentsSlice = createSlice({
           state.data[index].logo = payload.logo;
         }
       })
-      .addCase(removeEstablishmentLogo.fulfilled, (state, { payload }) => {
+      .addCase(resetLogo.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
         const index = state.data.findIndex(
@@ -93,8 +93,8 @@ const establishmentsSlice = createSlice({
       .addCase(fetchEstablishmentByUuid.pending, setLoadingState)
       .addCase(addEstablishment.pending, setLoadingState)
       .addCase(editEstablishment.pending, setLoadingState)
-      .addCase(uploadEstablishmentLogo.pending, setLoadingState)
-      .addCase(removeEstablishmentLogo.pending, setLoadingState)
+      .addCase(changeLogo.pending, setLoadingState)
+      .addCase(resetLogo.pending, setLoadingState)
       .addCase(removeEstablishment.pending, setLoadingState)
 
       // Rejected
@@ -102,8 +102,8 @@ const establishmentsSlice = createSlice({
       .addCase(fetchEstablishmentByUuid.rejected, setErrorState)
       .addCase(addEstablishment.rejected, setErrorState)
       .addCase(editEstablishment.rejected, setErrorState)
-      .addCase(uploadEstablishmentLogo.rejected, setErrorState)
-      .addCase(removeEstablishmentLogo.rejected, setErrorState)
+      .addCase(changeLogo.rejected, setErrorState)
+      .addCase(resetLogo.rejected, setErrorState)
       .addCase(removeEstablishment.rejected, setErrorState);
   },
 });

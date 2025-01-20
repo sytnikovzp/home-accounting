@@ -177,7 +177,7 @@ const restController = {
     createEstablishment(title, description, url),
   editEstablishment: (establishmentUuid, title, description, url) =>
     updateEstablishment(establishmentUuid, title, description, url),
-  uploadEstablishmentLogo: (establishmentUuid, establishmentLogo) =>
+  changeLogo: (establishmentUuid, establishmentLogo) =>
     updateEstablishmentLogo(establishmentUuid, establishmentLogo),
   resetEstablishmentLogo: (establishmentUuid) =>
     resetEstablishmentLogo(establishmentUuid),

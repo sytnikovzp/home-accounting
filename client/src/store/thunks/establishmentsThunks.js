@@ -65,8 +65,8 @@ export const editEstablishment = createAsyncThunk(
   }
 );
 
-export const uploadEstablishmentLogo = createAsyncThunk(
-  `${ESTABLISHMENTS_SLICE_NAME}/uploadLogo`,
+export const changeLogo = createAsyncThunk(
+  `${ESTABLISHMENTS_SLICE_NAME}/changeLogo`,
   async ({ uuid, logoFile }, { rejectWithValue }) => {
     try {
       const { data } = await updateEstablishmentLogo(uuid, logoFile);
@@ -77,8 +77,8 @@ export const uploadEstablishmentLogo = createAsyncThunk(
   }
 );
 
-export const removeEstablishmentLogo = createAsyncThunk(
-  `${ESTABLISHMENTS_SLICE_NAME}/removeLogo`,
+export const resetLogo = createAsyncThunk(
+  `${ESTABLISHMENTS_SLICE_NAME}/resetLogo`,
   async ({ uuid }, { rejectWithValue }) => {
     try {
       const { data } = await resetEstablishmentLogo(uuid);

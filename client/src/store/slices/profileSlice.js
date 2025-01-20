@@ -7,43 +7,30 @@ import {
   changePhoto,
   changeUserPassword,
   editUser,
-  fetchUserByUuid,
-  fetchUsers,
+  fetchUserProfile,
   removeUser,
   resetPhoto,
-} from '../thunks/usersThunks';
+} from '../thunks/profileThunks';
 
-const { USERS_SLICE_NAME } = sliceNames;
+const { PROFILE_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  data: [],
-  totalCount: 0,
-  current: null,
+  profile: null,
   isLoading: false,
   error: null,
 };
 
-const usersSlice = createSlice({
-  name: USERS_SLICE_NAME,
+const profileSlice = createSlice({
+  name: PROFILE_SLICE_NAME,
   initialState,
-  reducers: {
-    clearCurrent(state) {
-      state.current = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Fulfilled
-      .addCase(fetchUsers.fulfilled, (state, { payload }) => {
+      .addCase(fetchUserProfile.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        state.data = payload.data;
-        state.totalCount = payload.totalCount;
-      })
-      .addCase(fetchUserByUuid.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.profile = payload;
       })
       .addCase(changeUserPassword.fulfilled, (state) => {
         state.isLoading = false;
@@ -52,36 +39,32 @@ const usersSlice = createSlice({
       .addCase(editUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        const index = state.data.findIndex(
-          (user) => user.uuid === payload.uuid
-        );
-        if (index !== -1) {
-          state.data[index] = payload;
-        }
+        state.profile = payload;
       })
       .addCase(changePhoto.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
-        if (state.current && state.current.uuid === payload.uuid) {
-          state.current.photo = payload.photo;
-        }
+        state.profile = {
+          ...state.profile,
+          photo: payload.photo,
+        };
       })
-      .addCase(resetPhoto.fulfilled, (state, { payload }) => {
+      .addCase(resetPhoto.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
-        if (state.current && state.current.uuid === payload.uuid) {
-          state.current.photo = null;
-        }
+        state.profile = {
+          ...state.profile,
+          photo: null,
+        };
       })
-      .addCase(removeUser.fulfilled, (state, { payload }) => {
+      .addCase(removeUser.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
-        state.data = state.data.filter((user) => user.uuid !== payload);
+        state.profile = null;
       })
 
       // Pending
-      .addCase(fetchUsers.pending, setLoadingState)
-      .addCase(fetchUserByUuid.pending, setLoadingState)
+      .addCase(fetchUserProfile.pending, setLoadingState)
       .addCase(changeUserPassword.pending, setLoadingState)
       .addCase(editUser.pending, setLoadingState)
       .addCase(changePhoto.pending, setLoadingState)
@@ -89,8 +72,7 @@ const usersSlice = createSlice({
       .addCase(removeUser.pending, setLoadingState)
 
       // Rejected
-      .addCase(fetchUsers.rejected, setErrorState)
-      .addCase(fetchUserByUuid.rejected, setErrorState)
+      .addCase(fetchUserProfile.rejected, setErrorState)
       .addCase(changeUserPassword.rejected, setErrorState)
       .addCase(editUser.rejected, setErrorState)
       .addCase(changePhoto.rejected, setErrorState)
@@ -99,6 +81,4 @@ const usersSlice = createSlice({
   },
 });
 
-export const { clearCurrent } = usersSlice.actions;
-
-export default usersSlice.reducer;
+export default profileSlice.reducer;

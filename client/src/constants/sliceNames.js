@@ -6,6 +6,7 @@ const MEASURES_SLICE_NAME = 'measures';
 const NBU_EXCHANGES_SLICE_NAME = 'nbuExchanges';
 const PERMISSIONS_SLICE_NAME = 'permissions';
 const PRODUCTS_SLICE_NAME = 'products';
+const PROFILE_SLICE_NAME = 'profile';
 const ROLES_SLICE_NAME = 'roles';
 const STATISTICS_SLICE_NAME = 'statistics';
 const USERS_SLICE_NAME = 'users';
@@ -19,6 +20,7 @@ export {
   NBU_EXCHANGES_SLICE_NAME,
   PERMISSIONS_SLICE_NAME,
   PRODUCTS_SLICE_NAME,
+  PROFILE_SLICE_NAME,
   ROLES_SLICE_NAME,
   STATISTICS_SLICE_NAME,
   USERS_SLICE_NAME,

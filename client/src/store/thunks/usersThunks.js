@@ -47,18 +47,6 @@ export const fetchUserByUuid = createAsyncThunk(
   }
 );
 
-export const editUser = createAsyncThunk(
-  `${USERS_SLICE_NAME}/edit`,
-  async ({ uuid, fullName, email, role }, { rejectWithValue }) => {
-    try {
-      const { data } = await updateUser(uuid, fullName, email, role);
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
 export const changeUserPassword = createAsyncThunk(
   `${USERS_SLICE_NAME}/changePassword`,
   async ({ uuid, newPassword, confirmNewPassword }, { rejectWithValue }) => {
@@ -75,8 +63,20 @@ export const changeUserPassword = createAsyncThunk(
   }
 );
 
-export const editPhoto = createAsyncThunk(
-  `${USERS_SLICE_NAME}/editPhoto`,
+export const editUser = createAsyncThunk(
+  `${USERS_SLICE_NAME}/edit`,
+  async ({ uuid, fullName, email, role }, { rejectWithValue }) => {
+    try {
+      const { data } = await updateUser(uuid, fullName, email, role);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const changePhoto = createAsyncThunk(
+  `${USERS_SLICE_NAME}/changePhoto`,
   async ({ uuid, userPhoto }, { rejectWithValue }) => {
     try {
       const { data } = await updateUserPhoto(uuid, userPhoto);

@@ -13,9 +13,9 @@ import {
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import {
-  selectStatisticsData,
-  selectStatisticsError,
-  selectStatisticsLoading,
+  selectError,
+  selectIsLoading,
+  selectStatistics,
 } from '../../store/selectors/statisticsSelectors';
 import { fetchStatisticsByCriteria } from '../../store/thunks/statisticsThunks';
 
@@ -33,9 +33,9 @@ import {
 function HomePage({ currentUser }) {
   const dispatch = useDispatch();
   const location = useLocation();
-  const data = useSelector(selectStatisticsData);
-  const isLoading = useSelector(selectStatisticsLoading);
-  const errorMessage = useSelector(selectStatisticsError);
+  const statistics = useSelector(selectStatistics);
+  const isLoading = useSelector(selectIsLoading);
+  const errorMessage = useSelector(selectError);
 
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
@@ -108,7 +108,7 @@ function HomePage({ currentUser }) {
           </FormControl>
         </Box>
       </Box>
-      <StatisticsChart data={data} />
+      <StatisticsChart data={statistics} />
     </>
   );
 }

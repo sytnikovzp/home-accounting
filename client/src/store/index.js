@@ -9,6 +9,7 @@ import measuresReducer from './slices/measuresSlice';
 import nbuExchangesReducer from './slices/nbuExchangesSlice';
 import permissionsReducer from './slices/permissionsSlice';
 import productsReducer from './slices/productsSlice';
+import profileReducer from './slices/profileSlice';
 import rolesReducer from './slices/rolesSlice';
 import statisticsReducer from './slices/statisticsSlice';
 import usersReducer from './slices/usersSlice';
@@ -23,6 +24,7 @@ const store = configureStore({
     nbuExchanges: nbuExchangesReducer,
     permissions: permissionsReducer,
     products: productsReducer,
+    profile: profileReducer,
     roles: rolesReducer,
     statistics: statisticsReducer,
     users: usersReducer,
