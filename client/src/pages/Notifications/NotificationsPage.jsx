@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
+
+import { clearStatus } from '../../store/slices/emailVerificationSlice';
 
 import InfoMessage from '../../components/InfoMessage/InfoMessage';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
@@ -10,6 +13,7 @@ function NotificationsPage() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const params = new URLSearchParams(location.search);
   const severity = params.get('severity') || 'info';
@@ -18,6 +22,7 @@ function NotificationsPage() {
 
   const handleModalClose = () => {
     setIsOpen(false);
+    dispatch(clearStatus());
     navigate('/');
   };
 

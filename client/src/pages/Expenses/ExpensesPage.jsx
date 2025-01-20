@@ -10,9 +10,9 @@ import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
 import {
-  selectError,
   selectExpenses,
-  selectIsLoading,
+  selectExpensesError,
+  selectExpensesIsLoading,
   selectTotalCount,
 } from '../../store/selectors/expensesSelectors';
 import { clearCurrent } from '../../store/slices/expensesSlice';
@@ -52,8 +52,8 @@ function ExpensesPage() {
 
   const expenses = useSelector(selectExpenses);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectExpensesIsLoading);
+  const error = useSelector(selectExpensesError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =

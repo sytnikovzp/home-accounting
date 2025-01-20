@@ -3,6 +3,7 @@ import { logger } from 'redux-logger';
 
 import categoriesReducer from './slices/categoriesSlice';
 import currenciesReducer from './slices/currenciesSlice';
+import emailVerificationReducer from './slices/emailVerificationSlice';
 import establishmentsReducer from './slices/establishmentsSlice';
 import expensesReducer from './slices/expensesSlice';
 import measuresReducer from './slices/measuresSlice';
@@ -18,6 +19,7 @@ const store = configureStore({
   reducer: {
     categories: categoriesReducer,
     currencies: currenciesReducer,
+    emailVerification: emailVerificationReducer,
     establishments: establishmentsReducer,
     expenses: expensesReducer,
     measures: measuresReducer,

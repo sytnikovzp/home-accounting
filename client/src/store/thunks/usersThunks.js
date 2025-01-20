@@ -37,9 +37,9 @@ export const fetchUsers = createAsyncThunk(
 
 export const fetchUserByUuid = createAsyncThunk(
   `${USERS_SLICE_NAME}/fetchByUuid`,
-  async ({ uuid }, { rejectWithValue }) => {
+  async (uuid, { rejectWithValue }) => {
     try {
-      const { data } = await getUserByUuid(uuid);
+      const data = await getUserByUuid(uuid);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

@@ -29,9 +29,9 @@ export const fetchMeasures = createAsyncThunk(
 
 export const fetchMeasureByUuid = createAsyncThunk(
   `${MEASURES_SLICE_NAME}/fetchByUuid`,
-  async ({ uuid }, { rejectWithValue }) => {
+  async (uuid, { rejectWithValue }) => {
     try {
-      const { data } = await getMeasureByUuid(uuid);
+      const data = await getMeasureByUuid(uuid);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

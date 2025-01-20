@@ -9,8 +9,8 @@ export const fetchNBURates = createAsyncThunk(
   `${NBU_EXCHANGES_SLICE_NAME}/fetch`,
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getNBURates();
-      return response;
+      const data = await getNBURates();
+      return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

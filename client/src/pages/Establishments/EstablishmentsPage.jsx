@@ -10,9 +10,9 @@ import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
 import {
-  selectError,
   selectEstablishments,
-  selectIsLoading,
+  selectEstablishmentsError,
+  selectEstablishmentsIsLoading,
   selectTotalCount,
 } from '../../store/selectors/establishmentsSelectors';
 import { clearCurrent } from '../../store/slices/establishmentsSlice';
@@ -52,8 +52,8 @@ function EstablishmentsPage() {
 
   const establishments = useSelector(selectEstablishments);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectEstablishmentsIsLoading);
+  const error = useSelector(selectEstablishmentsError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =

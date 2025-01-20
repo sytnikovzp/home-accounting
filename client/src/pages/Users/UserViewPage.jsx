@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Box, Button, Tooltip } from '@mui/material';
 import {
   AlternateEmail,
@@ -10,8 +11,15 @@ import {
 } from '@mui/icons-material';
 
 import { configs } from '../../constants';
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+
+import { selectEmailVerificationIsLoading } from '../../store/selectors/emailVerificationSelectors';
+import {
+  selectCurrentUser,
+  selectUsersError,
+  selectUsersIsLoading,
+} from '../../store/selectors/usersSelectors';
+import { sendVerificationEmail } from '../../store/thunks/emailVerificationThunks';
+import { fetchUserByUuid } from '../../store/thunks/usersThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -29,18 +37,20 @@ const { BASE_URL } = configs;
 function UserViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const navigate = useNavigate();
-  const {
-    entity: userToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('User');
+  const dispatch = useDispatch();
+
+  const userToCRUD = useSelector((state) => selectCurrentUser(state, uuid));
+  const isLoading = useSelector(selectUsersIsLoading);
+  const errorMessage = useSelector(selectUsersError);
+  const emailVerificationLoading = useSelector(
+    selectEmailVerificationIsLoading
+  );
 
   useEffect(() => {
-    if (uuid && !userToCRUD) {
-      fetchEntityByUuid(uuid);
+    if (uuid) {
+      dispatch(fetchUserByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid, userToCRUD]);
+  }, [dispatch, uuid]);
 
   const { fullName, role, photo, email, emailVerificationStatus, creation } =
     userToCRUD || {};
@@ -49,19 +59,22 @@ function UserViewPage({ handleModalClose }) {
   const handleResendVerification = useCallback(
     async (email) => {
       try {
-        const response = await restController.resendVerifyEmail(email);
-        navigate(
-          `/notification?severity=${encodeURIComponent(
-            response.severity
-          )}&title=${encodeURIComponent(
-            response.title
-          )}&message=${encodeURIComponent(response.message)}`
-        );
+        const response = await dispatch(sendVerificationEmail(email));
+        if (sendVerificationEmail.fulfilled.match(response)) {
+          const { severity, title, message } = response.payload;
+          navigate(
+            `/notification?severity=${encodeURIComponent(
+              severity
+            )}&title=${encodeURIComponent(
+              title
+            )}&message=${encodeURIComponent(message)}`
+          );
+        }
       } catch (error) {
         console.error('Error sending verification email:', error.message);
       }
     },
-    [navigate]
+    [dispatch, navigate]
   );
 
   const photoSrc = useMemo(() => {
@@ -114,6 +127,7 @@ function UserViewPage({ handleModalClose }) {
               extra: emailVerificationStatus === 'Очікує веріфікації' && (
                 <Tooltip title='Повторно відправити email'>
                   <Button
+                    disabled={emailVerificationLoading}
                     size='small'
                     sx={stylesUserViewPageEmailButton}
                     variant='text'
@@ -128,7 +142,7 @@ function UserViewPage({ handleModalClose }) {
         : []),
       {
         icon: CalendarToday,
-        label: 'Зареєстовано',
+        label: 'Зареєстровано',
         value: createdAt,
       },
       {
@@ -146,6 +160,7 @@ function UserViewPage({ handleModalClose }) {
       createdAt,
       updatedAt,
       handleResendVerification,
+      emailVerificationLoading,
     ]
   );
 

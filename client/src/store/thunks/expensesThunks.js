@@ -29,9 +29,9 @@ export const fetchExpenses = createAsyncThunk(
 
 export const fetchExpenseByUuid = createAsyncThunk(
   `${EXPENSES_SLICE_NAME}/fetchByUuid`,
-  async ({ uuid }, { rejectWithValue }) => {
+  async (uuid, { rejectWithValue }) => {
     try {
-      const { data } = await getExpenseByUuid(uuid);
+      const data = await getExpenseByUuid(uuid);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

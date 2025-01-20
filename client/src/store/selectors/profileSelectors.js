@@ -1,3 +1,3 @@
 export const selectProfile = (state) => state.profile.data;
-export const selectIsLoading = (state) => state.profile.isLoading;
-export const selectError = (state) => state.profile.error;
+export const selectProfileIsLoading = (state) => state.profile.isLoading;
+export const selectProfileError = (state) => state.profile.error;

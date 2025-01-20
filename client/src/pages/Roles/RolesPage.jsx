@@ -10,9 +10,9 @@ import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
 import {
-  selectError,
-  selectIsLoading,
   selectRoles,
+  selectRolesError,
+  selectRolesIsLoading,
   selectTotalCount,
 } from '../../store/selectors/rolesSelectors';
 import { clearCurrent } from '../../store/slices/rolesSlice';
@@ -51,8 +51,8 @@ function RolesPage() {
 
   const roles = useSelector(selectRoles);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectRolesIsLoading);
+  const error = useSelector(selectRolesError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =

@@ -1,3 +1,3 @@
 export const selectNBURates = (state) => state.nbuExchanges.data;
-export const selectIsLoading = (state) => state.nbuExchanges.isLoading;
-export const selectError = (state) => state.nbuExchanges.error;
+export const selectNBURatesIsLoading = (state) => state.nbuExchanges.isLoading;
+export const selectNBURatesError = (state) => state.nbuExchanges.error;

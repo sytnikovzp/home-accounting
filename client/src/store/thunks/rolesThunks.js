@@ -29,9 +29,9 @@ export const fetchRoles = createAsyncThunk(
 
 export const fetchRoleByUuid = createAsyncThunk(
   `${ROLES_SLICE_NAME}/fetchByUuid`,
-  async ({ uuid }, { rejectWithValue }) => {
+  async (uuid, { rejectWithValue }) => {
     try {
-      const { data } = await getRoleByUuid(uuid);
+      const data = await getRoleByUuid(uuid);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

@@ -10,9 +10,9 @@ import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
 import {
-  selectError,
-  selectIsLoading,
   selectProducts,
+  selectProductsError,
+  selectProductsIsLoading,
   selectTotalCount,
 } from '../../store/selectors/productsSelectors';
 import { clearCurrent } from '../../store/slices/productsSlice';
@@ -52,8 +52,8 @@ function ProductsPage() {
 
   const products = useSelector(selectProducts);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectProductsIsLoading);
+  const error = useSelector(selectProductsError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =

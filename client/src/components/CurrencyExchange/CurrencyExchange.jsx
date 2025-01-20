@@ -14,9 +14,9 @@ import {
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import {
-  selectError,
-  selectIsLoading,
   selectNBURates,
+  selectNBURatesError,
+  selectNBURatesIsLoading,
 } from '../../store/selectors/nbuExchangesSelectors';
 import { fetchNBURates } from '../../store/thunks/nbuExchangesThunks';
 
@@ -29,8 +29,8 @@ function CurrencyExchange() {
   const dispatch = useDispatch();
 
   const rates = useSelector(selectNBURates);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectNBURatesIsLoading);
+  const error = useSelector(selectNBURatesError);
 
   useEffect(() => {
     dispatch(fetchNBURates());

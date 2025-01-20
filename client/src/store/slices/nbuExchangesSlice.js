@@ -22,6 +22,7 @@ const currenciesSlice = createSlice({
       // Fulfilled
       .addCase(fetchNBURates.fulfilled, (state, { payload }) => {
         state.isLoading = false;
+        state.error = null;
         state.data = payload;
       })
 

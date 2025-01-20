@@ -10,9 +10,9 @@ import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
 import {
-  selectError,
-  selectIsLoading,
   selectMeasures,
+  selectMeasuresError,
+  selectMeasuresIsLoading,
   selectTotalCount,
 } from '../../store/selectors/measuresSelectors';
 import { clearCurrent } from '../../store/slices/measuresSlice';
@@ -51,8 +51,8 @@ function MeasuresPage() {
 
   const measures = useSelector(selectMeasures);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectMeasuresIsLoading);
+  const error = useSelector(selectMeasuresError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =

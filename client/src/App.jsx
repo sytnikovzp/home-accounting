@@ -9,9 +9,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  selectError,
-  selectIsLoading,
   selectProfile,
+  selectProfileError,
+  selectProfileIsLoading,
 } from './store/selectors/profileSelectors';
 import { fetchUserProfile } from './store/thunks/profileThunks';
 
@@ -41,8 +41,8 @@ function App() {
   const dispatch = useDispatch();
 
   const currentUser = useSelector(selectProfile);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectProfileIsLoading);
+  const error = useSelector(selectProfileError);
 
   useEffect(() => {
     dispatch(fetchUserProfile());

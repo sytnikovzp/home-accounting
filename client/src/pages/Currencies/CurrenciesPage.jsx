@@ -11,8 +11,8 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectCurrencies,
-  selectError,
-  selectIsLoading,
+  selectCurrenciesError,
+  selectCurrenciesIsLoading,
   selectTotalCount,
 } from '../../store/selectors/currenciesSelectors';
 import { clearCurrent } from '../../store/slices/currenciesSlice';
@@ -51,8 +51,8 @@ function CurrenciesPage() {
 
   const currencies = useSelector(selectCurrencies);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectCurrenciesIsLoading);
+  const error = useSelector(selectCurrenciesError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =

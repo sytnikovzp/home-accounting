@@ -11,8 +11,8 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectCategories,
-  selectError,
-  selectIsLoading,
+  selectCategoriesError,
+  selectCategoriesIsLoading,
   selectTotalCount,
 } from '../../store/selectors/categoriesSelectors';
 import { clearCurrent } from '../../store/slices/categoriesSlice';
@@ -52,8 +52,8 @@ function CategoriesPage() {
 
   const categories = useSelector(selectCategories);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectCategoriesIsLoading);
+  const error = useSelector(selectCategoriesError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =

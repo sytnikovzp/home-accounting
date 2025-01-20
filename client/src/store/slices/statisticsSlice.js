@@ -22,6 +22,7 @@ const statisticsSlice = createSlice({
       // Fulfilled
       .addCase(fetchStatisticsByCriteria.fulfilled, (state, { payload }) => {
         state.isLoading = false;
+        state.error = null;
         state.data = payload;
       })
       // Pending

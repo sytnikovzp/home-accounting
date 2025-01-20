@@ -10,10 +10,10 @@ import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
 import {
-  selectError,
-  selectIsLoading,
   selectTotalCount,
   selectUsers,
+  selectUsersError,
+  selectUsersIsLoading,
 } from '../../store/selectors/usersSelectors';
 import { clearCurrent } from '../../store/slices/usersSlice';
 import { fetchUsers } from '../../store/thunks/usersThunks';
@@ -51,8 +51,8 @@ function UsersPage() {
 
   const users = useSelector(selectUsers);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectUsersIsLoading);
+  const error = useSelector(selectUsersError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =

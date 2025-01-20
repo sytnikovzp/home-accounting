@@ -14,9 +14,9 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import { selectProfile } from '../../store/selectors/profileSelectors';
 import {
-  selectError,
-  selectIsLoading,
   selectStatistics,
+  selectStatisticsError,
+  selectStatisticsIsLoading,
 } from '../../store/selectors/statisticsSelectors';
 import { fetchStatisticsByCriteria } from '../../store/thunks/statisticsThunks';
 
@@ -36,8 +36,8 @@ function HomePage() {
   const location = useLocation();
   const currentUser = useSelector(selectProfile);
   const statistics = useSelector(selectStatistics);
-  const isLoading = useSelector(selectIsLoading);
-  const errorMessage = useSelector(selectError);
+  const isLoading = useSelector(selectStatisticsIsLoading);
+  const errorMessage = useSelector(selectStatisticsError);
 
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
