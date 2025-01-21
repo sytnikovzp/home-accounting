@@ -2,21 +2,26 @@ import { useEffect } from 'react';
 
 import { uuidPattern } from '../utils/sharedFunctions';
 
-function usePageTitle(location, pageTitles) {
+function usePageTitle(location, pageTitles, authMode) {
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    const isPasswordOrEditOrDelete =
-      location.pathname.includes('password') ||
-      location.pathname.includes('edit') ||
-      location.pathname.includes('remove');
-    document.title =
-      isUuid && !isPasswordOrEditOrDelete
-        ? pageTitles.view
-        : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    let title = null;
+    if (authMode && pageTitles[authMode]) {
+      title = pageTitles[authMode];
+    } else if (
+      uuidPattern.test(location.pathname) &&
+      !location.pathname.includes('password') &&
+      !location.pathname.includes('edit') &&
+      !location.pathname.includes('remove')
+    ) {
+      title = pageTitles.view;
+    } else {
+      const pathKey = Object.keys(pageTitles).find((key) =>
+        location.pathname.includes(key)
+      );
+      title = pageTitles[pathKey] || pageTitles.default;
+    }
+    document.title = title;
+  }, [location, pageTitles, authMode]);
 }
 
 export default usePageTitle;

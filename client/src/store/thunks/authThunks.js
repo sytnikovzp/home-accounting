@@ -16,7 +16,7 @@ export const registrationThunk = createAsyncThunk(
   `${AUTH_SLICE_NAME}/registration`,
   async ({ fullName, email, password }, { rejectWithValue }) => {
     try {
-      const { data } = await registration(fullName, email, password);
+      const data = await registration(fullName, email, password);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -28,7 +28,7 @@ export const loginThunk = createAsyncThunk(
   `${AUTH_SLICE_NAME}/login`,
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const { data } = await login(email, password);
+      const data = await login(email, password);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -76,11 +76,7 @@ export const resetPasswordThunk = createAsyncThunk(
   `${AUTH_SLICE_NAME}/resetPassword`,
   async ({ token, newPassword, confirmNewPassword }, { rejectWithValue }) => {
     try {
-      const { data } = await resetPassword(
-        token,
-        newPassword,
-        confirmNewPassword
-      );
+      const data = await resetPassword(token, newPassword, confirmNewPassword);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

@@ -2,7 +2,7 @@ import { LOGIN_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
-function LoginForm({ onSubmit }) {
+function LoginForm({ isLoading, onSubmit }) {
   const initialValues = {
     email: '',
     password: '',
@@ -27,6 +27,7 @@ function LoginForm({ onSubmit }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
+      isLoading={isLoading}
       submitButtonText='Увійти'
       validationSchema={LOGIN_VALIDATION_SCHEME}
       onSubmit={onSubmit}

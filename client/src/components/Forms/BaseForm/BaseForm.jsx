@@ -1,5 +1,5 @@
 import { Form, Formik } from 'formik';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import FormFields from '../FormFields/FormFields';
 
@@ -8,15 +8,14 @@ import { stylesBaseFormButtomBox } from '../../../styles';
 function BaseForm({
   initialValues,
   validationSchema,
+  isLoading,
   onSubmit,
   fields,
   submitButtonText,
-  customActions,
-  generalError,
   layout,
   customContent,
 }) {
-  const renderForm = ({ errors, touched, isValid, isSubmitting }) => (
+  const renderForm = ({ errors, touched, isValid }) => (
     <Form>
       <Box sx={{ mt: 2 }}>
         {layout === 'expense' ? (
@@ -103,23 +102,17 @@ function BaseForm({
         )}
       </Box>
       {customContent}
-      {generalError && (
-        <Typography color='error' sx={{ mt: 1 }}>
-          {generalError}
-        </Typography>
-      )}
       <Box sx={stylesBaseFormButtomBox}>
         <Button
           fullWidth
           color='success'
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isLoading}
           size='large'
           type='submit'
           variant='contained'
         >
           {submitButtonText}
         </Button>
-        {customActions}
       </Box>
     </Form>
   );

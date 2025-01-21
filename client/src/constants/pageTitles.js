@@ -1,3 +1,9 @@
+const AUTH_TITLES = {
+  login: 'Авторизація | Моя бухгалтерія',
+  register: 'Реєстрація | Моя бухгалтерія',
+  forgotPassword: 'Відновлення паролю | Моя бухгалтерія',
+};
+
 const CATEGORIES_TITLES = {
   view: 'Деталі категорії | Моя бухгалтерія',
   add: 'Додавання категорії | Моя бухгалтерія',
@@ -68,6 +74,7 @@ const USERS_TITLES = {
 };
 
 export {
+  AUTH_TITLES,
   CATEGORIES_TITLES,
   CURRENCIES_TITLES,
   ESTABLISHMENTS_TITLES,

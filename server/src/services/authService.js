@@ -1,6 +1,7 @@
 const {
   User,
   Role,
+  Permission,
   VerificationToken,
   PasswordResetToken,
 } = require('../db/dbMongo/models');
@@ -53,6 +54,9 @@ class AuthService {
       email,
       `http://${HOST}:${PORT}/api/email/verify?token=${verificationToken.token}`
     );
+    const permissions = await Permission.find({
+      uuid: { $in: foundRole.permissions },
+    });
     const tokens = generateTokens(user);
     return {
       ...tokens,
@@ -66,6 +70,7 @@ class AuthService {
         role: foundRole.title || '',
         photo: user.photo || '',
       },
+      permissions: permissions.map((permission) => permission.title),
     };
   }
 
@@ -83,6 +88,9 @@ class AuthService {
     if (!foundRole) {
       throw notFound('Роль для користувача не знайдено');
     }
+    const permissions = await Permission.find({
+      uuid: { $in: foundRole.permissions },
+    });
     const tokens = generateTokens(foundUser);
     return {
       ...tokens,
@@ -96,6 +104,7 @@ class AuthService {
         role: foundRole.title || '',
         photo: foundUser.photo || '',
       },
+      permissions: permissions.map((permission) => permission.title),
     };
   }
 
@@ -116,6 +125,9 @@ class AuthService {
     if (!foundRole) {
       throw notFound('Роль для користувача не знайдено');
     }
+    const permissions = await Permission.find({
+      uuid: { $in: foundRole.permissions },
+    });
     const tokens = generateTokens(foundUser);
     return {
       ...tokens,
@@ -129,6 +141,7 @@ class AuthService {
         role: foundRole.title || '',
         photo: foundUser.photo || '',
       },
+      permissions: permissions.map((permission) => permission.title),
     };
   }
 

@@ -16,6 +16,7 @@ const { AUTH_SLICE_NAME } = sliceNames;
 
 const initialState = {
   user: null,
+  permissions: [],
   isAuthenticated: false,
   isLoading: false,
   error: null,
@@ -33,33 +34,43 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         state.user = payload.user;
+        state.permissions = payload.permissions;
         state.isAuthenticated = true;
       })
       .addCase(loginThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
         state.user = payload.user;
+        state.permissions = payload.permissions;
         state.isAuthenticated = true;
       })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
         state.user = null;
+        state.permissions = [];
         state.isAuthenticated = false;
       })
       .addCase(refreshAccessTokenThunk.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
         state.user = payload.user;
+        state.permissions = payload.permissions;
         state.isAuthenticated = true;
       })
       .addCase(forgotPasswordThunk.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
+        state.user = null;
+        state.permissions = [];
+        state.isAuthenticated = false;
       })
       .addCase(resetPasswordThunk.fulfilled, (state) => {
         state.isLoading = false;
         state.error = null;
+        state.user = null;
+        state.permissions = [];
+        state.isAuthenticated = false;
       })
 
       // Pending

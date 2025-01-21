@@ -2,7 +2,7 @@ import { FORGOT_PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSche
 
 import BaseForm from '../BaseForm/BaseForm';
 
-function ForgotPasswordForm({ onSubmit }) {
+function ForgotPasswordForm({ isLoading, onSubmit }) {
   const initialValues = {
     email: '',
   };
@@ -20,6 +20,7 @@ function ForgotPasswordForm({ onSubmit }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
+      isLoading={isLoading}
       submitButtonText='Запросити зміну паролю'
       validationSchema={FORGOT_PASSWORD_VALIDATION_SCHEME}
       onSubmit={onSubmit}

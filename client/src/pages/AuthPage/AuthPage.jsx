@@ -1,9 +1,21 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Box, Button, Typography } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
 
-import restController from '../../api/rest/restController';
+import { pageTitles } from '../../constants';
+import usePageTitle from '../../hooks/usePageTitle';
+
+import {
+  selectAuthError,
+  selectAuthIsLoading,
+} from '../../store/selectors/authSelectors';
+import {
+  forgotPasswordThunk,
+  loginThunk,
+  registrationThunk,
+} from '../../store/thunks/authThunks';
 
 import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm/ForgotPasswordForm';
 import LoginForm from '../../components/Forms/LoginForm/LoginForm';
@@ -12,41 +24,42 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 import { stylesAuthPageAvatar, stylesAuthPageTitle } from '../../styles';
 
+const { AUTH_TITLES } = pageTitles;
+
 function AuthPage({ isOpen, onClose }) {
   const [authMode, setAuthMode] = useState('login');
-  const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleAuth = useCallback(
-    async (authMethod, ...args) => {
-      setErrorMessage(null);
-      try {
-        const response = await authMethod(...args);
-        if (authMethod === restController.forgotPassword) {
-          onClose();
-          navigate(
-            `/notification?severity=${encodeURIComponent(
-              response.severity
-            )}&title=${encodeURIComponent(
-              response.title
-            )}&message=${encodeURIComponent(response.message)}`
-          );
-          return;
-        }
-        onClose();
-        navigate('/');
-      } catch (error) {
-        setErrorMessage(error.response.data);
-      }
-    },
-    [navigate, onClose]
-  );
+  const errorMessage = useSelector(selectAuthError);
+  const isLoading = useSelector(selectAuthIsLoading);
 
-  const toggleAuthMode = (mode) => {
-    setErrorMessage(null);
-    setAuthMode(mode);
+  usePageTitle(location, AUTH_TITLES, authMode);
+
+  const handleAuth = async (action, args) => {
+    const resultAction = await dispatch(action(args));
+    if (
+      action === forgotPasswordThunk &&
+      resultAction.meta.requestStatus === 'fulfilled'
+    ) {
+      onClose();
+      const { severity, title, message } = resultAction.payload;
+      navigate(
+        `/notification?severity=${encodeURIComponent(
+          severity
+        )}&title=${encodeURIComponent(title)}&message=${encodeURIComponent(message)}`
+      );
+      return;
+    }
+
+    if (resultAction.meta.requestStatus === 'fulfilled') {
+      onClose();
+      navigate('/');
+    }
   };
+
+  const toggleAuthMode = (mode) => setAuthMode(mode);
 
   const renderTitle = () => {
     const titles = {
@@ -81,24 +94,15 @@ function AuthPage({ isOpen, onClose }) {
     );
   };
 
-  useEffect(() => {
-    const pageTitles = {
-      login: 'Авторизація | Моя бухгалтерія',
-      register: 'Реєстрація | Моя бухгалтерія',
-      forgotPassword: 'Відновлення паролю | Моя бухгалтерія',
-    };
-
-    document.title = pageTitles[authMode];
-  }, [authMode]);
-
   const renderContent = () => {
     switch (authMode) {
       case 'login':
         return (
           <>
             <LoginForm
+              isLoading={isLoading}
               onSubmit={({ email, password }) =>
-                handleAuth(restController.login, email, password)
+                handleAuth(loginThunk, { email, password })
               }
             />
             <Button
@@ -115,17 +119,17 @@ function AuthPage({ isOpen, onClose }) {
       case 'register':
         return (
           <RegistrationForm
+            isLoading={isLoading}
             onSubmit={({ fullName, email, password }) =>
-              handleAuth(restController.registration, fullName, email, password)
+              handleAuth(registrationThunk, { fullName, email, password })
             }
           />
         );
       case 'forgotPassword':
         return (
           <ForgotPasswordForm
-            onSubmit={({ email }) =>
-              handleAuth(restController.forgotPassword, email)
-            }
+            isLoading={isLoading}
+            onSubmit={({ email }) => handleAuth(forgotPasswordThunk, { email })}
           />
         );
       default:

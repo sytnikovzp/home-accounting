@@ -68,19 +68,19 @@ class UsersService {
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    const role = await Role.findOne({ uuid: foundUser.roleUuid });
-    if (!role) {
+    const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
+    if (!foundRole) {
       throw notFound('Роль для користувача не знайдено');
     }
     const permissions = await Permission.find({
-      uuid: { $in: role.permissions },
+      uuid: { $in: foundRole.permissions },
     });
     const limitUserData = {
       uuid: foundUser.uuid,
       fullName: foundUser.fullName,
       role: {
-        uuid: role.uuid,
-        title: role.title,
+        uuid: foundRole.uuid,
+        title: foundRole.title,
       },
       photo: foundUser.photo || '',
       creation: {
@@ -120,19 +120,19 @@ class UsersService {
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    const role = await Role.findOne({ uuid: foundUser.roleUuid });
-    if (!role) {
+    const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
+    if (!foundRole) {
       throw notFound('Роль для користувача не знайдено');
     }
     const permissions = await Permission.find({
-      uuid: { $in: role.permissions },
+      uuid: { $in: foundRole.permissions },
     });
     return {
       uuid: foundUser.uuid,
       fullName: foundUser.fullName,
       role: {
-        uuid: role.uuid,
-        title: role.title,
+        uuid: foundRole.uuid,
+        title: foundRole.title,
       },
       photo: foundUser.photo || '',
       email: foundUser.email,
