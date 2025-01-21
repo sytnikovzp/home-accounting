@@ -38,6 +38,11 @@ const MEASURES_TITLES = {
   default: 'Одиниці вимірів | Моя бухгалтерія',
 };
 
+const MODERATIONS_TITLES = {
+  view: 'Модерація контенту | Моя бухгалтерія',
+  default: 'Підлягають модерації | Моя бухгалтерія',
+};
+
 const PRODUCTS_TITLES = {
   view: 'Деталі товару/послуги | Моя бухгалтерія',
   add: 'Додавання товару/послуги | Моя бухгалтерія',
@@ -68,6 +73,7 @@ export {
   ESTABLISHMENTS_TITLES,
   EXPENSES_TITLES,
   MEASURES_TITLES,
+  MODERATIONS_TITLES,
   PRODUCTS_TITLES,
   ROLES_TITLES,
   USERS_TITLES,

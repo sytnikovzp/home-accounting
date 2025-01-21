@@ -10,7 +10,7 @@ import {
 
 const { MODERATIONS_SLICE_NAME } = sliceNames;
 
-export const fetchPendingItems = createAsyncThunk(
+export const fetchModerations = createAsyncThunk(
   `${MODERATIONS_SLICE_NAME}/fetchAll`,
   async (
     { page = 1, limit = 6, sort = 'uuid', order = 'asc' },

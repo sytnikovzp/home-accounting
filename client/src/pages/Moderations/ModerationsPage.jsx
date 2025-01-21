@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 
-import { uuidPattern } from '../../utils/sharedFunctions';
-import restController from '../../api/rest/restController';
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
+import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 
+import {
+  selectModerations,
+  selectModerationsError,
+  selectModerationsIsLoading,
+  selectTotalCount,
+} from '../../store/selectors/moderationsSelectors';
+import { clearCurrent } from '../../store/slices/moderationsSlice';
+import { fetchModerations } from '../../store/thunks/moderationsThunks';
+
+import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
 import Preloader from '../../components/Preloader/Preloader';
@@ -16,101 +27,69 @@ import ContentModerationPage from './ContentModerationPage';
 
 import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
+const { MODERATIONS_TITLES } = pageTitles;
+const MODERATIONS_PAGES = [
+  { path: ':path/:uuid', Component: ContentModerationPage },
+];
+
 function ModerationsPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [moderations, setModerations] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-  const [crudError, setCrudError] = useState(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const moderations = useSelector(selectModerations);
+  const totalCount = useSelector(selectTotalCount);
+  const isLoading = useSelector(selectModerationsIsLoading);
+  const error = useSelector(selectModerationsError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const handleModalClose = () => {
-    setCrudError(null);
-    navigate('/moderation');
-  };
-
-  const handleModalOpen = (moderation) => {
-    const { path, uuid } = moderation;
-    const allowedPaths = ['category', 'product', 'establishment'];
-    if (allowedPaths.includes(path) && uuid) {
-      navigate(`/moderation/${path}/${uuid}`);
-    } else {
-      console.error('Недійсний шлях або UUID відсутній:', moderation);
-    }
-  };
-
-  const fetchModerations = useCallback(async () => {
-    setIsLoading(true);
-    setErrorMessage(null);
-    try {
-      const params = {
-        page: currentPage,
-        limit: pageSize,
-        sort: sortModel.field,
-        order: sortModel.order,
-      };
-      const { data, totalCount } =
-        await restController.fetchAllPendingItems(params);
-      setModerations(data || []);
-      setTotalCount(totalCount);
-    } catch (error) {
-      setErrorMessage(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, pageSize, sortModel]);
-
-  const pageTitles = useMemo(
+  const fetchParams = useMemo(
     () => ({
-      view: 'Модерація контенту | Моя бухгалтерія',
-      default: 'Підлягають модерації | Моя бухгалтерія',
+      page: currentPage,
+      limit: pageSize,
+      sort: sortModel.field,
+      order: sortModel.order,
     }),
-    []
+    [currentPage, pageSize, sortModel]
   );
 
   useEffect(() => {
-    const pathKey = Object.keys(pageTitles).find((key) =>
-      location.pathname.includes(key)
-    );
-    const isUuid = uuidPattern.test(location.pathname);
-    document.title = isUuid
-      ? pageTitles.view
-      : pageTitles[pathKey] || pageTitles.default;
-  }, [location, pageTitles]);
+    dispatch(fetchModerations(fetchParams));
+  }, [dispatch, fetchParams]);
 
-  useEffect(() => {
-    fetchModerations();
-  }, [fetchModerations]);
+  usePageTitle(location, MODERATIONS_TITLES);
+
+  const handleModalOpen = useCallback(
+    (moderation) => {
+      const { path, uuid } = moderation;
+      const allowedPaths = ['category', 'product', 'establishment'];
+      if (allowedPaths.includes(path) && uuid) {
+        navigate(`/moderation/${path}/${uuid}`);
+      } else {
+        console.error('Недійсний шлях або UUID відсутній:', moderation);
+      }
+    },
+    [navigate]
+  );
+
+  const handleModalClose = useCallback(() => {
+    dispatch(clearCurrent());
+    navigate('/moderation');
+  }, [dispatch, navigate]);
 
   const showPreloader = useDelayedPreloader(isLoading);
-
-  const renderRoutes = () => (
-    <Routes>
-      <Route
-        element={
-          <ContentModerationPage
-            crudError={crudError}
-            fetchModerations={fetchModerations}
-            handleModalClose={handleModalClose}
-            setCrudError={setCrudError}
-          />
-        }
-        path=':path/:uuid'
-      />
-    </Routes>
-  );
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Модерацій"...' />;
   }
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (
@@ -147,7 +126,11 @@ function ModerationsPage() {
         onModerate={handleModalOpen}
         onSortModelChange={setSortModel}
       />
-      {renderRoutes()}
+      <EntityRoutes
+        entityPages={MODERATIONS_PAGES}
+        fetchEntities={fetchModerations}
+        handleModalClose={handleModalClose}
+      />
     </>
   );
 }

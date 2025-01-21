@@ -4,7 +4,7 @@ import { sliceNames } from '../../constants';
 import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
 
 import {
-  fetchPendingItems,
+  fetchModerations,
   moderateCategory,
   moderateEstablishment,
   moderateProduct,
@@ -31,7 +31,7 @@ const moderationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Fulfilled
-      .addCase(fetchPendingItems.fulfilled, (state, { payload }) => {
+      .addCase(fetchModerations.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
         state.data = payload.data;
@@ -54,13 +54,13 @@ const moderationSlice = createSlice({
       })
 
       // Pending
-      .addCase(fetchPendingItems.pending, setLoadingState)
+      .addCase(fetchModerations.pending, setLoadingState)
       .addCase(moderateCategory.pending, setLoadingState)
       .addCase(moderateEstablishment.pending, setLoadingState)
       .addCase(moderateProduct.pending, setLoadingState)
 
       // Rejected
-      .addCase(fetchPendingItems.rejected, setErrorState)
+      .addCase(fetchModerations.rejected, setErrorState)
       .addCase(moderateCategory.rejected, setErrorState)
       .addCase(moderateEstablishment.rejected, setErrorState)
       .addCase(moderateProduct.rejected, setErrorState);
