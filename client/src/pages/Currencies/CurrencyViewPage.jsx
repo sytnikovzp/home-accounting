@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import {
   CalendarToday,
@@ -9,7 +10,12 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  selectCurrenciesError,
+  selectCurrenciesIsLoading,
+  selectCurrentCurrency,
+} from '../../store/selectors/currenciesSelectors';
+import { fetchCurrencyByUuid } from '../../store/thunks/currenciesThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -19,18 +25,19 @@ import { stylesViewPageBox } from '../../styles';
 
 function CurrencyViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: currencyToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Currency');
+  const dispatch = useDispatch();
+
+  const currencyToCRUD = useSelector((state) =>
+    selectCurrentCurrency(state, uuid)
+  );
+  const isLoading = useSelector(selectCurrenciesIsLoading);
+  const errorMessage = useSelector(selectCurrenciesError);
 
   useEffect(() => {
-    if (uuid && !currencyToCRUD) {
-      fetchEntityByUuid(uuid);
+    if (uuid) {
+      dispatch(fetchCurrencyByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid, currencyToCRUD]);
+  }, [dispatch, uuid]);
 
   const { title, code, creation } = currencyToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};

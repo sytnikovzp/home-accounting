@@ -1,9 +1,15 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import { CalendarToday, Info, Person, Update } from '@mui/icons-material';
 
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  selectCategoriesError,
+  selectCategoriesIsLoading,
+  selectCurrentCategory,
+} from '../../store/selectors/categoriesSelectors';
+import { fetchCategoryByUuid } from '../../store/thunks/categoriesThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -14,18 +20,19 @@ import { stylesViewPageBox } from '../../styles';
 
 function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: categoryToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Category');
+  const dispatch = useDispatch();
+
+  const categoryToCRUD = useSelector((state) =>
+    selectCurrentCategory(state, uuid)
+  );
+  const isLoading = useSelector(selectCategoriesIsLoading);
+  const errorMessage = useSelector(selectCategoriesError);
 
   useEffect(() => {
-    if (uuid && !categoryToCRUD) {
-      fetchEntityByUuid(uuid);
+    if (uuid) {
+      dispatch(fetchCategoryByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid, categoryToCRUD]);
+  }, [dispatch, uuid]);
 
   const { title, status, moderation, creation } = categoryToCRUD || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};

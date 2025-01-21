@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import {
   CalendarToday,
@@ -9,7 +10,12 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  selectCurrentProduct,
+  selectProductsError,
+  selectProductsIsLoading,
+} from '../../store/selectors/productsSelectors';
+import { fetchProductByUuid } from '../../store/thunks/productsThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -20,18 +26,19 @@ import { stylesViewPageBox } from '../../styles';
 
 function ProductViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: productToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Product');
+  const dispatch = useDispatch();
+
+  const productToCRUD = useSelector((state) =>
+    selectCurrentProduct(state, uuid)
+  );
+  const isLoading = useSelector(selectProductsIsLoading);
+  const errorMessage = useSelector(selectProductsError);
 
   useEffect(() => {
-    if (uuid && !productToCRUD) {
-      fetchEntityByUuid(uuid);
+    if (uuid) {
+      dispatch(fetchProductByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid, productToCRUD]);
+  }, [dispatch, uuid]);
 
   const { title, status, moderation, creation, category } = productToCRUD || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};

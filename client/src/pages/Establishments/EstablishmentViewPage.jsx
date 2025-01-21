@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Box } from '@mui/material';
 import {
   CalendarToday,
@@ -11,7 +12,13 @@ import {
 } from '@mui/icons-material';
 
 import { configs } from '../../constants';
-import useFetchEntity from '../../hooks/useFetchEntity';
+
+import {
+  selectCurrentEstablishment,
+  selectEstablishmentsError,
+  selectEstablishmentsIsLoading,
+} from '../../store/selectors/establishmentsSelectors';
+import { fetchEstablishmentByUuid } from '../../store/thunks/establishmentsThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -28,18 +35,19 @@ const { BASE_URL } = configs;
 
 function EstablishmentViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: establishmentToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Establishment');
+  const dispatch = useDispatch();
+
+  const establishmentToCRUD = useSelector((state) =>
+    selectCurrentEstablishment(state, uuid)
+  );
+  const isLoading = useSelector(selectEstablishmentsIsLoading);
+  const errorMessage = useSelector(selectEstablishmentsError);
 
   useEffect(() => {
-    if (uuid && !establishmentToCRUD) {
-      fetchEntityByUuid(uuid);
+    if (uuid) {
+      dispatch(fetchEstablishmentByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid, establishmentToCRUD]);
+  }, [dispatch, uuid]);
 
   const { title, description, url, logo, status, moderation, creation } =
     establishmentToCRUD || {};

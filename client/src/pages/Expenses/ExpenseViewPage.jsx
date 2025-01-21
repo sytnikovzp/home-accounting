@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import {
   AttachMoney,
@@ -12,7 +13,12 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  selectCurrentExpense,
+  selectExpensesError,
+  selectExpensesIsLoading,
+} from '../../store/selectors/expensesSelectors';
+import { fetchExpenseByUuid } from '../../store/thunks/expensesThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -22,18 +28,19 @@ import { stylesViewPageBox } from '../../styles';
 
 function ExpenseViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: expenseToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Expense');
+  const dispatch = useDispatch();
+
+  const expenseToCRUD = useSelector((state) =>
+    selectCurrentExpense(state, uuid)
+  );
+  const isLoading = useSelector(selectExpensesIsLoading);
+  const errorMessage = useSelector(selectExpensesError);
 
   useEffect(() => {
-    if (uuid && !expenseToCRUD) {
-      fetchEntityByUuid(uuid);
+    if (uuid) {
+      dispatch(fetchExpenseByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid, expenseToCRUD]);
+  }, [dispatch, uuid]);
 
   const {
     product,

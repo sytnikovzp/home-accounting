@@ -18,7 +18,6 @@ import {
   getCurrencyByUuid,
   updateCurrency,
 } from '../../services/currenciesService';
-import { resendVerifyEmail } from '../../services/emailService';
 import {
   createEstablishment,
   deleteEstablishment,
@@ -51,7 +50,6 @@ import {
   getProductByUuid,
   updateProduct,
 } from '../../services/productsService';
-import { getUserProfile } from '../../services/profileService';
 import {
   createRole,
   deleteRole,
@@ -61,7 +59,6 @@ import {
 import {
   changePassword,
   deleteUser,
-  getUserByUuid,
   resetUserPhoto,
   updateUser,
   updateUserPhoto,
@@ -78,12 +75,7 @@ const restController = {
   resetPassword: (token, newPassword, confirmNewPassword) =>
     resetPassword(token, newPassword, confirmNewPassword),
 
-  // Email service
-  resendVerifyEmail: (email) => resendVerifyEmail(email),
-
   // User management
-  fetchUserProfile: () => getUserProfile(),
-  fetchUserByUuid: (userUuid) => getUserByUuid(userUuid),
   editUser: (userUuid, fullName, email, role) =>
     updateUser(userUuid, fullName, email, role),
   changePassword: (userUuid, newPassword, confirmNewPassword) =>

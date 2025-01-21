@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { sliceNames } from '../../constants';
-import { resendVerifyEmail } from '../../services/emailService';
+import { resendVerifyEmail } from '../../services/emailVerificationService';
 
 const { EMAIL_VERIFICATION_SLICE_NAME } = sliceNames;
 

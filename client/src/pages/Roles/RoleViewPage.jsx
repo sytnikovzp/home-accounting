@@ -1,9 +1,15 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Divider, Typography } from '@mui/material';
 import { CalendarToday, Description, Info, Update } from '@mui/icons-material';
 
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  selectCurrentRole,
+  selectRolesError,
+  selectRolesIsLoading,
+} from '../../store/selectors/rolesSelectors';
+import { fetchRoleByUuid } from '../../store/thunks/rolesThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -14,18 +20,17 @@ import { stylesViewPageBox } from '../../styles';
 
 function RoleViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: roleToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Role');
+  const dispatch = useDispatch();
+
+  const roleToCRUD = useSelector((state) => selectCurrentRole(state, uuid));
+  const isLoading = useSelector(selectRolesIsLoading);
+  const errorMessage = useSelector(selectRolesError);
 
   useEffect(() => {
-    if (uuid && !roleToCRUD) {
-      fetchEntityByUuid(uuid);
+    if (uuid) {
+      dispatch(fetchRoleByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid, roleToCRUD]);
+  }, [dispatch, uuid]);
 
   const { title, description, permissions, createdAt, updatedAt } =
     roleToCRUD || {};

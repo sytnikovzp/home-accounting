@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import {
   CalendarToday,
@@ -9,7 +10,12 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  selectCurrentMeasure,
+  selectMeasuresError,
+  selectMeasuresIsLoading,
+} from '../../store/selectors/measuresSelectors';
+import { fetchMeasureByUuid } from '../../store/thunks/measuresThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -19,18 +25,19 @@ import { stylesViewPageBox } from '../../styles';
 
 function MeasureViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: measureToCRUD,
-    isLoading,
-    errorMessage,
-    fetchEntityByUuid,
-  } = useFetchEntity('Measure');
+  const dispatch = useDispatch();
+
+  const measureToCRUD = useSelector((state) =>
+    selectCurrentMeasure(state, uuid)
+  );
+  const isLoading = useSelector(selectMeasuresIsLoading);
+  const errorMessage = useSelector(selectMeasuresError);
 
   useEffect(() => {
-    if (uuid && !measureToCRUD) {
-      fetchEntityByUuid(uuid);
+    if (uuid) {
+      dispatch(fetchMeasureByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid, measureToCRUD]);
+  }, [dispatch, uuid]);
 
   const { title, description, creation } = measureToCRUD || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
