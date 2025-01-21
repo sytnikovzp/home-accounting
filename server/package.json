@@ -1,5 +1,6 @@
 {
   "name": "server",
+  "private": true,
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -15,15 +16,25 @@
     "seedmongo": "node ./src/utils/seedMongo.js",
     "lint": "eslint .",
     "fixlint": "eslint --fix .",
+    "syncmodel": "node ./src/utils/syncModel.js",
+    "syncallmodels": "node ./src/utils/syncAllModels.js",
     "dbcreate-test": "npx sequelize db:create --env test",
     "dbdrop-test": "npx sequelize db:drop --env test",
     "mig-test": "npx sequelize db:migrate --env test",
     "seedall-test": "npx sequelize db:seed:all --env test",
     "test": "npm run cljson && npm run dbdrop-test && npm run dbcreate-test && npm run mig-test && npm run seedall-test && jest --forceExit"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sytnikovzp/home-accounting.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sytnikovzp/home-accounting/issues"
+  },
+  "homepage": "https://github.com/sytnikovzp/home-accounting#readme",
+  "author": "Alexandr Sytnikov <sytnikov.zp@gmail.com>",
   "license": "ISC",
+  "keywords": [],
   "description": "",
   "dependencies": {
     "axios": "^1.7.9",

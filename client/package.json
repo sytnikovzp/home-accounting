@@ -10,6 +10,16 @@
     "fixlint": "eslint --fix .",
     "preview": "vite preview"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sytnikovzp/home-accounting.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sytnikovzp/home-accounting/issues"
+  },
+  "homepage": "https://github.com/sytnikovzp/home-accounting#readme",
+  "author": "Alexandr Sytnikov <sytnikov.zp@gmail.com>",
+  "license": "ISC",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

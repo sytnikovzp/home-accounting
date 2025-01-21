@@ -63,7 +63,7 @@ const seedDatabase = async () => {
     const permissionUuids = await createPermissions();
     const roleUuids = await createRoles(permissionUuids);
     await createUsers(roleUuids);
-    console.log('Database seeded successfully');
+    console.log('MongoDB database seeded successfully');
   } catch (error) {
     console.error('Error seeding database:', error);
     throw error;
@@ -73,7 +73,7 @@ const seedDatabase = async () => {
 const closeDatabase = async () => {
   try {
     await mongoose.connection.close();
-    console.log('Database connection closed');
+    console.log('MongoDB database connection closed');
   } catch (error) {
     console.error('Error closing database connection:', error);
   }
