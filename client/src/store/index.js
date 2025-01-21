@@ -7,6 +7,7 @@ import emailVerificationReducer from './slices/emailVerificationSlice';
 import establishmentsReducer from './slices/establishmentsSlice';
 import expensesReducer from './slices/expensesSlice';
 import measuresReducer from './slices/measuresSlice';
+import moderationsReducer from './slices/moderationsSlice';
 import nbuExchangesReducer from './slices/nbuExchangesSlice';
 import permissionsReducer from './slices/permissionsSlice';
 import productsReducer from './slices/productsSlice';
@@ -23,6 +24,7 @@ const store = configureStore({
     establishments: establishmentsReducer,
     expenses: expensesReducer,
     measures: measuresReducer,
+    moderations: moderationsReducer,
     nbuExchanges: nbuExchangesReducer,
     permissions: permissionsReducer,
     products: productsReducer,
