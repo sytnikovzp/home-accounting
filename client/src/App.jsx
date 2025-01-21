@@ -9,11 +9,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  selectProfile,
-  selectProfileError,
-  selectProfileIsLoading,
-} from './store/selectors/profileSelectors';
-import { fetchUserProfile } from './store/thunks/profileThunks';
+  selectUserProfile,
+  selectUserProfileError,
+  selectUserProfileIsLoading,
+} from './store/selectors/userProfileSelectors';
+import { fetchUserProfile } from './store/thunks/userProfileThunks';
 
 import Error from './components/Error/Error';
 import Layout from './components/Layout/Layout';
@@ -40,9 +40,9 @@ function App() {
 
   const dispatch = useDispatch();
 
-  const currentUser = useSelector(selectProfile);
-  const isLoading = useSelector(selectProfileIsLoading);
-  const error = useSelector(selectProfileError);
+  const currentUser = useSelector(selectUserProfile);
+  const isLoading = useSelector(selectUserProfileIsLoading);
+  const error = useSelector(selectUserProfileError);
 
   useEffect(() => {
     dispatch(fetchUserProfile());

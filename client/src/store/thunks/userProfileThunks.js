@@ -8,12 +8,12 @@ import {
   resetUserPhoto,
   updateUser,
   updateUserPhoto,
-} from '../../services/profileService';
+} from '../../services/userProfileService';
 
-const { PROFILE_SLICE_NAME } = sliceNames;
+const { USER_PROFILE_SLICE_NAME } = sliceNames;
 
 export const fetchUserProfile = createAsyncThunk(
-  `${PROFILE_SLICE_NAME}/fetch`,
+  `${USER_PROFILE_SLICE_NAME}/fetch`,
   async (_, { rejectWithValue }) => {
     try {
       const data = await getUserProfile();
@@ -25,7 +25,7 @@ export const fetchUserProfile = createAsyncThunk(
 );
 
 export const changeUserPassword = createAsyncThunk(
-  `${PROFILE_SLICE_NAME}/changePassword`,
+  `${USER_PROFILE_SLICE_NAME}/changePassword`,
   async ({ newPassword, confirmNewPassword }, { rejectWithValue }) => {
     try {
       const { data } = await changePassword(newPassword, confirmNewPassword);
@@ -37,7 +37,7 @@ export const changeUserPassword = createAsyncThunk(
 );
 
 export const editUser = createAsyncThunk(
-  `${PROFILE_SLICE_NAME}/edit`,
+  `${USER_PROFILE_SLICE_NAME}/edit`,
   async ({ fullName, email, role }, { rejectWithValue }) => {
     try {
       const { data } = await updateUser(fullName, email, role);
@@ -49,7 +49,7 @@ export const editUser = createAsyncThunk(
 );
 
 export const changePhoto = createAsyncThunk(
-  `${PROFILE_SLICE_NAME}/changePhoto`,
+  `${USER_PROFILE_SLICE_NAME}/changePhoto`,
   async ({ userPhoto }, { rejectWithValue }) => {
     try {
       const { data } = await updateUserPhoto(userPhoto);
@@ -61,7 +61,7 @@ export const changePhoto = createAsyncThunk(
 );
 
 export const resetPhoto = createAsyncThunk(
-  `${PROFILE_SLICE_NAME}/resetPhoto`,
+  `${USER_PROFILE_SLICE_NAME}/resetPhoto`,
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await resetUserPhoto();
@@ -73,7 +73,7 @@ export const resetPhoto = createAsyncThunk(
 );
 
 export const removeUser = createAsyncThunk(
-  `${PROFILE_SLICE_NAME}/remove`,
+  `${USER_PROFILE_SLICE_NAME}/remove`,
   async (_, { rejectWithValue }) => {
     try {
       await deleteUser();

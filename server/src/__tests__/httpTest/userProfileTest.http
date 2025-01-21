@@ -1,14 +1,14 @@
 ### Get current user profile
 GET http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwYWItNmVkMy00ZDYxLTg1NGMtOTVlYTMxNjI1ODgzIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjU3NDIsImV4cCI6MTczODYyMTc0Mn0.nFtNHabwU7X8gQoxRwkRiBcoqxl2spXGNxigUWsXHIo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYmRkZjFiMzItNmQwZi00MjU3LTgyNWQtOTY5MzVmZjU0NGU4IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3Mzc0NzI5MTUsImV4cCI6MTczODc2ODkxNX0.0ua7kFL6PHl8vFIDfBTtaByAUWWATiybatwrxyHbDA8
 
 // ==============================================================
 
 ### Change current user password
 PATCH http://localhost:5000/api/profile/password HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwYWItNmVkMy00ZDYxLTg1NGMtOTVlYTMxNjI1ODgzIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjU3NDIsImV4cCI6MTczODYyMTc0Mn0.nFtNHabwU7X8gQoxRwkRiBcoqxl2spXGNxigUWsXHIo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYmRkZjFiMzItNmQwZi00MjU3LTgyNWQtOTY5MzVmZjU0NGU4IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3Mzc0NzI5MTUsImV4cCI6MTczODc2ODkxNX0.0ua7kFL6PHl8vFIDfBTtaByAUWWATiybatwrxyHbDA8
 
 {
   "newPassword": "Qwerty1234567",
@@ -20,7 +20,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwY
 ### Update current user data
 PATCH http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwYWItNmVkMy00ZDYxLTg1NGMtOTVlYTMxNjI1ODgzIiwidG9rZW5WZXJzaW9uIjoxLCJpYXQiOjE3MzczMjU3NzUsImV4cCI6MTczODYyMTc3NX0.FU1kQNG0BnCNcNouDybrqKKWThQXvvAREZsD29VBZ6g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlMGItZGM1Ny00OWI1LTgyNDktYmJjMjQ2NWFmYjRjIiwidG9rZW5WZXJzaW9uIjoyLCJpYXQiOjE3Mzc0NzIyMTMsImV4cCI6MTczODc2ODIxM30.-P0ieMaPeE17BXuqB2UcbmtYjGSZX7MXAaAN7y_Kook
 
 {
   "fullName": "Оновлений користувач",
@@ -34,7 +34,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwY
 ### Update current user photo
 PATCH http://localhost:5000/api/profile/photo HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwYWItNmVkMy00ZDYxLTg1NGMtOTVlYTMxNjI1ODgzIiwidG9rZW5WZXJzaW9uIjoxLCJpYXQiOjE3MzczMjU3NzUsImV4cCI6MTczODYyMTc3NX0.FU1kQNG0BnCNcNouDybrqKKWThQXvvAREZsD29VBZ6g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlMGItZGM1Ny00OWI1LTgyNDktYmJjMjQ2NWFmYjRjIiwidG9rZW5WZXJzaW9uIjoyLCJpYXQiOjE3Mzc0NzIyNzMsImV4cCI6MTczODc2ODI3M30.neOiW6MJuUieknlpuZ7GcWh9U7opoZRGidQh6MeRpt4
 
 --boundary
 Content-Disposition: form-data; name="userPhoto"; filename="user.png"
@@ -51,7 +51,7 @@ Content-Type: image/png
 ### Reset current user photo
 PATCH http://localhost:5000/api/profile/photo/reset HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwYWItNmVkMy00ZDYxLTg1NGMtOTVlYTMxNjI1ODgzIiwidG9rZW5WZXJzaW9uIjoxLCJpYXQiOjE3MzczMjU3NzUsImV4cCI6MTczODYyMTc3NX0.FU1kQNG0BnCNcNouDybrqKKWThQXvvAREZsD29VBZ6g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlMGItZGM1Ny00OWI1LTgyNDktYmJjMjQ2NWFmYjRjIiwidG9rZW5WZXJzaW9uIjoyLCJpYXQiOjE3Mzc0NzIyNzMsImV4cCI6MTczODc2ODI3M30.neOiW6MJuUieknlpuZ7GcWh9U7opoZRGidQh6MeRpt4
 
 {
   "photo": null
@@ -62,4 +62,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwY
 ### Delete current user
 DELETE http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDY4NDEwYWItNmVkMy00ZDYxLTg1NGMtOTVlYTMxNjI1ODgzIiwidG9rZW5WZXJzaW9uIjoxLCJpYXQiOjE3MzczMjU3NzUsImV4cCI6MTczODYyMTc3NX0.FU1kQNG0BnCNcNouDybrqKKWThQXvvAREZsD29VBZ6g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlMGItZGM1Ny00OWI1LTgyNDktYmJjMjQ2NWFmYjRjIiwidG9rZW5WZXJzaW9uIjoyLCJpYXQiOjE3Mzc0NzIyNzMsImV4cCI6MTczODc2ODI3M30.neOiW6MJuUieknlpuZ7GcWh9U7opoZRGidQh6MeRpt4

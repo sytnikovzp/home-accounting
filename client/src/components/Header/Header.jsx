@@ -12,7 +12,7 @@ import {
 
 import restController from '../../api/rest/restController';
 
-import { selectProfile } from '../../store/selectors/profileSelectors';
+import { selectUserProfile } from '../../store/selectors/userProfileSelectors';
 
 import NavBar from '../Navigation/NavBar';
 
@@ -25,7 +25,7 @@ function Header({ setAuthModalOpen }) {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
-  const currentUser = useSelector(selectProfile);
+  const currentUser = useSelector(selectUserProfile);
 
   const isAuthenticated = Boolean(currentUser);
 

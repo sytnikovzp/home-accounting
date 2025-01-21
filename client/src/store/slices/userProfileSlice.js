@@ -10,9 +10,9 @@ import {
   fetchUserProfile,
   removeUser,
   resetPhoto,
-} from '../thunks/profileThunks';
+} from '../thunks/userProfileThunks';
 
-const { PROFILE_SLICE_NAME } = sliceNames;
+const { USER_PROFILE_SLICE_NAME } = sliceNames;
 
 const initialState = {
   data: null,
@@ -20,8 +20,8 @@ const initialState = {
   error: null,
 };
 
-const profileSlice = createSlice({
-  name: PROFILE_SLICE_NAME,
+const userProfileSlice = createSlice({
+  name: USER_PROFILE_SLICE_NAME,
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -81,4 +81,4 @@ const profileSlice = createSlice({
   },
 });
 
-export default profileSlice.reducer;
+export default userProfileSlice.reducer;

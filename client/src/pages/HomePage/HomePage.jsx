@@ -12,12 +12,12 @@ import {
 
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
-import { selectProfile } from '../../store/selectors/profileSelectors';
 import {
   selectStatistics,
   selectStatisticsError,
   selectStatisticsIsLoading,
 } from '../../store/selectors/statisticsSelectors';
+import { selectUserProfile } from '../../store/selectors/userProfileSelectors';
 import { fetchStatisticsByCriteria } from '../../store/thunks/statisticsThunks';
 
 import Error from '../../components/Error/Error';
@@ -32,15 +32,16 @@ import {
 } from '../../styles';
 
 function HomePage() {
+  const [ago, setAgo] = useState('allTime');
+  const [criteria, setCriteria] = useState('byCategories');
+
   const dispatch = useDispatch();
   const location = useLocation();
-  const currentUser = useSelector(selectProfile);
+
+  const currentUser = useSelector(selectUserProfile);
   const statistics = useSelector(selectStatistics);
   const isLoading = useSelector(selectStatisticsIsLoading);
   const errorMessage = useSelector(selectStatisticsError);
-
-  const [ago, setAgo] = useState('allTime');
-  const [criteria, setCriteria] = useState('byCategories');
 
   const pageTitles = useMemo(
     () => ({

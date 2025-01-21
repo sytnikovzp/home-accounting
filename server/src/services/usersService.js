@@ -182,6 +182,13 @@ class UsersService {
     if (!updatedUser) {
       throw badRequest('Дані цього користувача не оновлено');
     }
+    const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
+    if (!foundRole) {
+      throw notFound('Роль для користувача не знайдено');
+    }
+    const permissions = await Permission.find({
+      uuid: { $in: foundRole.permissions },
+    });
     const tokens = generateTokens(updatedUser);
     return {
       ...tokens,
@@ -192,7 +199,10 @@ class UsersService {
           updatedUser.emailVerificationStatus,
           USER_VERIFICATION_MAPPING
         ),
+        role: foundRole.title || '',
+        photo: foundUser.photo || '',
       },
+      permissions: permissions.map((permission) => permission.title),
     };
   }
 
@@ -268,6 +278,9 @@ class UsersService {
     if (!updatedUser) {
       throw badRequest('Дані цього користувача не оновлено');
     }
+    const permissions = await Permission.find({
+      uuid: { $in: foundRole.permissions },
+    });
     const tokens = generateTokens(updatedUser);
     return {
       ...tokens,
@@ -279,7 +292,9 @@ class UsersService {
           USER_VERIFICATION_MAPPING
         ),
         role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,
+        photo: foundUser.photo || '',
       },
+      permissions: permissions.map((permission) => permission.title),
     };
   }
 

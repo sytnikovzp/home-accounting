@@ -13,24 +13,24 @@ const {
   resetUserPhoto,
   deleteUser,
   updateUser,
-} = require('../controllers/profileController');
+} = require('../controllers/userProfileController');
 
-const profileRouter = new Router();
+const userProfileRouter = new Router();
 
-profileRouter.use(authHandler);
+userProfileRouter.use(authHandler);
 
-profileRouter
+userProfileRouter
   .route('/')
   .get(getCurrentUserProfile)
   .patch(validateUser, updateUser)
   .delete(deleteUser);
 
-profileRouter.route('/password').patch(validatePassword, changePassword);
+userProfileRouter.route('/password').patch(validatePassword, changePassword);
 
-profileRouter
+userProfileRouter
   .route('/photo')
   .patch(uploadUserPhotos.single('userPhoto'), updateUserPhoto);
 
-profileRouter.route('/photo/reset').patch(resetUserPhoto);
+userProfileRouter.route('/photo/reset').patch(resetUserPhoto);
 
-module.exports = profileRouter;
+module.exports = userProfileRouter;

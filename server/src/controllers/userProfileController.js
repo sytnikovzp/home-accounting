@@ -7,7 +7,7 @@ const {
   deleteUser,
 } = require('../services/usersService');
 
-class ProfileController {
+class UserProfileController {
   static async getCurrentUserProfile(req, res, next) {
     try {
       const currentUser = await getCurrentUser(req.user.uuid);
@@ -120,4 +120,4 @@ class ProfileController {
   }
 }
 
-module.exports = ProfileController;
+module.exports = UserProfileController;
