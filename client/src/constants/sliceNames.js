@@ -1,3 +1,4 @@
+const AUTH_SLICE_NAME = 'auth';
 const CATEGORIES_SLICE_NAME = 'categories';
 const CURRENCIES_SLICE_NAME = 'currencies';
 const EMAIL_VERIFICATION_SLICE_NAME = 'emailVerification';
@@ -14,6 +15,7 @@ const STATISTICS_SLICE_NAME = 'statistics';
 const USERS_SLICE_NAME = 'users';
 
 export {
+  AUTH_SLICE_NAME,
   CATEGORIES_SLICE_NAME,
   CURRENCIES_SLICE_NAME,
   EMAIL_VERIFICATION_SLICE_NAME,

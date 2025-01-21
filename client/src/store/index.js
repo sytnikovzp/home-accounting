@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { logger } from 'redux-logger';
 
+import authReducer from './slices/authSlice';
 import categoriesReducer from './slices/categoriesSlice';
 import currenciesReducer from './slices/currenciesSlice';
 import emailVerificationReducer from './slices/emailVerificationSlice';
@@ -18,6 +19,7 @@ import usersReducer from './slices/usersSlice';
 
 const store = configureStore({
   reducer: {
+    auth: authReducer,
     categories: categoriesReducer,
     currencies: currenciesReducer,
     emailVerification: emailVerificationReducer,
