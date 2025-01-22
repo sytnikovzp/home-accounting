@@ -23,7 +23,6 @@ function MeasureAddPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={<MeasureForm onSubmit={handleSubmitMeasure} />}
       error={crudError}
       title='Додавання одиниці...'

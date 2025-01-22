@@ -35,7 +35,6 @@ function ExpenseAddPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         <ExpenseForm
           currencies={currencies}

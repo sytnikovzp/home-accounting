@@ -47,7 +47,6 @@ function ProductEditPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

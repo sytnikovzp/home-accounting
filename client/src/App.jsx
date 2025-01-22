@@ -52,6 +52,7 @@ function App() {
     return (
       <ModalWindow
         disableBackdropClick
+        disableCloseButton
         isOpen
         content={<Preloader message='Welcome to Home Accounting...' />}
       />

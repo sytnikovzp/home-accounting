@@ -41,7 +41,6 @@ function UserResetPasswordPage() {
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={<ChangePasswordForm onSubmit={handleSubmitResetPassword} />}
       error={error}
       title='Скидання паролю...'

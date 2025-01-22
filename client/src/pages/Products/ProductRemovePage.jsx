@@ -43,7 +43,6 @@ function ProductRemovePage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       actions={[
         <Button
           key='remove'

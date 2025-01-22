@@ -167,7 +167,6 @@ function UserViewPage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

@@ -82,7 +82,6 @@ function CategoryViewPage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

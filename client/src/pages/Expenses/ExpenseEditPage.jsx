@@ -55,7 +55,6 @@ function ExpenseEditPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

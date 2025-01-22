@@ -48,7 +48,6 @@ function RoleEditPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

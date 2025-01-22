@@ -43,7 +43,6 @@ function RoleRemovePage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       actions={[
         <Button
           key='remove'

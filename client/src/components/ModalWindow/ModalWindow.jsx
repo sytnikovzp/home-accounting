@@ -18,7 +18,7 @@ import {
 function ModalWindow({
   isOpen,
   onClose,
-  showCloseButton = false,
+  disableCloseButton = false,
   title,
   content,
   actions,
@@ -28,14 +28,14 @@ function ModalWindow({
   return (
     <Modal
       closeAfterTransition
-      aria-describedby='custom-modal-description'
-      aria-labelledby={title ? 'custom-modal-title' : null}
+      aria-describedby='modal-window-description'
+      aria-labelledby={title ? 'modal-window-title' : null}
       open={isOpen}
       onClose={disableBackdropClick ? null : onClose}
     >
       <Fade in={isOpen}>
         <Box position='relative' sx={stylesModalWindowFadeBox}>
-          {showCloseButton && (
+          {!disableCloseButton && (
             <IconButton
               aria-label='Закрити'
               sx={stylesModalWindowIconButton}
@@ -45,7 +45,7 @@ function ModalWindow({
             </IconButton>
           )}
           {title && (
-            <Box id='custom-modal-title' mb={2}>
+            <Box id='modal-window-title' mb={2}>
               {typeof title === 'string' ? (
                 <Typography component='h1' variant='h5'>
                   {title}
@@ -61,7 +61,7 @@ function ModalWindow({
               {error?.message || 'error'}
             </Alert>
           )}
-          <Box id='custom-modal-description' sx={stylesModalWindowContentBox}>
+          <Box id='modal-window-description' sx={stylesModalWindowContentBox}>
             {content}
           </Box>
           {actions && (

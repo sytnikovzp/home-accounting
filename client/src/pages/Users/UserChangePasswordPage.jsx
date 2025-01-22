@@ -46,7 +46,6 @@ function UserChangePasswordPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

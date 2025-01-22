@@ -73,7 +73,6 @@ function UserEditPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

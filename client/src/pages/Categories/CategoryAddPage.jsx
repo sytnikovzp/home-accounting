@@ -23,7 +23,6 @@ function CategoryAddPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={<CategoryForm onSubmit={handleSubmitCategory} />}
       error={crudError}
       title='Додавання категорії...'

@@ -43,7 +43,6 @@ function CategoryRemovePage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       actions={[
         <Button
           key='remove'

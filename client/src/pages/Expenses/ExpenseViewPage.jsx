@@ -117,7 +117,6 @@ function ExpenseViewPage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

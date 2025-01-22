@@ -46,7 +46,6 @@ function CurrencyEditPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

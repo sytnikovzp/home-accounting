@@ -67,7 +67,6 @@ function EstablishmentEditPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

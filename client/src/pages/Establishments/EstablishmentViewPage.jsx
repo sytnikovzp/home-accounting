@@ -133,7 +133,6 @@ function EstablishmentViewPage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

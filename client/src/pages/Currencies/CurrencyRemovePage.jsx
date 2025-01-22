@@ -43,7 +43,6 @@ function CurrencyRemovePage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       actions={[
         <Button
           key='remove'

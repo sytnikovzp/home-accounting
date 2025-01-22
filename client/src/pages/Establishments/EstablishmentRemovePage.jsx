@@ -43,7 +43,6 @@ function EstablishmentRemovePage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       actions={[
         <Button
           key='remove'

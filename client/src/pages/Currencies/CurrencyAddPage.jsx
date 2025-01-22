@@ -23,7 +23,6 @@ function CurrencyAddPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={<CurrencyForm onSubmit={handleSubmitCurrency} />}
       error={crudError}
       title='Додавання валюти...'

@@ -28,7 +28,6 @@ function RoleAddPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         <RoleForm
           permissionsList={permissionsList}

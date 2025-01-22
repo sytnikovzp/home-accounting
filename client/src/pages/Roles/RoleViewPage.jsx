@@ -48,7 +48,6 @@ function RoleViewPage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         isLoading ? (
           <Preloader />

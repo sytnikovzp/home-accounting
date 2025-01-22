@@ -24,7 +24,6 @@ function ProductAddPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={
         <ProductForm categories={categories} onSubmit={handleSubmitProduct} />
       }

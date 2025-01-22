@@ -27,7 +27,6 @@ function EstablishmentAddPage({
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       content={<EstablishmentForm onSubmit={handleSubmitEstablishment} />}
       error={crudError}
       title='Додавання закладу...'

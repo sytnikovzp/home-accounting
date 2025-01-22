@@ -191,7 +191,6 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
   return (
     <ModalWindow
       isOpen
-      showCloseButton
       actions={[
         <Button
           key='approve'
