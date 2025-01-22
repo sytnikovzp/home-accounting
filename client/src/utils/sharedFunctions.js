@@ -79,7 +79,7 @@ const requestHandler = async ({
     }
     return response.data;
   } catch (error) {
-    if (method === 'GET' && url.includes('/profile')) {
+    if (method === 'GET' && url.includes('/refresh')) {
       return null;
     }
     if (method === 'GET') {

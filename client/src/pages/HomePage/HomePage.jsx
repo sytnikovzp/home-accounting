@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,12 +12,12 @@ import {
 
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
+import { selectAuthUser } from '../../store/selectors/authSelectors';
 import {
   selectStatistics,
   selectStatisticsError,
   selectStatisticsIsLoading,
 } from '../../store/selectors/statisticsSelectors';
-import { selectUserProfile } from '../../store/selectors/userProfileSelectors';
 import { fetchStatisticsByCriteria } from '../../store/thunks/statisticsThunks';
 
 import Error from '../../components/Error/Error';
@@ -38,10 +38,18 @@ function HomePage() {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const currentUser = useSelector(selectUserProfile);
+  const currentUser = useSelector(selectAuthUser);
   const statistics = useSelector(selectStatistics);
   const isLoading = useSelector(selectStatisticsIsLoading);
   const errorMessage = useSelector(selectStatisticsError);
+
+  const handleCriteriaChange = useCallback((e) => {
+    setCriteria(e.target.value);
+  }, []);
+
+  const handleAgoChange = useCallback((e) => {
+    setAgo(e.target.value);
+  }, []);
 
   const pageTitles = useMemo(
     () => ({
@@ -57,7 +65,7 @@ function HomePage() {
   useEffect(() => {
     const creatorUuid = currentUser?.uuid || null;
     dispatch(fetchStatisticsByCriteria({ ago, criteria, creatorUuid }));
-  }, [dispatch, ago, criteria, currentUser]);
+  }, [ago, criteria, currentUser?.uuid, dispatch]);
 
   const showPreloader = useDelayedPreloader(isLoading);
 
@@ -87,7 +95,7 @@ function HomePage() {
             <Select
               label='Критерії'
               value={criteria}
-              onChange={(e) => setCriteria(e.target.value)}
+              onChange={handleCriteriaChange}
             >
               <MenuItem value='byCategories'>За категоріями</MenuItem>
               <MenuItem value='byEstablishments'>За закладами</MenuItem>
@@ -97,11 +105,7 @@ function HomePage() {
 
           <FormControl size='small' sx={stylesHomePagePeriodSelect}>
             <InputLabel>Період</InputLabel>
-            <Select
-              label='Період'
-              value={ago}
-              onChange={(e) => setAgo(e.target.value)}
-            >
+            <Select label='Період' value={ago} onChange={handleAgoChange}>
               <MenuItem value='day'>За день</MenuItem>
               <MenuItem value='week'>За тиждень</MenuItem>
               <MenuItem value='month'>За місяць</MenuItem>

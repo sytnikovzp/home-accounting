@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import {
   BrowserRouter as Router,
@@ -8,14 +8,14 @@ import {
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  selectUserProfile,
-  selectUserProfileError,
-  selectUserProfileIsLoading,
-} from './store/selectors/userProfileSelectors';
-import { fetchUserProfile } from './store/thunks/userProfileThunks';
+import { getAccessToken } from './utils/sharedFunctions';
 
-import Error from './components/Error/Error';
+import {
+  selectAuthIsLoading,
+  selectIsAuthenticated,
+} from './store/selectors/authSelectors';
+import { refreshAccessTokenThunk } from './store/thunks/authThunks';
+
 import Layout from './components/Layout/Layout';
 import ModalWindow from './components/ModalWindow/ModalWindow';
 import Preloader from './components/Preloader/Preloader';
@@ -40,16 +40,19 @@ function App() {
 
   const dispatch = useDispatch();
 
-  const currentUser = useSelector(selectUserProfile);
-  const isLoading = useSelector(selectUserProfileIsLoading);
-  const error = useSelector(selectUserProfileError);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isLoading = useSelector(selectAuthIsLoading);
 
   useEffect(() => {
-    dispatch(fetchUserProfile());
+    const token = getAccessToken();
+    if (token) {
+      dispatch(refreshAccessTokenThunk());
+    }
   }, [dispatch]);
 
-  const isAuthenticated = Boolean(currentUser);
-  const handleCloseAuthModal = () => setAuthModalOpen(false);
+  const handleCloseAuthModal = useCallback(() => {
+    setAuthModalOpen(false);
+  }, []);
 
   if (isLoading) {
     return (
@@ -61,17 +64,8 @@ function App() {
     );
   }
 
-  if (error && !isAuthenticated) {
-    return <Error error={error} />;
-  }
-
   const renderPrivateRoute = (Component) => (
-    <PrivateRoute
-      isAuthenticated={isAuthenticated}
-      setAuthModalOpen={setAuthModalOpen}
-    >
-      {Component}
-    </PrivateRoute>
+    <PrivateRoute setAuthModalOpen={setAuthModalOpen}>{Component}</PrivateRoute>
   );
 
   return (
@@ -115,13 +109,22 @@ function App() {
             <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
             <Route element={<NotificationsPage />} path='notification' />
             <Route element={<UserResetPasswordPage />} path='reset-password' />
+            <Route
+              element={
+                isAuthenticated ? (
+                  <Navigate replace to='/' />
+                ) : (
+                  <AuthPage
+                    isOpen={isAuthModalOpen}
+                    onClose={handleCloseAuthModal}
+                  />
+                )
+              }
+              path='auth/*'
+            />
             <Route element={<Navigate replace to='/' />} path='*' />
           </Route>
         </Routes>
-
-        {isAuthModalOpen && !isAuthenticated && (
-          <AuthPage isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
-        )}
       </Router>
     </HelmetProvider>
   );

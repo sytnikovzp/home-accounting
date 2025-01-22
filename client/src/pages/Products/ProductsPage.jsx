@@ -88,6 +88,10 @@ function ProductsPage() {
     navigate('/products');
   }, [dispatch, navigate]);
 
+  const handleAddClick = useCallback(() => {
+    handleModalOpen('add');
+  }, [handleModalOpen]);
+
   const handleEdit = useCallback(
     (product) => handleModalOpen('edit', product.uuid),
     [handleModalOpen]
@@ -97,6 +101,10 @@ function ProductsPage() {
     (product) => handleModalOpen('remove', product.uuid),
     [handleModalOpen]
   );
+
+  const handleStatusChange = useCallback((event) => {
+    setSelectedStatus(event.target.value);
+  }, []);
 
   const showPreloader = useDelayedPreloader(isLoading);
 
@@ -124,7 +132,7 @@ function ProductsPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => handleModalOpen('add')}
+          onClick={handleAddClick}
         >
           Додати товар/послугу
         </Button>
@@ -150,7 +158,7 @@ function ProductsPage() {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onSortModelChange={setSortModel}
-        onStatusChange={(event) => setSelectedStatus(event.target.value)}
+        onStatusChange={handleStatusChange}
       />
       <EntityRoutes
         entityPages={PRODUCTS_PAGES}

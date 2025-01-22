@@ -1,3 +1,4 @@
+// import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { CssBaseline } from '@mui/material';
@@ -13,10 +14,12 @@ import './index.css';
 const theme = createTheme({}, ukUA);
 
 createRoot(document.getElementById('root')).render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Provider store={store}>
+  // <StrictMode>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <App />
-    </Provider>
-  </ThemeProvider>
+    </ThemeProvider>
+  </Provider>
+  // </StrictMode>
 );

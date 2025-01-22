@@ -88,6 +88,10 @@ function EstablishmentsPage() {
     navigate('/establishments');
   }, [dispatch, navigate]);
 
+  const handleAddClick = useCallback(() => {
+    handleModalOpen('add');
+  }, [handleModalOpen]);
+
   const handleEdit = useCallback(
     (establishment) => handleModalOpen('edit', establishment.uuid),
     [handleModalOpen]
@@ -97,6 +101,10 @@ function EstablishmentsPage() {
     (establishment) => handleModalOpen('remove', establishment.uuid),
     [handleModalOpen]
   );
+
+  const handleStatusChange = useCallback((event) => {
+    setSelectedStatus(event.target.value);
+  }, []);
 
   const showPreloader = useDelayedPreloader(isLoading);
 
@@ -124,7 +132,7 @@ function EstablishmentsPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => handleModalOpen('add')}
+          onClick={handleAddClick}
         >
           Додати заклад
         </Button>
@@ -150,7 +158,7 @@ function EstablishmentsPage() {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onSortModelChange={setSortModel}
-        onStatusChange={(event) => setSelectedStatus(event.target.value)}
+        onStatusChange={handleStatusChange}
       />
       <EntityRoutes
         entityPages={ESTABLISHMENTS_PAGES}

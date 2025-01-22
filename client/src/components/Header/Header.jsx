@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   AppBar,
   Box,
@@ -10,9 +10,11 @@ import {
   Toolbar,
 } from '@mui/material';
 
-import restController from '../../api/rest/restController';
-
-import { selectUserProfile } from '../../store/selectors/userProfileSelectors';
+import {
+  selectAuthUser,
+  selectIsAuthenticated,
+} from '../../store/selectors/authSelectors';
+import { logoutThunk } from '../../store/thunks/authThunks';
 
 import NavBar from '../Navigation/NavBar';
 
@@ -25,26 +27,35 @@ function Header({ setAuthModalOpen }) {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
-  const currentUser = useSelector(selectUserProfile);
-
-  const isAuthenticated = Boolean(currentUser);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const currentUser = useSelector(selectAuthUser);
 
   const navigate = useNavigate();
-  const navigateTo = (path) => navigate(path);
-  const handleToggleNavBar = () => setOpenNavBar((prev) => !prev);
-  const toggleUserMenu = (event) => setOpenUserMenu(event.currentTarget);
-  const closeMenu = () => setOpenUserMenu(false);
+  const dispatch = useDispatch();
 
-  const openAuthModal = () => setAuthModalOpen(true);
+  const navigateTo = useCallback((path) => navigate(path), [navigate]);
 
-  const handleLogout = async () => {
-    try {
-      await restController.logout();
-      navigate('/');
-    } catch (error) {
-      console.error('Помилка виходу із системи:', error.message);
-    }
-  };
+  const handleToggleNavBar = useCallback(
+    () => setOpenNavBar((prev) => !prev),
+    []
+  );
+
+  const toggleUserMenu = useCallback(
+    (event) => setOpenUserMenu(event.currentTarget),
+    []
+  );
+
+  const closeMenu = useCallback(() => setOpenUserMenu(false), []);
+
+  const openAuthModal = useCallback(() => {
+    navigate('/auth');
+    setAuthModalOpen(true);
+  }, [navigate, setAuthModalOpen]);
+
+  const handleLogout = useCallback(() => {
+    dispatch(logoutThunk());
+    navigate('/');
+  }, [dispatch, navigate]);
 
   return (
     <AppBar position='sticky' sx={stylesHeaderAppBar}>

@@ -88,6 +88,10 @@ function ExpensesPage() {
     navigate('/expenses');
   }, [dispatch, navigate]);
 
+  const handleAddClick = useCallback(() => {
+    handleModalOpen('add');
+  }, [handleModalOpen]);
+
   const handleEdit = useCallback(
     (expense) => handleModalOpen('edit', expense.uuid),
     [handleModalOpen]
@@ -97,6 +101,10 @@ function ExpensesPage() {
     (expense) => handleModalOpen('remove', expense.uuid),
     [handleModalOpen]
   );
+
+  const handlePeriodChange = useCallback((event) => {
+    setSelectedPeriod(event.target.value);
+  }, []);
 
   const showPreloader = useDelayedPreloader(isLoading);
 
@@ -124,7 +132,7 @@ function ExpensesPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => handleModalOpen('add')}
+          onClick={handleAddClick}
         >
           Додати витрату
         </Button>
@@ -152,7 +160,7 @@ function ExpensesPage() {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onSortModelChange={setSortModel}
-        onStatusChange={(event) => setSelectedPeriod(event.target.value)}
+        onStatusChange={handlePeriodChange}
       />
       <EntityRoutes
         entityPages={EXPENSES_PAGES}

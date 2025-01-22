@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
@@ -20,11 +20,11 @@ function NotificationsPage() {
   const title = params.get('title') || 'Повідомлення';
   const message = params.get('message') || 'Невідоме повідомлення';
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     setIsOpen(false);
     dispatch(clearStatus());
     navigate('/');
-  };
+  }, [dispatch, navigate]);
 
   const pageTitles = useMemo(
     () => ({

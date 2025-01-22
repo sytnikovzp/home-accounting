@@ -4,7 +4,7 @@ import { stylesWelcomeBlockBox } from '../../styles';
 
 function WelcomeBlock({ currentUser }) {
   const fullName = currentUser?.fullName || 'Невідомий користувач';
-  const roleTitle = currentUser?.role?.title || 'невідома роль';
+  const roleTitle = currentUser?.role || 'невідома роль';
 
   return (
     <Box sx={stylesWelcomeBlockBox}>

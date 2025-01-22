@@ -113,13 +113,15 @@ export default [
       'import/no-duplicates': 'error',
       'prettier/prettier': 'warn',
       'react/sort-comp': [
-        'warn',
+        'error',
         {
           order: [
-            'type-annotations',
             'static-methods',
+            'instance-variables',
             'lifecycle',
             'render',
+            '/^handle.+$/',
+            '/^on.+$/',
             'everything-else',
           ],
         },
@@ -388,6 +390,29 @@ export default [
       'promise/prefer-await-to-then': 'warn',
       'no-console': 'off',
       'no-inline-comments': 'warn',
+      // ============================
+      // 'react/no-render-return-value': 'warn',
+      // 'react/jsx-no-duplicate-props': 'error',
+      // 'react/no-array-index-key': 'error',
+      // 'react/no-unused-state': 'warn',
+      // 'react/require-render-return': 'warn',
+      // 'react/no-unstable-nested-components': 'error',
+      // 'react/jsx-no-bind': ['warn', { ignoreRefs: true }],
+      // 'react/no-children-prop': 'error',
+      // 'react/jsx-pascal-case': 'error',
+      // // 'no-magic-numbers': 'warn',
+      // 'react/no-unused-prop-types': 'warn',
+      // 'react/jsx-fragments': ['error', 'syntax'],
+      // 'react/display-name': 'error',
+      // 'react/require-default-props': 'warn',
+      // 'react/no-direct-mutation-state': 'error',
+      // 'react/no-multi-comp': ['error', { ignoreStateless: true }],
+      // 'react/no-typos': 'error',
+      // // 'react/jsx-no-literals': 'error', // !!!
+      // 'react/boolean-prop-naming': [
+      //   'warn',
+      //   { rule: '^(is|has|can)[A-Z]([A-Za-z0-9]?)+' },
+      // ],
     },
   },
 ];

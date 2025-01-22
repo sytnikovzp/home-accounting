@@ -88,6 +88,10 @@ function CategoriesPage() {
     navigate('/categories');
   }, [dispatch, navigate]);
 
+  const handleAddClick = useCallback(() => {
+    handleModalOpen('add');
+  }, [handleModalOpen]);
+
   const handleEdit = useCallback(
     (category) => handleModalOpen('edit', category.uuid),
     [handleModalOpen]
@@ -97,6 +101,10 @@ function CategoriesPage() {
     (category) => handleModalOpen('remove', category.uuid),
     [handleModalOpen]
   );
+
+  const handleStatusChange = useCallback((event) => {
+    setSelectedStatus(event.target.value);
+  }, []);
 
   const showPreloader = useDelayedPreloader(isLoading);
 
@@ -124,7 +132,7 @@ function CategoriesPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => handleModalOpen('add')}
+          onClick={handleAddClick}
         >
           Додати категорію
         </Button>
@@ -149,7 +157,7 @@ function CategoriesPage() {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onSortModelChange={setSortModel}
-        onStatusChange={(event) => setSelectedStatus(event.target.value)}
+        onStatusChange={handleStatusChange}
       />
       <EntityRoutes
         entityPages={CATEGORIES_PAGES}

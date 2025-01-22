@@ -21,7 +21,7 @@ function usePageTitle(location, pageTitles, authMode) {
       title = pageTitles[pathKey] || pageTitles.default;
     }
     document.title = title;
-  }, [location, pageTitles, authMode]);
+  }, [authMode, location.pathname, pageTitles]);
 }
 
 export default usePageTitle;

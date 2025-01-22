@@ -86,6 +86,10 @@ function CurrenciesPage() {
     navigate('/currencies');
   }, [dispatch, navigate]);
 
+  const handleAddClick = useCallback(() => {
+    handleModalOpen('add');
+  }, [handleModalOpen]);
+
   const handleEdit = useCallback(
     (currency) => handleModalOpen('edit', currency.uuid),
     [handleModalOpen]
@@ -122,7 +126,7 @@ function CurrenciesPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => handleModalOpen('add')}
+          onClick={handleAddClick}
         >
           Додати валюту
         </Button>

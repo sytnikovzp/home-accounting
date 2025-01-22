@@ -1,14 +1,21 @@
 import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-function PrivateRoute({ children, isAuthenticated, setAuthModalOpen }) {
+import { selectIsAuthenticated } from '../../store/selectors/authSelectors';
+
+function PrivateRoute({ children, setAuthModalOpen }) {
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   useEffect(() => {
     if (!isAuthenticated) {
       setAuthModalOpen(true);
     }
   }, [isAuthenticated, setAuthModalOpen]);
   if (!isAuthenticated) {
-    return null;
+    return <Navigate replace to='/auth' />;
   }
+
   return children;
 }
 

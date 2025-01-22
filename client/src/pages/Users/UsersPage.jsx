@@ -97,6 +97,10 @@ function UsersPage() {
     [handleModalOpen]
   );
 
+  const handleStatusChange = useCallback((event) => {
+    setEmailVerificationStatus(event.target.value);
+  }, []);
+
   const showPreloader = useDelayedPreloader(isLoading);
 
   if (showPreloader) {
@@ -142,9 +146,7 @@ function UsersPage() {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onSortModelChange={setSortModel}
-        onStatusChange={(event) =>
-          setEmailVerificationStatus(event.target.value)
-        }
+        onStatusChange={handleStatusChange}
       />
       <EntityRoutes
         entityPages={USERS_PAGES}

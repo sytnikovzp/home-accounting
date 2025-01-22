@@ -108,6 +108,13 @@ function StatisticsChart({ data }) {
     },
   };
 
+  const chartHandlers = {
+    doughnut: () => setChartType('doughnut'),
+    pie: () => setChartType('pie'),
+    bar: () => setChartType('bar'),
+    polar: () => setChartType('polar'),
+  };
+
   const renderChart = () => {
     switch (chartType) {
       case 'doughnut':
@@ -138,7 +145,7 @@ function StatisticsChart({ data }) {
           startIcon={<PieChart />}
           sx={stylesStatisticsChartButton}
           variant='contained'
-          onClick={() => setChartType('doughnut')}
+          onClick={chartHandlers.doughnut}
         >
           Донат-діаграма
         </Button>
@@ -148,7 +155,7 @@ function StatisticsChart({ data }) {
           startIcon={<PieChart />}
           sx={stylesStatisticsChartButton}
           variant='contained'
-          onClick={() => setChartType('pie')}
+          onClick={chartHandlers.pie}
         >
           Пірогова діаграма
         </Button>
@@ -158,7 +165,7 @@ function StatisticsChart({ data }) {
           startIcon={<BarChart />}
           sx={stylesStatisticsChartButton}
           variant='contained'
-          onClick={() => setChartType('bar')}
+          onClick={chartHandlers.bar}
         >
           Бар-діаграма
         </Button>
@@ -168,7 +175,7 @@ function StatisticsChart({ data }) {
           startIcon={<Radar />}
           sx={stylesStatisticsChartButton}
           variant='contained'
-          onClick={() => setChartType('polar')}
+          onClick={chartHandlers.polar}
         >
           Полярна діаграма
         </Button>

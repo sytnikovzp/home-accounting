@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Box, Button, Typography } from '@mui/material';
@@ -25,10 +25,14 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import { stylesAuthPageAvatar, stylesAuthPageTitle } from '../../styles';
 
 const { AUTH_TITLES } = pageTitles;
+const TITLES = {
+  login: 'Авторизація',
+  register: 'Реєстрація',
+  forgotPassword: 'Відновлення паролю',
+};
 
 function AuthPage({ isOpen, onClose }) {
   const [authMode, setAuthMode] = useState('login');
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -37,147 +41,184 @@ function AuthPage({ isOpen, onClose }) {
 
   usePageTitle(location, AUTH_TITLES, authMode);
 
-  const handleAuth = async (action, args) => {
-    const resultAction = await dispatch(action(args));
-    if (
-      action === forgotPasswordThunk &&
-      resultAction.meta.requestStatus === 'fulfilled'
-    ) {
+  const handleCloseAndNavigate = useCallback(
+    (path, payload = null) => {
       onClose();
-      const { severity, title, message } = resultAction.payload;
-      navigate(
-        `/notification?severity=${encodeURIComponent(
-          severity
-        )}&title=${encodeURIComponent(title)}&message=${encodeURIComponent(message)}`
-      );
-      return;
+      if (payload) {
+        const { severity, title, message } = payload;
+        navigate(
+          `${path}?severity=${encodeURIComponent(severity)}&title=${encodeURIComponent(
+            title
+          )}&message=${encodeURIComponent(message)}`
+        );
+      } else {
+        navigate(path);
+      }
+    },
+    [onClose, navigate]
+  );
+
+  const handleAuth = useCallback(
+    async (action, args) => {
+      const resultAction = await dispatch(action(args));
+      if (
+        action === forgotPasswordThunk &&
+        resultAction.meta.requestStatus === 'fulfilled'
+      ) {
+        handleCloseAndNavigate(`/notification`, resultAction.payload);
+        return;
+      }
+
+      if (resultAction.meta.requestStatus === 'fulfilled') {
+        handleCloseAndNavigate('/');
+      }
+    },
+    [dispatch, handleCloseAndNavigate]
+  );
+
+  const handleLoginSubmit = useCallback(
+    (formData) => handleAuth(loginThunk, formData),
+    [handleAuth]
+  );
+
+  const handleRegistrationSubmit = useCallback(
+    (formData) => handleAuth(registrationThunk, formData),
+    [handleAuth]
+  );
+
+  const handleForgotPasswordSubmit = useCallback(
+    (formData) => handleAuth(forgotPasswordThunk, formData),
+    [handleAuth]
+  );
+
+  const handleToggleAuthMode = useCallback((mode) => setAuthMode(mode), []);
+
+  const handleSwitchToLogin = useCallback(() => {
+    handleToggleAuthMode('login');
+  }, [handleToggleAuthMode]);
+
+  const handleToggleLoginOrRegister = useCallback(() => {
+    const nextMode = authMode === 'login' ? 'register' : 'login';
+    handleToggleAuthMode(nextMode);
+  }, [authMode, handleToggleAuthMode]);
+
+  const handleModalClose = useCallback(() => {
+    handleCloseAndNavigate('/');
+  }, [handleCloseAndNavigate]);
+
+  const handleForgotPasswordClick = useCallback(() => {
+    handleToggleAuthMode('forgotPassword');
+  }, [handleToggleAuthMode]);
+
+  const getAvatarBgColor = useCallback(() => {
+    switch (authMode) {
+      case 'login':
+        return 'success.light';
+      case 'register':
+        return 'success.main';
+      default:
+        return 'warning.main';
     }
+  }, [authMode]);
 
-    if (resultAction.meta.requestStatus === 'fulfilled') {
-      onClose();
-      navigate('/');
-    }
-  };
-
-  const toggleAuthMode = (mode) => setAuthMode(mode);
-
-  const renderTitle = () => {
-    const titles = {
-      login: 'Авторизація',
-      register: 'Реєстрація',
-      forgotPassword: 'Відновлення паролю',
-    };
-
-    return (
+  const renderTitle = useMemo(
+    () => (
       <Box alignItems='center' display='flex' flexDirection='column'>
-        <Avatar
-          sx={{
-            ...stylesAuthPageAvatar,
-            bgcolor: (() => {
-              switch (authMode) {
-                case 'login':
-                  return 'success.light';
-                case 'register':
-                  return 'success.main';
-                default:
-                  return 'warning.main';
-              }
-            })(),
-          }}
-        >
+        <Avatar sx={{ ...stylesAuthPageAvatar, bgcolor: getAvatarBgColor() }}>
           <LockOutlined />
         </Avatar>
         <Typography sx={stylesAuthPageTitle} variant='h6'>
-          {titles[authMode]}
+          {TITLES[authMode]}
         </Typography>
       </Box>
-    );
-  };
+    ),
+    [authMode, getAvatarBgColor]
+  );
 
-  const renderContent = () => {
-    switch (authMode) {
-      case 'login':
-        return (
-          <>
-            <LoginForm
-              isLoading={isLoading}
-              onSubmit={({ email, password }) =>
-                handleAuth(loginThunk, { email, password })
-              }
-            />
-            <Button
-              fullWidth
-              color='secondary'
-              sx={{ mt: 2 }}
-              variant='text'
-              onClick={() => toggleAuthMode('forgotPassword')}
-            >
-              Забули пароль?
-            </Button>
-          </>
-        );
-      case 'register':
-        return (
-          <RegistrationForm
-            isLoading={isLoading}
-            onSubmit={({ fullName, email, password }) =>
-              handleAuth(registrationThunk, { fullName, email, password })
-            }
-          />
-        );
-      case 'forgotPassword':
-        return (
-          <ForgotPasswordForm
-            isLoading={isLoading}
-            onSubmit={({ email }) => handleAuth(forgotPasswordThunk, { email })}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
-  const renderActionButton = () => {
-    if (authMode === 'forgotPassword') {
+  const getContentByAuthMode = useCallback(() => {
+    if (authMode === 'login') {
       return (
-        <Button
-          fullWidth
-          color='secondary'
-          variant='text'
-          onClick={() => toggleAuthMode('login')}
-        >
-          Повернутися до авторизації
-        </Button>
+        <>
+          <LoginForm isLoading={isLoading} onSubmit={handleLoginSubmit} />
+          <Button
+            fullWidth
+            color='secondary'
+            sx={{ mt: 2 }}
+            variant='text'
+            onClick={handleForgotPasswordClick}
+          >
+            Забули пароль?
+          </Button>
+        </>
       );
     }
 
+    if (authMode === 'register') {
+      return (
+        <RegistrationForm
+          isLoading={isLoading}
+          onSubmit={handleRegistrationSubmit}
+        />
+      );
+    }
+
+    if (authMode === 'forgotPassword') {
+      return (
+        <ForgotPasswordForm
+          isLoading={isLoading}
+          onSubmit={handleForgotPasswordSubmit}
+        />
+      );
+    }
+
+    return null;
+  }, [
+    authMode,
+    handleForgotPasswordClick,
+    handleForgotPasswordSubmit,
+    handleLoginSubmit,
+    handleRegistrationSubmit,
+    isLoading,
+  ]);
+
+  const renderContent = useMemo(
+    () => getContentByAuthMode(),
+    [getContentByAuthMode]
+  );
+
+  const renderActionButton = useMemo(() => {
+    let buttonText = null;
+    if (authMode === 'login') {
+      buttonText = 'Перейти до реєстрації';
+    } else if (authMode === 'register') {
+      buttonText = 'Перейти до авторизації';
+    } else {
+      buttonText = 'Повернутися до авторизації';
+    }
+    const buttonHandler =
+      authMode === 'forgotPassword'
+        ? handleSwitchToLogin
+        : handleToggleLoginOrRegister;
     return (
       <Button
         fullWidth
         color='secondary'
         variant='text'
-        onClick={() =>
-          toggleAuthMode(authMode === 'login' ? 'register' : 'login')
-        }
+        onClick={buttonHandler}
       >
-        {authMode === 'login'
-          ? 'Перейти до реєстрації'
-          : 'Перейти до авторизації'}
+        {buttonText}
       </Button>
     );
-  };
+  }, [authMode, handleSwitchToLogin, handleToggleLoginOrRegister]);
 
   return (
     <ModalWindow
-      actions={renderActionButton()}
-      content={renderContent()}
+      actions={renderActionButton}
+      content={renderContent}
       error={errorMessage}
       isOpen={isOpen}
-      title={renderTitle()}
-      onClose={() => {
-        onClose();
-        navigate('/');
-      }}
+      title={renderTitle}
+      onClose={handleModalClose}
     />
   );
 }

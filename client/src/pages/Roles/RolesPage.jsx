@@ -86,6 +86,10 @@ function RolesPage() {
     navigate('/roles');
   }, [dispatch, navigate]);
 
+  const handleAddClick = useCallback(() => {
+    handleModalOpen('add');
+  }, [handleModalOpen]);
+
   const handleEdit = useCallback(
     (role) => handleModalOpen('edit', role.uuid),
     [handleModalOpen]
@@ -122,7 +126,7 @@ function RolesPage() {
           color='success'
           sx={stylesEntityPageButton}
           variant='contained'
-          onClick={() => handleModalOpen('add')}
+          onClick={handleAddClick}
         >
           Додати роль
         </Button>

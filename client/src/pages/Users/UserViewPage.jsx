@@ -57,9 +57,9 @@ function UserViewPage({ handleModalClose }) {
   const { createdAt, updatedAt } = creation || {};
 
   const handleResendVerification = useCallback(
-    async (email) => {
+    (email) => {
       try {
-        const response = await dispatch(sendVerificationEmail(email));
+        const response = dispatch(sendVerificationEmail(email));
         if (sendVerificationEmail.fulfilled.match(response)) {
           const { severity, title, message } = response.payload;
           navigate(
@@ -76,6 +76,10 @@ function UserViewPage({ handleModalClose }) {
     },
     [dispatch, navigate]
   );
+
+  const handleResendClick = useCallback(() => {
+    handleResendVerification(email);
+  }, [email, handleResendVerification]);
 
   const photoSrc = useMemo(() => {
     const baseUrl = BASE_URL.replace('/api/', '');
@@ -131,7 +135,7 @@ function UserViewPage({ handleModalClose }) {
                     size='small'
                     sx={stylesUserViewPageEmailButton}
                     variant='text'
-                    onClick={() => handleResendVerification(email)}
+                    onClick={handleResendClick}
                   >
                     ⟳
                   </Button>
@@ -157,10 +161,10 @@ function UserViewPage({ handleModalClose }) {
       role,
       email,
       emailVerificationStatus,
+      emailVerificationLoading,
+      handleResendClick,
       createdAt,
       updatedAt,
-      handleResendVerification,
-      emailVerificationLoading,
     ]
   );
 

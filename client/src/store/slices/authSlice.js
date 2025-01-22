@@ -76,6 +76,8 @@ const authSlice = createSlice({
       // Pending
       .addCase(registrationThunk.pending, setLoadingState)
       .addCase(loginThunk.pending, setLoadingState)
+      .addCase(logoutThunk.pending, setLoadingState)
+      .addCase(refreshAccessTokenThunk.pending, setLoadingState)
       .addCase(forgotPasswordThunk.pending, setLoadingState)
       .addCase(resetPasswordThunk.pending, setLoadingState)
 

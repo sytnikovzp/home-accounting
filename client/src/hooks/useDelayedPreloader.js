@@ -9,6 +9,7 @@ function useDelayedPreloader(isLoading) {
 
   useEffect(() => {
     let timeout = null;
+
     if (isLoading) {
       timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
     } else {
