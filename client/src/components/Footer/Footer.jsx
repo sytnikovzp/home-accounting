@@ -29,9 +29,9 @@ function Footer() {
           Designed by Alexandr Sytnikov © {currentYear}
         </Typography>
         <Box sx={{ mt: 1 }}>
-          {socialLinks.map(({ href, icon }, index) => (
+          {socialLinks.map(({ href, icon }) => (
             <Link
-              key={index}
+              key={href}
               href={href}
               rel='noopener noreferrer'
               sx={stylesFooterIcon}

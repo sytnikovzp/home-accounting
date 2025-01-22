@@ -2,12 +2,16 @@ import { builtinModules } from 'module';
 
 import js from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
+import jsxA11Y from 'eslint-plugin-jsx-a11y';
+import nosecrets from 'eslint-plugin-no-secrets';
+import regexopt from 'eslint-plugin-optimize-regex';
 import prettier from 'eslint-plugin-prettier';
 import promise from 'eslint-plugin-promise';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 
 export default [
@@ -29,9 +33,13 @@ export default [
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'simple-import-sort': simpleImportSort,
+      'jsx-a11y': jsxA11Y,
+      'optimize-regex': regexopt,
+      'no-secrets': nosecrets,
       import: importPlugin,
       prettier,
       promise,
+      unicorn,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -173,7 +181,13 @@ export default [
         },
       ],
       'prefer-const': ['warn', { destructuring: 'all' }],
-      'no-param-reassign': 'error',
+      'no-param-reassign': [
+        'error',
+        {
+          props: true,
+          ignorePropertyModificationsFor: ['state', 'acc', 'config'],
+        },
+      ],
       'prefer-template': 'warn',
       'no-throw-literal': 'error',
       'no-undefined': 'warn',
@@ -202,7 +216,7 @@ export default [
         },
       ],
       'no-var': 'error',
-      'no-use-before-define': 'error',
+      'no-use-before-define': ['error', { functions: true, classes: true }],
       'no-promise-executor-return': 'error',
       'no-useless-backreference': 'error',
       'no-unreachable-loop': 'error',
@@ -385,34 +399,54 @@ export default [
       'object-curly-spacing': ['warn', 'always'],
       'space-in-parens': ['error', 'never'],
       'promise/always-return': 'warn',
-      'promise/no-return-wrap': 'error',
+      'promise/no-return-wrap': 'warn',
       'promise/catch-or-return': 'warn',
       'promise/prefer-await-to-then': 'warn',
-      'no-console': 'off',
+      'promise/no-nesting': 'warn',
       'no-inline-comments': 'warn',
-      // ============================
-      // 'react/no-render-return-value': 'warn',
-      // 'react/jsx-no-duplicate-props': 'error',
-      // 'react/no-array-index-key': 'error',
-      // 'react/no-unused-state': 'warn',
-      // 'react/require-render-return': 'warn',
-      // 'react/no-unstable-nested-components': 'error',
-      // 'react/jsx-no-bind': ['warn', { ignoreRefs: true }],
-      // 'react/no-children-prop': 'error',
-      // 'react/jsx-pascal-case': 'error',
-      // // 'no-magic-numbers': 'warn',
-      // 'react/no-unused-prop-types': 'warn',
-      // 'react/jsx-fragments': ['error', 'syntax'],
-      // 'react/display-name': 'error',
-      // 'react/require-default-props': 'warn',
-      // 'react/no-direct-mutation-state': 'error',
-      // 'react/no-multi-comp': ['error', { ignoreStateless: true }],
-      // 'react/no-typos': 'error',
-      // // 'react/jsx-no-literals': 'error', // !!!
-      // 'react/boolean-prop-naming': [
-      //   'warn',
-      //   { rule: '^(is|has|can)[A-Z]([A-Za-z0-9]?)+' },
-      // ],
+      'react/no-render-return-value': 'warn',
+      'react/jsx-no-duplicate-props': 'error',
+      'react/no-unused-state': 'warn',
+      'react/require-render-return': 'warn',
+      'react/no-unstable-nested-components': ['error', { allowAsProps: true }],
+      'react/no-children-prop': 'error',
+      'react/jsx-pascal-case': 'error',
+      'react/no-unused-prop-types': 'warn',
+      'react/jsx-fragments': ['error', 'syntax'],
+      'react/display-name': 'error',
+      'react/require-default-props': 'warn',
+      'react/no-direct-mutation-state': 'error',
+      'react/no-multi-comp': ['error', { ignoreStateless: true }],
+      'react/no-typos': 'error',
+      'react/boolean-prop-naming': [
+        'warn',
+        { rule: '^(is|has|can)[A-Z]([A-Za-z0-9]?)+' },
+      ],
+      'react/no-access-state-in-setstate': 'error',
+      'react/self-closing-comp': 'warn',
+      'react/void-dom-elements-no-children': 'error',
+      'optimize-regex/optimize-regex': 'warn',
+      'unicorn/no-array-for-each': 'warn',
+      'unicorn/prefer-query-selector': 'warn',
+      'no-secrets/no-secrets': 'error',
+      'jsx-a11y/alt-text': 'warn',
+      'jsx-a11y/anchor-is-valid': 'warn',
+      'jsx-a11y/no-noninteractive-element-to-interactive-role': 'error',
+      'no-console': 'off',
+      'no-magic-numbers': [
+        'error',
+        {
+          ignore: [
+            -2, -1, 0, 1, 2, 3, 5, 6, 8, 15, 16, 20, 25, 31, 100, 256, 401, 404,
+            500, 3000,
+          ],
+          ignoreArrayIndexes: true,
+          enforceConst: true,
+          detectObjects: false,
+        },
+      ],
+      // 'react/no-array-index-key': 'warn',
+      'react/jsx-no-bind': ['warn', { ignoreRefs: true }],
     },
   },
 ];

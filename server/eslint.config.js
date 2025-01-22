@@ -1,5 +1,6 @@
 const js = require('@eslint/js');
 const importPlugin = require('eslint-plugin-import');
+const regexopt = require('eslint-plugin-optimize-regex');
 const prettier = require('eslint-plugin-prettier');
 const promise = require('eslint-plugin-promise');
 const sequelize = require('eslint-plugin-sequelize');
@@ -27,6 +28,7 @@ module.exports = [
       promise,
       sequelize,
       import: importPlugin,
+      'optimize-regex': regexopt,
       prettier,
     },
     rules: {
@@ -291,6 +293,7 @@ module.exports = [
       'array-bracket-newline': ['warn', 'consistent'],
       'yield-star-spacing': 'warn',
       'promise/prefer-await-to-then': 'warn',
+      'optimize-regex/optimize-regex': 'warn',
       'no-console': 'off',
       'no-inline-comments': 'warn',
     },

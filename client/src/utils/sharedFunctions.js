@@ -15,7 +15,7 @@ const saveAccessToken = (token) => localStorage.setItem('accessToken', token);
 
 const removeAccessToken = () => localStorage.removeItem('accessToken');
 
-const uuidPattern = /[0-9a-fA-F-]{36}/;
+const uuidPattern = /[\dA-Fa-f-]{36}/;
 
 const stringToColor = (string) => {
   let hash = 0;

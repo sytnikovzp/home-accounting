@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { logger } from 'redux-logger';
 
-// import { logger } from 'redux-logger';
 import authReducer from './slices/authSlice';
 import categoriesReducer from './slices/categoriesSlice';
 import currenciesReducer from './slices/currenciesSlice';
@@ -35,7 +35,7 @@ const store = configureStore({
     userProfile: userProfileReducer,
     users: usersReducer,
   },
-  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
 
 export default store;

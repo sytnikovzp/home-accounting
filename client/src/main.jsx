@@ -13,7 +13,7 @@ import './index.css';
 
 const theme = createTheme({}, ukUA);
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.querySelector('#root')).render(
   // <StrictMode>
   <Provider store={store}>
     <ThemeProvider theme={theme}>
