@@ -26,7 +26,7 @@ function CategoryViewPage({ handleModalClose }) {
     selectCurrentCategory(state, uuid)
   );
   const isLoading = useSelector(selectCategoriesIsLoading);
-  const errorMessage = useSelector(selectCategoriesError);
+  const error = useSelector(selectCategoriesError);
 
   useEffect(() => {
     if (uuid) {
@@ -92,7 +92,7 @@ function CategoryViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Деталі категорії...'
       onClose={handleModalClose}
     />

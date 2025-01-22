@@ -23,7 +23,7 @@ import Logo from './Logo';
 
 import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 
-function Header({ setAuthModalOpen }) {
+function Header() {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
@@ -45,12 +45,11 @@ function Header({ setAuthModalOpen }) {
     []
   );
 
-  const closeMenu = useCallback(() => setOpenUserMenu(false), []);
+  const closeUserMenu = useCallback(() => setOpenUserMenu(false), []);
 
   const openAuthModal = useCallback(() => {
     navigate('/auth');
-    setAuthModalOpen(true);
-  }, [navigate, setAuthModalOpen]);
+  }, [navigate]);
 
   const handleLogout = useCallback(() => {
     dispatch(logoutThunk());
@@ -66,7 +65,7 @@ function Header({ setAuthModalOpen }) {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {isAuthenticated ? (
               <AuthenticatedMenu
-                closeMenu={closeMenu}
+                closeUserMenu={closeUserMenu}
                 currentUser={currentUser}
                 handleLogout={handleLogout}
                 navigateTo={navigateTo}

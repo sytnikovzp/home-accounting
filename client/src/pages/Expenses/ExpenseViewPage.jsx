@@ -34,7 +34,7 @@ function ExpenseViewPage({ handleModalClose }) {
     selectCurrentExpense(state, uuid)
   );
   const isLoading = useSelector(selectExpensesIsLoading);
-  const errorMessage = useSelector(selectExpensesError);
+  const error = useSelector(selectExpensesError);
 
   useEffect(() => {
     if (uuid) {
@@ -127,7 +127,7 @@ function ExpenseViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Деталі витрати...'
       onClose={handleModalClose}
     />

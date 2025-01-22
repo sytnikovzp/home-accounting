@@ -22,7 +22,7 @@ function ExpenseEditPage({
   const {
     entity: expenseToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Expense');
 
@@ -70,7 +70,7 @@ function ExpenseEditPage({
           />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Редагування витрати...'
       onClose={handleModalClose}
     />

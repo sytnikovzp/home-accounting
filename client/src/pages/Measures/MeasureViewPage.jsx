@@ -31,7 +31,7 @@ function MeasureViewPage({ handleModalClose }) {
     selectCurrentMeasure(state, uuid)
   );
   const isLoading = useSelector(selectMeasuresIsLoading);
-  const errorMessage = useSelector(selectMeasuresError);
+  const error = useSelector(selectMeasuresError);
 
   useEffect(() => {
     if (uuid) {
@@ -76,7 +76,7 @@ function MeasureViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Деталі одиниці...'
       onClose={handleModalClose}
     />

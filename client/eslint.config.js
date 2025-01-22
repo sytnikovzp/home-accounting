@@ -446,7 +446,7 @@ export default [
         },
       ],
       // 'react/no-array-index-key': 'warn',
-      'react/jsx-no-bind': ['warn', { ignoreRefs: true }],
+      // 'react/jsx-no-bind': ['warn', { ignoreRefs: true }],
     },
   },
 ];

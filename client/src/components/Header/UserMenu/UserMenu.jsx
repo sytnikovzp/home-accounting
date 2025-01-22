@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import UserMenuItem from './UserMenuItem';
 
 function UserMenu({
-  closeMenu,
+  closeUserMenu,
   currentUser,
   handleLogout,
   menuItems,
@@ -18,9 +18,9 @@ function UserMenu({
       } else {
         navigateTo(currentUser[action]);
       }
-      closeMenu();
+      closeUserMenu();
     },
-    [handleLogout, navigateTo, closeMenu, currentUser]
+    [handleLogout, navigateTo, closeUserMenu, currentUser]
   );
 
   return (

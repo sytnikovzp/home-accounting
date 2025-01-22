@@ -18,7 +18,7 @@ function EstablishmentEditPage({
   const {
     entity: establishmentToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Establishment');
 
@@ -80,7 +80,7 @@ function EstablishmentEditPage({
           />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Редагування закладу...'
       onClose={handleModalClose}
     />

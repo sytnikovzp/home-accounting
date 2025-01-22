@@ -20,7 +20,7 @@ function ProductRemovePage({
   const {
     entity: productToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Product');
 
@@ -66,7 +66,7 @@ function ProductRemovePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Видалення товару/послуги...'
       onClose={handleModalClose}
     />

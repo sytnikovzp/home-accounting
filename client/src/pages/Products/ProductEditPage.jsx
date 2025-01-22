@@ -19,7 +19,7 @@ function ProductEditPage({
   const {
     entity: productToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Product');
 
@@ -59,7 +59,7 @@ function ProductEditPage({
           />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Редагування товару/послуги...'
       onClose={handleModalClose}
     />

@@ -20,7 +20,7 @@ function MeasureRemovePage({
   const {
     entity: measureToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Measure');
 
@@ -67,7 +67,7 @@ function MeasureRemovePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Видалення одиниці...'
       onClose={handleModalClose}
     />

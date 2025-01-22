@@ -18,7 +18,7 @@ function CategoryEditPage({
   const {
     entity: categoryToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Category');
 
@@ -53,7 +53,7 @@ function CategoryEditPage({
           />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Редагування категорії...'
       onClose={handleModalClose}
     />

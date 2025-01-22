@@ -18,7 +18,7 @@ import {
   stylesLayoutXLGridContainer,
 } from '../../styles';
 
-function Layout({ setAuthModalOpen }) {
+function Layout() {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -41,7 +41,7 @@ function Layout({ setAuthModalOpen }) {
         sx={stylesLayoutGridContainer}
       >
         <Grid2>
-          <Header setAuthModalOpen={setAuthModalOpen} />
+          <Header />
         </Grid2>
         <Container maxWidth='xl' sx={stylesLayoutXLContainer}>
           <Grid2 container columnSpacing={2} sx={stylesLayoutXLGridContainer}>

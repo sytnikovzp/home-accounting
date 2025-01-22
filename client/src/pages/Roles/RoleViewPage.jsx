@@ -24,7 +24,7 @@ function RoleViewPage({ handleModalClose }) {
 
   const roleToCRUD = useSelector((state) => selectCurrentRole(state, uuid));
   const isLoading = useSelector(selectRolesIsLoading);
-  const errorMessage = useSelector(selectRolesError);
+  const error = useSelector(selectRolesError);
 
   useEffect(() => {
     if (uuid) {
@@ -61,7 +61,7 @@ function RoleViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Деталі ролі...'
       onClose={handleModalClose}
     />

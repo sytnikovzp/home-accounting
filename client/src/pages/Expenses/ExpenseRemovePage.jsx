@@ -20,7 +20,7 @@ function ExpenseRemovePage({
   const {
     entity: expenseToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Expense');
 
@@ -66,7 +66,7 @@ function ExpenseRemovePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Видалення витрати...'
       onClose={handleModalClose}
     />

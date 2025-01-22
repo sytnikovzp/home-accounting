@@ -20,7 +20,7 @@ function UserEditPage({
   const {
     entity: userToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('User');
 
@@ -88,7 +88,7 @@ function UserEditPage({
           />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Редагування користувача...'
       onClose={handleModalClose}
     />

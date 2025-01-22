@@ -47,7 +47,7 @@ const menuItemsData = [
 const { BASE_URL } = configs;
 
 function AuthenticatedMenu({
-  closeMenu,
+  closeUserMenu,
   currentUser,
   handleLogout,
   navigateTo,
@@ -84,10 +84,10 @@ function AuthenticatedMenu({
         open={Boolean(openUserMenu)}
         slotProps={{ paper: { elevation: 0, sx: stylesAuthenticatedMenu } }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        onClose={closeMenu}
+        onClose={closeUserMenu}
       >
         <UserMenu
-          closeMenu={closeMenu}
+          closeUserMenu={closeUserMenu}
           currentUser={currentUser}
           handleLogout={handleLogout}
           menuItems={menuItemsData}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import {
   BrowserRouter as Router,
@@ -36,8 +36,6 @@ import UserResetPasswordPage from './pages/Users/UserResetPasswordPage';
 import UsersPage from './pages/Users/UsersPage';
 
 function App() {
-  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
-
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -50,10 +48,6 @@ function App() {
     }
   }, [dispatch]);
 
-  const handleCloseAuthModal = useCallback(() => {
-    setAuthModalOpen(false);
-  }, []);
-
   if (isLoading) {
     return (
       <ModalWindow
@@ -65,17 +59,14 @@ function App() {
   }
 
   const renderPrivateRoute = (Component) => (
-    <PrivateRoute setAuthModalOpen={setAuthModalOpen}>{Component}</PrivateRoute>
+    <PrivateRoute>{Component}</PrivateRoute>
   );
 
   return (
     <HelmetProvider>
       <Router>
         <Routes>
-          <Route
-            element={<Layout setAuthModalOpen={setAuthModalOpen} />}
-            path='/'
-          >
+          <Route element={<Layout />} path='/'>
             <Route index element={<HomePage />} />
             <Route
               element={renderPrivateRoute(<ExpensesPage />)}
@@ -111,14 +102,7 @@ function App() {
             <Route element={<UserResetPasswordPage />} path='reset-password' />
             <Route
               element={
-                isAuthenticated ? (
-                  <Navigate replace to='/' />
-                ) : (
-                  <AuthPage
-                    isOpen={isAuthModalOpen}
-                    onClose={handleCloseAuthModal}
-                  />
-                )
+                isAuthenticated ? <Navigate replace to='/' /> : <AuthPage />
               }
               path='auth/*'
             />

@@ -25,25 +25,20 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import { stylesAuthPageAvatar, stylesAuthPageTitle } from '../../styles';
 
 const { AUTH_TITLES } = pageTitles;
-const TITLES = {
-  login: 'Авторизація',
-  register: 'Реєстрація',
-  forgotPassword: 'Відновлення паролю',
-};
 
-function AuthPage({ isOpen, onClose }) {
+function AuthPage() {
   const [authMode, setAuthMode] = useState('login');
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const errorMessage = useSelector(selectAuthError);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const isLoading = useSelector(selectAuthIsLoading);
+  const error = useSelector(selectAuthError);
 
   usePageTitle(location, AUTH_TITLES, authMode);
 
   const handleCloseAndNavigate = useCallback(
     (path, payload = null) => {
-      onClose();
       if (payload) {
         const { severity, title, message } = payload;
         navigate(
@@ -55,7 +50,7 @@ function AuthPage({ isOpen, onClose }) {
         navigate(path);
       }
     },
-    [onClose, navigate]
+    [navigate]
   );
 
   const handleAuth = useCallback(
@@ -128,7 +123,7 @@ function AuthPage({ isOpen, onClose }) {
           <LockOutlined />
         </Avatar>
         <Typography sx={stylesAuthPageTitle} variant='h6'>
-          {TITLES[authMode]}
+          {AUTH_TITLES[authMode]}
         </Typography>
       </Box>
     ),
@@ -213,10 +208,10 @@ function AuthPage({ isOpen, onClose }) {
 
   return (
     <ModalWindow
+      isOpen
       actions={renderActionButton}
       content={renderContent}
-      error={errorMessage}
-      isOpen={isOpen}
+      error={error}
       title={renderTitle}
       onClose={handleModalClose}
     />

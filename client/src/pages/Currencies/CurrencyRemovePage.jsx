@@ -20,7 +20,7 @@ function CurrencyRemovePage({
   const {
     entity: currencyToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Currency');
 
@@ -67,7 +67,7 @@ function CurrencyRemovePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Видалення категорії...'
       onClose={handleModalClose}
     />

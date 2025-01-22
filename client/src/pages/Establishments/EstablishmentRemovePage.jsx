@@ -20,7 +20,7 @@ function EstablishmentRemovePage({
   const {
     entity: establishmentToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Establishment');
 
@@ -66,7 +66,7 @@ function EstablishmentRemovePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Видалення закладу...'
       onClose={handleModalClose}
     />

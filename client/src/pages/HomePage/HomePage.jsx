@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,7 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 
+import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
+import usePageTitle from '../../hooks/usePageTitle';
 
 import { selectAuthUser } from '../../store/selectors/authSelectors';
 import {
@@ -31,6 +33,8 @@ import {
   stylesHomePagePeriodSelect,
 } from '../../styles';
 
+const { HOME_PAGE_TITLES } = pageTitles;
+
 function HomePage() {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
@@ -41,7 +45,14 @@ function HomePage() {
   const currentUser = useSelector(selectAuthUser);
   const statistics = useSelector(selectStatistics);
   const isLoading = useSelector(selectStatisticsIsLoading);
-  const errorMessage = useSelector(selectStatisticsError);
+  const error = useSelector(selectStatisticsError);
+
+  useEffect(() => {
+    const creatorUuid = currentUser?.uuid || null;
+    dispatch(fetchStatisticsByCriteria({ ago, criteria, creatorUuid }));
+  }, [ago, criteria, currentUser?.uuid, dispatch]);
+
+  usePageTitle(location, HOME_PAGE_TITLES);
 
   const handleCriteriaChange = useCallback((e) => {
     setCriteria(e.target.value);
@@ -51,30 +62,14 @@ function HomePage() {
     setAgo(e.target.value);
   }, []);
 
-  const pageTitles = useMemo(
-    () => ({
-      default: 'Моя бухгалтерія',
-    }),
-    []
-  );
-
-  useEffect(() => {
-    document.title = pageTitles.default;
-  }, [location, pageTitles]);
-
-  useEffect(() => {
-    const creatorUuid = currentUser?.uuid || null;
-    dispatch(fetchStatisticsByCriteria({ ago, criteria, creatorUuid }));
-  }, [ago, criteria, currentUser?.uuid, dispatch]);
-
   const showPreloader = useDelayedPreloader(isLoading);
 
   if (showPreloader) {
     return <Preloader message='Завантаження даних статистики...' />;
   }
 
-  if (errorMessage) {
-    return <Error error={errorMessage} />;
+  if (error) {
+    return <Error error={error} />;
   }
 
   return (

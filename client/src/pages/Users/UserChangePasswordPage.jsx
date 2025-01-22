@@ -18,7 +18,7 @@ function UserChangePasswordPage({
   const {
     entity: userToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('User');
 
@@ -54,7 +54,7 @@ function UserChangePasswordPage({
           <ChangePasswordForm onSubmit={handleSubmitUser} />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Зміна паролю...'
       onClose={handleModalClose}
     />

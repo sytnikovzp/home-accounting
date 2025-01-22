@@ -36,7 +36,7 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
   const {
     entity: moderationToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity(capitalizedPath);
 
@@ -96,13 +96,9 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
   const moderationMethod = selectMethod(path);
 
   const handleModerationAction = async (status) => {
-    try {
-      await moderationMethod(uuid, status);
-      handleModalClose();
-      fetchModerations();
-    } catch (error) {
-      console.error(error.response.data);
-    }
+    await moderationMethod(uuid, status);
+    handleModalClose();
+    fetchModerations();
   };
 
   const handleEditAndApprove = () => {
@@ -237,7 +233,7 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Модерація контенту...'
       onClose={handleModalClose}
     />

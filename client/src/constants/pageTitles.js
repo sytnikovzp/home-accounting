@@ -1,7 +1,7 @@
 const AUTH_TITLES = {
-  login: 'Авторизація | Моя бухгалтерія',
-  register: 'Реєстрація | Моя бухгалтерія',
-  forgotPassword: 'Відновлення паролю | Моя бухгалтерія',
+  login: 'Авторизація',
+  register: 'Реєстрація',
+  forgotPassword: 'Відновлення паролю',
 };
 
 const CATEGORIES_TITLES = {
@@ -36,6 +36,10 @@ const EXPENSES_TITLES = {
   default: 'Витрати | Моя бухгалтерія',
 };
 
+const HOME_PAGE_TITLES = {
+  default: 'Моя бухгалтерія',
+};
+
 const MEASURES_TITLES = {
   view: 'Деталі одиниці | Моя бухгалтерія',
   add: 'Додавання одиниці | Моя бухгалтерія',
@@ -47,6 +51,10 @@ const MEASURES_TITLES = {
 const MODERATIONS_TITLES = {
   view: 'Модерація контенту | Моя бухгалтерія',
   default: 'Підлягають модерації | Моя бухгалтерія',
+};
+
+const NOTIFICATION_PAGE_TITLES = {
+  default: 'Повідомлення | Моя бухгалтерія',
 };
 
 const PRODUCTS_TITLES = {
@@ -79,8 +87,10 @@ export {
   CURRENCIES_TITLES,
   ESTABLISHMENTS_TITLES,
   EXPENSES_TITLES,
+  HOME_PAGE_TITLES,
   MEASURES_TITLES,
   MODERATIONS_TITLES,
+  NOTIFICATION_PAGE_TITLES,
   PRODUCTS_TITLES,
   ROLES_TITLES,
   USERS_TITLES,

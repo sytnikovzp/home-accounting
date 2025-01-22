@@ -18,7 +18,7 @@ function CurrencyEditPage({
   const {
     entity: currencyToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Currency');
 
@@ -57,7 +57,7 @@ function CurrencyEditPage({
           />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Редагування валюти...'
       onClose={handleModalClose}
     />

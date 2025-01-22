@@ -19,7 +19,7 @@ function RoleEditPage({
   const {
     entity: roleToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Role');
 
@@ -60,7 +60,7 @@ function RoleEditPage({
           />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Редагування ролі...'
       onClose={handleModalClose}
     />

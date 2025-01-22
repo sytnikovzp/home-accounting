@@ -41,7 +41,7 @@ function EstablishmentViewPage({ handleModalClose }) {
     selectCurrentEstablishment(state, uuid)
   );
   const isLoading = useSelector(selectEstablishmentsIsLoading);
-  const errorMessage = useSelector(selectEstablishmentsError);
+  const error = useSelector(selectEstablishmentsError);
 
   useEffect(() => {
     if (uuid) {
@@ -146,7 +146,7 @@ function EstablishmentViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Деталі закладу...'
       onClose={handleModalClose}
     />

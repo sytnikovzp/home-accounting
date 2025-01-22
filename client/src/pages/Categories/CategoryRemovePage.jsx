@@ -20,7 +20,7 @@ function CategoryRemovePage({
   const {
     entity: categoryToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Category');
 
@@ -65,7 +65,7 @@ function CategoryRemovePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Видалення категорії...'
       onClose={handleModalClose}
     />

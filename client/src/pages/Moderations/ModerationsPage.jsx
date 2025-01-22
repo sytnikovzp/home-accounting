@@ -67,12 +67,7 @@ function ModerationsPage() {
   const handleModalOpen = useCallback(
     (moderation) => {
       const { path, uuid } = moderation;
-      const allowedPaths = ['category', 'product', 'establishment'];
-      if (allowedPaths.includes(path) && uuid) {
-        navigate(`/moderation/${path}/${uuid}`);
-      } else {
-        console.error('Недійсний шлях або UUID відсутній:', moderation);
-      }
+      navigate(`/moderation/${path}/${uuid}`);
     },
     [navigate]
   );

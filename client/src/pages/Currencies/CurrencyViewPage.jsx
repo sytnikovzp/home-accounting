@@ -31,7 +31,7 @@ function CurrencyViewPage({ handleModalClose }) {
     selectCurrentCurrency(state, uuid)
   );
   const isLoading = useSelector(selectCurrenciesIsLoading);
-  const errorMessage = useSelector(selectCurrenciesError);
+  const error = useSelector(selectCurrenciesError);
 
   useEffect(() => {
     if (uuid) {
@@ -72,7 +72,7 @@ function CurrencyViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Деталі валюти...'
       onClose={handleModalClose}
     />

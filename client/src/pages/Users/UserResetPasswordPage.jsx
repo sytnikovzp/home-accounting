@@ -7,8 +7,7 @@ import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/Change
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function UserResetPasswordPage() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,7 +15,7 @@ function UserResetPasswordPage() {
   const token = params.get('token');
 
   const handleSubmitResetPassword = async (values) => {
-    setErrorMessage(null);
+    setError(null);
     try {
       const response = await restController.resetPassword(
         token,
@@ -31,23 +30,22 @@ function UserResetPasswordPage() {
         )}&message=${encodeURIComponent(response.message)}`
       );
     } catch (error) {
-      setErrorMessage(error.response.data);
+      setError(error.response.data);
     }
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
+  const handleModalOpen = () => {
     navigate('/');
   };
 
   return (
     <ModalWindow
+      isOpen
       showCloseButton
       content={<ChangePasswordForm onSubmit={handleSubmitResetPassword} />}
-      error={errorMessage}
-      isOpen={isOpen}
+      error={error}
       title='Скидання паролю...'
-      onClose={handleClose}
+      onClose={handleModalOpen}
     />
   );
 }

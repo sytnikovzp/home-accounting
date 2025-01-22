@@ -41,7 +41,7 @@ function UserViewPage({ handleModalClose }) {
 
   const userToCRUD = useSelector((state) => selectCurrentUser(state, uuid));
   const isLoading = useSelector(selectUsersIsLoading);
-  const errorMessage = useSelector(selectUsersError);
+  const error = useSelector(selectUsersError);
   const emailVerificationLoading = useSelector(
     selectEmailVerificationIsLoading
   );
@@ -58,20 +58,16 @@ function UserViewPage({ handleModalClose }) {
 
   const handleResendVerification = useCallback(
     (email) => {
-      try {
-        const response = dispatch(sendVerificationEmail(email));
-        if (sendVerificationEmail.fulfilled.match(response)) {
-          const { severity, title, message } = response.payload;
-          navigate(
-            `/notification?severity=${encodeURIComponent(
-              severity
-            )}&title=${encodeURIComponent(
-              title
-            )}&message=${encodeURIComponent(message)}`
-          );
-        }
-      } catch (error) {
-        console.error('Error sending verification email:', error.message);
+      const response = dispatch(sendVerificationEmail(email));
+      if (sendVerificationEmail.fulfilled.match(response)) {
+        const { severity, title, message } = response.payload;
+        navigate(
+          `/notification?severity=${encodeURIComponent(
+            severity
+          )}&title=${encodeURIComponent(
+            title
+          )}&message=${encodeURIComponent(message)}`
+        );
       }
     },
     [dispatch, navigate]
@@ -181,7 +177,7 @@ function UserViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Деталі користувача...'
       onClose={handleModalClose}
     />

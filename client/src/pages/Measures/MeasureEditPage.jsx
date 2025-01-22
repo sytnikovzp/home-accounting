@@ -18,7 +18,7 @@ function MeasureEditPage({
   const {
     entity: measureToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Measure');
 
@@ -54,7 +54,7 @@ function MeasureEditPage({
           <MeasureForm measure={measureToCRUD} onSubmit={handleSubmitMeasure} />
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Редагування одиниці...'
       onClose={handleModalClose}
     />

@@ -20,7 +20,7 @@ function RoleRemovePage({
   const {
     entity: roleToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('Role');
 
@@ -65,7 +65,7 @@ function RoleRemovePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Видалення ролі...'
       onClose={handleModalClose}
     />

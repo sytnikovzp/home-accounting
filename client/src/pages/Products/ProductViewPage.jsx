@@ -32,7 +32,7 @@ function ProductViewPage({ handleModalClose }) {
     selectCurrentProduct(state, uuid)
   );
   const isLoading = useSelector(selectProductsIsLoading);
-  const errorMessage = useSelector(selectProductsError);
+  const error = useSelector(selectProductsError);
 
   useEffect(() => {
     if (uuid) {
@@ -106,7 +106,7 @@ function ProductViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={errorMessage}
+      error={error}
       title='Деталі товару/послуги...'
       onClose={handleModalClose}
     />

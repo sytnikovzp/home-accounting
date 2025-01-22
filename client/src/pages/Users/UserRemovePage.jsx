@@ -22,7 +22,7 @@ function UserRemovePage({
   const {
     entity: userToCRUD,
     isLoading,
-    errorMessage,
+    error,
     fetchEntityByUuid,
   } = useFetchEntity('User');
 
@@ -33,12 +33,8 @@ function UserRemovePage({
   }, [uuid, fetchEntityByUuid]);
 
   const handleLogout = async () => {
-    try {
-      await restController.logout();
-      navigate('/');
-    } catch (error) {
-      console.error('Помилка виходу із системи:', error.message);
-    }
+    await restController.logout();
+    navigate('/');
   };
 
   const handleDeleteUser = async () => {
@@ -82,7 +78,7 @@ function UserRemovePage({
           </Typography>
         )
       }
-      error={errorMessage || crudError}
+      error={error || crudError}
       title='Видалення користувача...'
       onClose={handleModalClose}
     />

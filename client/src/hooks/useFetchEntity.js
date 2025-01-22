@@ -5,7 +5,7 @@ import restController from '../api/rest/restController';
 function useFetchEntity(entityType) {
   const [entity, setEntity] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   const fetchEntityByUuid = useCallback(
     async (uuid) => {
@@ -14,7 +14,7 @@ function useFetchEntity(entityType) {
         const response = await restController[`fetch${entityType}ByUuid`](uuid);
         setEntity(response);
       } catch (error) {
-        setErrorMessage(error.response.data);
+        setError(error.response.data);
       } finally {
         setIsLoading(false);
       }
@@ -22,7 +22,7 @@ function useFetchEntity(entityType) {
     [entityType]
   );
 
-  return { entity, isLoading, errorMessage, fetchEntityByUuid };
+  return { entity, isLoading, error, fetchEntityByUuid };
 }
 
 export default useFetchEntity;
