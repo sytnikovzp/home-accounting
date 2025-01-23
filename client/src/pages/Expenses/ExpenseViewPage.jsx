@@ -14,9 +14,9 @@ import {
 } from '@mui/icons-material';
 
 import {
-  selectCurrentExpense,
-  selectExpensesError,
-  selectExpensesIsLoading,
+  selectExpensesActionError,
+  selectExpensesProcessingAction,
+  selectSelectedExpense,
 } from '../../store/selectors/expensesSelectors';
 import { fetchExpenseByUuid } from '../../store/thunks/expensesThunks';
 
@@ -30,11 +30,9 @@ function ExpenseViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const dispatch = useDispatch();
 
-  const expenseToCRUD = useSelector((state) =>
-    selectCurrentExpense(state, uuid)
-  );
-  const isLoading = useSelector(selectExpensesIsLoading);
-  const error = useSelector(selectExpensesError);
+  const expense = useSelector(selectSelectedExpense);
+  const isLoading = useSelector(selectExpensesProcessingAction);
+  const error = useSelector(selectExpensesActionError);
 
   useEffect(() => {
     if (uuid) {
@@ -52,7 +50,7 @@ function ExpenseViewPage({ handleModalClose }) {
     currency,
     date,
     creation,
-  } = expenseToCRUD || {};
+  } = expense || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   const data = useMemo(

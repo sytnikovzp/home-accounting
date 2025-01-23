@@ -5,9 +5,9 @@ import { Box, Divider, Typography } from '@mui/material';
 import { CalendarToday, Description, Info, Update } from '@mui/icons-material';
 
 import {
-  selectCurrentRole,
-  selectRolesError,
-  selectRolesIsLoading,
+  selectRolesActionError,
+  selectRolesProcessingAction,
+  selectSelectedRole,
 } from '../../store/selectors/rolesSelectors';
 import { fetchRoleByUuid } from '../../store/thunks/rolesThunks';
 
@@ -22,9 +22,9 @@ function RoleViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const dispatch = useDispatch();
 
-  const roleToCRUD = useSelector((state) => selectCurrentRole(state, uuid));
-  const isLoading = useSelector(selectRolesIsLoading);
-  const error = useSelector(selectRolesError);
+  const role = useSelector(selectSelectedRole);
+  const isLoading = useSelector(selectRolesProcessingAction);
+  const error = useSelector(selectRolesActionError);
 
   useEffect(() => {
     if (uuid) {
@@ -32,8 +32,7 @@ function RoleViewPage({ handleModalClose }) {
     }
   }, [dispatch, uuid]);
 
-  const { title, description, permissions, createdAt, updatedAt } =
-    roleToCRUD || {};
+  const { title, description, permissions, createdAt, updatedAt } = role || {};
 
   const data = useMemo(
     () => [

@@ -11,11 +11,11 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectRoles,
-  selectRolesError,
-  selectRolesIsLoading,
+  selectRolesIsLoadingList,
+  selectRolesListLoadingError,
   selectTotalCount,
 } from '../../store/selectors/rolesSelectors';
-import { clearCurrent } from '../../store/slices/rolesSlice';
+import { clearSelected } from '../../store/slices/rolesSlice';
 import { fetchRoles } from '../../store/thunks/rolesThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -51,8 +51,8 @@ function RolesPage() {
 
   const roles = useSelector(selectRoles);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectRolesIsLoading);
-  const error = useSelector(selectRolesError);
+  const isLoading = useSelector(selectRolesIsLoadingList);
+  const error = useSelector(selectRolesListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -82,7 +82,7 @@ function RolesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/roles');
   }, [dispatch, navigate]);
 

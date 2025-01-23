@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { sliceNames } from '../../constants';
-import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
+import {
+  setErrorActionState,
+  setErrorListState,
+  setLoadingActionState,
+  setLoadingListState,
+} from '../../utils/sharedFunctions';
 
 import {
   addProduct,
@@ -14,72 +19,75 @@ import {
 const { PRODUCTS_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  data: [],
+  list: [],
   totalCount: 0,
-  current: null,
-  isLoading: false,
-  error: null,
+  isLoadingList: false,
+  listLoadingError: null,
+  selected: null,
+  isProcessingAction: true,
+  actionError: null,
 };
 
 const productsSlice = createSlice({
   name: PRODUCTS_SLICE_NAME,
   initialState,
   reducers: {
-    clearCurrent(state) {
-      state.current = null;
+    clearSelected(state) {
+      state.selected = null;
+      state.actionError = null;
     },
   },
   extraReducers: (builder) => {
     builder
       // Fulfilled
       .addCase(fetchProducts.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = payload.data;
+        state.isLoadingList = false;
+        state.listLoadingError = null;
+        state.list = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchProductByUuid.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
       .addCase(addProduct.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data.push(payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list.push(payload);
       })
       .addCase(editProduct.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.data.findIndex(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        const index = state.list.findIndex(
           (product) => product.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.data[index] = payload;
+          state.list[index] = payload;
         }
       })
       .addCase(removeProduct.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = state.data.filter((product) => product.uuid !== payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list = state.list.filter((product) => product.uuid !== payload);
       })
 
       // Pending
-      .addCase(fetchProducts.pending, setLoadingState)
-      .addCase(fetchProductByUuid.pending, setLoadingState)
-      .addCase(addProduct.pending, setLoadingState)
-      .addCase(editProduct.pending, setLoadingState)
-      .addCase(removeProduct.pending, setLoadingState)
+      .addCase(fetchProducts.pending, setLoadingListState)
+      .addCase(fetchProductByUuid.pending, setLoadingActionState)
+      .addCase(addProduct.pending, setLoadingActionState)
+      .addCase(editProduct.pending, setLoadingActionState)
+      .addCase(removeProduct.pending, setLoadingActionState)
 
       // Rejected
-      .addCase(fetchProducts.rejected, setErrorState)
-      .addCase(fetchProductByUuid.rejected, setErrorState)
-      .addCase(addProduct.rejected, setErrorState)
-      .addCase(editProduct.rejected, setErrorState)
-      .addCase(removeProduct.rejected, setErrorState);
+      .addCase(fetchProducts.rejected, setErrorListState)
+      .addCase(fetchProductByUuid.rejected, setErrorActionState)
+      .addCase(addProduct.rejected, setErrorActionState)
+      .addCase(editProduct.rejected, setErrorActionState)
+      .addCase(removeProduct.rejected, setErrorActionState);
   },
 });
 
-export const { clearCurrent } = productsSlice.actions;
+export const { clearSelected } = productsSlice.actions;
 
 export default productsSlice.reducer;

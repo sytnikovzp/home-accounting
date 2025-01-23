@@ -16,7 +16,7 @@ function MeasureEditPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: measureToCRUD,
+    entity: measure,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function MeasureEditPage({
     setCrudError(null);
     try {
       await restController.editMeasure(
-        measureToCRUD.uuid,
+        measure.uuid,
         values.title,
         values.description
       );
@@ -50,7 +50,7 @@ function MeasureEditPage({
         isLoading ? (
           <Preloader />
         ) : (
-          <MeasureForm measure={measureToCRUD} onSubmit={handleSubmitMeasure} />
+          <MeasureForm measure={measure} onSubmit={handleSubmitMeasure} />
         )
       }
       error={error || crudError}

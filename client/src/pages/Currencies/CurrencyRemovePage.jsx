@@ -18,7 +18,7 @@ function CurrencyRemovePage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: currencyToCRUD,
+    entity: currency,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function CurrencyRemovePage({
 
   const handleDeleteCurrency = async () => {
     try {
-      await restController.removeCurrency(currencyToCRUD.uuid);
+      await restController.removeCurrency(currency.uuid);
       handleModalClose();
       fetchCurrencies();
     } catch (error) {
@@ -60,9 +60,9 @@ function CurrencyRemovePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити валюту «{currencyToCRUD?.title}»?
-            Зверніть увагу, що видалення цієї валюти призведе до видалення всіх
-            витрат, у яких вона використовується.
+            Ви впевнені, що хочете видалити валюту «{currency?.title}»? Зверніть
+            увагу, що видалення цієї валюти призведе до видалення всіх витрат, у
+            яких вона використовується.
           </Typography>
         )
       }

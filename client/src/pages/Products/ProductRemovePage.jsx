@@ -18,7 +18,7 @@ function ProductRemovePage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: productToCRUD,
+    entity: product,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function ProductRemovePage({
 
   const handleDeleteProduct = async () => {
     try {
-      await restController.removeProduct(productToCRUD.uuid);
+      await restController.removeProduct(product.uuid);
       handleModalClose();
       fetchProducts();
     } catch (error) {
@@ -60,7 +60,7 @@ function ProductRemovePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити товар «{productToCRUD?.title}»? Це
+            Ви впевнені, що хочете видалити товар «{product?.title}»? Це
             призведе до видалення всіх витрат, що містять цей товар.
           </Typography>
         )

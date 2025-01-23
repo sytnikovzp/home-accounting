@@ -16,7 +16,7 @@ function UserChangePasswordPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: userToCRUD,
+    entity: user,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function UserChangePasswordPage({
     setCrudError(null);
     try {
       await restController.changePassword(
-        userToCRUD.uuid,
+        user.uuid,
         values.newPassword,
         values.confirmNewPassword
       );

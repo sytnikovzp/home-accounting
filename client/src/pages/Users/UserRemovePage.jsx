@@ -20,7 +20,7 @@ function UserRemovePage({
   const { uuid } = useParams();
   const navigate = useNavigate();
   const {
-    entity: userToCRUD,
+    entity: user,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -39,8 +39,8 @@ function UserRemovePage({
 
   const handleDeleteUser = async () => {
     try {
-      await restController.removeUser(userToCRUD.uuid);
-      if (userToCRUD.uuid === currentUser.uuid) {
+      await restController.removeUser(user.uuid);
+      if (user.uuid === currentUser.uuid) {
         await handleLogout();
       } else {
         handleModalClose();
@@ -71,9 +71,9 @@ function UserRemovePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            {userToCRUD?.uuid === currentUser.uuid
+            {user?.uuid === currentUser.uuid
               ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
-              : `Ви впевнені, що хочете видалити користувача «${userToCRUD?.fullName}»?`}
+              : `Ви впевнені, що хочете видалити користувача «${user?.fullName}»?`}
           </Typography>
         )
       }

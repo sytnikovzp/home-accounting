@@ -11,9 +11,9 @@ import {
 } from '@mui/icons-material';
 
 import {
-  selectCurrenciesError,
-  selectCurrenciesIsLoading,
-  selectCurrentCurrency,
+  selectCurrenciesActionError,
+  selectCurrenciesProcessingAction,
+  selectSelectedCurrency,
 } from '../../store/selectors/currenciesSelectors';
 import { fetchCurrencyByUuid } from '../../store/thunks/currenciesThunks';
 
@@ -27,11 +27,9 @@ function CurrencyViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const dispatch = useDispatch();
 
-  const currencyToCRUD = useSelector((state) =>
-    selectCurrentCurrency(state, uuid)
-  );
-  const isLoading = useSelector(selectCurrenciesIsLoading);
-  const error = useSelector(selectCurrenciesError);
+  const currency = useSelector(selectSelectedCurrency);
+  const isLoading = useSelector(selectCurrenciesProcessingAction);
+  const error = useSelector(selectCurrenciesActionError);
 
   useEffect(() => {
     if (uuid) {
@@ -39,7 +37,7 @@ function CurrencyViewPage({ handleModalClose }) {
     }
   }, [dispatch, uuid]);
 
-  const { title, code, creation } = currencyToCRUD || {};
+  const { title, code, creation } = currency || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   const data = useMemo(

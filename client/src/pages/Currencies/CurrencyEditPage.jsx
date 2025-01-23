@@ -16,7 +16,7 @@ function CurrencyEditPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: currencyToCRUD,
+    entity: currency,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function CurrencyEditPage({
     setCrudError(null);
     try {
       await restController.editCurrency(
-        currencyToCRUD.uuid,
+        currency.uuid,
         values.title,
         values.code
       );
@@ -50,10 +50,7 @@ function CurrencyEditPage({
         isLoading ? (
           <Preloader />
         ) : (
-          <CurrencyForm
-            currency={currencyToCRUD}
-            onSubmit={handleSubmitCurrency}
-          />
+          <CurrencyForm currency={currency} onSubmit={handleSubmitCurrency} />
         )
       }
       error={error || crudError}

@@ -18,7 +18,7 @@ function UserEditPage({
   const { uuid } = useParams();
   const navigate = useNavigate();
   const {
-    entity: userToCRUD,
+    entity: user,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -34,7 +34,7 @@ function UserEditPage({
     setCrudError(null);
     try {
       await restController.editUser(
-        userToCRUD.uuid,
+        user.uuid,
         values.fullName,
         values.email,
         values.role
@@ -49,7 +49,7 @@ function UserEditPage({
   const handleUploadPhoto = async (file) => {
     setCrudError(null);
     try {
-      await restController.uploadUserPhoto(userToCRUD.uuid, file);
+      await restController.uploadUserPhoto(user.uuid, file);
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);
@@ -59,7 +59,7 @@ function UserEditPage({
   const handleRemovePhoto = async () => {
     setCrudError(null);
     try {
-      await restController.resetUserPhoto(userToCRUD.uuid);
+      await restController.resetUserPhoto(user.uuid);
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);
@@ -79,7 +79,7 @@ function UserEditPage({
         ) : (
           <UserForm
             roles={roles}
-            user={userToCRUD}
+            user={user}
             onChangePassword={handleChangePassword}
             onRemovePhoto={handleRemovePhoto}
             onSubmit={handleSubmitUser}

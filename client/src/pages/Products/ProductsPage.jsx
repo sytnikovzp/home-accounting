@@ -11,11 +11,11 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectProducts,
-  selectProductsError,
-  selectProductsIsLoading,
+  selectProductsIsLoadingList,
+  selectProductsListLoadingError,
   selectTotalCount,
 } from '../../store/selectors/productsSelectors';
-import { clearCurrent } from '../../store/slices/productsSlice';
+import { clearSelected } from '../../store/slices/productsSlice';
 import { fetchProducts } from '../../store/thunks/productsThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -52,8 +52,8 @@ function ProductsPage() {
 
   const products = useSelector(selectProducts);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectProductsIsLoading);
-  const error = useSelector(selectProductsError);
+  const isLoading = useSelector(selectProductsIsLoadingList);
+  const error = useSelector(selectProductsListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -84,7 +84,7 @@ function ProductsPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/products');
   }, [dispatch, navigate]);
 

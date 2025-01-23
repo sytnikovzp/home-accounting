@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { sliceNames } from '../../constants';
-import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
+import {
+  setErrorActionState,
+  setErrorListState,
+  setLoadingActionState,
+  setLoadingListState,
+} from '../../utils/sharedFunctions';
 
 import {
   addCategory,
@@ -14,72 +19,75 @@ import {
 const { CATEGORIES_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  data: [],
+  list: [],
   totalCount: 0,
-  current: null,
-  isLoading: false,
-  error: null,
+  isLoadingList: false,
+  listLoadingError: null,
+  selected: null,
+  isProcessingAction: true,
+  actionError: null,
 };
 
 const categoriesSlice = createSlice({
   name: CATEGORIES_SLICE_NAME,
   initialState,
   reducers: {
-    clearCurrent(state) {
-      state.current = null;
+    clearSelected(state) {
+      state.selected = null;
+      state.actionError = null;
     },
   },
   extraReducers: (builder) => {
     builder
       // Fulfilled
       .addCase(fetchCategories.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = payload.data;
+        state.isLoadingList = false;
+        state.listLoadingError = null;
+        state.list = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchCategoryByUuid.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
       .addCase(addCategory.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data.push(payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list.push(payload);
       })
       .addCase(editCategory.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.data.findIndex(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        const index = state.list.findIndex(
           (category) => category.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.data[index] = payload;
+          state.list[index] = payload;
         }
       })
       .addCase(removeCategory.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = state.data.filter((category) => category.uuid !== payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list = state.list.filter((category) => category.uuid !== payload);
       })
 
       // Pending
-      .addCase(fetchCategories.pending, setLoadingState)
-      .addCase(fetchCategoryByUuid.pending, setLoadingState)
-      .addCase(addCategory.pending, setLoadingState)
-      .addCase(editCategory.pending, setLoadingState)
-      .addCase(removeCategory.pending, setLoadingState)
+      .addCase(fetchCategories.pending, setLoadingListState)
+      .addCase(fetchCategoryByUuid.pending, setLoadingActionState)
+      .addCase(addCategory.pending, setLoadingActionState)
+      .addCase(editCategory.pending, setLoadingActionState)
+      .addCase(removeCategory.pending, setLoadingActionState)
 
       // Rejected
-      .addCase(fetchCategories.rejected, setErrorState)
-      .addCase(fetchCategoryByUuid.rejected, setErrorState)
-      .addCase(addCategory.rejected, setErrorState)
-      .addCase(editCategory.rejected, setErrorState)
-      .addCase(removeCategory.rejected, setErrorState);
+      .addCase(fetchCategories.rejected, setErrorListState)
+      .addCase(fetchCategoryByUuid.rejected, setErrorActionState)
+      .addCase(addCategory.rejected, setErrorActionState)
+      .addCase(editCategory.rejected, setErrorActionState)
+      .addCase(removeCategory.rejected, setErrorActionState);
   },
 });
 
-export const { clearCurrent } = categoriesSlice.actions;
+export const { clearSelected } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

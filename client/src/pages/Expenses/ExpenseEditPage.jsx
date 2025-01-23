@@ -20,7 +20,7 @@ function ExpenseEditPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: expenseToCRUD,
+    entity: expense,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -36,7 +36,7 @@ function ExpenseEditPage({
     setCrudError(null);
     try {
       await restController.editExpense(
-        expenseToCRUD.uuid,
+        expense.uuid,
         values.product,
         values.quantity,
         values.unitPrice,
@@ -62,7 +62,7 @@ function ExpenseEditPage({
           <ExpenseForm
             currencies={currencies}
             establishments={establishments}
-            expense={expenseToCRUD}
+            expense={expense}
             measures={measures}
             products={products}
             onSubmit={handleSubmitExpense}

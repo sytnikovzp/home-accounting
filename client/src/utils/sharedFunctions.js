@@ -92,6 +92,26 @@ const requestHandler = async ({
   }
 };
 
+const setErrorListState = (state, { payload }) => {
+  state.isLoadingList = false;
+  state.listLoadingError = payload;
+};
+
+const setLoadingListState = (state) => {
+  state.isLoadingList = true;
+  state.listLoadingError = null;
+};
+
+const setLoadingActionState = (state) => {
+  state.isProcessingAction = true;
+  state.actionError = null;
+};
+
+const setErrorActionState = (state, { payload }) => {
+  state.isProcessingAction = false;
+  state.actionError = payload;
+};
+
 const setErrorState = (state, { payload }) => {
   state.isLoading = false;
   state.error = payload;
@@ -107,7 +127,11 @@ export {
   removeAccessToken,
   requestHandler,
   saveAccessToken,
+  setErrorActionState,
+  setErrorListState,
   setErrorState,
+  setLoadingActionState,
+  setLoadingListState,
   setLoadingState,
   stringAvatar,
   uuidPattern,

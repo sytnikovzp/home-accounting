@@ -1,4 +1,6 @@
-export const selectPermissions = (state) => state.permissions.data;
-export const selectPermissionsIsLoading = (state) =>
-  state.permissions.isLoading;
-export const selectPermissionsError = (state) => state.permissions.error;
+export const selectPermissions = (state) => state.permissions.list;
+
+export const selectPermissionsIsLoadingList = (state) =>
+  state.permissions.isLoadingList;
+export const selectPermissionsListLoadingError = (state) =>
+  state.permissions.listLoadingError;

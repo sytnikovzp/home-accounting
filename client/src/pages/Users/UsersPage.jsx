@@ -12,10 +12,10 @@ import usePagination from '../../hooks/usePagination';
 import {
   selectTotalCount,
   selectUsers,
-  selectUsersError,
-  selectUsersIsLoading,
+  selectUsersIsLoadingList,
+  selectUsersListLoadingError,
 } from '../../store/selectors/usersSelectors';
-import { clearCurrent } from '../../store/slices/usersSlice';
+import { clearSelected } from '../../store/slices/usersSlice';
 import { fetchUsers } from '../../store/thunks/usersThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -51,8 +51,8 @@ function UsersPage() {
 
   const users = useSelector(selectUsers);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectUsersIsLoading);
-  const error = useSelector(selectUsersError);
+  const isLoading = useSelector(selectUsersIsLoadingList);
+  const error = useSelector(selectUsersListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -83,7 +83,7 @@ function UsersPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/users');
   }, [dispatch, navigate]);
 

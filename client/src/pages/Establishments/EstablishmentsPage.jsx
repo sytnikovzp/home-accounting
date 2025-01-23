@@ -11,11 +11,11 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectEstablishments,
-  selectEstablishmentsError,
-  selectEstablishmentsIsLoading,
+  selectEstablishmentsIsLoadingList,
+  selectEstablishmentsListLoadingError,
   selectTotalCount,
 } from '../../store/selectors/establishmentsSelectors';
-import { clearCurrent } from '../../store/slices/establishmentsSlice';
+import { clearSelected } from '../../store/slices/establishmentsSlice';
 import { fetchEstablishments } from '../../store/thunks/establishmentsThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -52,8 +52,8 @@ function EstablishmentsPage() {
 
   const establishments = useSelector(selectEstablishments);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectEstablishmentsIsLoading);
-  const error = useSelector(selectEstablishmentsError);
+  const isLoading = useSelector(selectEstablishmentsIsLoadingList);
+  const error = useSelector(selectEstablishmentsListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -84,7 +84,7 @@ function EstablishmentsPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/establishments');
   }, [dispatch, navigate]);
 

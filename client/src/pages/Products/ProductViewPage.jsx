@@ -11,9 +11,9 @@ import {
 } from '@mui/icons-material';
 
 import {
-  selectCurrentProduct,
-  selectProductsError,
-  selectProductsIsLoading,
+  selectProductsActionError,
+  selectProductsProcessingAction,
+  selectSelectedProduct,
 } from '../../store/selectors/productsSelectors';
 import { fetchProductByUuid } from '../../store/thunks/productsThunks';
 
@@ -28,11 +28,9 @@ function ProductViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const dispatch = useDispatch();
 
-  const productToCRUD = useSelector((state) =>
-    selectCurrentProduct(state, uuid)
-  );
-  const isLoading = useSelector(selectProductsIsLoading);
-  const error = useSelector(selectProductsError);
+  const product = useSelector(selectSelectedProduct);
+  const isLoading = useSelector(selectProductsProcessingAction);
+  const error = useSelector(selectProductsActionError);
 
   useEffect(() => {
     if (uuid) {
@@ -40,7 +38,7 @@ function ProductViewPage({ handleModalClose }) {
     }
   }, [dispatch, uuid]);
 
-  const { title, status, moderation, creation, category } = productToCRUD || {};
+  const { title, status, moderation, creation, category } = product || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 

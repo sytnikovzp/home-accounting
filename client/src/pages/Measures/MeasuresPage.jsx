@@ -11,11 +11,11 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectMeasures,
-  selectMeasuresError,
-  selectMeasuresIsLoading,
+  selectMeasuresIsLoadingList,
+  selectMeasuresListLoadingError,
   selectTotalCount,
 } from '../../store/selectors/measuresSelectors';
-import { clearCurrent } from '../../store/slices/measuresSlice';
+import { clearSelected } from '../../store/slices/measuresSlice';
 import { fetchMeasures } from '../../store/thunks/measuresThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -51,8 +51,8 @@ function MeasuresPage() {
 
   const measures = useSelector(selectMeasures);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectMeasuresIsLoading);
-  const error = useSelector(selectMeasuresError);
+  const isLoading = useSelector(selectMeasuresIsLoadingList);
+  const error = useSelector(selectMeasuresListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -82,7 +82,7 @@ function MeasuresPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/measures');
   }, [dispatch, navigate]);
 

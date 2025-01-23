@@ -16,7 +16,7 @@ function EstablishmentEditPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: establishmentToCRUD,
+    entity: establishment,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function EstablishmentEditPage({
     setCrudError(null);
     try {
       await restController.editEstablishment(
-        establishmentToCRUD.uuid,
+        establishment.uuid,
         values.title,
         values.description,
         values.url
@@ -47,7 +47,7 @@ function EstablishmentEditPage({
   const handleUploadLogo = async (file) => {
     setCrudError(null);
     try {
-      await restController.changeLogo(establishmentToCRUD.uuid, file);
+      await restController.changeLogo(establishment.uuid, file);
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);
@@ -57,7 +57,7 @@ function EstablishmentEditPage({
   const handleRemoveLogo = async () => {
     setCrudError(null);
     try {
-      await restController.resetEstablishmentLogo(establishmentToCRUD.uuid);
+      await restController.resetEstablishmentLogo(establishment.uuid);
       fetchEntityByUuid(uuid);
     } catch (error) {
       setCrudError(error.response.data);
@@ -72,7 +72,7 @@ function EstablishmentEditPage({
           <Preloader />
         ) : (
           <EstablishmentForm
-            establishment={establishmentToCRUD}
+            establishment={establishment}
             onRemoveLogo={handleRemoveLogo}
             onSubmit={handleSubmitEstablishment}
             onUploadLogo={handleUploadLogo}

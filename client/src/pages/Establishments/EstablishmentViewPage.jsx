@@ -14,9 +14,9 @@ import {
 import { configs } from '../../constants';
 
 import {
-  selectCurrentEstablishment,
-  selectEstablishmentsError,
-  selectEstablishmentsIsLoading,
+  selectEstablishmentsActionError,
+  selectEstablishmentsProcessingAction,
+  selectSelectedEstablishment,
 } from '../../store/selectors/establishmentsSelectors';
 import { fetchEstablishmentByUuid } from '../../store/thunks/establishmentsThunks';
 
@@ -37,11 +37,11 @@ function EstablishmentViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const dispatch = useDispatch();
 
-  const establishmentToCRUD = useSelector((state) =>
-    selectCurrentEstablishment(state, uuid)
+  const establishment = useSelector((state) =>
+    selectSelectedEstablishment(state, uuid)
   );
-  const isLoading = useSelector(selectEstablishmentsIsLoading);
-  const error = useSelector(selectEstablishmentsError);
+  const isLoading = useSelector(selectEstablishmentsProcessingAction);
+  const error = useSelector(selectEstablishmentsActionError);
 
   useEffect(() => {
     if (uuid) {
@@ -50,7 +50,7 @@ function EstablishmentViewPage({ handleModalClose }) {
   }, [dispatch, uuid]);
 
   const { title, description, url, logo, status, moderation, creation } =
-    establishmentToCRUD || {};
+    establishment || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 

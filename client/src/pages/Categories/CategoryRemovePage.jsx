@@ -1,42 +1,53 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  selectCategoriesActionError,
+  selectCategoriesProcessingAction,
+  selectSelectedCategory,
+} from '../../store/selectors/categoriesSelectors';
+import { clearSelected } from '../../store/slices/categoriesSlice';
+import {
+  fetchCategories,
+  fetchCategoryByUuid,
+  removeCategory,
+} from '../../store/thunks/categoriesThunks';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function CategoryRemovePage({
-  handleModalClose,
-  fetchCategories,
-  crudError,
-  setCrudError,
-}) {
+function CategoryRemovePage() {
   const { uuid } = useParams();
-  const {
-    entity: categoryToCRUD,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Category');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const category = useSelector(selectSelectedCategory);
+  const isLoading = useSelector(selectCategoriesProcessingAction);
+  const error = useSelector(selectCategoriesActionError);
 
   useEffect(() => {
     if (uuid) {
-      fetchEntityByUuid(uuid);
+      dispatch(fetchCategoryByUuid(uuid));
     }
-  }, [uuid, fetchEntityByUuid]);
+  }, [uuid, dispatch]);
+
+  const handleModalClose = useCallback(() => {
+    dispatch(clearSelected());
+    navigate('/categories');
+  }, [dispatch, navigate]);
 
   const handleDeleteCategory = async () => {
     try {
-      await restController.removeCategory(categoryToCRUD.uuid);
+      await dispatch(removeCategory({ uuid })).unwrap();
+      dispatch(fetchCategories());
       handleModalClose();
-      fetchCategories();
     } catch (error) {
-      setCrudError(error.response.data);
+      console.error(error.message);
     }
   };
 
@@ -60,11 +71,11 @@ function CategoryRemovePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити категорію «{categoryToCRUD?.title}»?
+            Ви впевнені, що хочете видалити категорію «{category?.title}»?
           </Typography>
         )
       }
-      error={error || crudError}
+      error={error}
       title='Видалення категорії...'
       onClose={handleModalClose}
     />

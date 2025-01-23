@@ -1,5 +1,13 @@
-export const selectCategories = (state) => state.categories.data;
+export const selectCategories = (state) => state.categories.list;
 export const selectTotalCount = (state) => state.categories.totalCount;
-export const selectCurrentCategory = (state) => state.categories.current;
-export const selectCategoriesIsLoading = (state) => state.categories.isLoading;
-export const selectCategoriesError = (state) => state.categories.error;
+export const selectSelectedCategory = (state) => state.categories.selected;
+
+export const selectCategoriesIsLoadingList = (state) =>
+  state.categories.isLoadingList;
+export const selectCategoriesListLoadingError = (state) =>
+  state.categories.listLoadingError;
+
+export const selectCategoriesProcessingAction = (state) =>
+  state.categories.isProcessingAction;
+export const selectCategoriesActionError = (state) =>
+  state.categories.actionError;

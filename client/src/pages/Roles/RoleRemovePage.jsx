@@ -18,7 +18,7 @@ function RoleRemovePage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: roleToCRUD,
+    entity: role,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function RoleRemovePage({
 
   const handleDeleteRole = async () => {
     try {
-      await restController.removeRole(roleToCRUD.uuid);
+      await restController.removeRole(role.uuid);
       handleModalClose();
       fetchRoles();
     } catch (error) {
@@ -60,7 +60,7 @@ function RoleRemovePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити роль «{roleToCRUD?.title}»?
+            Ви впевнені, що хочете видалити роль «{role?.title}»?
           </Typography>
         )
       }

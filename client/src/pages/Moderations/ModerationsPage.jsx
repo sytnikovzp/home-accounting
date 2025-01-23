@@ -11,11 +11,11 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectModerations,
-  selectModerationsError,
-  selectModerationsIsLoading,
+  selectModerationsIsLoadingList,
+  selectModerationsListLoadingError,
   selectTotalCount,
 } from '../../store/selectors/moderationsSelectors';
-import { clearCurrent } from '../../store/slices/moderationsSlice';
+import { clearSelected } from '../../store/slices/moderationsSlice';
 import { fetchModerations } from '../../store/thunks/moderationsThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -41,8 +41,8 @@ function ModerationsPage() {
 
   const moderations = useSelector(selectModerations);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectModerationsIsLoading);
-  const error = useSelector(selectModerationsError);
+  const isLoading = useSelector(selectModerationsIsLoadingList);
+  const error = useSelector(selectModerationsListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -73,7 +73,7 @@ function ModerationsPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/moderation');
   }, [dispatch, navigate]);
 

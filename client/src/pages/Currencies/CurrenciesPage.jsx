@@ -11,11 +11,11 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectCurrencies,
-  selectCurrenciesError,
-  selectCurrenciesIsLoading,
+  selectCurrenciesIsLoadingList,
+  selectCurrenciesListLoadingError,
   selectTotalCount,
 } from '../../store/selectors/currenciesSelectors';
-import { clearCurrent } from '../../store/slices/currenciesSlice';
+import { clearSelected } from '../../store/slices/currenciesSlice';
 import { fetchCurrencies } from '../../store/thunks/currenciesThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -51,8 +51,8 @@ function CurrenciesPage() {
 
   const currencies = useSelector(selectCurrencies);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectCurrenciesIsLoading);
-  const error = useSelector(selectCurrenciesError);
+  const isLoading = useSelector(selectCurrenciesIsLoadingList);
+  const error = useSelector(selectCurrenciesListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -82,7 +82,7 @@ function CurrenciesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/currencies');
   }, [dispatch, navigate]);
 

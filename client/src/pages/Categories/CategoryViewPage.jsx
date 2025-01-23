@@ -5,9 +5,9 @@ import { Box } from '@mui/material';
 import { CalendarToday, Info, Person, Update } from '@mui/icons-material';
 
 import {
-  selectCategoriesError,
-  selectCategoriesIsLoading,
-  selectCurrentCategory,
+  selectCategoriesActionError,
+  selectCategoriesProcessingAction,
+  selectSelectedCategory,
 } from '../../store/selectors/categoriesSelectors';
 import { fetchCategoryByUuid } from '../../store/thunks/categoriesThunks';
 
@@ -20,13 +20,12 @@ import { stylesViewPageBox } from '../../styles';
 
 function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();
+
   const dispatch = useDispatch();
 
-  const categoryToCRUD = useSelector((state) =>
-    selectCurrentCategory(state, uuid)
-  );
-  const isLoading = useSelector(selectCategoriesIsLoading);
-  const error = useSelector(selectCategoriesError);
+  const category = useSelector(selectSelectedCategory);
+  const isLoading = useSelector(selectCategoriesProcessingAction);
+  const error = useSelector(selectCategoriesActionError);
 
   useEffect(() => {
     if (uuid) {
@@ -34,7 +33,7 @@ function CategoryViewPage({ handleModalClose }) {
     }
   }, [dispatch, uuid]);
 
-  const { title, status, moderation, creation } = categoryToCRUD || {};
+  const { title, status, moderation, creation } = category || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 

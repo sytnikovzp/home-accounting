@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { sliceNames } from '../../constants';
-import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
+import {
+  setErrorActionState,
+  setErrorListState,
+  setLoadingActionState,
+  setLoadingListState,
+} from '../../utils/sharedFunctions';
 
 import {
   addEstablishment,
@@ -16,98 +21,101 @@ import {
 const { ESTABLISHMENTS_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  data: [],
+  list: [],
   totalCount: 0,
-  current: null,
-  isLoading: false,
-  error: null,
+  isLoadingList: false,
+  listLoadingError: null,
+  selected: null,
+  isProcessingAction: true,
+  actionError: null,
 };
 
 const establishmentsSlice = createSlice({
   name: ESTABLISHMENTS_SLICE_NAME,
   initialState,
   reducers: {
-    clearCurrent(state) {
-      state.current = null;
+    clearSelected(state) {
+      state.selected = null;
+      state.actionError = null;
     },
   },
   extraReducers: (builder) => {
     builder
       // Fulfilled
       .addCase(fetchEstablishments.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = payload.data;
+        state.isLoadingList = false;
+        state.listLoadingError = null;
+        state.list = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchEstablishmentByUuid.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
       .addCase(addEstablishment.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data.push(payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list.push(payload);
       })
       .addCase(editEstablishment.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.data.findIndex(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        const index = state.list.findIndex(
           (establishment) => establishment.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.data[index] = payload;
+          state.list[index] = payload;
         }
       })
       .addCase(changeLogo.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.data.findIndex(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        const index = state.list.findIndex(
           (establishment) => establishment.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.data[index].logo = payload.logo;
+          state.list[index].logo = payload.logo;
         }
       })
       .addCase(resetLogo.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.data.findIndex(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        const index = state.list.findIndex(
           (establishment) => establishment.uuid === payload
         );
         if (index !== -1) {
-          state.data[index].logo = null;
+          state.list[index].logo = null;
         }
       })
       .addCase(removeEstablishment.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = state.data.filter(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list = state.list.filter(
           (establishment) => establishment.uuid !== payload
         );
       })
 
       // Pending
-      .addCase(fetchEstablishments.pending, setLoadingState)
-      .addCase(fetchEstablishmentByUuid.pending, setLoadingState)
-      .addCase(addEstablishment.pending, setLoadingState)
-      .addCase(editEstablishment.pending, setLoadingState)
-      .addCase(changeLogo.pending, setLoadingState)
-      .addCase(resetLogo.pending, setLoadingState)
-      .addCase(removeEstablishment.pending, setLoadingState)
+      .addCase(fetchEstablishments.pending, setLoadingListState)
+      .addCase(fetchEstablishmentByUuid.pending, setLoadingActionState)
+      .addCase(addEstablishment.pending, setLoadingActionState)
+      .addCase(editEstablishment.pending, setLoadingActionState)
+      .addCase(changeLogo.pending, setLoadingActionState)
+      .addCase(resetLogo.pending, setLoadingActionState)
+      .addCase(removeEstablishment.pending, setLoadingActionState)
 
       // Rejected
-      .addCase(fetchEstablishments.rejected, setErrorState)
-      .addCase(fetchEstablishmentByUuid.rejected, setErrorState)
-      .addCase(addEstablishment.rejected, setErrorState)
-      .addCase(editEstablishment.rejected, setErrorState)
-      .addCase(changeLogo.rejected, setErrorState)
-      .addCase(resetLogo.rejected, setErrorState)
-      .addCase(removeEstablishment.rejected, setErrorState);
+      .addCase(fetchEstablishments.rejected, setErrorListState)
+      .addCase(fetchEstablishmentByUuid.rejected, setErrorActionState)
+      .addCase(addEstablishment.rejected, setErrorActionState)
+      .addCase(editEstablishment.rejected, setErrorActionState)
+      .addCase(changeLogo.rejected, setErrorActionState)
+      .addCase(resetLogo.rejected, setErrorActionState)
+      .addCase(removeEstablishment.rejected, setErrorActionState);
   },
 });
 
-export const { clearCurrent } = establishmentsSlice.actions;
+export const { clearSelected } = establishmentsSlice.actions;
 
 export default establishmentsSlice.reducer;

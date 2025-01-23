@@ -18,7 +18,7 @@ function EstablishmentRemovePage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: establishmentToCRUD,
+    entity: establishment,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function EstablishmentRemovePage({
 
   const handleDeleteEstablishment = async () => {
     try {
-      await restController.removeEstablishment(establishmentToCRUD.uuid);
+      await restController.removeEstablishment(establishment.uuid);
       handleModalClose();
       fetchEstablishments();
     } catch (error) {
@@ -60,7 +60,7 @@ function EstablishmentRemovePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити заклад «{establishmentToCRUD?.title}
+            Ви впевнені, що хочете видалити заклад «{establishment?.title}
             »? Це призведе до видалення всіх витрат, пов`язаних з цим закладом.
           </Typography>
         )

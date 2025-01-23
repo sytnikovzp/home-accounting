@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { sliceNames } from '../../constants';
-import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
+import {
+  setErrorActionState,
+  setErrorListState,
+  setLoadingActionState,
+  setLoadingListState,
+} from '../../utils/sharedFunctions';
 
 import {
   changePhoto,
@@ -16,89 +21,92 @@ import {
 const { USERS_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  data: [],
+  list: [],
   totalCount: 0,
-  current: null,
-  isLoading: false,
-  error: null,
+  isLoadingList: false,
+  listLoadingError: null,
+  selected: null,
+  isProcessingAction: true,
+  actionError: null,
 };
 
 const usersSlice = createSlice({
   name: USERS_SLICE_NAME,
   initialState,
   reducers: {
-    clearCurrent(state) {
-      state.current = null;
+    clearSelected(state) {
+      state.selected = null;
+      state.actionError = null;
     },
   },
   extraReducers: (builder) => {
     builder
       // Fulfilled
       .addCase(fetchUsers.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = payload.data;
+        state.isLoadingList = false;
+        state.listLoadingError = null;
+        state.list = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchUserByUuid.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
       .addCase(changeUserPassword.fulfilled, (state) => {
-        state.isLoading = false;
-        state.error = null;
+        state.isProcessingAction = false;
+        state.actionError = null;
       })
       .addCase(editUser.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.data.findIndex(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        const index = state.list.findIndex(
           (user) => user.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.data[index] = payload;
+          state.list[index] = payload;
         }
       })
       .addCase(changePhoto.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        if (state.current && state.current.uuid === payload.uuid) {
-          state.current.photo = payload.photo;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        if (state.selected && state.selected.uuid === payload.uuid) {
+          state.selected.photo = payload.photo;
         }
       })
       .addCase(resetPhoto.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        if (state.current && state.current.uuid === payload.uuid) {
-          state.current.photo = null;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        if (state.selected && state.selected.uuid === payload.uuid) {
+          state.selected.photo = null;
         }
       })
       .addCase(removeUser.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = state.data.filter((user) => user.uuid !== payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list = state.list.filter((user) => user.uuid !== payload);
       })
 
       // Pending
-      .addCase(fetchUsers.pending, setLoadingState)
-      .addCase(fetchUserByUuid.pending, setLoadingState)
-      .addCase(changeUserPassword.pending, setLoadingState)
-      .addCase(editUser.pending, setLoadingState)
-      .addCase(changePhoto.pending, setLoadingState)
-      .addCase(resetPhoto.pending, setLoadingState)
-      .addCase(removeUser.pending, setLoadingState)
+      .addCase(fetchUsers.pending, setLoadingListState)
+      .addCase(fetchUserByUuid.pending, setLoadingActionState)
+      .addCase(changeUserPassword.pending, setLoadingActionState)
+      .addCase(editUser.pending, setLoadingActionState)
+      .addCase(changePhoto.pending, setLoadingActionState)
+      .addCase(resetPhoto.pending, setLoadingActionState)
+      .addCase(removeUser.pending, setLoadingActionState)
 
       // Rejected
-      .addCase(fetchUsers.rejected, setErrorState)
-      .addCase(fetchUserByUuid.rejected, setErrorState)
-      .addCase(changeUserPassword.rejected, setErrorState)
-      .addCase(editUser.rejected, setErrorState)
-      .addCase(changePhoto.rejected, setErrorState)
-      .addCase(resetPhoto.rejected, setErrorState)
-      .addCase(removeUser.rejected, setErrorState);
+      .addCase(fetchUsers.rejected, setErrorListState)
+      .addCase(fetchUserByUuid.rejected, setErrorActionState)
+      .addCase(changeUserPassword.rejected, setErrorActionState)
+      .addCase(editUser.rejected, setErrorActionState)
+      .addCase(changePhoto.rejected, setErrorActionState)
+      .addCase(resetPhoto.rejected, setErrorActionState)
+      .addCase(removeUser.rejected, setErrorActionState);
   },
 });
 
-export const { clearCurrent } = usersSlice.actions;
+export const { clearSelected } = usersSlice.actions;
 
 export default usersSlice.reducer;

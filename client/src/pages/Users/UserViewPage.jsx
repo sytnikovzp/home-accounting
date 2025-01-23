@@ -14,9 +14,9 @@ import { configs } from '../../constants';
 
 import { selectEmailVerificationIsLoading } from '../../store/selectors/emailVerificationSelectors';
 import {
-  selectCurrentUser,
-  selectUsersError,
-  selectUsersIsLoading,
+  selectSelectedUser,
+  selectUsersActionError,
+  selectUsersProcessingAction,
 } from '../../store/selectors/usersSelectors';
 import { sendVerificationEmail } from '../../store/thunks/emailVerificationThunks';
 import { fetchUserByUuid } from '../../store/thunks/usersThunks';
@@ -39,9 +39,9 @@ function UserViewPage({ handleModalClose }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userToCRUD = useSelector((state) => selectCurrentUser(state, uuid));
-  const isLoading = useSelector(selectUsersIsLoading);
-  const error = useSelector(selectUsersError);
+  const user = useSelector(selectSelectedUser);
+  const isLoading = useSelector(selectUsersProcessingAction);
+  const error = useSelector(selectUsersActionError);
   const emailVerificationLoading = useSelector(
     selectEmailVerificationIsLoading
   );
@@ -53,7 +53,7 @@ function UserViewPage({ handleModalClose }) {
   }, [dispatch, uuid]);
 
   const { fullName, role, photo, email, emailVerificationStatus, creation } =
-    userToCRUD || {};
+    user || {};
   const { createdAt, updatedAt } = creation || {};
 
   const handleResendVerification = useCallback(

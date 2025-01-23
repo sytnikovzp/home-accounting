@@ -17,7 +17,7 @@ function ProductEditPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: productToCRUD,
+    entity: product,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -33,7 +33,7 @@ function ProductEditPage({
     setCrudError(null);
     try {
       await restController.editProduct(
-        productToCRUD.uuid,
+        product.uuid,
         values.title,
         values.category
       );
@@ -53,7 +53,7 @@ function ProductEditPage({
         ) : (
           <ProductForm
             categories={categories}
-            product={productToCRUD}
+            product={product}
             onSubmit={handleSubmitProduct}
           />
         )

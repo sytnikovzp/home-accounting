@@ -18,7 +18,7 @@ const initialState = {
   user: null,
   permissions: [],
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
   error: null,
 };
 

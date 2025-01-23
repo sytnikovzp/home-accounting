@@ -18,7 +18,7 @@ function MeasureRemovePage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: measureToCRUD,
+    entity: measure,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function MeasureRemovePage({
 
   const handleDeleteMeasure = async () => {
     try {
-      await restController.removeMeasure(measureToCRUD.uuid);
+      await restController.removeMeasure(measure.uuid);
       handleModalClose();
       fetchMeasures();
     } catch (error) {
@@ -60,9 +60,8 @@ function MeasureRemovePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити одиницю вимірів «
-            {measureToCRUD?.title}»? Це призведе до видалення всіх витрат, де
-            вона використовується.
+            Ви впевнені, що хочете видалити одиницю вимірів «{measure?.title}»?
+            Це призведе до видалення всіх витрат, де вона використовується.
           </Typography>
         )
       }

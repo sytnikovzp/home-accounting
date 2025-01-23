@@ -16,7 +16,7 @@ function CategoryEditPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: categoryToCRUD,
+    entity: category,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -31,7 +31,7 @@ function CategoryEditPage({
   const handleSubmitCategory = async (values) => {
     setCrudError(null);
     try {
-      await restController.editCategory(categoryToCRUD.uuid, values.title);
+      await restController.editCategory(category.uuid, values.title);
       handleModalClose();
       fetchCategories();
     } catch (error) {
@@ -46,10 +46,7 @@ function CategoryEditPage({
         isLoading ? (
           <Preloader />
         ) : (
-          <CategoryForm
-            category={categoryToCRUD}
-            onSubmit={handleSubmitCategory}
-          />
+          <CategoryForm category={category} onSubmit={handleSubmitCategory} />
         )
       }
       error={error || crudError}

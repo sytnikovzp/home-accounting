@@ -11,11 +11,11 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectCategories,
-  selectCategoriesError,
-  selectCategoriesIsLoading,
+  selectCategoriesIsLoadingList,
+  selectCategoriesListLoadingError,
   selectTotalCount,
 } from '../../store/selectors/categoriesSelectors';
-import { clearCurrent } from '../../store/slices/categoriesSlice';
+import { clearSelected } from '../../store/slices/categoriesSlice';
 import { fetchCategories } from '../../store/thunks/categoriesThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -52,8 +52,8 @@ function CategoriesPage() {
 
   const categories = useSelector(selectCategories);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectCategoriesIsLoading);
-  const error = useSelector(selectCategoriesError);
+  const isLoading = useSelector(selectCategoriesIsLoadingList);
+  const error = useSelector(selectCategoriesListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -84,7 +84,7 @@ function CategoriesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/categories');
   }, [dispatch, navigate]);
 

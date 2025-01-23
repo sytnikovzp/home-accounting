@@ -11,11 +11,11 @@ import usePagination from '../../hooks/usePagination';
 
 import {
   selectExpenses,
-  selectExpensesError,
-  selectExpensesIsLoading,
+  selectExpensesIsLoadingList,
+  selectExpensesListLoadingError,
   selectTotalCount,
 } from '../../store/selectors/expensesSelectors';
-import { clearCurrent } from '../../store/slices/expensesSlice';
+import { clearSelected } from '../../store/slices/expensesSlice';
 import { fetchExpenses } from '../../store/thunks/expensesThunks';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
@@ -52,8 +52,8 @@ function ExpensesPage() {
 
   const expenses = useSelector(selectExpenses);
   const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectExpensesIsLoading);
-  const error = useSelector(selectExpensesError);
+  const isLoading = useSelector(selectExpensesIsLoadingList);
+  const error = useSelector(selectExpensesListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
@@ -84,7 +84,7 @@ function ExpensesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearCurrent());
+    dispatch(clearSelected());
     navigate('/expenses');
   }, [dispatch, navigate]);
 

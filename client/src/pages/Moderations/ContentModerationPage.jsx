@@ -34,17 +34,17 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
   );
 
   const {
-    entity: moderationToCRUD,
+    entity: moderation,
     isLoading,
     error,
     fetchEntityByUuid,
   } = useFetchEntity(capitalizedPath);
 
   useEffect(() => {
-    if (uuid && !moderationToCRUD) {
+    if (uuid && !moderation) {
       fetchEntityByUuid(uuid);
     }
-  }, [uuid, fetchEntityByUuid, moderationToCRUD]);
+  }, [uuid, fetchEntityByUuid, moderation]);
 
   const {
     contentType,
@@ -55,7 +55,7 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
     status,
     creation,
     category,
-  } = moderationToCRUD || {};
+  } = moderation || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   const logoSrc = useMemo(() => {

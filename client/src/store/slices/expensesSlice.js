@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { sliceNames } from '../../constants';
-import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
+import {
+  setErrorActionState,
+  setErrorListState,
+  setLoadingActionState,
+  setLoadingListState,
+} from '../../utils/sharedFunctions';
 
 import {
   addExpense,
@@ -14,72 +19,75 @@ import {
 const { EXPENSES_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  data: [],
+  list: [],
   totalCount: 0,
-  current: null,
-  isLoading: false,
-  error: null,
+  isLoadingList: false,
+  listLoadingError: null,
+  selected: null,
+  isProcessingAction: true,
+  actionError: null,
 };
 
 const expensesSlice = createSlice({
   name: EXPENSES_SLICE_NAME,
   initialState,
   reducers: {
-    clearCurrent(state) {
-      state.current = null;
+    clearSelected(state) {
+      state.selected = null;
+      state.actionError = null;
     },
   },
   extraReducers: (builder) => {
     builder
       // Fulfilled
       .addCase(fetchExpenses.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = payload.data;
+        state.isLoadingList = false;
+        state.listLoadingError = null;
+        state.list = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchExpenseByUuid.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
       .addCase(addExpense.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data.push(payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list.push(payload);
       })
       .addCase(editExpense.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.data.findIndex(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        const index = state.list.findIndex(
           (expense) => expense.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.data[index] = payload;
+          state.list[index] = payload;
         }
       })
       .addCase(removeExpense.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = state.data.filter((expense) => expense.uuid !== payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list = state.list.filter((expense) => expense.uuid !== payload);
       })
 
       // Pending
-      .addCase(fetchExpenses.pending, setLoadingState)
-      .addCase(fetchExpenseByUuid.pending, setLoadingState)
-      .addCase(addExpense.pending, setLoadingState)
-      .addCase(editExpense.pending, setLoadingState)
-      .addCase(removeExpense.pending, setLoadingState)
+      .addCase(fetchExpenses.pending, setLoadingListState)
+      .addCase(fetchExpenseByUuid.pending, setLoadingActionState)
+      .addCase(addExpense.pending, setLoadingActionState)
+      .addCase(editExpense.pending, setLoadingActionState)
+      .addCase(removeExpense.pending, setLoadingActionState)
 
       // Rejected
-      .addCase(fetchExpenses.rejected, setErrorState)
-      .addCase(fetchExpenseByUuid.rejected, setErrorState)
-      .addCase(addExpense.rejected, setErrorState)
-      .addCase(editExpense.rejected, setErrorState)
-      .addCase(removeExpense.rejected, setErrorState);
+      .addCase(fetchExpenses.rejected, setErrorListState)
+      .addCase(fetchExpenseByUuid.rejected, setErrorActionState)
+      .addCase(addExpense.rejected, setErrorActionState)
+      .addCase(editExpense.rejected, setErrorActionState)
+      .addCase(removeExpense.rejected, setErrorActionState);
   },
 });
 
-export const { clearCurrent } = expensesSlice.actions;
+export const { clearSelected } = expensesSlice.actions;
 
 export default expensesSlice.reducer;

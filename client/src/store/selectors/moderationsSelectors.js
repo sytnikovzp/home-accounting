@@ -1,6 +1,13 @@
-export const selectModerations = (state) => state.moderations.data;
+export const selectModerations = (state) => state.moderations.list;
 export const selectTotalCount = (state) => state.moderations.totalCount;
-export const selectCurrentItem = (state) => state.moderations.current;
-export const selectModerationsIsLoading = (state) =>
-  state.moderations.isLoading;
-export const selectModerationsError = (state) => state.moderations.error;
+export const selectSelectedItem = (state) => state.moderations.selected;
+
+export const selectModerationsIsLoadingList = (state) =>
+  state.moderations.isLoadingList;
+export const selectModerationsListLoadingError = (state) =>
+  state.moderations.listLoadingError;
+
+export const selectModerationsProcessingAction = (state) =>
+  state.moderations.isProcessingAction;
+export const selectModerationsActionError = (state) =>
+  state.moderations.actionError;

@@ -18,7 +18,7 @@ function ExpenseRemovePage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: expenseToCRUD,
+    entity: expense,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -32,7 +32,7 @@ function ExpenseRemovePage({
 
   const handleDeleteExpense = async () => {
     try {
-      await restController.removeExpense(expenseToCRUD.uuid);
+      await restController.removeExpense(expense.uuid);
       handleModalClose();
       fetchExpenses();
     } catch (error) {
@@ -60,8 +60,7 @@ function ExpenseRemovePage({
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити витрату «
-            {expenseToCRUD?.product.title}»?
+            Ви впевнені, що хочете видалити витрату «{expense?.product.title}»?
           </Typography>
         )
       }

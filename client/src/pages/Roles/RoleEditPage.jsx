@@ -17,7 +17,7 @@ function RoleEditPage({
 }) {
   const { uuid } = useParams();
   const {
-    entity: roleToCRUD,
+    entity: role,
     isLoading,
     error,
     fetchEntityByUuid,
@@ -33,7 +33,7 @@ function RoleEditPage({
     setCrudError(null);
     try {
       await restController.editRole(
-        roleToCRUD.uuid,
+        role.uuid,
         values.title,
         values.description,
         values.permissions
@@ -54,7 +54,7 @@ function RoleEditPage({
         ) : (
           <RoleForm
             permissionsList={permissionsList}
-            role={roleToCRUD}
+            role={role}
             onSubmit={handleSubmitRole}
           />
         )

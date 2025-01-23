@@ -11,9 +11,9 @@ import {
 } from '@mui/icons-material';
 
 import {
-  selectCurrentMeasure,
-  selectMeasuresError,
-  selectMeasuresIsLoading,
+  selectMeasuresActionError,
+  selectMeasuresProcessingAction,
+  selectSelectedMeasure,
 } from '../../store/selectors/measuresSelectors';
 import { fetchMeasureByUuid } from '../../store/thunks/measuresThunks';
 
@@ -27,11 +27,9 @@ function MeasureViewPage({ handleModalClose }) {
   const { uuid } = useParams();
   const dispatch = useDispatch();
 
-  const measureToCRUD = useSelector((state) =>
-    selectCurrentMeasure(state, uuid)
-  );
-  const isLoading = useSelector(selectMeasuresIsLoading);
-  const error = useSelector(selectMeasuresError);
+  const measure = useSelector(selectSelectedMeasure);
+  const isLoading = useSelector(selectMeasuresProcessingAction);
+  const error = useSelector(selectMeasuresActionError);
 
   useEffect(() => {
     if (uuid) {
@@ -39,7 +37,7 @@ function MeasureViewPage({ handleModalClose }) {
     }
   }, [dispatch, uuid]);
 
-  const { title, description, creation } = measureToCRUD || {};
+  const { title, description, creation } = measure || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
 
   const data = useMemo(

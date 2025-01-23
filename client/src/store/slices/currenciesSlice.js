@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { sliceNames } from '../../constants';
-import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
+import {
+  setErrorActionState,
+  setErrorListState,
+  setLoadingActionState,
+  setLoadingListState,
+} from '../../utils/sharedFunctions';
 
 import {
   addCurrency,
@@ -14,72 +19,75 @@ import {
 const { CURRENCIES_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  data: [],
+  list: [],
   totalCount: 0,
-  current: null,
-  isLoading: false,
-  error: null,
+  isLoadingList: false,
+  listLoadingError: null,
+  selected: null,
+  isProcessingAction: true,
+  actionError: null,
 };
 
 const currenciesSlice = createSlice({
   name: CURRENCIES_SLICE_NAME,
   initialState,
   reducers: {
-    clearCurrent(state) {
-      state.current = null;
+    clearSelected(state) {
+      state.selected = null;
+      state.actionError = null;
     },
   },
   extraReducers: (builder) => {
     builder
       // Fulfilled
       .addCase(fetchCurrencies.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = payload.data;
+        state.isLoadingList = false;
+        state.listLoadingError = null;
+        state.list = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(fetchCurrencyByUuid.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
       .addCase(addCurrency.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data.push(payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list.push(payload);
       })
       .addCase(editCurrency.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        const index = state.data.findIndex(
+        state.isProcessingAction = false;
+        state.actionError = null;
+        const index = state.list.findIndex(
           (currency) => currency.uuid === payload.uuid
         );
         if (index !== -1) {
-          state.data[index] = payload;
+          state.list[index] = payload;
         }
       })
       .addCase(removeCurrency.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = state.data.filter((currency) => currency.uuid !== payload);
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.list = state.list.filter((currency) => currency.uuid !== payload);
       })
 
       // Pending
-      .addCase(fetchCurrencies.pending, setLoadingState)
-      .addCase(fetchCurrencyByUuid.pending, setLoadingState)
-      .addCase(addCurrency.pending, setLoadingState)
-      .addCase(editCurrency.pending, setLoadingState)
-      .addCase(removeCurrency.pending, setLoadingState)
+      .addCase(fetchCurrencies.pending, setLoadingListState)
+      .addCase(fetchCurrencyByUuid.pending, setLoadingActionState)
+      .addCase(addCurrency.pending, setLoadingActionState)
+      .addCase(editCurrency.pending, setLoadingActionState)
+      .addCase(removeCurrency.pending, setLoadingActionState)
 
       // Rejected
-      .addCase(fetchCurrencies.rejected, setErrorState)
-      .addCase(fetchCurrencyByUuid.rejected, setErrorState)
-      .addCase(addCurrency.rejected, setErrorState)
-      .addCase(editCurrency.rejected, setErrorState)
-      .addCase(removeCurrency.rejected, setErrorState);
+      .addCase(fetchCurrencies.rejected, setErrorListState)
+      .addCase(fetchCurrencyByUuid.rejected, setErrorActionState)
+      .addCase(addCurrency.rejected, setErrorActionState)
+      .addCase(editCurrency.rejected, setErrorActionState)
+      .addCase(removeCurrency.rejected, setErrorActionState);
   },
 });
 
-export const { clearCurrent } = currenciesSlice.actions;
+export const { clearSelected } = currenciesSlice.actions;
 
 export default currenciesSlice.reducer;

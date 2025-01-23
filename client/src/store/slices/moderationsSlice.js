@@ -1,7 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { sliceNames } from '../../constants';
-import { setErrorState, setLoadingState } from '../../utils/sharedFunctions';
+import {
+  setErrorActionState,
+  setErrorListState,
+  setLoadingActionState,
+  setLoadingListState,
+} from '../../utils/sharedFunctions';
 
 import {
   fetchModerations,
@@ -13,60 +18,63 @@ import {
 const { MODERATIONS_SLICE_NAME } = sliceNames;
 
 const initialState = {
-  data: [],
+  list: [],
   totalCount: 0,
-  current: null,
-  isLoading: false,
-  error: null,
+  isLoadingList: false,
+  listLoadingError: null,
+  selected: null,
+  isProcessingAction: true,
+  actionError: null,
 };
 
 const moderationSlice = createSlice({
   name: MODERATIONS_SLICE_NAME,
   initialState,
   reducers: {
-    clearCurrent(state) {
-      state.current = null;
+    clearSelected(state) {
+      state.selected = null;
+      state.actionError = null;
     },
   },
   extraReducers: (builder) => {
     builder
       // Fulfilled
       .addCase(fetchModerations.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.data = payload.data;
+        state.isLoadingList = false;
+        state.listLoadingError = null;
+        state.list = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addCase(moderateCategory.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
       .addCase(moderateEstablishment.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
       .addCase(moderateProduct.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = null;
-        state.current = payload;
+        state.isProcessingAction = false;
+        state.actionError = null;
+        state.selected = payload;
       })
 
       // Pending
-      .addCase(fetchModerations.pending, setLoadingState)
-      .addCase(moderateCategory.pending, setLoadingState)
-      .addCase(moderateEstablishment.pending, setLoadingState)
-      .addCase(moderateProduct.pending, setLoadingState)
+      .addCase(fetchModerations.pending, setLoadingListState)
+      .addCase(moderateCategory.pending, setLoadingActionState)
+      .addCase(moderateEstablishment.pending, setLoadingActionState)
+      .addCase(moderateProduct.pending, setLoadingActionState)
 
       // Rejected
-      .addCase(fetchModerations.rejected, setErrorState)
-      .addCase(moderateCategory.rejected, setErrorState)
-      .addCase(moderateEstablishment.rejected, setErrorState)
-      .addCase(moderateProduct.rejected, setErrorState);
+      .addCase(fetchModerations.rejected, setErrorListState)
+      .addCase(moderateCategory.rejected, setErrorActionState)
+      .addCase(moderateEstablishment.rejected, setErrorActionState)
+      .addCase(moderateProduct.rejected, setErrorActionState);
   },
 });
 
-export const { clearCurrent } = moderationSlice.actions;
+export const { clearSelected } = moderationSlice.actions;
 
 export default moderationSlice.reducer;
