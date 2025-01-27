@@ -1,53 +1,29 @@
-import { useCallback, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
 import {
-  selectCategoriesActionError,
-  selectCategoriesProcessingAction,
-  selectSelectedCategory,
-} from '../../store/selectors/categoriesSelectors';
-import { clearSelected } from '../../store/slices/categoriesSlice';
-import {
-  fetchCategories,
-  fetchCategoryByUuid,
-  removeCategory,
-} from '../../store/thunks/categoriesThunks';
+  useFetchCategoryByUuidQuery,
+  useRemoveCategoryMutation,
+} from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function CategoryRemovePage() {
+function CategoryRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { data: category, isLoading: isFetching } =
+    useFetchCategoryByUuidQuery(uuid);
 
-  const category = useSelector(selectSelectedCategory);
-  const isLoading = useSelector(selectCategoriesProcessingAction);
-  const error = useSelector(selectCategoriesActionError);
-
-  useEffect(() => {
-    if (uuid) {
-      dispatch(fetchCategoryByUuid(uuid));
-    }
-  }, [uuid, dispatch]);
-
-  const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
-    navigate('/categories');
-  }, [dispatch, navigate]);
+  const [removeCategory, { isLoading: isDeleting, error }] =
+    useRemoveCategoryMutation();
 
   const handleDeleteCategory = async () => {
-    try {
-      await dispatch(removeCategory({ uuid })).unwrap();
-      dispatch(fetchCategories());
+    const result = await removeCategory(category.uuid);
+    if (result?.data) {
       handleModalClose();
-    } catch (error) {
-      console.error(error.message);
     }
   };
 
@@ -59,6 +35,7 @@ function CategoryRemovePage() {
           key='remove'
           fullWidth
           color='error'
+          disabled={isDeleting}
           size='large'
           variant='contained'
           onClick={handleDeleteCategory}
@@ -67,7 +44,7 @@ function CategoryRemovePage() {
         </Button>,
       ]}
       content={
-        isLoading ? (
+        isFetching ? (
           <Preloader />
         ) : (
           <Typography sx={stylesDeletePageTypography} variant='body1'>
@@ -75,7 +52,7 @@ function CategoryRemovePage() {
           </Typography>
         )
       }
-      error={error}
+      error={error?.data}
       title='Видалення категорії...'
       onClose={handleModalClose}
     />

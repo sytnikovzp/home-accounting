@@ -1,22 +1,15 @@
-import restController from '../../api/rest/restController';
+import { useAddCategoryMutation } from '../../store/services';
 
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-function CategoryAddPage({
-  handleModalClose,
-  fetchCategories,
-  crudError,
-  setCrudError,
-}) {
+function CategoryAddPage({ handleModalClose }) {
+  const [addCategory, { error }] = useAddCategoryMutation();
+
   const handleSubmitCategory = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.addCategory(values.title);
+    const result = await addCategory({ title: values.title });
+    if (result?.data) {
       handleModalClose();
-      fetchCategories();
-    } catch (error) {
-      setCrudError(error.response.data);
     }
   };
 
@@ -24,7 +17,7 @@ function CategoryAddPage({
     <ModalWindow
       isOpen
       content={<CategoryForm onSubmit={handleSubmitCategory} />}
-      error={crudError}
+      error={error?.data}
       title='Додавання категорії...'
       onClose={handleModalClose}
     />

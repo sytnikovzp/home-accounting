@@ -1,17 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 
-function EntityRoutes({ entityPages, fetchEntities, handleModalClose }) {
+function EntityRoutes({ entityPages, handleModalClose }) {
   return (
     <Routes>
-      {entityPages.map(({ path, Component, fetchMethod }) => (
+      {entityPages.map(({ path, Component }) => (
         <Route
           key={path}
-          element={
-            <Component
-              fetchEntities={fetchMethod || fetchEntities}
-              handleModalClose={handleModalClose}
-            />
-          }
+          element={<Component handleModalClose={handleModalClose} />}
           path={path}
         />
       ))}

@@ -1,11 +1,5 @@
 import { resetPassword } from '../../services/authService';
 import {
-  createCategory,
-  deleteCategory,
-  getCategoryByUuid,
-  updateCategory,
-} from '../../services/categoriesService';
-import {
   createCurrency,
   deleteCurrency,
   getCurrencyByUuid,
@@ -85,12 +79,6 @@ const restController = {
   editRole: (roleUuid, title, description, permissions) =>
     updateRole(roleUuid, title, description, permissions),
   removeRole: (roleUuid) => deleteRole(roleUuid),
-
-  // Category management
-  fetchCategoryByUuid: (categoryUuid) => getCategoryByUuid(categoryUuid),
-  addCategory: (title) => createCategory(title),
-  editCategory: (categoryUuid, title) => updateCategory(categoryUuid, title),
-  removeCategory: (categoryUuid) => deleteCategory(categoryUuid),
 
   // Currency management
   fetchCurrencyByUuid: (currencyUuid) => getCurrencyByUuid(currencyUuid),

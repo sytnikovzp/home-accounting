@@ -1,41 +1,29 @@
-import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useEditCategoryMutation,
+  useFetchCategoryByUuidQuery,
+} from '../../store/services';
 
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-function CategoryEditPage({
-  handleModalClose,
-  fetchCategories,
-  crudError,
-  setCrudError,
-}) {
+function CategoryEditPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: category,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Category');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
-    }
-  }, [uuid, fetchEntityByUuid]);
+  const { data: category, isLoading: isFetching } =
+    useFetchCategoryByUuidQuery(uuid);
+
+  const [editCategory, { error }] = useEditCategoryMutation();
 
   const handleSubmitCategory = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.editCategory(category.uuid, values.title);
+    const result = await editCategory({
+      categoryUuid: uuid,
+      title: values.title,
+    });
+    if (result?.data) {
       handleModalClose();
-      fetchCategories();
-    } catch (error) {
-      setCrudError(error.response.data);
     }
   };
 
@@ -43,13 +31,13 @@ function CategoryEditPage({
     <ModalWindow
       isOpen
       content={
-        isLoading ? (
+        isFetching ? (
           <Preloader />
         ) : (
           <CategoryForm category={category} onSubmit={handleSubmitCategory} />
         )
       }
-      error={error || crudError}
+      error={error?.data}
       title='Редагування категорії...'
       onClose={handleModalClose}
     />

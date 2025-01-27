@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
 import { pageTitles } from '../../constants';
@@ -8,15 +7,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
-
-import {
-  selectCategories,
-  selectCategoriesIsLoadingList,
-  selectCategoriesListLoadingError,
-  selectTotalCount,
-} from '../../store/selectors/categoriesSelectors';
-import { clearSelected } from '../../store/slices/categoriesSlice';
-import { fetchCategories } from '../../store/thunks/categoriesThunks';
+import { useFetchAllCategoriesQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
@@ -46,33 +37,27 @@ function CategoriesPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const categories = useSelector(selectCategories);
-  const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectCategoriesIsLoadingList);
-  const error = useSelector(selectCategoriesListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      status: selectedStatus,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, selectedStatus, sortModel]
-  );
+  const {
+    data: categoriesData,
+    error: fetchError,
+    isLoading,
+  } = useFetchAllCategoriesQuery({
+    page: currentPage,
+    limit: pageSize,
+    status: selectedStatus,
+    sort: sortModel.field,
+    order: sortModel.order,
+  });
 
-  useEffect(() => {
-    dispatch(fetchCategories(fetchParams));
-  }, [dispatch, fetchParams]);
+  const categories = categoriesData?.data || [];
+  const totalCount = categoriesData?.totalCount || 0;
 
   usePageTitle(location, CATEGORIES_TITLES);
 
@@ -84,9 +69,8 @@ function CategoriesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
     navigate('/categories');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleAddClick = useCallback(() => {
     handleModalOpen('add');
@@ -112,8 +96,8 @@ function CategoriesPage() {
     return <Preloader message='Завантаження списку "Категорій"...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError.data.message} />;
   }
 
   return (
@@ -161,7 +145,6 @@ function CategoriesPage() {
       />
       <EntityRoutes
         entityPages={CATEGORIES_PAGES}
-        fetchEntities={fetchCategories}
         handleModalClose={handleModalClose}
       />
     </>

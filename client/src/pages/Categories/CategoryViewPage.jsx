@@ -1,15 +1,9 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import { CalendarToday, Info, Person, Update } from '@mui/icons-material';
 
-import {
-  selectCategoriesActionError,
-  selectCategoriesProcessingAction,
-  selectSelectedCategory,
-} from '../../store/selectors/categoriesSelectors';
-import { fetchCategoryByUuid } from '../../store/thunks/categoriesThunks';
+import { useFetchCategoryByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -21,17 +15,13 @@ import { stylesViewPageBox } from '../../styles';
 function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const dispatch = useDispatch();
-
-  const category = useSelector(selectSelectedCategory);
-  const isLoading = useSelector(selectCategoriesProcessingAction);
-  const error = useSelector(selectCategoriesActionError);
-
-  useEffect(() => {
-    if (uuid) {
-      dispatch(fetchCategoryByUuid(uuid));
-    }
-  }, [dispatch, uuid]);
+  const {
+    data: category,
+    isLoading: isFetching,
+    error,
+  } = useFetchCategoryByUuidQuery(uuid, {
+    skip: !uuid,
+  });
 
   const { title, status, moderation, creation } = category || {};
   const { moderatorUuid, moderatorFullName } = moderation || {};
@@ -82,7 +72,7 @@ function CategoryViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={
-        isLoading ? (
+        isFetching ? (
           <Preloader />
         ) : (
           <Box sx={stylesViewPageBox}>
@@ -90,7 +80,7 @@ function CategoryViewPage({ handleModalClose }) {
           </Box>
         )
       }
-      error={error}
+      error={error?.data}
       title='Деталі категорії...'
       onClose={handleModalClose}
     />
