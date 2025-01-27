@@ -17,7 +17,6 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }
-    headers.set('Content-Type', 'application/json');
     return headers;
   },
 });
@@ -26,31 +25,26 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    const originalRequest = { ...args };
     try {
-      const refreshResult = await baseQuery(
-        { url: '/auth/refresh', method: 'GET' },
+      const response = await baseQuery(
+        {
+          url: 'auth/refresh',
+          method: 'GET',
+        },
         api,
         extraOptions
       );
-      if (refreshResult.data) {
-        const newToken = refreshResult.data.accessToken;
-        saveAccessToken(newToken);
-        if (!originalRequest.headers) {
-          originalRequest.headers = new Headers();
-        }
-        originalRequest.headers.set('Authorization', `Bearer ${newToken}`);
-        result = await baseQuery(originalRequest, api, extraOptions);
-      } else {
-        throw new Error('Failed to refresh token');
+
+      if (response.data) {
+        saveAccessToken(response.data.accessToken);
+        result = await baseQuery(args, api, extraOptions);
       }
-    } catch (err) {
-      console.warn('Token refresh failed', err);
+    } catch (error) {
+      console.warn('Token refresh failed', error);
       removeAccessToken();
     }
   }
 
   return result;
 };
-
 export { baseQuery, baseQueryWithReauth };

@@ -145,7 +145,7 @@ class UserController {
         if (currentUser.uuid === userUuid) {
           res.clearCookie('refreshToken');
         }
-        res.sendStatus(res.statusCode);
+        res.status(200).json('OK');
       } else {
         res.status(401);
       }

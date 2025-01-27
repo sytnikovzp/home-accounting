@@ -44,7 +44,7 @@ class AuthController {
   static logout(req, res, next) {
     try {
       res.clearCookie('refreshToken');
-      res.sendStatus(res.statusCode);
+      res.status(200).json('OK');
     } catch (error) {
       console.error('Logout error: ', error.message);
       next(error);

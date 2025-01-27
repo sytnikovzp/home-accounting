@@ -109,7 +109,7 @@ class UserProfileController {
       const deletedUser = await deleteUser(uuid, currentUser);
       if (deletedUser) {
         res.clearCookie('refreshToken');
-        res.sendStatus(res.statusCode);
+        res.status(200).json('OK');
       } else {
         res.status(401);
       }

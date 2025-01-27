@@ -89,7 +89,7 @@ class RolesController {
       const currentUser = await getCurrentUser(req.user.uuid);
       const deletedRole = await deleteRole(roleUuid, currentUser);
       if (deletedRole) {
-        res.sendStatus(res.statusCode);
+        res.status(200).json('OK');
       } else {
         res.status(401);
       }

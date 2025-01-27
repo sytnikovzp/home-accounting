@@ -140,7 +140,7 @@ class ExpensesController {
       );
       if (deletedExpense) {
         await transaction.commit();
-        res.sendStatus(res.statusCode);
+        res.status(200).json('OK');
       } else {
         await transaction.rollback();
         res.status(401);
