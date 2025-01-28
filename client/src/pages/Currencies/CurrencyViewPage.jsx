@@ -1,6 +1,5 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import {
   CalendarToday,
@@ -10,12 +9,7 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import {
-  selectCurrenciesActionError,
-  selectCurrenciesProcessingAction,
-  selectSelectedCurrency,
-} from '../../store/selectors/currenciesSelectors';
-import { fetchCurrencyByUuid } from '../../store/thunks/currenciesThunks';
+import { useFetchCurrencyByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -25,17 +19,14 @@ import { stylesViewPageBox } from '../../styles';
 
 function CurrencyViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const dispatch = useDispatch();
 
-  const currency = useSelector(selectSelectedCurrency);
-  const isLoading = useSelector(selectCurrenciesProcessingAction);
-  const error = useSelector(selectCurrenciesActionError);
-
-  useEffect(() => {
-    if (uuid) {
-      dispatch(fetchCurrencyByUuid(uuid));
-    }
-  }, [dispatch, uuid]);
+  const {
+    data: currency,
+    isLoading: isFetching,
+    error,
+  } = useFetchCurrencyByUuidQuery(uuid, {
+    skip: !uuid,
+  });
 
   const { title, code, creation } = currency || {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
@@ -57,18 +48,21 @@ function CurrencyViewPage({ handleModalClose }) {
     [title, code, creatorFullName, creatorUuid, createdAt, updatedAt]
   );
 
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Box sx={stylesViewPageBox}>
+        <ViewDetails data={data} />
+      </Box>
+    );
+  }, [data, isFetching]);
+
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Box sx={stylesViewPageBox}>
-            <ViewDetails data={data} />
-          </Box>
-        )
-      }
+      content={content}
       error={error}
       title='Деталі валюти...'
       onClose={handleModalClose}

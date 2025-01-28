@@ -29,7 +29,7 @@ function CategoryRemovePage({ handleModalClose }) {
     if (result?.data) {
       handleModalClose();
     }
-  }, [category?.uuid, removeCategory, handleModalClose]);
+  }, [category?.uuid, handleModalClose, removeCategory]);
 
   const actions = useMemo(
     () => [

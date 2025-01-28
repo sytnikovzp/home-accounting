@@ -1,59 +1,52 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useEditCurrencyMutation,
+  useFetchCurrencyByUuidQuery,
+} from '../../store/services';
 
 import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-function CurrencyEditPage({
-  handleModalClose,
-  fetchCurrencies,
-  crudError,
-  setCrudError,
-}) {
+function CurrencyEditPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: currency,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Currency');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
-    }
-  }, [uuid, fetchEntityByUuid]);
+  const { data: currency, isLoading: isFetching } =
+    useFetchCurrencyByUuidQuery(uuid);
 
-  const handleSubmitCurrency = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.editCurrency(
-        currency.uuid,
-        values.title,
-        values.code
-      );
-      handleModalClose();
-      fetchCurrencies();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const [editCurrency, { isLoading, error }] = useEditCurrencyMutation();
+
+  const handleSubmitCurrency = useCallback(
+    async (values) => {
+      const result = await editCurrency({
+        currencyUuid: uuid,
+        title: values.title,
+        code: values.code,
+      });
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [editCurrency, handleModalClose, uuid]
+  );
+
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <CurrencyForm
+      currency={currency}
+      isLoading={isLoading}
+      onSubmit={handleSubmitCurrency}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <CurrencyForm currency={currency} onSubmit={handleSubmitCurrency} />
-        )
-      }
-      error={error || crudError}
+      content={content}
+      error={error?.data}
       title='Редагування валюти...'
       onClose={handleModalClose}
     />

@@ -18,7 +18,6 @@ import {
 } from './services';
 
 import authReducer from './slices/authSlice';
-import currenciesReducer from './slices/currenciesSlice';
 import emailVerificationReducer from './slices/emailVerificationSlice';
 import establishmentsReducer from './slices/establishmentsSlice';
 import expensesReducer from './slices/expensesSlice';
@@ -35,7 +34,7 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
-    currencies: currenciesReducer,
+    [currenciesApi.reducerPath]: currenciesApi.reducer,
     emailVerification: emailVerificationReducer,
     establishments: establishmentsReducer,
     expenses: expensesReducer,
@@ -52,6 +51,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       categoriesApi.middleware,
+      currenciesApi.middleware,
       nbuRatesApi.middleware,
       logger
     ),

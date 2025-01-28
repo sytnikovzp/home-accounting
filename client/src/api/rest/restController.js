@@ -1,11 +1,5 @@
 import { resetPassword } from '../../services/authService';
 import {
-  createCurrency,
-  deleteCurrency,
-  getCurrencyByUuid,
-  updateCurrency,
-} from '../../services/currenciesService';
-import {
   createEstablishment,
   deleteEstablishment,
   getEstablishmentByUuid,
@@ -79,13 +73,6 @@ const restController = {
   editRole: (roleUuid, title, description, permissions) =>
     updateRole(roleUuid, title, description, permissions),
   removeRole: (roleUuid) => deleteRole(roleUuid),
-
-  // Currency management
-  fetchCurrencyByUuid: (currencyUuid) => getCurrencyByUuid(currencyUuid),
-  addCurrency: (title, code) => createCurrency(title, code),
-  editCurrency: (currencyUuid, title, code) =>
-    updateCurrency(currencyUuid, title, code),
-  removeCurrency: (currencyUuid) => deleteCurrency(currencyUuid),
 
   // Measure management
   fetchMeasureByUuid: (measureUuid) => getMeasureByUuid(measureUuid),

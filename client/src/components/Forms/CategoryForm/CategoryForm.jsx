@@ -6,22 +6,21 @@ import BaseForm from '../BaseForm/BaseForm';
 
 function CategoryForm({ isLoading, category = null, onSubmit }) {
   const initialValues = useMemo(
-    () => ({ title: category?.title || '' }),
+    () => ({
+      title: category?.title || '',
+    }),
     [category]
   );
 
-  const fields = useMemo(
-    () => [
-      {
-        name: 'title',
-        label: 'Назва категорії',
-        placeholder: 'Наприклад "Електроніка"',
-        required: true,
-        autoFocus: true,
-      },
-    ],
-    []
-  );
+  const fields = [
+    {
+      name: 'title',
+      label: 'Назва категорії',
+      placeholder: 'Наприклад "Електроніка"',
+      required: true,
+      autoFocus: true,
+    },
+  ];
 
   return (
     <BaseForm

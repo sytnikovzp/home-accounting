@@ -68,18 +68,21 @@ function CategoryViewPage({ handleModalClose }) {
     ]
   );
 
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Box sx={stylesViewPageBox}>
+        <ViewDetails data={data} />
+      </Box>
+    );
+  }, [data, isFetching]);
+
   return (
     <ModalWindow
       isOpen
-      content={
-        isFetching ? (
-          <Preloader />
-        ) : (
-          <Box sx={stylesViewPageBox}>
-            <ViewDetails data={data} />
-          </Box>
-        )
-      }
+      content={content}
       error={error?.data}
       title='Деталі категорії...'
       onClose={handleModalClose}

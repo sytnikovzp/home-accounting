@@ -28,7 +28,7 @@ function CategoryEditPage({ handleModalClose }) {
         handleModalClose();
       }
     },
-    [editCategory, uuid, handleModalClose]
+    [editCategory, handleModalClose, uuid]
   );
 
   const content = isFetching ? (

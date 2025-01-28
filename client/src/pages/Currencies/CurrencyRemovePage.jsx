@@ -1,72 +1,72 @@
-import { useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useFetchCurrencyByUuidQuery,
+  useRemoveCurrencyMutation,
+} from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function CurrencyRemovePage({
-  handleModalClose,
-  fetchCurrencies,
-  crudError,
-  setCrudError,
-}) {
+function CurrencyRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: currency,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Currency');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
+  const { data: currency, isLoading: isFetching } =
+    useFetchCurrencyByUuidQuery(uuid);
+
+  const [removeCurrency, { isLoading: isDeleting, error }] =
+    useRemoveCurrencyMutation();
+
+  const handleDeleteCurrency = useCallback(async () => {
+    if (!currency?.uuid) {
+      return;
     }
-  }, [uuid, fetchEntityByUuid]);
-
-  const handleDeleteCurrency = async () => {
-    try {
-      await restController.removeCurrency(currency.uuid);
+    const result = await removeCurrency(currency.uuid);
+    if (result?.data) {
       handleModalClose();
-      fetchCurrencies();
-    } catch (error) {
-      setCrudError(error.response.data);
     }
-  };
+  }, [currency?.uuid, handleModalClose, removeCurrency]);
+
+  const actions = useMemo(
+    () => [
+      <Button
+        key='remove'
+        fullWidth
+        color='error'
+        disabled={isDeleting}
+        size='large'
+        variant='contained'
+        onClick={handleDeleteCurrency}
+      >
+        Видалити
+      </Button>,
+    ],
+    [isDeleting, handleDeleteCurrency]
+  );
+
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Typography sx={stylesDeletePageTypography} variant='body1'>
+        Ви впевнені, що хочете видалити валюту «{currency?.title}»? Зверніть
+        увагу, що видалення цієї валюти призведе до видалення всіх витрат, у
+        яких вона використовується.
+      </Typography>
+    );
+  }, [isFetching, currency?.title]);
 
   return (
     <ModalWindow
       isOpen
-      actions={[
-        <Button
-          key='remove'
-          fullWidth
-          color='error'
-          size='large'
-          variant='contained'
-          onClick={handleDeleteCurrency}
-        >
-          Видалити
-        </Button>,
-      ]}
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити валюту «{currency?.title}»? Зверніть
-            увагу, що видалення цієї валюти призведе до видалення всіх витрат, у
-            яких вона використовується.
-          </Typography>
-        )
-      }
-      error={error || crudError}
+      actions={actions}
+      content={content}
+      error={error?.data}
       title='Видалення категорії...'
       onClose={handleModalClose}
     />
