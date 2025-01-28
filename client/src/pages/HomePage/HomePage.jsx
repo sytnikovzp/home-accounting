@@ -101,10 +101,10 @@ function HomePage() {
           <FormControl size='small' sx={stylesHomePagePeriodSelect}>
             <InputLabel>Період</InputLabel>
             <Select label='Період' value={ago} onChange={handleAgoChange}>
-              <MenuItem value='day'>За день</MenuItem>
-              <MenuItem value='week'>За тиждень</MenuItem>
-              <MenuItem value='month'>За місяць</MenuItem>
-              <MenuItem value='year'>За рік</MenuItem>
+              <MenuItem value='day'>За останній день</MenuItem>
+              <MenuItem value='week'>За останній тиждень</MenuItem>
+              <MenuItem value='month'>За останній місяць</MenuItem>
+              <MenuItem value='year'>За останній рік</MenuItem>
               <MenuItem value='allTime'>За весь час</MenuItem>
             </Select>
           </FormControl>

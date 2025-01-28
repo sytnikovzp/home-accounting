@@ -8,12 +8,6 @@ import {
   updateEstablishmentLogo,
 } from '../../services/establishmentsService';
 import {
-  createExpense,
-  deleteExpense,
-  getExpenseByUuid,
-  updateExpense,
-} from '../../services/expensesService';
-import {
   getAllPendingItems,
   moderationCategory,
   moderationEstablishment,
@@ -74,48 +68,6 @@ const restController = {
   editProduct: (productUuid, title, category) =>
     updateProduct(productUuid, title, category),
   removeProduct: (productUuid) => deleteProduct(productUuid),
-
-  // Expense management
-  fetchExpenseByUuid: (expenseUuid) => getExpenseByUuid(expenseUuid),
-  addExpense: (
-    product,
-    quantity,
-    unitPrice,
-    establishment,
-    measure,
-    currency,
-    date
-  ) =>
-    createExpense(
-      product,
-      quantity,
-      unitPrice,
-      establishment,
-      measure,
-      currency,
-      date
-    ),
-  editExpense: (
-    expenseUuid,
-    product,
-    quantity,
-    unitPrice,
-    establishment,
-    measure,
-    currency,
-    date
-  ) =>
-    updateExpense(
-      expenseUuid,
-      product,
-      quantity,
-      unitPrice,
-      establishment,
-      measure,
-      currency,
-      date
-    ),
-  removeExpense: (expenseUuid) => deleteExpense(expenseUuid),
 
   // Establishment management
   fetchEstablishmentByUuid: (establishmentUuid) =>

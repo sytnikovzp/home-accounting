@@ -1,6 +1,5 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import {
   AttachMoney,
@@ -13,12 +12,7 @@ import {
   Update,
 } from '@mui/icons-material';
 
-import {
-  selectExpensesActionError,
-  selectExpensesProcessingAction,
-  selectSelectedExpense,
-} from '../../store/selectors/expensesSelectors';
-import { fetchExpenseByUuid } from '../../store/thunks/expensesThunks';
+import { useFetchExpenseByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -28,17 +22,14 @@ import { stylesViewPageBox } from '../../styles';
 
 function ExpenseViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const dispatch = useDispatch();
 
-  const expense = useSelector(selectSelectedExpense);
-  const isLoading = useSelector(selectExpensesProcessingAction);
-  const error = useSelector(selectExpensesActionError);
-
-  useEffect(() => {
-    if (uuid) {
-      dispatch(fetchExpenseByUuid(uuid));
-    }
-  }, [dispatch, uuid]);
+  const {
+    data: expense,
+    isLoading: isFetching,
+    error,
+  } = useFetchExpenseByUuidQuery(uuid, {
+    skip: !uuid,
+  });
 
   const {
     product,
@@ -112,19 +103,22 @@ function ExpenseViewPage({ handleModalClose }) {
     ]
   );
 
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Box sx={stylesViewPageBox}>
+        <ViewDetails data={data} />
+      </Box>
+    );
+  }, [data, isFetching]);
+
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Box sx={stylesViewPageBox}>
-            <ViewDetails data={data} />
-          </Box>
-        )
-      }
-      error={error}
+      content={content}
+      error={error?.data}
       title='Деталі витрати...'
       onClose={handleModalClose}
     />

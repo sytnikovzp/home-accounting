@@ -20,7 +20,6 @@ import {
 import authReducer from './slices/authSlice';
 import emailVerificationReducer from './slices/emailVerificationSlice';
 import establishmentsReducer from './slices/establishmentsSlice';
-import expensesReducer from './slices/expensesSlice';
 import moderationsReducer from './slices/moderationsSlice';
 import permissionsReducer from './slices/permissionsSlice';
 import productsReducer from './slices/productsSlice';
@@ -36,12 +35,14 @@ const store = configureStore({
     [currenciesApi.reducerPath]: currenciesApi.reducer,
     emailVerification: emailVerificationReducer,
     establishments: establishmentsReducer,
-    expenses: expensesReducer,
+    [establishmentsApi.reducerPath]: establishmentsApi.reducer,
+    [expensesApi.reducerPath]: expensesApi.reducer,
     [measuresApi.reducerPath]: measuresApi.reducer,
     moderations: moderationsReducer,
     [nbuRatesApi.reducerPath]: nbuRatesApi.reducer,
     permissions: permissionsReducer,
     products: productsReducer,
+    [productsApi.reducerPath]: productsApi.reducer,
     roles: rolesReducer,
     statistics: statisticsReducer,
     userProfile: userProfileReducer,
@@ -51,8 +52,11 @@ const store = configureStore({
     getDefaultMiddleware().concat(
       categoriesApi.middleware,
       currenciesApi.middleware,
+      establishmentsApi.middleware,
+      expensesApi.middleware,
       measuresApi.middleware,
       nbuRatesApi.middleware,
+      productsApi.middleware,
       logger
     ),
 });

@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
 import { pageTitles } from '../../constants';
@@ -8,15 +7,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
-
-import {
-  selectExpenses,
-  selectExpensesIsLoadingList,
-  selectExpensesListLoadingError,
-  selectTotalCount,
-} from '../../store/selectors/expensesSelectors';
-import { clearSelected } from '../../store/slices/expensesSlice';
-import { fetchExpenses } from '../../store/thunks/expensesThunks';
+import { useFetchAllExpensesQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
@@ -46,33 +37,27 @@ function ExpensesPage() {
   const [sortModel, setSortModel] = useState({ field: 'date', order: 'desc' });
   const [selectedPeriod, setSelectedPeriod] = useState('allTime');
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const expenses = useSelector(selectExpenses);
-  const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectExpensesIsLoadingList);
-  const error = useSelector(selectExpensesListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      ago: selectedPeriod,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, selectedPeriod, sortModel]
-  );
+  const {
+    data: expensesData,
+    error: fetchError,
+    isLoading,
+  } = useFetchAllExpensesQuery({
+    page: currentPage,
+    limit: pageSize,
+    ago: selectedPeriod,
+    sort: sortModel.field,
+    order: sortModel.order,
+  });
 
-  useEffect(() => {
-    dispatch(fetchExpenses(fetchParams));
-  }, [dispatch, fetchParams]);
+  const expenses = expensesData?.data || [];
+  const totalCount = expensesData?.totalCount || 0;
 
   usePageTitle(location, EXPENSES_TITLES);
 
@@ -84,9 +69,8 @@ function ExpensesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
     navigate('/expenses');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleAddClick = useCallback(() => {
     handleModalOpen('add');
@@ -112,8 +96,8 @@ function ExpensesPage() {
     return <Preloader message='Завантаження списку "Покупок"...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError.data.message} />;
   }
 
   return (
@@ -164,7 +148,6 @@ function ExpensesPage() {
       />
       <EntityRoutes
         entityPages={EXPENSES_PAGES}
-        fetchEntities={fetchExpenses}
         handleModalClose={handleModalClose}
       />
     </>

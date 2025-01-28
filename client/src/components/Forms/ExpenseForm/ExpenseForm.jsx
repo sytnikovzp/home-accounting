@@ -7,36 +7,30 @@ import { EXPENSE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 import BaseForm from '../BaseForm/BaseForm';
 
 function ExpenseForm({
+  isLoading,
   expense = null,
   onSubmit,
-  products,
-  establishments,
-  measures,
-  currencies,
+  products = [],
+  establishments = [],
+  measures = [],
+  currencies = [],
 }) {
-  const initialValues = expense
-    ? {
-        product: expense.product.title,
-        quantity: expense.quantity,
-        unitPrice: expense.unitPrice,
-        establishment: expense.establishment.title,
-        measure: expense.measure.title,
-        currency: expense.currency.title,
-        date: expense.date,
-      }
-    : {
-        product: '',
-        quantity: '',
-        unitPrice: '',
-        establishment: '',
-        measure: '',
-        currency: 'Українська гривня',
-        date: format(new Date(), 'dd MMMM yyyy', { locale: uk }),
-      };
+  const initialValues = useMemo(
+    () => ({
+      product: expense?.product?.title || '',
+      quantity: expense?.quantity || '',
+      unitPrice: expense?.unitPrice || '',
+      establishment: expense?.establishment?.title || '',
+      measure: expense?.measure?.title || '',
+      currency: expense?.currency?.title || 'Українська гривня',
+      date: expense?.date || format(new Date(), 'dd MMMM yyyy', { locale: uk }),
+    }),
+    [expense]
+  );
 
   const groupedProducts = useMemo(
     () =>
-      products
+      [...products]
         .sort((a, b) => a.title.localeCompare(b.title))
         .reduce((acc, product) => {
           const firstLetter = product.title[0].toUpperCase();
@@ -54,7 +48,7 @@ function ExpenseForm({
 
   const groupedCurrencies = useMemo(
     () =>
-      currencies
+      [...currencies]
         .sort((a, b) => a.title.localeCompare(b.title))
         .reduce((acc, currency) => {
           const firstLetter = currency.title[0].toUpperCase();
@@ -72,7 +66,7 @@ function ExpenseForm({
 
   const groupedEstablishments = useMemo(
     () =>
-      establishments
+      [...establishments]
         .sort((a, b) => a.title.localeCompare(b.title))
         .reduce((acc, establishment) => {
           const firstLetter = establishment.title[0].toUpperCase();
@@ -90,7 +84,7 @@ function ExpenseForm({
 
   const sortedMeasures = useMemo(
     () =>
-      measures
+      [...measures]
         .sort((a, b) => a.description.localeCompare(b.description))
         .map((measure) => ({
           value: measure.title,
@@ -149,7 +143,7 @@ function ExpenseForm({
       name: 'date',
       type: 'date',
       label: 'Дата витрати',
-      placeholder: 'Наприклад "02 грудня 2024"',
+      placeholder: 'Наприклад "02 лютого 2025"',
       required: true,
     },
   ];
@@ -158,6 +152,7 @@ function ExpenseForm({
     <BaseForm
       fields={fields}
       initialValues={initialValues}
+      isLoading={isLoading}
       layout='expense'
       submitButtonText={expense ? 'Зберегти зміни' : 'Додати витрату'}
       validationSchema={EXPENSE_VALIDATION_SCHEME}

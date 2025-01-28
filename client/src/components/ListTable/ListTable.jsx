@@ -156,10 +156,10 @@ function ListTable({
       ];
     } else if (expensesPage) {
       statusOptions = [
-        { value: 'day', label: 'За день' },
-        { value: 'week', label: 'За тиждень' },
-        { value: 'month', label: 'За місяць' },
-        { value: 'year', label: 'За рік' },
+        { value: 'day', label: 'За останній день' },
+        { value: 'week', label: 'За останній тиждень' },
+        { value: 'month', label: 'За останній місяць' },
+        { value: 'year', label: 'За останній рік' },
         { value: 'allTime', label: 'За весь час' },
       ];
     } else {

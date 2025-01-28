@@ -1,70 +1,70 @@
-import { useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useFetchExpenseByUuidQuery,
+  useRemoveExpenseMutation,
+} from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function ExpenseRemovePage({
-  handleModalClose,
-  fetchExpenses,
-  crudError,
-  setCrudError,
-}) {
+function ExpenseRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: expense,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Expense');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
+  const { data: expense, isLoading: isFetching } =
+    useFetchExpenseByUuidQuery(uuid);
+
+  const [removeExpense, { isLoading: isDeleting, error }] =
+    useRemoveExpenseMutation();
+
+  const handleDeleteExpense = useCallback(async () => {
+    if (!expense?.uuid) {
+      return;
     }
-  }, [uuid, fetchEntityByUuid]);
-
-  const handleDeleteExpense = async () => {
-    try {
-      await restController.removeExpense(expense.uuid);
+    const result = await removeExpense(expense.uuid);
+    if (result?.data) {
       handleModalClose();
-      fetchExpenses();
-    } catch (error) {
-      setCrudError(error.response.data);
     }
-  };
+  }, [expense?.uuid, handleModalClose, removeExpense]);
+
+  const actions = useMemo(
+    () => [
+      <Button
+        key='remove'
+        fullWidth
+        color='error'
+        disabled={isDeleting}
+        size='large'
+        variant='contained'
+        onClick={handleDeleteExpense}
+      >
+        Видалити
+      </Button>,
+    ],
+    [isDeleting, handleDeleteExpense]
+  );
+
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Typography sx={stylesDeletePageTypography} variant='body1'>
+        Ви впевнені, що хочете видалити витрату «{expense?.product.title}»?
+      </Typography>
+    );
+  }, [isFetching, expense?.product.title]);
 
   return (
     <ModalWindow
       isOpen
-      actions={[
-        <Button
-          key='remove'
-          fullWidth
-          color='error'
-          size='large'
-          variant='contained'
-          onClick={handleDeleteExpense}
-        >
-          Видалити
-        </Button>,
-      ]}
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити витрату «{expense?.product.title}»?
-          </Typography>
-        )
-      }
-      error={error || crudError}
+      actions={actions}
+      content={content}
+      error={error?.data}
       title='Видалення витрати...'
       onClose={handleModalClose}
     />
