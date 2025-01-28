@@ -16,6 +16,7 @@ export const categoriesApi = createApi({
         order = 'asc',
       }) => ({
         url: 'categories',
+        method: 'GET',
         params: { status, page, limit, sort, order },
       }),
       transformResponse: (response, meta) => ({
@@ -37,7 +38,10 @@ export const categoriesApi = createApi({
     }),
 
     fetchCategoryByUuid: builder.query({
-      query: (categoryUuid) => `/categories/${categoryUuid}`,
+      query: (categoryUuid) => ({
+        url: `categories/${categoryUuid}`,
+        method: 'GET',
+      }),
       providesTags: (result, error, categoryUuid) => [
         { type: 'Category', id: categoryUuid },
       ],
