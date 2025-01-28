@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { format, parse } from 'date-fns';
 import { uk } from 'date-fns/locale';
 import { Field } from 'formik';
@@ -6,8 +5,6 @@ import {
   Autocomplete,
   FormControl,
   FormHelperText,
-  IconButton,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -15,7 +12,8 @@ import {
 } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+import PasswordField from './PasswordField';
 
 import { stylesFormFieldsHeight } from '../../../styles';
 
@@ -30,41 +28,6 @@ function FormFields({
   error,
   touched,
 }) {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((prev) => !prev);
-  const handleMouseDownPassword = (event) => event.preventDefault();
-
-  const renderPasswordField = () => (
-    <Field
-      fullWidth
-      as={TextField}
-      autoFocus={autoFocus}
-      error={Boolean(touched && error)}
-      helperText={touched && error ? error : ' '}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position='end'>
-            <IconButton
-              aria-label={showPassword ? 'Приховати пароль' : 'Показати пароль'}
-              edge='end'
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-      label={label}
-      name={name}
-      placeholder={placeholder}
-      required={required}
-      sx={stylesFormFieldsHeight}
-      type={showPassword ? 'text' : 'password'}
-    />
-  );
-
   const renderSelectField = () => (
     <Field name={name}>
       {({ field }) => (
@@ -166,7 +129,17 @@ function FormFields({
   );
 
   if (type === 'password') {
-    return renderPasswordField();
+    return (
+      <PasswordField
+        autoFocus={autoFocus}
+        error={error}
+        label={label}
+        name={name}
+        placeholder={placeholder}
+        required={required}
+        touched={touched}
+      />
+    );
   }
   if (type === 'select') {
     return renderSelectField();
