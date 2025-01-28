@@ -22,8 +22,7 @@ function MeasureEditPage({ handleModalClose }) {
     async (values) => {
       const result = await editMeasure({
         measureUuid: uuid,
-        title: values.title,
-        description: values.description,
+        ...values,
       });
       if (result?.data) {
         handleModalClose();

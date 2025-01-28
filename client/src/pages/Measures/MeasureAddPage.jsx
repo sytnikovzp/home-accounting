@@ -10,10 +10,7 @@ function MeasureAddPage({ handleModalClose }) {
 
   const handleSubmitMeasure = useCallback(
     async (values) => {
-      const result = await addMeasure({
-        title: values.title,
-        description: values.description,
-      });
+      const result = await addMeasure(values);
       if (result?.data) {
         handleModalClose();
       }

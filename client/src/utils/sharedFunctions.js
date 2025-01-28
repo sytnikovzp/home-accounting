@@ -92,6 +92,21 @@ const requestHandler = async ({
   }
 };
 
+const groupByFirstLetter = (items, labelKey, valueKey) =>
+  items
+    .sort((a, b) => a[labelKey].localeCompare(b[labelKey]))
+    .reduce((acc, item) => {
+      const firstLetter = item[labelKey][0].toUpperCase();
+      if (!acc[firstLetter]) {
+        acc[firstLetter] = [];
+      }
+      acc[firstLetter].push({
+        label: item[labelKey],
+        value: item[valueKey],
+      });
+      return acc;
+    }, {});
+
 const setErrorListState = (state, { payload }) => {
   state.isLoadingList = false;
   state.listLoadingError = payload;
@@ -124,6 +139,7 @@ const setLoadingState = (state) => {
 
 export {
   getAccessToken,
+  groupByFirstLetter,
   removeAccessToken,
   requestHandler,
   saveAccessToken,

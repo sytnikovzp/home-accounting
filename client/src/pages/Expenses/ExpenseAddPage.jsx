@@ -13,42 +13,20 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 function ExpenseAddPage({ handleModalClose }) {
-  const { data: measuresData, isLoading: isFetchingMeasures } =
-    useFetchAllMeasuresQuery({ page: 1, limit: 500 });
+  const queries = [
+    useFetchAllMeasuresQuery({ page: 1, limit: 500 }),
+    useFetchAllCurrenciesQuery({ page: 1, limit: 500 }),
+    useFetchAllEstablishmentsQuery({ page: 1, limit: 500 }),
+    useFetchAllProductsQuery({ page: 1, limit: 500 }),
+  ];
 
-  const { data: currenciesData, isLoading: isFetchingCurrencies } =
-    useFetchAllCurrenciesQuery({ page: 1, limit: 500 });
-
-  const { data: establishmentsData, isLoading: isFetchingEstablishments } =
-    useFetchAllEstablishmentsQuery({ page: 1, limit: 500 });
-
-  const { data: productsData, isLoading: isFetchingProducts } =
-    useFetchAllProductsQuery({ page: 1, limit: 500 });
-
-  const measures = measuresData?.data || [];
-  const currencies = currenciesData?.data || [];
-  const establishments = establishmentsData?.data || [];
-  const products = productsData?.data || [];
+  const isFetching = queries.some(({ isLoading }) => isLoading);
 
   const [addExpense, { isLoading, error }] = useAddExpenseMutation();
 
-  const isFetching =
-    isFetchingMeasures ||
-    isFetchingCurrencies ||
-    isFetchingEstablishments ||
-    isFetchingProducts;
-
   const handleSubmitExpense = useCallback(
     async (values) => {
-      const result = await addExpense({
-        product: values.product,
-        quantity: values.quantity,
-        unitPrice: values.unitPrice,
-        establishment: values.establishment,
-        measure: values.measure,
-        currency: values.currency,
-        date: values.date,
-      });
+      const result = await addExpense(values);
       if (result?.data) {
         handleModalClose();
       }
@@ -60,11 +38,11 @@ function ExpenseAddPage({ handleModalClose }) {
     <Preloader />
   ) : (
     <ExpenseForm
-      currencies={currencies}
-      establishments={establishments}
+      currencies={queries[1].data?.data || []}
+      establishments={queries[2].data?.data || []}
       isLoading={isLoading}
-      measures={measures}
-      products={products}
+      measures={queries[0].data?.data || []}
+      products={queries[3].data?.data || []}
       onSubmit={handleSubmitExpense}
     />
   );

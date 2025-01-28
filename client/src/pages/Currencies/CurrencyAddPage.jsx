@@ -10,10 +10,7 @@ function CurrencyAddPage({ handleModalClose }) {
 
   const handleSubmitCurrency = useCallback(
     async (values) => {
-      const result = await addCurrency({
-        title: values.title,
-        code: values.code,
-      });
+      const result = await addCurrency(values);
       if (result?.data) {
         handleModalClose();
       }

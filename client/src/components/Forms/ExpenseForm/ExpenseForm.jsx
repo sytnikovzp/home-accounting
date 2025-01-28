@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
+import { groupByFirstLetter } from '../../../utils/sharedFunctions';
 import { EXPENSE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
@@ -29,56 +30,17 @@ function ExpenseForm({
   );
 
   const groupedProducts = useMemo(
-    () =>
-      [...products]
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .reduce((acc, product) => {
-          const firstLetter = product.title[0].toUpperCase();
-          if (!acc[firstLetter]) {
-            acc[firstLetter] = [];
-          }
-          acc[firstLetter].push({
-            label: product.title,
-            value: product.title,
-          });
-          return acc;
-        }, {}),
+    () => groupByFirstLetter([...products], 'title', 'title'),
     [products]
   );
 
   const groupedCurrencies = useMemo(
-    () =>
-      [...currencies]
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .reduce((acc, currency) => {
-          const firstLetter = currency.title[0].toUpperCase();
-          if (!acc[firstLetter]) {
-            acc[firstLetter] = [];
-          }
-          acc[firstLetter].push({
-            label: currency.title,
-            value: currency.title,
-          });
-          return acc;
-        }, {}),
+    () => groupByFirstLetter([...currencies], 'title', 'title'),
     [currencies]
   );
 
   const groupedEstablishments = useMemo(
-    () =>
-      [...establishments]
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .reduce((acc, establishment) => {
-          const firstLetter = establishment.title[0].toUpperCase();
-          if (!acc[firstLetter]) {
-            acc[firstLetter] = [];
-          }
-          acc[firstLetter].push({
-            label: establishment.title,
-            value: establishment.title,
-          });
-          return acc;
-        }, {}),
+    () => groupByFirstLetter([...establishments], 'title', 'title'),
     [establishments]
   );
 

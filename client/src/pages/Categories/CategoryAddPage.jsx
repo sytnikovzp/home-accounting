@@ -10,7 +10,7 @@ function CategoryAddPage({ handleModalClose }) {
 
   const handleSubmitCategory = useCallback(
     async (values) => {
-      const result = await addCategory({ title: values.title });
+      const result = await addCategory(values);
       if (result?.data) {
         handleModalClose();
       }

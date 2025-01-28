@@ -22,8 +22,7 @@ function CurrencyEditPage({ handleModalClose }) {
     async (values) => {
       const result = await editCurrency({
         currencyUuid: uuid,
-        title: values.title,
-        code: values.code,
+        ...values,
       });
       if (result?.data) {
         handleModalClose();

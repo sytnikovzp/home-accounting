@@ -22,7 +22,7 @@ function CategoryEditPage({ handleModalClose }) {
     async (values) => {
       const result = await editCategory({
         categoryUuid: uuid,
-        title: values.title,
+        ...values,
       });
       if (result?.data) {
         handleModalClose();
