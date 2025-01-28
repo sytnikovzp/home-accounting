@@ -16,6 +16,7 @@ export const productsApi = createApi({
         order = 'asc',
       } = {}) => ({
         url: 'products',
+        method: 'GET',
         params: { status, page, limit, sort, order },
       }),
       transformResponse: (response, meta) => ({
@@ -25,7 +26,10 @@ export const productsApi = createApi({
       providesTags: (result) => {
         if (result?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({ type: 'Product', id: uuid })),
+            ...result.data.map(({ uuid }) => ({
+              type: 'Product',
+              id: uuid,
+            })),
             { type: 'Product', id: 'LIST' },
           ];
         }
@@ -34,7 +38,10 @@ export const productsApi = createApi({
     }),
 
     fetchProductByUuid: builder.query({
-      query: (productUuid) => `products/${productUuid}`,
+      query: (productUuid) => ({
+        url: `products/${productUuid}`,
+        method: 'GET',
+      }),
       providesTags: (result, error, productUuid) => [
         { type: 'Product', id: productUuid },
       ],
