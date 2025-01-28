@@ -14,12 +14,6 @@ import {
   moderationProduct,
 } from '../../services/moderationService';
 import {
-  createProduct,
-  deleteProduct,
-  getProductByUuid,
-  updateProduct,
-} from '../../services/productsService';
-import {
   createRole,
   deleteRole,
   getRoleByUuid,
@@ -61,13 +55,6 @@ const restController = {
   editRole: (roleUuid, title, description, permissions) =>
     updateRole(roleUuid, title, description, permissions),
   removeRole: (roleUuid) => deleteRole(roleUuid),
-
-  // Product management
-  fetchProductByUuid: (productUuid) => getProductByUuid(productUuid),
-  addProduct: (title, category = '') => createProduct(title, category),
-  editProduct: (productUuid, title, category) =>
-    updateProduct(productUuid, title, category),
-  removeProduct: (productUuid) => deleteProduct(productUuid),
 
   // Establishment management
   fetchEstablishmentByUuid: (establishmentUuid) =>

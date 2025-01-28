@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
 import { pageTitles } from '../../constants';
@@ -8,15 +7,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
-
-import {
-  selectProducts,
-  selectProductsIsLoadingList,
-  selectProductsListLoadingError,
-  selectTotalCount,
-} from '../../store/selectors/productsSelectors';
-import { clearSelected } from '../../store/slices/productsSlice';
-import { fetchProducts } from '../../store/thunks/productsThunks';
+import { useFetchAllProductsQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
@@ -46,33 +37,27 @@ function ProductsPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const products = useSelector(selectProducts);
-  const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectProductsIsLoadingList);
-  const error = useSelector(selectProductsListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      status: selectedStatus,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, selectedStatus, sortModel]
-  );
+  const {
+    data: productsData,
+    error: fetchError,
+    isLoading,
+  } = useFetchAllProductsQuery({
+    page: currentPage,
+    limit: pageSize,
+    status: selectedStatus,
+    sort: sortModel.field,
+    order: sortModel.order,
+  });
 
-  useEffect(() => {
-    dispatch(fetchProducts(fetchParams));
-  }, [dispatch, fetchParams]);
+  const products = productsData?.data || [];
+  const totalCount = productsData?.totalCount || 0;
 
   usePageTitle(location, PRODUCTS_TITLES);
 
@@ -84,9 +69,8 @@ function ProductsPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
     navigate('/products');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleAddClick = useCallback(() => {
     handleModalOpen('add');
@@ -112,8 +96,8 @@ function ProductsPage() {
     return <Preloader message='Завантаження списку "Товарів та послуг"...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError.data.message} />;
   }
 
   return (
@@ -162,7 +146,6 @@ function ProductsPage() {
       />
       <EntityRoutes
         entityPages={PRODUCTS_PAGES}
-        fetchEntities={fetchProducts}
         handleModalClose={handleModalClose}
       />
     </>

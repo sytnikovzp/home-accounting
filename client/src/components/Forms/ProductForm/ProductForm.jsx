@@ -1,29 +1,21 @@
 import { useMemo } from 'react';
 
+import { groupByFirstLetter } from '../../../utils/sharedFunctions';
 import { PRODUCT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
-function ProductForm({ product = null, onSubmit, categories }) {
-  const initialValues = product
-    ? { title: product.title, category: product.category.title }
-    : { title: '', category: '' };
+function ProductForm({ isLoading, product = null, onSubmit, categories = [] }) {
+  const initialValues = useMemo(
+    () => ({
+      title: product?.title || '',
+      category: product?.category?.title || '',
+    }),
+    [product]
+  );
 
   const groupedCategories = useMemo(
-    () =>
-      categories
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .reduce((acc, category) => {
-          const firstLetter = category.title[0].toUpperCase();
-          if (!acc[firstLetter]) {
-            acc[firstLetter] = [];
-          }
-          acc[firstLetter].push({
-            label: category.title,
-            value: category.title,
-          });
-          return acc;
-        }, {}),
+    () => groupByFirstLetter([...categories], 'title', 'title'),
     [categories]
   );
 
@@ -41,7 +33,6 @@ function ProductForm({ product = null, onSubmit, categories }) {
       type: 'autocomplete',
       options: groupedCategories,
       placeholder: 'Наприклад "Одяг"',
-      required: true,
     },
   ];
 
@@ -49,6 +40,7 @@ function ProductForm({ product = null, onSubmit, categories }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
+      isLoading={isLoading}
       submitButtonText={product ? 'Зберегти зміни' : 'Додати товар'}
       validationSchema={PRODUCT_VALIDATION_SCHEME}
       onSubmit={onSubmit}

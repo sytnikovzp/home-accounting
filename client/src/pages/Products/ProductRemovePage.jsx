@@ -1,71 +1,71 @@
-import { useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useFetchProductByUuidQuery,
+  useRemoveProductMutation,
+} from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function ProductRemovePage({
-  handleModalClose,
-  fetchProducts,
-  crudError,
-  setCrudError,
-}) {
+function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: product,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Product');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
+  const { data: product, isLoading: isFetching } =
+    useFetchProductByUuidQuery(uuid);
+
+  const [removeProduct, { isLoading: isDeleting, error }] =
+    useRemoveProductMutation();
+
+  const handleDeleteProduct = useCallback(async () => {
+    if (!product?.uuid) {
+      return;
     }
-  }, [uuid, fetchEntityByUuid]);
-
-  const handleDeleteProduct = async () => {
-    try {
-      await restController.removeProduct(product.uuid);
+    const result = await removeProduct(product.uuid);
+    if (result?.data) {
       handleModalClose();
-      fetchProducts();
-    } catch (error) {
-      setCrudError(error.response.data);
     }
-  };
+  }, [product?.uuid, handleModalClose, removeProduct]);
+
+  const actions = useMemo(
+    () => [
+      <Button
+        key='remove'
+        fullWidth
+        color='error'
+        disabled={isDeleting}
+        size='large'
+        variant='contained'
+        onClick={handleDeleteProduct}
+      >
+        Видалити
+      </Button>,
+    ],
+    [isDeleting, handleDeleteProduct]
+  );
+
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Typography sx={stylesDeletePageTypography} variant='body1'>
+        Ви впевнені, що хочете видалити товар/послугу «{product?.title}»? Це
+        призведе до видалення всіх витрат, що містять цей товар.
+      </Typography>
+    );
+  }, [isFetching, product?.title]);
 
   return (
     <ModalWindow
       isOpen
-      actions={[
-        <Button
-          key='remove'
-          fullWidth
-          color='error'
-          size='large'
-          variant='contained'
-          onClick={handleDeleteProduct}
-        >
-          Видалити
-        </Button>,
-      ]}
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити товар «{product?.title}»? Це
-            призведе до видалення всіх витрат, що містять цей товар.
-          </Typography>
-        )
-      }
-      error={error || crudError}
+      actions={actions}
+      content={content}
+      error={error?.data}
       title='Видалення товару/послуги...'
       onClose={handleModalClose}
     />

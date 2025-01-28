@@ -22,7 +22,6 @@ import emailVerificationReducer from './slices/emailVerificationSlice';
 import establishmentsReducer from './slices/establishmentsSlice';
 import moderationsReducer from './slices/moderationsSlice';
 import permissionsReducer from './slices/permissionsSlice';
-import productsReducer from './slices/productsSlice';
 import rolesReducer from './slices/rolesSlice';
 import statisticsReducer from './slices/statisticsSlice';
 import userProfileReducer from './slices/userProfileSlice';
@@ -41,7 +40,6 @@ const store = configureStore({
     moderations: moderationsReducer,
     [nbuRatesApi.reducerPath]: nbuRatesApi.reducer,
     permissions: permissionsReducer,
-    products: productsReducer,
     [productsApi.reducerPath]: productsApi.reducer,
     roles: rolesReducer,
     statistics: statisticsReducer,

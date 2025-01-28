@@ -1,64 +1,59 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useEditProductMutation,
+  useFetchAllCategoriesQuery,
+  useFetchProductByUuidQuery,
+} from '../../store/services';
 
 import ProductForm from '../../components/Forms/ProductForm/ProductForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-function ProductEditPage({
-  handleModalClose,
-  fetchProducts,
-  categories,
-  crudError,
-  setCrudError,
-}) {
+function ProductEditPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: product,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Product');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
-    }
-  }, [uuid, fetchEntityByUuid]);
+  const queries = [
+    useFetchProductByUuidQuery(uuid),
+    useFetchAllCategoriesQuery({ page: 1, limit: 500 }),
+  ];
 
-  const handleSubmitProduct = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.editProduct(
-        product.uuid,
-        values.title,
-        values.category
-      );
-      handleModalClose();
-      fetchProducts();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const product = queries[0]?.data;
+
+  const isFetching = queries.some(({ isLoading }) => isLoading);
+
+  const [editProduct, { isLoading, error }] = useEditProductMutation();
+
+  const handleSubmitProduct = useCallback(
+    async (values) => {
+      const result = await editProduct({
+        productUuid: uuid,
+        ...values,
+      });
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [editProduct, handleModalClose, uuid]
+  );
+
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <ProductForm
+      categories={queries[1].data?.data || []}
+      isLoading={isLoading}
+      product={product}
+      onSubmit={handleSubmitProduct}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <ProductForm
-            categories={categories}
-            product={product}
-            onSubmit={handleSubmitProduct}
-          />
-        )
-      }
-      error={error || crudError}
+      content={content}
+      error={error?.data}
       title='Редагування товару/послуги...'
       onClose={handleModalClose}
     />

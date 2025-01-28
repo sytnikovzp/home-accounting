@@ -1,33 +1,46 @@
-import restController from '../../api/rest/restController';
+import { useCallback } from 'react';
+
+import {
+  useAddProductMutation,
+  useFetchAllCategoriesQuery,
+} from '../../store/services';
 
 import ProductForm from '../../components/Forms/ProductForm/ProductForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
 
-function ProductAddPage({
-  handleModalClose,
-  fetchProducts,
-  categories,
-  crudError,
-  setCrudError,
-}) {
-  const handleSubmitProduct = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.addProduct(values.title, values.category);
-      handleModalClose();
-      fetchProducts();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+function ProductAddPage({ handleModalClose }) {
+  const queries = [useFetchAllCategoriesQuery({ page: 1, limit: 500 })];
+
+  const isFetching = queries.some(({ isLoading }) => isLoading);
+
+  const [addProduct, { isLoading, error }] = useAddProductMutation();
+
+  const handleSubmitProduct = useCallback(
+    async (values) => {
+      const result = await addProduct(values);
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [addProduct, handleModalClose]
+  );
+
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <ProductForm
+      categories={queries[0].data?.data || []}
+      isLoading={isLoading}
+      onSubmit={handleSubmitProduct}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        <ProductForm categories={categories} onSubmit={handleSubmitProduct} />
-      }
-      error={crudError}
+      content={content}
+      error={error?.data}
       title='Додавання товару/послуги...'
       onClose={handleModalClose}
     />
