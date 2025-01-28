@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -15,28 +16,35 @@ function CategoryEditPage({ handleModalClose }) {
   const { data: category, isLoading: isFetching } =
     useFetchCategoryByUuidQuery(uuid);
 
-  const [editCategory, { error }] = useEditCategoryMutation();
+  const [editCategory, { isLoading, error }] = useEditCategoryMutation();
 
-  const handleSubmitCategory = async (values) => {
-    const result = await editCategory({
-      categoryUuid: uuid,
-      title: values.title,
-    });
-    if (result?.data) {
-      handleModalClose();
-    }
-  };
+  const handleSubmitCategory = useCallback(
+    async (values) => {
+      const result = await editCategory({
+        categoryUuid: uuid,
+        title: values.title,
+      });
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [editCategory, uuid, handleModalClose]
+  );
+
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <CategoryForm
+      category={category}
+      isLoading={isLoading}
+      onSubmit={handleSubmitCategory}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        isFetching ? (
-          <Preloader />
-        ) : (
-          <CategoryForm category={category} onSubmit={handleSubmitCategory} />
-        )
-      }
+      content={content}
       error={error?.data}
       title='Редагування категорії...'
       onClose={handleModalClose}

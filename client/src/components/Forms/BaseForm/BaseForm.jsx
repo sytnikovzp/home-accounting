@@ -6,101 +6,60 @@ import FormFields from '../FormFields/FormFields';
 import { stylesBaseFormButtomBox } from '../../../styles';
 
 function BaseForm({
-  initialValues,
-  validationSchema,
-  isLoading,
-  onSubmit,
   fields,
+  initialValues,
+  isLoading,
   submitButtonText,
+  validationSchema,
+  onSubmit,
   layout,
   customContent,
 }) {
+  const renderFields = (fields, errors, touched, layout) => {
+    if (layout === 'expense') {
+      const renderField = (name, wrapperProps = {}) => {
+        const field = fields.find((field) => field.name === name);
+        return (
+          <Box {...wrapperProps}>
+            <FormFields
+              {...field}
+              error={errors[name]}
+              touched={touched[name]}
+            />
+          </Box>
+        );
+      };
+
+      return (
+        <>
+          {renderField('product', { sx: { mb: 2 } })}
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            {renderField('quantity', { sx: { width: '40%' } })}
+            {renderField('measure', { sx: { flex: 1 } })}
+          </Box>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            {renderField('unitPrice', { sx: { width: '40%' } })}
+            {renderField('currency', { sx: { flex: 1 } })}
+          </Box>
+          {renderField('establishment', { sx: { mb: 2 } })}
+          {renderField('date', { sx: { mb: 2 } })}
+        </>
+      );
+    }
+
+    return fields.map((field) => (
+      <FormFields
+        key={field.name}
+        {...field}
+        error={errors[field.name]}
+        touched={touched[field.name]}
+      />
+    ));
+  };
+
   const renderForm = ({ errors, touched, isValid }) => (
     <Form>
-      <Box sx={{ mt: 2 }}>
-        {layout === 'expense' ? (
-          <>
-            <Box sx={{ mb: 2 }}>
-              <FormFields
-                {...fields.find((field) => field.name === 'product')}
-                error={errors['product']}
-                touched={touched['product']}
-              />
-            </Box>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Box sx={{ width: '40%' }}>
-                <FormFields
-                  {...fields.find((field) => field.name === 'quantity')}
-                  error={errors['quantity']}
-                  touched={touched['quantity']}
-                />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <FormFields
-                  {...fields.find((field) => field.name === 'measure')}
-                  error={errors['measure']}
-                  touched={touched['measure']}
-                />
-              </Box>
-            </Box>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Box sx={{ width: '40%' }}>
-                <FormFields
-                  {...fields.find((field) => field.name === 'unitPrice')}
-                  error={errors['unitPrice']}
-                  touched={touched['unitPrice']}
-                />
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <FormFields
-                  {...fields.find((field) => field.name === 'currency')}
-                  error={errors['currency']}
-                  touched={touched['currency']}
-                />
-              </Box>
-            </Box>
-            <Box sx={{ mb: 2 }}>
-              <FormFields
-                {...fields.find((field) => field.name === 'establishment')}
-                error={errors['establishment']}
-                touched={touched['establishment']}
-              />
-            </Box>
-            <Box sx={{ mb: 2 }}>
-              <FormFields
-                {...fields.find((field) => field.name === 'date')}
-                error={errors['date']}
-                touched={touched['date']}
-              />
-            </Box>
-          </>
-        ) : (
-          fields.map(
-            ({
-              name,
-              label,
-              placeholder,
-              required,
-              autoFocus,
-              type,
-              options,
-            }) => (
-              <FormFields
-                key={name}
-                autoFocus={autoFocus}
-                error={errors[name]}
-                label={label}
-                name={name}
-                options={options}
-                placeholder={placeholder}
-                required={required}
-                touched={touched[name]}
-                type={type}
-              />
-            )
-          )
-        )}
-      </Box>
+      <Box sx={{ mt: 2 }}>{renderFields(fields, errors, touched, layout)}</Box>
       {customContent}
       <Box sx={stylesBaseFormButtomBox}>
         <Button
