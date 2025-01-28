@@ -63,7 +63,7 @@ function CurrencyViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error}
+      error={error?.data}
       title='Деталі валюти...'
       onClose={handleModalClose}
     />

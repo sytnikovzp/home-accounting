@@ -1,30 +1,35 @@
-import restController from '../../api/rest/restController';
+import { useCallback } from 'react';
+
+import { useAddMeasureMutation } from '../../store/services';
 
 import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-function MeasureAddPage({
-  handleModalClose,
-  fetchMeasures,
-  crudError,
-  setCrudError,
-}) {
-  const handleSubmitMeasure = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.addMeasure(values.title, values.description);
-      handleModalClose();
-      fetchMeasures();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+function MeasureAddPage({ handleModalClose }) {
+  const [addMeasure, { isLoading, error }] = useAddMeasureMutation();
+
+  const handleSubmitMeasure = useCallback(
+    async (values) => {
+      const result = await addMeasure({
+        title: values.title,
+        description: values.description,
+      });
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [addMeasure, handleModalClose]
+  );
+
+  const content = (
+    <MeasureForm isLoading={isLoading} onSubmit={handleSubmitMeasure} />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={<MeasureForm onSubmit={handleSubmitMeasure} />}
-      error={crudError}
+      content={content}
+      error={error?.data}
       title='Додавання одиниці...'
       onClose={handleModalClose}
     />

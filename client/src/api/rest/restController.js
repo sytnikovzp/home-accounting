@@ -14,12 +14,6 @@ import {
   updateExpense,
 } from '../../services/expensesService';
 import {
-  createMeasure,
-  deleteMeasure,
-  getMeasureByUuid,
-  updateMeasure,
-} from '../../services/measuresService';
-import {
   getAllPendingItems,
   moderationCategory,
   moderationEstablishment,
@@ -73,13 +67,6 @@ const restController = {
   editRole: (roleUuid, title, description, permissions) =>
     updateRole(roleUuid, title, description, permissions),
   removeRole: (roleUuid) => deleteRole(roleUuid),
-
-  // Measure management
-  fetchMeasureByUuid: (measureUuid) => getMeasureByUuid(measureUuid),
-  addMeasure: (title, description = '') => createMeasure(title, description),
-  editMeasure: (measureUuid, title, description) =>
-    updateMeasure(measureUuid, title, description),
-  removeMeasure: (measureUuid) => deleteMeasure(measureUuid),
 
   // Product management
   fetchProductByUuid: (productUuid) => getProductByUuid(productUuid),

@@ -21,7 +21,6 @@ import authReducer from './slices/authSlice';
 import emailVerificationReducer from './slices/emailVerificationSlice';
 import establishmentsReducer from './slices/establishmentsSlice';
 import expensesReducer from './slices/expensesSlice';
-import measuresReducer from './slices/measuresSlice';
 import moderationsReducer from './slices/moderationsSlice';
 import permissionsReducer from './slices/permissionsSlice';
 import productsReducer from './slices/productsSlice';
@@ -38,7 +37,7 @@ const store = configureStore({
     emailVerification: emailVerificationReducer,
     establishments: establishmentsReducer,
     expenses: expensesReducer,
-    measures: measuresReducer,
+    [measuresApi.reducerPath]: measuresApi.reducer,
     moderations: moderationsReducer,
     [nbuRatesApi.reducerPath]: nbuRatesApi.reducer,
     permissions: permissionsReducer,
@@ -52,6 +51,7 @@ const store = configureStore({
     getDefaultMiddleware().concat(
       categoriesApi.middleware,
       currenciesApi.middleware,
+      measuresApi.middleware,
       nbuRatesApi.middleware,
       logger
     ),

@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
 import { pageTitles } from '../../constants';
@@ -8,15 +7,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
-
-import {
-  selectMeasures,
-  selectMeasuresIsLoadingList,
-  selectMeasuresListLoadingError,
-  selectTotalCount,
-} from '../../store/selectors/measuresSelectors';
-import { clearSelected } from '../../store/slices/measuresSlice';
-import { fetchMeasures } from '../../store/thunks/measuresThunks';
+import { useFetchAllMeasuresQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
@@ -45,32 +36,26 @@ const MEASURES_PAGES = [
 function MeasuresPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const measures = useSelector(selectMeasures);
-  const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectMeasuresIsLoadingList);
-  const error = useSelector(selectMeasuresListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, sortModel]
-  );
+  const {
+    data: measuresData,
+    error: fetchError,
+    isLoading,
+  } = useFetchAllMeasuresQuery({
+    page: currentPage,
+    limit: pageSize,
+    sort: sortModel.field,
+    order: sortModel.order,
+  });
 
-  useEffect(() => {
-    dispatch(fetchMeasures(fetchParams));
-  }, [dispatch, fetchParams]);
+  const measures = measuresData?.data || [];
+  const totalCount = measuresData?.totalCount || 0;
 
   usePageTitle(location, MEASURES_TITLES);
 
@@ -82,9 +67,8 @@ function MeasuresPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
     navigate('/measures');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleAddClick = useCallback(() => {
     handleModalOpen('add');
@@ -106,8 +90,8 @@ function MeasuresPage() {
     return <Preloader message='Завантаження списку "Одиниць вимірів"...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError.data.message} />;
   }
 
   return (
@@ -152,7 +136,6 @@ function MeasuresPage() {
       />
       <EntityRoutes
         entityPages={MEASURES_PAGES}
-        fetchEntities={fetchMeasures}
         handleModalClose={handleModalClose}
       />
     </>

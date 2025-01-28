@@ -1,59 +1,52 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useEditMeasureMutation,
+  useFetchMeasureByUuidQuery,
+} from '../../store/services';
 
 import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-function MeasureEditPage({
-  handleModalClose,
-  fetchMeasures,
-  crudError,
-  setCrudError,
-}) {
+function MeasureEditPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: measure,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Measure');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
-    }
-  }, [uuid, fetchEntityByUuid]);
+  const { data: measure, isLoading: isFetching } =
+    useFetchMeasureByUuidQuery(uuid);
 
-  const handleSubmitMeasure = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.editMeasure(
-        measure.uuid,
-        values.title,
-        values.description
-      );
-      handleModalClose();
-      fetchMeasures();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const [editMeasure, { isLoading, error }] = useEditMeasureMutation();
+
+  const handleSubmitMeasure = useCallback(
+    async (values) => {
+      const result = await editMeasure({
+        measureUuid: uuid,
+        title: values.title,
+        description: values.description,
+      });
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [editMeasure, handleModalClose, uuid]
+  );
+
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <MeasureForm
+      isLoading={isLoading}
+      measure={measure}
+      onSubmit={handleSubmitMeasure}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <MeasureForm measure={measure} onSubmit={handleSubmitMeasure} />
-        )
-      }
-      error={error || crudError}
+      content={content}
+      error={error?.data}
       title='Редагування одиниці...'
       onClose={handleModalClose}
     />

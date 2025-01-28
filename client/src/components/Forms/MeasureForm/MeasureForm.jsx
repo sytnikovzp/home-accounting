@@ -1,11 +1,17 @@
+import { useMemo } from 'react';
+
 import { MEASURE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
-function MeasureForm({ measure = null, onSubmit }) {
-  const initialValues = measure
-    ? { title: measure.title, description: measure.description }
-    : { title: '', description: '' };
+function MeasureForm({ isLoading, measure = null, onSubmit }) {
+  const initialValues = useMemo(
+    () => ({
+      title: measure?.title || '',
+      description: measure?.description || '',
+    }),
+    [measure]
+  );
 
   const fields = [
     {
@@ -27,6 +33,7 @@ function MeasureForm({ measure = null, onSubmit }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
+      isLoading={isLoading}
       submitButtonText={measure ? 'Зберегти зміни' : 'Додати одиницю'}
       validationSchema={MEASURE_VALIDATION_SCHEME}
       onSubmit={onSubmit}
