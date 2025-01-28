@@ -1,7 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { logger } from 'redux-logger';
 
-import { categoriesApi } from './services';
+import {
+  categoriesApi,
+  currenciesApi,
+  establishmentsApi,
+  expensesApi,
+  measuresApi,
+  moderationApi,
+  nbuRatesApi,
+  permissionsApi,
+  productsApi,
+  rolesApi,
+  statisticsApi,
+  userProfileApi,
+  usersApi,
+} from './services';
 
 import authReducer from './slices/authSlice';
 import currenciesReducer from './slices/currenciesSlice';
@@ -10,7 +24,6 @@ import establishmentsReducer from './slices/establishmentsSlice';
 import expensesReducer from './slices/expensesSlice';
 import measuresReducer from './slices/measuresSlice';
 import moderationsReducer from './slices/moderationsSlice';
-import nbuExchangesReducer from './slices/nbuExchangesSlice';
 import permissionsReducer from './slices/permissionsSlice';
 import productsReducer from './slices/productsSlice';
 import rolesReducer from './slices/rolesSlice';
@@ -28,7 +41,7 @@ const store = configureStore({
     expenses: expensesReducer,
     measures: measuresReducer,
     moderations: moderationsReducer,
-    nbuExchanges: nbuExchangesReducer,
+    [nbuRatesApi.reducerPath]: nbuRatesApi.reducer,
     permissions: permissionsReducer,
     products: productsReducer,
     roles: rolesReducer,
@@ -37,7 +50,11 @@ const store = configureStore({
     users: usersReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(categoriesApi.middleware, logger),
+    getDefaultMiddleware().concat(
+      categoriesApi.middleware,
+      nbuRatesApi.middleware,
+      logger
+    ),
 });
 
 export default store;

@@ -1,14 +1,14 @@
 import { Box } from '@mui/material';
 
 import Calendar from '../Calendar/Calendar';
-import CurrencyExchange from '../CurrencyExchange/CurrencyExchange';
+import CurrencyRates from '../CurrencyRates/CurrencyRates';
 
 import { stylesServiceBlockBox } from '../../styles';
 
 function ServiceBlock() {
   return (
     <Box sx={stylesServiceBlockBox}>
-      <CurrencyExchange />
+      <CurrencyRates />
       <Calendar />
     </Box>
   );

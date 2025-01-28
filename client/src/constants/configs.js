@@ -9,4 +9,6 @@ const SERVER = {
 
 const BASE_URL = `http://${SERVER.HOST}:${SERVER.PORT}/api/`;
 
-export { BASE_URL, CURRENCY_CODES, DELAY_SHOW_PRELOADER };
+const NBU_STAT_URL = 'https://bank.gov.ua/NBUStatService/v1';
+
+export { BASE_URL, CURRENCY_CODES, DELAY_SHOW_PRELOADER, NBU_STAT_URL };
