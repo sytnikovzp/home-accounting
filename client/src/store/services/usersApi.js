@@ -53,9 +53,6 @@ export const usersApi = createApi({
         method: 'PATCH',
         body: { newPassword, confirmNewPassword },
       }),
-      invalidatesTags: (result, error, { userUuid }) => [
-        { type: 'User', id: userUuid },
-      ],
     }),
 
     editUser: builder.mutation({
