@@ -5,10 +5,10 @@ const {
   updateCategoryStatus,
   updateProductStatus,
   updateEstablishmentStatus,
-} = require('../services/moderationsService');
+} = require('../services/moderationService');
 const { getCurrentUser } = require('../services/usersService');
 
-class ModerationsController {
+class ModerationController {
   static async getAllPendingItems(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
@@ -109,4 +109,4 @@ class ModerationsController {
   }
 }
 
-module.exports = ModerationsController;
+module.exports = ModerationController;

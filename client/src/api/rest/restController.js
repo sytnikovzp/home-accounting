@@ -30,7 +30,7 @@ import {
   moderationCategory,
   moderationEstablishment,
   moderationProduct,
-} from '../../services/moderationsService';
+} from '../../services/moderationService';
 import {
   createProduct,
   deleteProduct,

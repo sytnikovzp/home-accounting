@@ -11,24 +11,24 @@ const {
   moderationCategory,
   moderationProduct,
   moderationEstablishment,
-} = require('../controllers/moderationsController');
+} = require('../controllers/moderationController');
 
-const moderationsRouter = new Router();
+const moderationRouter = new Router();
 
-moderationsRouter.use(authHandler);
+moderationRouter.use(authHandler);
 
-moderationsRouter.route('/').get(paginateElements, getAllPendingItems);
+moderationRouter.route('/').get(paginateElements, getAllPendingItems);
 
-moderationsRouter
+moderationRouter
   .route('/categories/:categoryUuid')
   .patch(validateModeration, moderationCategory);
 
-moderationsRouter
+moderationRouter
   .route('/products/:productUuid')
   .patch(validateModeration, moderationProduct);
 
-moderationsRouter
+moderationRouter
   .route('/establishments/:establishmentUuid')
   .patch(validateModeration, moderationEstablishment);
 
-module.exports = moderationsRouter;
+module.exports = moderationRouter;

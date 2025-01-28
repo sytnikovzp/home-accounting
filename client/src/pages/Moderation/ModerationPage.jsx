@@ -32,7 +32,7 @@ const MODERATIONS_PAGES = [
   { path: ':path/:uuid', Component: ContentModerationPage },
 ];
 
-function ModerationsPage() {
+function ModerationPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
 
   const dispatch = useDispatch();
@@ -130,4 +130,4 @@ function ModerationsPage() {
   );
 }
 
-export default ModerationsPage;
+export default ModerationPage;

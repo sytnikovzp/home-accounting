@@ -28,7 +28,7 @@ import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
 import ExpensesPage from './pages/Expenses/ExpensesPage';
 import HomePage from './pages/HomePage/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
-import ModerationsPage from './pages/Moderations/ModerationsPage';
+import ModerationPage from './pages/Moderation/ModerationPage';
 import NotificationsPage from './pages/Notifications/NotificationsPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import RolesPage from './pages/Roles/RolesPage';
@@ -94,7 +94,7 @@ function App() {
               path='measures/*'
             />
             <Route
-              element={renderPrivateRoute(<ModerationsPage />)}
+              element={renderPrivateRoute(<ModerationPage />)}
               path='moderation/*'
             />
             <Route element={renderPrivateRoute(<UsersPage />)} path='users/*' />

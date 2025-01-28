@@ -52,7 +52,7 @@ const formatEntityData = (entity) => ({
   },
 });
 
-class ModerationsService {
+class ModerationService {
   static async getPendingItemsFromAllEntities(limit, offset, sort, order) {
     const pendingStatus = 'pending';
     let total = 0;
@@ -199,4 +199,4 @@ class ModerationsService {
   }
 }
 
-module.exports = ModerationsService;
+module.exports = ModerationService;

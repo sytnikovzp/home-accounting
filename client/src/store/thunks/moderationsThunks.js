@@ -6,7 +6,7 @@ import {
   moderationCategory,
   moderationEstablishment,
   moderationProduct,
-} from '../../services/moderationsService';
+} from '../../services/moderationService';
 
 const { MODERATIONS_SLICE_NAME } = sliceNames;
 
