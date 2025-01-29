@@ -1,17 +1,11 @@
-import { useMemo } from 'react';
-
 import { CURRENCY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
 function CurrencyForm({ isLoading, currency = null, onSubmit }) {
-  const initialValues = useMemo(
-    () => ({
-      title: currency?.title || '',
-      code: currency?.code || '',
-    }),
-    [currency]
-  );
+  const { uuid, title = '', code = '' } = currency || {};
+
+  const initialValues = { title, code };
 
   const fields = [
     {
@@ -34,7 +28,7 @@ function CurrencyForm({ isLoading, currency = null, onSubmit }) {
       fields={fields}
       initialValues={initialValues}
       isLoading={isLoading}
-      submitButtonText={currency ? 'Зберегти зміни' : 'Додати валюту'}
+      submitButtonText={uuid ? 'Зберегти зміни' : 'Додати валюту'}
       validationSchema={CURRENCY_VALIDATION_SCHEME}
       onSubmit={onSubmit}
     />

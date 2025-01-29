@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
@@ -16,51 +15,46 @@ function ExpenseForm({
   measures = [],
   currencies = [],
 }) {
-  const initialValues = useMemo(
-    () => ({
-      product: expense?.product?.title || '',
-      quantity: expense?.quantity || '',
-      unitPrice: expense?.unitPrice || '',
-      establishment: expense?.establishment?.title || '',
-      measure: expense?.measure?.title || '',
-      currency: expense?.currency?.title || 'Українська гривня',
-      date: expense?.date || format(new Date(), 'dd MMMM yyyy', { locale: uk }),
-    }),
-    [expense]
-  );
+  const {
+    uuid,
+    product,
+    quantity,
+    unitPrice,
+    establishment,
+    measure,
+    currency,
+    date,
+  } = expense || {};
 
-  const groupedProducts = useMemo(
-    () => groupByFirstLetter([...products], 'title', 'title'),
-    [products]
-  );
+  const initialValues = {
+    product: product?.title || '',
+    quantity: quantity || '',
+    unitPrice: unitPrice || '',
+    establishment: establishment?.title || '',
+    measure: measure?.title || '',
+    currency: currency?.title || 'Українська гривня',
+    date: date || format(new Date(), 'dd MMMM yyyy', { locale: uk }),
+  };
 
-  const groupedCurrencies = useMemo(
-    () => groupByFirstLetter([...currencies], 'title', 'title'),
-    [currencies]
-  );
+  const groupedOptions = {
+    products: groupByFirstLetter([...products], 'title', 'title'),
+    currencies: groupByFirstLetter([...currencies], 'title', 'title'),
+    establishments: groupByFirstLetter([...establishments], 'title', 'title'),
+  };
 
-  const groupedEstablishments = useMemo(
-    () => groupByFirstLetter([...establishments], 'title', 'title'),
-    [establishments]
-  );
-
-  const sortedMeasures = useMemo(
-    () =>
-      [...measures]
-        .sort((a, b) => a.description.localeCompare(b.description))
-        .map((measure) => ({
-          value: measure.title,
-          label: measure.description,
-        })),
-    [measures]
-  );
+  const sortedMeasures = [...measures]
+    .sort((a, b) => a.description.localeCompare(b.description))
+    .map((measure) => ({
+      value: measure.title,
+      label: measure.description,
+    }));
 
   const fields = [
     {
       name: 'product',
       label: 'Товар',
       type: 'autocomplete',
-      options: groupedProducts,
+      options: groupedOptions.products,
       placeholder: 'Наприклад "Помідори"',
       required: true,
       autoFocus: true,
@@ -81,7 +75,7 @@ function ExpenseForm({
       name: 'establishment',
       label: 'Заклад',
       type: 'autocomplete',
-      options: groupedEstablishments,
+      options: groupedOptions.establishments,
       placeholder: 'Наприклад "АТБ"',
       required: true,
     },
@@ -97,7 +91,7 @@ function ExpenseForm({
       name: 'currency',
       label: 'Валюта',
       type: 'autocomplete',
-      options: groupedCurrencies,
+      options: groupedOptions.currencies,
       placeholder: 'Наприклад "Українська гривня"',
       required: true,
     },
@@ -116,7 +110,7 @@ function ExpenseForm({
       initialValues={initialValues}
       isLoading={isLoading}
       layout='expense'
-      submitButtonText={expense ? 'Зберегти зміни' : 'Додати витрату'}
+      submitButtonText={uuid ? 'Зберегти зміни' : 'Додати витрату'}
       validationSchema={EXPENSE_VALIDATION_SCHEME}
       onSubmit={onSubmit}
     />

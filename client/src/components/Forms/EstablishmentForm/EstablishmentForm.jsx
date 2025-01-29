@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { ESTABLISHMENT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 import {
@@ -10,16 +10,15 @@ import FileUpload from '../../FileUpload/FileUpload';
 import BaseForm from '../BaseForm/BaseForm';
 
 function EstablishmentForm({ isLoading, establishment = null, onSubmit }) {
-  const { uuid, title, description, url, logo } = establishment || {};
+  const {
+    uuid,
+    title = '',
+    description = '',
+    url = '',
+    logo,
+  } = establishment || {};
 
-  const initialValues = useMemo(
-    () => ({
-      title: title || '',
-      description: description || '',
-      url: url || '',
-    }),
-    [title, description, url]
-  );
+  const initialValues = { title, description, url };
 
   const [changeLogo, { isLoading: isUploading, error: uploadError }] =
     useChangeEstablishmentLogoMutation();
@@ -27,14 +26,8 @@ function EstablishmentForm({ isLoading, establishment = null, onSubmit }) {
   const [resetLogo, { isLoading: isResetting, error: resetError }] =
     useResetEstablishmentLogoMutation();
 
-  const isChanging = useMemo(
-    () => isUploading || isResetting,
-    [isUploading, isResetting]
-  );
-  const error = useMemo(
-    () => uploadError?.data || resetError?.data,
-    [uploadError, resetError]
-  );
+  const isChanging = isUploading || isResetting;
+  const error = uploadError?.data || resetError?.data;
 
   const fields = [
     {
@@ -73,26 +66,19 @@ function EstablishmentForm({ isLoading, establishment = null, onSubmit }) {
     await resetLogo({ establishmentUuid: uuid });
   }, [resetLogo, uuid]);
 
-  const fileUpload = useMemo(() => {
-    if (!uuid) {
-      return null;
-    }
-    return (
-      <FileUpload
-        entity='establishments'
-        error={error}
-        file={logo}
-        isLoading={isChanging}
-        label={logo ? 'Оновити логотип' : 'Завантажити логотип'}
-        onRemove={handleRemoveLogo}
-        onUpload={handleUploadLogo}
-      />
-    );
-  }, [uuid, error, logo, isChanging, handleRemoveLogo, handleUploadLogo]);
-
   return (
     <>
-      {fileUpload}
+      {uuid && (
+        <FileUpload
+          entity='establishments'
+          error={error}
+          file={logo}
+          isLoading={isChanging}
+          label={logo ? 'Оновити логотип' : 'Завантажити логотип'}
+          onRemove={handleRemoveLogo}
+          onUpload={handleUploadLogo}
+        />
+      )}
       <BaseForm
         fields={fields}
         initialValues={initialValues}
