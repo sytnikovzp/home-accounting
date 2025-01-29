@@ -9,7 +9,6 @@ const {
     FILES: { IMAGE_MIMETYPE, IMAGE_EXTENSIONS, MAX_FILE_SIZE },
   },
 } = require('../constants');
-const { badRequest } = require('../errors/generalErrors');
 
 const createStorage = (subfolder) =>
   multer.diskStorage({
@@ -42,13 +41,11 @@ const createFileFilter =
       !allowedMimeTypes.test(file.mimetype) ||
       !allowedExtensions.includes(extension)
     ) {
-      const errorMessage = `Неприпустимий формат файлу. Дозволені формати файлів: ${allowedExtensions.join(
-        ', '
-      )}`;
-      cb(badRequest(errorMessage), false);
-      return;
+      const error = new multer.MulterError('LIMIT_UNEXPECTED_FILE');
+      error.message = `Неприпустимий формат файлу. Дозволені формати файлів: ${allowedExtensions.join(', ')}.`;
+      return cb(error, false);
     }
-    cb(null, true);
+    return cb(null, true);
   };
 
 const createUploader = (subfolder, mimeRegexp, fileExtensions, maxSize) =>

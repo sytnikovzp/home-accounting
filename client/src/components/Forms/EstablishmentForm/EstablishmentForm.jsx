@@ -1,25 +1,40 @@
-import { useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { ESTABLISHMENT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import {
+  useChangeEstablishmentLogoMutation,
+  useResetEstablishmentLogoMutation,
+} from '../../../store/services';
 
 import FileUpload from '../../FileUpload/FileUpload';
 import BaseForm from '../BaseForm/BaseForm';
 
-function EstablishmentForm({
-  establishment = null,
-  onSubmit,
-  onUploadLogo,
-  onRemoveLogo,
-}) {
-  const [uploading, setUploading] = useState(false);
+function EstablishmentForm({ isLoading, establishment = null, onSubmit }) {
+  const { uuid, title, description, url, logo } = establishment || {};
 
-  const initialValues = establishment
-    ? {
-        title: establishment.title,
-        description: establishment.description,
-        url: establishment.url,
-      }
-    : { title: '', description: '', url: '' };
+  const initialValues = useMemo(
+    () => ({
+      title: title || '',
+      description: description || '',
+      url: url || '',
+    }),
+    [title, description, url]
+  );
+
+  const [changeLogo, { isLoading: isUploading, error: uploadError }] =
+    useChangeEstablishmentLogoMutation();
+
+  const [resetLogo, { isLoading: isResetting, error: resetError }] =
+    useResetEstablishmentLogoMutation();
+
+  const isChanging = useMemo(
+    () => isUploading || isResetting,
+    [isUploading, isResetting]
+  );
+  const error = useMemo(
+    () => uploadError?.data || resetError?.data,
+    [uploadError, resetError]
+  );
 
   const fields = [
     {
@@ -41,28 +56,48 @@ function EstablishmentForm({
     },
   ];
 
+  const handleUploadLogo = useCallback(
+    async (file) => {
+      if (!uuid) {
+        return;
+      }
+      await changeLogo({ establishmentUuid: uuid, establishmentLogo: file });
+    },
+    [changeLogo, uuid]
+  );
+
+  const handleRemoveLogo = useCallback(async () => {
+    if (!uuid) {
+      return;
+    }
+    await resetLogo({ establishmentUuid: uuid });
+  }, [resetLogo, uuid]);
+
+  const fileUpload = useMemo(() => {
+    if (!uuid) {
+      return null;
+    }
+    return (
+      <FileUpload
+        entity='establishments'
+        error={error}
+        file={logo}
+        isLoading={isChanging}
+        label={logo ? 'Оновити логотип' : 'Завантажити логотип'}
+        onRemove={handleRemoveLogo}
+        onUpload={handleUploadLogo}
+      />
+    );
+  }, [uuid, error, logo, isChanging, handleRemoveLogo, handleUploadLogo]);
+
   return (
     <>
-      {establishment?.uuid && (
-        <FileUpload
-          entity='establishments'
-          file={establishment.logo}
-          label={
-            establishment?.logo ? 'Оновити логотип' : 'Завантажити логотип'
-          }
-          uploading={uploading}
-          onRemove={onRemoveLogo}
-          onUpload={async (file) => {
-            setUploading(true);
-            await onUploadLogo(file);
-            setUploading(false);
-          }}
-        />
-      )}
+      {fileUpload}
       <BaseForm
         fields={fields}
         initialValues={initialValues}
-        submitButtonText={establishment ? 'Зберегти зміни' : 'Додати заклад'}
+        isLoading={isLoading}
+        submitButtonText={uuid ? 'Зберегти зміни' : 'Додати заклад'}
         validationSchema={ESTABLISHMENT_VALIDATION_SCHEME}
         onSubmit={onSubmit}
       />

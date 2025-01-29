@@ -35,8 +35,3 @@ export const stylesFileUploadIconButton = {
     backgroundColor: 'rgba(255, 255, 255, 1)',
   },
 };
-
-export const stylesFileUploadLinearProgress = {
-  width: '100%',
-  mt: 1,
-};

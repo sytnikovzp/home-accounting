@@ -1,13 +1,5 @@
 import { resetPassword } from '../../services/authService';
 import {
-  createEstablishment,
-  deleteEstablishment,
-  getEstablishmentByUuid,
-  resetEstablishmentLogo,
-  updateEstablishment,
-  updateEstablishmentLogo,
-} from '../../services/establishmentsService';
-import {
   getAllPendingItems,
   moderationCategory,
   moderationEstablishment,
@@ -55,20 +47,6 @@ const restController = {
   editRole: (roleUuid, title, description, permissions) =>
     updateRole(roleUuid, title, description, permissions),
   removeRole: (roleUuid) => deleteRole(roleUuid),
-
-  // Establishment management
-  fetchEstablishmentByUuid: (establishmentUuid) =>
-    getEstablishmentByUuid(establishmentUuid),
-  addEstablishment: (title, description = '', url = '') =>
-    createEstablishment(title, description, url),
-  editEstablishment: (establishmentUuid, title, description, url) =>
-    updateEstablishment(establishmentUuid, title, description, url),
-  changeLogo: (establishmentUuid, establishmentLogo) =>
-    updateEstablishmentLogo(establishmentUuid, establishmentLogo),
-  resetEstablishmentLogo: (establishmentUuid) =>
-    resetEstablishmentLogo(establishmentUuid),
-  removeEstablishment: (establishmentUuid) =>
-    deleteEstablishment(establishmentUuid),
 
   // Moderation
   fetchAllPendingItems: async ({

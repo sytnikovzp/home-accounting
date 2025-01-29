@@ -6,6 +6,11 @@ const {
   Sequelize: { BaseError },
 } = require('../db/dbPostgres/models');
 
+const {
+  configs: {
+    FILES: { MAX_FILE_SIZE },
+  },
+} = require('../constants');
 const AuthError = require('../errors/authErrors');
 const GeneralError = require('../errors/generalErrors');
 
@@ -55,9 +60,18 @@ module.exports.sequelizeErrorHandler = (err, req, res, next) => {
 
 module.exports.uploadErrorHandler = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
+    let errorMessage = err.message;
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      errorMessage = `Файл занадто великий. Максимальний розмір: ${MAX_FILE_SIZE / 1024 / 1024}MB`;
+    }
+    if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+      errorMessage = err.message;
+    }
     return res
       .status(400)
-      .send(formatError('Помилка завантаження файлу', err.message, err.errors));
+      .send(
+        formatError('Помилка завантаження файлу', errorMessage, err.errors)
+      );
   }
   return next(err);
 };

@@ -1,85 +1,52 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useEditEstablishmentMutation,
+  useFetchEstablishmentByUuidQuery,
+} from '../../store/services';
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-function EstablishmentEditPage({
-  handleModalClose,
-  fetchEstablishments,
-  crudError,
-  setCrudError,
-}) {
+function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: establishment,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Establishment');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
-    }
-  }, [uuid, fetchEntityByUuid]);
+  const { data: establishment, isLoading: isFetching } =
+    useFetchEstablishmentByUuidQuery(uuid);
 
-  const handleSubmitEstablishment = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.editEstablishment(
-        establishment.uuid,
-        values.title,
-        values.description,
-        values.url
-      );
-      handleModalClose();
-      fetchEstablishments();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const [editEstablishment, { isLoading, error }] =
+    useEditEstablishmentMutation();
 
-  const handleUploadLogo = async (file) => {
-    setCrudError(null);
-    try {
-      await restController.changeLogo(establishment.uuid, file);
-      fetchEntityByUuid(uuid);
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const handleSubmitEstablishment = useCallback(
+    async (values) => {
+      const result = await editEstablishment({
+        establishmentUuid: uuid,
+        ...values,
+      });
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [editEstablishment, handleModalClose, uuid]
+  );
 
-  const handleRemoveLogo = async () => {
-    setCrudError(null);
-    try {
-      await restController.resetEstablishmentLogo(establishment.uuid);
-      fetchEntityByUuid(uuid);
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <EstablishmentForm
+      establishment={establishment}
+      isLoading={isLoading}
+      onSubmit={handleSubmitEstablishment}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <EstablishmentForm
-            establishment={establishment}
-            onRemoveLogo={handleRemoveLogo}
-            onSubmit={handleSubmitEstablishment}
-            onUploadLogo={handleUploadLogo}
-          />
-        )
-      }
-      error={error || crudError}
+      content={content}
+      error={error?.data}
       title='Редагування закладу...'
       onClose={handleModalClose}
     />

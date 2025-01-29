@@ -67,7 +67,7 @@ export const establishmentsApi = createApi({
       ],
     }),
 
-    editEstablishmentLogo: builder.mutation({
+    changeEstablishmentLogo: builder.mutation({
       query: ({ establishmentUuid, establishmentLogo }) => {
         const formData = new FormData();
         formData.append('establishmentLogo', establishmentLogo);
@@ -83,12 +83,12 @@ export const establishmentsApi = createApi({
     }),
 
     resetEstablishmentLogo: builder.mutation({
-      query: (establishmentUuid) => ({
+      query: ({ establishmentUuid }) => ({
         url: `establishments/${establishmentUuid}/logo/reset`,
         method: 'PATCH',
         body: { logo: null },
       }),
-      invalidatesTags: (result, error, establishmentUuid) => [
+      invalidatesTags: (result, error, { establishmentUuid }) => [
         { type: 'Establishment', id: establishmentUuid },
       ],
     }),
@@ -108,7 +108,7 @@ export const {
   useFetchEstablishmentByUuidQuery,
   useAddEstablishmentMutation,
   useEditEstablishmentMutation,
-  useEditEstablishmentLogoMutation,
+  useChangeEstablishmentLogoMutation,
   useResetEstablishmentLogoMutation,
   useRemoveEstablishmentMutation,
 } = establishmentsApi;

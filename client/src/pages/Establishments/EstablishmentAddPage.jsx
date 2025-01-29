@@ -1,34 +1,36 @@
-import restController from '../../api/rest/restController';
+import { useCallback } from 'react';
+
+import { useAddEstablishmentMutation } from '../../store/services';
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-function EstablishmentAddPage({
-  handleModalClose,
-  fetchEstablishments,
-  crudError,
-  setCrudError,
-}) {
-  const handleSubmitEstablishment = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.addEstablishment(
-        values.title,
-        values.description,
-        values.url
-      );
-      handleModalClose();
-      fetchEstablishments();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+function EstablishmentAddPage({ handleModalClose }) {
+  const [addEstablishment, { isLoading, error }] =
+    useAddEstablishmentMutation();
+
+  const handleSubmitEstablishment = useCallback(
+    async (values) => {
+      const result = await addEstablishment(values);
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [addEstablishment, handleModalClose]
+  );
+
+  const content = (
+    <EstablishmentForm
+      isLoading={isLoading}
+      onSubmit={handleSubmitEstablishment}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={<EstablishmentForm onSubmit={handleSubmitEstablishment} />}
-      error={crudError}
+      content={content}
+      error={error?.data}
       title='Додавання закладу...'
       onClose={handleModalClose}
     />

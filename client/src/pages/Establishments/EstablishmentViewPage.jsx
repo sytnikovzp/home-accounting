@@ -1,6 +1,5 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Box } from '@mui/material';
 import {
   CalendarToday,
@@ -12,13 +11,7 @@ import {
 } from '@mui/icons-material';
 
 import { configs } from '../../constants';
-
-import {
-  selectEstablishmentsActionError,
-  selectEstablishmentsProcessingAction,
-  selectSelectedEstablishment,
-} from '../../store/selectors/establishmentsSelectors';
-import { fetchEstablishmentByUuid } from '../../store/thunks/establishmentsThunks';
+import { useFetchEstablishmentByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -35,19 +28,14 @@ const { BASE_URL } = configs;
 
 function EstablishmentViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const dispatch = useDispatch();
 
-  const establishment = useSelector((state) =>
-    selectSelectedEstablishment(state, uuid)
-  );
-  const isLoading = useSelector(selectEstablishmentsProcessingAction);
-  const error = useSelector(selectEstablishmentsActionError);
-
-  useEffect(() => {
-    if (uuid) {
-      dispatch(fetchEstablishmentByUuid(uuid));
-    }
-  }, [dispatch, uuid]);
+  const {
+    data: establishment,
+    isLoading: isFetching,
+    error,
+  } = useFetchEstablishmentByUuidQuery(uuid, {
+    skip: !uuid,
+  });
 
   const { title, description, url, logo, status, moderation, creation } =
     establishment || {};
@@ -130,22 +118,22 @@ function EstablishmentViewPage({ handleModalClose }) {
     ]
   );
 
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Box sx={stylesViewPageBox}>
+        <ViewDetails data={data} extraStyles={stylesViewPageBoxWithAvatar} />
+      </Box>
+    );
+  }, [data, isFetching]);
+
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Box sx={stylesViewPageBox}>
-            <ViewDetails
-              data={data}
-              extraStyles={stylesViewPageBoxWithAvatar}
-            />
-          </Box>
-        )
-      }
-      error={error}
+      content={content}
+      error={error?.data}
       title='Деталі закладу...'
       onClose={handleModalClose}
     />

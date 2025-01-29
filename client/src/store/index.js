@@ -19,7 +19,6 @@ import {
 
 import authReducer from './slices/authSlice';
 import emailVerificationReducer from './slices/emailVerificationSlice';
-import establishmentsReducer from './slices/establishmentsSlice';
 import moderationsReducer from './slices/moderationsSlice';
 import permissionsReducer from './slices/permissionsSlice';
 import rolesReducer from './slices/rolesSlice';
@@ -33,7 +32,6 @@ const store = configureStore({
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [currenciesApi.reducerPath]: currenciesApi.reducer,
     emailVerification: emailVerificationReducer,
-    establishments: establishmentsReducer,
     [establishmentsApi.reducerPath]: establishmentsApi.reducer,
     [expensesApi.reducerPath]: expensesApi.reducer,
     [measuresApi.reducerPath]: measuresApi.reducer,

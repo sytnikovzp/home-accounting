@@ -66,7 +66,7 @@ export const usersApi = createApi({
       ],
     }),
 
-    editUserPhoto: builder.mutation({
+    changeUserPhoto: builder.mutation({
       query: ({ userUuid, userPhoto }) => {
         const formData = new FormData();
         formData.append('userPhoto', userPhoto);
@@ -82,12 +82,12 @@ export const usersApi = createApi({
     }),
 
     resetUserPhoto: builder.mutation({
-      query: (userUuid) => ({
+      query: ({ userUuid }) => ({
         url: `users/${userUuid}/photo/reset`,
         method: 'PATCH',
         body: { photo: null },
       }),
-      invalidatesTags: (result, error, userUuid) => [
+      invalidatesTags: (result, error, { userUuid }) => [
         { type: 'User', id: userUuid },
       ],
     }),
@@ -107,7 +107,7 @@ export const {
   useFetchUserByUuidQuery,
   useChangePasswordMutation,
   useEditUserMutation,
-  useEditUserPhotoMutation,
+  useChangeUserPhotoMutation,
   useResetUserPhotoMutation,
   useRemoveUserMutation,
 } = usersApi;

@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
 import { pageTitles } from '../../constants';
@@ -8,15 +7,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
-
-import {
-  selectEstablishments,
-  selectEstablishmentsIsLoadingList,
-  selectEstablishmentsListLoadingError,
-  selectTotalCount,
-} from '../../store/selectors/establishmentsSelectors';
-import { clearSelected } from '../../store/slices/establishmentsSlice';
-import { fetchEstablishments } from '../../store/thunks/establishmentsThunks';
+import { useFetchAllEstablishmentsQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
@@ -46,33 +37,27 @@ function EstablishmentsPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const establishments = useSelector(selectEstablishments);
-  const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectEstablishmentsIsLoadingList);
-  const error = useSelector(selectEstablishmentsListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      status: selectedStatus,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, selectedStatus, sortModel]
-  );
+  const {
+    data: establishmentsData,
+    error: fetchError,
+    isLoading,
+  } = useFetchAllEstablishmentsQuery({
+    page: currentPage,
+    limit: pageSize,
+    status: selectedStatus,
+    sort: sortModel.field,
+    order: sortModel.order,
+  });
 
-  useEffect(() => {
-    dispatch(fetchEstablishments(fetchParams));
-  }, [dispatch, fetchParams]);
+  const establishments = establishmentsData?.data || [];
+  const totalCount = establishmentsData?.totalCount || 0;
 
   usePageTitle(location, ESTABLISHMENTS_TITLES);
 
@@ -84,9 +69,8 @@ function EstablishmentsPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
     navigate('/establishments');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleAddClick = useCallback(() => {
     handleModalOpen('add');
@@ -112,8 +96,8 @@ function EstablishmentsPage() {
     return <Preloader message='Завантаження списку "Закладів"...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError.data.message} />;
   }
 
   return (
@@ -162,7 +146,6 @@ function EstablishmentsPage() {
       />
       <EntityRoutes
         entityPages={ESTABLISHMENTS_PAGES}
-        fetchEntities={fetchEstablishments}
         handleModalClose={handleModalClose}
       />
     </>

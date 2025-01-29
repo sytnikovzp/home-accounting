@@ -1,71 +1,71 @@
-import { useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useFetchEstablishmentByUuidQuery,
+  useRemoveEstablishmentMutation,
+} from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function EstablishmentRemovePage({
-  handleModalClose,
-  fetchEstablishments,
-  crudError,
-  setCrudError,
-}) {
+function EstablishmentRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: establishment,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Establishment');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
+  const { data: establishment, isLoading: isFetching } =
+    useFetchEstablishmentByUuidQuery(uuid);
+
+  const [removeEstablishment, { isLoading: isDeleting, error }] =
+    useRemoveEstablishmentMutation();
+
+  const handleDeleteEstablishment = useCallback(async () => {
+    if (!establishment?.uuid) {
+      return;
     }
-  }, [uuid, fetchEntityByUuid]);
-
-  const handleDeleteEstablishment = async () => {
-    try {
-      await restController.removeEstablishment(establishment.uuid);
+    const result = await removeEstablishment(establishment.uuid);
+    if (result?.data) {
       handleModalClose();
-      fetchEstablishments();
-    } catch (error) {
-      setCrudError(error.response.data);
     }
-  };
+  }, [establishment?.uuid, handleModalClose, removeEstablishment]);
+
+  const actions = useMemo(
+    () => [
+      <Button
+        key='remove'
+        fullWidth
+        color='error'
+        disabled={isDeleting}
+        size='large'
+        variant='contained'
+        onClick={handleDeleteEstablishment}
+      >
+        Видалити
+      </Button>,
+    ],
+    [isDeleting, handleDeleteEstablishment]
+  );
+
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Typography sx={stylesDeletePageTypography} variant='body1'>
+        Ви впевнені, що хочете видалити заклад «{establishment?.title}
+        »? Це призведе до видалення всіх витрат, пов`язаних з цим закладом.
+      </Typography>
+    );
+  }, [isFetching, establishment?.title]);
 
   return (
     <ModalWindow
       isOpen
-      actions={[
-        <Button
-          key='remove'
-          fullWidth
-          color='error'
-          size='large'
-          variant='contained'
-          onClick={handleDeleteEstablishment}
-        >
-          Видалити
-        </Button>,
-      ]}
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити заклад «{establishment?.title}
-            »? Це призведе до видалення всіх витрат, пов`язаних з цим закладом.
-          </Typography>
-        )
-      }
-      error={error || crudError}
+      actions={actions}
+      content={content}
+      error={error?.data}
       title='Видалення закладу...'
       onClose={handleModalClose}
     />
