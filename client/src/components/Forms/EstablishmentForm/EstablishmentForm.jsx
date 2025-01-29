@@ -16,7 +16,7 @@ function EstablishmentForm({ isLoading, establishment = null, onSubmit }) {
     description = '',
     url = '',
     logo,
-  } = establishment || {};
+  } = establishment ?? {};
 
   const initialValues = { title, description, url };
 

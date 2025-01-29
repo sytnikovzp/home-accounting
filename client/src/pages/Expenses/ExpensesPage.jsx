@@ -56,8 +56,8 @@ function ExpensesPage() {
     order: sortModel.order,
   });
 
-  const expenses = expensesData?.data || [];
-  const totalCount = expensesData?.totalCount || 0;
+  const expenses = expensesData?.data ?? [];
+  const totalCount = expensesData?.totalCount ?? 0;
 
   usePageTitle(location, EXPENSES_TITLES);
 

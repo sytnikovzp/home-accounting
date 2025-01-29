@@ -3,7 +3,7 @@ import { CURRENCY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 import BaseForm from '../BaseForm/BaseForm';
 
 function CurrencyForm({ isLoading, currency = null, onSubmit }) {
-  const { uuid, title = '', code = '' } = currency || {};
+  const { uuid, title = '', code = '' } = currency ?? {};
 
   const initialValues = { title, code };
 

@@ -48,12 +48,12 @@ function ExpenseEditPage({ handleModalClose }) {
     <Preloader />
   ) : (
     <ExpenseForm
-      currencies={queries[2].data?.data || []}
-      establishments={queries[3].data?.data || []}
+      currencies={queries[2].data?.data ?? []}
+      establishments={queries[3].data?.data ?? []}
       expense={expense}
       isLoading={isLoading}
-      measures={queries[1].data?.data || []}
-      products={queries[4].data?.data || []}
+      measures={queries[1].data?.data ?? []}
+      products={queries[4].data?.data ?? []}
       onSubmit={handleSubmitExpense}
     />
   );

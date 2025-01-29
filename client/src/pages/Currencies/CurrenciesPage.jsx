@@ -54,8 +54,8 @@ function CurrenciesPage() {
     order: sortModel.order,
   });
 
-  const currencies = currenciesData?.data || [];
-  const totalCount = currenciesData?.totalCount || 0;
+  const currencies = currenciesData?.data ?? [];
+  const totalCount = currenciesData?.totalCount ?? 0;
 
   usePageTitle(location, CURRENCIES_TITLES);
 

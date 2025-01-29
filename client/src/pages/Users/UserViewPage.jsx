@@ -53,8 +53,8 @@ function UserViewPage({ handleModalClose }) {
   }, [dispatch, uuid]);
 
   const { fullName, role, photo, email, emailVerificationStatus, creation } =
-    user || {};
-  const { createdAt, updatedAt } = creation || {};
+    user ?? {};
+  const { createdAt, updatedAt } = creation ?? {};
 
   const handleResendVerification = useCallback(
     (email) => {

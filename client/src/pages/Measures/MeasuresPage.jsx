@@ -54,8 +54,8 @@ function MeasuresPage() {
     order: sortModel.order,
   });
 
-  const measures = measuresData?.data || [];
-  const totalCount = measuresData?.totalCount || 0;
+  const measures = measuresData?.data ?? [];
+  const totalCount = measuresData?.totalCount ?? 0;
 
   usePageTitle(location, MEASURES_TITLES);
 

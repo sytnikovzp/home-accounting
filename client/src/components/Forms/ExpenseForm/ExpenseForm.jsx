@@ -24,7 +24,7 @@ function ExpenseForm({
     measure,
     currency,
     date,
-  } = expense || {};
+  } = expense ?? {};
 
   const initialValues = {
     product: product?.title || '',

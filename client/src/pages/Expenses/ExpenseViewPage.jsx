@@ -41,8 +41,8 @@ function ExpenseViewPage({ handleModalClose }) {
     currency,
     date,
     creation,
-  } = expense || {};
-  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+  } = expense ?? {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
   const data = useMemo(
     () => [

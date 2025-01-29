@@ -56,8 +56,8 @@ function CategoriesPage() {
     order: sortModel.order,
   });
 
-  const categories = categoriesData?.data || [];
-  const totalCount = categoriesData?.totalCount || 0;
+  const categories = categoriesData?.data ?? [];
+  const totalCount = categoriesData?.totalCount ?? 0;
 
   usePageTitle(location, CATEGORIES_TITLES);
 

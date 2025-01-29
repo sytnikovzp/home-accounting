@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import {
   useEditProductMutation,
-  useFetchAllCategoriesQuery,
   useFetchProductByUuidQuery,
 } from '../../store/services';
 
@@ -14,14 +13,8 @@ import Preloader from '../../components/Preloader/Preloader';
 function ProductEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const queries = [
-    useFetchProductByUuidQuery(uuid),
-    useFetchAllCategoriesQuery({ page: 1, limit: 500 }),
-  ];
-
-  const product = queries[0]?.data;
-
-  const isFetching = queries.some(({ isLoading }) => isLoading);
+  const { data: product, isLoading: isFetching } =
+    useFetchProductByUuidQuery(uuid);
 
   const [editProduct, { isLoading, error }] = useEditProductMutation();
 
@@ -42,7 +35,6 @@ function ProductEditPage({ handleModalClose }) {
     <Preloader />
   ) : (
     <ProductForm
-      categories={queries[1].data?.data || []}
       isLoading={isLoading}
       product={product}
       onSubmit={handleSubmitProduct}

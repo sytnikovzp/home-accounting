@@ -29,9 +29,9 @@ function ProductViewPage({ handleModalClose }) {
     skip: !uuid,
   });
 
-  const { title, status, moderation, creation, category } = product || {};
-  const { moderatorUuid, moderatorFullName } = moderation || {};
-  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+  const { title, status, moderation, creation, category } = product ?? {};
+  const { moderatorUuid, moderatorFullName } = moderation ?? {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
   const data = useMemo(
     () => [

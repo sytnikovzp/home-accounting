@@ -56,8 +56,8 @@ function EstablishmentsPage() {
     order: sortModel.order,
   });
 
-  const establishments = establishmentsData?.data || [];
-  const totalCount = establishmentsData?.totalCount || 0;
+  const establishments = establishmentsData?.data ?? [];
+  const totalCount = establishmentsData?.totalCount ?? 0;
 
   usePageTitle(location, ESTABLISHMENTS_TITLES);
 

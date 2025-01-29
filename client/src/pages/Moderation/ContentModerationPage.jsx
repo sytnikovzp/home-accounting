@@ -55,8 +55,8 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
     status,
     creation,
     category,
-  } = moderation || {};
-  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+  } = moderation ?? {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
   const logoSrc = useMemo(() => {
     const baseUrl = BASE_URL.replace('/api/', '');

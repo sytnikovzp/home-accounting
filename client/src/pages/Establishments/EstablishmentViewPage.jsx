@@ -38,9 +38,9 @@ function EstablishmentViewPage({ handleModalClose }) {
   });
 
   const { title, description, url, logo, status, moderation, creation } =
-    establishment || {};
-  const { moderatorUuid, moderatorFullName } = moderation || {};
-  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+    establishment ?? {};
+  const { moderatorUuid, moderatorFullName } = moderation ?? {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
   const logoSrc = useMemo(() => {
     const baseUrl = BASE_URL.replace('/api/', '');

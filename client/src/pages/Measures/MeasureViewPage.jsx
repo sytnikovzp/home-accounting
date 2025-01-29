@@ -28,8 +28,8 @@ function MeasureViewPage({ handleModalClose }) {
     skip: !uuid,
   });
 
-  const { title, description, creation } = measure || {};
-  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+  const { title, description, creation } = measure ?? {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
   const data = useMemo(
     () => [

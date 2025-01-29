@@ -3,7 +3,7 @@ import { CATEGORY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 import BaseForm from '../BaseForm/BaseForm';
 
 function CategoryForm({ isLoading, category = null, onSubmit }) {
-  const { uuid, title = '' } = category || {};
+  const { uuid, title = '' } = category ?? {};
 
   const initialValues = { title };
 

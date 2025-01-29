@@ -28,8 +28,8 @@ function CurrencyViewPage({ handleModalClose }) {
     skip: !uuid,
   });
 
-  const { title, code, creation } = currency || {};
-  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation || {};
+  const { title, code, creation } = currency ?? {};
+  const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
   const data = useMemo(
     () => [

@@ -32,7 +32,7 @@ function RoleViewPage({ handleModalClose }) {
     }
   }, [dispatch, uuid]);
 
-  const { title, description, permissions, createdAt, updatedAt } = role || {};
+  const { title, description, permissions, createdAt, updatedAt } = role ?? {};
 
   const data = useMemo(
     () => [

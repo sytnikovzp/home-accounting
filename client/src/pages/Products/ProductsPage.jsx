@@ -56,8 +56,8 @@ function ProductsPage() {
     order: sortModel.order,
   });
 
-  const products = productsData?.data || [];
-  const totalCount = productsData?.totalCount || 0;
+  const products = productsData?.data ?? [];
+  const totalCount = productsData?.totalCount ?? 0;
 
   usePageTitle(location, PRODUCTS_TITLES);
 
