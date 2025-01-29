@@ -3,10 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import {
   useEditExpenseMutation,
-  useFetchAllCurrenciesQuery,
-  useFetchAllEstablishmentsQuery,
-  useFetchAllMeasuresQuery,
-  useFetchAllProductsQuery,
   useFetchExpenseByUuidQuery,
 } from '../../store/services';
 
@@ -17,17 +13,8 @@ import Preloader from '../../components/Preloader/Preloader';
 function ExpenseEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const queries = [
-    useFetchExpenseByUuidQuery(uuid),
-    useFetchAllMeasuresQuery({ page: 1, limit: 500 }),
-    useFetchAllCurrenciesQuery({ page: 1, limit: 500 }),
-    useFetchAllEstablishmentsQuery({ page: 1, limit: 500 }),
-    useFetchAllProductsQuery({ page: 1, limit: 500 }),
-  ];
-
-  const expense = queries[0]?.data;
-
-  const isFetching = queries.some(({ isLoading }) => isLoading);
+  const { data: expense, isLoading: isFetching } =
+    useFetchExpenseByUuidQuery(uuid);
 
   const [editExpense, { isLoading, error }] = useEditExpenseMutation();
 
@@ -48,12 +35,8 @@ function ExpenseEditPage({ handleModalClose }) {
     <Preloader />
   ) : (
     <ExpenseForm
-      currencies={queries[2].data?.data ?? []}
-      establishments={queries[3].data?.data ?? []}
       expense={expense}
       isLoading={isLoading}
-      measures={queries[1].data?.data ?? []}
-      products={queries[4].data?.data ?? []}
       onSubmit={handleSubmitExpense}
     />
   );

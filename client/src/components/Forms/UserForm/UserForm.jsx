@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Box, Button } from '@mui/material';
 
+import { formatItems } from '../../../utils/sharedFunctions';
 import { USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import FileUpload from '../../FileUpload/FileUpload';
@@ -26,17 +27,6 @@ function UserForm({
       }
     : { fullName: '', email: '', role: '' };
 
-  const sortedRoles = useMemo(
-    () =>
-      roles
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .map((role) => ({
-          value: role.title,
-          label: role.title,
-        })),
-    [roles]
-  );
-
   const fields = [
     {
       name: 'fullName',
@@ -55,7 +45,7 @@ function UserForm({
       name: 'role',
       label: 'Роль',
       type: 'select',
-      options: sortedRoles,
+      options: formatItems(roles, 'title', 'title'),
       placeholder: 'Наприклад "User"',
       required: true,
     },

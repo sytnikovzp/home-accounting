@@ -1,20 +1,22 @@
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
-import { groupByFirstLetter } from '../../../utils/sharedFunctions';
+import {
+  formatItems,
+  groupByFirstLetter,
+} from '../../../utils/sharedFunctions';
 import { EXPENSE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import {
+  useFetchAllCurrenciesQuery,
+  useFetchAllEstablishmentsQuery,
+  useFetchAllMeasuresQuery,
+  useFetchAllProductsQuery,
+} from '../../../store/services';
 
+import Preloader from '../../Preloader/Preloader';
 import BaseForm from '../BaseForm/BaseForm';
 
-function ExpenseForm({
-  isLoading,
-  expense = null,
-  onSubmit,
-  products = [],
-  establishments = [],
-  measures = [],
-  currencies = [],
-}) {
+function ExpenseForm({ isLoading, expense = null, onSubmit }) {
   const {
     uuid,
     product,
@@ -26,6 +28,22 @@ function ExpenseForm({
     date,
   } = expense ?? {};
 
+  const queries = [
+    useFetchAllMeasuresQuery({ page: 1, limit: 500, sort: 'description' }),
+    useFetchAllCurrenciesQuery({ page: 1, limit: 500, sort: 'title' }),
+    useFetchAllEstablishmentsQuery({ page: 1, limit: 500, sort: 'title' }),
+    useFetchAllProductsQuery({ page: 1, limit: 500, sort: 'title' }),
+  ];
+
+  const currencies = queries[1].data?.data ?? [];
+  const establishments = queries[2].data?.data ?? [];
+  const measures = queries[0].data?.data ?? [];
+  const products = queries[3].data?.data ?? [];
+
+  if (queries.some((query) => query.isLoading)) {
+    return <Preloader />;
+  }
+
   const initialValues = {
     product: product?.title || '',
     quantity: quantity || '',
@@ -36,25 +54,12 @@ function ExpenseForm({
     date: date || format(new Date(), 'dd MMMM yyyy', { locale: uk }),
   };
 
-  const groupedOptions = {
-    products: groupByFirstLetter([...products], 'title', 'title'),
-    currencies: groupByFirstLetter([...currencies], 'title', 'title'),
-    establishments: groupByFirstLetter([...establishments], 'title', 'title'),
-  };
-
-  const sortedMeasures = [...measures]
-    .sort((a, b) => a.description.localeCompare(b.description))
-    .map((measure) => ({
-      value: measure.title,
-      label: measure.description,
-    }));
-
   const fields = [
     {
       name: 'product',
       label: 'Товар',
       type: 'autocomplete',
-      options: groupedOptions.products,
+      options: groupByFirstLetter([...products], 'title', 'title'),
       placeholder: 'Наприклад "Помідори"',
       required: true,
       autoFocus: true,
@@ -75,7 +80,7 @@ function ExpenseForm({
       name: 'establishment',
       label: 'Заклад',
       type: 'autocomplete',
-      options: groupedOptions.establishments,
+      options: groupByFirstLetter([...establishments], 'title', 'title'),
       placeholder: 'Наприклад "АТБ"',
       required: true,
     },
@@ -83,7 +88,7 @@ function ExpenseForm({
       name: 'measure',
       label: 'Одиниця вимірів',
       type: 'select',
-      options: sortedMeasures,
+      options: formatItems(measures, 'title', 'description'),
       placeholder: 'Наприклад "кг"',
       required: true,
     },
@@ -91,7 +96,7 @@ function ExpenseForm({
       name: 'currency',
       label: 'Валюта',
       type: 'autocomplete',
-      options: groupedOptions.currencies,
+      options: groupByFirstLetter([...currencies], 'title', 'title'),
       placeholder: 'Наприклад "Українська гривня"',
       required: true,
     },

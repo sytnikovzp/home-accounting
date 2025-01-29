@@ -2,18 +2,24 @@ import { groupByFirstLetter } from '../../../utils/sharedFunctions';
 import { PRODUCT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 import { useFetchAllCategoriesQuery } from '../../../store/services';
 
+import Preloader from '../../Preloader/Preloader';
 import BaseForm from '../BaseForm/BaseForm';
 
 function ProductForm({ isLoading, product = null, onSubmit }) {
   const { uuid, title, category } = product ?? {};
 
-  const { data: categoriesData } = useFetchAllCategoriesQuery({
-    page: 1,
-    limit: 500,
-    sort: 'title',
-  });
+  const { data: categoriesData, isLoading: isFetchingCategories } =
+    useFetchAllCategoriesQuery({
+      page: 1,
+      limit: 500,
+      sort: 'title',
+    });
 
   const categories = categoriesData?.data ?? [];
+
+  if (isFetchingCategories) {
+    return <Preloader />;
+  }
 
   const initialValues = {
     title: title || '',

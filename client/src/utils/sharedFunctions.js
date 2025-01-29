@@ -105,6 +105,12 @@ const groupByFirstLetter = (items, labelKey, valueKey) =>
     return acc;
   }, {});
 
+const formatItems = (items, valueKey, labelKey) =>
+  items.map((item) => ({
+    value: item[valueKey],
+    label: item[labelKey],
+  }));
+
 const setErrorListState = (state, { payload }) => {
   state.isLoadingList = false;
   state.listLoadingError = payload;
@@ -136,6 +142,7 @@ const setLoadingState = (state) => {
 };
 
 export {
+  formatItems,
   getAccessToken,
   groupByFirstLetter,
   removeAccessToken,
