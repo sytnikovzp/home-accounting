@@ -11,9 +11,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { uuid: null, accessToken: null },
-  moderator: { uuid: null, accessToken: null },
-  admin: { uuid: null, accessToken: null },
+  admin: { accessToken: null, uuid: null },
+  moderator: { accessToken: null, uuid: null },
+  user: { accessToken: null, uuid: null },
 };
 
 describe('UserController', () => {
@@ -83,7 +83,7 @@ describe('UserController', () => {
     it('should get all users (custom pagination)', async () => {
       const response = await request(app)
         .get('/api/users')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -165,8 +165,8 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          fullName: 'Charlie Updated',
           email: 'Charlie.Updated@Gmail.com',
+          fullName: 'Charlie Updated',
           role: 'User',
         });
       expect(response.status).toBe(200);
@@ -183,8 +183,8 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.moderator.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          fullName: 'Charlie Updated',
           email: 'Charlie.Updated@Gmail.com',
+          fullName: 'Charlie Updated',
           role: 'Moderator',
         });
       expect(response.status).toBe(403);
@@ -211,8 +211,8 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          fullName: 'Charlie Updated',
           email: 'Charlie.Updated@Gmail.com',
+          fullName: 'Charlie Updated',
           role: 'Moderator',
         });
       expect(response.status).toBe(403);
@@ -225,8 +225,8 @@ describe('UserController', () => {
       const response = await request(app)
         .patch(`/api/users/${authData.user.uuid}`)
         .send({
-          fullName: 'Charlie Updated',
           email: 'Charlie.Updated@Gmail.com',
+          fullName: 'Charlie Updated',
           role: 'User',
         });
       expect(response.status).toBe(401);
@@ -248,8 +248,8 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          fullName: 'Charlie Updated',
           email: 'Charlie.Updated@Gmail.com',
+          fullName: 'Charlie Updated',
           role: 'Moderator',
         });
       expect(response.status).toBe(200);
@@ -272,13 +272,13 @@ describe('UserController', () => {
     });
   });
 
-  describe('PATCH /api/users/:userUuid/photo/reset', () => {
+  describe('PATCH /api/users/:userUuid/photo', () => {
     it('should remove user photo', async () => {
       const updatedUser = {
         photo: null,
       };
       const response = await request(app)
-        .patch(`/api/users/${authData.user.uuid}/photo/reset`)
+        .patch(`/api/users/${authData.user.uuid}/photo`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send(updatedUser);
       expect(response.status).toBe(200);

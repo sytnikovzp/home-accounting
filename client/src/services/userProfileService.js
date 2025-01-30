@@ -26,7 +26,7 @@ const updateUser = async (fullName, email, role) => {
   return response;
 };
 
-const updateUserPhoto = async (userPhoto) => {
+const changeUserPhoto = async (userPhoto) => {
   const formData = new FormData();
   formData.append('userPhoto', userPhoto);
   const response = await requestHandler({
@@ -39,7 +39,7 @@ const updateUserPhoto = async (userPhoto) => {
 
 const resetUserPhoto = async () => {
   const response = await requestHandler({
-    url: `/profile/photo/reset`,
+    url: `/profile/photo`,
     method: 'PATCH',
     data: { photo: null },
   });
@@ -56,9 +56,9 @@ const deleteUser = async () => {
 
 export {
   changePassword,
+  changeUserPhoto,
   deleteUser,
   getUserProfile,
   resetUserPhoto,
   updateUser,
-  updateUserPhoto,
 };

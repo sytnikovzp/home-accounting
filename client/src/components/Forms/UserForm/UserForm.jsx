@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 
@@ -13,7 +14,6 @@ import { stylesUserFormPasswordButton } from '../../../styles';
 
 function UserForm({
   isLoading,
-  isRemoving,
   isChanging,
   onDelete,
   onUpload,
@@ -48,7 +48,6 @@ function UserForm({
       name: 'email',
       label: 'E-mail',
       placeholder: 'example@gmail.com',
-      required: true,
     },
     {
       name: 'role',
@@ -56,13 +55,12 @@ function UserForm({
       type: 'select',
       options: formatItems(roles, 'title', 'title'),
       placeholder: 'Наприклад "User"',
-      required: true,
     },
   ];
 
-  const handleChangePassword = () => {
+  const handleChangePassword = useCallback(() => {
     navigate(`/users/password/${uuid}`);
-  };
+  }, [navigate, uuid]);
 
   if (isFetchingRoles) {
     return <Preloader />;
@@ -70,35 +68,26 @@ function UserForm({
 
   return (
     <>
-      {uuid && (
-        <FileUpload
-          entity='users'
-          file={photo}
-          isLoading={isChanging}
-          label={photo ? 'Оновити фото' : 'Завантажити фото'}
-          onReset={onReset}
-          onUpload={onUpload}
-        />
-      )}
-      {uuid && (
-        <Box sx={stylesUserFormPasswordButton}>
-          <Button
-            color='success'
-            variant='contained'
-            onClick={handleChangePassword}
-          >
-            Змінити пароль
-          </Button>
-          <Button
-            color='error'
-            disabled={isRemoving}
-            variant='contained'
-            onClick={onDelete}
-          >
-            Видалити профіль
-          </Button>
-        </Box>
-      )}
+      <FileUpload
+        entity='users'
+        file={photo}
+        isLoading={isChanging}
+        label={photo ? 'Оновити фото' : 'Завантажити фото'}
+        onReset={onReset}
+        onUpload={onUpload}
+      />
+      <Box sx={stylesUserFormPasswordButton}>
+        <Button
+          color='success'
+          variant='contained'
+          onClick={handleChangePassword}
+        >
+          Змінити пароль
+        </Button>
+        <Button color='error' variant='contained' onClick={onDelete}>
+          Видалити профіль
+        </Button>
+      </Box>
       <BaseForm
         fields={fields}
         initialValues={initialValues}

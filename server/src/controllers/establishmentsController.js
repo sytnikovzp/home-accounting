@@ -6,7 +6,7 @@ const {
   createEstablishment,
   updateEstablishment,
   deleteEstablishment,
-  updateEstablishmentLogo,
+  changeEstablishmentLogo,
   resetEstablishmentLogo,
 } = require('../services/establishmentsService');
 const { getCurrentUser } = require('../services/usersService');
@@ -103,7 +103,7 @@ class EstablishmentsController {
     }
   }
 
-  static async updateEstablishmentLogo(req, res, next) {
+  static async changeEstablishmentLogo(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
       const {
@@ -111,7 +111,7 @@ class EstablishmentsController {
         file: { filename },
       } = req;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const updatedLogoEstablishment = await updateEstablishmentLogo(
+      const updatedLogoEstablishment = await changeEstablishmentLogo(
         establishmentUuid,
         filename,
         currentUser,
@@ -126,7 +126,7 @@ class EstablishmentsController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Update logo establishment error: ', error.message);
+      console.error('Change logo establishment error: ', error.message);
       next(error);
     }
   }

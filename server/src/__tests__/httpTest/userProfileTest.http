@@ -1,7 +1,7 @@
 ### Get current user profile
 GET http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYmRkZjFiMzItNmQwZi00MjU3LTgyNWQtOTY5MzVmZjU0NGU4IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3Mzc0NzI5MTUsImV4cCI6MTczODc2ODkxNX0.0ua7kFL6PHl8vFIDfBTtaByAUWWATiybatwrxyHbDA8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZmVmZTJjMTEtZDViNi00ZDgyLWJiNWUtZjEzYjEwOTNlYmU1IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTI2NjQsImV4cCI6MTczOTU0ODY2NH0.ruuV7eS6cV4ZtYH8kRf7UGpx0YoUebY7UA2GM0xeqJw
 
 // ==============================================================
 
@@ -31,10 +31,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlM
 
 // ==============================================================
 
-### Update current user photo
+### Change current user photo
 PATCH http://localhost:5000/api/profile/photo HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlMGItZGM1Ny00OWI1LTgyNDktYmJjMjQ2NWFmYjRjIiwidG9rZW5WZXJzaW9uIjoyLCJpYXQiOjE3Mzc0NzIyNzMsImV4cCI6MTczODc2ODI3M30.neOiW6MJuUieknlpuZ7GcWh9U7opoZRGidQh6MeRpt4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZmVmZTJjMTEtZDViNi00ZDgyLWJiNWUtZjEzYjEwOTNlYmU1IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTI2NjQsImV4cCI6MTczOTU0ODY2NH0.ruuV7eS6cV4ZtYH8kRf7UGpx0YoUebY7UA2GM0xeqJw
 
 --boundary
 Content-Disposition: form-data; name="userPhoto"; filename="user.png"
@@ -49,13 +49,9 @@ Content-Type: image/png
 --boundary--
 
 ### Reset current user photo
-PATCH http://localhost:5000/api/profile/photo/reset HTTP/1.1
+DELETE http://localhost:5000/api/profile/photo HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlMGItZGM1Ny00OWI1LTgyNDktYmJjMjQ2NWFmYjRjIiwidG9rZW5WZXJzaW9uIjoyLCJpYXQiOjE3Mzc0NzIyNzMsImV4cCI6MTczODc2ODI3M30.neOiW6MJuUieknlpuZ7GcWh9U7opoZRGidQh6MeRpt4
-
-{
-  "photo": null
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZmVmZTJjMTEtZDViNi00ZDgyLWJiNWUtZjEzYjEwOTNlYmU1IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTI2NjQsImV4cCI6MTczOTU0ODY2NH0.ruuV7eS6cV4ZtYH8kRf7UGpx0YoUebY7UA2GM0xeqJw
 
 // ==============================================================
 

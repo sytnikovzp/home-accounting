@@ -298,7 +298,7 @@ class UsersService {
     };
   }
 
-  static async updateUserPhoto(uuid, filename, currentUser) {
+  static async changeUserPhoto(uuid, filename, currentUser) {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }

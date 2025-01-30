@@ -20,10 +20,7 @@ function CurrencyEditPage({ handleModalClose }) {
 
   const handleSubmitCurrency = useCallback(
     async (values) => {
-      const result = await editCurrency({
-        currencyUuid: uuid,
-        ...values,
-      });
+      const result = await editCurrency({ currencyUuid: uuid, ...values });
       if (result?.data) {
         handleModalClose();
       }

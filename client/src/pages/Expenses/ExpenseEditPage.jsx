@@ -20,10 +20,7 @@ function ExpenseEditPage({ handleModalClose }) {
 
   const handleSubmitExpense = useCallback(
     async (values) => {
-      const result = await editExpense({
-        expenseUuid: uuid,
-        ...values,
-      });
+      const result = await editExpense({ expenseUuid: uuid, ...values });
       if (result?.data) {
         handleModalClose();
       }

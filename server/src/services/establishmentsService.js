@@ -168,7 +168,7 @@ class EstablishmentsService {
     return formatEstablishmentData(updatedEstablishment);
   }
 
-  static async updateEstablishmentLogo(
+  static async changeEstablishmentLogo(
     uuid,
     filename,
     currentUser,
@@ -176,9 +176,6 @@ class EstablishmentsService {
   ) {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
-    }
-    if (!filename) {
-      throw badRequest('Файл не завантажено');
     }
     const foundEstablishment = await Establishment.findOne({ where: { uuid } });
     if (!foundEstablishment) {
@@ -193,6 +190,9 @@ class EstablishmentsService {
       throw forbidden(
         'Ви не маєте дозволу на оновлення логотипу цього закладу'
       );
+    }
+    if (!filename) {
+      throw badRequest('Файл не завантажено');
     }
     const [affectedRows, [updatedEstablishmentLogo]] =
       await Establishment.update(

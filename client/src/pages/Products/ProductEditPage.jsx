@@ -20,10 +20,7 @@ function ProductEditPage({ handleModalClose }) {
 
   const handleSubmitProduct = useCallback(
     async (values) => {
-      const result = await editProduct({
-        productUuid: uuid,
-        ...values,
-      });
+      const result = await editProduct({ productUuid: uuid, ...values });
       if (result?.data) {
         handleModalClose();
       }

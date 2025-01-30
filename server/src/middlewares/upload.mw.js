@@ -50,18 +50,18 @@ const createFileFilter =
 
 const createUploader = (subfolder, mimeRegexp, fileExtensions, maxSize) =>
   multer({
-    storage: createStorage(subfolder),
     fileFilter: createFileFilter(mimeRegexp, fileExtensions),
     limits: { fileSize: maxSize },
+    storage: createStorage(subfolder),
   });
 
-module.exports.uploadEstablishmentLogos = createUploader(
+module.exports.uploadEstablishmentLogo = createUploader(
   'establishments',
   IMAGE_MIMETYPE,
   IMAGE_EXTENSIONS,
   MAX_FILE_SIZE
 );
-module.exports.uploadUserPhotos = createUploader(
+module.exports.uploadUserPhoto = createUploader(
   'users',
   IMAGE_MIMETYPE,
   IMAGE_EXTENSIONS,

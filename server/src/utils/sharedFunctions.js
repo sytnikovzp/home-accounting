@@ -1,6 +1,6 @@
 const axios = require('axios');
 const bcrypt = require('bcrypt');
-const { format } = require('date-fns');
+const { format, parse, isValid } = require('date-fns');
 const { uk } = require('date-fns/locale');
 
 const {
@@ -28,8 +28,8 @@ const verifyPassword = function (password, userPassword) {
 
 const setRefreshTokenCookie = function (res, refreshToken) {
   res.cookie('refreshToken', refreshToken, {
-    maxAge: 60 * 24 * 60 * 60 * 1000,
     httpOnly: true,
+    maxAge: 60 * 24 * 60 * 60 * 1000,
   });
 };
 
@@ -44,11 +44,11 @@ const formatDate = function (date) {
 const getTime = function (ago = 'allTime') {
   const timeAgo = new Date();
   const intervals = {
-    day: () => timeAgo.setDate(timeAgo.getDate() - 1),
-    week: () => timeAgo.setDate(timeAgo.getDate() - 7),
-    month: () => timeAgo.setMonth(timeAgo.getMonth() - 1),
-    year: () => timeAgo.setFullYear(timeAgo.getFullYear() - 1),
     allTime: () => new Date(0),
+    day: () => timeAgo.setDate(timeAgo.getDate() - 1),
+    month: () => timeAgo.setMonth(timeAgo.getMonth() - 1),
+    week: () => timeAgo.setDate(timeAgo.getDate() - 7),
+    year: () => timeAgo.setFullYear(timeAgo.getFullYear() - 1),
   };
   return (intervals[ago] || intervals.allTime)();
 };
@@ -92,9 +92,9 @@ const getRecordByTitle = async function (Model, title) {
     return null;
   }
   const record = await Model.findOne({
-    where: { title },
     attributes: ['uuid', 'title'],
     raw: true,
+    where: { title },
   });
   if (!record) {
     throw notFound(`${Model.name} not found`);
@@ -107,9 +107,9 @@ const getCurrencyByTitle = async function (Model, title) {
     return null;
   }
   const record = await Model.findOne({
-    where: { title },
     attributes: ['uuid', 'title', 'code'],
     raw: true,
+    where: { title },
   });
   if (!record) {
     throw notFound(`${Model.name} not found`);
@@ -123,8 +123,8 @@ const getUserDetailsByEmail = async function (email) {
     return null;
   }
   return {
-    uuid: user.uuid,
     fullName: user.fullName,
+    uuid: user.uuid,
   };
 };
 
@@ -150,6 +150,16 @@ const convertToUAH = async (amount, currencyCode) => {
   return amountInUAH;
 };
 
+const parseDateString = (value, originalValue) => {
+  if (typeof originalValue === 'string') {
+    const parsedDate = parse(originalValue, 'dd MMMM yyyy', new Date(), {
+      locale: uk,
+    });
+    return isValid(parsedDate) ? parsedDate : new Date('');
+  }
+  return originalValue;
+};
+
 const checkToken = async (token, type = 'reset') => {
   let checkedToken = null;
   if (type === 'reset') {
@@ -169,19 +179,20 @@ const checkToken = async (token, type = 'reset') => {
 };
 
 module.exports = {
-  hashPassword,
-  verifyPassword,
-  setRefreshTokenCookie,
-  formatDateTime,
-  formatDate,
-  getTime,
-  emailToLowerCase,
-  isValidUUID,
   checkPermission,
-  getRecordByTitle,
-  getCurrencyByTitle,
-  getUserDetailsByEmail,
-  mapValue,
-  convertToUAH,
   checkToken,
+  convertToUAH,
+  emailToLowerCase,
+  formatDate,
+  formatDateTime,
+  getCurrencyByTitle,
+  getRecordByTitle,
+  getTime,
+  getUserDetailsByEmail,
+  hashPassword,
+  isValidUUID,
+  mapValue,
+  parseDateString,
+  setRefreshTokenCookie,
+  verifyPassword,
 };

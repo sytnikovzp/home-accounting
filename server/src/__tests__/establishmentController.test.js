@@ -11,9 +11,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { uuid: null, accessToken: null },
-  moderator: { uuid: null, accessToken: null },
-  admin: { uuid: null, accessToken: null },
+  admin: { accessToken: null, uuid: null },
+  moderator: { accessToken: null, uuid: null },
+  user: { accessToken: null, uuid: null },
 };
 
 describe('EstablishmentsController', () => {
@@ -74,7 +74,7 @@ describe('EstablishmentsController', () => {
     it('should return list of establishments (status approved, custom pagination)', async () => {
       const response = await request(app)
         .get('/api/establishments')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -97,7 +97,7 @@ describe('EstablishmentsController', () => {
       const response = await request(app)
         .get('/api/establishments')
         .query({ status: 'pending' })
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -120,7 +120,7 @@ describe('EstablishmentsController', () => {
       const response = await request(app)
         .get('/api/establishments')
         .query({ status: 'rejected' })
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -140,8 +140,8 @@ describe('EstablishmentsController', () => {
         .post('/api/establishments')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Новий модераторський заклад',
           description: 'Тестовий опис закладу',
+          title: 'Новий модераторський заклад',
           url: 'https://www.moderator.com',
         });
       expect(response.status).toBe(201);
@@ -160,8 +160,8 @@ describe('EstablishmentsController', () => {
         .post('/api/establishments')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Новий користувацький заклад',
           description: 'Тестовий опис закладу',
+          title: 'Новий користувацький заклад',
           url: 'https://www.user.com',
         });
       expect(response.status).toBe(201);
@@ -272,8 +272,8 @@ describe('EstablishmentsController', () => {
         .patch(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Оновлена назва закладу',
           description: 'Оновлений опис закладу',
+          title: 'Оновлена назва закладу',
           url: 'https://www.updated.com',
         });
       expect(response.status).toBe(200);
@@ -292,8 +292,8 @@ describe('EstablishmentsController', () => {
         .patch(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Оновлена назва закладу',
           description: 'Оновлений опис закладу',
+          title: 'Оновлена назва закладу',
           url: 'https://www.updated.com',
         });
       expect(response.status).toBe(200);
@@ -363,13 +363,13 @@ describe('EstablishmentsController', () => {
     });
   });
 
-  describe('PATCH /api/establishments/:establishmentUuid/logo/reset', () => {
+  describe('PATCH /api/establishments/:establishmentUuid/logo', () => {
     it('should remove establishment logo', async () => {
       const updatedEstablishment = {
         logo: null,
       };
       const response = await request(app)
-        .patch(`/api/establishments/${establishmentUuid}/logo/reset`)
+        .patch(`/api/establishments/${establishmentUuid}/logo`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send(updatedEstablishment);
       expect(response.status).toBe(200);

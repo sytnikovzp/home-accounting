@@ -1,16 +1,6 @@
-import { isValid, parse } from 'date-fns';
-import { uk } from 'date-fns/locale';
 import * as yup from 'yup';
 
-const parseDateString = (value, originalValue) => {
-  if (typeof originalValue === 'string') {
-    const parsedDate = parse(originalValue, 'dd MMMM yyyy', new Date(), {
-      locale: uk,
-    });
-    return isValid(parsedDate) ? parsedDate : new Date('');
-  }
-  return originalValue;
-};
+import { parseDateString } from './sharedFunctions';
 
 const STRING_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
@@ -58,6 +48,11 @@ const EMAIL_REQUIRED_VALIDATION_SCHEME = yup
   .email('Введіть коректний e-mail')
   .required('E-mail є обовʼязковим полем');
 
+const EMAIL_NULLABLE_VALIDATION_SCHEME = yup
+  .string('Це поле має бути рядком')
+  .email('Введіть коректний e-mail')
+  .nullable();
+
 const STATUS_REQUIRED_SCHEME = yup
   .string('Це поле має бути рядком')
   .oneOf(['approved', 'rejected'], 'Неприпустиме значення для статусу')
@@ -101,8 +96,8 @@ const PASSWORD_VALIDATION_SCHEME = yup.object().shape({
 
 const USER_VALIDATION_SCHEME = yup.object().shape({
   fullName: STRING_REQUIRED_SCHEME,
-  email: EMAIL_REQUIRED_VALIDATION_SCHEME,
-  role: STRING_REQUIRED_SCHEME,
+  email: EMAIL_NULLABLE_VALIDATION_SCHEME,
+  role: STRING_NULLABLE_SCHEME,
   photo: STRING_NULLABLE_SCHEME,
 });
 

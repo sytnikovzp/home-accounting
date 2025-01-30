@@ -3,11 +3,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { sliceNames } from '../../constants';
 import {
   changePassword,
+  changeUserPhoto,
   deleteUser,
   getUserProfile,
   resetUserPhoto,
   updateUser,
-  updateUserPhoto,
 } from '../../services/userProfileService';
 
 const { USER_PROFILE_SLICE_NAME } = sliceNames;
@@ -52,7 +52,7 @@ export const changePhoto = createAsyncThunk(
   `${USER_PROFILE_SLICE_NAME}/changePhoto`,
   async ({ userPhoto }, { rejectWithValue }) => {
     try {
-      const { data } = await updateUserPhoto(userPhoto);
+      const { data } = await changeUserPhoto(userPhoto);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

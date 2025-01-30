@@ -4,7 +4,7 @@ const {
   auth: { authHandler },
   validation: { validateUser, validatePassword },
   pagination: { paginateElements },
-  upload: { uploadUserPhotos },
+  upload: { uploadUserPhoto },
 } = require('../middlewares');
 
 const {
@@ -12,7 +12,7 @@ const {
   getUserByUuid,
   updateUser,
   changePassword,
-  updateUserPhoto,
+  changeUserPhoto,
   resetUserPhoto,
   deleteUser,
 } = require('../controllers/usersController');
@@ -29,9 +29,8 @@ usersRouter
 
 usersRouter
   .route('/:userUuid/photo')
-  .patch(uploadUserPhotos.single('userPhoto'), updateUserPhoto);
-
-usersRouter.route('/:userUuid/photo/reset').patch(resetUserPhoto);
+  .patch(uploadUserPhoto.single('userPhoto'), changeUserPhoto)
+  .delete(resetUserPhoto);
 
 usersRouter
   .route('/:userUuid')

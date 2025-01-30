@@ -2,7 +2,7 @@ const {
   getCurrentUser,
   updateUser,
   changePassword,
-  updateUserPhoto,
+  changeUserPhoto,
   resetUserPhoto,
   deleteUser,
 } = require('../services/usersService');
@@ -67,21 +67,21 @@ class UserProfileController {
     }
   }
 
-  static async updateUserPhoto(req, res, next) {
+  static async changeUserPhoto(req, res, next) {
     try {
       const {
         user: { uuid },
         file: { filename },
       } = req;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const updatedUser = await updateUserPhoto(uuid, filename, currentUser);
+      const updatedUser = await changeUserPhoto(uuid, filename, currentUser);
       if (updatedUser) {
         res.status(200).json(updatedUser);
       } else {
         res.status(401);
       }
     } catch (error) {
-      console.error('Update user photo error: ', error.message);
+      console.error('Change user photo error: ', error.message);
       next(error);
     }
   }

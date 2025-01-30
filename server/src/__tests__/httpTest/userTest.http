@@ -36,9 +36,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmM
 // ==============================================================
 
 ### Get user by uuid
-GET http://localhost:5000/api/users/143d91db-0e97-4fed-91f7-00f96add76ab HTTP/1.1
+GET http://localhost:5000/api/users/64964dd7-1e6e-4b32-8fd9-2c4bca24985b HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmMzctZmRlYy00ZTk1LTg0YjUtMmQ3ZGExMWZmZmU2IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjQ5NTcsImV4cCI6MTczODYyMDk1N30.7DAh3n_3iYtGNpngBp5dWj9b-n-hK_bhm6q9Rr2pDtE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNjQ5NjRkZDctMWU2ZS00YjMyLThmZDktMmM0YmNhMjQ5ODViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTcyNjYsImV4cCI6MTczOTU1MzI2Nn0.YN0WxzMlv_nzSXeqAhVUPuRVokItPiBS-NoMcEDjC-A
 
 // ==============================================================
 
@@ -55,23 +55,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmM
 // ==============================================================
 
 ### Update user data
-PATCH http://localhost:5000/api/users/143d91db-0e97-4fed-91f7-00f96add76ab HTTP/1.1
+PATCH http://localhost:5000/api/users/64964dd7-1e6e-4b32-8fd9-2c4bca24985b HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmMzctZmRlYy00ZTk1LTg0YjUtMmQ3ZGExMWZmZmU2IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjQ5NTcsImV4cCI6MTczODYyMDk1N30.7DAh3n_3iYtGNpngBp5dWj9b-n-hK_bhm6q9Rr2pDtE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNjQ5NjRkZDctMWU2ZS00YjMyLThmZDktMmM0YmNhMjQ5ODViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTcyNjYsImV4cCI6MTczOTU1MzI2Nn0.YN0WxzMlv_nzSXeqAhVUPuRVokItPiBS-NoMcEDjC-A
 
 {
-  "fullName": "Оновлений користувач",
+  "fullName": "Оновлений користувач"
   # "email": "New.User@Gmail.com",
-  "email": "sytnikov.zp@Gmail.com",
-  "role": "User"
+  # "email": "sytnikov.zp@Gmail.com",
+  # "role": "User"
 }
 
 // ==============================================================
 
-### Update user photo
-PATCH http://localhost:5000/api/users/143d91db-0e97-4fed-91f7-00f96add76ab/photo HTTP/1.1
+### Change user photo
+PATCH http://localhost:5000/api/users/9966d850-d128-435b-8e78-5c15f9fd4aee/photo HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmMzctZmRlYy00ZTk1LTg0YjUtMmQ3ZGExMWZmZmU2IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjQ5NTcsImV4cCI6MTczODYyMDk1N30.7DAh3n_3iYtGNpngBp5dWj9b-n-hK_bhm6q9Rr2pDtE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOTk2NmQ4NTAtZDEyOC00MzViLThlNzgtNWMxNWY5ZmQ0YWVlIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTIyMDcsImV4cCI6MTczOTU0ODIwN30.m4sKDlEldWKRFMw06X0zTQCjaQClTF5UhGlPI6ByzIg
 
 --boundary
 Content-Disposition: form-data; name="userPhoto"; filename="user.png"
@@ -86,13 +86,9 @@ Content-Type: image/png
 --boundary--
 
 ### Reset user photo
-PATCH http://localhost:5000/api/users/143d91db-0e97-4fed-91f7-00f96add76ab/photo/reset HTTP/1.1
+DELETE  http://localhost:5000/api/users/9966d850-d128-435b-8e78-5c15f9fd4aee/photo HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmMzctZmRlYy00ZTk1LTg0YjUtMmQ3ZGExMWZmZmU2IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjQ5NTcsImV4cCI6MTczODYyMDk1N30.7DAh3n_3iYtGNpngBp5dWj9b-n-hK_bhm6q9Rr2pDtE
-
-{
-  "photo": null
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOTk2NmQ4NTAtZDEyOC00MzViLThlNzgtNWMxNWY5ZmQ0YWVlIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTIyMDcsImV4cCI6MTczOTU0ODIwN30.m4sKDlEldWKRFMw06X0zTQCjaQClTF5UhGlPI6ByzIg
 
 // ==============================================================
 

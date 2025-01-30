@@ -20,7 +20,7 @@ import {
 
 const { BASE_URL } = configs;
 
-function FileUpload({ file, onUpload, onReset, label, entity, isLoading }) {
+function FileUpload({ entity, file, isLoading, label, onReset, onUpload }) {
   const avatarPath = useMemo(() => {
     if (file) {
       return `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`;

@@ -20,10 +20,7 @@ function MeasureEditPage({ handleModalClose }) {
 
   const handleSubmitMeasure = useCallback(
     async (values) => {
-      const result = await editMeasure({
-        measureUuid: uuid,
-        ...values,
-      });
+      const result = await editMeasure({ measureUuid: uuid, ...values });
       if (result?.data) {
         handleModalClose();
       }

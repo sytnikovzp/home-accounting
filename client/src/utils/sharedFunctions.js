@@ -1,3 +1,6 @@
+import { isValid, parse } from 'date-fns';
+import { uk } from 'date-fns/locale';
+
 import api from '../api';
 
 import { stylesHeaderUserAvatar } from '../styles';
@@ -111,6 +114,16 @@ const formatItems = (items, valueKey, labelKey) =>
     label: item[labelKey],
   }));
 
+const parseDateString = (value, originalValue) => {
+  if (typeof originalValue === 'string') {
+    const parsedDate = parse(originalValue, 'dd MMMM yyyy', new Date(), {
+      locale: uk,
+    });
+    return isValid(parsedDate) ? parsedDate : new Date('');
+  }
+  return originalValue;
+};
+
 const setErrorListState = (state, { payload }) => {
   state.isLoadingList = false;
   state.listLoadingError = payload;
@@ -145,6 +158,7 @@ export {
   formatItems,
   getAccessToken,
   groupByFirstLetter,
+  parseDateString,
   removeAccessToken,
   requestHandler,
   saveAccessToken,

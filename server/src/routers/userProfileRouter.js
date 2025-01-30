@@ -3,13 +3,13 @@ const { Router } = require('express');
 const {
   auth: { authHandler },
   validation: { validatePassword, validateUser },
-  upload: { uploadUserPhotos },
+  upload: { uploadUserPhoto },
 } = require('../middlewares');
 
 const {
   getCurrentUserProfile,
   changePassword,
-  updateUserPhoto,
+  changeUserPhoto,
   resetUserPhoto,
   deleteUser,
   updateUser,
@@ -29,8 +29,7 @@ userProfileRouter.route('/password').patch(validatePassword, changePassword);
 
 userProfileRouter
   .route('/photo')
-  .patch(uploadUserPhotos.single('userPhoto'), updateUserPhoto);
-
-userProfileRouter.route('/photo/reset').patch(resetUserPhoto);
+  .patch(uploadUserPhoto.single('userPhoto'), changeUserPhoto)
+  .delete(resetUserPhoto);
 
 module.exports = userProfileRouter;

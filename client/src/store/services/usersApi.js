@@ -82,10 +82,9 @@ export const usersApi = createApi({
     }),
 
     resetUserPhoto: builder.mutation({
-      query: ({ userUuid }) => ({
-        url: `users/${userUuid}/photo/reset`,
-        method: 'PATCH',
-        body: { photo: null },
+      query: (userUuid) => ({
+        url: `users/${userUuid}/photo`,
+        method: 'DELETE',
       }),
       invalidatesTags: (result, error, { userUuid }) => [
         { type: 'User', id: userUuid },

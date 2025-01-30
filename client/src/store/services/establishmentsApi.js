@@ -83,10 +83,9 @@ export const establishmentsApi = createApi({
     }),
 
     resetEstablishmentLogo: builder.mutation({
-      query: ({ establishmentUuid }) => ({
-        url: `establishments/${establishmentUuid}/logo/reset`,
-        method: 'PATCH',
-        body: { logo: null },
+      query: (establishmentUuid) => ({
+        url: `establishments/${establishmentUuid}/logo`,
+        method: 'DELETE',
       }),
       invalidatesTags: (result, error, { establishmentUuid }) => [
         { type: 'Establishment', id: establishmentUuid },

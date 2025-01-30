@@ -4,7 +4,7 @@ const {
   auth: { authHandler },
   validation: { validateEstablishment },
   pagination: { paginateElements },
-  upload: { uploadEstablishmentLogos },
+  upload: { uploadEstablishmentLogo },
 } = require('../middlewares');
 
 const {
@@ -12,7 +12,7 @@ const {
   getEstablishmentByUuid,
   createEstablishment,
   updateEstablishment,
-  updateEstablishmentLogo,
+  changeEstablishmentLogo,
   resetEstablishmentLogo,
   deleteEstablishment,
 } = require('../controllers/establishmentsController');
@@ -29,13 +29,10 @@ establishmentsRouter
 establishmentsRouter
   .route('/:establishmentUuid/logo')
   .patch(
-    uploadEstablishmentLogos.single('establishmentLogo'),
-    updateEstablishmentLogo
-  );
-
-establishmentsRouter
-  .route('/:establishmentUuid/logo/reset')
-  .patch(resetEstablishmentLogo);
+    uploadEstablishmentLogo.single('establishmentLogo'),
+    changeEstablishmentLogo
+  )
+  .delete(resetEstablishmentLogo);
 
 establishmentsRouter
   .route('/:establishmentUuid')

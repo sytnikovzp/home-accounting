@@ -20,10 +20,7 @@ function CategoryEditPage({ handleModalClose }) {
 
   const handleSubmitCategory = useCallback(
     async (values) => {
-      const result = await editCategory({
-        categoryUuid: uuid,
-        ...values,
-      });
+      const result = await editCategory({ categoryUuid: uuid, ...values });
       if (result?.data) {
         handleModalClose();
       }
