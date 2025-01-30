@@ -46,10 +46,10 @@ function ExpenseViewPage({ handleModalClose }) {
     () => [
       {
         icon: DryCleaning,
-        label: 'Товар',
-        value: product?.title || '*Немає даних*',
         isLink: Boolean(product),
+        label: 'Товар',
         linkTo: establishment ? `/products/${product?.uuid}` : '',
+        value: product?.title || '*Немає даних*',
       },
       {
         icon: ProductionQuantityLimits,
@@ -69,17 +69,17 @@ function ExpenseViewPage({ handleModalClose }) {
       },
       {
         icon: Store,
-        label: 'Заклад',
-        value: establishment?.title || '*Немає даних*',
         isLink: Boolean(establishment),
+        label: 'Заклад',
         linkTo: establishment ? `/establishments/${establishment?.uuid}` : '',
+        value: establishment?.title || '*Немає даних*',
       },
       {
         icon: Person,
-        label: 'Автор',
-        value: creatorFullName,
         isLink: Boolean(creatorFullName),
+        label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+        value: creatorFullName,
       },
       { icon: Shop, label: 'Дата витрати', value: date || '*Немає даних*' },
       { icon: CalendarToday, label: 'Створено', value: createdAt },

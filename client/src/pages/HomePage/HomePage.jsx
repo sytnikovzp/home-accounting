@@ -49,7 +49,7 @@ function HomePage() {
 
   useEffect(() => {
     const creatorUuid = currentUser?.uuid || null;
-    dispatch(fetchStatisticsByCriteria({ ago, criteria, creatorUuid }));
+    dispatch(fetchStatisticsByCriteria({ ago, creatorUuid, criteria }));
   }, [ago, criteria, currentUser?.uuid, dispatch]);
 
   usePageTitle(location, HOME_PAGE_TITLES);

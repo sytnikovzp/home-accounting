@@ -17,30 +17,30 @@ import { stylesAuthenticatedMenu } from '../../styles';
 
 const menuItemsData = [
   {
-    label: 'Переглянути профіль',
-    icon: <Portrait fontSize='small' />,
     action: (user) => `/users/${user.uuid}`,
+    icon: <Portrait fontSize='small' />,
+    label: 'Переглянути профіль',
   },
   {
-    label: 'Редагувати профіль',
-    icon: <ListAlt fontSize='small' />,
     action: (user) => `/users/edit/${user.uuid}`,
+    icon: <ListAlt fontSize='small' />,
+    label: 'Редагувати профіль',
   },
   {
-    label: 'Переглянути права',
-    icon: <AdminPanelSettings fontSize='small' />,
     action: (user) => `/roles/${user.role.uuid}`,
+    icon: <AdminPanelSettings fontSize='small' />,
+    label: 'Переглянути права',
   },
   {
-    label: 'Змінити пароль',
-    icon: <Password fontSize='small' />,
     action: (user) => `/users/password/${user.uuid}`,
+    icon: <Password fontSize='small' />,
+    label: 'Змінити пароль',
   },
   {
-    label: 'Вийти',
-    icon: <Logout fontSize='small' />,
     action: 'handleLogout',
+    icon: <Logout fontSize='small' />,
     isLogout: true,
+    label: 'Вийти',
   },
 ];
 
@@ -55,7 +55,7 @@ function AuthenticatedMenu({
   toggleUserMenu,
 }) {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ alignItems: 'center', display: 'flex' }}>
       <WelcomeBlock currentUser={currentUser} />
       <Tooltip title='Обліковий запис'>
         <IconButton

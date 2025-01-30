@@ -35,19 +35,19 @@ function CategoryViewPage({ handleModalClose }) {
       },
       {
         icon: Person,
-        label: 'Автор',
-        value: creatorFullName,
         isLink: Boolean(creatorFullName),
+        label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+        value: creatorFullName,
       },
       ...(moderatorFullName
         ? [
             {
               icon: Person,
-              label: 'Модератор',
-              value: moderatorFullName,
               isLink: Boolean(moderatorFullName),
+              label: 'Модератор',
               linkTo: moderatorFullName ? `/users/${moderatorUuid}` : '',
+              value: moderatorFullName,
             },
           ]
         : []),

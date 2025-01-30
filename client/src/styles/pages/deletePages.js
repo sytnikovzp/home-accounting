@@ -1,6 +1,6 @@
 export const stylesDeletePageTypography = {
-  textAlign: 'justify',
-  mt: 2,
   mb: 2,
+  mt: 2,
+  textAlign: 'justify',
   textIndent: '2em',
 };

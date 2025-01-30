@@ -3,13 +3,13 @@ export const stylesNavItemText = {
 };
 
 export const stylesNavBarBox = {
-  position: { md: 'sticky', xs: 'static' },
-  top: 0,
-  minHeight: { md: '75vh', xs: 'auto' },
+  alignItems: { md: 'center', xs: 'flex-start' },
   backgroundColor: 'transparent',
+  borderRight: { md: '1px solid rgba(0, 0, 0, 0.1)', xs: 'none' },
   display: 'flex',
   flexDirection: { md: 'column', xs: 'row' },
-  alignItems: { md: 'center', xs: 'flex-start' },
   justifyContent: { md: 'flex-start', xs: 'space-between' },
-  borderRight: { md: '1px solid rgba(0, 0, 0, 0.1)', xs: 'none' },
+  minHeight: { md: '75vh', xs: 'auto' },
+  position: { md: 'sticky', xs: 'static' },
+  top: 0,
 };

@@ -59,18 +59,18 @@ function StatisticsChart({ data }) {
     const results = data.map((item) => parseFloat(item.result));
 
     return {
-      labels: titles,
       datasets: [
         {
-          label: 'Витрати',
-          data: results,
           backgroundColor: stylesStatisticsChartBackgroundColor,
           borderColor: stylesStatisticsChartBorderColor,
           borderWidth: 1,
+          data: results,
           hoverBackgroundColor: stylesStatisticsChartHoverBackgroundColor,
           hoverBorderColor: stylesStatisticsChartHoverBorderColor,
+          label: 'Витрати',
         },
       ],
+      labels: titles,
     };
   }, [data]);
 
@@ -80,8 +80,21 @@ function StatisticsChart({ data }) {
 
   const chartOptions = {
     indexAxis: isMobile ? 'x' : 'y',
-    responsive: true,
     plugins: {
+      datalabels: {
+        color: 'black',
+        display: true,
+        formatter: (value, context) => {
+          const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+          const percentage =
+            value === 0 ? '0' : ((value / total) * 100).toFixed(0);
+          return `${percentage}%`;
+        },
+      },
+      legend: {
+        display: chartType !== 'bar',
+        position: 'left',
+      },
       title: {
         display: false,
         text: 'Статистика витрат',
@@ -91,27 +104,14 @@ function StatisticsChart({ data }) {
           label: (context) => `Вартість: ${context.raw} грн`,
         },
       },
-      legend: {
-        display: chartType !== 'bar',
-        position: 'left',
-      },
-      datalabels: {
-        display: true,
-        color: 'black',
-        formatter: (value, context) => {
-          const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
-          const percentage =
-            value === 0 ? '0' : ((value / total) * 100).toFixed(0);
-          return `${percentage}%`;
-        },
-      },
     },
+    responsive: true,
   };
 
   const chartHandlers = {
+    bar: () => setChartType('bar'),
     doughnut: () => setChartType('doughnut'),
     pie: () => setChartType('pie'),
-    bar: () => setChartType('bar'),
     polar: () => setChartType('polar'),
   };
 

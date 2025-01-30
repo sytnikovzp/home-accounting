@@ -150,23 +150,23 @@ function ListTable({
     let statusOptions = [];
     if (usersPage) {
       statusOptions = [
-        { value: 'all', label: 'Всі користувачі' },
-        { value: 'pending', label: 'Очікують веріфікації' },
-        { value: 'verified', label: 'Веріфіковані' },
+        { label: 'Всі користувачі', value: 'all' },
+        { label: 'Очікують веріфікації', value: 'pending' },
+        { label: 'Веріфіковані', value: 'verified' },
       ];
     } else if (expensesPage) {
       statusOptions = [
-        { value: 'day', label: 'За останній день' },
-        { value: 'week', label: 'За останній тиждень' },
-        { value: 'month', label: 'За останній місяць' },
-        { value: 'year', label: 'За останній рік' },
-        { value: 'allTime', label: 'За весь час' },
+        { label: 'За останній день', value: 'day' },
+        { label: 'За останній тиждень', value: 'week' },
+        { label: 'За останній місяць', value: 'month' },
+        { label: 'За останній рік', value: 'year' },
+        { label: 'За весь час', value: 'allTime' },
       ];
     } else {
       statusOptions = [
-        { value: 'pending', label: 'Очікує модерації' },
-        { value: 'approved', label: 'Затверджено' },
-        { value: 'rejected', label: 'Відхилено' },
+        { label: 'Очікує модерації', value: 'pending' },
+        { label: 'Затверджено', value: 'approved' },
+        { label: 'Відхилено', value: 'rejected' },
       ];
     }
 

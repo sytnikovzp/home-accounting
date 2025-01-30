@@ -297,7 +297,7 @@ module.exports = [
       'require-atomic-updates': 'error',
       'require-await': 'error',
       'require-yield': 'error',
-      'sort-keys-fix/sort-keys-fix': 'warn',
+      'sort-keys-fix/sort-keys-fix': 'off',
       'sort-vars': [
         'warn',
         {

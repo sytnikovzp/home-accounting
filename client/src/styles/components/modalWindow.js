@@ -1,24 +1,24 @@
 export const stylesModalWindowFadeBox = {
+  bgcolor: 'background.paper',
+  borderRadius: 2,
+  boxShadow: 24,
   display: 'flex',
   flexDirection: 'column',
+  left: '50%',
+  maxWidth: 600,
+  minHeight: 'auto',
+  p: 2,
   position: 'absolute',
   top: '50%',
-  left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: { xs: '90%', sm: 450 },
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 2,
-  borderRadius: 2,
-  minHeight: 'auto',
-  maxWidth: 600,
+  width: { sm: 450, xs: '90%' },
 };
 
 export const stylesModalWindowIconButton = {
-  position: 'absolute',
-  top: 12,
-  right: 12,
   color: (theme) => theme.palette.grey[700],
+  position: 'absolute',
+  right: 12,
+  top: 12,
 };
 
 export const stylesModalWindowContentBox = {

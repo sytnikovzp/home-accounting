@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 /* eslint-disable camelcase */
 const { Product, Establishment, Measure, Currency } = require('../models');
 

@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { Schema, model } = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 

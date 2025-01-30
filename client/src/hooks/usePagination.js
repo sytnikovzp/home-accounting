@@ -17,9 +17,9 @@ function usePagination(initialPageSize, totalPages = 0) {
 
   return {
     currentPage,
-    pageSize,
     handlePageChange,
     handleRowsPerPageChange,
+    pageSize,
   };
 }
 

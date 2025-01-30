@@ -1,7 +1,7 @@
 export const stylesErrorTypography = {
-  m: 2,
-  display: 'flex',
-  justifyContent: 'center',
   alignItems: 'center',
+  display: 'flex',
   height: '30vh',
+  justifyContent: 'center',
+  m: 2,
 };

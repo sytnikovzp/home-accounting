@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 const nodemailer = require('nodemailer');
 
 const {

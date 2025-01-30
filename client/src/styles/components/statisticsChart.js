@@ -1,28 +1,28 @@
 export const stylesStatisticsChartBox = {
-  height: '60vh',
-  overflow: 'auto',
+  alignItems: 'center',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
+  height: '60vh',
   justifyContent: 'center',
+  overflow: 'auto',
 };
 
 export const stylesStatisticsChartStackDirection = {
-  xs: 'column',
   sm: 'row',
+  xs: 'column',
 };
 
 export const stylesStatisticsChartStackButton = {
-  mt: 2,
   mb: 2,
+  mt: 2,
 };
 
 export const stylesStatisticsChartButton = {
-  backgroundImage: 'linear-gradient(to top, #c1e1a6, #a5d6a7)',
-  color: 'black',
   '&:hover': {
     backgroundImage: 'linear-gradient(to top, #a5d6a7, #81c784)',
   },
+  backgroundImage: 'linear-gradient(to top, #c1e1a6, #a5d6a7)',
+  color: 'black',
 };
 
 export const stylesStatisticsChartBackgroundColor = [

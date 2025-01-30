@@ -1,36 +1,36 @@
 export const stylesViewDetailRowExtraBox = {
+  alignItems: 'flex-end',
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'flex-end',
-  justifyContent: 'space-between',
   gap: '8px',
+  justifyContent: 'space-between',
   width: '100%',
 };
 
 export const stylesViewDetailRowBox = {
-  display: 'flex',
   alignItems: 'center',
+  display: 'flex',
   gap: '8px',
 };
 
 export const stylesViewDetailRowTypography = {
-  wordBreak: 'break-word',
   whiteSpace: 'pre-wrap',
+  wordBreak: 'break-word',
 };
 
 export const stylesPermissionsListBox = {
-  maxHeight: '250px',
-  paddingLeft: '10px',
-  paddingRight: '10px',
-  overflowY: 'auto',
-  overflowX: 'hidden',
   border: '1px solid #ddd',
   borderRadius: '4px',
+  maxHeight: '250px',
+  overflowX: 'hidden',
+  overflowY: 'auto',
+  paddingLeft: '10px',
+  paddingRight: '10px',
 };
 
 export const stylesPermissionsListBoxEmpty = {
-  display: 'flex',
   alignItems: 'center',
-  p: 1,
   color: 'grey.600',
+  display: 'flex',
+  p: 1,
 };

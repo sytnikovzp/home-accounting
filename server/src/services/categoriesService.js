@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { Category } = require('../db/dbPostgres/models');
 
 const {

@@ -3,8 +3,8 @@ export const stylesAuthPageTitle = {
 };
 
 export const stylesAuthPageAvatar = {
-  mx: 'auto',
-  width: 50,
   height: 50,
   mb: 2,
+  mx: 'auto',
+  width: 50,
 };

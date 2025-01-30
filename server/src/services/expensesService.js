@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 /* eslint-disable camelcase */
 const { parse, isValid } = require('date-fns');
 const { uk } = require('date-fns/locale');

@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { Category, Product, Establishment } = require('../db/dbPostgres/models');
 
 const { STATUS_MODERATION_MAPPING } = require('../constants/dataMapping');

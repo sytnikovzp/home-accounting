@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { Model, Sequelize } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {

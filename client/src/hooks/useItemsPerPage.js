@@ -8,11 +8,11 @@ function useItemsPerPage() {
   const isXl = useMediaQuery((theme) => theme.breakpoints.up('xl'));
 
   const breakpoints = [
-    { match: isXs, items: 6 },
-    { match: isSm, items: 7 },
-    { match: isMd, items: 8 },
-    { match: isLg, items: 8 },
-    { match: isXl, items: 12 },
+    { items: 6, match: isXs },
+    { items: 7, match: isSm },
+    { items: 8, match: isMd },
+    { items: 8, match: isLg },
+    { items: 12, match: isXl },
   ];
 
   const matchedBreakpoint = breakpoints.find((bp) => bp.match);

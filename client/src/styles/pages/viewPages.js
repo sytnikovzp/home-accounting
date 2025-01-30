@@ -2,8 +2,8 @@ export const stylesViewPageBox = {
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',
-  mt: 1,
   mb: 1,
+  mt: 1,
 };
 
 export const stylesViewPageBoxWithAvatar = {
@@ -12,19 +12,19 @@ export const stylesViewPageBoxWithAvatar = {
 };
 
 export const stylesViewPageAvatarSize = {
-  width: 50,
   height: 50,
+  width: 50,
 };
 
 export const stylesUserViewPageEmailBox = {
+  alignItems: 'center',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
 };
 
 export const stylesUserViewPageEmailButton = {
   fontSize: '2rem',
-  padding: 0,
-  minWidth: 'auto',
   lineHeight: 1,
+  minWidth: 'auto',
+  padding: 0,
 };

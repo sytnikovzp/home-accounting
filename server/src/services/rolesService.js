@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { Role, User, Permission } = require('../db/dbMongo/models');
 
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');

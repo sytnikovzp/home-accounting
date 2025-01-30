@@ -45,6 +45,7 @@ const store = configureStore({
     userProfile: userProfileReducer,
     [usersApi.reducerPath]: usersApi.reducer,
   },
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       categoriesApi.middleware,

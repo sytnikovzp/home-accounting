@@ -5,14 +5,14 @@ export const stylesLayoutBox = {
 };
 
 export const stylesLayoutGridContainer = {
-  flexGrow: 1,
   backgroundImage: 'linear-gradient(to bottom, #e8f5e9, #c8e6c9)',
+  flexGrow: 1,
 };
 
 export const stylesLayoutXLContainer = {
-  flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
+  flexGrow: 1,
 };
 
 export const stylesLayoutXLGridContainer = {
@@ -21,25 +21,25 @@ export const stylesLayoutXLGridContainer = {
 };
 
 export const stylesLayoutNavBarDesktop = {
-  display: { xs: 'none', md: 'block' },
-  width: '190px',
+  display: { md: 'block', xs: 'none' },
   flexShrink: 0,
+  width: '190px',
 };
 
 export const stylesLayoutNavBarMobile = {
-  display: { xs: 'block', md: 'none' },
+  display: { md: 'none', xs: 'block' },
 };
 
 export const stylesLayoutOutlet = {
-  flexGrow: 1,
   flexBasis: '0',
-  minWidth: 0,
+  flexGrow: 1,
   maxWidth: '100%',
+  minWidth: 0,
   overflowX: 'auto',
 };
 
 export const stylesLayoutServiceBlock = {
+  display: { md: 'flex', xs: 'block' },
   flexShrink: 0,
-  display: { xs: 'block', md: 'flex' },
   maxWidth: 'calc(100% - 190px)',
 };

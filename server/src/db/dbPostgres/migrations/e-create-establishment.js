@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 /* eslint-disable camelcase */
 module.exports = {
   async up(queryInterface, Sequelize) {

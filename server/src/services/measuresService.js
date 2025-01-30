@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { Measure } = require('../db/dbPostgres/models');
 
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');

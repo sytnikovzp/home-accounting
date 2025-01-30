@@ -50,9 +50,6 @@ function EstablishmentViewPage({ handleModalClose }) {
   const data = useMemo(
     () => [
       {
-        icon: Info,
-        label: 'Назва',
-        value: title,
         extra: (
           <Avatar
             alt='Логотип закладу'
@@ -61,6 +58,9 @@ function EstablishmentViewPage({ handleModalClose }) {
             variant='rounded'
           />
         ),
+        icon: Info,
+        label: 'Назва',
+        value: title,
       },
       {
         icon: Description,
@@ -69,10 +69,10 @@ function EstablishmentViewPage({ handleModalClose }) {
       },
       {
         icon: LinkIcon,
-        label: 'Посилання',
-        value: url || '*Немає даних*',
         isLink: Boolean(url),
+        label: 'Посилання',
         linkTo: url ? `${url}` : '',
+        value: url || '*Немає даних*',
       },
       {
         icon: () => <StatusIcon status={status} />,
@@ -81,19 +81,19 @@ function EstablishmentViewPage({ handleModalClose }) {
       },
       {
         icon: Person,
-        label: 'Автор',
-        value: creatorFullName,
         isLink: Boolean(creatorFullName),
+        label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+        value: creatorFullName,
       },
       ...(moderatorFullName
         ? [
             {
               icon: Person,
-              label: 'Модератор',
-              value: moderatorFullName,
               isLink: Boolean(moderatorFullName),
+              label: 'Модератор',
               linkTo: moderatorFullName ? `/users/${moderatorUuid}` : '',
+              value: moderatorFullName,
             },
           ]
         : []),

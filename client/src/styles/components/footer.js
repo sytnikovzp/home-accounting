@@ -1,11 +1,11 @@
 export const stylesFooterBox = {
-  py: 1.5,
+  alignItems: 'center',
   backgroundColor: '#c8e6c9',
+  borderTop: '1px solid rgba(0, 0, 0, 0.1)',
   color: '#333',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+  py: 1.5,
 };
 
 export const stylesFooterTypography = {
@@ -13,8 +13,8 @@ export const stylesFooterTypography = {
 };
 
 export const stylesFooterIcon = {
-  mx: 1,
-  color: '#555',
-  transition: 'color 0.3s ease',
   '&:hover': { color: '#2E7D32' },
+  color: '#555',
+  mx: 1,
+  transition: 'color 0.3s ease',
 };

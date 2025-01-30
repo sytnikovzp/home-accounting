@@ -109,9 +109,6 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
   const data = useMemo(
     () => [
       {
-        icon: Info,
-        label: 'Назва',
-        value: title,
         extra: logo ? (
           <Avatar
             alt='Логотип'
@@ -120,6 +117,9 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
             variant='rounded'
           />
         ) : null,
+        icon: Info,
+        label: 'Назва',
+        value: title,
       },
       {
         icon: ContentPasteSearch,
@@ -139,10 +139,10 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
         ? [
             {
               icon: LinkIcon,
-              label: 'Посилання',
-              value: url || '*Немає даних*',
               isLink: Boolean(url),
+              label: 'Посилання',
               linkTo: url ? `${url}` : '',
+              value: url || '*Немає даних*',
             },
           ]
         : []),
@@ -150,10 +150,10 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
         ? [
             {
               icon: Category,
-              label: 'Категорія',
-              value: category?.title || '*Немає даних*',
               isLink: Boolean(category),
+              label: 'Категорія',
               linkTo: `/categories/${category?.uuid}`,
+              value: category?.title || '*Немає даних*',
             },
           ]
         : []),
@@ -164,10 +164,10 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
       },
       {
         icon: Person,
-        label: 'Автор',
-        value: creatorFullName,
         isLink: Boolean(creatorFullName),
+        label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+        value: creatorFullName,
       },
       { icon: CalendarToday, label: 'Створено', value: createdAt },
       { icon: Update, label: 'Редаговано', value: updatedAt },

@@ -1,16 +1,16 @@
 export const stylesPermissionsSwitchesMainBox = {
-  maxHeight: '250px',
-  overflowY: 'auto',
-  overflowX: 'hidden',
   border: '1px solid #ddd',
   borderRadius: '4px',
+  maxHeight: '250px',
+  overflowX: 'hidden',
+  overflowY: 'auto',
 };
 
 export const stylesPermissionsSwitchesListItem = {
-  display: 'flex',
   alignItems: 'flex-start',
-  ml: 1,
   borderBottom: '1px solid #ddd',
+  display: 'flex',
+  ml: 1,
 };
 
 export const stylesPermissionsSwitchesFontTitle = {

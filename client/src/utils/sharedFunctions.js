@@ -36,22 +36,22 @@ const stringToColor = (string) => {
 const stringAvatar = (fullName) => {
   if (!fullName || typeof fullName !== 'string') {
     return {
+      children: '',
       sx: {
         ...stylesHeaderUserAvatar,
         backgroundColor: stringToColor(''),
       },
-      children: '',
     };
   }
   const words = fullName.trim().split(' ');
   const firstLetter = words[0] ? words[0][0].toUpperCase() : '';
   const secondLetter = words[1] ? words[1][0].toUpperCase() : '';
   return {
+    children: `${firstLetter}${secondLetter}`,
     sx: {
       ...stylesHeaderUserAvatar,
       backgroundColor: stringToColor(fullName),
     },
-    children: `${firstLetter}${secondLetter}`,
   };
 };
 
@@ -68,9 +68,9 @@ const requestHandler = async ({
         ? { 'Content-Type': 'multipart/form-data' }
         : {};
     const response = await api({
-      url: `${url}${queryParams && `?${queryParams}`}`,
-      method,
       headers,
+      method,
+      url: `${url}${queryParams && `?${queryParams}`}`,
       ...(method === 'GET' || method === 'DELETE' ? {} : { data }),
     });
     if (method === 'GET' && response.headers['x-total-count']) {
@@ -110,8 +110,8 @@ const groupByFirstLetter = (items, labelKey, valueKey) =>
 
 const formatItems = (items, valueKey, labelKey) =>
   items.map((item) => ({
-    value: item[valueKey],
     label: item[labelKey],
+    value: item[valueKey],
   }));
 
 const parseDateString = (value, originalValue) => {

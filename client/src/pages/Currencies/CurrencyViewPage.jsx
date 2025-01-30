@@ -35,10 +35,10 @@ function CurrencyViewPage({ handleModalClose }) {
       { icon: Description, label: 'Міжнародний код валюти', value: code },
       {
         icon: Person,
-        label: 'Автор',
-        value: creatorFullName,
         isLink: Boolean(creatorFullName),
+        label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
+        value: creatorFullName,
       },
       { icon: CalendarToday, label: 'Створено', value: createdAt },
       { icon: Update, label: 'Редаговано', value: updatedAt },

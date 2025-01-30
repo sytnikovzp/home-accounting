@@ -59,9 +59,6 @@ function UserViewPage({ handleModalClose }) {
   const data = useMemo(
     () => [
       {
-        icon: Info,
-        label: 'Повне ім’я',
-        value: fullName,
         extra: (
           <Avatar
             alt='Фото користувача'
@@ -70,31 +67,31 @@ function UserViewPage({ handleModalClose }) {
             variant='rounded'
           />
         ),
+        icon: Info,
+        label: 'Повне ім’я',
+        value: fullName,
       },
       {
         icon: AssignmentInd,
-        label: 'Роль',
-        value: role?.title || '*Немає даних*',
         isLink: Boolean(role),
+        label: 'Роль',
         linkTo: role ? `/roles/${role?.uuid}` : '',
+        value: role?.title || '*Немає даних*',
       },
       ...(email
         ? [
             {
               icon: AlternateEmail,
-              label: 'Email',
-              value: email,
               isLink: true,
+              label: 'Email',
               linkTo: `mailto:${email}`,
+              value: email,
             },
           ]
         : []),
       ...(emailVerificationStatus
         ? [
             {
-              icon: () => <StatusIcon status={emailVerificationStatus} />,
-              label: 'Обліковий запис',
-              value: emailVerificationStatus,
               extra: emailVerificationStatus === 'Очікує веріфікації' && (
                 <Tooltip title='Повторно відправити email'>
                   <Button
@@ -108,6 +105,9 @@ function UserViewPage({ handleModalClose }) {
                   </Button>
                 </Tooltip>
               ),
+              icon: () => <StatusIcon status={emailVerificationStatus} />,
+              label: 'Обліковий запис',
+              value: emailVerificationStatus,
             },
           ]
         : []),

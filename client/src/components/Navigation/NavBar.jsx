@@ -18,16 +18,16 @@ import NavItem from './NavItem';
 import { stylesNavBarBox } from '../../styles';
 
 const navItems = [
-  { to: '/', icon: Home, label: 'Головна' },
-  { to: '/expenses', icon: ShoppingCart, label: 'Витрати' },
-  { to: '/establishments', icon: Store, label: 'Заклади' },
-  { to: '/products', icon: DryCleaning, label: 'Товари' },
-  { to: '/categories', icon: Category, label: 'Категорії' },
-  { to: '/currencies', icon: AttachMoney, label: 'Валюти' },
-  { to: '/measures', icon: SquareFoot, label: 'Одиниці' },
-  { to: '/moderation', icon: Gavel, label: 'Модерація' },
-  { to: '/users', icon: People, label: 'Користувачі' },
-  { to: '/roles', icon: ManageAccounts, label: 'Ролі' },
+  { icon: Home, label: 'Головна', to: '/' },
+  { icon: ShoppingCart, label: 'Витрати', to: '/expenses' },
+  { icon: Store, label: 'Заклади', to: '/establishments' },
+  { icon: DryCleaning, label: 'Товари', to: '/products' },
+  { icon: Category, label: 'Категорії', to: '/categories' },
+  { icon: AttachMoney, label: 'Валюти', to: '/currencies' },
+  { icon: SquareFoot, label: 'Одиниці', to: '/measures' },
+  { icon: Gavel, label: 'Модерація', to: '/moderation' },
+  { icon: People, label: 'Користувачі', to: '/users' },
+  { icon: ManageAccounts, label: 'Ролі', to: '/roles' },
 ];
 
 function NavBar({ onClose }) {

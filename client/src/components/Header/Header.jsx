@@ -62,7 +62,7 @@ function Header() {
         <Toolbar disableGutters sx={stylesHeaderToolbar}>
           <Logo isMobile={false} />
           <Logo isMobile onClick={handleToggleNavBar} />
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ alignItems: 'center', display: 'flex' }}>
             {isAuthenticated ? (
               <AuthenticatedMenu
                 closeUserMenu={closeUserMenu}

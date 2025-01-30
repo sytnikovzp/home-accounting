@@ -1,6 +1,6 @@
 export const stylesUserFormPasswordButton = {
-  mt: 2,
   display: 'flex',
-  justifyContent: 'center',
   gap: 2,
+  justifyContent: 'center',
+  mt: 2,
 };

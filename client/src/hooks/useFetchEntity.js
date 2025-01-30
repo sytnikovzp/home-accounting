@@ -22,7 +22,7 @@ function useFetchEntity(entityType) {
     [entityType]
   );
 
-  return { entity, isLoading, error, fetchEntityByUuid };
+  return { entity, error, fetchEntityByUuid, isLoading };
 }
 
 export default useFetchEntity;

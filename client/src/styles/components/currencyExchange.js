@@ -1,6 +1,6 @@
 export const stylesCurrencyExchangeBox = {
-  flexGrow: { sm: 1, md: 0 },
+  alignItems: 'center',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
+  flexGrow: { md: 0, sm: 1 },
 };

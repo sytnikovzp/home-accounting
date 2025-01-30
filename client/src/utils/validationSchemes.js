@@ -71,8 +71,8 @@ const PAGINATION_SCHEME = yup.object().shape({
 });
 
 const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
-  fullName: STRING_REQUIRED_SCHEME,
   email: EMAIL_REQUIRED_VALIDATION_SCHEME,
+  fullName: STRING_REQUIRED_SCHEME,
   password: PASSWORD_REQUIRED_SCHEME,
 });
 
@@ -90,21 +90,21 @@ const FORGOT_PASSWORD_VALIDATION_SCHEME = yup.object().shape({
 });
 
 const PASSWORD_VALIDATION_SCHEME = yup.object().shape({
-  newPassword: PASSWORD_REQUIRED_SCHEME,
   confirmNewPassword: PASSWORD_REQUIRED_CONFIRM_SCHEME,
+  newPassword: PASSWORD_REQUIRED_SCHEME,
 });
 
 const USER_VALIDATION_SCHEME = yup.object().shape({
-  fullName: STRING_REQUIRED_SCHEME,
   email: EMAIL_NULLABLE_VALIDATION_SCHEME,
-  role: STRING_NULLABLE_SCHEME,
+  fullName: STRING_REQUIRED_SCHEME,
   photo: STRING_NULLABLE_SCHEME,
+  role: STRING_NULLABLE_SCHEME,
 });
 
 const ROLE_VALIDATION_SCHEME = yup.object().shape({
-  title: STRING_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
   permissions: ARRAY_OF_STRING_NULLABLE_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
 });
 
 const MODERATION_VALIDATION_SCHEME = yup.object().shape({
@@ -112,18 +112,18 @@ const MODERATION_VALIDATION_SCHEME = yup.object().shape({
 });
 
 const EXPENSE_VALIDATION_SCHEME = yup.object().shape({
+  currency: STRING_REQUIRED_SCHEME,
+  date: DATE_REQUIRED_SCHEME,
+  establishment: STRING_REQUIRED_SCHEME,
+  measure: STRING_REQUIRED_SCHEME,
   product: STRING_REQUIRED_SCHEME,
   quantity: NUMBER_REQUIRED_SCHEME,
   unitPrice: NUMBER_REQUIRED_SCHEME,
-  establishment: STRING_REQUIRED_SCHEME,
-  measure: STRING_REQUIRED_SCHEME,
-  currency: STRING_REQUIRED_SCHEME,
-  date: DATE_REQUIRED_SCHEME,
 });
 
 const PRODUCT_VALIDATION_SCHEME = yup.object().shape({
-  title: STRING_REQUIRED_SCHEME,
   category: STRING_NULLABLE_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
 });
 
 const CATEGORY_VALIDATION_SCHEME = yup.object().shape({
@@ -131,23 +131,23 @@ const CATEGORY_VALIDATION_SCHEME = yup.object().shape({
 });
 
 const ESTABLISHMENT_VALIDATION_SCHEME = yup.object().shape({
-  title: STRING_REQUIRED_SCHEME,
   description: STRING_NULLABLE_SCHEME,
-  url: URL_RESOURCE_NULLABLE_SCHEME,
   logo: STRING_NULLABLE_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
+  url: URL_RESOURCE_NULLABLE_SCHEME,
 });
 
 const MEASURE_VALIDATION_SCHEME = yup.object().shape({
-  title: STRING_REQUIRED_SCHEME,
   description: STRING_REQUIRED_SCHEME,
+  title: STRING_REQUIRED_SCHEME,
 });
 
 const CURRENCY_VALIDATION_SCHEME = yup.object().shape({
-  title: STRING_REQUIRED_SCHEME,
   code: STRING_REQUIRED_SCHEME.matches(
     /^[A-Z]{3}$/,
     'Поле повинно містити рівно 3 великі латинські літери без цифр'
   ),
+  title: STRING_REQUIRED_SCHEME,
 });
 
 export {
