@@ -7,13 +7,13 @@ const {
 
 module.exports = {
   development: {
+    dbName: MONGO_DB_NAME,
     host: HOST,
     port: MONGO_PORT,
-    dbName: MONGO_DB_NAME,
   },
   test: {
+    dbName: MONGO_DB_NAME_TEST,
     host: HOST,
     port: MONGO_PORT,
-    dbName: MONGO_DB_NAME_TEST,
   },
 };

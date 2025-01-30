@@ -10,9 +10,9 @@ class PermissionsService {
     }
     const allPermissions = foundPermissions.map(
       ({ uuid, title, description }) => ({
-        uuid,
-        title,
         description,
+        title,
+        uuid,
       })
     );
     return {

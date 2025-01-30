@@ -91,4 +91,4 @@ if (require.main === module) {
   initializeDatabase(true);
 }
 
-module.exports = { initializeDatabase, closeDatabase };
+module.exports = { closeDatabase, initializeDatabase };

@@ -29,23 +29,23 @@ class StatisticsService {
           'result',
         ],
       ],
+      group: ['Product->Category.uuid'],
       include: [
         {
-          model: Product,
           attributes: [],
           include: [
             {
-              model: Category,
               attributes: [],
+              model: Category,
             },
           ],
+          model: Product,
         },
       ],
-      where: whereCondition,
-      group: ['Product->Category.uuid'],
       raw: true,
+      where: whereCondition,
     });
-    return result.length ? result : [{ title: 'Немає даних', result: '0' }];
+    return result.length ? result : [{ result: '0', title: 'Немає даних' }];
   }
 
   static async getCostByEstablishments(ago, creatorUuid) {
@@ -65,12 +65,12 @@ class StatisticsService {
           'result',
         ],
       ],
-      include: [{ model: Establishment, attributes: [] }],
-      where: whereCondition,
       group: ['Establishment.title'],
+      include: [{ attributes: [], model: Establishment }],
       raw: true,
+      where: whereCondition,
     });
-    return result.length ? result : [{ title: 'Немає даних', result: '0' }];
+    return result.length ? result : [{ result: '0', title: 'Немає даних' }];
   }
 
   static async getCostByProducts(ago, creatorUuid) {
@@ -90,12 +90,12 @@ class StatisticsService {
           'result',
         ],
       ],
-      include: [{ model: Product, attributes: [] }],
-      where: whereCondition,
       group: ['Product.title'],
+      include: [{ attributes: [], model: Product }],
       raw: true,
+      where: whereCondition,
     });
-    return result.length ? result : [{ title: 'Немає даних', result: '0' }];
+    return result.length ? result : [{ result: '0', title: 'Немає даних' }];
   }
 }
 

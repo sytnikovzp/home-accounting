@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { Op } = require('sequelize');
 
 const { Currency } = require('../db/dbPostgres/models');

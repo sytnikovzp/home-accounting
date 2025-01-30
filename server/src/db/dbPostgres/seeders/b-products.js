@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 /* eslint-disable camelcase */
 const { Category } = require('../models');
 

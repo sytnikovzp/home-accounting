@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { isBefore, parseISO } = require('date-fns');
 const { Model, Sequelize } = require('sequelize');
 

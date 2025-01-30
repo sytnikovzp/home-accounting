@@ -68,10 +68,10 @@ class AuthController {
       const { email } = req.body;
       await forgotPassword(email);
       res.status(200).json({
-        severity: 'success',
-        title: 'Зміна паролю...',
         message:
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
+        severity: 'success',
+        title: 'Зміна паролю...',
       });
     } catch (error) {
       console.error('Password reset error: ', error.message);
@@ -98,9 +98,9 @@ class AuthController {
       const { newPassword, confirmNewPassword } = req.body;
       await resetPassword(token, newPassword, confirmNewPassword);
       res.status(200).json({
+        message: 'Ваш пароль успішно змінено',
         severity: 'success',
         title: 'Зміна паролю...',
-        message: 'Ваш пароль успішно змінено',
       });
     } catch (error) {
       console.error('Password reset error: ', error.message);

@@ -9,9 +9,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { uuid: null, accessToken: null },
-  moderator: { uuid: null, accessToken: null },
-  admin: { uuid: null, accessToken: null },
+  admin: { accessToken: null, uuid: null },
+  moderator: { accessToken: null, uuid: null },
+  user: { accessToken: null, uuid: null },
 };
 
 describe('RolesController', () => {
@@ -72,7 +72,7 @@ describe('RolesController', () => {
     it('should get all permissions (custom pagination)', async () => {
       const response = await request(app)
         .get('/api/roles/permissions')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -111,7 +111,7 @@ describe('RolesController', () => {
     it('should return list of roles (custom pagination)', async () => {
       const response = await request(app)
         .get('/api/roles')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -142,9 +142,9 @@ describe('RolesController', () => {
         .post('/api/roles')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Нова роль користувача',
           description: '',
           permissions: ['ADD_CATEGORIES', 'ADD_ESTABLISHMENTS', 'ADD_PRODUCTS'],
+          title: 'Нова роль користувача',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
@@ -154,16 +154,16 @@ describe('RolesController', () => {
       expect(response.body.permissions).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            title: 'ADD_CATEGORIES',
             description: 'Додавання нових категорій, потребують модерації',
+            title: 'ADD_CATEGORIES',
           }),
           expect.objectContaining({
-            title: 'ADD_ESTABLISHMENTS',
             description: 'Додавання нових закладів, потребують модерації',
+            title: 'ADD_ESTABLISHMENTS',
           }),
           expect.objectContaining({
-            title: 'ADD_PRODUCTS',
             description: 'Додавання нових товарів, потребують модерації',
+            title: 'ADD_PRODUCTS',
           }),
         ])
       );
@@ -175,9 +175,9 @@ describe('RolesController', () => {
         .post('/api/roles')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Нова  наступна роль користувача',
           description: '',
           permissions: ['ADD_CATEGORIES1'],
+          title: 'Нова  наступна роль користувача',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe(
@@ -203,8 +203,8 @@ describe('RolesController', () => {
         .post('/api/roles')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Нова роль користувача',
           description: 'Роль для цілі тестування',
+          title: 'Нова роль користувача',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -237,16 +237,16 @@ describe('RolesController', () => {
       expect(response.body.permissions).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            title: 'ADD_CATEGORIES',
             description: 'Додавання нових категорій, потребують модерації',
+            title: 'ADD_CATEGORIES',
           }),
           expect.objectContaining({
-            title: 'ADD_ESTABLISHMENTS',
             description: 'Додавання нових закладів, потребують модерації',
+            title: 'ADD_ESTABLISHMENTS',
           }),
           expect.objectContaining({
-            title: 'ADD_PRODUCTS',
             description: 'Додавання нових товарів, потребують модерації',
+            title: 'ADD_PRODUCTS',
           }),
         ])
       );
@@ -274,9 +274,9 @@ describe('RolesController', () => {
         .patch(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Оновлена назва ролі',
           description: 'Оновлений опис ролі',
           permissions: [],
+          title: 'Оновлена назва ролі',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', roleUuid);
@@ -303,9 +303,9 @@ describe('RolesController', () => {
         .patch(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Оновлена назва ролі',
           description: 'Оновлений опис ролі',
           permissions: [],
+          title: 'Оновлена назва ролі',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(

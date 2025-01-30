@@ -14,8 +14,8 @@ const {
 class TokenService {
   static generateTokens(user) {
     const payload = {
-      uuid: user.uuid,
       tokenVersion: user.tokenVersion,
+      uuid: user.uuid,
     };
     const accessToken = jwt.sign(payload, ACCESS_SECRET, {
       expiresIn: ACCESS_TOKEN_LIFETIME,

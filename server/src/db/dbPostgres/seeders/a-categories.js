@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 const { postgresData } = require('../../../constants');
 
 module.exports = {

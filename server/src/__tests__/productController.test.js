@@ -9,9 +9,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { uuid: null, accessToken: null },
-  moderator: { uuid: null, accessToken: null },
-  admin: { uuid: null, accessToken: null },
+  admin: { accessToken: null, uuid: null },
+  moderator: { accessToken: null, uuid: null },
+  user: { accessToken: null, uuid: null },
 };
 
 describe('ProductsController', () => {
@@ -72,7 +72,7 @@ describe('ProductsController', () => {
     it('should return list of products (status approved, custom pagination)', async () => {
       const response = await request(app)
         .get('/api/products')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -95,7 +95,7 @@ describe('ProductsController', () => {
       const response = await request(app)
         .get('/api/products')
         .query({ status: 'pending' })
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -118,7 +118,7 @@ describe('ProductsController', () => {
       const response = await request(app)
         .get('/api/products')
         .query({ status: 'rejected' })
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -138,8 +138,8 @@ describe('ProductsController', () => {
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Новий модераторський товар',
           category: 'Пристрої',
+          title: 'Новий модераторський товар',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
@@ -156,8 +156,8 @@ describe('ProductsController', () => {
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Новий користувацький товар',
           category: 'Електроніка',
+          title: 'Новий користувацький товар',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
@@ -175,8 +175,8 @@ describe('ProductsController', () => {
         .post('/api/products')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Новий товар',
           category: 'Машини',
+          title: 'Новий товар',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Category not found');
@@ -274,8 +274,8 @@ describe('ProductsController', () => {
         .patch(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          title: 'Оновлена назва товару',
           category: 'Обчислювальна техніка',
+          title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', productUuid);
@@ -292,8 +292,8 @@ describe('ProductsController', () => {
         .patch(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Оновлена назва товару',
           category: 'Обчислювальна техніка',
+          title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', productUuid);

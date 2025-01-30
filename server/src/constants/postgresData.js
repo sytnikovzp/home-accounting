@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 /* eslint-disable camelcase */
 const { getUserDetailsByEmail } = require('../utils/sharedFunctions');
 

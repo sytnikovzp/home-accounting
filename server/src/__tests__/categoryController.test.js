@@ -9,9 +9,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { uuid: null, accessToken: null },
-  moderator: { uuid: null, accessToken: null },
-  admin: { uuid: null, accessToken: null },
+  admin: { accessToken: null, uuid: null },
+  moderator: { accessToken: null, uuid: null },
+  user: { accessToken: null, uuid: null },
 };
 
 describe('CategoriesController', () => {
@@ -72,7 +72,7 @@ describe('CategoriesController', () => {
     it('should return list of categories (status approved, custom pagination)', async () => {
       const response = await request(app)
         .get('/api/categories')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -95,7 +95,7 @@ describe('CategoriesController', () => {
       const response = await request(app)
         .get('/api/categories')
         .query({ status: 'pending' })
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -118,7 +118,7 @@ describe('CategoriesController', () => {
       const response = await request(app)
         .get('/api/categories')
         .query({ status: 'rejected' })
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');

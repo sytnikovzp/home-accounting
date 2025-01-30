@@ -9,9 +9,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { uuid: null, accessToken: null },
-  moderator: { uuid: null, accessToken: null },
-  admin: { uuid: null, accessToken: null },
+  admin: { accessToken: null, uuid: null },
+  moderator: { accessToken: null, uuid: null },
+  user: { accessToken: null, uuid: null },
 };
 
 describe('MeasuresController', () => {
@@ -72,7 +72,7 @@ describe('MeasuresController', () => {
     it('should return list of measures (custom pagination)', async () => {
       const response = await request(app)
         .get('/api/measures')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -92,8 +92,8 @@ describe('MeasuresController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Нова одиниця вимірів',
           description: '',
+          title: 'Нова одиниця вимірів',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
@@ -120,8 +120,8 @@ describe('MeasuresController', () => {
         .post('/api/measures')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Нова одиниця вимірів',
           description: '',
+          title: 'Нова одиниця вимірів',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -174,8 +174,8 @@ describe('MeasuresController', () => {
         .patch(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Оновлена назва одиниці вимірів',
           description: 'Оновлений опис одиниці вимірів',
+          title: 'Оновлена назва одиниці вимірів',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', measureUuid);
@@ -201,8 +201,8 @@ describe('MeasuresController', () => {
         .patch(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Оновлена назва одиниці вимірів',
           description: 'Оновлений опис одиниці вимірів',
+          title: 'Оновлена назва одиниці вимірів',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(

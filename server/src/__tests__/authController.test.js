@@ -14,8 +14,8 @@ describe('AuthController', () => {
   describe('POST /api/auth/registration', () => {
     it('should register a new user', async () => {
       const response = await request(app).post('/api/auth/registration').send({
-        fullName: 'Євген Ступка',
         email: 'evgen.stupka@gmail.com',
+        fullName: 'Євген Ступка',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(201);
@@ -28,8 +28,8 @@ describe('AuthController', () => {
 
     it('should return 400 for existing user', async () => {
       const response = await request(app).post('/api/auth/registration').send({
-        fullName: 'Іван Петренко',
         email: 'ivan.petrenko@gmail.com',
+        fullName: 'Іван Петренко',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(400);

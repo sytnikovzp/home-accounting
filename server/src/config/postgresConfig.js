@@ -7,22 +7,22 @@ const {
 
 module.exports = {
   development: {
-    username: DB_USER,
-    password: DB_PASS,
     database: DB_NAME,
-    host: HOST,
     dialect: DB_DIALECT,
+    host: HOST,
     migrationStorage: 'json',
-    seederStorage: 'json',
-  },
-  test: {
-    username: DB_USER,
     password: DB_PASS,
-    database: DB_NAME_TEST,
-    host: HOST,
-    dialect: DB_DIALECT,
-    migrationStorage: 'json',
     seederStorage: 'json',
+    username: DB_USER,
   },
   production: {},
+  test: {
+    database: DB_NAME_TEST,
+    dialect: DB_DIALECT,
+    host: HOST,
+    migrationStorage: 'json',
+    password: DB_PASS,
+    seederStorage: 'json',
+    username: DB_USER,
+  },
 };

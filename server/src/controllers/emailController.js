@@ -31,10 +31,10 @@ class EmailController {
       const { email } = req.body;
       await resendVerifyEmail(email);
       res.status(200).json({
-        severity: 'success',
-        title: 'Веріфікація облікового запису...',
         message:
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
+        severity: 'success',
+        title: 'Веріфікація облікового запису...',
       });
     } catch (error) {
       console.error('Resend verification email error: ', error.message);

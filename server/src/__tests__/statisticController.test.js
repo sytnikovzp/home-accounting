@@ -13,7 +13,7 @@ describe('StatisticsController', () => {
     it('should return cost for category with time filter (month)', async () => {
       const response = await request(app)
         .get('/api/statistics/category-per-period')
-        .query({ category: 'Побутові пристрої', ago: 'month' });
+        .query({ ago: 'month', category: 'Побутові пристрої' });
       expect(response.status).toBe(200);
       expect(response.body).toEqual([{ result: '83000.00' }]);
     });
@@ -47,7 +47,7 @@ describe('StatisticsController', () => {
     it('should return total cost for establishment "Comfy" with time filter (week)', async () => {
       const response = await request(app)
         .get('/api/statistics/establishment-per-period')
-        .query({ establishment: 'Comfy', ago: 'week' });
+        .query({ ago: 'week', establishment: 'Comfy' });
       expect(response.status).toBe(200);
       expect(response.body).toEqual([{ result: '49000.00' }]);
     });

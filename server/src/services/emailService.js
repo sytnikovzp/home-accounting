@@ -34,8 +34,8 @@ class EmailService {
     }
     await VerificationToken.deleteMany({ userUuid: foundUser.uuid });
     const verificationToken = await VerificationToken.create({
-      userUuid: foundUser.uuid,
       expiresAt: new Date(Date.now() + VERIFICATION),
+      userUuid: foundUser.uuid,
     });
     await mailService.sendVerificationMail(
       foundUser.email,

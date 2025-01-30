@@ -9,9 +9,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { uuid: null, accessToken: null },
-  moderator: { uuid: null, accessToken: null },
-  admin: { uuid: null, accessToken: null },
+  admin: { accessToken: null, uuid: null },
+  moderator: { accessToken: null, uuid: null },
+  user: { accessToken: null, uuid: null },
 };
 
 describe('CurrenciesController', () => {
@@ -72,7 +72,7 @@ describe('CurrenciesController', () => {
     it('should return list of currencies (custom pagination)', async () => {
       const response = await request(app)
         .get('/api/currencies')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -92,8 +92,8 @@ describe('CurrenciesController', () => {
         .post('/api/currencies')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Нова валюта',
           description: '',
+          title: 'Нова валюта',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
@@ -118,8 +118,8 @@ describe('CurrenciesController', () => {
         .post('/api/currencies')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Нова валюта',
           description: '',
+          title: 'Нова валюта',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -174,8 +174,8 @@ describe('CurrenciesController', () => {
         .patch(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Оновлена назва валюти',
           description: 'Оновлений опис валюти',
+          title: 'Оновлена назва валюти',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', currencyUuid);
@@ -199,8 +199,8 @@ describe('CurrenciesController', () => {
         .patch(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Оновлена назва валюти',
           description: 'Оновлений опис валюти',
+          title: 'Оновлена назва валюти',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(

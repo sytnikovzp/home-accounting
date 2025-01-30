@@ -5,8 +5,8 @@ const STATUS_MODERATION_MAPPING = {
 };
 
 const USER_VERIFICATION_MAPPING = {
-  verified: 'Веріфікований',
   pending: 'Очікує веріфікації',
+  verified: 'Веріфікований',
 };
 
 module.exports = {

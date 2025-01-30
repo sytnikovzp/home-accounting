@@ -5,6 +5,13 @@
 
 /** @type {import('jest').Config} */
 const config = {
+  // Indicates which provider should be used to instrument code for coverage
+  coverageProvider: 'v8',
+
+  // Allows you to use a custom runner instead of Jest's default test runner
+  // runner: "jest-runner",
+  runner: 'jest-serial-runner',
+
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 
   // All imported modules in your tests should be mocked automatically
@@ -32,9 +39,6 @@ const config = {
   // coveragePathIgnorePatterns: [
   //   "/node_modules/"
   // ],
-
-  // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -130,10 +134,6 @@ const config = {
   // roots: [
   //   "<rootDir>"
   // ],
-
-  // Allows you to use a custom runner instead of Jest's default test runner
-  // runner: "jest-runner",
-  runner: 'jest-serial-runner',
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
   // setupFiles: [],

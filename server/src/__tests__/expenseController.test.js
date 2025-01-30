@@ -9,9 +9,9 @@ beforeAll(initializeDatabase);
 afterAll(closeDatabase);
 
 const authData = {
-  user: { uuid: null, accessToken: null },
-  moderator: { uuid: null, accessToken: null },
-  admin: { uuid: null, accessToken: null },
+  admin: { accessToken: null, uuid: null },
+  moderator: { accessToken: null, uuid: null },
+  user: { accessToken: null, uuid: null },
 };
 
 describe('ExpensesController', () => {
@@ -72,7 +72,7 @@ describe('ExpensesController', () => {
     it('should return list of expenses (custom pagination)', async () => {
       const response = await request(app)
         .get('/api/expenses')
-        .query({ page: 1, limit: 10 })
+        .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -92,12 +92,12 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'UAH',
+          establishment: 'Comfy',
+          measure: 'шт',
           product: 'Навушники',
           quantity: 2,
           unitPrice: 500,
-          establishment: 'Comfy',
-          measure: 'шт',
-          currency: 'UAH',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
@@ -117,12 +117,12 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Велика кишеня',
+          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Велика кишеня',
-          measure: 'шт',
-          currency: 'USD',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Establishment not found');
@@ -133,12 +133,12 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Comfy',
+          measure: 'шт',
           product: 'Ноутбуки',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Comfy',
-          measure: 'шт',
-          currency: 'USD',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Product not found');
@@ -149,12 +149,12 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Comfy',
+          measure: 'літр',
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Comfy',
-          measure: 'літр',
-          currency: 'USD',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Measure not found');
@@ -165,12 +165,12 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'YYY',
+          establishment: 'Comfy',
+          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Comfy',
-          measure: 'шт',
-          currency: 'YYY',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Currency not found');
@@ -181,12 +181,12 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Comfy',
+          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Comfy',
-          measure: 'шт',
-          currency: 'USD',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -234,12 +234,12 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Епіцентр',
+          measure: 'шт',
           product: 'Ноутбук',
           quantity: 1,
           unitPrice: 850.0,
-          establishment: 'Епіцентр',
-          measure: 'шт',
-          currency: 'USD',
         });
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', expenseUuid);
@@ -258,12 +258,12 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Велика кишеня',
+          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Велика кишеня',
-          measure: 'шт',
-          currency: 'USD',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Establishment not found');
@@ -274,12 +274,12 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Comfy',
+          measure: 'шт',
           product: 'Ноутбуки',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Comfy',
-          measure: 'шт',
-          currency: 'USD',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Product not found');
@@ -290,12 +290,12 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Comfy',
+          measure: 'літр',
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Comfy',
-          measure: 'літр',
-          currency: 'USD',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Measure not found');
@@ -306,12 +306,12 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          currency: 'YYY',
+          establishment: 'Comfy',
+          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
           unitPrice: 100,
-          establishment: 'Comfy',
-          measure: 'шт',
-          currency: 'YYY',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Currency not found');
@@ -322,12 +322,12 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Епіцентр',
+          measure: 'шт',
           product: 'Ноутбук',
           quantity: 1,
           unitPrice: 850.0,
-          establishment: 'Епіцентр',
-          measure: 'шт',
-          currency: 'USD',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -340,12 +340,12 @@ describe('ExpensesController', () => {
         .patch('/api/expenses/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
+          currency: 'USD',
+          establishment: 'Епіцентр',
+          measure: 'шт',
           product: 'Ноутбук',
           quantity: 1,
           unitPrice: 850.0,
-          establishment: 'Епіцентр',
-          measure: 'шт',
-          currency: 'USD',
         });
       expect(response.status).toBe(404);
       expect(response.body.errors[0].title).toBe('Витрату не знайдено');
