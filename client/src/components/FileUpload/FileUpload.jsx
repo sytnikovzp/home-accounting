@@ -1,12 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import {
-  Alert,
-  AlertTitle,
   Avatar,
   Box,
   Button,
   CircularProgress,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import { Clear } from '@mui/icons-material';
 
@@ -21,18 +20,13 @@ import {
 
 const { BASE_URL } = configs;
 
-function FileUpload({
-  file,
-  onUpload,
-  onRemove,
-  label,
-  entity,
-  isLoading,
-  error,
-}) {
-  const avatarSrc = useMemo(() => {
+function FileUpload({ file, onUpload, onReset, label, entity, isLoading }) {
+  const avatarPath = useMemo(() => {
     if (file) {
       return `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`;
+    }
+    if (entity === 'users') {
+      return null;
     }
     return `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
   }, [file, entity]);
@@ -49,13 +43,6 @@ function FileUpload({
 
   return (
     <Box sx={stylesFileUploadMainBox}>
-      {error && (
-        <Alert severity={error?.severity || 'error'} sx={{ mb: 1 }}>
-          <AlertTitle>{error?.title || 'error'}:</AlertTitle>
-          {error?.message || 'error'}
-        </Alert>
-      )}
-
       <Box sx={stylesFileUploadAvatarBox}>
         {isLoading ? (
           <CircularProgress />
@@ -63,24 +50,25 @@ function FileUpload({
           <>
             <Avatar
               alt={file ? 'Файл завантажений' : 'Файл не завантажений'}
-              src={avatarSrc}
+              src={avatarPath}
               sx={stylesFileUploadAvatar}
               variant='rounded'
             />
             {file && (
-              <IconButton
-                color='error'
-                size='small'
-                sx={stylesFileUploadIconButton}
-                onClick={onRemove}
-              >
-                <Clear fontSize='small' />
-              </IconButton>
+              <Tooltip title='Видалити'>
+                <IconButton
+                  color='error'
+                  size='small'
+                  sx={stylesFileUploadIconButton}
+                  onClick={onReset}
+                >
+                  <Clear fontSize='small' />
+                </IconButton>
+              </Tooltip>
             )}
           </>
         )}
       </Box>
-
       <Button
         color='success'
         component='label'

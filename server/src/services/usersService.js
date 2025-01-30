@@ -245,7 +245,7 @@ class UsersService {
           roleUuid: foundUser.roleUuid,
         });
         if (adminCount === 1) {
-          throw forbidden('Змінити роль останнього Адміністратора не можна');
+          throw forbidden('Не можна змінити роль останнього Адміністратора');
         }
       }
       const newRole = await Role.findOne({ title: role });
@@ -374,7 +374,7 @@ class UsersService {
         roleUuid: foundUser.roleUuid,
       });
       if (adminCount === 1) {
-        throw forbidden('Неможливо видалити останнього Адміністратора');
+        throw forbidden('Не можна видалити останнього Адміністратора');
       }
     }
     const deletedUser = await User.findOneAndDelete({ uuid });

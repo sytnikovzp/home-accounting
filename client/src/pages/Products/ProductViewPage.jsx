@@ -25,9 +25,7 @@ function ProductViewPage({ handleModalClose }) {
     data: product,
     isLoading: isFetching,
     error,
-  } = useFetchProductByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  } = useFetchProductByUuidQuery(uuid, { skip: !uuid });
 
   const { title, status, moderation, creation, category } = product ?? {};
   const { moderatorUuid, moderatorFullName } = moderation ?? {};

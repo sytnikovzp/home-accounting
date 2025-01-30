@@ -19,9 +19,7 @@ function CategoryViewPage({ handleModalClose }) {
     data: category,
     isLoading: isFetching,
     error,
-  } = useFetchCategoryByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  } = useFetchCategoryByUuidQuery(uuid, { skip: !uuid });
 
   const { title, status, moderation, creation } = category ?? {};
   const { moderatorUuid, moderatorFullName } = moderation ?? {};

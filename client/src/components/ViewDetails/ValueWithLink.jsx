@@ -2,8 +2,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '@mui/material';
 
 function ValueWithLink({ value, isLink, linkTo = '' }) {
-  const isExternalLink =
-    linkTo && (linkTo.startsWith('http://') || linkTo.startsWith('https://'));
+  const isExternalLink = /^https?:\/\//.test(linkTo ?? '');
 
   if (isLink && linkTo) {
     return isExternalLink ? (
@@ -27,6 +26,7 @@ function ValueWithLink({ value, isLink, linkTo = '' }) {
       </Link>
     );
   }
+
   return value || '*Немає даних*';
 }
 

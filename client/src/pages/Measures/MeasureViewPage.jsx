@@ -24,9 +24,7 @@ function MeasureViewPage({ handleModalClose }) {
     data: measure,
     isLoading: isFetching,
     error,
-  } = useFetchMeasureByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  } = useFetchMeasureByUuidQuery(uuid, { skip: !uuid });
 
   const { title, description, creation } = measure ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};

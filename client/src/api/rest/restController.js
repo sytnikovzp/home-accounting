@@ -1,4 +1,11 @@
-import { resetPassword } from '../../services/authService';
+import {
+  forgotPassword,
+  login,
+  logout,
+  refreshAccessToken,
+  registration,
+  resetPassword,
+} from '../../services/authService';
 import {
   getAllPendingItems,
   moderationCategory,
@@ -11,34 +18,17 @@ import {
   getRoleByUuid,
   updateRole,
 } from '../../services/rolesService';
-import {
-  changePassword,
-  deleteUser,
-  resetUserPhoto,
-  updateUser,
-  updateUserPhoto,
-} from '../../services/usersService';
 
 const restController = {
   // Authentication
-  // registration: (fullName, email, password) =>
-  //   registration(fullName, email, password),
-  // login: (email, password) => login(email, password),
-  // logout: () => logout(),
-  // refreshAccessToken: (originalRequest) => refreshAccessToken(originalRequest),
-  // forgotPassword: (email) => forgotPassword(email),
+  registration: (fullName, email, password) =>
+    registration(fullName, email, password),
+  login: (email, password) => login(email, password),
+  logout: () => logout(),
+  refreshAccessToken: (originalRequest) => refreshAccessToken(originalRequest),
+  forgotPassword: (email) => forgotPassword(email),
   resetPassword: (token, newPassword, confirmNewPassword) =>
     resetPassword(token, newPassword, confirmNewPassword),
-
-  // User management
-  editUser: (userUuid, fullName, email, role) =>
-    updateUser(userUuid, fullName, email, role),
-  changePassword: (userUuid, newPassword, confirmNewPassword) =>
-    changePassword(userUuid, newPassword, confirmNewPassword),
-  uploadUserPhoto: (userUuid, userPhoto) =>
-    updateUserPhoto(userUuid, userPhoto),
-  resetUserPhoto: (userUuid) => resetUserPhoto(userUuid),
-  removeUser: (userUuid) => deleteUser(userUuid),
 
   // Role management
   fetchRoleByUuid: (roleUuid) => getRoleByUuid(roleUuid),

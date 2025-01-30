@@ -7,6 +7,7 @@ function StatusIcon({ status }) {
     'Очікує модерації': <HourglassEmpty color='warning' />,
     'Очікує веріфікації': <HourglassEmpty color='warning' />,
   };
+
   return icons[status] || <Cancel color='error' />;
 }
 

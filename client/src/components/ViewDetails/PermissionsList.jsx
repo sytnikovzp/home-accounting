@@ -36,7 +36,7 @@ function PermissionsList({ permissions = [] }) {
             </ListItemIcon>
             <ListItemText
               primary={<Typography variant='body1'>{title}</Typography>}
-              secondary={description || '*Опис відсутній*'}
+              secondary={description || '*Немає даних*'}
             />
           </ListItem>
         ))}

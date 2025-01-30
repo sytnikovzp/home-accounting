@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { Avatar, Box, Button, Tooltip } from '@mui/material';
 import {
   AlternateEmail,
@@ -11,15 +10,10 @@ import {
 } from '@mui/icons-material';
 
 import { configs } from '../../constants';
-
-import { selectEmailVerificationIsLoading } from '../../store/selectors/emailVerificationSelectors';
 import {
-  selectSelectedUser,
-  selectUsersActionError,
-  selectUsersProcessingAction,
-} from '../../store/selectors/usersSelectors';
-import { sendVerificationEmail } from '../../store/thunks/emailVerificationThunks';
-import { fetchUserByUuid } from '../../store/thunks/usersThunks';
+  useFetchUserByUuidQuery,
+  useResendVerifyEmailMutation,
+} from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -30,60 +24,37 @@ import {
   stylesUserViewPageEmailButton,
   stylesViewPageAvatarSize,
   stylesViewPageBox,
+  stylesViewPageBoxWithAvatar,
 } from '../../styles';
 
 const { BASE_URL } = configs;
 
 function UserViewPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const user = useSelector(selectSelectedUser);
-  const isLoading = useSelector(selectUsersProcessingAction);
-  const error = useSelector(selectUsersActionError);
-  const emailVerificationLoading = useSelector(
-    selectEmailVerificationIsLoading
-  );
+  const {
+    data: user,
+    isLoading: isFetching,
+    error,
+  } = useFetchUserByUuidQuery(uuid, { skip: !uuid });
 
-  useEffect(() => {
-    if (uuid) {
-      dispatch(fetchUserByUuid(uuid));
-    }
-  }, [dispatch, uuid]);
+  const [resendVerifyEmail, { isLoading: emailVerificationLoading }] =
+    useResendVerifyEmailMutation();
 
   const { fullName, role, photo, email, emailVerificationStatus, creation } =
     user ?? {};
   const { createdAt, updatedAt } = creation ?? {};
 
-  const handleResendVerification = useCallback(
-    (email) => {
-      const response = dispatch(sendVerificationEmail(email));
-      if (sendVerificationEmail.fulfilled.match(response)) {
-        const { severity, title, message } = response.payload;
-        navigate(
-          `/notification?severity=${encodeURIComponent(
-            severity
-          )}&title=${encodeURIComponent(
-            title
-          )}&message=${encodeURIComponent(message)}`
-        );
-      }
-    },
-    [dispatch, navigate]
-  );
+  const photoPath = useMemo(() => {
+    const baseUrl = BASE_URL.replace('/api/', '');
+    return photo ? `${baseUrl}/images/users/${photo}` : null;
+  }, [photo]);
 
   const handleResendClick = useCallback(() => {
-    handleResendVerification(email);
-  }, [email, handleResendVerification]);
-
-  const photoSrc = useMemo(() => {
-    const baseUrl = BASE_URL.replace('/api/', '');
-    if (photo) {
-      return `${baseUrl}/images/users/${photo}`;
+    if (email) {
+      resendVerifyEmail(email);
     }
-    return null;
-  }, [photo]);
+  }, [email, resendVerifyEmail]);
 
   const data = useMemo(
     () => [
@@ -94,7 +65,7 @@ function UserViewPage({ handleModalClose }) {
         extra: (
           <Avatar
             alt='Фото користувача'
-            src={photoSrc}
+            src={photoPath}
             sx={stylesViewPageAvatarSize}
             variant='rounded'
           />
@@ -153,7 +124,7 @@ function UserViewPage({ handleModalClose }) {
     ],
     [
       fullName,
-      photoSrc,
+      photoPath,
       role,
       email,
       emailVerificationStatus,
@@ -164,19 +135,22 @@ function UserViewPage({ handleModalClose }) {
     ]
   );
 
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Box sx={stylesViewPageBox}>
+        <ViewDetails data={data} extraStyles={stylesViewPageBoxWithAvatar} />
+      </Box>
+    );
+  }, [data, isFetching]);
+
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Box sx={stylesViewPageBox}>
-            <ViewDetails data={data} />
-          </Box>
-        )
-      }
-      error={error}
+      content={content}
+      error={error?.data}
       title='Деталі користувача...'
       onClose={handleModalClose}
     />

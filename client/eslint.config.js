@@ -258,7 +258,7 @@ export default [
       'no-warning-comments': 'warn',
       'no-unneeded-ternary': 'error',
       'spaced-comment': 'error',
-      'wrap-regex': 'warn',
+      'wrap-regex': 'off',
       'import/no-self-import': 'error',
       'require-atomic-updates': 'error',
       'array-callback-return': 'error',
@@ -368,7 +368,6 @@ export default [
       'no-ex-assign': 'error',
       'no-fallthrough': 'error',
       'no-func-assign': 'error',
-      'no-restricted-syntax': ['error', 'WithStatement'],
       'no-sparse-arrays': 'error',
       'no-this-before-super': 'error',
       'no-unused-labels': 'error',
@@ -445,6 +444,21 @@ export default [
           enforceConst: true,
           detectObjects: false,
         },
+      ],
+      'no-unsafe-optional-chaining': [
+        'warn',
+        {
+          disallowArithmeticOperators: true,
+        },
+      ],
+      'no-restricted-syntax': [
+        'error',
+        'WithStatement',
+        // {
+        //   selector: "LogicalExpression[operator='||']",
+        //   message:
+        //     'Используйте ?? вместо || для проверки на null или undefined.',
+        // },
       ],
       // 'react/no-array-index-key': 'warn',
       // 'react/jsx-no-bind': ['warn', { ignoreRefs: true }],

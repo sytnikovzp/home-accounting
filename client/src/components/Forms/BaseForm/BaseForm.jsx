@@ -8,7 +8,7 @@ import { stylesBaseFormButtomBox } from '../../../styles';
 function BaseForm({
   fields,
   initialValues,
-  isLoading,
+  isLoading = true,
   submitButtonText,
   validationSchema,
   onSubmit,

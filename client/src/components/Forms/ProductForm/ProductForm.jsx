@@ -17,10 +17,6 @@ function ProductForm({ isLoading, product = null, onSubmit }) {
 
   const categories = categoriesData?.data ?? [];
 
-  if (isFetchingCategories) {
-    return <Preloader />;
-  }
-
   const initialValues = {
     title: title || '',
     category: category?.title || '',
@@ -29,19 +25,23 @@ function ProductForm({ isLoading, product = null, onSubmit }) {
   const fields = [
     {
       name: 'title',
-      label: 'Назва товару',
+      label: 'Назва товару/послуги',
       placeholder: 'Наприклад "Футболка"',
       required: true,
       autoFocus: true,
     },
     {
       name: 'category',
-      label: 'Категорія товару',
+      label: 'Категорія товару/послуги',
       type: 'autocomplete',
       options: groupByFirstLetter([...categories], 'title', 'title'),
       placeholder: 'Наприклад "Одяг"',
     },
   ];
+
+  if (isFetchingCategories) {
+    return <Preloader />;
+  }
 
   return (
     <BaseForm

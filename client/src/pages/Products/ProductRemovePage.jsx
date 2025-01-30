@@ -18,7 +18,7 @@ function ProductRemovePage({ handleModalClose }) {
   const { data: product, isLoading: isFetching } =
     useFetchProductByUuidQuery(uuid);
 
-  const [removeProduct, { isLoading: isDeleting, error }] =
+  const [removeProduct, { isLoading: isRemoving, error }] =
     useRemoveProductMutation();
 
   const handleDeleteProduct = useCallback(async () => {
@@ -37,7 +37,7 @@ function ProductRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isDeleting}
+        disabled={isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteProduct}
@@ -45,7 +45,7 @@ function ProductRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isDeleting, handleDeleteProduct]
+    [isRemoving, handleDeleteProduct]
   );
 
   const content = useMemo(() => {

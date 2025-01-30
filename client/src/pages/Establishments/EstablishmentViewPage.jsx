@@ -33,21 +33,18 @@ function EstablishmentViewPage({ handleModalClose }) {
     data: establishment,
     isLoading: isFetching,
     error,
-  } = useFetchEstablishmentByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  } = useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 
   const { title, description, url, logo, status, moderation, creation } =
     establishment ?? {};
   const { moderatorUuid, moderatorFullName } = moderation ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
-  const logoSrc = useMemo(() => {
+  const logoPath = useMemo(() => {
     const baseUrl = BASE_URL.replace('/api/', '');
-    if (logo) {
-      return `${baseUrl}/images/establishments/${logo}`;
-    }
-    return `${baseUrl}/images/noLogo.png`;
+    return logo
+      ? `${baseUrl}/images/establishments/${logo}`
+      : `${baseUrl}/images/noLogo.png`;
   }, [logo]);
 
   const data = useMemo(
@@ -59,7 +56,7 @@ function EstablishmentViewPage({ handleModalClose }) {
         extra: (
           <Avatar
             alt='Логотип закладу'
-            src={logoSrc}
+            src={logoPath}
             sx={stylesViewPageAvatarSize}
             variant='rounded'
           />
@@ -105,7 +102,7 @@ function EstablishmentViewPage({ handleModalClose }) {
     ],
     [
       title,
-      logoSrc,
+      logoPath,
       description,
       url,
       status,

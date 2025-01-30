@@ -18,7 +18,7 @@ function MeasureRemovePage({ handleModalClose }) {
   const { data: measure, isLoading: isFetching } =
     useFetchMeasureByUuidQuery(uuid);
 
-  const [removeMeasure, { isLoading: isDeleting, error }] =
+  const [removeMeasure, { isLoading: isRemoving, error }] =
     useRemoveMeasureMutation();
 
   const handleDeleteMeasure = useCallback(async () => {
@@ -37,7 +37,7 @@ function MeasureRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isDeleting}
+        disabled={isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteMeasure}
@@ -45,7 +45,7 @@ function MeasureRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isDeleting, handleDeleteMeasure]
+    [isRemoving, handleDeleteMeasure]
   );
 
   const content = useMemo(() => {

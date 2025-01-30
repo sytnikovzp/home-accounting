@@ -1,12 +1,9 @@
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
 
 import { pageTitles } from '../../constants';
 import usePageTitle from '../../hooks/usePageTitle';
-
-import { clearStatus } from '../../store/slices/emailVerificationSlice';
 
 import InfoMessage from '../../components/InfoMessage/InfoMessage';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
@@ -14,7 +11,6 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 const { NOTIFICATION_PAGE_TITLES } = pageTitles;
 
 function NotificationsPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,9 +22,8 @@ function NotificationsPage() {
   usePageTitle(location, NOTIFICATION_PAGE_TITLES);
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearStatus());
     navigate('/');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   return (
     <ModalWindow

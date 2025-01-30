@@ -229,7 +229,6 @@ module.exports = [
       'no-empty-character-class': 'error',
       'no-empty-pattern': 'error',
       'no-fallthrough': 'error',
-      'no-restricted-syntax': ['error', 'WithStatement'],
       'class-methods-use-this': 'error',
       'no-lone-blocks': 'warn',
       'init-declarations': ['warn', 'always'],
@@ -267,7 +266,7 @@ module.exports = [
       ],
       'dot-location': ['warn', 'property'],
       'no-nested-ternary': 'warn',
-      'wrap-regex': 'warn',
+      'wrap-regex': 'off',
       'no-label-var': 'error',
       'import/exports-last': 'warn',
       'import/no-named-as-default': 'warn',
@@ -294,6 +293,21 @@ module.exports = [
       'yield-star-spacing': 'warn',
       'promise/prefer-await-to-then': 'warn',
       'optimize-regex/optimize-regex': 'warn',
+      'no-unsafe-optional-chaining': [
+        'warn',
+        {
+          disallowArithmeticOperators: true,
+        },
+      ],
+      'no-restricted-syntax': [
+        'error',
+        'WithStatement',
+        // {
+        //   selector: "LogicalExpression[operator='||']",
+        //   message:
+        //     'Используйте ?? вместо || для проверки на null или undefined.',
+        // },
+      ],
       'no-console': 'off',
       'no-inline-comments': 'warn',
     },

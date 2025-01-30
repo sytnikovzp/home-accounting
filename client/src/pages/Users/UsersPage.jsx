@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 
 import { pageTitles } from '../../constants';
@@ -8,15 +7,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
-
-import {
-  selectTotalCount,
-  selectUsers,
-  selectUsersIsLoadingList,
-  selectUsersListLoadingError,
-} from '../../store/selectors/usersSelectors';
-import { clearSelected } from '../../store/slices/usersSlice';
-import { fetchUsers } from '../../store/thunks/usersThunks';
+import { useFetchAllUsersQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
@@ -45,33 +36,27 @@ function UsersPage() {
   });
   const [emailVerificationStatus, setEmailVerificationStatus] = useState('all');
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const users = useSelector(selectUsers);
-  const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectUsersIsLoadingList);
-  const error = useSelector(selectUsersListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      emailVerificationStatus,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, emailVerificationStatus, sortModel]
-  );
+  const {
+    data: usersData,
+    error: fetchError,
+    isLoading,
+  } = useFetchAllUsersQuery({
+    page: currentPage,
+    limit: pageSize,
+    emailVerificationStatus,
+    sort: sortModel.field,
+    order: sortModel.order,
+  });
 
-  useEffect(() => {
-    dispatch(fetchUsers(fetchParams));
-  }, [dispatch, fetchParams]);
+  const users = usersData?.data ?? [];
+  const totalCount = usersData?.totalCount ?? 0;
 
   usePageTitle(location, USERS_TITLES);
 
@@ -83,9 +68,8 @@ function UsersPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
     navigate('/users');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleEdit = useCallback(
     (user) => handleModalOpen('edit', user.uuid),
@@ -107,8 +91,8 @@ function UsersPage() {
     return <Preloader message='Завантаження списку "Користувачів"...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError.data.message} />;
   }
 
   return (
@@ -150,7 +134,6 @@ function UsersPage() {
       />
       <EntityRoutes
         entityPages={USERS_PAGES}
-        fetchEntities={fetchUsers}
         handleModalClose={handleModalClose}
       />
     </>

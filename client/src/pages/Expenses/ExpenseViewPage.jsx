@@ -27,9 +27,7 @@ function ExpenseViewPage({ handleModalClose }) {
     data: expense,
     isLoading: isFetching,
     error,
-  } = useFetchExpenseByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  } = useFetchExpenseByUuidQuery(uuid, { skip: !uuid });
 
   const {
     product,

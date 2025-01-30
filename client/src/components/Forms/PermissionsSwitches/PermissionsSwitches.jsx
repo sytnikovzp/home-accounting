@@ -63,7 +63,7 @@ function PermissionsSwitches({ permissionsList }) {
                           sx={stylesPermissionsSwitchesFontDescription}
                           variant='body2'
                         >
-                          {permission.description || '*Опис відсутній*'}
+                          {permission.description || '*Немає даних*'}
                         </Typography>
                       </Box>
                     }

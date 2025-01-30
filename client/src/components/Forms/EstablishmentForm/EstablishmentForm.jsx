@@ -18,16 +18,15 @@ function EstablishmentForm({ isLoading, establishment = null, onSubmit }) {
     logo,
   } = establishment ?? {};
 
-  const initialValues = { title, description, url };
-
   const [changeLogo, { isLoading: isUploading, error: uploadError }] =
     useChangeEstablishmentLogoMutation();
-
   const [resetLogo, { isLoading: isResetting, error: resetError }] =
     useResetEstablishmentLogoMutation();
 
   const isChanging = isUploading || isResetting;
   const error = uploadError?.data || resetError?.data;
+
+  const initialValues = { title, description, url };
 
   const fields = [
     {
@@ -75,7 +74,7 @@ function EstablishmentForm({ isLoading, establishment = null, onSubmit }) {
           file={logo}
           isLoading={isChanging}
           label={logo ? 'Оновити логотип' : 'Завантажити логотип'}
-          onRemove={handleRemoveLogo}
+          onReset={handleRemoveLogo}
           onUpload={handleUploadLogo}
         />
       )}

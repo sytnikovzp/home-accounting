@@ -4,6 +4,7 @@ import { logger } from 'redux-logger';
 import {
   categoriesApi,
   currenciesApi,
+  emailApi,
   establishmentsApi,
   expensesApi,
   measuresApi,
@@ -18,41 +19,45 @@ import {
 } from './services';
 
 import authReducer from './slices/authSlice';
-import emailVerificationReducer from './slices/emailVerificationSlice';
 import moderationsReducer from './slices/moderationsSlice';
 import permissionsReducer from './slices/permissionsSlice';
 import rolesReducer from './slices/rolesSlice';
 import statisticsReducer from './slices/statisticsSlice';
 import userProfileReducer from './slices/userProfileSlice';
-import usersReducer from './slices/usersSlice';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [currenciesApi.reducerPath]: currenciesApi.reducer,
-    emailVerification: emailVerificationReducer,
+    [emailApi.reducerPath]: emailApi.reducer,
     [establishmentsApi.reducerPath]: establishmentsApi.reducer,
     [expensesApi.reducerPath]: expensesApi.reducer,
     [measuresApi.reducerPath]: measuresApi.reducer,
     moderations: moderationsReducer,
     [nbuRatesApi.reducerPath]: nbuRatesApi.reducer,
     permissions: permissionsReducer,
+    [permissionsApi.reducerPath]: permissionsApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
+    [rolesApi.reducerPath]: rolesApi.reducer,
     roles: rolesReducer,
     statistics: statisticsReducer,
     userProfile: userProfileReducer,
-    users: usersReducer,
+    [usersApi.reducerPath]: usersApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       categoriesApi.middleware,
       currenciesApi.middleware,
+      emailApi.middleware,
       establishmentsApi.middleware,
       expensesApi.middleware,
       measuresApi.middleware,
       nbuRatesApi.middleware,
+      permissionsApi.middleware,
       productsApi.middleware,
+      rolesApi.middleware,
+      usersApi.middleware,
       logger
     ),
 });

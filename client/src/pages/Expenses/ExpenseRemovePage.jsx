@@ -18,7 +18,7 @@ function ExpenseRemovePage({ handleModalClose }) {
   const { data: expense, isLoading: isFetching } =
     useFetchExpenseByUuidQuery(uuid);
 
-  const [removeExpense, { isLoading: isDeleting, error }] =
+  const [removeExpense, { isLoading: isRemoving, error }] =
     useRemoveExpenseMutation();
 
   const handleDeleteExpense = useCallback(async () => {
@@ -37,7 +37,7 @@ function ExpenseRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isDeleting}
+        disabled={isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteExpense}
@@ -45,7 +45,7 @@ function ExpenseRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isDeleting, handleDeleteExpense]
+    [isRemoving, handleDeleteExpense]
   );
 
   const content = useMemo(() => {

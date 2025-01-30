@@ -1,31 +1,40 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 
 import { formatItems } from '../../../utils/sharedFunctions';
 import { USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import { useFetchAllRolesQuery } from '../../../store/services';
 
 import FileUpload from '../../FileUpload/FileUpload';
+import Preloader from '../../Preloader/Preloader';
 import BaseForm from '../BaseForm/BaseForm';
 
 import { stylesUserFormPasswordButton } from '../../../styles';
 
 function UserForm({
+  isLoading,
+  isRemoving,
+  isChanging,
+  onDelete,
+  onUpload,
+  onReset,
   user = null,
   onSubmit,
-  roles,
-  onUploadPhoto,
-  onRemovePhoto,
-  onChangePassword,
-  onDeleteProfile,
 }) {
-  const [uploading, setUploading] = useState(false);
-  const initialValues = user
-    ? {
-        fullName: user.fullName,
-        email: user.email,
-        role: user.role.title,
-      }
-    : { fullName: '', email: '', role: '' };
+  const navigate = useNavigate();
+  const { uuid, fullName, email, role, photo } = user ?? {};
+
+  const { data: rolesData, isLoading: isFetchingRoles } = useFetchAllRolesQuery(
+    { page: 1, limit: 500, sort: 'title' }
+  );
+
+  const roles = rolesData?.data ?? [];
+
+  const initialValues = {
+    fullName: fullName || '',
+    email: email || '',
+    role: role?.title || '',
+  };
 
   const fields = [
     {
@@ -51,42 +60,50 @@ function UserForm({
     },
   ];
 
+  const handleChangePassword = () => {
+    navigate(`/users/password/${uuid}`);
+  };
+
+  if (isFetchingRoles) {
+    return <Preloader />;
+  }
+
   return (
     <>
-      {user?.uuid && (
+      {uuid && (
         <FileUpload
           entity='users'
-          file={user.photo}
-          label={user?.photo ? 'Оновити фото' : 'Завантажити фото'}
-          uploading={uploading}
-          onRemove={onRemovePhoto}
-          onUpload={async (file) => {
-            setUploading(true);
-            await onUploadPhoto(file);
-            setUploading(false);
-          }}
+          file={photo}
+          isLoading={isChanging}
+          label={photo ? 'Оновити фото' : 'Завантажити фото'}
+          onReset={onReset}
+          onUpload={onUpload}
         />
       )}
-      <Box sx={stylesUserFormPasswordButton}>
-        {user?.uuid && (
-          <>
-            <Button
-              color='success'
-              variant='contained'
-              onClick={onChangePassword}
-            >
-              Змінити пароль
-            </Button>
-            <Button color='error' variant='contained' onClick={onDeleteProfile}>
-              Видалити профіль
-            </Button>
-          </>
-        )}
-      </Box>
+      {uuid && (
+        <Box sx={stylesUserFormPasswordButton}>
+          <Button
+            color='success'
+            variant='contained'
+            onClick={handleChangePassword}
+          >
+            Змінити пароль
+          </Button>
+          <Button
+            color='error'
+            disabled={isRemoving}
+            variant='contained'
+            onClick={onDelete}
+          >
+            Видалити профіль
+          </Button>
+        </Box>
+      )}
       <BaseForm
         fields={fields}
         initialValues={initialValues}
-        submitButtonText={'Зберегти зміни'}
+        isLoading={isLoading}
+        submitButtonText='Зберегти зміни'
         validationSchema={USER_VALIDATION_SCHEME}
         onSubmit={onSubmit}
       />

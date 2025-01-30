@@ -24,9 +24,7 @@ function CurrencyViewPage({ handleModalClose }) {
     data: currency,
     isLoading: isFetching,
     error,
-  } = useFetchCurrencyByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  } = useFetchCurrencyByUuidQuery(uuid, { skip: !uuid });
 
   const { title, code, creation } = currency ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
