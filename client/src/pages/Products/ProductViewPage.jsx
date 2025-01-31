@@ -24,7 +24,7 @@ function ProductViewPage({ handleModalClose }) {
   const {
     data: product,
     isLoading: isFetching,
-    error,
+    error: fetchError,
   } = useFetchProductByUuidQuery(uuid, { skip: !uuid });
 
   const { title, status, moderation, creation, category } = product ?? {};
@@ -41,7 +41,7 @@ function ProductViewPage({ handleModalClose }) {
       },
       {
         icon: Category,
-        isLink: Boolean(category),
+        isLink: Boolean(category?.title),
         label: 'Категорія',
         linkTo: category ? `/categories/${category?.uuid}` : '',
         value: category?.title || '*Немає даних*',
@@ -95,7 +95,7 @@ function ProductViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={fetchError?.data}
       title='Деталі товару/послуги...'
       onClose={handleModalClose}
     />

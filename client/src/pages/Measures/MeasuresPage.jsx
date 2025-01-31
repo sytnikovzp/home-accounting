@@ -45,8 +45,8 @@ function MeasuresPage() {
 
   const {
     data: measuresData,
+    isLoading: isFetching,
     error: fetchError,
-    isLoading,
   } = useFetchAllMeasuresQuery({
     page: currentPage,
     limit: pageSize,
@@ -84,7 +84,7 @@ function MeasuresPage() {
     [handleModalOpen]
   );
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Одиниць вимірів"...' />;

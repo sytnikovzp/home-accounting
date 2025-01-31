@@ -23,7 +23,7 @@ import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
 const { USERS_TITLES } = pageTitles;
 const USERS_PAGES = [
-  { path: 'password', Component: UserChangePasswordPage },
+  { path: 'password/:uuid', Component: UserChangePasswordPage }, // !!!!!
   { path: 'edit/:uuid', Component: UserEditPage },
   { path: 'remove/:uuid', Component: UserRemovePage },
   { path: ':uuid', Component: UserViewPage },
@@ -45,8 +45,8 @@ function UsersPage() {
 
   const {
     data: usersData,
+    isLoading: isFetching,
     error: fetchError,
-    isLoading,
   } = useFetchAllUsersQuery({
     page: currentPage,
     limit: pageSize,
@@ -85,7 +85,7 @@ function UsersPage() {
     setEmailVerificationStatus(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Користувачів"...' />;

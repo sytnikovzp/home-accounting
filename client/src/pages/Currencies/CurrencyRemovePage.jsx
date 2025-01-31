@@ -15,10 +15,12 @@ import { stylesDeletePageTypography } from '../../styles';
 function CurrencyRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: currency, isLoading: isFetching } =
-    useFetchCurrencyByUuidQuery(uuid);
+  const { data: currency, isLoading: isFetching } = useFetchCurrencyByUuidQuery(
+    uuid,
+    { skip: !uuid }
+  );
 
-  const [removeCurrency, { isLoading: isRemoving, error }] =
+  const [removeCurrency, { isLoading: isRemoving, error: removeError }] =
     useRemoveCurrencyMutation();
 
   const handleDeleteCurrency = useCallback(async () => {
@@ -66,8 +68,8 @@ function CurrencyRemovePage({ handleModalClose }) {
       isOpen
       actions={actions}
       content={content}
-      error={error?.data}
-      title='Видалення категорії...'
+      error={removeError?.data}
+      title='Видалення валюти...'
       onClose={handleModalClose}
     />
   );

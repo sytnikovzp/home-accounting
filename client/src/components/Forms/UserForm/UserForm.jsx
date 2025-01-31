@@ -13,11 +13,11 @@ import BaseForm from '../BaseForm/BaseForm';
 import { stylesUserFormPasswordButton } from '../../../styles';
 
 function UserForm({
-  isLoading,
+  isSubmitting,
   isChanging,
   onDelete,
   onUpload,
-  onReset,
+  onRemove,
   user = null,
   onSubmit,
 }) {
@@ -71,9 +71,9 @@ function UserForm({
       <FileUpload
         entity='users'
         file={photo}
-        isLoading={isChanging}
+        isChanging={isChanging}
         label={photo ? 'Оновити фото' : 'Завантажити фото'}
-        onReset={onReset}
+        onRemove={onRemove}
         onUpload={onUpload}
       />
       <Box sx={stylesUserFormPasswordButton}>
@@ -91,7 +91,7 @@ function UserForm({
       <BaseForm
         fields={fields}
         initialValues={initialValues}
-        isLoading={isLoading}
+        isSubmitting={isSubmitting}
         submitButtonText='Зберегти зміни'
         validationSchema={USER_VALIDATION_SCHEME}
         onSubmit={onSubmit}

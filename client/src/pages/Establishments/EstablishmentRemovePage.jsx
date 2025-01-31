@@ -16,9 +16,9 @@ function EstablishmentRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const { data: establishment, isLoading: isFetching } =
-    useFetchEstablishmentByUuidQuery(uuid);
+    useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 
-  const [removeEstablishment, { isLoading: isRemoving, error }] =
+  const [removeEstablishment, { isLoading: isRemoving, error: removeError }] =
     useRemoveEstablishmentMutation();
 
   const handleDeleteEstablishment = useCallback(async () => {
@@ -65,7 +65,7 @@ function EstablishmentRemovePage({ handleModalClose }) {
       isOpen
       actions={actions}
       content={content}
-      error={error?.data}
+      error={removeError?.data}
       title='Видалення закладу...'
       onClose={handleModalClose}
     />

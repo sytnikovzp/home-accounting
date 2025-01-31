@@ -46,8 +46,8 @@ function ProductsPage() {
 
   const {
     data: productsData,
+    isLoading: isFetching,
     error: fetchError,
-    isLoading,
   } = useFetchAllProductsQuery({
     page: currentPage,
     limit: pageSize,
@@ -90,7 +90,7 @@ function ProductsPage() {
     setSelectedStatus(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Товарів та послуг"...' />;

@@ -16,7 +16,7 @@ import {
 import Preloader from '../../Preloader/Preloader';
 import BaseForm from '../BaseForm/BaseForm';
 
-function ExpenseForm({ isLoading, expense = null, onSubmit }) {
+function ExpenseForm({ isSubmitting, expense = null, onSubmit }) {
   const {
     uuid,
     product,
@@ -113,7 +113,7 @@ function ExpenseForm({ isLoading, expense = null, onSubmit }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
-      isLoading={isLoading}
+      isSubmitting={isSubmitting}
       layout='expense'
       submitButtonText={uuid ? 'Зберегти зміни' : 'Додати витрату'}
       validationSchema={EXPENSE_VALIDATION_SCHEME}

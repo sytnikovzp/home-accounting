@@ -15,10 +15,12 @@ import { stylesDeletePageTypography } from '../../styles';
 function CategoryRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: category, isLoading: isFetching } =
-    useFetchCategoryByUuidQuery(uuid);
+  const { data: category, isLoading: isFetching } = useFetchCategoryByUuidQuery(
+    uuid,
+    { skip: !uuid }
+  );
 
-  const [removeCategory, { isLoading: isRemoving, error }] =
+  const [removeCategory, { isLoading: isRemoving, error: removeError }] =
     useRemoveCategoryMutation();
 
   const handleDeleteCategory = useCallback(async () => {
@@ -64,7 +66,7 @@ function CategoryRemovePage({ handleModalClose }) {
       isOpen
       actions={actions}
       content={content}
-      error={error?.data}
+      error={removeError?.data}
       title='Видалення категорії...'
       onClose={handleModalClose}
     />

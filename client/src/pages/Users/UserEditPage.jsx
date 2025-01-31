@@ -16,16 +16,19 @@ function UserEditPage({ handleModalClose }) {
   const { uuid } = useParams();
   const navigate = useNavigate();
 
-  const { data: user, isLoading: isFetching } = useFetchUserByUuidQuery(uuid);
+  const { data: user, isLoading: isFetching } = useFetchUserByUuidQuery(uuid, {
+    skip: !uuid,
+  });
 
-  const [editUser, { isLoading, error: editError }] = useEditUserMutation();
+  const [editUser, { isLoading: isSubmitting, error: submitError }] =
+    useEditUserMutation();
   const [changePhoto, { isLoading: isUploading, error: uploadError }] =
     useChangeUserPhotoMutation();
   const [resetPhoto, { isLoading: isResetting, error: resetError }] =
     useResetUserPhotoMutation();
 
   const isChanging = isUploading || isResetting;
-  const error = uploadError || resetError || editError;
+  const error = uploadError || resetError || submitError;
 
   const handleUploadPhoto = useCallback(
     (file) => changePhoto({ userUuid: uuid, userPhoto: file }),
@@ -56,10 +59,10 @@ function UserEditPage({ handleModalClose }) {
   ) : (
     <UserForm
       isChanging={isChanging}
-      isLoading={isLoading}
+      isSubmitting={isSubmitting}
       user={user}
       onDelete={handleDeleteProfile}
-      onReset={handleRemovePhoto}
+      onRemove={handleRemovePhoto}
       onSubmit={handleSubmitUser}
       onUpload={handleUploadPhoto}
     />

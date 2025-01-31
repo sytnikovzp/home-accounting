@@ -20,7 +20,7 @@ import {
 
 const { BASE_URL } = configs;
 
-function FileUpload({ entity, file, isLoading, label, onReset, onUpload }) {
+function FileUpload({ entity, file, isChanging, label, onRemove, onUpload }) {
   const avatarPath = useMemo(() => {
     if (file) {
       return `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`;
@@ -44,7 +44,7 @@ function FileUpload({ entity, file, isLoading, label, onReset, onUpload }) {
   return (
     <Box sx={stylesFileUploadMainBox}>
       <Box sx={stylesFileUploadAvatarBox}>
-        {isLoading ? (
+        {isChanging ? (
           <CircularProgress />
         ) : (
           <>
@@ -60,7 +60,7 @@ function FileUpload({ entity, file, isLoading, label, onReset, onUpload }) {
                   color='error'
                   size='small'
                   sx={stylesFileUploadIconButton}
-                  onClick={onReset}
+                  onClick={onRemove}
                 >
                   <Clear fontSize='small' />
                 </IconButton>
@@ -72,7 +72,7 @@ function FileUpload({ entity, file, isLoading, label, onReset, onUpload }) {
       <Button
         color='success'
         component='label'
-        disabled={isLoading}
+        disabled={isChanging}
         variant='contained'
       >
         {label}

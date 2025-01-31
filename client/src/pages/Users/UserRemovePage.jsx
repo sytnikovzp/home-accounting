@@ -18,9 +18,11 @@ function UserRemovePage({
 }) {
   const { uuid } = useParams();
 
-  const { data: user, isLoading: isFetching } = useFetchUserByUuidQuery(uuid);
+  const { data: user, isLoading: isFetching } = useFetchUserByUuidQuery(uuid, {
+    skip: !uuid,
+  });
 
-  const [removeUser, { isLoading: isRemoving, error }] =
+  const [removeUser, { isLoading: isRemoving, error: removeError }] =
     useRemoveUserMutation();
 
   // const handleLogout = async () => {
@@ -79,7 +81,7 @@ function UserRemovePage({
       isOpen
       actions={actions}
       content={content}
-      error={error?.data}
+      error={removeError?.data}
       title='Видалення користувача...'
       onClose={handleModalClose}
     />

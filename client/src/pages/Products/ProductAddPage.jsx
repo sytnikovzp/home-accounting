@@ -6,7 +6,8 @@ import ProductForm from '../../components/Forms/ProductForm/ProductForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function ProductAddPage({ handleModalClose }) {
-  const [addProduct, { isLoading, error }] = useAddProductMutation();
+  const [addProduct, { isLoading: isSubmitting, error: submitError }] =
+    useAddProductMutation();
 
   const handleSubmitProduct = useCallback(
     async (values) => {
@@ -19,14 +20,14 @@ function ProductAddPage({ handleModalClose }) {
   );
 
   const content = (
-    <ProductForm isLoading={isLoading} onSubmit={handleSubmitProduct} />
+    <ProductForm isSubmitting={isSubmitting} onSubmit={handleSubmitProduct} />
   );
 
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={submitError?.data}
       title='Додавання товару/послуги...'
       onClose={handleModalClose}
     />

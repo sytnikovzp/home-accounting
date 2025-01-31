@@ -18,7 +18,7 @@ function CategoryViewPage({ handleModalClose }) {
   const {
     data: category,
     isLoading: isFetching,
-    error,
+    error: fetchError,
   } = useFetchCategoryByUuidQuery(uuid, { skip: !uuid });
 
   const { title, status, moderation, creation } = category ?? {};
@@ -81,7 +81,7 @@ function CategoryViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={fetchError?.data}
       title='Деталі категорії...'
       onClose={handleModalClose}
     />

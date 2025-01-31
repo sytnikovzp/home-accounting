@@ -1,59 +1,39 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import { useChangeUserPasswordMutation } from '../../store/services';
 
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
-function UserChangePasswordPage({
-  handleModalClose,
-  fetchUsers,
-  crudError,
-  setCrudError,
-}) {
+function UserChangePasswordPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: user,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('User');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
-    }
-  }, [uuid, fetchEntityByUuid]);
+  const [changeUserPassword, { isLoading: isSubmitting, error: submitError }] =
+    useChangeUserPasswordMutation();
 
-  const handleSubmitUser = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.changePassword(
-        user.uuid,
-        values.newPassword,
-        values.confirmNewPassword
-      );
-      handleModalClose();
-      fetchUsers();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const handleSubmitUser = useCallback(
+    async (values) => {
+      const result = await changeUserPassword({ userUuid: uuid, ...values });
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [changeUserPassword, handleModalClose, uuid]
+  );
+
+  const content = (
+    <ChangePasswordForm
+      isSubmitting={isSubmitting}
+      onSubmit={handleSubmitUser}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <ChangePasswordForm onSubmit={handleSubmitUser} />
-        )
-      }
-      error={error || crudError}
+      content={content}
+      error={submitError?.data}
       title='Зміна паролю...'
       onClose={handleModalClose}
     />

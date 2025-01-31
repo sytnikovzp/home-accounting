@@ -2,7 +2,7 @@ import { PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
-function ChangePasswordForm({ onSubmit }) {
+function ChangePasswordForm({ onSubmit, isSubmitting }) {
   const initialValues = {
     newPassword: '',
     confirmNewPassword: '',
@@ -30,6 +30,7 @@ function ChangePasswordForm({ onSubmit }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
+      isSubmitting={isSubmitting}
       submitButtonText='Змінити пароль'
       validationSchema={PASSWORD_VALIDATION_SCHEME}
       onSubmit={onSubmit}

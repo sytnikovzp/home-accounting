@@ -6,7 +6,8 @@ import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function CurrencyAddPage({ handleModalClose }) {
-  const [addCurrency, { isLoading, error }] = useAddCurrencyMutation();
+  const [addCurrency, { isLoading: isSubmitting, error: submitError }] =
+    useAddCurrencyMutation();
 
   const handleSubmitCurrency = useCallback(
     async (values) => {
@@ -19,14 +20,14 @@ function CurrencyAddPage({ handleModalClose }) {
   );
 
   const content = (
-    <CurrencyForm isLoading={isLoading} onSubmit={handleSubmitCurrency} />
+    <CurrencyForm isSubmitting={isSubmitting} onSubmit={handleSubmitCurrency} />
   );
 
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={submitError?.data}
       title='Додавання валюти...'
       onClose={handleModalClose}
     />

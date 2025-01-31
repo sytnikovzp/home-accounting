@@ -15,10 +15,12 @@ import { stylesDeletePageTypography } from '../../styles';
 function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: product, isLoading: isFetching } =
-    useFetchProductByUuidQuery(uuid);
+  const { data: product, isLoading: isFetching } = useFetchProductByUuidQuery(
+    uuid,
+    { skip: !uuid }
+  );
 
-  const [removeProduct, { isLoading: isRemoving, error }] =
+  const [removeProduct, { isLoading: isRemoving, error: removeError }] =
     useRemoveProductMutation();
 
   const handleDeleteProduct = useCallback(async () => {
@@ -65,7 +67,7 @@ function ProductRemovePage({ handleModalClose }) {
       isOpen
       actions={actions}
       content={content}
-      error={error?.data}
+      error={removeError?.data}
       title='Видалення товару/послуги...'
       onClose={handleModalClose}
     />

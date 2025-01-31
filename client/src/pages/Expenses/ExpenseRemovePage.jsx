@@ -15,10 +15,12 @@ import { stylesDeletePageTypography } from '../../styles';
 function ExpenseRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: expense, isLoading: isFetching } =
-    useFetchExpenseByUuidQuery(uuid);
+  const { data: expense, isLoading: isFetching } = useFetchExpenseByUuidQuery(
+    uuid,
+    { skip: !uuid }
+  );
 
-  const [removeExpense, { isLoading: isRemoving, error }] =
+  const [removeExpense, { isLoading: isRemoving, error: removeError }] =
     useRemoveExpenseMutation();
 
   const handleDeleteExpense = useCallback(async () => {
@@ -64,7 +66,7 @@ function ExpenseRemovePage({ handleModalClose }) {
       isOpen
       actions={actions}
       content={content}
-      error={error?.data}
+      error={removeError?.data}
       title='Видалення витрати...'
       onClose={handleModalClose}
     />

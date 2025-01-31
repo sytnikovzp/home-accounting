@@ -32,7 +32,7 @@ function EstablishmentViewPage({ handleModalClose }) {
   const {
     data: establishment,
     isLoading: isFetching,
-    error,
+    error: fetchError,
   } = useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 
   const { title, description, url, logo, status, moderation, creation } =
@@ -130,7 +130,7 @@ function EstablishmentViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={fetchError?.data}
       title='Деталі закладу...'
       onClose={handleModalClose}
     />

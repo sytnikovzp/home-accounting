@@ -26,7 +26,7 @@ function ExpenseViewPage({ handleModalClose }) {
   const {
     data: expense,
     isLoading: isFetching,
-    error,
+    error: fetchError,
   } = useFetchExpenseByUuidQuery(uuid, { skip: !uuid });
 
   const {
@@ -116,7 +116,7 @@ function ExpenseViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={fetchError?.data}
       title='Деталі витрати...'
       onClose={handleModalClose}
     />

@@ -47,7 +47,7 @@ export const usersApi = createApi({
       ],
     }),
 
-    changePassword: builder.mutation({
+    changeUserPassword: builder.mutation({
       query: ({ userUuid, newPassword, confirmNewPassword }) => ({
         url: `users/${userUuid}/password`,
         method: 'PATCH',
@@ -104,7 +104,7 @@ export const usersApi = createApi({
 export const {
   useFetchAllUsersQuery,
   useFetchUserByUuidQuery,
-  useChangePasswordMutation,
+  useChangeUserPasswordMutation,
   useEditUserMutation,
   useChangeUserPhotoMutation,
   useResetUserPhotoMutation,

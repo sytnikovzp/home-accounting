@@ -2,7 +2,7 @@ import { REGISTRATION_VALIDATION_SCHEME } from '../../../utils/validationSchemes
 
 import BaseForm from '../BaseForm/BaseForm';
 
-function RegistrationForm({ isLoading, onSubmit }) {
+function RegistrationForm({ isSubmitting, onSubmit }) {
   const initialValues = {
     fullName: '',
     email: '',
@@ -33,7 +33,7 @@ function RegistrationForm({ isLoading, onSubmit }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
-      isLoading={isLoading}
+      isSubmitting={isSubmitting}
       submitButtonText='Зареєструватися та увійти'
       validationSchema={REGISTRATION_VALIDATION_SCHEME}
       onSubmit={onSubmit}

@@ -6,7 +6,8 @@ import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function ExpenseAddPage({ handleModalClose }) {
-  const [addExpense, { isLoading, error }] = useAddExpenseMutation();
+  const [addExpense, { isLoading: isSubmitting, error: submitError }] =
+    useAddExpenseMutation();
 
   const handleSubmitExpense = useCallback(
     async (values) => {
@@ -19,14 +20,14 @@ function ExpenseAddPage({ handleModalClose }) {
   );
 
   const content = (
-    <ExpenseForm isLoading={isLoading} onSubmit={handleSubmitExpense} />
+    <ExpenseForm isSubmitting={isSubmitting} onSubmit={handleSubmitExpense} />
   );
 
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={submitError?.data}
       title='Додавання витрати...'
       onClose={handleModalClose}
     />

@@ -32,7 +32,7 @@ function AuthPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLoading = useSelector(selectAuthIsLoading);
+  const isSubmitting = useSelector(selectAuthIsLoading);
   const error = useSelector(selectAuthError);
 
   usePageTitle(location, AUTH_TITLES, authMode);
@@ -134,7 +134,7 @@ function AuthPage() {
     if (authMode === 'login') {
       return (
         <>
-          <LoginForm isLoading={isLoading} onSubmit={handleLoginSubmit} />
+          <LoginForm isSubmitting={isSubmitting} onSubmit={handleLoginSubmit} />
           <Button
             fullWidth
             color='secondary'
@@ -151,7 +151,7 @@ function AuthPage() {
     if (authMode === 'register') {
       return (
         <RegistrationForm
-          isLoading={isLoading}
+          isSubmitting={isSubmitting}
           onSubmit={handleRegistrationSubmit}
         />
       );
@@ -160,7 +160,7 @@ function AuthPage() {
     if (authMode === 'forgotPassword') {
       return (
         <ForgotPasswordForm
-          isLoading={isLoading}
+          isSubmitting={isSubmitting}
           onSubmit={handleForgotPasswordSubmit}
         />
       );
@@ -173,7 +173,7 @@ function AuthPage() {
     handleForgotPasswordSubmit,
     handleLoginSubmit,
     handleRegistrationSubmit,
-    isLoading,
+    isSubmitting,
   ]);
 
   const renderContent = useMemo(

@@ -23,7 +23,7 @@ function CurrencyViewPage({ handleModalClose }) {
   const {
     data: currency,
     isLoading: isFetching,
-    error,
+    error: fetchError,
   } = useFetchCurrencyByUuidQuery(uuid, { skip: !uuid });
 
   const { title, code, creation } = currency ?? {};
@@ -61,7 +61,7 @@ function CurrencyViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={fetchError?.data}
       title='Деталі валюти...'
       onClose={handleModalClose}
     />

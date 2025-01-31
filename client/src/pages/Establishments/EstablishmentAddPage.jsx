@@ -6,7 +6,7 @@ import EstablishmentForm from '../../components/Forms/EstablishmentForm/Establis
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function EstablishmentAddPage({ handleModalClose }) {
-  const [addEstablishment, { isLoading, error }] =
+  const [addEstablishment, { isLoading: isSubmitting, error: submitError }] =
     useAddEstablishmentMutation();
 
   const handleSubmitEstablishment = useCallback(
@@ -21,7 +21,7 @@ function EstablishmentAddPage({ handleModalClose }) {
 
   const content = (
     <EstablishmentForm
-      isLoading={isLoading}
+      isSubmitting={isSubmitting}
       onSubmit={handleSubmitEstablishment}
     />
   );
@@ -30,7 +30,7 @@ function EstablishmentAddPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={submitError?.data}
       title='Додавання закладу...'
       onClose={handleModalClose}
     />

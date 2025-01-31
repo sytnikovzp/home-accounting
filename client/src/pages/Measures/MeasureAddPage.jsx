@@ -6,7 +6,8 @@ import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function MeasureAddPage({ handleModalClose }) {
-  const [addMeasure, { isLoading, error }] = useAddMeasureMutation();
+  const [addMeasure, { isLoading: isSubmitting, error: submitError }] =
+    useAddMeasureMutation();
 
   const handleSubmitMeasure = useCallback(
     async (values) => {
@@ -19,14 +20,14 @@ function MeasureAddPage({ handleModalClose }) {
   );
 
   const content = (
-    <MeasureForm isLoading={isLoading} onSubmit={handleSubmitMeasure} />
+    <MeasureForm isSubmitting={isSubmitting} onSubmit={handleSubmitMeasure} />
   );
 
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={submitError?.data}
       title='Додавання одиниці...'
       onClose={handleModalClose}
     />

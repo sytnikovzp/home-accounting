@@ -13,10 +13,13 @@ import Preloader from '../../components/Preloader/Preloader';
 function CategoryEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: category, isLoading: isFetching } =
-    useFetchCategoryByUuidQuery(uuid);
+  const { data: category, isLoading: isFetching } = useFetchCategoryByUuidQuery(
+    uuid,
+    { skip: !uuid }
+  );
 
-  const [editCategory, { isLoading, error }] = useEditCategoryMutation();
+  const [editCategory, { isLoading: isSubmitting, error: submitError }] =
+    useEditCategoryMutation();
 
   const handleSubmitCategory = useCallback(
     async (values) => {
@@ -33,7 +36,7 @@ function CategoryEditPage({ handleModalClose }) {
   ) : (
     <CategoryForm
       category={category}
-      isLoading={isLoading}
+      isSubmitting={isSubmitting}
       onSubmit={handleSubmitCategory}
     />
   );
@@ -42,7 +45,7 @@ function CategoryEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={submitError?.data}
       title='Редагування категорії...'
       onClose={handleModalClose}
     />

@@ -2,7 +2,7 @@ import { CURRENCY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
-function CurrencyForm({ isLoading, currency = null, onSubmit }) {
+function CurrencyForm({ isSubmitting, currency = null, onSubmit }) {
   const { uuid, title = '', code = '' } = currency ?? {};
 
   const initialValues = { title, code };
@@ -27,7 +27,7 @@ function CurrencyForm({ isLoading, currency = null, onSubmit }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
-      isLoading={isLoading}
+      isSubmitting={isSubmitting}
       submitButtonText={uuid ? 'Зберегти зміни' : 'Додати валюту'}
       validationSchema={CURRENCY_VALIDATION_SCHEME}
       onSubmit={onSubmit}

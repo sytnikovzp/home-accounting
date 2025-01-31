@@ -2,7 +2,7 @@ import { MEASURE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
-function MeasureForm({ isLoading, measure = null, onSubmit }) {
+function MeasureForm({ isSubmitting, measure = null, onSubmit }) {
   const { uuid, title = '', description = '' } = measure ?? {};
 
   const initialValues = { title, description };
@@ -27,7 +27,7 @@ function MeasureForm({ isLoading, measure = null, onSubmit }) {
     <BaseForm
       fields={fields}
       initialValues={initialValues}
-      isLoading={isLoading}
+      isSubmitting={isSubmitting}
       submitButtonText={uuid ? 'Зберегти зміни' : 'Додати одиницю'}
       validationSchema={MEASURE_VALIDATION_SCHEME}
       onSubmit={onSubmit}

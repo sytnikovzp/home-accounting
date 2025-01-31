@@ -46,8 +46,8 @@ function EstablishmentsPage() {
 
   const {
     data: establishmentsData,
+    isLoading: isFetching,
     error: fetchError,
-    isLoading,
   } = useFetchAllEstablishmentsQuery({
     page: currentPage,
     limit: pageSize,
@@ -90,7 +90,7 @@ function EstablishmentsPage() {
     setSelectedStatus(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Закладів"...' />;

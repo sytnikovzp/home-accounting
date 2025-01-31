@@ -6,7 +6,8 @@ import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function CategoryAddPage({ handleModalClose }) {
-  const [addCategory, { isLoading, error }] = useAddCategoryMutation();
+  const [addCategory, { isLoading: isSubmitting, error: submitError }] =
+    useAddCategoryMutation();
 
   const handleSubmitCategory = useCallback(
     async (values) => {
@@ -19,14 +20,14 @@ function CategoryAddPage({ handleModalClose }) {
   );
 
   const content = (
-    <CategoryForm isLoading={isLoading} onSubmit={handleSubmitCategory} />
+    <CategoryForm isSubmitting={isSubmitting} onSubmit={handleSubmitCategory} />
   );
 
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={submitError?.data}
       title='Додавання категорії...'
       onClose={handleModalClose}
     />

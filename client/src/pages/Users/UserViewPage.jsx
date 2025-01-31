@@ -35,7 +35,7 @@ function UserViewPage({ handleModalClose }) {
   const {
     data: user,
     isLoading: isFetching,
-    error,
+    error: fetchError,
   } = useFetchUserByUuidQuery(uuid, { skip: !uuid });
 
   const [resendVerifyEmail, { isLoading: emailVerificationLoading }] =
@@ -150,7 +150,7 @@ function UserViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={fetchError?.data}
       title='Деталі користувача...'
       onClose={handleModalClose}
     />

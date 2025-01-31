@@ -45,8 +45,8 @@ function CurrenciesPage() {
 
   const {
     data: currenciesData,
+    isLoading: isFetching,
     error: fetchError,
-    isLoading,
   } = useFetchAllCurrenciesQuery({
     page: currentPage,
     limit: pageSize,
@@ -84,7 +84,7 @@ function CurrenciesPage() {
     [handleModalOpen]
   );
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Валют"...' />;

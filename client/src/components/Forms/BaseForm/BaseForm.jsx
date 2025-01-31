@@ -8,7 +8,7 @@ import { stylesBaseFormButtomBox } from '../../../styles';
 function BaseForm({
   fields,
   initialValues,
-  isLoading = true,
+  isSubmitting = true,
   submitButtonText,
   validationSchema,
   onSubmit,
@@ -65,7 +65,7 @@ function BaseForm({
         <Button
           fullWidth
           color='success'
-          disabled={!isValid || isLoading}
+          disabled={!isValid || isSubmitting}
           size='large'
           type='submit'
           variant='contained'

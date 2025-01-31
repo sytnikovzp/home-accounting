@@ -46,8 +46,8 @@ function CategoriesPage() {
 
   const {
     data: categoriesData,
+    isLoading: isFetching,
     error: fetchError,
-    isLoading,
   } = useFetchAllCategoriesQuery({
     page: currentPage,
     limit: pageSize,
@@ -90,7 +90,7 @@ function CategoriesPage() {
     setSelectedStatus(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Категорій"...' />;

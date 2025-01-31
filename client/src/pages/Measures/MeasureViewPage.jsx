@@ -23,7 +23,7 @@ function MeasureViewPage({ handleModalClose }) {
   const {
     data: measure,
     isLoading: isFetching,
-    error,
+    error: fetchError,
   } = useFetchMeasureByUuidQuery(uuid, { skip: !uuid });
 
   const { title, description, creation } = measure ?? {};
@@ -61,7 +61,7 @@ function MeasureViewPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={fetchError?.data}
       title='Деталі одиниці...'
       onClose={handleModalClose}
     />

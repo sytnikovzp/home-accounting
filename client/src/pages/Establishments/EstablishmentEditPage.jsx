@@ -2,8 +2,10 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import {
+  useChangeEstablishmentLogoMutation,
   useEditEstablishmentMutation,
   useFetchEstablishmentByUuidQuery,
+  useResetEstablishmentLogoMutation,
 } from '../../store/services';
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
@@ -14,10 +16,27 @@ function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const { data: establishment, isLoading: isFetching } =
-    useFetchEstablishmentByUuidQuery(uuid);
+    useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 
-  const [editEstablishment, { isLoading, error }] =
+  const [editEstablishment, { isLoading: isSubmitting, error: submitError }] =
     useEditEstablishmentMutation();
+  const [changeLogo, { isLoading: isUploading, error: uploadError }] =
+    useChangeEstablishmentLogoMutation();
+  const [resetLogo, { isLoading: isResetting, error: resetError }] =
+    useResetEstablishmentLogoMutation();
+
+  const isChanging = isUploading || isResetting;
+  const error = uploadError || resetError || submitError;
+
+  const handleUploadLogo = useCallback(
+    (file) => changeLogo({ establishmentUuid: uuid, establishmentLogo: file }),
+    [changeLogo, uuid]
+  );
+
+  const handleRemoveLogo = useCallback(
+    () => resetLogo(uuid),
+    [resetLogo, uuid]
+  );
 
   const handleSubmitEstablishment = useCallback(
     async (values) => {
@@ -37,8 +56,11 @@ function EstablishmentEditPage({ handleModalClose }) {
   ) : (
     <EstablishmentForm
       establishment={establishment}
-      isLoading={isLoading}
+      isChanging={isChanging}
+      isSubmitting={isSubmitting}
+      onRemove={handleRemoveLogo}
       onSubmit={handleSubmitEstablishment}
+      onUpload={handleUploadLogo}
     />
   );
 

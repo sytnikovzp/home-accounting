@@ -15,10 +15,12 @@ import { stylesDeletePageTypography } from '../../styles';
 function MeasureRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: measure, isLoading: isFetching } =
-    useFetchMeasureByUuidQuery(uuid);
+  const { data: measure, isLoading: isFetching } = useFetchMeasureByUuidQuery(
+    uuid,
+    { skip: !uuid }
+  );
 
-  const [removeMeasure, { isLoading: isRemoving, error }] =
+  const [removeMeasure, { isLoading: isRemoving, error: removeError }] =
     useRemoveMeasureMutation();
 
   const handleDeleteMeasure = useCallback(async () => {
@@ -65,7 +67,7 @@ function MeasureRemovePage({ handleModalClose }) {
       isOpen
       actions={actions}
       content={content}
-      error={error?.data}
+      error={removeError?.data}
       title='Видалення одиниці...'
       onClose={handleModalClose}
     />

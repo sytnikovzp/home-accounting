@@ -46,8 +46,8 @@ function ExpensesPage() {
 
   const {
     data: expensesData,
+    isLoading: isFetching,
     error: fetchError,
-    isLoading,
   } = useFetchAllExpensesQuery({
     page: currentPage,
     limit: pageSize,
@@ -90,7 +90,7 @@ function ExpensesPage() {
     setSelectedPeriod(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Покупок"...' />;

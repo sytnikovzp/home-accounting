@@ -21,18 +21,18 @@ import ModalWindow from './components/ModalWindow/ModalWindow';
 import Preloader from './components/Preloader/Preloader';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
-import AuthPage from './pages/AuthPage/AuthPage';
+import AuthPage from './pages/Auth/AuthPage';
 import CategoriesPage from './pages/Categories/CategoriesPage';
 import CurrenciesPage from './pages/Currencies/CurrenciesPage';
 import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
 import ExpensesPage from './pages/Expenses/ExpensesPage';
-import HomePage from './pages/HomePage/HomePage';
+import HomePage from './pages/Home/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
 import NotificationsPage from './pages/Notifications/NotificationsPage';
 import ProductsPage from './pages/Products/ProductsPage';
+import ResetPasswordPage from './pages/ResetPassword/ResetPasswordPage';
 import RolesPage from './pages/Roles/RolesPage';
-import UserResetPasswordPage from './pages/Users/UserResetPasswordPage';
 import UsersPage from './pages/Users/UsersPage';
 
 function App() {
@@ -100,7 +100,7 @@ function App() {
             <Route element={renderPrivateRoute(<UsersPage />)} path='users/*' />
             <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
             <Route element={<NotificationsPage />} path='notification' />
-            <Route element={<UserResetPasswordPage />} path='reset-password' />
+            <Route element={<ResetPasswordPage />} path='reset-password' />
             <Route
               element={
                 isAuthenticated ? <Navigate replace to='/' /> : <AuthPage />
