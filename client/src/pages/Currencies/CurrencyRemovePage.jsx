@@ -23,7 +23,7 @@ function CurrencyRemovePage({ handleModalClose }) {
   const [removeCurrency, { isLoading: isRemoving, error: removeError }] =
     useRemoveCurrencyMutation();
 
-  const handleDeleteCurrency = useCallback(async () => {
+  const handleRemoveCurrency = useCallback(async () => {
     if (!currency?.uuid) {
       return;
     }
@@ -42,12 +42,12 @@ function CurrencyRemovePage({ handleModalClose }) {
         disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
-        onClick={handleDeleteCurrency}
+        onClick={handleRemoveCurrency}
       >
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleDeleteCurrency]
+    [isFetching, isRemoving, handleRemoveCurrency]
   );
 
   const content = useMemo(() => {

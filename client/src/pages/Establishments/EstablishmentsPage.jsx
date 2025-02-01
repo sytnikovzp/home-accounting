@@ -81,7 +81,7 @@ function EstablishmentsPage() {
     [handleModalOpen]
   );
 
-  const handleDelete = useCallback(
+  const handleRemove = useCallback(
     (establishment) => handleModalOpen('remove', establishment.uuid),
     [handleModalOpen]
   );
@@ -139,8 +139,8 @@ function EstablishmentsPage() {
         rows={establishments}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={handleDelete}
         onEdit={handleEdit}
+        onRemove={handleRemove}
         onSortModelChange={setSortModel}
         onStatusChange={handleStatusChange}
       />

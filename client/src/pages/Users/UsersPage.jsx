@@ -76,7 +76,7 @@ function UsersPage() {
     [handleModalOpen]
   );
 
-  const handleDelete = useCallback(
+  const handleRemove = useCallback(
     (user) => handleModalOpen('remove', user.uuid),
     [handleModalOpen]
   );
@@ -127,8 +127,8 @@ function UsersPage() {
         rows={users}
         selectedStatus={emailVerificationStatus}
         sortModel={sortModel}
-        onDelete={handleDelete}
         onEdit={handleEdit}
+        onRemove={handleRemove}
         onSortModelChange={setSortModel}
         onStatusChange={handleStatusChange}
       />

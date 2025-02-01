@@ -21,7 +21,7 @@ function EstablishmentRemovePage({ handleModalClose }) {
   const [removeEstablishment, { isLoading: isRemoving, error: removeError }] =
     useRemoveEstablishmentMutation();
 
-  const handleDeleteEstablishment = useCallback(async () => {
+  const handleRemoveEstablishment = useCallback(async () => {
     if (!establishment?.uuid) {
       return;
     }
@@ -40,12 +40,12 @@ function EstablishmentRemovePage({ handleModalClose }) {
         disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
-        onClick={handleDeleteEstablishment}
+        onClick={handleRemoveEstablishment}
       >
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleDeleteEstablishment]
+    [isFetching, isRemoving, handleRemoveEstablishment]
   );
 
   const content = useMemo(() => {

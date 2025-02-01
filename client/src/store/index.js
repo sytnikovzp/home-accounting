@@ -19,8 +19,6 @@ import {
 } from './services';
 
 import authReducer from './slices/authSlice';
-import statisticsReducer from './slices/statisticsSlice';
-import userProfileReducer from './slices/userProfileSlice';
 
 const store = configureStore({
   reducer: {
@@ -36,8 +34,8 @@ const store = configureStore({
     [permissionsApi.reducerPath]: permissionsApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [rolesApi.reducerPath]: rolesApi.reducer,
-    statistics: statisticsReducer,
-    userProfile: userProfileReducer,
+    [statisticsApi.reducerPath]: statisticsApi.reducer,
+    [userProfileApi.reducerPath]: userProfileApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
   },
 
@@ -54,6 +52,8 @@ const store = configureStore({
       permissionsApi.middleware,
       productsApi.middleware,
       rolesApi.middleware,
+      statisticsApi.middleware,
+      userProfileApi.middleware,
       usersApi.middleware,
       logger
     ),

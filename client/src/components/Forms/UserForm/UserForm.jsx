@@ -15,18 +15,20 @@ import { stylesUserFormPasswordButton } from '../../../styles';
 function UserForm({
   isSubmitting,
   isChanging,
-  onDelete,
-  onUpload,
   onRemove,
+  onUpload,
+  onReset,
   user = null,
   onSubmit,
 }) {
   const navigate = useNavigate();
   const { uuid, fullName, email, role, photo } = user ?? {};
 
-  const { data: rolesData, isLoading: isFetchingRoles } = useFetchAllRolesQuery(
-    { page: 1, limit: 500, sort: 'title' }
-  );
+  const { data: rolesData, isLoading: isFetching } = useFetchAllRolesQuery({
+    page: 1,
+    limit: 500,
+    sort: 'title',
+  });
 
   const roles = rolesData?.data ?? [];
 
@@ -62,7 +64,7 @@ function UserForm({
     navigate(`/users/password/${uuid}`);
   }, [navigate, uuid]);
 
-  if (isFetchingRoles) {
+  if (isFetching) {
     return <Preloader />;
   }
 
@@ -73,7 +75,7 @@ function UserForm({
         file={photo}
         isChanging={isChanging}
         label={photo ? 'Оновити фото' : 'Завантажити фото'}
-        onRemove={onRemove}
+        onReset={onReset}
         onUpload={onUpload}
       />
       <Box sx={stylesUserFormPasswordButton}>
@@ -84,7 +86,7 @@ function UserForm({
         >
           Змінити пароль
         </Button>
-        <Button color='error' variant='contained' onClick={onDelete}>
+        <Button color='error' variant='contained' onClick={onRemove}>
           Видалити профіль
         </Button>
       </Box>

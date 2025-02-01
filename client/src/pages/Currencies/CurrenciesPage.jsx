@@ -79,7 +79,7 @@ function CurrenciesPage() {
     [handleModalOpen]
   );
 
-  const handleDelete = useCallback(
+  const handleRemove = useCallback(
     (currency) => handleModalOpen('remove', currency.uuid),
     [handleModalOpen]
   );
@@ -130,8 +130,8 @@ function CurrenciesPage() {
         }}
         rows={currencies}
         sortModel={sortModel}
-        onDelete={handleDelete}
         onEdit={handleEdit}
+        onRemove={handleRemove}
         onSortModelChange={setSortModel}
       />
       <EntityRoutes

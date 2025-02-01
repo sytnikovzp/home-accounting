@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   FormControl,
@@ -13,14 +12,12 @@ import {
 import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import usePageTitle from '../../hooks/usePageTitle';
-
-import { selectAuthUser } from '../../store/selectors/authSelectors';
 import {
-  selectStatistics,
-  selectStatisticsError,
-  selectStatisticsIsLoading,
-} from '../../store/selectors/statisticsSelectors';
-import { fetchStatisticsByCriteria } from '../../store/thunks/statisticsThunks';
+  useFetchCostByCategoriesQuery,
+  useFetchCostByEstablishmentsQuery,
+  useFetchCostByProductsQuery,
+  useFetchUserProfileQuery,
+} from '../../store/services';
 
 import Error from '../../components/Error/Error';
 import Preloader from '../../components/Preloader/Preloader';
@@ -39,18 +36,31 @@ function HomePage() {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
 
-  const dispatch = useDispatch();
   const location = useLocation();
 
-  const currentUser = useSelector(selectAuthUser);
-  const statistics = useSelector(selectStatistics);
-  const isLoading = useSelector(selectStatisticsIsLoading);
-  const error = useSelector(selectStatisticsError);
+  const {
+    data: currentUser,
+    isLoading: isFetchingUser,
+    error: fetchUserError,
+  } = useFetchUserProfileQuery();
 
-  useEffect(() => {
-    const creatorUuid = currentUser?.uuid || null;
-    dispatch(fetchStatisticsByCriteria({ ago, creatorUuid, criteria }));
-  }, [ago, criteria, currentUser?.uuid, dispatch]);
+  const creatorUuid = currentUser?.uuid || null;
+
+  const queriesMap = {
+    byCategories: useFetchCostByCategoriesQuery,
+    byEstablishments: useFetchCostByEstablishmentsQuery,
+    byProducts: useFetchCostByProductsQuery,
+  };
+
+  const {
+    data: statistics,
+    isLoading: isFetchingStatistics,
+    error: fetchStatisticsError,
+  } = queriesMap[criteria]({ ago, creatorUuid }, { skip: !creatorUuid });
+
+  const showPreloader = useDelayedPreloader(
+    isFetchingStatistics || isFetchingUser
+  );
 
   usePageTitle(location, HOME_PAGE_TITLES);
 
@@ -62,14 +72,12 @@ function HomePage() {
     setAgo(e.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isLoading);
-
   if (showPreloader) {
     return <Preloader message='Завантаження даних статистики...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchStatisticsError || fetchUserError) {
+    return <Error error={fetchStatisticsError || fetchUserError} />;
   }
 
   return (

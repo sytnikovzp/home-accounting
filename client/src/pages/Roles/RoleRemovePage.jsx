@@ -22,7 +22,7 @@ function RoleRemovePage({ handleModalClose }) {
   const [removeRole, { isLoading: isRemoving, error: removeError }] =
     useRemoveRoleMutation();
 
-  const handleDeleteRole = useCallback(async () => {
+  const handleRemoveRole = useCallback(async () => {
     if (!role?.uuid) {
       return;
     }
@@ -41,12 +41,12 @@ function RoleRemovePage({ handleModalClose }) {
         disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
-        onClick={handleDeleteRole}
+        onClick={handleRemoveRole}
       >
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleDeleteRole]
+    [isFetching, isRemoving, handleRemoveRole]
   );
 
   const content = useMemo(() => {

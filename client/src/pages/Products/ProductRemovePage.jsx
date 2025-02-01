@@ -23,7 +23,7 @@ function ProductRemovePage({ handleModalClose }) {
   const [removeProduct, { isLoading: isRemoving, error: removeError }] =
     useRemoveProductMutation();
 
-  const handleDeleteProduct = useCallback(async () => {
+  const handleRemoveProduct = useCallback(async () => {
     if (!product?.uuid) {
       return;
     }
@@ -42,12 +42,12 @@ function ProductRemovePage({ handleModalClose }) {
         disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
-        onClick={handleDeleteProduct}
+        onClick={handleRemoveProduct}
       >
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleDeleteProduct]
+    [isFetching, isRemoving, handleRemoveProduct]
   );
 
   const content = useMemo(() => {

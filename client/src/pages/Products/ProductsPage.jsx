@@ -81,7 +81,7 @@ function ProductsPage() {
     [handleModalOpen]
   );
 
-  const handleDelete = useCallback(
+  const handleRemove = useCallback(
     (product) => handleModalOpen('remove', product.uuid),
     [handleModalOpen]
   );
@@ -139,8 +139,8 @@ function ProductsPage() {
         rows={products}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={handleDelete}
         onEdit={handleEdit}
+        onRemove={handleRemove}
         onSortModelChange={setSortModel}
         onStatusChange={handleStatusChange}
       />

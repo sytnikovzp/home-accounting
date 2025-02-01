@@ -23,7 +23,7 @@ function CategoryRemovePage({ handleModalClose }) {
   const [removeCategory, { isLoading: isRemoving, error: removeError }] =
     useRemoveCategoryMutation();
 
-  const handleDeleteCategory = useCallback(async () => {
+  const handleRemoveCategory = useCallback(async () => {
     if (!category?.uuid) {
       return;
     }
@@ -42,12 +42,12 @@ function CategoryRemovePage({ handleModalClose }) {
         disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
-        onClick={handleDeleteCategory}
+        onClick={handleRemoveCategory}
       >
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleDeleteCategory]
+    [isFetching, isRemoving, handleRemoveCategory]
   );
 
   const content = useMemo(() => {

@@ -10,7 +10,7 @@ import PermissionsSwitches from '../PermissionsSwitches/PermissionsSwitches';
 function RoleForm({ isSubmitting, role = null, onSubmit }) {
   const { uuid, title = '', description = '', permissions = [] } = role ?? {};
 
-  const { data: responseData, isLoading: isFetchingPermissions } =
+  const { data: responseData, isLoading: isFetching } =
     useFetchAllPermissionsQuery();
 
   const permissionsList = useMemo(() => responseData ?? [], [responseData]);
@@ -58,7 +58,7 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
     [onSubmit, permissionMap]
   );
 
-  if (isFetchingPermissions) {
+  if (isFetching) {
     return <Preloader />;
   }
 

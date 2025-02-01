@@ -47,7 +47,7 @@ function ListTable({
   columns,
   rows,
   onEdit,
-  onDelete,
+  onRemove,
   onModerate,
   pagination: {
     totalCount,
@@ -255,7 +255,7 @@ function ListTable({
                           </IconButton>
                         </Tooltip>
                         <Tooltip title='Видалити'>
-                          <IconButton onClick={() => onDelete(row)}>
+                          <IconButton onClick={() => onRemove(row)}>
                             <Delete />
                           </IconButton>
                         </Tooltip>

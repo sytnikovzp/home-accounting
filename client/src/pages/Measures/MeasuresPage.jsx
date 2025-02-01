@@ -79,7 +79,7 @@ function MeasuresPage() {
     [handleModalOpen]
   );
 
-  const handleDelete = useCallback(
+  const handleRemove = useCallback(
     (measure) => handleModalOpen('remove', measure.uuid),
     [handleModalOpen]
   );
@@ -130,8 +130,8 @@ function MeasuresPage() {
         }}
         rows={measures}
         sortModel={sortModel}
-        onDelete={handleDelete}
         onEdit={handleEdit}
+        onRemove={handleRemove}
         onSortModelChange={setSortModel}
       />
       <EntityRoutes

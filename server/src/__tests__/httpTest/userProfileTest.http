@@ -1,7 +1,7 @@
 ### Get current user profile
 GET http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZmVmZTJjMTEtZDViNi00ZDgyLWJiNWUtZjEzYjEwOTNlYmU1IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTI2NjQsImV4cCI6MTczOTU0ODY2NH0.ruuV7eS6cV4ZtYH8kRf7UGpx0YoUebY7UA2GM0xeqJw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2ZDJmMjFmZi1mYjY4LTQyM2MtYjkxNi1lMDU0ZmYwMzVlODgiLCJpYXQiOjE3MzgzODM1OTAsImV4cCI6MTczOTY3OTU5MH0.cloXflBvKHgWA9TS-LESoYB47eI_AzadK9EeOFTKUBY
 
 // ==============================================================
 
@@ -20,13 +20,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYmRkZjFiM
 ### Update current user data
 PATCH http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlMGItZGM1Ny00OWI1LTgyNDktYmJjMjQ2NWFmYjRjIiwidG9rZW5WZXJzaW9uIjoyLCJpYXQiOjE3Mzc0NzIyMTMsImV4cCI6MTczODc2ODIxM30.-P0ieMaPeE17BXuqB2UcbmtYjGSZX7MXAaAN7y_Kook
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2ZDJmMjFmZi1mYjY4LTQyM2MtYjkxNi1lMDU0ZmYwMzVlODgiLCJpYXQiOjE3MzgzODM1OTAsImV4cCI6MTczOTY3OTU5MH0.cloXflBvKHgWA9TS-LESoYB47eI_AzadK9EeOFTKUBY
 
 {
-  "fullName": "Оновлений користувач",
+  "fullName": "Оновлений користувач"
   # "email": "New.User@Gmail.com",
-  "email": "sytnikov.zp@Gmail.com",
-  "role": "User"
+  # "email": "sytnikov.zp@Gmail.com",
+  # "role": "User"
 }
 
 // ==============================================================
@@ -34,7 +34,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYjgxOWZlM
 ### Change current user photo
 PATCH http://localhost:5000/api/profile/photo HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZmVmZTJjMTEtZDViNi00ZDgyLWJiNWUtZjEzYjEwOTNlYmU1IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTI2NjQsImV4cCI6MTczOTU0ODY2NH0.ruuV7eS6cV4ZtYH8kRf7UGpx0YoUebY7UA2GM0xeqJw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2ZDJmMjFmZi1mYjY4LTQyM2MtYjkxNi1lMDU0ZmYwMzVlODgiLCJpYXQiOjE3MzgzODM1OTAsImV4cCI6MTczOTY3OTU5MH0.cloXflBvKHgWA9TS-LESoYB47eI_AzadK9EeOFTKUBY
 
 --boundary
 Content-Disposition: form-data; name="userPhoto"; filename="user.png"
@@ -51,7 +51,7 @@ Content-Type: image/png
 ### Reset current user photo
 DELETE http://localhost:5000/api/profile/photo HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZmVmZTJjMTEtZDViNi00ZDgyLWJiNWUtZjEzYjEwOTNlYmU1IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTI2NjQsImV4cCI6MTczOTU0ODY2NH0.ruuV7eS6cV4ZtYH8kRf7UGpx0YoUebY7UA2GM0xeqJw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2ZDJmMjFmZi1mYjY4LTQyM2MtYjkxNi1lMDU0ZmYwMzVlODgiLCJpYXQiOjE3MzgzODM1OTAsImV4cCI6MTczOTY3OTU5MH0.cloXflBvKHgWA9TS-LESoYB47eI_AzadK9EeOFTKUBY
 
 // ==============================================================
 

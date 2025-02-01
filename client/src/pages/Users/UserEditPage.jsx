@@ -35,12 +35,12 @@ function UserEditPage({ handleModalClose }) {
     [changePhoto, uuid]
   );
 
-  const handleRemovePhoto = useCallback(
+  const handleResetPhoto = useCallback(
     () => resetPhoto(uuid),
     [resetPhoto, uuid]
   );
 
-  const handleDeleteProfile = useCallback(() => {
+  const handleRemoveProfile = useCallback(() => {
     navigate(`/users/remove/${uuid}`);
   }, [navigate, uuid]);
 
@@ -61,8 +61,8 @@ function UserEditPage({ handleModalClose }) {
       isChanging={isChanging}
       isSubmitting={isSubmitting}
       user={user}
-      onDelete={handleDeleteProfile}
-      onRemove={handleRemovePhoto}
+      onRemove={handleRemoveProfile}
+      onReset={handleResetPhoto}
       onSubmit={handleSubmitUser}
       onUpload={handleUploadPhoto}
     />

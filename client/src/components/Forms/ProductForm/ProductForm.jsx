@@ -8,7 +8,7 @@ import BaseForm from '../BaseForm/BaseForm';
 function ProductForm({ isSubmitting, product = null, onSubmit }) {
   const { uuid, title, category } = product ?? {};
 
-  const { data: categoriesData, isLoading: isFetchingCategories } =
+  const { data: categoriesData, isLoading: isFetching } =
     useFetchAllCategoriesQuery({
       page: 1,
       limit: 500,
@@ -39,7 +39,7 @@ function ProductForm({ isSubmitting, product = null, onSubmit }) {
     },
   ];
 
-  if (isFetchingCategories) {
+  if (isFetching) {
     return <Preloader />;
   }
 

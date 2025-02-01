@@ -7,7 +7,7 @@ function EstablishmentForm({
   isSubmitting,
   isChanging,
   onUpload,
-  onRemove,
+  onReset,
   establishment = null,
   onSubmit,
 }) {
@@ -49,7 +49,7 @@ function EstablishmentForm({
           file={logo}
           isChanging={isChanging}
           label={logo ? 'Оновити логотип' : 'Завантажити логотип'}
-          onRemove={onRemove}
+          onReset={onReset}
           onUpload={onUpload}
         />
       )}

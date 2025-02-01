@@ -23,7 +23,7 @@ function ExpenseRemovePage({ handleModalClose }) {
   const [removeExpense, { isLoading: isRemoving, error: removeError }] =
     useRemoveExpenseMutation();
 
-  const handleDeleteExpense = useCallback(async () => {
+  const handleRemoveExpense = useCallback(async () => {
     if (!expense?.uuid) {
       return;
     }
@@ -42,12 +42,12 @@ function ExpenseRemovePage({ handleModalClose }) {
         disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
-        onClick={handleDeleteExpense}
+        onClick={handleRemoveExpense}
       >
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleDeleteExpense]
+    [isFetching, isRemoving, handleRemoveExpense]
   );
 
   const content = useMemo(() => {

@@ -33,10 +33,7 @@ function EstablishmentEditPage({ handleModalClose }) {
     [changeLogo, uuid]
   );
 
-  const handleRemoveLogo = useCallback(
-    () => resetLogo(uuid),
-    [resetLogo, uuid]
-  );
+  const handleResetLogo = useCallback(() => resetLogo(uuid), [resetLogo, uuid]);
 
   const handleSubmitEstablishment = useCallback(
     async (values) => {
@@ -58,7 +55,7 @@ function EstablishmentEditPage({ handleModalClose }) {
       establishment={establishment}
       isChanging={isChanging}
       isSubmitting={isSubmitting}
-      onRemove={handleRemoveLogo}
+      onReset={handleResetLogo}
       onSubmit={handleSubmitEstablishment}
       onUpload={handleUploadLogo}
     />

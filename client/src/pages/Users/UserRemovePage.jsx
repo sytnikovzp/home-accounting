@@ -30,7 +30,7 @@ function UserRemovePage({
   //   navigate('/');
   // };
 
-  const handleDeleteUser = useCallback(async () => {
+  const handleRemoveUser = useCallback(async () => {
     if (!user?.uuid) {
       return;
     }
@@ -55,12 +55,12 @@ function UserRemovePage({
         disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
-        onClick={handleDeleteUser}
+        onClick={handleRemoveUser}
       >
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleDeleteUser]
+    [isFetching, isRemoving, handleRemoveUser]
   );
 
   const content = useMemo(() => {

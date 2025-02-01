@@ -81,7 +81,7 @@ function CategoriesPage() {
     [handleModalOpen]
   );
 
-  const handleDelete = useCallback(
+  const handleRemove = useCallback(
     (category) => handleModalOpen('remove', category.uuid),
     [handleModalOpen]
   );
@@ -138,8 +138,8 @@ function CategoriesPage() {
         rows={categories}
         selectedStatus={selectedStatus}
         sortModel={sortModel}
-        onDelete={handleDelete}
         onEdit={handleEdit}
+        onRemove={handleRemove}
         onSortModelChange={setSortModel}
         onStatusChange={handleStatusChange}
       />

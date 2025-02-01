@@ -81,7 +81,7 @@ function ExpensesPage() {
     [handleModalOpen]
   );
 
-  const handleDelete = useCallback(
+  const handleRemove = useCallback(
     (expense) => handleModalOpen('remove', expense.uuid),
     [handleModalOpen]
   );
@@ -141,8 +141,8 @@ function ExpensesPage() {
         rows={expenses}
         selectedStatus={selectedPeriod}
         sortModel={sortModel}
-        onDelete={handleDelete}
         onEdit={handleEdit}
+        onRemove={handleRemove}
         onSortModelChange={setSortModel}
         onStatusChange={handlePeriodChange}
       />
