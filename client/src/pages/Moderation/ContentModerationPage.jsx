@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Avatar, Box, Button } from '@mui/material';
 import {
@@ -13,8 +13,14 @@ import {
 } from '@mui/icons-material';
 
 import { configs } from '../../constants';
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useFetchCategoryByUuidQuery,
+  useFetchEstablishmentByUuidQuery,
+  useFetchProductByUuidQuery,
+  useModerationCategoryMutation,
+  useModerationEstablishmentMutation,
+  useModerationProductMutation,
+} from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -25,26 +31,75 @@ import { stylesViewPageAvatarSize, stylesViewPageBox } from '../../styles';
 
 const { BASE_URL } = configs;
 
-function ContentModerationPage({ handleModalClose, fetchModerations }) {
+function ContentModerationPage({ handleModalClose }) {
   const { path, uuid } = useParams();
   const navigate = useNavigate();
-  const capitalizedPath = useMemo(
-    () => path.charAt(0).toUpperCase() + path.slice(1),
-    [path]
-  );
+
+  const fetchEntityQuery = {
+    product: useFetchProductByUuidQuery,
+    category: useFetchCategoryByUuidQuery,
+    establishment: useFetchEstablishmentByUuidQuery,
+  }[path];
 
   const {
-    entity: moderation,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity(capitalizedPath);
+    data: moderation,
+    isLoading: isFetching,
+    error: fetchError,
+  } = fetchEntityQuery(uuid, { skip: !uuid });
 
-  useEffect(() => {
-    if (uuid && !moderation) {
-      fetchEntityByUuid(uuid);
-    }
-  }, [uuid, fetchEntityByUuid, moderation]);
+  const [
+    moderateProduct,
+    { isLoading: isProductModerating, error: productError },
+  ] = useModerationProductMutation();
+  const [
+    moderateCategory,
+    { isLoading: isCategoryModerating, error: categoryError },
+  ] = useModerationCategoryMutation();
+  const [
+    moderateEstablishment,
+    { isLoading: isEstablishmentModerating, error: establishmentError },
+  ] = useModerationEstablishmentMutation();
+
+  const moderateEntity = {
+    product: moderateProduct,
+    category: moderateCategory,
+    establishment: moderateEstablishment,
+  }[path];
+
+  const isModerating = {
+    product: isProductModerating,
+    category: isCategoryModerating,
+    establishment: isEstablishmentModerating,
+  }[path];
+
+  const moderationError = {
+    product: productError,
+    category: categoryError,
+    establishment: establishmentError,
+  }[path];
+
+  const handleModerationAction = useCallback(
+    async (status) => {
+      if (!moderateEntity) {
+        return;
+      }
+      await moderateEntity({ [`${path}Uuid`]: uuid, status });
+    },
+    [moderateEntity, path, uuid]
+  );
+
+  const pathMapping = useMemo(
+    () => ({
+      category: 'categories',
+      product: 'products',
+      establishment: 'establishments',
+    }),
+    []
+  );
+
+  const handleEditAndApprove = useCallback(() => {
+    navigate(`/${pathMapping[path] || path}/edit/${uuid}`);
+  }, [pathMapping, path, navigate, uuid]);
 
   const {
     contentType,
@@ -58,61 +113,20 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
   } = moderation ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
-  const logoSrc = useMemo(() => {
+  const logoPath = useMemo(() => {
     const baseUrl = BASE_URL.replace('/api/', '');
-    if (logo) {
-      return `${baseUrl}/images/establishments/${logo}`;
-    }
-    return `${baseUrl}/images/noLogo.png`;
+    return logo
+      ? `${baseUrl}/images/establishments/${logo}`
+      : `${baseUrl}/images/noLogo.png`;
   }, [logo]);
-
-  const pluralizePath = (path) => {
-    switch (path) {
-      case 'product':
-        return 'products';
-      case 'category':
-        return 'categories';
-      case 'establishment':
-        return 'establishments';
-      default:
-        return path;
-    }
-  };
-
-  const newPath = pluralizePath(path);
-
-  const selectMethod = (path) => {
-    switch (path) {
-      case 'product':
-        return restController.moderationProduct;
-      case 'category':
-        return restController.moderationCategory;
-      case 'establishment':
-        return restController.moderationEstablishment;
-      default:
-        return path;
-    }
-  };
-  const moderationMethod = selectMethod(path);
-
-  const handleModerationAction = async (status) => {
-    await moderationMethod(uuid, status);
-    handleModalClose();
-    fetchModerations();
-  };
-
-  const handleEditAndApprove = () => {
-    handleModalClose();
-    navigate(`/${newPath}/edit/${uuid}`);
-  };
 
   const data = useMemo(
     () => [
       {
         extra: logo ? (
           <Avatar
-            alt='Логотип'
-            src={logoSrc}
+            alt='Логотип закладу'
+            src={logoPath}
             sx={stylesViewPageAvatarSize}
             variant='rounded'
           />
@@ -124,14 +138,14 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
       {
         icon: ContentPasteSearch,
         label: 'Тип контенту',
-        value: contentType,
+        value: contentType || '*Немає даних*',
       },
       ...(description
         ? [
             {
               icon: Description,
               label: 'Опис',
-              value: description,
+              value: description || '*Немає даних*',
             },
           ]
         : []),
@@ -150,9 +164,9 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
         ? [
             {
               icon: Category,
-              isLink: Boolean(category),
+              isLink: Boolean(category?.title),
               label: 'Категорія',
-              linkTo: `/categories/${category?.uuid}`,
+              linkTo: category ? `/categories/${category?.uuid}` : '',
               value: category?.title || '*Немає даних*',
             },
           ]
@@ -180,7 +194,7 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
       creatorUuid,
       description,
       logo,
-      logoSrc,
+      logoPath,
       status,
       title,
       updatedAt,
@@ -188,51 +202,62 @@ function ContentModerationPage({ handleModalClose, fetchModerations }) {
     ]
   );
 
+  const actions = useMemo(
+    () => [
+      <Button
+        key='approve'
+        fullWidth
+        color='success'
+        disabled={isFetching || isModerating}
+        size='large'
+        variant='contained'
+        onClick={() => handleModerationAction('approved')}
+      >
+        Затвердити
+      </Button>,
+      <Button
+        key='edit'
+        fullWidth
+        color='warning'
+        disabled={isFetching || isModerating}
+        size='large'
+        variant='contained'
+        onClick={handleEditAndApprove}
+      >
+        Редагувати та затвердити
+      </Button>,
+      <Button
+        key='reject'
+        fullWidth
+        color='error'
+        disabled={isFetching || isModerating}
+        size='large'
+        variant='contained'
+        onClick={() => handleModerationAction('rejected')}
+      >
+        Відхилити
+      </Button>,
+    ],
+    [handleEditAndApprove, handleModerationAction, isFetching, isModerating]
+  );
+
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Box sx={stylesViewPageBox}>
+        <ViewDetails data={data} />
+      </Box>
+    );
+  }, [data, isFetching]);
+
   return (
     <ModalWindow
       isOpen
-      actions={[
-        <Button
-          key='approve'
-          fullWidth
-          color='success'
-          size='large'
-          variant='contained'
-          onClick={() => handleModerationAction('approved')}
-        >
-          Затвердити
-        </Button>,
-        <Button
-          key='edit'
-          fullWidth
-          color='warning'
-          size='large'
-          variant='contained'
-          onClick={handleEditAndApprove}
-        >
-          Редагувати та затвердити
-        </Button>,
-        <Button
-          key='reject'
-          fullWidth
-          color='error'
-          size='large'
-          variant='contained'
-          onClick={() => handleModerationAction('rejected')}
-        >
-          Відхилити
-        </Button>,
-      ]}
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Box sx={stylesViewPageBox}>
-            <ViewDetails data={data} />
-          </Box>
-        )
-      }
-      error={error}
+      actions={actions}
+      content={content}
+      error={fetchError?.data || moderationError?.data}
       title='Модерація контенту...'
       onClose={handleModalClose}
     />

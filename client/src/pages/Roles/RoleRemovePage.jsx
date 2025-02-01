@@ -38,7 +38,7 @@ function RoleRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isRemoving}
+        disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteRole}
@@ -46,7 +46,7 @@ function RoleRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isRemoving, handleDeleteRole]
+    [isFetching, isRemoving, handleDeleteRole]
   );
 
   const content = useMemo(() => {

@@ -5,7 +5,7 @@ const getAllPendingItems = async ({
   limit = 6,
   sort = 'uuid',
   order = 'asc',
-} = {}) => {
+}) => {
   const params = { page, limit, sort, order };
   const response = await requestHandler({
     url: '/moderation',

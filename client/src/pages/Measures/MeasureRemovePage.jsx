@@ -39,7 +39,7 @@ function MeasureRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isRemoving}
+        disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteMeasure}
@@ -47,7 +47,7 @@ function MeasureRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isRemoving, handleDeleteMeasure]
+    [isFetching, isRemoving, handleDeleteMeasure]
   );
 
   const content = useMemo(() => {

@@ -39,7 +39,7 @@ function ProductRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isRemoving}
+        disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteProduct}
@@ -47,7 +47,7 @@ function ProductRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isRemoving, handleDeleteProduct]
+    [isFetching, isRemoving, handleDeleteProduct]
   );
 
   const content = useMemo(() => {

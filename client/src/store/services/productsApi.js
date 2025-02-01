@@ -14,7 +14,7 @@ export const productsApi = createApi({
         limit = 6,
         sort = 'uuid',
         order = 'asc',
-      } = {}) => ({
+      }) => ({
         url: 'products',
         method: 'GET',
         params: { status, page, limit, sort, order },

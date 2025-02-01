@@ -37,7 +37,7 @@ function EstablishmentRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isRemoving}
+        disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteEstablishment}
@@ -45,7 +45,7 @@ function EstablishmentRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isRemoving, handleDeleteEstablishment]
+    [isFetching, isRemoving, handleDeleteEstablishment]
   );
 
   const content = useMemo(() => {

@@ -39,7 +39,7 @@ function CategoryRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isRemoving}
+        disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteCategory}
@@ -47,7 +47,7 @@ function CategoryRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isRemoving, handleDeleteCategory]
+    [isFetching, isRemoving, handleDeleteCategory]
   );
 
   const content = useMemo(() => {

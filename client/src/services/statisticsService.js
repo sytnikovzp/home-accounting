@@ -2,7 +2,7 @@ import { requestHandler } from '../utils/sharedFunctions';
 
 const statisticsFetcher =
   (url) =>
-  async ({ ago = 'allTime', creatorUuid } = {}) => {
+  async ({ ago = 'allTime', creatorUuid }) => {
     const params = { ago };
     if (creatorUuid) {
       params.creatorUuid = creatorUuid;

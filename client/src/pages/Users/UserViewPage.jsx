@@ -24,7 +24,6 @@ import {
   stylesUserViewPageEmailButton,
   stylesViewPageAvatarSize,
   stylesViewPageBox,
-  stylesViewPageBoxWithAvatar,
 } from '../../styles';
 
 const { BASE_URL } = configs;
@@ -141,7 +140,7 @@ function UserViewPage({ handleModalClose }) {
     }
     return (
       <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} extraStyles={stylesViewPageBoxWithAvatar} />
+        <ViewDetails data={data} />
       </Box>
     );
   }, [data, isFetching]);

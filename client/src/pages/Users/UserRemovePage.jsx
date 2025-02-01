@@ -52,7 +52,7 @@ function UserRemovePage({
         key='remove'
         fullWidth
         color='error'
-        disabled={isRemoving}
+        disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteUser}
@@ -60,7 +60,7 @@ function UserRemovePage({
         Видалити
       </Button>,
     ],
-    [isRemoving, handleDeleteUser]
+    [isFetching, isRemoving, handleDeleteUser]
   );
 
   const content = useMemo(() => {

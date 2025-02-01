@@ -39,7 +39,7 @@ function ExpenseRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isRemoving}
+        disabled={isFetching || isRemoving}
         size='large'
         variant='contained'
         onClick={handleDeleteExpense}
@@ -47,7 +47,7 @@ function ExpenseRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isRemoving, handleDeleteExpense]
+    [isFetching, isRemoving, handleDeleteExpense]
   );
 
   const content = useMemo(() => {

@@ -18,11 +18,7 @@ import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
-import {
-  stylesViewPageAvatarSize,
-  stylesViewPageBox,
-  stylesViewPageBoxWithAvatar,
-} from '../../styles';
+import { stylesViewPageAvatarSize, stylesViewPageBox } from '../../styles';
 
 const { BASE_URL } = configs;
 
@@ -121,7 +117,7 @@ function EstablishmentViewPage({ handleModalClose }) {
     }
     return (
       <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} extraStyles={stylesViewPageBoxWithAvatar} />
+        <ViewDetails data={data} />
       </Box>
     );
   }, [data, isFetching]);

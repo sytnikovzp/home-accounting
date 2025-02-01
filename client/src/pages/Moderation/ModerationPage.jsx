@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 
 import { pageTitles } from '../../constants';
@@ -8,15 +7,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
-
-import {
-  selectModerations,
-  selectModerationsIsLoadingList,
-  selectModerationsListLoadingError,
-  selectTotalCount,
-} from '../../store/selectors/moderationsSelectors';
-import { clearSelected } from '../../store/slices/moderationsSlice';
-import { fetchModerations } from '../../store/thunks/moderationsThunks';
+import { useFetchAllPendingItemsQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
@@ -35,32 +26,26 @@ const MODERATIONS_PAGES = [
 function ModerationPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const moderations = useSelector(selectModerations);
-  const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectModerationsIsLoadingList);
-  const error = useSelector(selectModerationsListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, sortModel]
-  );
+  const {
+    data: moderationData,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchAllPendingItemsQuery({
+    page: currentPage,
+    limit: pageSize,
+    sort: sortModel.field,
+    order: sortModel.order,
+  });
 
-  useEffect(() => {
-    dispatch(fetchModerations(fetchParams));
-  }, [dispatch, fetchParams]);
+  const moderations = moderationData?.data ?? [];
+  const totalCount = moderationData?.totalCount ?? 0;
 
   usePageTitle(location, MODERATIONS_TITLES);
 
@@ -73,18 +58,17 @@ function ModerationPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
     navigate('/moderation');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Модерацій"...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError.data.message} />;
   }
 
   return (
@@ -123,7 +107,6 @@ function ModerationPage() {
       />
       <EntityRoutes
         entityPages={MODERATIONS_PAGES}
-        fetchEntities={fetchModerations}
         handleModalClose={handleModalClose}
       />
     </>

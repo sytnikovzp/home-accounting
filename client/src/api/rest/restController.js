@@ -6,12 +6,6 @@ import {
   registration,
   resetPassword,
 } from '../../services/authService';
-import {
-  getAllPendingItems,
-  moderationCategory,
-  moderationEstablishment,
-  moderationProduct,
-} from '../../services/moderationService';
 
 const restController = {
   // Authentication
@@ -23,31 +17,6 @@ const restController = {
   forgotPassword: (email) => forgotPassword(email),
   resetPassword: (token, newPassword, confirmNewPassword) =>
     resetPassword(token, newPassword, confirmNewPassword),
-
-  // Moderation
-  fetchAllPendingItems: async ({
-    page = 1,
-    limit = 6,
-    sort = 'uuid',
-    order = 'asc',
-  } = {}) => {
-    const { data, totalCount } = await getAllPendingItems({
-      page,
-      limit,
-      sort,
-      order,
-    });
-    return {
-      data,
-      totalCount,
-    };
-  },
-  moderationCategory: (categoryUuid, status) =>
-    moderationCategory(categoryUuid, status),
-  moderationProduct: (productUuid, status) =>
-    moderationProduct(productUuid, status),
-  moderationEstablishment: (establishmentUuid, status) =>
-    moderationEstablishment(establishmentUuid, status),
 };
 
 export default restController;
