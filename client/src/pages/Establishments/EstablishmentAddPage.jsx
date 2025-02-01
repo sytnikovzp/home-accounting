@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useAddEstablishmentMutation } from '../../store/services';
 
@@ -19,11 +19,14 @@ function EstablishmentAddPage({ handleModalClose }) {
     [addEstablishment, handleModalClose]
   );
 
-  const content = (
-    <EstablishmentForm
-      isSubmitting={isSubmitting}
-      onSubmit={handleSubmitEstablishment}
-    />
+  const content = useMemo(
+    () => (
+      <EstablishmentForm
+        isSubmitting={isSubmitting}
+        onSubmit={handleSubmitEstablishment}
+      />
+    ),
+    [handleSubmitEstablishment, isSubmitting]
   );
 
   return (

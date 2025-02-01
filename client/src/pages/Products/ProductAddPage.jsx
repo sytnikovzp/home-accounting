@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useAddProductMutation } from '../../store/services';
 
@@ -19,8 +19,11 @@ function ProductAddPage({ handleModalClose }) {
     [addProduct, handleModalClose]
   );
 
-  const content = (
-    <ProductForm isSubmitting={isSubmitting} onSubmit={handleSubmitProduct} />
+  const content = useMemo(
+    () => (
+      <ProductForm isSubmitting={isSubmitting} onSubmit={handleSubmitProduct} />
+    ),
+    [handleSubmitProduct, isSubmitting]
   );
 
   return (

@@ -35,7 +35,7 @@
 //     [resetPassword, token, navigate]
 //   );
 
-//   const content = (
+//   const content = useMemo(() => (
 //     <ChangePasswordForm
 //       isSubmitting={isSubmitting}
 //       onSubmit={handleSubmitResetPassword}

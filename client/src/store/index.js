@@ -20,8 +20,6 @@ import {
 
 import authReducer from './slices/authSlice';
 import moderationsReducer from './slices/moderationsSlice';
-import permissionsReducer from './slices/permissionsSlice';
-import rolesReducer from './slices/rolesSlice';
 import statisticsReducer from './slices/statisticsSlice';
 import userProfileReducer from './slices/userProfileSlice';
 
@@ -36,11 +34,9 @@ const store = configureStore({
     [measuresApi.reducerPath]: measuresApi.reducer,
     moderations: moderationsReducer,
     [nbuRatesApi.reducerPath]: nbuRatesApi.reducer,
-    permissions: permissionsReducer,
     [permissionsApi.reducerPath]: permissionsApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [rolesApi.reducerPath]: rolesApi.reducer,
-    roles: rolesReducer,
     statistics: statisticsReducer,
     userProfile: userProfileReducer,
     [usersApi.reducerPath]: usersApi.reducer,

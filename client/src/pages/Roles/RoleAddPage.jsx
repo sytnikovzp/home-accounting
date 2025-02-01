@@ -1,40 +1,34 @@
-import restController from '../../api/rest/restController';
+import { useCallback, useMemo } from 'react';
+
+import { useAddRoleMutation } from '../../store/services';
 
 import RoleForm from '../../components/Forms/RoleForm/RoleForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-function RoleAddPage({
-  handleModalClose,
-  fetchRoles,
-  permissionsList,
-  crudError,
-  setCrudError,
-}) {
-  const handleSubmitRole = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.addRole(
-        values.title,
-        values.description,
-        values.permissions
-      );
-      handleModalClose();
-      fetchRoles();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+function RoleAddPage({ handleModalClose }) {
+  const [addRole, { isLoading: isSubmitting, error: submitError }] =
+    useAddRoleMutation();
+
+  const handleSubmitRole = useCallback(
+    async (values) => {
+      const result = await addRole(values);
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [addRole, handleModalClose]
+  );
+
+  const content = useMemo(
+    () => <RoleForm isSubmitting={isSubmitting} onSubmit={handleSubmitRole} />,
+    [handleSubmitRole, isSubmitting]
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        <RoleForm
-          permissionsList={permissionsList}
-          onSubmit={handleSubmitRole}
-        />
-      }
-      error={crudError}
+      content={content}
+      error={submitError?.data}
       title='Додавання ролі...'
       onClose={handleModalClose}
     />

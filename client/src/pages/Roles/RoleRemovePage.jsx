@@ -1,70 +1,71 @@
-import { useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useFetchRoleByUuidQuery,
+  useRemoveRoleMutation,
+} from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function RoleRemovePage({
-  handleModalClose,
-  fetchRoles,
-  crudError,
-  setCrudError,
-}) {
+function RoleRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: role,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Role');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
+  const { data: role, isLoading: isFetching } = useFetchRoleByUuidQuery(uuid, {
+    skip: !uuid,
+  });
+
+  const [removeRole, { isLoading: isRemoving, error: removeError }] =
+    useRemoveRoleMutation();
+
+  const handleDeleteRole = useCallback(async () => {
+    if (!role?.uuid) {
+      return;
     }
-  }, [uuid, fetchEntityByUuid]);
-
-  const handleDeleteRole = async () => {
-    try {
-      await restController.removeRole(role.uuid);
+    const result = await removeRole(role.uuid);
+    if (result?.data) {
       handleModalClose();
-      fetchRoles();
-    } catch (error) {
-      setCrudError(error.response.data);
     }
-  };
+  }, [role?.uuid, handleModalClose, removeRole]);
+
+  const actions = useMemo(
+    () => [
+      <Button
+        key='remove'
+        fullWidth
+        color='error'
+        disabled={isRemoving}
+        size='large'
+        variant='contained'
+        onClick={handleDeleteRole}
+      >
+        Видалити
+      </Button>,
+    ],
+    [isRemoving, handleDeleteRole]
+  );
+
+  const content = useMemo(() => {
+    if (isFetching) {
+      return <Preloader />;
+    }
+    return (
+      <Typography sx={stylesDeletePageTypography} variant='body1'>
+        Ви впевнені, що хочете видалити роль «{role?.title}»?
+      </Typography>
+    );
+  }, [isFetching, role?.title]);
 
   return (
     <ModalWindow
       isOpen
-      actions={[
-        <Button
-          key='remove'
-          fullWidth
-          color='error'
-          size='large'
-          variant='contained'
-          onClick={handleDeleteRole}
-        >
-          Видалити
-        </Button>,
-      ]}
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <Typography sx={stylesDeletePageTypography} variant='body1'>
-            Ви впевнені, що хочете видалити роль «{role?.title}»?
-          </Typography>
-        )
-      }
-      error={error || crudError}
+      actions={actions}
+      content={content}
+      error={removeError?.data}
       title='Видалення ролі...'
       onClose={handleModalClose}
     />

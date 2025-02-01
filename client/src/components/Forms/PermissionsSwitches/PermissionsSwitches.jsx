@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import { FieldArray, useFormikContext } from 'formik';
 import {
   Box,
@@ -17,6 +18,26 @@ import {
 
 function PermissionsSwitches({ permissionsList }) {
   const { values } = useFormikContext();
+  const selectedPermissions = values.permissions;
+
+  const isCheckedPermissions = useMemo(
+    () => new Set(selectedPermissions),
+    [selectedPermissions]
+  );
+
+  const handleToggle = useCallback(
+    (uuid, arrayHelpers) => (event) => {
+      if (event.target.checked) {
+        arrayHelpers.push(uuid);
+      } else {
+        const index = selectedPermissions.indexOf(uuid);
+        if (index !== -1) {
+          arrayHelpers.remove(index);
+        }
+      }
+    },
+    [selectedPermissions]
+  );
 
   return (
     <Box sx={stylesPermissionsSwitchesMainBox}>
@@ -27,50 +48,38 @@ function PermissionsSwitches({ permissionsList }) {
         name='permissions'
         render={(arrayHelpers) => (
           <List>
-            {permissionsList.map((permission) => {
-              const isChecked = values.permissions.includes(permission.uuid);
-              return (
-                <ListItem
-                  key={permission.uuid}
-                  disableGutters
-                  sx={stylesPermissionsSwitchesListItem}
-                >
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={isChecked}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            arrayHelpers.push(permission.uuid);
-                          } else {
-                            const index = values.permissions.indexOf(
-                              permission.uuid
-                            );
-                            arrayHelpers.remove(index);
-                          }
-                        }}
-                      />
-                    }
-                    label={
-                      <Box>
-                        <Typography
-                          sx={stylesPermissionsSwitchesFontTitle}
-                          variant='body1'
-                        >
-                          {permission.title}
-                        </Typography>
-                        <Typography
-                          sx={stylesPermissionsSwitchesFontDescription}
-                          variant='body2'
-                        >
-                          {permission.description || '*Немає даних*'}
-                        </Typography>
-                      </Box>
-                    }
-                  />
-                </ListItem>
-              );
-            })}
+            {permissionsList.map(({ uuid, title, description }) => (
+              <ListItem
+                key={uuid}
+                disableGutters
+                sx={stylesPermissionsSwitchesListItem}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={isCheckedPermissions.has(uuid)}
+                      onChange={handleToggle(uuid, arrayHelpers)}
+                    />
+                  }
+                  label={
+                    <Box>
+                      <Typography
+                        sx={stylesPermissionsSwitchesFontTitle}
+                        variant='body1'
+                      >
+                        {title}
+                      </Typography>
+                      <Typography
+                        sx={stylesPermissionsSwitchesFontDescription}
+                        variant='body2'
+                      >
+                        {description || '*Немає даних*'}
+                      </Typography>
+                    </Box>
+                  }
+                />
+              </ListItem>
+            ))}
           </List>
         )}
       />

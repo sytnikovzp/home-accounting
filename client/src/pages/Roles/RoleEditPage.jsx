@@ -1,65 +1,50 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import restController from '../../api/rest/restController';
-import useFetchEntity from '../../hooks/useFetchEntity';
+import {
+  useEditRoleMutation,
+  useFetchRoleByUuidQuery,
+} from '../../store/services';
 
 import RoleForm from '../../components/Forms/RoleForm/RoleForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-function RoleEditPage({
-  handleModalClose,
-  fetchRoles,
-  permissionsList,
-  crudError,
-  setCrudError,
-}) {
+function RoleEditPage({ handleModalClose }) {
   const { uuid } = useParams();
-  const {
-    entity: role,
-    isLoading,
-    error,
-    fetchEntityByUuid,
-  } = useFetchEntity('Role');
 
-  useEffect(() => {
-    if (uuid) {
-      fetchEntityByUuid(uuid);
-    }
-  }, [uuid, fetchEntityByUuid]);
+  const { data: role, isLoading: isFetching } = useFetchRoleByUuidQuery(uuid, {
+    skip: !uuid,
+  });
 
-  const handleSubmitRole = async (values) => {
-    setCrudError(null);
-    try {
-      await restController.editRole(
-        role.uuid,
-        values.title,
-        values.description,
-        values.permissions
-      );
-      handleModalClose();
-      fetchRoles();
-    } catch (error) {
-      setCrudError(error.response.data);
-    }
-  };
+  const [editRole, { isLoading: isSubmitting, error: submitError }] =
+    useEditRoleMutation();
+
+  const handleSubmitRole = useCallback(
+    async (values) => {
+      const result = await editRole({ roleUuid: uuid, ...values });
+      if (result?.data) {
+        handleModalClose();
+      }
+    },
+    [editRole, handleModalClose, uuid]
+  );
+
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <RoleForm
+      isSubmitting={isSubmitting}
+      role={role}
+      onSubmit={handleSubmitRole}
+    />
+  );
 
   return (
     <ModalWindow
       isOpen
-      content={
-        isLoading ? (
-          <Preloader />
-        ) : (
-          <RoleForm
-            permissionsList={permissionsList}
-            role={role}
-            onSubmit={handleSubmitRole}
-          />
-        )
-      }
-      error={error || crudError}
+      content={content}
+      error={submitError?.data}
       title='Редагування ролі...'
       onClose={handleModalClose}
     />

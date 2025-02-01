@@ -12,12 +12,6 @@ import {
   moderationEstablishment,
   moderationProduct,
 } from '../../services/moderationService';
-import {
-  createRole,
-  deleteRole,
-  getRoleByUuid,
-  updateRole,
-} from '../../services/rolesService';
 
 const restController = {
   // Authentication
@@ -29,14 +23,6 @@ const restController = {
   forgotPassword: (email) => forgotPassword(email),
   resetPassword: (token, newPassword, confirmNewPassword) =>
     resetPassword(token, newPassword, confirmNewPassword),
-
-  // Role management
-  fetchRoleByUuid: (roleUuid) => getRoleByUuid(roleUuid),
-  addRole: (title, description, permissions) =>
-    createRole(title, description, permissions),
-  editRole: (roleUuid, title, description, permissions) =>
-    updateRole(roleUuid, title, description, permissions),
-  removeRole: (roleUuid) => deleteRole(roleUuid),
 
   // Moderation
   fetchAllPendingItems: async ({

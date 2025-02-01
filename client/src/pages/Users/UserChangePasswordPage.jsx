@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useChangeUserPasswordMutation } from '../../store/services';
@@ -22,11 +22,14 @@ function UserChangePasswordPage({ handleModalClose }) {
     [changeUserPassword, handleModalClose, uuid]
   );
 
-  const content = (
-    <ChangePasswordForm
-      isSubmitting={isSubmitting}
-      onSubmit={handleSubmitUser}
-    />
+  const content = useMemo(
+    () => (
+      <ChangePasswordForm
+        isSubmitting={isSubmitting}
+        onSubmit={handleSubmitUser}
+      />
+    ),
+    [handleSubmitUser, isSubmitting]
   );
 
   return (

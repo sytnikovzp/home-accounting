@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useAddExpenseMutation } from '../../store/services';
 
@@ -19,8 +19,11 @@ function ExpenseAddPage({ handleModalClose }) {
     [addExpense, handleModalClose]
   );
 
-  const content = (
-    <ExpenseForm isSubmitting={isSubmitting} onSubmit={handleSubmitExpense} />
+  const content = useMemo(
+    () => (
+      <ExpenseForm isSubmitting={isSubmitting} onSubmit={handleSubmitExpense} />
+    ),
+    [handleSubmitExpense, isSubmitting]
   );
 
   return (

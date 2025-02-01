@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Typography } from '@mui/material';
 
 import { pageTitles } from '../../constants';
@@ -8,15 +7,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
-
-import {
-  selectRoles,
-  selectRolesIsLoadingList,
-  selectRolesListLoadingError,
-  selectTotalCount,
-} from '../../store/selectors/rolesSelectors';
-import { clearSelected } from '../../store/slices/rolesSlice';
-import { fetchRoles } from '../../store/thunks/rolesThunks';
+import { useFetchAllRolesQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import Error from '../../components/Error/Error';
@@ -45,32 +36,26 @@ const ROLES_PAGES = [
 function RolesPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const roles = useSelector(selectRoles);
-  const totalCount = useSelector(selectTotalCount);
-  const isLoading = useSelector(selectRolesIsLoadingList);
-  const error = useSelector(selectRolesListLoadingError);
 
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
-  const fetchParams = useMemo(
-    () => ({
-      page: currentPage,
-      limit: pageSize,
-      sort: sortModel.field,
-      order: sortModel.order,
-    }),
-    [currentPage, pageSize, sortModel]
-  );
+  const {
+    data: rolesData,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchAllRolesQuery({
+    page: currentPage,
+    limit: pageSize,
+    sort: sortModel.field,
+    order: sortModel.order,
+  });
 
-  useEffect(() => {
-    dispatch(fetchRoles(fetchParams));
-  }, [dispatch, fetchParams]);
+  const roles = rolesData?.data ?? [];
+  const totalCount = rolesData?.totalCount ?? 0;
 
   usePageTitle(location, ROLES_TITLES);
 
@@ -82,9 +67,8 @@ function RolesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    dispatch(clearSelected());
     navigate('/roles');
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleAddClick = useCallback(() => {
     handleModalOpen('add');
@@ -100,14 +84,14 @@ function RolesPage() {
     [handleModalOpen]
   );
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const showPreloader = useDelayedPreloader(isFetching);
 
   if (showPreloader) {
     return <Preloader message='Завантаження списку "Ролей користувачів"...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError.data.message} />;
   }
 
   return (
@@ -150,7 +134,6 @@ function RolesPage() {
       />
       <EntityRoutes
         entityPages={ROLES_PAGES}
-        fetchEntities={fetchRoles}
         handleModalClose={handleModalClose}
       />
     </>
