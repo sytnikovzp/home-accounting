@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import {
   BrowserRouter as Router,
@@ -6,15 +5,6 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { getAccessToken } from './utils/sharedFunctions';
-
-import {
-  selectAuthIsLoading,
-  selectIsAuthenticated,
-} from './store/selectors/authSelectors';
-import { refreshAccessTokenThunk } from './store/thunks/authThunks';
 
 import Layout from './components/Layout/Layout';
 import ModalWindow from './components/ModalWindow/ModalWindow';
@@ -36,28 +26,16 @@ import RolesPage from './pages/Roles/RolesPage';
 import UsersPage from './pages/Users/UsersPage';
 
 function App() {
-  const dispatch = useDispatch();
-
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const isLoading = useSelector(selectAuthIsLoading);
-
-  useEffect(() => {
-    const token = getAccessToken();
-    if (token) {
-      dispatch(refreshAccessTokenThunk());
-    }
-  }, [dispatch]);
-
-  if (isLoading) {
-    return (
-      <ModalWindow
-        disableBackdropClick
-        disableCloseButton
-        isOpen
-        content={<Preloader message='Welcome to Home Accounting...' />}
-      />
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <ModalWindow
+  //       disableBackdropClick
+  //       disableCloseButton
+  //       isOpen
+  //       content={<Preloader message='Welcome to Home Accounting...' />}
+  //     />
+  //   );
+  // }
 
   const renderPrivateRoute = (Component) => (
     <PrivateRoute>{Component}</PrivateRoute>
@@ -103,7 +81,8 @@ function App() {
             <Route element={<ResetPasswordPage />} path='reset-password' />
             <Route
               element={
-                isAuthenticated ? <Navigate replace to='/' /> : <AuthPage />
+                // isAuthenticated ? <Navigate replace to='/' /> :
+                <AuthPage />
               }
               path='auth/*'
             />

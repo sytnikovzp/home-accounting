@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { logger } from 'redux-logger';
 
 import {
+  authApi,
   categoriesApi,
   currenciesApi,
   emailApi,
@@ -18,11 +19,9 @@ import {
   usersApi,
 } from './services';
 
-import authReducer from './slices/authSlice';
-
 const store = configureStore({
   reducer: {
-    auth: authReducer,
+    [authApi.reducerPath]: authApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [currenciesApi.reducerPath]: currenciesApi.reducer,
     [emailApi.reducerPath]: emailApi.reducer,
@@ -41,6 +40,7 @@ const store = configureStore({
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
+      authApi.middleware,
       categoriesApi.middleware,
       currenciesApi.middleware,
       emailApi.middleware,

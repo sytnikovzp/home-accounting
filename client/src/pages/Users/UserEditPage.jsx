@@ -20,25 +20,36 @@ function UserEditPage({ handleModalClose }) {
     skip: !uuid,
   });
 
-  const [editUser, { isLoading: isSubmitting, error: submitError }] =
-    useEditUserMutation();
-  const [changePhoto, { isLoading: isUploading, error: uploadError }] =
-    useChangeUserPhotoMutation();
-  const [resetPhoto, { isLoading: isResetting, error: resetError }] =
-    useResetUserPhotoMutation();
+  const [
+    editUser,
+    { isLoading: isSubmitting, error: submitError, reset: resetSubmitting },
+  ] = useEditUserMutation();
+  const [
+    changePhoto,
+    { isLoading: isUploading, error: uploadError, reset: resetUploading },
+  ] = useChangeUserPhotoMutation();
+  const [
+    resetPhoto,
+    { isLoading: isResetting, error: resetError, reset: resetResetting },
+  ] = useResetUserPhotoMutation();
 
   const isChanging = isUploading || isResetting;
   const error = uploadError || resetError || submitError;
 
   const handleUploadPhoto = useCallback(
-    (file) => changePhoto({ userUuid: uuid, userPhoto: file }),
-    [changePhoto, uuid]
+    async (file) => {
+      resetSubmitting();
+      resetResetting();
+      await changePhoto({ userUuid: uuid, userPhoto: file });
+    },
+    [changePhoto, resetResetting, resetSubmitting, uuid]
   );
 
-  const handleResetPhoto = useCallback(
-    () => resetPhoto(uuid),
-    [resetPhoto, uuid]
-  );
+  const handleResetPhoto = useCallback(async () => {
+    resetSubmitting();
+    resetUploading();
+    await resetPhoto(uuid);
+  }, [resetPhoto, resetSubmitting, resetUploading, uuid]);
 
   const handleRemoveProfile = useCallback(() => {
     navigate(`/users/remove/${uuid}`);
@@ -46,12 +57,14 @@ function UserEditPage({ handleModalClose }) {
 
   const handleSubmitUser = useCallback(
     async (values) => {
+      resetUploading();
+      resetResetting();
       const result = await editUser({ userUuid: uuid, ...values });
       if (result?.data) {
         handleModalClose();
       }
     },
-    [editUser, handleModalClose, uuid]
+    [editUser, handleModalClose, resetResetting, resetUploading, uuid]
   );
 
   const content = isFetching ? (

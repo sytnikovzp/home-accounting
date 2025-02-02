@@ -1,8 +1,6 @@
 import { isValid, parse } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
-import api from '../api';
-
 import { stylesHeaderUserAvatar } from '../styles';
 
 const getAccessToken = () => {
@@ -53,46 +51,6 @@ const stringAvatar = (fullName) => {
       backgroundColor: stringToColor(fullName),
     },
   };
-};
-
-const requestHandler = async ({
-  url,
-  method = 'GET',
-  data = {},
-  params = {},
-}) => {
-  try {
-    const queryParams = new URLSearchParams(params).toString();
-    const headers =
-      url.includes('logo') || url.includes('photo')
-        ? { 'Content-Type': 'multipart/form-data' }
-        : {};
-    const response = await api({
-      headers,
-      method,
-      url: `${url}${queryParams && `?${queryParams}`}`,
-      ...(method === 'GET' || method === 'DELETE' ? {} : { data }),
-    });
-    if (method === 'GET' && response.headers['x-total-count']) {
-      const totalCount = parseInt(response.headers['x-total-count']);
-      return {
-        data: response.data,
-        totalCount,
-      };
-    }
-    return response.data;
-  } catch (error) {
-    if (method === 'GET' && url.includes('/refresh')) {
-      return null;
-    }
-    if (method === 'GET') {
-      return {
-        data: [],
-        totalCount: 0,
-      };
-    }
-    throw error;
-  }
 };
 
 const groupByFirstLetter = (items, labelKey, valueKey) =>
@@ -160,7 +118,6 @@ export {
   groupByFirstLetter,
   parseDateString,
   removeAccessToken,
-  requestHandler,
   saveAccessToken,
   setErrorActionState,
   setErrorListState,

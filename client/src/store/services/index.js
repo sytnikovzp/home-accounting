@@ -1,3 +1,4 @@
+export * from './authApi';
 export * from './categoriesApi';
 export * from './currenciesApi';
 export * from './emailApi';

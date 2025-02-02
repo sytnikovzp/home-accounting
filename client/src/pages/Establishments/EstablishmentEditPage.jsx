@@ -18,25 +18,44 @@ function EstablishmentEditPage({ handleModalClose }) {
   const { data: establishment, isLoading: isFetching } =
     useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 
-  const [editEstablishment, { isLoading: isSubmitting, error: submitError }] =
-    useEditEstablishmentMutation();
-  const [changeLogo, { isLoading: isUploading, error: uploadError }] =
-    useChangeEstablishmentLogoMutation();
-  const [resetLogo, { isLoading: isResetting, error: resetError }] =
-    useResetEstablishmentLogoMutation();
+  const [
+    editEstablishment,
+    { isLoading: isSubmitting, error: submitError, reset: resetSubmitting },
+  ] = useEditEstablishmentMutation();
+  const [
+    changeLogo,
+    { isLoading: isUploading, error: uploadError, reset: resetUploading },
+  ] = useChangeEstablishmentLogoMutation();
+  const [
+    resetLogo,
+    { isLoading: isResetting, error: resetingError, reset: resetResetting },
+  ] = useResetEstablishmentLogoMutation();
 
   const isChanging = isUploading || isResetting;
-  const error = uploadError || resetError || submitError;
+  const error = uploadError || resetingError || submitError;
 
   const handleUploadLogo = useCallback(
-    (file) => changeLogo({ establishmentUuid: uuid, establishmentLogo: file }),
-    [changeLogo, uuid]
+    async (file) => {
+      resetSubmitting();
+      resetResetting();
+      await changeLogo({ establishmentUuid: uuid, establishmentLogo: file });
+    },
+    [changeLogo, resetResetting, resetSubmitting, uuid]
   );
 
-  const handleResetLogo = useCallback(() => resetLogo(uuid), [resetLogo, uuid]);
+  const handleResetLogo = useCallback(async () => {
+    resetSubmitting();
+    resetUploading();
+
+    console.log('!!!!');
+
+    await resetLogo(uuid);
+  }, [resetLogo, resetSubmitting, resetUploading, uuid]);
 
   const handleSubmitEstablishment = useCallback(
     async (values) => {
+      resetUploading();
+      resetResetting();
       const result = await editEstablishment({
         establishmentUuid: uuid,
         ...values,
@@ -45,7 +64,7 @@ function EstablishmentEditPage({ handleModalClose }) {
         handleModalClose();
       }
     },
-    [editEstablishment, handleModalClose, uuid]
+    [editEstablishment, handleModalClose, resetResetting, resetUploading, uuid]
   );
 
   const content = isFetching ? (

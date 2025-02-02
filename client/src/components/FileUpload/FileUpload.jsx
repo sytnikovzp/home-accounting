@@ -20,7 +20,7 @@ import {
 
 const { BASE_URL } = configs;
 
-function FileUpload({ entity, file, isChanging, label, onRemove, onUpload }) {
+function FileUpload({ entity, file, isChanging, label, onReset, onUpload }) {
   const avatarPath = useMemo(() => {
     if (file) {
       return `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`;
@@ -60,7 +60,7 @@ function FileUpload({ entity, file, isChanging, label, onRemove, onUpload }) {
                   color='error'
                   size='small'
                   sx={stylesFileUploadIconButton}
-                  onClick={onRemove}
+                  onClick={onReset}
                 >
                   <Clear fontSize='small' />
                 </IconButton>

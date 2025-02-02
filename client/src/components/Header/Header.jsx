@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import {
   AppBar,
   Box,
@@ -10,11 +10,11 @@ import {
   Toolbar,
 } from '@mui/material';
 
-import {
-  selectAuthUser,
-  selectIsAuthenticated,
-} from '../../store/selectors/authSelectors';
-import { logoutThunk } from '../../store/thunks/authThunks';
+// import {
+//   selectAuthUser,
+//   selectIsAuthenticated,
+// } from '../../store/selectors/authSelectors';
+// import { logoutThunk } from '../../store/thunks/authThunks';
 
 import NavBar from '../Navigation/NavBar';
 
@@ -27,11 +27,11 @@ function Header() {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const currentUser = useSelector(selectAuthUser);
+  // const isAuthenticated = useSelector(selectIsAuthenticated);
+  // const currentUser = useSelector(selectAuthUser);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const navigateTo = useCallback((path) => navigate(path), [navigate]);
 
@@ -51,10 +51,10 @@ function Header() {
     navigate('/auth');
   }, [navigate]);
 
-  const handleLogout = useCallback(() => {
-    dispatch(logoutThunk());
-    navigate('/');
-  }, [dispatch, navigate]);
+  // const handleLogout = useCallback(() => {
+  //   dispatch(logoutThunk());
+  //   navigate('/');
+  // }, [dispatch, navigate]);
 
   return (
     <AppBar position='sticky' sx={stylesHeaderAppBar}>
@@ -63,7 +63,7 @@ function Header() {
           <Logo isMobile={false} />
           <Logo isMobile onClick={handleToggleNavBar} />
           <Box sx={{ alignItems: 'center', display: 'flex' }}>
-            {isAuthenticated ? (
+            {/* {isAuthenticated ? (
               <AuthenticatedMenu
                 closeUserMenu={closeUserMenu}
                 currentUser={currentUser}
@@ -80,7 +80,7 @@ function Header() {
               >
                 Увійти
               </Button>
-            )}
+            )} */}
           </Box>
         </Toolbar>
       </Container>
