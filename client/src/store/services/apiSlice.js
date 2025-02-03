@@ -21,30 +21,49 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions);
+let refreshSubscribers = [];
 
-  if (result.error && result.error.status === 401) {
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+  const result = await baseQuery(args, api, extraOptions);
+
+  if (result.error?.status === 401) {
+    const originalRequest = args;
+
+    if (originalRequest._retry) {
+      return result;
+    }
+
+    originalRequest._retry = true;
+
     try {
       const response = await baseQuery(
-        {
-          url: 'auth/refresh',
-          method: 'GET',
-        },
+        { url: 'auth/refresh', method: 'GET' },
         api,
         extraOptions
       );
 
       if (response.data) {
         saveAccessToken(response.data.accessToken);
-        result = await baseQuery(args, api, extraOptions);
+
+        originalRequest.headers = originalRequest.headers || {};
+        originalRequest.headers['Authorization'] =
+          `Bearer ${response.data.accessToken}`;
+
+        for (const callback of refreshSubscribers) {
+          callback(response.data.accessToken);
+        }
+        refreshSubscribers = [];
+
+        return baseQuery(originalRequest, api, extraOptions);
       }
     } catch (error) {
       console.warn('Token refresh failed', error);
       removeAccessToken();
+      refreshSubscribers = [];
     }
   }
 
   return result;
 };
+
 export { baseQuery, baseQueryWithReauth };

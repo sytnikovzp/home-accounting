@@ -38,13 +38,13 @@ function HomePage() {
 
   const location = useLocation();
 
-  const {
-    data: currentUser,
-    isLoading: isFetchingUser,
-    error: fetchUserError,
-  } = useFetchUserProfileQuery();
+  // const {
+  //   data: currentUser,
+  //   isLoading: isFetchingUser,
+  //   error: fetchUserError,
+  // } = useFetchUserProfileQuery();
 
-  const creatorUuid = currentUser?.uuid || null;
+  // const creatorUuid = currentUser?.uuid;
 
   const queriesMap = {
     byCategories: useFetchCostByCategoriesQuery,
@@ -56,10 +56,15 @@ function HomePage() {
     data: statistics,
     isLoading: isFetchingStatistics,
     error: fetchStatisticsError,
-  } = queriesMap[criteria]({ ago, creatorUuid }, { skip: !creatorUuid });
+  } = queriesMap[criteria](
+    // { ago, ...(creatorUuid && { creatorUuid }) },
+    { ago },
+    { skip: !ago }
+  );
 
   const showPreloader = useDelayedPreloader(
-    isFetchingStatistics || isFetchingUser
+    isFetchingStatistics
+    // || isFetchingUser
   );
 
   usePageTitle(location, HOME_PAGE_TITLES);
@@ -76,8 +81,12 @@ function HomePage() {
     return <Preloader message='Завантаження даних статистики...' />;
   }
 
-  if (fetchStatisticsError || fetchUserError) {
-    return <Error error={fetchStatisticsError || fetchUserError} />;
+  // if (fetchUserError) {
+  //   return <Error error={fetchUserError?.data?.message} />;
+  // }
+
+  if (fetchStatisticsError) {
+    return <Error error={fetchStatisticsError?.data?.message} />;
   }
 
   return (

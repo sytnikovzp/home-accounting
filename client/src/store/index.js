@@ -54,8 +54,8 @@ const store = configureStore({
       rolesApi.middleware,
       statisticsApi.middleware,
       userProfileApi.middleware,
-      usersApi.middleware,
-      logger
+      usersApi.middleware
+      // logger
     ),
 });
 

@@ -6,6 +6,7 @@ import {
 } from '../../utils/sharedFunctions';
 
 import { baseQueryWithReauth } from './apiSlice';
+import { userProfileApi } from './userProfileApi';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -48,10 +49,11 @@ export const authApi = createApi({
         url: 'auth/logout',
         method: 'GET',
       }),
-      onQueryStarted: async (_args, { queryFulfilled }) => {
+      onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
         try {
           await queryFulfilled;
           removeAccessToken();
+          dispatch(userProfileApi.util.invalidateTags(['UserProfile']));
         } catch (error) {
           console.warn('Logout failed:', error);
         }
