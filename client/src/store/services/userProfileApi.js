@@ -58,6 +58,7 @@ export const userProfileApi = createApi({
         url: 'profile',
         method: 'DELETE',
       }),
+      invalidatesTags: [{ type: 'UserProfile', id: 'PROFILE' }],
     }),
   }),
 });

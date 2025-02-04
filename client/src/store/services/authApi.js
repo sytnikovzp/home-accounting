@@ -18,10 +18,15 @@ export const authApi = createApi({
         method: 'POST',
         body: { fullName, email, password },
       }),
-      onQueryStarted: async (_args, { queryFulfilled }) => {
+      onQueryStarted: async (_args, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
           saveAccessToken(data.accessToken);
+          dispatch(
+            userProfileApi.util.invalidateTags([
+              { type: 'UserProfile', id: 'PROFILE' },
+            ])
+          );
         } catch (error) {
           console.warn('Registration failed:', error);
         }
@@ -34,10 +39,15 @@ export const authApi = createApi({
         method: 'POST',
         body: { email, password },
       }),
-      onQueryStarted: async (_args, { queryFulfilled }) => {
+      onQueryStarted: async (_args, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
           saveAccessToken(data.accessToken);
+          dispatch(
+            userProfileApi.util.invalidateTags([
+              { type: 'UserProfile', id: 'PROFILE' },
+            ])
+          );
         } catch (error) {
           console.warn('Login failed:', error);
         }
@@ -49,11 +59,11 @@ export const authApi = createApi({
         url: 'auth/logout',
         method: 'GET',
       }),
-      onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+      onQueryStarted: async (_args, { dispatch, queryFulfilled }) => {
         try {
           await queryFulfilled;
           removeAccessToken();
-          dispatch(userProfileApi.util.invalidateTags(['UserProfile']));
+          dispatch(userProfileApi.util.resetApiState());
         } catch (error) {
           console.warn('Logout failed:', error);
         }
