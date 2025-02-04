@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -9,11 +9,7 @@ import {
   Toolbar,
 } from '@mui/material';
 
-import { getAccessToken } from '../../utils/sharedFunctions';
-import {
-  useFetchUserProfileQuery,
-  useLogoutMutation,
-} from '../../store/services';
+import { useAuth } from '../../hooks/useAuth';
 
 import NavBar from '../Navigation/NavBar';
 
@@ -25,33 +21,13 @@ import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 function Header() {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
 
   const navigate = useNavigate();
 
-  const accessToken = getAccessToken();
+  const { currentUser, isAuthenticated, logout } = useAuth();
 
-  const { data, isSuccess } = useFetchUserProfileQuery(null, {
-    skip: !accessToken,
-  });
-
-  // console.log('isAuthenticated', isAuthenticated);
-  // console.log('currentUser', currentUser);
-
-  const [logoutMutation] = useLogoutMutation();
-
-  useEffect(() => {
-    console.log('Triggered useEffect', { isSuccess, data });
-
-    if (isSuccess && data) {
-      setIsAuthenticated(true);
-      setCurrentUser(data);
-    } else {
-      setIsAuthenticated(false);
-      setCurrentUser(null);
-    }
-  }, [isSuccess, data]);
+  console.log('isAuthenticated', isAuthenticated);
+  console.log('currentUser', currentUser);
 
   const navigateTo = useCallback((path) => navigate(path), [navigate]);
 
@@ -71,13 +47,6 @@ function Header() {
     navigate('/auth');
   }, [navigate]);
 
-  const handleLogout = useCallback(async () => {
-    await logoutMutation();
-    setIsAuthenticated(false);
-    setCurrentUser(null);
-    navigate('/');
-  }, [logoutMutation, navigate]);
-
   return (
     <AppBar position='sticky' sx={stylesHeaderAppBar}>
       <Container maxWidth='xl'>
@@ -89,7 +58,7 @@ function Header() {
               <AuthenticatedMenu
                 closeUserMenu={closeUserMenu}
                 currentUser={currentUser}
-                handleLogout={handleLogout}
+                handleLogout={logout}
                 navigateTo={navigateTo}
                 openUserMenu={openUserMenu}
                 toggleUserMenu={toggleUserMenu}
