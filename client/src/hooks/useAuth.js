@@ -1,41 +1,31 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getAccessToken } from '../utils/sharedFunctions';
-import { useFetchUserProfileQuery, useLogoutMutation } from '../store/services';
+import { useFetchUserProfileQuery } from '../store/services/userProfileApi';
 
-export const useAuth = () => {
-  const navigate = useNavigate();
+import { logout } from '../store/slices/authSlice';
+
+function useAuth() {
+  const dispatch = useDispatch();
   const accessToken = getAccessToken();
-
-  const { data, isSuccess } = useFetchUserProfileQuery(null, {
+  const { data, isSuccess, isError } = useFetchUserProfileQuery(null, {
     skip: !accessToken,
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [logoutMutation] = useLogoutMutation();
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  console.log('currentUser', currentUser);
+  console.log('isAuthenticated', isAuthenticated);
 
   useEffect(() => {
-    if (isSuccess && data) {
-      setIsAuthenticated(true);
-      setCurrentUser(data);
-    } else {
-      setIsAuthenticated(false);
-      setCurrentUser(null);
+    if (isError) {
+      dispatch(logout());
     }
-  }, [isSuccess, data]);
+  }, [isError, dispatch]);
 
-  const logout = useCallback(async () => {
-    await logoutMutation();
-    setIsAuthenticated(false);
-    setCurrentUser(null);
-    navigate('/');
-  }, [logoutMutation, navigate]);
+  return { currentUser, isAuthenticated };
+}
 
-  return {
-    currentUser,
-    isAuthenticated,
-    logout,
-  };
-};
+export default useAuth;

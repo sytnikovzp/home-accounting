@@ -12,7 +12,7 @@ export const userProfileApi = createApi({
         url: 'profile',
         method: 'GET',
       }),
-      providesTags: [{ type: 'UserProfile', id: 'PROFILE' }],
+      providesTags: ['UserProfile'],
     }),
 
     changePassword: builder.mutation({

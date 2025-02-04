@@ -5,6 +5,8 @@ import {
   saveAccessToken,
 } from '../../utils/sharedFunctions';
 
+import { logout } from '../slices/authSlice';
+
 import { baseQueryWithReauth } from './apiSlice';
 import { userProfileApi } from './userProfileApi';
 
@@ -22,11 +24,7 @@ export const authApi = createApi({
         try {
           const { data } = await queryFulfilled;
           saveAccessToken(data.accessToken);
-          dispatch(
-            userProfileApi.util.invalidateTags([
-              { type: 'UserProfile', id: 'PROFILE' },
-            ])
-          );
+          dispatch(userProfileApi.util.invalidateTags(['UserProfile']));
         } catch (error) {
           console.warn('Registration failed:', error);
         }
@@ -43,11 +41,7 @@ export const authApi = createApi({
         try {
           const { data } = await queryFulfilled;
           saveAccessToken(data.accessToken);
-          dispatch(
-            userProfileApi.util.invalidateTags([
-              { type: 'UserProfile', id: 'PROFILE' },
-            ])
-          );
+          dispatch(userProfileApi.util.invalidateTags(['UserProfile']));
         } catch (error) {
           console.warn('Login failed:', error);
         }
@@ -65,6 +59,7 @@ export const authApi = createApi({
           removeAccessToken();
           dispatch(userProfileApi.util.resetApiState());
           dispatch(authApi.util.resetApiState());
+          dispatch(logout());
         } catch (error) {
           console.warn('Logout failed:', error);
         }

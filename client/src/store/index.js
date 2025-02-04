@@ -19,8 +19,11 @@ import {
   usersApi,
 } from './services';
 
+import authReducer from './slices/authSlice';
+
 const store = configureStore({
   reducer: {
+    auth: authReducer,
     [authApi.reducerPath]: authApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [currenciesApi.reducerPath]: currenciesApi.reducer,
@@ -54,8 +57,8 @@ const store = configureStore({
       rolesApi.middleware,
       statisticsApi.middleware,
       userProfileApi.middleware,
-      usersApi.middleware
-      // logger
+      usersApi.middleware,
+      logger
     ),
 });
 
