@@ -82,36 +82,6 @@ const parseDateString = (value, originalValue) => {
   return originalValue;
 };
 
-const setErrorListState = (state, { payload }) => {
-  state.isLoadingList = false;
-  state.listLoadingError = payload;
-};
-
-const setLoadingListState = (state) => {
-  state.isLoadingList = true;
-  state.listLoadingError = null;
-};
-
-const setLoadingActionState = (state) => {
-  state.isProcessingAction = true;
-  state.actionError = null;
-};
-
-const setErrorActionState = (state, { payload }) => {
-  state.isProcessingAction = false;
-  state.actionError = payload;
-};
-
-const setErrorState = (state, { payload }) => {
-  state.isLoading = false;
-  state.error = payload;
-};
-
-const setLoadingState = (state) => {
-  state.isLoading = true;
-  state.error = null;
-};
-
 export {
   formatItems,
   getAccessToken,
@@ -119,12 +89,6 @@ export {
   parseDateString,
   removeAccessToken,
   saveAccessToken,
-  setErrorActionState,
-  setErrorListState,
-  setErrorState,
-  setLoadingActionState,
-  setLoadingListState,
-  setLoadingState,
   stringAvatar,
   uuidPattern,
 };

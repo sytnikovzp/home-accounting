@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -9,6 +9,7 @@ import {
   Toolbar,
 } from '@mui/material';
 
+import { getAccessToken } from '../../utils/sharedFunctions';
 import {
   useFetchUserProfileQuery,
   useLogoutMutation,
@@ -24,15 +25,33 @@ import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 function Header() {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const navigate = useNavigate();
 
-  const { data: currentUser, isSuccess: isAuthenticated } =
-    useFetchUserProfileQuery();
+  const accessToken = getAccessToken();
+
+  const { data, isSuccess } = useFetchUserProfileQuery(null, {
+    skip: !accessToken,
+  });
+
+  // console.log('isAuthenticated', isAuthenticated);
+  // console.log('currentUser', currentUser);
+
   const [logoutMutation] = useLogoutMutation();
 
-  console.log('isAuthenticated', isAuthenticated);
-  console.log('currentUser', currentUser);
+  useEffect(() => {
+    console.log('Triggered useEffect', { isSuccess, data });
+
+    if (isSuccess && data) {
+      setIsAuthenticated(true);
+      setCurrentUser(data);
+    } else {
+      setIsAuthenticated(false);
+      setCurrentUser(null);
+    }
+  }, [isSuccess, data]);
 
   const navigateTo = useCallback((path) => navigate(path), [navigate]);
 
@@ -53,10 +72,10 @@ function Header() {
   }, [navigate]);
 
   const handleLogout = useCallback(async () => {
-    const result = await logoutMutation();
-    if (result?.data) {
-      navigate('/');
-    }
+    await logoutMutation();
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+    navigate('/');
   }, [logoutMutation, navigate]);
 
   return (

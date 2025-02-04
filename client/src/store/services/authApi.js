@@ -64,6 +64,7 @@ export const authApi = createApi({
           await queryFulfilled;
           removeAccessToken();
           dispatch(userProfileApi.util.resetApiState());
+          dispatch(authApi.util.resetApiState());
         } catch (error) {
           console.warn('Logout failed:', error);
         }
