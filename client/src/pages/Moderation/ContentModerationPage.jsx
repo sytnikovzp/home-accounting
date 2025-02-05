@@ -114,7 +114,7 @@ function ContentModerationPage({ handleModalClose }) {
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
   const logoPath = useMemo(() => {
-    const baseUrl = BASE_URL.replace('/api/', '');
+    const baseUrl = BASE_URL.replace('/api', '');
     return logo
       ? `${baseUrl}/images/establishments/${logo}`
       : `${baseUrl}/images/noLogo.png`;

@@ -12,7 +12,7 @@ function UserChangePasswordPage({ handleModalClose }) {
   const [changeUserPassword, { isLoading: isSubmitting, error: submitError }] =
     useChangeUserPasswordMutation();
 
-  const handleSubmitUser = useCallback(
+  const handleSubmitPassword = useCallback(
     async (values) => {
       const result = await changeUserPassword({ userUuid: uuid, ...values });
       if (result?.data) {
@@ -26,10 +26,10 @@ function UserChangePasswordPage({ handleModalClose }) {
     () => (
       <ChangePasswordForm
         isSubmitting={isSubmitting}
-        onSubmit={handleSubmitUser}
+        onSubmit={handleSubmitPassword}
       />
     ),
-    [handleSubmitUser, isSubmitting]
+    [handleSubmitPassword, isSubmitting]
   );
 
   return (

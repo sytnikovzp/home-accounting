@@ -23,7 +23,7 @@ import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
 const { USERS_TITLES } = pageTitles;
 const USERS_PAGES = [
-  { path: 'password/:uuid', Component: UserChangePasswordPage }, // !!!!!
+  { path: 'password/:uuid', Component: UserChangePasswordPage },
   { path: 'edit/:uuid', Component: UserEditPage },
   { path: 'remove/:uuid', Component: UserRemovePage },
   { path: ':uuid', Component: UserViewPage },

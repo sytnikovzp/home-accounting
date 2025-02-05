@@ -65,6 +65,10 @@ const PRODUCTS_TITLES = {
   default: 'Товари та послуги | Моя бухгалтерія',
 };
 
+const RESET_PASSWORD_TITLES = {
+  default: 'Скидання паролю | Моя бухгалтерія',
+};
+
 const ROLES_TITLES = {
   view: 'Деталі ролі | Моя бухгалтерія',
   add: 'Додавання ролі | Моя бухгалтерія',
@@ -92,6 +96,7 @@ export {
   MODERATIONS_TITLES,
   NOTIFICATION_PAGE_TITLES,
   PRODUCTS_TITLES,
+  RESET_PASSWORD_TITLES,
   ROLES_TITLES,
   USERS_TITLES,
 };

@@ -69,7 +69,7 @@ function AuthenticatedMenu({
             {...stringAvatar(authenticatedUser.fullName)}
             src={
               authenticatedUser.photo
-                ? `${BASE_URL.replace('/api/', '')}/images/users/${authenticatedUser.photo}`
+                ? `${BASE_URL.replace('/api', '')}/images/users/${authenticatedUser.photo}`
                 : null
             }
           />

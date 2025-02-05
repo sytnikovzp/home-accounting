@@ -23,12 +23,12 @@ const { BASE_URL } = configs;
 function FileUpload({ entity, file, isChanging, label, onReset, onUpload }) {
   const avatarPath = useMemo(() => {
     if (file) {
-      return `${BASE_URL.replace('/api/', '')}/images/${entity}/${file}`;
+      return `${BASE_URL.replace('/api', '')}/images/${entity}/${file}`;
     }
     if (entity === 'users') {
       return null;
     }
-    return `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
+    return `${BASE_URL.replace('/api', '')}/images/noLogo.png`;
   }, [file, entity]);
 
   const handleFileChange = useCallback(

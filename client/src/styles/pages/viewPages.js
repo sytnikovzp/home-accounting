@@ -6,20 +6,9 @@ export const stylesViewPageBox = {
   mt: 1,
 };
 
-export const stylesViewPageBoxWithAvatar = {
-  display: 'flex',
-  justifyContent: 'space-between',
-};
-
 export const stylesViewPageAvatarSize = {
   height: 50,
   width: 50,
-};
-
-export const stylesUserViewPageEmailBox = {
-  alignItems: 'center',
-  display: 'flex',
-  justifyContent: 'space-between',
 };
 
 export const stylesUserViewPageEmailButton = {

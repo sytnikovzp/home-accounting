@@ -99,12 +99,12 @@ function ListTable({
                 }
                 src={(() => {
                   if (row[col.field]) {
-                    return `${BASE_URL.replace('/api/', '')}/images/${
+                    return `${BASE_URL.replace('/api', '')}/images/${
                       col.field === 'logo' ? 'establishments' : 'users'
                     }/${row[col.field]}`;
                   }
                   if (col.field === 'logo') {
-                    return `${BASE_URL.replace('/api/', '')}/images/noLogo.png`;
+                    return `${BASE_URL.replace('/api', '')}/images/noLogo.png`;
                   }
                   return null;
                 })()}

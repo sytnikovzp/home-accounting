@@ -45,7 +45,7 @@ function UserViewPage({ handleModalClose }) {
   const { createdAt, updatedAt } = creation ?? {};
 
   const photoPath = useMemo(() => {
-    const baseUrl = BASE_URL.replace('/api/', '');
+    const baseUrl = BASE_URL.replace('/api', '');
     return photo ? `${baseUrl}/images/users/${photo}` : null;
   }, [photo]);
 

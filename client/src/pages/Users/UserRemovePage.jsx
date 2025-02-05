@@ -1,9 +1,11 @@
 import { useCallback, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 
+import useAuthUser from '../../hooks/useAuthUser';
 import {
   useFetchUserByUuidQuery,
+  useLogoutMutation,
   useRemoveUserMutation,
 } from '../../store/services';
 
@@ -12,11 +14,11 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function UserRemovePage({
-  handleModalClose,
-  // currentUser
-}) {
+function UserRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
+  const navigate = useNavigate();
+
+  const { authenticatedUser } = useAuthUser();
 
   const { data: user, isLoading: isFetching } = useFetchUserByUuidQuery(uuid, {
     skip: !uuid,
@@ -25,26 +27,29 @@ function UserRemovePage({
   const [removeUser, { isLoading: isRemoving, error: removeError }] =
     useRemoveUserMutation();
 
-  // const handleLogout = async () => {
-  //   await restController.logout();
-  //   navigate('/');
-  // };
+  const [logoutMutation] = useLogoutMutation();
 
   const handleRemoveUser = useCallback(async () => {
     if (!user?.uuid) {
       return;
     }
-
-    // if (user.uuid === currentUser.uuid) {
-    //   await handleLogout();
-    // } else {
-    //   handleModalClose();
-
     const result = await removeUser(user.uuid);
+    if (user.uuid === authenticatedUser?.uuid) {
+      await logoutMutation();
+      navigate('/');
+      return;
+    }
     if (result?.data) {
       handleModalClose();
     }
-  }, [user?.uuid, handleModalClose, removeUser]);
+  }, [
+    user,
+    removeUser,
+    authenticatedUser?.uuid,
+    logoutMutation,
+    navigate,
+    handleModalClose,
+  ]);
 
   const actions = useMemo(
     () => [
@@ -67,14 +72,15 @@ function UserRemovePage({
     if (isFetching) {
       return <Preloader />;
     }
+
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        {/* {user?.uuid === currentUser.uuid */}
-        {/* ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?' */}
-        Ви впевнені, що хочете видалити користувача «{user?.fullName}»?
+        {user?.uuid === authenticatedUser?.uuid
+          ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
+          : `Ви впевнені, що хочете видалити користувача «${user?.fullName}»?`}
       </Typography>
     );
-  }, [isFetching, user?.fullName]);
+  }, [authenticatedUser?.uuid, isFetching, user?.fullName, user?.uuid]);
 
   return (
     <ModalWindow

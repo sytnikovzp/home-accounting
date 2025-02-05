@@ -6,6 +6,8 @@ import {
   Routes,
 } from 'react-router-dom';
 
+import useAuthUser from './hooks/useAuthUser';
+
 import Layout from './components/Layout/Layout';
 import ModalWindow from './components/ModalWindow/ModalWindow';
 import Preloader from './components/Preloader/Preloader';
@@ -26,16 +28,18 @@ import RolesPage from './pages/Roles/RolesPage';
 import UsersPage from './pages/Users/UsersPage';
 
 function App() {
-  // if (isLoading) {
-  //   return (
-  //     <ModalWindow
-  //       disableBackdropClick
-  //       disableCloseButton
-  //       isOpen
-  //       content={<Preloader message='Welcome to Home Accounting...' />}
-  //     />
-  //   );
-  // }
+  const { isAuthenticated, isFetchingUser } = useAuthUser();
+
+  if (isFetchingUser) {
+    return (
+      <ModalWindow
+        disableBackdropClick
+        disableCloseButton
+        isOpen
+        content={<Preloader message='Welcome to Home Accounting...' />}
+      />
+    );
+  }
 
   const renderPrivateRoute = (Component) => (
     <PrivateRoute>{Component}</PrivateRoute>
@@ -81,8 +85,7 @@ function App() {
             <Route element={<ResetPasswordPage />} path='reset-password' />
             <Route
               element={
-                // isAuthenticated ? <Navigate replace to='/' /> :
-                <AuthPage />
+                isAuthenticated ? <Navigate replace to='/' /> : <AuthPage />
               }
               path='auth/*'
             />
