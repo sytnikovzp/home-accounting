@@ -7,7 +7,7 @@ const SERVER = {
   PORT: parseInt(import.meta.env.ACCOUNTING_SERVER_PORT),
 };
 
-const BASE_URL = `http://${SERVER.HOST}:${SERVER.PORT}/api/`;
+const BASE_URL = `http://${SERVER.HOST}:${SERVER.PORT}/api`;
 
 const NBU_STAT_URL = 'https://bank.gov.ua/NBUStatService/v1';
 

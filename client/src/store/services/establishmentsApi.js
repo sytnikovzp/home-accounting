@@ -15,7 +15,7 @@ export const establishmentsApi = createApi({
         sort = 'uuid',
         order = 'asc',
       }) => ({
-        url: 'establishments',
+        url: '/establishments',
         method: 'GET',
         params: { status, page, limit, sort, order },
       }),
@@ -39,7 +39,7 @@ export const establishmentsApi = createApi({
 
     fetchEstablishmentByUuid: builder.query({
       query: (establishmentUuid) => ({
-        url: `establishments/${establishmentUuid}`,
+        url: `/establishments/${establishmentUuid}`,
         method: 'GET',
       }),
       providesTags: (result, error, establishmentUuid) => [
@@ -49,7 +49,7 @@ export const establishmentsApi = createApi({
 
     addEstablishment: builder.mutation({
       query: ({ title, description = '', url = '' }) => ({
-        url: 'establishments',
+        url: '/establishments',
         method: 'POST',
         body: { title, description, url },
       }),
@@ -58,7 +58,7 @@ export const establishmentsApi = createApi({
 
     editEstablishment: builder.mutation({
       query: ({ establishmentUuid, title, description, url }) => ({
-        url: `establishments/${establishmentUuid}`,
+        url: `/establishments/${establishmentUuid}`,
         method: 'PATCH',
         body: { title, description, url },
       }),
@@ -72,7 +72,7 @@ export const establishmentsApi = createApi({
         const formData = new FormData();
         formData.append('establishmentLogo', establishmentLogo);
         return {
-          url: `establishments/${establishmentUuid}/logo`,
+          url: `/establishments/${establishmentUuid}/logo`,
           method: 'PATCH',
           body: formData,
         };
@@ -84,7 +84,7 @@ export const establishmentsApi = createApi({
 
     resetEstablishmentLogo: builder.mutation({
       query: (establishmentUuid) => ({
-        url: `establishments/${establishmentUuid}/logo`,
+        url: `/establishments/${establishmentUuid}/logo`,
         method: 'DELETE',
       }),
       invalidatesTags: (result, error, { establishmentUuid }) => [
@@ -94,7 +94,7 @@ export const establishmentsApi = createApi({
 
     removeEstablishment: builder.mutation({
       query: (establishmentUuid) => ({
-        url: `establishments/${establishmentUuid}`,
+        url: `/establishments/${establishmentUuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Establishment', id: 'LIST' }],

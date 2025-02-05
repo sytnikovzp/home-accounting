@@ -9,7 +9,7 @@ export const rolesApi = createApi({
   endpoints: (builder) => ({
     fetchAllRoles: builder.query({
       query: ({ page = 1, limit = 6, sort = 'uuid', order = 'asc' }) => ({
-        url: 'roles',
+        url: '/roles',
         method: 'GET',
         params: { page, limit, sort, order },
       }),
@@ -33,7 +33,7 @@ export const rolesApi = createApi({
 
     fetchRoleByUuid: builder.query({
       query: (roleUuid) => ({
-        url: `roles/${roleUuid}`,
+        url: `/roles/${roleUuid}`,
         method: 'GET',
       }),
       providesTags: (result, error, roleUuid) => [
@@ -43,7 +43,7 @@ export const rolesApi = createApi({
 
     addRole: builder.mutation({
       query: ({ title, description = '', permissions = [] }) => ({
-        url: 'roles',
+        url: '/roles',
         method: 'POST',
         body: { title, description, permissions },
       }),
@@ -52,7 +52,7 @@ export const rolesApi = createApi({
 
     editRole: builder.mutation({
       query: ({ roleUuid, title, description, permissions }) => ({
-        url: `roles/${roleUuid}`,
+        url: `/roles/${roleUuid}`,
         method: 'PATCH',
         body: { title, description, permissions },
       }),
@@ -63,7 +63,7 @@ export const rolesApi = createApi({
 
     removeRole: builder.mutation({
       query: (roleUuid) => ({
-        url: `roles/${roleUuid}`,
+        url: `/roles/${roleUuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Role', id: 'LIST' }],

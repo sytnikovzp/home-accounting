@@ -9,7 +9,7 @@ export const userProfileApi = createApi({
   endpoints: (builder) => ({
     fetchUserProfile: builder.query({
       query: () => ({
-        url: 'profile',
+        url: '/profile',
         method: 'GET',
       }),
       providesTags: ['UserProfile'],
@@ -17,7 +17,7 @@ export const userProfileApi = createApi({
 
     changePassword: builder.mutation({
       query: ({ newPassword, confirmNewPassword }) => ({
-        url: 'profile/password',
+        url: '/profile/password',
         method: 'PATCH',
         body: { newPassword, confirmNewPassword },
       }),
@@ -25,7 +25,7 @@ export const userProfileApi = createApi({
 
     editUserProfile: builder.mutation({
       query: ({ fullName, email, role }) => ({
-        url: 'profile',
+        url: '/profile',
         method: 'PATCH',
         body: { fullName, email, role },
       }),
@@ -37,7 +37,7 @@ export const userProfileApi = createApi({
         const formData = new FormData();
         formData.append('userPhoto', userPhoto);
         return {
-          url: 'profile/photo',
+          url: '/profile/photo',
           method: 'PATCH',
           body: formData,
         };
@@ -47,7 +47,7 @@ export const userProfileApi = createApi({
 
     resetUserProfilePhoto: builder.mutation({
       query: () => ({
-        url: 'profile/photo',
+        url: '/profile/photo',
         method: 'DELETE',
       }),
       providesTags: ['UserProfile'],
@@ -55,7 +55,7 @@ export const userProfileApi = createApi({
 
     removeUserProfile: builder.mutation({
       query: () => ({
-        url: 'profile',
+        url: '/profile',
         method: 'DELETE',
       }),
       providesTags: ['UserProfile'],

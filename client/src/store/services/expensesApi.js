@@ -15,7 +15,7 @@ export const expensesApi = createApi({
         sort = 'uuid',
         order = 'asc',
       }) => ({
-        url: 'expenses',
+        url: '/expenses',
         method: 'GET',
         params: { ago, page, limit, sort, order },
       }),
@@ -39,7 +39,7 @@ export const expensesApi = createApi({
 
     fetchExpenseByUuid: builder.query({
       query: (expenseUuid) => ({
-        url: `expenses/${expenseUuid}`,
+        url: `/expenses/${expenseUuid}`,
         method: 'GET',
       }),
       providesTags: (result, error, expenseUuid) => [
@@ -57,7 +57,7 @@ export const expensesApi = createApi({
         currency,
         date,
       }) => ({
-        url: 'expenses',
+        url: '/expenses',
         method: 'POST',
         body: {
           product,
@@ -83,7 +83,7 @@ export const expensesApi = createApi({
         currency,
         date,
       }) => ({
-        url: `expenses/${expenseUuid}`,
+        url: `/expenses/${expenseUuid}`,
         method: 'PATCH',
         body: {
           product,
@@ -102,7 +102,7 @@ export const expensesApi = createApi({
 
     removeExpense: builder.mutation({
       query: (expenseUuid) => ({
-        url: `expenses/${expenseUuid}`,
+        url: `/expenses/${expenseUuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Expense', id: 'LIST' }],

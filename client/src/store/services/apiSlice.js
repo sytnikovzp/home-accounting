@@ -37,7 +37,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
     try {
       const response = await baseQuery(
-        { url: 'auth/refresh', method: 'GET' },
+        { url: '/auth/refresh', method: 'GET' },
         api,
         extraOptions
       );

@@ -9,7 +9,7 @@ export const measuresApi = createApi({
   endpoints: (builder) => ({
     fetchAllMeasures: builder.query({
       query: ({ page = 1, limit = 6, sort = 'uuid', order = 'asc' }) => ({
-        url: 'measures',
+        url: '/measures',
         method: 'GET',
         params: { page, limit, sort, order },
       }),
@@ -33,7 +33,7 @@ export const measuresApi = createApi({
 
     fetchMeasureByUuid: builder.query({
       query: (measureUuid) => ({
-        url: `measures/${measureUuid}`,
+        url: `/measures/${measureUuid}`,
         method: 'GET',
       }),
       providesTags: (result, error, measureUuid) => [
@@ -43,7 +43,7 @@ export const measuresApi = createApi({
 
     addMeasure: builder.mutation({
       query: ({ title, description }) => ({
-        url: 'measures',
+        url: '/measures',
         method: 'POST',
         body: { title, description },
       }),
@@ -52,7 +52,7 @@ export const measuresApi = createApi({
 
     editMeasure: builder.mutation({
       query: ({ measureUuid, title, description }) => ({
-        url: `measures/${measureUuid}`,
+        url: `/measures/${measureUuid}`,
         method: 'PATCH',
         body: { title, description },
       }),
@@ -63,7 +63,7 @@ export const measuresApi = createApi({
 
     removeMeasure: builder.mutation({
       query: (measureUuid) => ({
-        url: `measures/${measureUuid}`,
+        url: `/measures/${measureUuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Measure', id: 'LIST' }],

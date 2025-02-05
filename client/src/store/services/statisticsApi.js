@@ -8,7 +8,7 @@ export const statisticsApi = createApi({
   endpoints: (builder) => ({
     fetchCostByCategories: builder.query({
       query: ({ ago = 'allTime', creatorUuid }) => ({
-        url: 'statistics/categories',
+        url: '/statistics/categories',
         method: 'GET',
         params: creatorUuid ? { ago, creatorUuid } : { ago },
       }),
@@ -16,7 +16,7 @@ export const statisticsApi = createApi({
 
     fetchCostByEstablishments: builder.query({
       query: ({ ago = 'allTime', creatorUuid }) => ({
-        url: 'statistics/establishments',
+        url: '/statistics/establishments',
         method: 'GET',
         params: creatorUuid ? { ago, creatorUuid } : { ago },
       }),
@@ -24,7 +24,7 @@ export const statisticsApi = createApi({
 
     fetchCostByProducts: builder.query({
       query: ({ ago = 'allTime', creatorUuid }) => ({
-        url: 'statistics/products',
+        url: '/statistics/products',
         method: 'GET',
         params: creatorUuid ? { ago, creatorUuid } : { ago },
       }),

@@ -16,7 +16,7 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     registration: builder.mutation({
       query: ({ fullName, email, password }) => ({
-        url: 'auth/registration',
+        url: '/auth/registration',
         method: 'POST',
         body: { fullName, email, password },
       }),
@@ -33,7 +33,7 @@ export const authApi = createApi({
 
     login: builder.mutation({
       query: ({ email, password }) => ({
-        url: 'auth/login',
+        url: '/auth/login',
         method: 'POST',
         body: { email, password },
       }),
@@ -50,7 +50,7 @@ export const authApi = createApi({
 
     logout: builder.mutation({
       query: () => ({
-        url: 'auth/logout',
+        url: '/auth/logout',
         method: 'GET',
       }),
       onQueryStarted: async (_args, { dispatch, queryFulfilled }) => {
@@ -68,7 +68,7 @@ export const authApi = createApi({
 
     refreshAccessToken: builder.mutation({
       query: () => ({
-        url: 'auth/refresh',
+        url: '/auth/refresh',
         method: 'GET',
       }),
       onQueryStarted: async (_args, { queryFulfilled }) => {
@@ -83,7 +83,7 @@ export const authApi = createApi({
 
     forgotPassword: builder.mutation({
       query: ({ email }) => ({
-        url: 'auth/forgot',
+        url: '/auth/forgot',
         method: 'POST',
         body: { email },
       }),
@@ -91,7 +91,7 @@ export const authApi = createApi({
 
     resetPassword: builder.mutation({
       query: ({ token, newPassword, confirmNewPassword }) => ({
-        url: `auth/reset?token=${token}`,
+        url: `/auth/reset?token=${token}`,
         method: 'POST',
         body: { newPassword, confirmNewPassword },
       }),

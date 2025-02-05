@@ -8,7 +8,7 @@ export const emailApi = createApi({
   endpoints: (builder) => ({
     resendVerifyEmail: builder.mutation({
       query: (email) => ({
-        url: 'email/resend-verify',
+        url: '/email/resend-verify',
         method: 'POST',
         body: { email },
       }),

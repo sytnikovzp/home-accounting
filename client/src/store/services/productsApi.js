@@ -15,7 +15,7 @@ export const productsApi = createApi({
         sort = 'uuid',
         order = 'asc',
       }) => ({
-        url: 'products',
+        url: '/products',
         method: 'GET',
         params: { status, page, limit, sort, order },
       }),
@@ -39,7 +39,7 @@ export const productsApi = createApi({
 
     fetchProductByUuid: builder.query({
       query: (productUuid) => ({
-        url: `products/${productUuid}`,
+        url: `/products/${productUuid}`,
         method: 'GET',
       }),
       providesTags: (result, error, productUuid) => [
@@ -49,7 +49,7 @@ export const productsApi = createApi({
 
     addProduct: builder.mutation({
       query: ({ title, category = '' }) => ({
-        url: 'products',
+        url: '/products',
         method: 'POST',
         body: { title, category },
       }),
@@ -58,7 +58,7 @@ export const productsApi = createApi({
 
     editProduct: builder.mutation({
       query: ({ productUuid, title, category }) => ({
-        url: `products/${productUuid}`,
+        url: `/products/${productUuid}`,
         method: 'PATCH',
         body: { title, category },
       }),
@@ -69,7 +69,7 @@ export const productsApi = createApi({
 
     removeProduct: builder.mutation({
       query: (productUuid) => ({
-        url: `products/${productUuid}`,
+        url: `/products/${productUuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Product', id: 'LIST' }],

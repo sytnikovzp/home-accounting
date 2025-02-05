@@ -9,7 +9,7 @@ export const moderationApi = createApi({
   endpoints: (builder) => ({
     fetchAllPendingItems: builder.query({
       query: ({ page = 1, limit = 6, sort = 'uuid', order = 'asc' }) => ({
-        url: 'moderation',
+        url: '/moderation',
         method: 'GET',
         params: { page, limit, sort, order },
       }),
@@ -33,7 +33,7 @@ export const moderationApi = createApi({
 
     moderationCategory: builder.mutation({
       query: ({ categoryUuid, status }) => ({
-        url: `moderation/categories/${categoryUuid}`,
+        url: `/moderation/categories/${categoryUuid}`,
         method: 'PATCH',
         body: { status },
       }),
@@ -44,7 +44,7 @@ export const moderationApi = createApi({
 
     moderationProduct: builder.mutation({
       query: ({ productUuid, status }) => ({
-        url: `moderation/products/${productUuid}`,
+        url: `/moderation/products/${productUuid}`,
         method: 'PATCH',
         body: { status },
       }),
@@ -55,7 +55,7 @@ export const moderationApi = createApi({
 
     moderationEstablishment: builder.mutation({
       query: ({ establishmentUuid, status }) => ({
-        url: `moderation/establishments/${establishmentUuid}`,
+        url: `/moderation/establishments/${establishmentUuid}`,
         method: 'PATCH',
         body: { status },
       }),

@@ -15,7 +15,7 @@ export const usersApi = createApi({
         sort = 'uuid',
         order = 'asc',
       }) => ({
-        url: 'users',
+        url: '/users',
         method: 'GET',
         params: { emailVerificationStatus, page, limit, sort, order },
       }),
@@ -39,7 +39,7 @@ export const usersApi = createApi({
 
     fetchUserByUuid: builder.query({
       query: (userUuid) => ({
-        url: `users/${userUuid}`,
+        url: `/users/${userUuid}`,
         method: 'GET',
       }),
       providesTags: (result, error, userUuid) => [
@@ -49,7 +49,7 @@ export const usersApi = createApi({
 
     changeUserPassword: builder.mutation({
       query: ({ userUuid, newPassword, confirmNewPassword }) => ({
-        url: `users/${userUuid}/password`,
+        url: `/users/${userUuid}/password`,
         method: 'PATCH',
         body: { newPassword, confirmNewPassword },
       }),
@@ -57,7 +57,7 @@ export const usersApi = createApi({
 
     editUser: builder.mutation({
       query: ({ userUuid, fullName, email, role }) => ({
-        url: `users/${userUuid}`,
+        url: `/users/${userUuid}`,
         method: 'PATCH',
         body: { fullName, email, role },
       }),
@@ -71,7 +71,7 @@ export const usersApi = createApi({
         const formData = new FormData();
         formData.append('userPhoto', userPhoto);
         return {
-          url: `users/${userUuid}/photo`,
+          url: `/users/${userUuid}/photo`,
           method: 'PATCH',
           body: formData,
         };
@@ -83,7 +83,7 @@ export const usersApi = createApi({
 
     resetUserPhoto: builder.mutation({
       query: (userUuid) => ({
-        url: `users/${userUuid}/photo`,
+        url: `/users/${userUuid}/photo`,
         method: 'DELETE',
       }),
       invalidatesTags: (result, error, { userUuid }) => [
@@ -93,7 +93,7 @@ export const usersApi = createApi({
 
     removeUser: builder.mutation({
       query: (userUuid) => ({
-        url: `users/${userUuid}`,
+        url: `/users/${userUuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'User', id: 'LIST' }],

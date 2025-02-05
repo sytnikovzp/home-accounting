@@ -15,7 +15,7 @@ export const categoriesApi = createApi({
         sort = 'uuid',
         order = 'asc',
       }) => ({
-        url: 'categories',
+        url: '/categories',
         method: 'GET',
         params: { status, page, limit, sort, order },
       }),
@@ -39,7 +39,7 @@ export const categoriesApi = createApi({
 
     fetchCategoryByUuid: builder.query({
       query: (categoryUuid) => ({
-        url: `categories/${categoryUuid}`,
+        url: `/categories/${categoryUuid}`,
         method: 'GET',
       }),
       providesTags: (result, error, categoryUuid) => [
@@ -49,7 +49,7 @@ export const categoriesApi = createApi({
 
     addCategory: builder.mutation({
       query: ({ title }) => ({
-        url: 'categories',
+        url: '/categories',
         method: 'POST',
         body: { title },
       }),
@@ -58,7 +58,7 @@ export const categoriesApi = createApi({
 
     editCategory: builder.mutation({
       query: ({ categoryUuid, title }) => ({
-        url: `categories/${categoryUuid}`,
+        url: `/categories/${categoryUuid}`,
         method: 'PATCH',
         body: { title },
       }),
@@ -69,7 +69,7 @@ export const categoriesApi = createApi({
 
     removeCategory: builder.mutation({
       query: (categoryUuid) => ({
-        url: `categories/${categoryUuid}`,
+        url: `/categories/${categoryUuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Category', id: 'LIST' }],

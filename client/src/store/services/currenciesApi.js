@@ -9,7 +9,7 @@ export const currenciesApi = createApi({
   endpoints: (builder) => ({
     fetchAllCurrencies: builder.query({
       query: ({ page = 1, limit = 6, sort = 'uuid', order = 'asc' }) => ({
-        url: 'currencies',
+        url: '/currencies',
         method: 'GET',
         params: { page, limit, sort, order },
       }),
@@ -33,7 +33,7 @@ export const currenciesApi = createApi({
 
     fetchCurrencyByUuid: builder.query({
       query: (currencyUuid) => ({
-        url: `currencies/${currencyUuid}`,
+        url: `/currencies/${currencyUuid}`,
         method: 'GET',
       }),
       providesTags: (result, error, currencyUuid) => [
@@ -43,7 +43,7 @@ export const currenciesApi = createApi({
 
     addCurrency: builder.mutation({
       query: ({ title, code }) => ({
-        url: 'currencies',
+        url: '/currencies',
         method: 'POST',
         body: { title, code },
       }),
@@ -52,7 +52,7 @@ export const currenciesApi = createApi({
 
     editCurrency: builder.mutation({
       query: ({ currencyUuid, title, code }) => ({
-        url: `currencies/${currencyUuid}`,
+        url: `/currencies/${currencyUuid}`,
         method: 'PATCH',
         body: { title, code },
       }),
@@ -63,7 +63,7 @@ export const currenciesApi = createApi({
 
     removeCurrency: builder.mutation({
       query: (currencyUuid) => ({
-        url: `currencies/${currencyUuid}`,
+        url: `/currencies/${currencyUuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Currency', id: 'LIST' }],
