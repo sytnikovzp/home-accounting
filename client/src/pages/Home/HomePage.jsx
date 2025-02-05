@@ -10,13 +10,13 @@ import {
 } from '@mui/material';
 
 import { pageTitles } from '../../constants';
+import useAuthUser from '../../hooks/useAuthUser';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import usePageTitle from '../../hooks/usePageTitle';
 import {
   useFetchCostByCategoriesQuery,
   useFetchCostByEstablishmentsQuery,
   useFetchCostByProductsQuery,
-  useFetchUserProfileQuery,
 } from '../../store/services';
 
 import Error from '../../components/Error/Error';
@@ -38,13 +38,9 @@ function HomePage() {
 
   const location = useLocation();
 
-  // const {
-  //   data: currentUser,
-  //   isLoading: isFetchingUser,
-  //   error: fetchUserError,
-  // } = useFetchUserProfileQuery();
+  const { isFetchingUser, authenticatedUser, isAuthenticated } = useAuthUser();
 
-  // const creatorUuid = currentUser?.uuid;
+  const creatorUuid = authenticatedUser?.uuid;
 
   const queriesMap = {
     byCategories: useFetchCostByCategoriesQuery,
@@ -57,14 +53,12 @@ function HomePage() {
     isLoading: isFetchingStatistics,
     error: fetchStatisticsError,
   } = queriesMap[criteria](
-    // { ago, ...(creatorUuid && { creatorUuid }) },
-    { ago },
+    { ago, ...(isAuthenticated && { creatorUuid }) },
     { skip: !ago }
   );
 
   const showPreloader = useDelayedPreloader(
-    isFetchingStatistics
-    // || isFetchingUser
+    isFetchingStatistics || isFetchingUser
   );
 
   usePageTitle(location, HOME_PAGE_TITLES);
@@ -80,10 +74,6 @@ function HomePage() {
   if (showPreloader) {
     return <Preloader message='Завантаження даних статистики...' />;
   }
-
-  // if (fetchUserError) {
-  //   return <Error error={fetchUserError?.data?.message} />;
-  // }
 
   if (fetchStatisticsError) {
     return <Error error={fetchStatisticsError?.data?.message} />;

@@ -5,7 +5,7 @@ import {
   saveAccessToken,
 } from '../../utils/sharedFunctions';
 
-import { logout } from '../slices/authSlice';
+import { logout } from '../slices/authUserSlice';
 
 import { baseQueryWithReauth } from './apiSlice';
 import { userProfileApi } from './userProfileApi';

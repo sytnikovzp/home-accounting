@@ -48,15 +48,13 @@ const { BASE_URL } = configs;
 
 function AuthenticatedMenu({
   closeUserMenu,
-  currentUser,
-  handleLogout,
-  navigateTo,
+  authenticatedUser,
   openUserMenu,
   toggleUserMenu,
 }) {
   return (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>
-      <WelcomeBlock currentUser={currentUser} />
+      <WelcomeBlock authenticatedUser={authenticatedUser} />
       <Tooltip title='Обліковий запис'>
         <IconButton
           aria-controls={openUserMenu ? 'account-menu' : null}
@@ -67,11 +65,11 @@ function AuthenticatedMenu({
           onClick={toggleUserMenu}
         >
           <Avatar
-            alt={currentUser.fullName}
-            {...stringAvatar(currentUser.fullName)}
+            alt={authenticatedUser.fullName}
+            {...stringAvatar(authenticatedUser.fullName)}
             src={
-              currentUser.photo
-                ? `${BASE_URL.replace('/api/', '')}/images/users/${currentUser.photo}`
+              authenticatedUser.photo
+                ? `${BASE_URL.replace('/api/', '')}/images/users/${authenticatedUser.photo}`
                 : null
             }
           />
@@ -87,11 +85,9 @@ function AuthenticatedMenu({
         onClose={closeUserMenu}
       >
         <UserMenu
+          authenticatedUser={authenticatedUser}
           closeUserMenu={closeUserMenu}
-          currentUser={currentUser}
-          handleLogout={handleLogout}
           menuItems={menuItemsData}
-          navigateTo={navigateTo}
         />
       </Menu>
     </Box>

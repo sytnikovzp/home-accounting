@@ -29,7 +29,7 @@ export const userProfileApi = createApi({
         method: 'PATCH',
         body: { fullName, email, role },
       }),
-      invalidatesTags: [{ type: 'UserProfile', id: 'PROFILE' }],
+      providesTags: ['UserProfile'],
     }),
 
     changeUserProfilePhoto: builder.mutation({
@@ -42,7 +42,7 @@ export const userProfileApi = createApi({
           body: formData,
         };
       },
-      invalidatesTags: [{ type: 'UserProfile', id: 'PROFILE' }],
+      providesTags: ['UserProfile'],
     }),
 
     resetUserProfilePhoto: builder.mutation({
@@ -50,7 +50,7 @@ export const userProfileApi = createApi({
         url: 'profile/photo',
         method: 'DELETE',
       }),
-      invalidatesTags: [{ type: 'UserProfile', id: 'PROFILE' }],
+      providesTags: ['UserProfile'],
     }),
 
     removeUserProfile: builder.mutation({
@@ -58,7 +58,7 @@ export const userProfileApi = createApi({
         url: 'profile',
         method: 'DELETE',
       }),
-      invalidatesTags: [{ type: 'UserProfile', id: 'PROFILE' }],
+      providesTags: ['UserProfile'],
     }),
   }),
 });

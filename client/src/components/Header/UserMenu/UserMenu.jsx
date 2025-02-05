@@ -1,37 +1,36 @@
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useLogoutMutation } from '../../../store/services';
 
 import UserMenuItem from './UserMenuItem';
 
-function UserMenu({
-  closeUserMenu,
-  currentUser,
-  handleLogout,
-  menuItems,
-  navigateTo,
-}) {
+function UserMenu({ closeUserMenu, authenticatedUser, menuItems }) {
+  const [logoutMutation] = useLogoutMutation();
+
+  const navigate = useNavigate();
+
+  const navigateTo = useCallback((path) => navigate(path), [navigate]);
+
   const handleMenuItemClick = useCallback(
-    (action, isLogout) => {
+    async (action, isLogout) => {
       if (isLogout) {
-        handleLogout();
+        await logoutMutation();
+        navigateTo('/');
       } else if (typeof action === 'function') {
-        navigateTo(action(currentUser));
+        navigateTo(action(authenticatedUser));
       } else {
-        navigateTo(currentUser[action]);
+        navigateTo(authenticatedUser[action]);
       }
       closeUserMenu();
     },
-    [handleLogout, navigateTo, closeUserMenu, currentUser]
+    [closeUserMenu, logoutMutation, navigateTo, authenticatedUser]
   );
 
   return (
     <>
       {menuItems.map((item, index) => (
-        <UserMenuItem
-          key={index}
-          {...item}
-          currentUser={currentUser}
-          onAction={handleMenuItemClick}
-        />
+        <UserMenuItem key={index} {...item} onAction={handleMenuItemClick} />
       ))}
     </>
   );

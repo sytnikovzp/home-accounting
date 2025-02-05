@@ -9,8 +9,7 @@ import {
   Toolbar,
 } from '@mui/material';
 
-import useAuth from '../../hooks/useAuth';
-import { useLogoutMutation } from '../../store/services/authApi';
+import useAuthUser from '../../hooks/useAuthUser';
 
 import NavBar from '../Navigation/NavBar';
 
@@ -22,12 +21,9 @@ import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 function Header() {
   const [openNavBar, setOpenNavBar] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
+  const { authenticatedUser, isAuthenticated } = useAuthUser();
 
   const navigate = useNavigate();
-  const { currentUser, isAuthenticated } = useAuth();
-  const [logoutMutation] = useLogoutMutation();
-
-  const navigateTo = useCallback((path) => navigate(path), [navigate]);
 
   const handleToggleNavBar = useCallback(
     () => setOpenNavBar((prev) => !prev),
@@ -43,11 +39,6 @@ function Header() {
     navigate('/auth');
   }, [navigate]);
 
-  const handleLogout = useCallback(async () => {
-    await logoutMutation();
-    navigate('/');
-  }, [logoutMutation, navigate]);
-
   return (
     <AppBar position='sticky' sx={stylesHeaderAppBar}>
       <Container maxWidth='xl'>
@@ -57,10 +48,8 @@ function Header() {
           <Box sx={{ alignItems: 'center', display: 'flex' }}>
             {isAuthenticated ? (
               <AuthenticatedMenu
+                authenticatedUser={authenticatedUser}
                 closeUserMenu={closeUserMenu}
-                currentUser={currentUser}
-                handleLogout={handleLogout}
-                navigateTo={navigateTo}
                 openUserMenu={openUserMenu}
                 toggleUserMenu={toggleUserMenu}
               />

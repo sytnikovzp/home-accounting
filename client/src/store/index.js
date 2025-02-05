@@ -19,11 +19,11 @@ import {
   usersApi,
 } from './services';
 
-import authReducer from './slices/authSlice';
+import authUserReducer from './slices/authUserSlice';
 
 const store = configureStore({
   reducer: {
-    auth: authReducer,
+    authUser: authUserReducer,
     [authApi.reducerPath]: authApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [currenciesApi.reducerPath]: currenciesApi.reducer,

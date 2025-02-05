@@ -2,9 +2,9 @@ import { Box, Typography } from '@mui/material';
 
 import { stylesWelcomeBlockBox } from '../../styles';
 
-function WelcomeBlock({ currentUser }) {
-  const fullName = currentUser?.fullName || 'Невідомий користувач';
-  const roleTitle = currentUser?.role?.title || 'невідома роль';
+function WelcomeBlock({ authenticatedUser }) {
+  const fullName = authenticatedUser?.fullName || 'Невідомий користувач';
+  const roleTitle = authenticatedUser?.role?.title || 'невідома роль';
 
   return (
     <Box sx={stylesWelcomeBlockBox}>
