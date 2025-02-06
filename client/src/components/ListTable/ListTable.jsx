@@ -12,16 +12,15 @@ import {
 } from '@mui/material';
 
 import ActionButtons from './ActionButtons';
+import EmptyRows from './EmptyRows';
 import EntityTableCell from './EntityTableCell';
 import StatusDropdown from './StatusDropdown';
 
 import {
   stylesListTableActionsHeadTableCell,
-  stylesListTableBorderEmptyRow,
   stylesListTableContainer,
   stylesListTableHeadBackgroundColor,
   stylesListTableHeadCell,
-  stylesListTableHeightEmptyRow,
   stylesListTableTable,
   stylesListTableTableRow,
 } from '../../styles';
@@ -69,15 +68,12 @@ function ListTable({
                     ? '90px'
                     : 'auto',
                 }}
-                onClick={() =>
-                  onSortModelChange({
-                    field: col.field,
-                    order:
-                      sortModel.field === col.field && sortModel.order === 'asc'
-                        ? 'desc'
-                        : 'asc',
-                  })
-                }
+                onClick={() => {
+                  const isSameField = sortModel.field === col.field;
+                  const newOrder =
+                    isSameField && sortModel.order === 'asc' ? 'desc' : 'asc';
+                  onSortModelChange({ field: col.field, order: newOrder });
+                }}
               >
                 {col.headerName}
                 {sortModel.field === col.field &&
@@ -127,22 +123,12 @@ function ListTable({
               </TableCell>
             </TableRow>
           )}
-          {Array.from({ length: Math.max(pageSize - rows.length, 0) }).map(
-            (_, index) => (
-              <TableRow
-                key={`empty-row-${index}`}
-                sx={stylesListTableHeightEmptyRow}
-              >
-                {columns.map((col, colIndex) => (
-                  <TableCell
-                    key={`empty-cell-${index}-${colIndex}`}
-                    sx={stylesListTableBorderEmptyRow}
-                  />
-                ))}
-                {!isMobile && <TableCell sx={stylesListTableBorderEmptyRow} />}
-              </TableRow>
-            )
-          )}
+          <EmptyRows
+            columns={columns}
+            isMobile={isMobile}
+            pageSize={pageSize}
+            rows={rows}
+          />
         </TableBody>
       </Table>
       <Box
