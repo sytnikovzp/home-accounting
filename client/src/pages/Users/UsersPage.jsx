@@ -106,7 +106,6 @@ function UsersPage() {
       </Box>
       <ListTable
         showStatusDropdown
-        usersPage
         linkEntity='users'
         pagination={{
           currentPage,

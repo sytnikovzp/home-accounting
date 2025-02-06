@@ -122,7 +122,6 @@ function ExpensesPage() {
         </Button>
       </Box>
       <ListTable
-        expensesPage
         showStatusDropdown
         linkEntity='expenses'
         pagination={{

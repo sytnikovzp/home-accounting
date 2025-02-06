@@ -4,21 +4,20 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { stylesListTableFormControl } from '../../styles';
 
 function StatusDropdown({
-  expensesPage,
+  linkEntity,
   selectedStatus,
-  usersPage,
   onPageChange,
   onStatusChange,
 }) {
   const statusOptions = useMemo(() => {
-    if (usersPage) {
+    if (linkEntity === 'users') {
       return [
         { label: 'Всі користувачі', value: 'all' },
         { label: 'Очікують веріфікації', value: 'pending' },
         { label: 'Веріфіковані', value: 'verified' },
       ];
     }
-    if (expensesPage) {
+    if (linkEntity === 'expenses') {
       return [
         { label: 'За останній день', value: 'day' },
         { label: 'За останній тиждень', value: 'week' },
@@ -32,7 +31,7 @@ function StatusDropdown({
       { label: 'Затверджено', value: 'approved' },
       { label: 'Відхилено', value: 'rejected' },
     ];
-  }, [usersPage, expensesPage]);
+  }, [linkEntity]);
 
   const handleStatusChange = (e) => {
     onStatusChange(e);

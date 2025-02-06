@@ -3,16 +3,10 @@ import { Delete, Edit, Task } from '@mui/icons-material';
 
 import { stylesListTableActionsBodyTableCell } from '../../styles';
 
-function ActionButtons({
-  row,
-  isModerationPage,
-  onEdit,
-  onRemove,
-  onModerate,
-}) {
+function ActionButtons({ row, linkEntity, onEdit, onRemove, onModerate }) {
   return (
     <TableCell align='center' sx={stylesListTableActionsBodyTableCell}>
-      {isModerationPage ? (
+      {linkEntity === 'moderation' ? (
         <Tooltip title='Модерувати'>
           <IconButton onClick={() => onModerate(row)}>
             <Task />

@@ -13,7 +13,7 @@ import {
 
 const { BASE_URL } = configs;
 
-function EntityTableCell({ col, row, isModerationPage, linkEntity }) {
+function EntityTableCell({ col, row, linkEntity }) {
   let avatarPath = null;
   if (row[col.field]) {
     avatarPath = `${BASE_URL.replace('/api', '')}/images/${
@@ -38,7 +38,7 @@ function EntityTableCell({ col, row, isModerationPage, linkEntity }) {
     );
   }
 
-  if (col.field === 'title' && isModerationPage) {
+  if (col.field === 'title' && linkEntity === 'moderation') {
     return (
       <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
         <Typography sx={stylesListTableTextColor} variant='body1'>

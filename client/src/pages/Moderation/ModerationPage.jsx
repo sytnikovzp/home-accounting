@@ -85,7 +85,6 @@ function ModerationPage() {
         </Typography>
       </Box>
       <ListTable
-        isModerationPage={true}
         linkEntity='moderation'
         pagination={{
           currentPage,

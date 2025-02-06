@@ -31,8 +31,6 @@ import {
 const { COLUMNS_CONFIG } = columnsConfig;
 
 function ListTable({
-  expensesPage = false,
-  isModerationPage = false,
   linkEntity = '',
   onEdit,
   onModerate,
@@ -44,7 +42,6 @@ function ListTable({
   selectedStatus,
   showStatusDropdown = false,
   sortModel,
-  usersPage = false,
 }) {
   const columns = COLUMNS_CONFIG[linkEntity] || [];
 
@@ -96,7 +93,7 @@ function ListTable({
                 align='center'
                 sx={stylesListTableActionsHeadTableCell}
               >
-                {isModerationPage ? 'Модерувати' : 'Редаг./Видал.'}
+                {linkEntity === 'moderation' ? 'Модерувати' : 'Редаг./Видал.'}
               </TableCell>
             )}
           </TableRow>
@@ -110,14 +107,13 @@ function ListTable({
                   <EntityTableCell
                     key={col.field}
                     col={col}
-                    isModerationPage={isModerationPage}
                     linkEntity={linkEntity}
                     row={row}
                   />
                 ))}
                 {!isMobile && (
                   <ActionButtons
-                    isModerationPage={isModerationPage}
+                    linkEntity={linkEntity}
                     row={row}
                     onEdit={onEdit}
                     onModerate={onModerate}
@@ -153,9 +149,8 @@ function ListTable({
       >
         {showStatusDropdown && (
           <StatusDropdown
-            expensesPage={expensesPage}
+            linkEntity={linkEntity}
             selectedStatus={selectedStatus}
-            usersPage={usersPage}
             onPageChange={onPageChange}
             onStatusChange={onStatusChange}
           />
