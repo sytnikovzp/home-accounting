@@ -158,8 +158,8 @@ export default [
           detectObjects: false,
           enforceConst: true,
           ignore: [
-            -2, -1, 0, 1, 2, 3, 5, 6, 8, 15, 16, 20, 25, 31, 100, 256, 401, 404,
-            500, 3000,
+            -2, -1, 0, 1, 2, 3, 5, 6, 8, 15, 16, 20, 25, 31, 80, 100, 200, 256,
+            401, 404, 500, 3000,
           ],
           ignoreArrayIndexes: true,
         },

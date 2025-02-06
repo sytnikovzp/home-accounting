@@ -4,17 +4,18 @@ import { uk } from 'date-fns/locale';
 import { stylesHeaderUserAvatar } from '../styles';
 
 const getAccessToken = () => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem('homeAccountingToken');
   if (token === 'undefined') {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('homeAccountingToken');
     return null;
   }
   return token;
 };
 
-const saveAccessToken = (token) => localStorage.setItem('accessToken', token);
+const saveAccessToken = (token) =>
+  localStorage.setItem('homeAccountingToken', token);
 
-const removeAccessToken = () => localStorage.removeItem('accessToken');
+const removeAccessToken = () => localStorage.removeItem('homeAccountingToken');
 
 const uuidPattern = /[\dA-Fa-f-]{36}/;
 
@@ -25,8 +26,9 @@ const stringToColor = (string) => {
   }
   let color = '#';
   for (let i = 0; i < 3; i += 1) {
-    const value = (hash / Math.pow(256, i)) % 256;
-    color += `00${Math.floor(value).toString(16)}`.slice(-2);
+    let value = Math.floor((hash / Math.pow(256, i)) % 256);
+    value = Math.max(80, Math.min(200, value));
+    color += value.toString(16).padStart(2, '0');
   }
   return color;
 };
