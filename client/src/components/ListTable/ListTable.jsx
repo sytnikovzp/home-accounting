@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   Box,
   Table,
@@ -35,48 +36,53 @@ function ListTable({
   onRemove,
   onSortModelChange,
   onStatusChange,
-  pagination: {
-    currentPage,
-    onPageChange,
-    onRowsPerPageChange,
-    pageSize,
-    rowsPerPageOptions = [6, 15, 20, 25],
-    totalCount,
-  },
+  pagination,
   rows,
   selectedStatus,
   showStatusDropdown = false,
   sortModel,
   usersPage = false,
 }) {
+  const {
+    currentPage,
+    onPageChange,
+    onRowsPerPageChange,
+    pageSize,
+    rowsPerPageOptions = [6, 15, 20, 25],
+    totalCount,
+  } = pagination;
+
   const isMobile = useMediaQuery('(max-width:600px)');
+
+  const handleSortChange = useCallback(
+    (field) => {
+      const isSameField = sortModel.field === field;
+      const newOrder =
+        isSameField && sortModel.order === 'asc' ? 'desc' : 'asc';
+      onSortModelChange({ field, order: newOrder });
+    },
+    [onSortModelChange, sortModel]
+  );
 
   return (
     <TableContainer sx={stylesListTableContainer}>
       <Table sx={stylesListTableTable}>
         <TableHead>
           <TableRow sx={stylesListTableHeadBackgroundColor}>
-            {columns.map((col, index) => (
+            {columns.map(({ field, align = 'center', headerName }, index) => (
               <TableCell
-                key={col.field}
-                align={col.align || 'center'}
+                key={field}
+                align={align}
                 sx={{
                   ...stylesListTableHeadCell,
                   borderRight:
                     index < columns.length - 1 ? '1px solid darkgreen' : 'none',
-                  width: ['logo', 'photo'].includes(col.field)
-                    ? '90px'
-                    : 'auto',
+                  width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
                 }}
-                onClick={() => {
-                  const isSameField = sortModel.field === col.field;
-                  const newOrder =
-                    isSameField && sortModel.order === 'asc' ? 'desc' : 'asc';
-                  onSortModelChange({ field: col.field, order: newOrder });
-                }}
+                onClick={() => handleSortChange(field)}
               >
-                {col.headerName}
-                {sortModel.field === col.field &&
+                {headerName}
+                {sortModel.field === field &&
                   (sortModel.order === 'asc' ? ' ↑' : ' ↓')}
               </TableCell>
             ))}
@@ -90,13 +96,14 @@ function ListTable({
             )}
           </TableRow>
         </TableHead>
+
         <TableBody>
           {rows.length > 0 ? (
             rows.map((row) => (
               <TableRow key={row.uuid} sx={stylesListTableTableRow}>
-                {columns.map((col, index) => (
+                {columns.map((col) => (
                   <EntityTableCell
-                    key={col.field || index}
+                    key={col.field}
                     col={col}
                     isModerationPage={isModerationPage}
                     linkEntity={linkEntity}
@@ -131,6 +138,7 @@ function ListTable({
           />
         </TableBody>
       </Table>
+
       <Box
         alignItems='center'
         display='flex'
@@ -155,7 +163,7 @@ function ListTable({
           }
           page={currentPage - 1}
           rowsPerPage={pageSize}
-          rowsPerPageOptions={isMobile ? [] : rowsPerPageOptions}
+          rowsPerPageOptions={rowsPerPageOptions}
           sx={{
             '& .MuiTablePagination-toolbar': {
               flexWrap: isMobile ? 'wrap' : 'nowrap',
