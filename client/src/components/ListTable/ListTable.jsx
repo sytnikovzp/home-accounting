@@ -1,13 +1,7 @@
 import { useCallback, useMemo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import {
-  Avatar,
   Box,
-  FormControl,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -21,53 +15,48 @@ import {
 } from '@mui/material';
 import { Delete, Edit, Task } from '@mui/icons-material';
 
-import { configs } from '../../constants';
+import EntityTableCell from './EntityTableCell';
+import StatusDropdown from './StatusDropdown';
 
 import {
   stylesListTableActionsBodyTableCell,
   stylesListTableActionsHeadTableCell,
-  stylesListTableAvatarBox,
-  stylesListTableAvatarSize,
   stylesListTableBorderEmptyRow,
-  stylesListTableCell,
   stylesListTableContainer,
-  stylesListTableFormControl,
   stylesListTableHeadBackgroundColor,
   stylesListTableHeadCell,
   stylesListTableHeightEmptyRow,
   stylesListTableTable,
   stylesListTableTableRow,
-  stylesListTableTableTypography,
-  stylesListTableTextColor,
 } from '../../styles';
-
-const { BASE_URL } = configs;
 
 function ListTable({
   columns,
-  rows,
+  expensesPage = false,
+  isModerationPage = false,
+  linkEntity = '',
   onEdit,
-  onRemove,
   onModerate,
+  onRemove,
+  onSortModelChange,
+  onStatusChange,
   pagination: {
-    totalCount,
     currentPage,
-    pageSize,
     onPageChange,
     onRowsPerPageChange,
+    pageSize,
     rowsPerPageOptions = [6, 15, 20, 25],
+    totalCount,
   },
-  sortModel,
-  onSortModelChange,
+  rows,
   selectedStatus,
-  onStatusChange,
   showStatusDropdown = false,
+  sortModel,
   usersPage = false,
-  expensesPage = false,
-  linkEntity = '',
-  isModerationPage = false,
 }) {
   const isMobile = useMediaQuery('(max-width:600px)');
+  const memoizedColumns = useMemo(() => columns, [columns]);
+  const memoizedRows = useMemo(() => rows, [rows]);
 
   const handleSort = useCallback(
     (field) => {
@@ -79,119 +68,6 @@ function ListTable({
     },
     [sortModel, onSortModelChange]
   );
-
-  const memoizedColumns = useMemo(() => columns, [columns]);
-  const memoizedRows = useMemo(() => rows, [rows]);
-
-  const renderTableCell = (col, row) => (
-    <TableCell
-      key={col.field}
-      align={col.align || 'center'}
-      sx={stylesListTableCell}
-    >
-      {(() => {
-        if (['logo', 'photo'].includes(col.field)) {
-          return (
-            <Box sx={stylesListTableAvatarBox}>
-              <Avatar
-                alt={
-                  col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'
-                }
-                src={(() => {
-                  if (row[col.field]) {
-                    return `${BASE_URL.replace('/api', '')}/images/${
-                      col.field === 'logo' ? 'establishments' : 'users'
-                    }/${row[col.field]}`;
-                  }
-                  if (col.field === 'logo') {
-                    return `${BASE_URL.replace('/api', '')}/images/noLogo.png`;
-                  }
-                  return null;
-                })()}
-                sx={stylesListTableAvatarSize}
-                variant='rounded'
-              />
-            </Box>
-          );
-        }
-        if (col.field === 'title' && isModerationPage) {
-          return (
-            <Typography sx={stylesListTableTextColor} variant='body1'>
-              {row[col.field]}
-            </Typography>
-          );
-        }
-        if (['title', 'product', 'fullName'].includes(col.field)) {
-          return (
-            <RouterLink
-              style={{ textDecoration: 'none' }}
-              to={`/${linkEntity}/${row.uuid}`}
-            >
-              <Typography
-                component='span'
-                sx={stylesListTableTableTypography}
-                variant='body1'
-              >
-                {row[col.field]}
-              </Typography>
-            </RouterLink>
-          );
-        }
-        return (
-          <Typography sx={stylesListTableTextColor} variant='body1'>
-            {row[col.field]}
-          </Typography>
-        );
-      })()}
-    </TableCell>
-  );
-
-  const renderStatusDropdown = () => {
-    let statusOptions = [];
-    if (usersPage) {
-      statusOptions = [
-        { label: 'Всі користувачі', value: 'all' },
-        { label: 'Очікують веріфікації', value: 'pending' },
-        { label: 'Веріфіковані', value: 'verified' },
-      ];
-    } else if (expensesPage) {
-      statusOptions = [
-        { label: 'За останній день', value: 'day' },
-        { label: 'За останній тиждень', value: 'week' },
-        { label: 'За останній місяць', value: 'month' },
-        { label: 'За останній рік', value: 'year' },
-        { label: 'За весь час', value: 'allTime' },
-      ];
-    } else {
-      statusOptions = [
-        { label: 'Очікує модерації', value: 'pending' },
-        { label: 'Затверджено', value: 'approved' },
-        { label: 'Відхилено', value: 'rejected' },
-      ];
-    }
-
-    return (
-      <FormControl sx={stylesListTableFormControl}>
-        <InputLabel id='status-select-label'>Статус</InputLabel>
-        <Select
-          label='Статус'
-          labelId='status-select-label'
-          size='small'
-          value={selectedStatus}
-          onChange={(e) => {
-            onStatusChange(e);
-            onPageChange(1);
-          }}
-        >
-          {statusOptions.map(({ value, label }) => (
-            <MenuItem key={value} value={value}>
-              {label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    );
-  };
 
   return (
     <TableContainer sx={stylesListTableContainer}>
@@ -233,9 +109,15 @@ function ListTable({
           {memoizedRows.length > 0 ? (
             memoizedRows.map((row) => (
               <TableRow key={row.uuid} sx={stylesListTableTableRow}>
-                {memoizedColumns.map((col, index) =>
-                  renderTableCell(col, row, index)
-                )}
+                {memoizedColumns.map((col, index) => (
+                  <EntityTableCell
+                    key={col.field || index}
+                    col={col}
+                    isModerationPage={isModerationPage}
+                    linkEntity={linkEntity}
+                    row={row}
+                  />
+                ))}
                 {!isMobile && (
                   <TableCell
                     align='center'
@@ -300,7 +182,15 @@ function ListTable({
         justifyContent={showStatusDropdown ? 'space-between' : 'flex-end'}
         m={2}
       >
-        {showStatusDropdown && renderStatusDropdown()}
+        {showStatusDropdown && (
+          <StatusDropdown
+            expensesPage={expensesPage}
+            selectedStatus={selectedStatus}
+            usersPage={usersPage}
+            onPageChange={onPageChange}
+            onStatusChange={onStatusChange}
+          />
+        )}
         <TablePagination
           component='div'
           count={totalCount}

@@ -85,7 +85,6 @@ function ModerationPage() {
         </Typography>
       </Box>
       <ListTable
-        disableClickableTitles
         columns={[
           { field: 'contentType', headerName: 'Тип контенту', align: 'left' },
           { field: 'title', headerName: 'Назва', align: 'left' },
