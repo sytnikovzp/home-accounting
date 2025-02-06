@@ -53,6 +53,10 @@ const MODERATIONS_TITLES = {
   default: 'Підлягають модерації | Моя бухгалтерія',
 };
 
+const NOT_FOUND_PAGE_TITLES = {
+  default: 'Помилка 404 | Моя бухгалтерія',
+};
+
 const NOTIFICATION_PAGE_TITLES = {
   default: 'Повідомлення | Моя бухгалтерія',
 };
@@ -94,6 +98,7 @@ export {
   HOME_PAGE_TITLES,
   MEASURES_TITLES,
   MODERATIONS_TITLES,
+  NOT_FOUND_PAGE_TITLES,
   NOTIFICATION_PAGE_TITLES,
   PRODUCTS_TITLES,
   RESET_PASSWORD_TITLES,

@@ -21,6 +21,7 @@ import ExpensesPage from './pages/Expenses/ExpensesPage';
 import HomePage from './pages/Home/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import NotificationsPage from './pages/Notifications/NotificationsPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import ResetPasswordPage from './pages/ResetPassword/ResetPasswordPage';
@@ -114,7 +115,7 @@ function App() {
               }
               path='auth/*'
             />
-            <Route element={<Navigate replace to='/' />} path='*' />
+            <Route element={<NotFoundPage />} path='*' />
           </Route>
         </Routes>
       </Router>
