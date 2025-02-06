@@ -55,6 +55,7 @@ function ListTable({
   usersPage = false,
 }) {
   const isMobile = useMediaQuery('(max-width:600px)');
+
   const memoizedColumns = useMemo(() => columns, [columns]);
   const memoizedRows = useMemo(() => rows, [rows]);
 
@@ -67,6 +68,27 @@ function ListTable({
       onSortModelChange(newSortModel);
     },
     [sortModel, onSortModelChange]
+  );
+
+  const renderStatusDropdown = useMemo(
+    () =>
+      showStatusDropdown && (
+        <StatusDropdown
+          expensesPage={expensesPage}
+          selectedStatus={selectedStatus}
+          usersPage={usersPage}
+          onPageChange={onPageChange}
+          onStatusChange={onStatusChange}
+        />
+      ),
+    [
+      showStatusDropdown,
+      expensesPage,
+      selectedStatus,
+      usersPage,
+      onPageChange,
+      onStatusChange,
+    ]
   );
 
   return (
@@ -182,15 +204,7 @@ function ListTable({
         justifyContent={showStatusDropdown ? 'space-between' : 'flex-end'}
         m={2}
       >
-        {showStatusDropdown && (
-          <StatusDropdown
-            expensesPage={expensesPage}
-            selectedStatus={selectedStatus}
-            usersPage={usersPage}
-            onPageChange={onPageChange}
-            onStatusChange={onStatusChange}
-          />
-        )}
+        {renderStatusDropdown}
         <TablePagination
           component='div'
           count={totalCount}

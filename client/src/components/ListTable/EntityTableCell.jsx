@@ -14,66 +14,64 @@ import {
 const { BASE_URL } = configs;
 
 function EntityTableCell({ col, row, isModerationPage, linkEntity }) {
-  return (
-    <TableCell
-      key={col.field}
-      align={col.align || 'center'}
-      sx={stylesListTableCell}
-    >
-      {(() => {
-        if (['logo', 'photo'].includes(col.field)) {
-          return (
-            <Box sx={stylesListTableAvatarBox}>
-              <Avatar
-                alt={
-                  col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'
-                }
-                src={(() => {
-                  if (row[col.field]) {
-                    return `${BASE_URL.replace('/api', '')}/images/${
-                      col.field === 'logo' ? 'establishments' : 'users'
-                    }/${row[col.field]}`;
-                  }
-                  if (col.field === 'logo') {
-                    return `${BASE_URL.replace('/api', '')}/images/noLogo.png`;
-                  }
-                  return null;
-                })()}
-                sx={stylesListTableAvatarSize}
-                variant='rounded'
-              />
-            </Box>
-          );
-        }
-        if (col.field === 'title' && isModerationPage) {
-          return (
-            <Typography sx={stylesListTableTextColor} variant='body1'>
-              {row[col.field]}
-            </Typography>
-          );
-        }
-        if (['title', 'product', 'fullName'].includes(col.field)) {
-          return (
-            <RouterLink
-              style={{ textDecoration: 'none' }}
-              to={`/${linkEntity}/${row.uuid}`}
-            >
-              <Typography
-                component='span'
-                sx={stylesListTableTableTypography}
-                variant='body1'
-              >
-                {row[col.field]}
-              </Typography>
-            </RouterLink>
-          );
-        }
-        return (
-          <Typography sx={stylesListTableTextColor} variant='body1'>
+  let avatarPath = null;
+  if (row[col.field]) {
+    avatarPath = `${BASE_URL.replace('/api', '')}/images/${
+      col.field === 'logo' ? 'establishments' : 'users'
+    }/${row[col.field]}`;
+  } else if (col.field === 'logo') {
+    avatarPath = `${BASE_URL.replace('/api', '')}/images/noLogo.png`;
+  }
+
+  if (col.field === 'logo' || col.field === 'photo') {
+    return (
+      <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
+        <Box sx={stylesListTableAvatarBox}>
+          <Avatar
+            alt={col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
+            src={avatarPath}
+            sx={stylesListTableAvatarSize}
+            variant='rounded'
+          />
+        </Box>
+      </TableCell>
+    );
+  }
+
+  if (col.field === 'title' && isModerationPage) {
+    return (
+      <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
+        <Typography sx={stylesListTableTextColor} variant='body1'>
+          {row[col.field]}
+        </Typography>
+      </TableCell>
+    );
+  }
+
+  if (['title', 'product', 'fullName'].includes(col.field)) {
+    return (
+      <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
+        <RouterLink
+          style={{ textDecoration: 'none' }}
+          to={`/${linkEntity}/${row.uuid}`}
+        >
+          <Typography
+            component='span'
+            sx={stylesListTableTableTypography}
+            variant='body1'
+          >
             {row[col.field]}
           </Typography>
-        );
-      })()}
+        </RouterLink>
+      </TableCell>
+    );
+  }
+
+  return (
+    <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
+      <Typography sx={stylesListTableTextColor} variant='body1'>
+        {row[col.field]}
+      </Typography>
     </TableCell>
   );
 }
