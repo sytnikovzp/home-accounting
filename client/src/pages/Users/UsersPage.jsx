@@ -67,10 +67,6 @@ function UsersPage() {
     [navigate]
   );
 
-  const handleModalClose = useCallback(() => {
-    navigate('/users');
-  }, [navigate]);
-
   const handleEdit = useCallback(
     (user) => handleModalOpen('edit', user.uuid),
     [handleModalOpen]
@@ -132,10 +128,7 @@ function UsersPage() {
         onSortModelChange={setSortModel}
         onStatusChange={handleStatusChange}
       />
-      <EntityRoutes
-        entityPages={USERS_PAGES}
-        handleModalClose={handleModalClose}
-      />
+      <EntityRoutes entityPages={USERS_PAGES} />
     </>
   );
 }

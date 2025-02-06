@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Avatar, Box, Button, Tooltip } from '@mui/material';
 import {
   AlternateEmail,
@@ -10,6 +10,7 @@ import {
 } from '@mui/icons-material';
 
 import { configs } from '../../constants';
+import useAuthUser from '../../hooks/useAuthUser';
 import {
   useFetchUserByUuidQuery,
   useResendVerifyEmailMutation,
@@ -28,26 +29,43 @@ import {
 
 const { BASE_URL } = configs;
 
-function UserViewPage({ handleModalClose }) {
+function UserViewPage() {
   const { uuid } = useParams();
+  const { authenticatedUser } = useAuthUser();
+  const navigate = useNavigate();
+
+  const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
   const {
     data: user,
     isLoading: isFetching,
     error: fetchError,
-  } = useFetchUserByUuidQuery(uuid, { skip: !uuid });
+  } = useFetchUserByUuidQuery(uuid, { skip: isAuthenticatedUser });
 
-  const [resendVerifyEmail, { isLoading: emailVerificationLoading }] =
-    useResendVerifyEmailMutation();
+  const userData = useMemo(
+    () => (isAuthenticatedUser ? authenticatedUser : user),
+    [isAuthenticatedUser, authenticatedUser, user]
+  );
 
   const { fullName, role, photo, email, emailVerificationStatus, creation } =
-    user ?? {};
+    userData ?? {};
   const { createdAt, updatedAt } = creation ?? {};
 
   const photoPath = useMemo(() => {
     const baseUrl = BASE_URL.replace('/api', '');
     return photo ? `${baseUrl}/images/users/${photo}` : null;
   }, [photo]);
+
+  const [resendVerifyEmail, { isLoading: emailVerificationLoading }] =
+    useResendVerifyEmailMutation();
+
+  const handleModalClose = useCallback(() => {
+    if (uuid) {
+      navigate('/users');
+    } else {
+      navigate(-1);
+    }
+  }, [uuid, navigate]);
 
   const handleResendClick = useCallback(() => {
     if (email) {

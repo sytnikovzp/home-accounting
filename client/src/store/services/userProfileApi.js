@@ -15,7 +15,7 @@ export const userProfileApi = createApi({
       providesTags: ['UserProfile'],
     }),
 
-    changePassword: builder.mutation({
+    changeUserProfilePassword: builder.mutation({
       query: ({ newPassword, confirmNewPassword }) => ({
         url: '/profile/password',
         method: 'PATCH',
@@ -29,7 +29,7 @@ export const userProfileApi = createApi({
         method: 'PATCH',
         body: { fullName, email, role },
       }),
-      providesTags: ['UserProfile'],
+      invalidatesTags: ['UserProfile'],
     }),
 
     changeUserProfilePhoto: builder.mutation({
@@ -42,7 +42,7 @@ export const userProfileApi = createApi({
           body: formData,
         };
       },
-      providesTags: ['UserProfile'],
+      invalidatesTags: ['UserProfile'],
     }),
 
     resetUserProfilePhoto: builder.mutation({
@@ -50,7 +50,7 @@ export const userProfileApi = createApi({
         url: '/profile/photo',
         method: 'DELETE',
       }),
-      providesTags: ['UserProfile'],
+      invalidatesTags: ['UserProfile'],
     }),
 
     removeUserProfile: builder.mutation({
@@ -58,14 +58,14 @@ export const userProfileApi = createApi({
         url: '/profile',
         method: 'DELETE',
       }),
-      providesTags: ['UserProfile'],
+      invalidatesTags: ['UserProfile'],
     }),
   }),
 });
 
 export const {
   useFetchUserProfileQuery,
-  useChangePasswordMutation,
+  useChangeUserProfilePasswordMutation,
   useEditUserProfileMutation,
   useChangeUserProfilePhotoMutation,
   useResetUserProfilePhotoMutation,

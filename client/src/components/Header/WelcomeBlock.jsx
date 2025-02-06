@@ -1,8 +1,12 @@
 import { Box, Typography } from '@mui/material';
 
+import useAuthUser from '../../hooks/useAuthUser';
+
 import { stylesWelcomeBlockBox } from '../../styles';
 
-function WelcomeBlock({ authenticatedUser }) {
+function WelcomeBlock() {
+  const { authenticatedUser } = useAuthUser();
+
   const fullName = authenticatedUser?.fullName || 'Невідомий користувач';
   const roleTitle = authenticatedUser?.role?.title || 'невідома роль';
 

@@ -1,42 +1,83 @@
 import { useCallback, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { useChangeUserPasswordMutation } from '../../store/services';
+import useAuthUser from '../../hooks/useAuthUser';
+import {
+  useChangeUserPasswordMutation,
+  useChangeUserProfilePasswordMutation,
+} from '../../store/services';
 
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-function UserChangePasswordPage({ handleModalClose }) {
+function UserChangePasswordPage() {
   const { uuid } = useParams();
+  const { authenticatedUser } = useAuthUser();
+  const navigate = useNavigate();
 
-  const [changeUserPassword, { isLoading: isSubmitting, error: submitError }] =
-    useChangeUserPasswordMutation();
+  const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
+
+  const [
+    changeUserPassword,
+    { isLoading: isUserPasswordSubmitting, error: submitUserPasswordError },
+  ] = useChangeUserPasswordMutation();
+  const [
+    changeUserProfilePassword,
+    {
+      isLoading: isUserProfilePasswordSubmitting,
+      error: submitUserProfilePasswordError,
+    },
+  ] = useChangeUserProfilePasswordMutation();
+
+  const isChangingPassword =
+    isUserPasswordSubmitting || isUserProfilePasswordSubmitting;
+  const error = submitUserPasswordError || submitUserProfilePasswordError;
+
+  const handleModalClose = useCallback(() => {
+    if (uuid) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  }, [uuid, navigate]);
 
   const handleSubmitPassword = useCallback(
     async (values) => {
-      const result = await changeUserPassword({ userUuid: uuid, ...values });
+      const action = isAuthenticatedUser
+        ? changeUserProfilePassword
+        : changeUserPassword;
+      const payload = isAuthenticatedUser
+        ? values
+        : { userUuid: uuid, ...values };
+      const result = await action(payload);
       if (result?.data) {
         handleModalClose();
       }
     },
-    [changeUserPassword, handleModalClose, uuid]
+    [
+      changeUserPassword,
+      changeUserProfilePassword,
+      handleModalClose,
+      isAuthenticatedUser,
+      uuid,
+    ]
   );
 
   const content = useMemo(
     () => (
       <ChangePasswordForm
-        isSubmitting={isSubmitting}
+        isSubmitting={isChangingPassword}
         onSubmit={handleSubmitPassword}
       />
     ),
-    [handleSubmitPassword, isSubmitting]
+    [handleSubmitPassword, isChangingPassword]
   );
 
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={error?.data}
       title='Зміна паролю...'
       onClose={handleModalClose}
     />

@@ -1,60 +1,35 @@
+import { useCallback, useState } from 'react';
 import { Avatar, Box, IconButton, Menu, Tooltip } from '@mui/material';
-import {
-  AdminPanelSettings,
-  ListAlt,
-  Logout,
-  Password,
-  Portrait,
-} from '@mui/icons-material';
 
 import { configs } from '../../constants';
 import { stringAvatar } from '../../utils/sharedFunctions';
+import useAuthUser from '../../hooks/useAuthUser';
 
 import UserMenu from './UserMenu/UserMenu';
 import WelcomeBlock from './WelcomeBlock';
 
 import { stylesAuthenticatedMenu } from '../../styles';
 
-const menuItemsData = [
-  {
-    action: (user) => `/users/${user.uuid}`,
-    icon: <Portrait fontSize='small' />,
-    label: 'Переглянути профіль',
-  },
-  {
-    action: (user) => `/users/edit/${user.uuid}`,
-    icon: <ListAlt fontSize='small' />,
-    label: 'Редагувати профіль',
-  },
-  {
-    action: (user) => `/roles/${user.role.uuid}`,
-    icon: <AdminPanelSettings fontSize='small' />,
-    label: 'Переглянути права',
-  },
-  {
-    action: (user) => `/users/password/${user.uuid}`,
-    icon: <Password fontSize='small' />,
-    label: 'Змінити пароль',
-  },
-  {
-    action: 'handleLogout',
-    icon: <Logout fontSize='small' />,
-    isLogout: true,
-    label: 'Вийти',
-  },
-];
-
 const { BASE_URL } = configs;
 
-function AuthenticatedMenu({
-  closeUserMenu,
-  authenticatedUser,
-  openUserMenu,
-  toggleUserMenu,
-}) {
+function AuthenticatedMenu() {
+  const [openUserMenu, setOpenUserMenu] = useState(false);
+
+  const { authenticatedUser } = useAuthUser();
+
+  const fullName = authenticatedUser?.fullName || 'Невідомий користувач';
+  const photo = authenticatedUser?.photo;
+
+  const toggleUserMenu = useCallback(
+    (event) => setOpenUserMenu(event.currentTarget),
+    []
+  );
+
+  const closeUserMenu = useCallback(() => setOpenUserMenu(false), []);
+
   return (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>
-      <WelcomeBlock authenticatedUser={authenticatedUser} />
+      <WelcomeBlock />
       <Tooltip title='Обліковий запис'>
         <IconButton
           aria-controls={openUserMenu ? 'account-menu' : null}
@@ -65,11 +40,11 @@ function AuthenticatedMenu({
           onClick={toggleUserMenu}
         >
           <Avatar
-            alt={authenticatedUser.fullName}
-            {...stringAvatar(authenticatedUser.fullName)}
+            alt={fullName}
+            {...stringAvatar(fullName)}
             src={
-              authenticatedUser.photo
-                ? `${BASE_URL.replace('/api', '')}/images/users/${authenticatedUser.photo}`
+              photo
+                ? `${BASE_URL.replace('/api', '')}/images/users/${photo}`
                 : null
             }
           />
@@ -84,11 +59,7 @@ function AuthenticatedMenu({
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         onClose={closeUserMenu}
       >
-        <UserMenu
-          authenticatedUser={authenticatedUser}
-          closeUserMenu={closeUserMenu}
-          menuItems={menuItemsData}
-        />
+        <UserMenu closeUserMenu={closeUserMenu} />
       </Menu>
     </Box>
   );

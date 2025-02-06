@@ -7,6 +7,7 @@ import {
   useFetchUserByUuidQuery,
   useLogoutMutation,
   useRemoveUserMutation,
+  useRemoveUserProfileMutation,
 } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
@@ -14,38 +15,62 @@ import Preloader from '../../components/Preloader/Preloader';
 
 import { stylesDeletePageTypography } from '../../styles';
 
-function UserRemovePage({ handleModalClose }) {
+function UserRemovePage() {
   const { uuid } = useParams();
+  const { authenticatedUser } = useAuthUser();
   const navigate = useNavigate();
 
-  const { authenticatedUser } = useAuthUser();
+  const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
-  const { data: user, isLoading: isFetching } = useFetchUserByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  const {
+    data: user,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchUserByUuidQuery(uuid, { skip: isAuthenticatedUser });
 
-  const [removeUser, { isLoading: isRemoving, error: removeError }] =
+  const userData = useMemo(
+    () => (isAuthenticatedUser ? authenticatedUser : user),
+    [isAuthenticatedUser, authenticatedUser, user]
+  );
+
+  const { fullName } = userData ?? {};
+
+  const [removeUser, { isLoading: isRemovingUser, error: removeUserError }] =
     useRemoveUserMutation();
-
+  const [
+    removeUserProfile,
+    { isLoading: isRemovingUserProfile, error: removeUserErrorProfile },
+  ] = useRemoveUserProfileMutation();
   const [logoutMutation] = useLogoutMutation();
 
+  const isLoading = isFetching || isRemovingUser || isRemovingUserProfile;
+  const error = fetchError || removeUserError || removeUserErrorProfile;
+
+  const handleModalClose = useCallback(() => {
+    if (uuid) {
+      navigate('/users');
+    } else {
+      navigate(-1);
+    }
+  }, [uuid, navigate]);
+
   const handleRemoveUser = useCallback(async () => {
-    if (!user?.uuid) {
-      return;
-    }
-    const result = await removeUser(user.uuid);
-    if (user.uuid === authenticatedUser?.uuid) {
-      await logoutMutation();
-      navigate('/');
-      return;
-    }
+    const action = isAuthenticatedUser ? removeUserProfile : removeUser;
+    const payload = isAuthenticatedUser ? null : uuid;
+    const result = await action(payload);
     if (result?.data) {
+      if (isAuthenticatedUser) {
+        await logoutMutation();
+        navigate('/');
+        return;
+      }
       handleModalClose();
     }
   }, [
-    user,
+    isAuthenticatedUser,
+    removeUserProfile,
     removeUser,
-    authenticatedUser?.uuid,
+    uuid,
     logoutMutation,
     navigate,
     handleModalClose,
@@ -57,7 +82,7 @@ function UserRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isFetching || isRemoving}
+        disabled={isLoading}
         size='large'
         variant='contained'
         onClick={handleRemoveUser}
@@ -65,7 +90,7 @@ function UserRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleRemoveUser]
+    [isLoading, handleRemoveUser]
   );
 
   const content = useMemo(() => {
@@ -75,19 +100,19 @@ function UserRemovePage({ handleModalClose }) {
 
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        {user?.uuid === authenticatedUser?.uuid
+        {isAuthenticatedUser
           ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
-          : `Ви впевнені, що хочете видалити користувача «${user?.fullName}»?`}
+          : `Ви впевнені, що хочете видалити користувача «${fullName}»?`}
       </Typography>
     );
-  }, [authenticatedUser?.uuid, isFetching, user?.fullName, user?.uuid]);
+  }, [isAuthenticatedUser, isFetching, fullName]);
 
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={removeError?.data}
+      error={error?.data}
       title='Видалення користувача...'
       onClose={handleModalClose}
     />

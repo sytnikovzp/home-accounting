@@ -25,7 +25,12 @@ import NotificationsPage from './pages/Notifications/NotificationsPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import ResetPasswordPage from './pages/ResetPassword/ResetPasswordPage';
 import RolesPage from './pages/Roles/RolesPage';
+import RoleViewPage from './pages/Roles/RoleViewPage';
+import UserChangePasswordPage from './pages/Users/UserChangePasswordPage';
+import UserEditPage from './pages/Users/UserEditPage';
+import UserRemovePage from './pages/Users/UserRemovePage';
 import UsersPage from './pages/Users/UsersPage';
+import UserViewPage from './pages/Users/UserViewPage';
 
 function App() {
   const { isAuthenticated, isFetchingUser } = useAuthUser();
@@ -81,6 +86,26 @@ function App() {
             />
             <Route element={renderPrivateRoute(<UsersPage />)} path='users/*' />
             <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
+            <Route
+              element={renderPrivateRoute(<UserViewPage />)}
+              path='profile'
+            />
+            <Route
+              element={renderPrivateRoute(<UserEditPage />)}
+              path='edit-profile'
+            />
+            <Route
+              element={renderPrivateRoute(<RoleViewPage />)}
+              path='permissions'
+            />
+            <Route
+              element={renderPrivateRoute(<UserChangePasswordPage />)}
+              path='password'
+            />
+            <Route
+              element={renderPrivateRoute(<UserRemovePage />)}
+              path='remove-profile'
+            />
             <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ResetPasswordPage />} path='reset-password' />
             <Route

@@ -6,7 +6,9 @@ function EntityRoutes({ entityPages, handleModalClose }) {
       {entityPages.map(({ path, Component }) => (
         <Route
           key={path}
-          element={<Component handleModalClose={handleModalClose} />}
+          element={
+            <Component {...(handleModalClose ? { handleModalClose } : {})} />
+          }
           path={path}
         />
       ))}

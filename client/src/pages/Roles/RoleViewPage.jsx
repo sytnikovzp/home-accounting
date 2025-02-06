@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Divider, Typography } from '@mui/material';
 import { CalendarToday, Description, Info, Update } from '@mui/icons-material';
 
+import useAuthUser from '../../hooks/useAuthUser';
 import { useFetchRoleByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
@@ -12,8 +13,12 @@ import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import { stylesViewPageBox } from '../../styles';
 
-function RoleViewPage({ handleModalClose }) {
-  const { uuid } = useParams();
+function RoleViewPage() {
+  const { uuid: paramUuid } = useParams();
+  const { authenticatedUser } = useAuthUser();
+  const navigate = useNavigate();
+
+  const uuid = paramUuid || authenticatedUser?.role?.uuid;
 
   const {
     data: role,
@@ -22,6 +27,14 @@ function RoleViewPage({ handleModalClose }) {
   } = useFetchRoleByUuidQuery(uuid, { skip: !uuid });
 
   const { title, description, permissions, createdAt, updatedAt } = role ?? {};
+
+  const handleModalClose = useCallback(() => {
+    if (paramUuid) {
+      navigate('/roles');
+    } else {
+      navigate(-1);
+    }
+  }, [paramUuid, navigate]);
 
   const data = useMemo(
     () => [

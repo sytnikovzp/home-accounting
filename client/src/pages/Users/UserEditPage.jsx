@@ -1,70 +1,193 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
+import useAuthUser from '../../hooks/useAuthUser';
 import {
   useChangeUserPhotoMutation,
+  useChangeUserProfilePhotoMutation,
   useEditUserMutation,
+  useEditUserProfileMutation,
   useFetchUserByUuidQuery,
   useResetUserPhotoMutation,
+  useResetUserProfilePhotoMutation,
+  usersApi,
 } from '../../store/services';
 
 import UserForm from '../../components/Forms/UserForm/UserForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-function UserEditPage({ handleModalClose }) {
+function UserEditPage() {
   const { uuid } = useParams();
+  const { authenticatedUser } = useAuthUser();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
   const { data: user, isLoading: isFetching } = useFetchUserByUuidQuery(uuid, {
-    skip: !uuid,
+    skip: isAuthenticatedUser,
   });
+
+  const userData = useMemo(
+    () => (isAuthenticatedUser ? authenticatedUser : user),
+    [isAuthenticatedUser, authenticatedUser, user]
+  );
 
   const [
     editUser,
-    { isLoading: isSubmitting, error: submitError, reset: resetSubmitting },
+    {
+      isLoading: isUserSubmitting,
+      error: submitUserError,
+      reset: resetUserSubmitting,
+    },
   ] = useEditUserMutation();
   const [
-    changePhoto,
-    { isLoading: isUploading, error: uploadError, reset: resetUploading },
+    editUserProfile,
+    {
+      isLoading: isUserProfileSubmitting,
+      error: submitUserProfileError,
+      reset: resetUserProfileSubmitting,
+    },
+  ] = useEditUserProfileMutation();
+
+  const [
+    changeUserPhoto,
+    {
+      isLoading: isUserPhotoUploading,
+      error: uploadUserPhotoError,
+      reset: resetUserPhotoUploading,
+    },
   ] = useChangeUserPhotoMutation();
   const [
-    resetPhoto,
-    { isLoading: isResetting, error: resetError, reset: resetResetting },
-  ] = useResetUserPhotoMutation();
+    changeUserProfilePhoto,
+    {
+      isLoading: isUserProfilePhotoUploading,
+      error: uploadUserProfilePhotoError,
+      reset: resetUserProfilePhotoUploading,
+    },
+  ] = useChangeUserProfilePhotoMutation();
 
-  const isChanging = isUploading || isResetting;
-  const error = uploadError || resetError || submitError;
+  const [
+    resetUserPhoto,
+    {
+      isLoading: isUserPhotoResetting,
+      error: resetUserPhotoError,
+      reset: resetUserPhotoResetting,
+    },
+  ] = useResetUserPhotoMutation();
+  const [
+    resetUserProfilePhoto,
+    {
+      isLoading: isUserProfilePhotoResetting,
+      error: resetUserProfilePhotoError,
+      reset: resetUserProfilePhotoResetting,
+    },
+  ] = useResetUserProfilePhotoMutation();
+
+  const isChanging =
+    isUserPhotoUploading ||
+    isUserProfilePhotoUploading ||
+    isUserPhotoResetting ||
+    isUserProfilePhotoResetting;
+  const error =
+    uploadUserPhotoError ||
+    uploadUserProfilePhotoError ||
+    resetUserPhotoError ||
+    resetUserProfilePhotoError ||
+    submitUserError ||
+    submitUserProfileError;
 
   const handleUploadPhoto = useCallback(
     async (file) => {
-      resetSubmitting();
-      resetResetting();
-      await changePhoto({ userUuid: uuid, userPhoto: file });
+      resetUserSubmitting();
+      resetUserProfileSubmitting();
+      resetUserPhotoResetting();
+      resetUserProfilePhotoResetting();
+      const action = isAuthenticatedUser
+        ? changeUserProfilePhoto
+        : changeUserPhoto;
+      const payload = isAuthenticatedUser
+        ? { userUuid: uuid, userPhoto: file }
+        : { userPhoto: file };
+      await action(payload);
+      dispatch(usersApi.util.invalidateTags([{ type: 'User', id: 'LIST' }]));
     },
-    [changePhoto, resetResetting, resetSubmitting, uuid]
+    [
+      resetUserSubmitting,
+      resetUserProfileSubmitting,
+      resetUserPhotoResetting,
+      resetUserProfilePhotoResetting,
+      isAuthenticatedUser,
+      changeUserProfilePhoto,
+      changeUserPhoto,
+      uuid,
+      dispatch,
+    ]
   );
 
   const handleResetPhoto = useCallback(async () => {
-    resetSubmitting();
-    resetUploading();
-    await resetPhoto(uuid);
-  }, [resetPhoto, resetSubmitting, resetUploading, uuid]);
+    resetUserSubmitting();
+    resetUserProfileSubmitting();
+    resetUserPhotoUploading();
+    resetUserProfilePhotoUploading();
+    const action = isAuthenticatedUser ? resetUserProfilePhoto : resetUserPhoto;
+    const payload = isAuthenticatedUser ? null : uuid;
+    await action(payload);
+    dispatch(usersApi.util.invalidateTags([{ type: 'User', id: 'LIST' }]));
+  }, [
+    resetUserSubmitting,
+    resetUserProfileSubmitting,
+    resetUserPhotoUploading,
+    resetUserProfilePhotoUploading,
+    isAuthenticatedUser,
+    resetUserProfilePhoto,
+    resetUserPhoto,
+    uuid,
+    dispatch,
+  ]);
 
   const handleRemoveProfile = useCallback(() => {
-    navigate(`/users/remove/${uuid}`);
-  }, [navigate, uuid]);
+    if (isAuthenticatedUser) {
+      navigate(`/remove-profile`);
+    } else {
+      navigate(`/users/remove/${uuid}`);
+    }
+  }, [isAuthenticatedUser, navigate, uuid]);
+
+  const handleModalClose = useCallback(() => {
+    if (uuid) {
+      navigate('/users');
+    } else {
+      navigate(-1);
+    }
+  }, [uuid, navigate]);
 
   const handleSubmitUser = useCallback(
     async (values) => {
-      resetUploading();
-      resetResetting();
-      const result = await editUser({ userUuid: uuid, ...values });
+      resetUserPhotoUploading();
+      resetUserPhotoResetting();
+      const action = isAuthenticatedUser ? editUserProfile : editUser;
+      const payload = isAuthenticatedUser
+        ? values
+        : { userUuid: uuid, ...values };
+      const result = await action(payload);
       if (result?.data) {
+        dispatch(usersApi.util.invalidateTags([{ type: 'User', id: 'LIST' }]));
         handleModalClose();
       }
     },
-    [editUser, handleModalClose, resetResetting, resetUploading, uuid]
+    [
+      resetUserPhotoUploading,
+      resetUserPhotoResetting,
+      isAuthenticatedUser,
+      editUserProfile,
+      editUser,
+      uuid,
+      dispatch,
+      handleModalClose,
+    ]
   );
 
   const content = isFetching ? (
@@ -72,8 +195,8 @@ function UserEditPage({ handleModalClose }) {
   ) : (
     <UserForm
       isChanging={isChanging}
-      isSubmitting={isSubmitting}
-      user={user}
+      isSubmitting={isUserSubmitting || isUserProfileSubmitting}
+      user={userData}
       onRemove={handleRemoveProfile}
       onReset={handleResetPhoto}
       onSubmit={handleSubmitUser}

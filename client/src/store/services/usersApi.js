@@ -26,10 +26,7 @@ export const usersApi = createApi({
       providesTags: (result) => {
         if (result?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
-              type: 'User',
-              id: uuid,
-            })),
+            ...result.data.map(({ uuid }) => ({ type: 'User', id: uuid })),
             { type: 'User', id: 'LIST' },
           ];
         }

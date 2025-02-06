@@ -20,22 +20,15 @@ import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 
 function Header() {
   const [openNavBar, setOpenNavBar] = useState(false);
-  const [openUserMenu, setOpenUserMenu] = useState(false);
-  const { authenticatedUser, isAuthenticated } = useAuthUser();
-
+  const { isAuthenticated } = useAuthUser();
   const navigate = useNavigate();
 
   const handleToggleNavBar = useCallback(
     () => setOpenNavBar((prev) => !prev),
     []
   );
-  const toggleUserMenu = useCallback(
-    (event) => setOpenUserMenu(event.currentTarget),
-    []
-  );
-  const closeUserMenu = useCallback(() => setOpenUserMenu(false), []);
 
-  const openAuthModal = useCallback(() => {
+  const handleOpenAuthModal = useCallback(() => {
     navigate('/auth');
   }, [navigate]);
 
@@ -47,17 +40,12 @@ function Header() {
           <Logo isMobile onClick={handleToggleNavBar} />
           <Box sx={{ alignItems: 'center', display: 'flex' }}>
             {isAuthenticated ? (
-              <AuthenticatedMenu
-                authenticatedUser={authenticatedUser}
-                closeUserMenu={closeUserMenu}
-                openUserMenu={openUserMenu}
-                toggleUserMenu={toggleUserMenu}
-              />
+              <AuthenticatedMenu />
             ) : (
               <Button
                 color='success'
                 variant='contained'
-                onClick={openAuthModal}
+                onClick={handleOpenAuthModal}
               >
                 Увійти
               </Button>
