@@ -13,7 +13,7 @@ import useAuthUser from '../../hooks/useAuthUser';
 
 import NavBar from '../Navigation/NavBar';
 
-import AuthenticatedMenu from './AuthenticatedMenu';
+import AuthenticatedUserBlock from './AuthenticatedUserBlock';
 import Logo from './Logo';
 
 import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
@@ -40,7 +40,7 @@ function Header() {
           <Logo isMobile onClick={handleToggleNavBar} />
           <Box sx={{ alignItems: 'center', display: 'flex' }}>
             {isAuthenticated ? (
-              <AuthenticatedMenu />
+              <AuthenticatedUserBlock />
             ) : (
               <Button
                 color='success'

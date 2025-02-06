@@ -15,21 +15,26 @@ import { stylesDeletePageTypography } from '../../styles';
 function EstablishmentRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: establishment, isLoading: isFetching } =
-    useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
+  const {
+    data: establishment,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
+
+  const { title } = establishment ?? {};
 
   const [removeEstablishment, { isLoading: isRemoving, error: removeError }] =
     useRemoveEstablishmentMutation();
 
+  const isLoading = isFetching || isRemoving;
+  const error = fetchError || removeError;
+
   const handleRemoveEstablishment = useCallback(async () => {
-    if (!establishment?.uuid) {
-      return;
-    }
-    const result = await removeEstablishment(establishment.uuid);
+    const result = await removeEstablishment(uuid);
     if (result?.data) {
       handleModalClose();
     }
-  }, [establishment?.uuid, handleModalClose, removeEstablishment]);
+  }, [uuid, handleModalClose, removeEstablishment]);
 
   const actions = useMemo(
     () => [
@@ -37,7 +42,7 @@ function EstablishmentRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isFetching || isRemoving}
+        disabled={isLoading}
         size='large'
         variant='contained'
         onClick={handleRemoveEstablishment}
@@ -45,7 +50,7 @@ function EstablishmentRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleRemoveEstablishment]
+    [isLoading, handleRemoveEstablishment]
   );
 
   const content = useMemo(() => {
@@ -54,18 +59,18 @@ function EstablishmentRemovePage({ handleModalClose }) {
     }
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        Ви впевнені, що хочете видалити заклад «{establishment?.title}
+        Ви впевнені, що хочете видалити заклад «{title}
         »? Це призведе до видалення всіх витрат, пов`язаних з цим закладом.
       </Typography>
     );
-  }, [isFetching, establishment?.title]);
+  }, [isFetching, title]);
 
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={removeError?.data}
+      error={error?.data}
       title='Видалення закладу...'
       onClose={handleModalClose}
     />

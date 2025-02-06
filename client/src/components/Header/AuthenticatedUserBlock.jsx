@@ -6,13 +6,13 @@ import { stringAvatar } from '../../utils/sharedFunctions';
 import useAuthUser from '../../hooks/useAuthUser';
 
 import UserMenu from './UserMenu/UserMenu';
-import WelcomeBlock from './WelcomeBlock';
+import Welcome from './Welcome';
 
 import { stylesAuthenticatedMenu } from '../../styles';
 
 const { BASE_URL } = configs;
 
-function AuthenticatedMenu() {
+function AuthenticatedUserBlock() {
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const { authenticatedUser } = useAuthUser();
@@ -29,7 +29,7 @@ function AuthenticatedMenu() {
 
   return (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>
-      <WelcomeBlock />
+      <Welcome />
       <Tooltip title='Обліковий запис'>
         <IconButton
           aria-controls={openUserMenu ? 'account-menu' : null}
@@ -65,4 +65,4 @@ function AuthenticatedMenu() {
   );
 }
 
-export default AuthenticatedMenu;
+export default AuthenticatedUserBlock;

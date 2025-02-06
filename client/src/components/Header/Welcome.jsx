@@ -4,7 +4,7 @@ import useAuthUser from '../../hooks/useAuthUser';
 
 import { stylesWelcomeBlockBox } from '../../styles';
 
-function WelcomeBlock() {
+function Welcome() {
   const { authenticatedUser } = useAuthUser();
 
   const fullName = authenticatedUser?.fullName || 'Невідомий користувач';
@@ -20,4 +20,4 @@ function WelcomeBlock() {
   );
 }
 
-export default WelcomeBlock;
+export default Welcome;

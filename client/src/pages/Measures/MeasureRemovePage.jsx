@@ -15,23 +15,26 @@ import { stylesDeletePageTypography } from '../../styles';
 function MeasureRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: measure, isLoading: isFetching } = useFetchMeasureByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: measure,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchMeasureByUuidQuery(uuid, { skip: !uuid });
+
+  const { title } = measure ?? {};
 
   const [removeMeasure, { isLoading: isRemoving, error: removeError }] =
     useRemoveMeasureMutation();
 
+  const isLoading = isFetching || isRemoving;
+  const error = fetchError || removeError;
+
   const handleRemoveMeasure = useCallback(async () => {
-    if (!measure?.uuid) {
-      return;
-    }
-    const result = await removeMeasure(measure.uuid);
+    const result = await removeMeasure(uuid);
     if (result?.data) {
       handleModalClose();
     }
-  }, [measure?.uuid, handleModalClose, removeMeasure]);
+  }, [uuid, handleModalClose, removeMeasure]);
 
   const actions = useMemo(
     () => [
@@ -39,7 +42,7 @@ function MeasureRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isFetching || isRemoving}
+        disabled={isLoading}
         size='large'
         variant='contained'
         onClick={handleRemoveMeasure}
@@ -47,7 +50,7 @@ function MeasureRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleRemoveMeasure]
+    [isLoading, handleRemoveMeasure]
   );
 
   const content = useMemo(() => {
@@ -56,18 +59,18 @@ function MeasureRemovePage({ handleModalClose }) {
     }
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        Ви впевнені, що хочете видалити одиницю вимірів «{measure?.title}»? Це
-        призведе до видалення всіх витрат, де вона використовується.
+        Ви впевнені, що хочете видалити одиницю вимірів «{title}»? Це призведе
+        до видалення всіх витрат, де вона використовується.
       </Typography>
     );
-  }, [isFetching, measure?.title]);
+  }, [isFetching, title]);
 
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={removeError?.data}
+      error={error?.data}
       title='Видалення одиниці...'
       onClose={handleModalClose}
     />

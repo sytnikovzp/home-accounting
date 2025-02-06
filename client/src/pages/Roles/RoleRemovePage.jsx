@@ -15,22 +15,26 @@ import { stylesDeletePageTypography } from '../../styles';
 function RoleRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: role, isLoading: isFetching } = useFetchRoleByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  const {
+    data: role,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchRoleByUuidQuery(uuid, { skip: !uuid });
+
+  const { title } = role ?? {};
 
   const [removeRole, { isLoading: isRemoving, error: removeError }] =
     useRemoveRoleMutation();
 
+  const isLoading = isFetching || isRemoving;
+  const error = fetchError || removeError;
+
   const handleRemoveRole = useCallback(async () => {
-    if (!role?.uuid) {
-      return;
-    }
-    const result = await removeRole(role.uuid);
+    const result = await removeRole(uuid);
     if (result?.data) {
       handleModalClose();
     }
-  }, [role?.uuid, handleModalClose, removeRole]);
+  }, [uuid, handleModalClose, removeRole]);
 
   const actions = useMemo(
     () => [
@@ -38,7 +42,7 @@ function RoleRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isFetching || isRemoving}
+        disabled={isLoading}
         size='large'
         variant='contained'
         onClick={handleRemoveRole}
@@ -46,7 +50,7 @@ function RoleRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleRemoveRole]
+    [isLoading, handleRemoveRole]
   );
 
   const content = useMemo(() => {
@@ -55,17 +59,17 @@ function RoleRemovePage({ handleModalClose }) {
     }
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        Ви впевнені, що хочете видалити роль «{role?.title}»?
+        Ви впевнені, що хочете видалити роль «{title}»?
       </Typography>
     );
-  }, [isFetching, role?.title]);
+  }, [isFetching, title]);
 
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={removeError?.data}
+      error={error?.data}
       title='Видалення ролі...'
       onClose={handleModalClose}
     />

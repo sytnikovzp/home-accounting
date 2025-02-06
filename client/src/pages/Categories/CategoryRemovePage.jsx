@@ -15,23 +15,26 @@ import { stylesDeletePageTypography } from '../../styles';
 function CategoryRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: category, isLoading: isFetching } = useFetchCategoryByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: category,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchCategoryByUuidQuery(uuid, { skip: !uuid });
+
+  const { title } = category ?? {};
 
   const [removeCategory, { isLoading: isRemoving, error: removeError }] =
     useRemoveCategoryMutation();
 
+  const isLoading = isFetching || isRemoving;
+  const error = fetchError || removeError;
+
   const handleRemoveCategory = useCallback(async () => {
-    if (!category?.uuid) {
-      return;
-    }
-    const result = await removeCategory(category.uuid);
+    const result = await removeCategory(uuid);
     if (result?.data) {
       handleModalClose();
     }
-  }, [category?.uuid, handleModalClose, removeCategory]);
+  }, [uuid, handleModalClose, removeCategory]);
 
   const actions = useMemo(
     () => [
@@ -39,7 +42,7 @@ function CategoryRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isFetching || isRemoving}
+        disabled={isLoading}
         size='large'
         variant='contained'
         onClick={handleRemoveCategory}
@@ -47,7 +50,7 @@ function CategoryRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleRemoveCategory]
+    [isLoading, handleRemoveCategory]
   );
 
   const content = useMemo(() => {
@@ -56,17 +59,17 @@ function CategoryRemovePage({ handleModalClose }) {
     }
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        Ви впевнені, що хочете видалити категорію «{category?.title}»?
+        Ви впевнені, що хочете видалити категорію «{title}»?
       </Typography>
     );
-  }, [isFetching, category?.title]);
+  }, [isFetching, title]);
 
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={removeError?.data}
+      error={error?.data}
       title='Видалення категорії...'
       onClose={handleModalClose}
     />

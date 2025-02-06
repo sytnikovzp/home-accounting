@@ -15,23 +15,26 @@ import { stylesDeletePageTypography } from '../../styles';
 function ExpenseRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: expense, isLoading: isFetching } = useFetchExpenseByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: expense,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchExpenseByUuidQuery(uuid, { skip: !uuid });
+
+  const { product } = expense ?? {};
 
   const [removeExpense, { isLoading: isRemoving, error: removeError }] =
     useRemoveExpenseMutation();
 
+  const isLoading = isFetching || isRemoving;
+  const error = fetchError || removeError;
+
   const handleRemoveExpense = useCallback(async () => {
-    if (!expense?.uuid) {
-      return;
-    }
-    const result = await removeExpense(expense.uuid);
+    const result = await removeExpense(uuid);
     if (result?.data) {
       handleModalClose();
     }
-  }, [expense?.uuid, handleModalClose, removeExpense]);
+  }, [uuid, handleModalClose, removeExpense]);
 
   const actions = useMemo(
     () => [
@@ -39,7 +42,7 @@ function ExpenseRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isFetching || isRemoving}
+        disabled={isLoading}
         size='large'
         variant='contained'
         onClick={handleRemoveExpense}
@@ -47,7 +50,7 @@ function ExpenseRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleRemoveExpense]
+    [isLoading, handleRemoveExpense]
   );
 
   const content = useMemo(() => {
@@ -56,17 +59,17 @@ function ExpenseRemovePage({ handleModalClose }) {
     }
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        Ви впевнені, що хочете видалити витрату «{expense?.product.title}»?
+        Ви впевнені, що хочете видалити витрату «{product?.title}»?
       </Typography>
     );
-  }, [isFetching, expense?.product.title]);
+  }, [isFetching, product?.title]);
 
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={removeError?.data}
+      error={error?.data}
       title='Видалення витрати...'
       onClose={handleModalClose}
     />

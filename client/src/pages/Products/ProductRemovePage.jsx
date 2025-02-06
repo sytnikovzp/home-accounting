@@ -15,23 +15,26 @@ import { stylesDeletePageTypography } from '../../styles';
 function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: product, isLoading: isFetching } = useFetchProductByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: product,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchProductByUuidQuery(uuid, { skip: !uuid });
+
+  const { title } = product ?? {};
 
   const [removeProduct, { isLoading: isRemoving, error: removeError }] =
     useRemoveProductMutation();
 
+  const isLoading = isFetching || isRemoving;
+  const error = fetchError || removeError;
+
   const handleRemoveProduct = useCallback(async () => {
-    if (!product?.uuid) {
-      return;
-    }
-    const result = await removeProduct(product.uuid);
+    const result = await removeProduct(uuid);
     if (result?.data) {
       handleModalClose();
     }
-  }, [product?.uuid, handleModalClose, removeProduct]);
+  }, [uuid, handleModalClose, removeProduct]);
 
   const actions = useMemo(
     () => [
@@ -39,7 +42,7 @@ function ProductRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isFetching || isRemoving}
+        disabled={isLoading}
         size='large'
         variant='contained'
         onClick={handleRemoveProduct}
@@ -47,7 +50,7 @@ function ProductRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleRemoveProduct]
+    [isLoading, handleRemoveProduct]
   );
 
   const content = useMemo(() => {
@@ -56,18 +59,18 @@ function ProductRemovePage({ handleModalClose }) {
     }
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        Ви впевнені, що хочете видалити товар/послугу «{product?.title}»? Це
-        призведе до видалення всіх витрат, що містять цей товар.
+        Ви впевнені, що хочете видалити товар/послугу «{title}»? Це призведе до
+        видалення всіх витрат, що містять цей товар.
       </Typography>
     );
-  }, [isFetching, product?.title]);
+  }, [isFetching, title]);
 
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={removeError?.data}
+      error={error?.data}
       title='Видалення товару/послуги...'
       onClose={handleModalClose}
     />

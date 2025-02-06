@@ -15,23 +15,26 @@ import { stylesDeletePageTypography } from '../../styles';
 function CurrencyRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: currency, isLoading: isFetching } = useFetchCurrencyByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: currency,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchCurrencyByUuidQuery(uuid, { skip: !uuid });
+
+  const { title } = currency ?? {};
 
   const [removeCurrency, { isLoading: isRemoving, error: removeError }] =
     useRemoveCurrencyMutation();
 
+  const isLoading = isFetching || isRemoving;
+  const error = fetchError || removeError;
+
   const handleRemoveCurrency = useCallback(async () => {
-    if (!currency?.uuid) {
-      return;
-    }
-    const result = await removeCurrency(currency.uuid);
+    const result = await removeCurrency(uuid);
     if (result?.data) {
       handleModalClose();
     }
-  }, [currency?.uuid, handleModalClose, removeCurrency]);
+  }, [uuid, handleModalClose, removeCurrency]);
 
   const actions = useMemo(
     () => [
@@ -39,7 +42,7 @@ function CurrencyRemovePage({ handleModalClose }) {
         key='remove'
         fullWidth
         color='error'
-        disabled={isFetching || isRemoving}
+        disabled={isLoading}
         size='large'
         variant='contained'
         onClick={handleRemoveCurrency}
@@ -47,7 +50,7 @@ function CurrencyRemovePage({ handleModalClose }) {
         Видалити
       </Button>,
     ],
-    [isFetching, isRemoving, handleRemoveCurrency]
+    [isLoading, handleRemoveCurrency]
   );
 
   const content = useMemo(() => {
@@ -56,19 +59,19 @@ function CurrencyRemovePage({ handleModalClose }) {
     }
     return (
       <Typography sx={stylesDeletePageTypography} variant='body1'>
-        Ви впевнені, що хочете видалити валюту «{currency?.title}»? Зверніть
-        увагу, що видалення цієї валюти призведе до видалення всіх витрат, у
-        яких вона використовується.
+        Ви впевнені, що хочете видалити валюту «{title}»? Зверніть увагу, що
+        видалення цієї валюти призведе до видалення всіх витрат, у яких вона
+        використовується.
       </Typography>
     );
-  }, [isFetching, currency?.title]);
+  }, [isFetching, title]);
 
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={removeError?.data}
+      error={error?.data}
       title='Видалення валюти...'
       onClose={handleModalClose}
     />
