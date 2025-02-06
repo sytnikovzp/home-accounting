@@ -13,13 +13,16 @@ import Preloader from '../../components/Preloader/Preloader';
 function CurrencyEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: currency, isLoading: isFetching } = useFetchCurrencyByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: currency,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchCurrencyByUuidQuery(uuid, { skip: !uuid });
 
   const [editCurrency, { isLoading: isSubmitting, error: submitError }] =
     useEditCurrencyMutation();
+
+  const error = fetchError || submitError;
 
   const handleSubmitCurrency = useCallback(
     async (values) => {
@@ -45,7 +48,7 @@ function CurrencyEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={error?.data}
       title='Редагування валюти...'
       onClose={handleModalClose}
     />

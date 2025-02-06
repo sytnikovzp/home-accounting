@@ -13,13 +13,16 @@ import Preloader from '../../components/Preloader/Preloader';
 function MeasureEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: measure, isLoading: isFetching } = useFetchMeasureByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: measure,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchMeasureByUuidQuery(uuid, { skip: !uuid });
 
   const [editMeasure, { isLoading: isSubmitting, error: submitError }] =
     useEditMeasureMutation();
+
+  const error = fetchError || submitError;
 
   const handleSubmitMeasure = useCallback(
     async (values) => {
@@ -45,7 +48,7 @@ function MeasureEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={error?.data}
       title='Редагування одиниці...'
       onClose={handleModalClose}
     />

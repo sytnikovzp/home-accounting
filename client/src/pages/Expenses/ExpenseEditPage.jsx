@@ -13,13 +13,16 @@ import Preloader from '../../components/Preloader/Preloader';
 function ExpenseEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: expense, isLoading: isFetching } = useFetchExpenseByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: expense,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchExpenseByUuidQuery(uuid, { skip: !uuid });
 
   const [editExpense, { isLoading: isSubmitting, error: submitError }] =
     useEditExpenseMutation();
+
+  const error = fetchError || submitError;
 
   const handleSubmitExpense = useCallback(
     async (values) => {
@@ -45,7 +48,7 @@ function ExpenseEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={error?.data}
       title='Редагування витрати...'
       onClose={handleModalClose}
     />

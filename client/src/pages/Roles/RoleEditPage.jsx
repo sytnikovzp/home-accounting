@@ -13,12 +13,16 @@ import Preloader from '../../components/Preloader/Preloader';
 function RoleEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: role, isLoading: isFetching } = useFetchRoleByUuidQuery(uuid, {
-    skip: !uuid,
-  });
+  const {
+    data: role,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchRoleByUuidQuery(uuid, { skip: !uuid });
 
   const [editRole, { isLoading: isSubmitting, error: submitError }] =
     useEditRoleMutation();
+
+  const error = fetchError || submitError;
 
   const handleSubmitRole = useCallback(
     async (values) => {
@@ -44,7 +48,7 @@ function RoleEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={error?.data}
       title='Редагування ролі...'
       onClose={handleModalClose}
     />

@@ -26,7 +26,11 @@ function UserEditPage() {
 
   const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
-  const { data: user, isLoading: isFetching } = useFetchUserByUuidQuery(uuid, {
+  const {
+    data: user,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchUserByUuidQuery(uuid, {
     skip: isAuthenticatedUser,
   });
 
@@ -86,18 +90,19 @@ function UserEditPage() {
     },
   ] = useResetUserProfilePhotoMutation();
 
-  const isChanging =
+  const isChangingPhoto =
     isUserPhotoUploading ||
     isUserProfilePhotoUploading ||
     isUserPhotoResetting ||
     isUserProfilePhotoResetting;
   const error =
+    fetchError ||
+    submitUserError ||
+    submitUserProfileError ||
     uploadUserPhotoError ||
     uploadUserProfilePhotoError ||
     resetUserPhotoError ||
-    resetUserProfilePhotoError ||
-    submitUserError ||
-    submitUserProfileError;
+    resetUserProfilePhotoError;
 
   const handleUploadPhoto = useCallback(
     async (file) => {
@@ -194,7 +199,7 @@ function UserEditPage() {
     <Preloader />
   ) : (
     <UserForm
-      isChanging={isChanging}
+      isChanging={isChangingPhoto}
       isSubmitting={isUserSubmitting || isUserProfileSubmitting}
       user={userData}
       onRemove={handleRemoveProfile}

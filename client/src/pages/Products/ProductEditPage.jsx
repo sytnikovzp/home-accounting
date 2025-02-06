@@ -13,13 +13,16 @@ import Preloader from '../../components/Preloader/Preloader';
 function ProductEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: product, isLoading: isFetching } = useFetchProductByUuidQuery(
-    uuid,
-    { skip: !uuid }
-  );
+  const {
+    data: product,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchProductByUuidQuery(uuid, { skip: !uuid });
 
   const [editProduct, { isLoading: isSubmitting, error: submitError }] =
     useEditProductMutation();
+
+  const error = fetchError || submitError;
 
   const handleSubmitProduct = useCallback(
     async (values) => {
@@ -45,7 +48,7 @@ function ProductEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={error?.data}
       title='Редагування товару/послуги...'
       onClose={handleModalClose}
     />

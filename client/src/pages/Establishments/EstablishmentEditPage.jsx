@@ -15,8 +15,11 @@ import Preloader from '../../components/Preloader/Preloader';
 function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
-  const { data: establishment, isLoading: isFetching } =
-    useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
+  const {
+    data: establishment,
+    isLoading: isFetching,
+    error: fetchError,
+  } = useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 
   const [
     editEstablishment,
@@ -31,8 +34,8 @@ function EstablishmentEditPage({ handleModalClose }) {
     { isLoading: isResetting, error: resetingError, reset: resetResetting },
   ] = useResetEstablishmentLogoMutation();
 
-  const isChanging = isUploading || isResetting;
-  const error = uploadError || resetingError || submitError;
+  const isChangingLogo = isUploading || isResetting;
+  const error = fetchError || submitError || uploadError || resetingError;
 
   const handleUploadLogo = useCallback(
     async (file) => {
@@ -46,9 +49,6 @@ function EstablishmentEditPage({ handleModalClose }) {
   const handleResetLogo = useCallback(async () => {
     resetSubmitting();
     resetUploading();
-
-    console.log('!!!!');
-
     await resetLogo(uuid);
   }, [resetLogo, resetSubmitting, resetUploading, uuid]);
 
@@ -72,7 +72,7 @@ function EstablishmentEditPage({ handleModalClose }) {
   ) : (
     <EstablishmentForm
       establishment={establishment}
-      isChanging={isChanging}
+      isChanging={isChangingLogo}
       isSubmitting={isSubmitting}
       onReset={handleResetLogo}
       onSubmit={handleSubmitEstablishment}
