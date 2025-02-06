@@ -1,7 +1,5 @@
-import { useCallback, useMemo } from 'react';
 import {
   Box,
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -9,17 +7,15 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Tooltip,
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { Delete, Edit, Task } from '@mui/icons-material';
 
+import ActionButtons from './ActionButtons';
 import EntityTableCell from './EntityTableCell';
 import StatusDropdown from './StatusDropdown';
 
 import {
-  stylesListTableActionsBodyTableCell,
   stylesListTableActionsHeadTableCell,
   stylesListTableBorderEmptyRow,
   stylesListTableContainer,
@@ -56,61 +52,32 @@ function ListTable({
 }) {
   const isMobile = useMediaQuery('(max-width:600px)');
 
-  const memoizedColumns = useMemo(() => columns, [columns]);
-  const memoizedRows = useMemo(() => rows, [rows]);
-
-  const handleSort = useCallback(
-    (field) => {
-      const newSortModel =
-        sortModel.field === field
-          ? { field, order: sortModel.order === 'asc' ? 'desc' : 'asc' }
-          : { field, order: 'asc' };
-      onSortModelChange(newSortModel);
-    },
-    [sortModel, onSortModelChange]
-  );
-
-  const renderStatusDropdown = useMemo(
-    () =>
-      showStatusDropdown && (
-        <StatusDropdown
-          expensesPage={expensesPage}
-          selectedStatus={selectedStatus}
-          usersPage={usersPage}
-          onPageChange={onPageChange}
-          onStatusChange={onStatusChange}
-        />
-      ),
-    [
-      showStatusDropdown,
-      expensesPage,
-      selectedStatus,
-      usersPage,
-      onPageChange,
-      onStatusChange,
-    ]
-  );
-
   return (
     <TableContainer sx={stylesListTableContainer}>
       <Table sx={stylesListTableTable}>
         <TableHead>
           <TableRow sx={stylesListTableHeadBackgroundColor}>
-            {memoizedColumns.map((col, index) => (
+            {columns.map((col, index) => (
               <TableCell
                 key={col.field}
                 align={col.align || 'center'}
                 sx={{
                   ...stylesListTableHeadCell,
                   borderRight:
-                    index < memoizedColumns.length - 1
-                      ? '1px solid darkgreen'
-                      : 'none',
+                    index < columns.length - 1 ? '1px solid darkgreen' : 'none',
                   width: ['logo', 'photo'].includes(col.field)
                     ? '90px'
                     : 'auto',
                 }}
-                onClick={() => handleSort(col.field)}
+                onClick={() =>
+                  onSortModelChange({
+                    field: col.field,
+                    order:
+                      sortModel.field === col.field && sortModel.order === 'asc'
+                        ? 'desc'
+                        : 'asc',
+                  })
+                }
               >
                 {col.headerName}
                 {sortModel.field === col.field &&
@@ -128,10 +95,10 @@ function ListTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {memoizedRows.length > 0 ? (
-            memoizedRows.map((row) => (
+          {rows.length > 0 ? (
+            rows.map((row) => (
               <TableRow key={row.uuid} sx={stylesListTableTableRow}>
-                {memoizedColumns.map((col, index) => (
+                {columns.map((col, index) => (
                   <EntityTableCell
                     key={col.field || index}
                     col={col}
@@ -141,51 +108,32 @@ function ListTable({
                   />
                 ))}
                 {!isMobile && (
-                  <TableCell
-                    align='center'
-                    sx={stylesListTableActionsBodyTableCell}
-                  >
-                    {isModerationPage ? (
-                      <Tooltip title='Модерувати'>
-                        <IconButton onClick={() => onModerate(row)}>
-                          <Task />
-                        </IconButton>
-                      </Tooltip>
-                    ) : (
-                      <>
-                        <Tooltip title='Редагувати'>
-                          <IconButton onClick={() => onEdit(row)}>
-                            <Edit />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title='Видалити'>
-                          <IconButton onClick={() => onRemove(row)}>
-                            <Delete />
-                          </IconButton>
-                        </Tooltip>
-                      </>
-                    )}
-                  </TableCell>
+                  <ActionButtons
+                    isModerationPage={isModerationPage}
+                    row={row}
+                    onEdit={onEdit}
+                    onModerate={onModerate}
+                    onRemove={onRemove}
+                  />
                 )}
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell align='center' colSpan={memoizedColumns.length + 1}>
+              <TableCell align='center' colSpan={columns.length + 1}>
                 <Typography variant='body1'>
                   Немає даних для відображення
                 </Typography>
               </TableCell>
             </TableRow>
           )}
-          {Array.from(
-            { length: pageSize - memoizedRows.length },
+          {Array.from({ length: Math.max(pageSize - rows.length, 0) }).map(
             (_, index) => (
               <TableRow
                 key={`empty-row-${index}`}
                 sx={stylesListTableHeightEmptyRow}
               >
-                {memoizedColumns.map((col, colIndex) => (
+                {columns.map((col, colIndex) => (
                   <TableCell
                     key={`empty-cell-${index}-${colIndex}`}
                     sx={stylesListTableBorderEmptyRow}
@@ -204,7 +152,15 @@ function ListTable({
         justifyContent={showStatusDropdown ? 'space-between' : 'flex-end'}
         m={2}
       >
-        {renderStatusDropdown}
+        {showStatusDropdown && (
+          <StatusDropdown
+            expensesPage={expensesPage}
+            selectedStatus={selectedStatus}
+            usersPage={usersPage}
+            onPageChange={onPageChange}
+            onStatusChange={onStatusChange}
+          />
+        )}
         <TablePagination
           component='div'
           count={totalCount}
