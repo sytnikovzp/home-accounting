@@ -116,17 +116,14 @@ function MeasuresPage() {
         </Button>
       </Box>
       <ListTable
-        columns={[
-          { field: 'title', headerName: 'Назва одиниці', align: 'left' },
-        ]}
         linkEntity='measures'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={measures}
         sortModel={sortModel}

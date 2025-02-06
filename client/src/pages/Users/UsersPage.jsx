@@ -107,18 +107,14 @@ function UsersPage() {
       <ListTable
         showStatusDropdown
         usersPage
-        columns={[
-          { field: 'photo', headerName: 'Фото', align: 'center' },
-          { field: 'fullName', headerName: 'Повне ім`я', align: 'left' },
-        ]}
         linkEntity='users'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={users}
         selectedStatus={emailVerificationStatus}

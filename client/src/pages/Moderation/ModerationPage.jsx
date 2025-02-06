@@ -85,19 +85,15 @@ function ModerationPage() {
         </Typography>
       </Box>
       <ListTable
-        columns={[
-          { field: 'contentType', headerName: 'Тип контенту', align: 'left' },
-          { field: 'title', headerName: 'Назва', align: 'left' },
-        ]}
         isModerationPage={true}
-        linkEntity='moderations'
+        linkEntity='moderation'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={moderations}
         sortModel={sortModel}

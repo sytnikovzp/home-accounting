@@ -116,17 +116,14 @@ function CurrenciesPage() {
         </Button>
       </Box>
       <ListTable
-        columns={[
-          { field: 'title', headerName: 'Назва валюти', align: 'left' },
-        ]}
         linkEntity='currencies'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={currencies}
         sortModel={sortModel}

@@ -123,17 +123,14 @@ function CategoriesPage() {
       </Box>
       <ListTable
         showStatusDropdown
-        columns={[
-          { field: 'title', headerName: 'Назва категорії', align: 'left' },
-        ]}
         linkEntity='categories'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={categories}
         selectedStatus={selectedStatus}

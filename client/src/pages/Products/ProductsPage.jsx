@@ -123,18 +123,14 @@ function ProductsPage() {
       </Box>
       <ListTable
         showStatusDropdown
-        columns={[
-          { field: 'category', headerName: 'Категорія', align: 'left' },
-          { field: 'title', headerName: 'Назва товару/послуги', align: 'left' },
-        ]}
         linkEntity='products'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={products}
         selectedStatus={selectedStatus}

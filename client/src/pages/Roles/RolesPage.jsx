@@ -116,15 +116,14 @@ function RolesPage() {
         </Button>
       </Box>
       <ListTable
-        columns={[{ field: 'title', headerName: 'Назва ролі', align: 'left' }]}
         linkEntity='roles'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={roles}
         sortModel={sortModel}

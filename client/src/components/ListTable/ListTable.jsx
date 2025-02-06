@@ -12,6 +12,8 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
+import { columnsConfig } from '../../constants';
+
 import ActionButtons from './ActionButtons';
 import EmptyRows from './EmptyRows';
 import EntityTableCell from './EntityTableCell';
@@ -26,8 +28,9 @@ import {
   stylesListTableTableRow,
 } from '../../styles';
 
+const { COLUMNS_CONFIG } = columnsConfig;
+
 function ListTable({
-  columns,
   expensesPage = false,
   isModerationPage = false,
   linkEntity = '',
@@ -43,6 +46,8 @@ function ListTable({
   sortModel,
   usersPage = false,
 }) {
+  const columns = COLUMNS_CONFIG[linkEntity] || [];
+
   const {
     currentPage,
     onPageChange,

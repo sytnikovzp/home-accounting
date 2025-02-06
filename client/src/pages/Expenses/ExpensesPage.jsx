@@ -124,19 +124,14 @@ function ExpensesPage() {
       <ListTable
         expensesPage
         showStatusDropdown
-        columns={[
-          { field: 'date', headerName: 'Дата', align: 'left' },
-          { field: 'product', headerName: 'Товар', align: 'left' },
-          { field: 'establishment', headerName: 'Заклад', align: 'left' },
-        ]}
         linkEntity='expenses'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={expenses}
         selectedStatus={selectedPeriod}

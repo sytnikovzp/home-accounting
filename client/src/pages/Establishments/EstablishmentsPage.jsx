@@ -123,18 +123,14 @@ function EstablishmentsPage() {
       </Box>
       <ListTable
         showStatusDropdown
-        columns={[
-          { field: 'logo', headerName: 'Лого', align: 'center' },
-          { field: 'title', headerName: 'Назва закладу', align: 'left' },
-        ]}
         linkEntity='establishments'
         pagination={{
-          totalCount,
           currentPage,
-          pageSize,
           onPageChange: handlePageChange,
           onRowsPerPageChange: handleRowsPerPageChange,
+          pageSize,
           rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+          totalCount,
         }}
         rows={establishments}
         selectedStatus={selectedStatus}
