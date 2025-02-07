@@ -11,15 +11,13 @@ function EstablishmentForm({
   establishment = null,
   onSubmit,
 }) {
-  const {
-    uuid,
-    title = '',
-    description = '',
-    url = '',
-    logo,
-  } = establishment ?? {};
+  const { uuid, title, description, url, logo } = establishment ?? {};
 
-  const initialValues = { title, description, url };
+  const initialValues = {
+    title: title || '',
+    description: description || '',
+    url: url || '',
+  };
 
   const fields = [
     {

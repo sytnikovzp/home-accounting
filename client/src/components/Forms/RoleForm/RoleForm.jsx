@@ -8,7 +8,7 @@ import BaseForm from '../BaseForm/BaseForm';
 import PermissionsSwitches from '../PermissionsSwitches/PermissionsSwitches';
 
 function RoleForm({ isSubmitting, role = null, onSubmit }) {
-  const { uuid, title = '', description = '', permissions = [] } = role ?? {};
+  const { uuid, title, description, permissions = [] } = role ?? {};
 
   const { data: responseData, isLoading: isFetching } =
     useFetchAllPermissionsQuery();
@@ -24,14 +24,11 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
     [permissionsList]
   );
 
-  const initialValues = useMemo(
-    () => ({
-      title,
-      description,
-      permissions: permissions.map((p) => p.uuid) || [],
-    }),
-    [title, description, permissions]
-  );
+  const initialValues = {
+    title: title || '',
+    description: description || '',
+    permissions: permissions.map((p) => p.uuid) || [],
+  };
 
   const fields = [
     {
