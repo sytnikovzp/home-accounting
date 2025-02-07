@@ -36,17 +36,17 @@ const CATEGORIES_PAGES = [
 function CategoriesPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, CATEGORIES_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: categoriesData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllCategoriesQuery({
     page: currentPage,
@@ -58,8 +58,6 @@ function CategoriesPage() {
 
   const categories = categoriesData?.data ?? [];
   const totalCount = categoriesData?.totalCount ?? 0;
-
-  usePageTitle(location, CATEGORIES_TITLES);
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -90,9 +88,9 @@ function CategoriesPage() {
     setSelectedStatus(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Категорій"...' />;
   }
 

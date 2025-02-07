@@ -17,7 +17,7 @@ function CurrencyRemovePage({ handleModalClose }) {
 
   const {
     data: currency,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchCurrencyByUuidQuery(uuid, { skip: !uuid });
 

@@ -16,14 +16,14 @@ function ResetPasswordPage() {
   const params = new URLSearchParams(location.search);
   const token = params.get('token');
 
+  usePageTitle(location, RESET_PASSWORD_TITLES);
+
   const [resetPassword, { isLoading: isSubmitting, error: submitError }] =
     useResetPasswordMutation();
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     navigate('/');
-  };
-
-  usePageTitle(location, RESET_PASSWORD_TITLES);
+  }, [navigate]);
 
   const handleSubmitPassword = useCallback(
     async (values) => {

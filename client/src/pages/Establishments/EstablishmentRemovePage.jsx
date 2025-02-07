@@ -17,7 +17,7 @@ function EstablishmentRemovePage({ handleModalClose }) {
 
   const {
     data: establishment,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 

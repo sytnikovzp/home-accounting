@@ -24,7 +24,7 @@ function UserRemovePage() {
 
   const {
     data: user,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchUserByUuidQuery(uuid, { skip: isAuthenticatedUser });
 

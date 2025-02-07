@@ -11,16 +11,20 @@ import CurrencyTable from './CurrencyTable';
 import { stylesCurrencyExchangeBox } from '../../styles';
 
 function CurrencyRates() {
-  const { data: rates, error, isLoading } = useFetchNBURatesQuery();
+  const {
+    data: rates,
+    isFetching,
+    error: fetchError,
+  } = useFetchNBURatesQuery();
 
-  const showPreloader = useDelayedPreloader(isLoading);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження валют...' />;
   }
 
-  if (error) {
-    return <Error error={error} />;
+  if (fetchError) {
+    return <Error error={fetchError} />;
   }
 
   if (!rates || rates.length === 0) {

@@ -15,7 +15,7 @@ function CurrencyEditPage({ handleModalClose }) {
 
   const {
     data: currency,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchCurrencyByUuidQuery(uuid, { skip: !uuid });
 

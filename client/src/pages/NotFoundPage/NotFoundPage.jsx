@@ -13,12 +13,12 @@ const { NOT_FOUND_PAGE_TITLES } = pageTitles;
 function NotFoundPage() {
   const navigate = useNavigate();
 
+  usePageTitle(location, NOT_FOUND_PAGE_TITLES);
+
   const randomMessage = useMemo(
     () => ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)],
     []
   );
-
-  usePageTitle(location, NOT_FOUND_PAGE_TITLES);
 
   const handleGoHome = () => navigate('/');
 

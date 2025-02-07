@@ -35,17 +35,17 @@ const CURRENCIES_PAGES = [
 
 function CurrenciesPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, CURRENCIES_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: currenciesData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllCurrenciesQuery({
     page: currentPage,
@@ -56,8 +56,6 @@ function CurrenciesPage() {
 
   const currencies = currenciesData?.data ?? [];
   const totalCount = currenciesData?.totalCount ?? 0;
-
-  usePageTitle(location, CURRENCIES_TITLES);
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -84,9 +82,9 @@ function CurrenciesPage() {
     [handleModalOpen]
   );
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Валют"...' />;
   }
 

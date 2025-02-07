@@ -1,6 +1,6 @@
 const CURRENCY_CODES = ['USD', 'EUR', 'GBP'];
 
-const DELAY_SHOW_PRELOADER = 350;
+const DELAY_VISIBLE_PRELOADER = 500;
 
 const SERVER = {
   HOST: import.meta.env.ACCOUNTING_SERVER_HOST,
@@ -11,4 +11,4 @@ const BASE_URL = `http://${SERVER.HOST}:${SERVER.PORT}/api`;
 
 const NBU_STAT_URL = 'https://bank.gov.ua/NBUStatService/v1';
 
-export { BASE_URL, CURRENCY_CODES, DELAY_SHOW_PRELOADER, NBU_STAT_URL };
+export { BASE_URL, CURRENCY_CODES, DELAY_VISIBLE_PRELOADER, NBU_STAT_URL };

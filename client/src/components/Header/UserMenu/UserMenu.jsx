@@ -43,27 +43,26 @@ const menuItems = [
 ];
 
 function UserMenu({ closeUserMenu }) {
-  const [logoutMutation] = useLogoutMutation();
-
   const { authenticatedUser } = useAuthUser();
-
   const navigate = useNavigate();
 
-  const navigateTo = useCallback((path) => navigate(path), [navigate]);
+  const [logoutMutation] = useLogoutMutation();
+
+  const handleNavigateTo = useCallback((path) => navigate(path), [navigate]);
 
   const handleMenuItemClick = useCallback(
     async (action, isLogout) => {
       if (isLogout) {
         await logoutMutation();
-        navigateTo('/');
+        handleNavigateTo('/');
       } else if (typeof action === 'function') {
-        navigateTo(action(authenticatedUser));
+        handleNavigateTo(action(authenticatedUser));
       } else {
-        navigateTo(authenticatedUser[action]);
+        handleNavigateTo(authenticatedUser[action]);
       }
       closeUserMenu();
     },
-    [closeUserMenu, logoutMutation, navigateTo, authenticatedUser]
+    [closeUserMenu, logoutMutation, handleNavigateTo, authenticatedUser]
   );
 
   return (

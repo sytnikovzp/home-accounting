@@ -35,10 +35,10 @@ const { HOME_PAGE_TITLES } = pageTitles;
 function HomePage() {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
-
   const location = useLocation();
-
   const { isFetchingUser, authenticatedUser, isAuthenticated } = useAuthUser();
+
+  usePageTitle(location, HOME_PAGE_TITLES);
 
   const creatorUuid = authenticatedUser?.uuid;
 
@@ -50,18 +50,12 @@ function HomePage() {
 
   const {
     data: statistics,
-    isLoading: isFetchingStatistics,
+    isFetching: isFetchingStatistics,
     error: fetchStatisticsError,
   } = queriesMap[criteria](
     { ago, ...(isAuthenticated && { creatorUuid }) },
     { skip: !ago }
   );
-
-  const showPreloader = useDelayedPreloader(
-    isFetchingStatistics || isFetchingUser
-  );
-
-  usePageTitle(location, HOME_PAGE_TITLES);
 
   const handleCriteriaChange = useCallback((e) => {
     setCriteria(e.target.value);
@@ -71,7 +65,11 @@ function HomePage() {
     setAgo(e.target.value);
   }, []);
 
-  if (showPreloader) {
+  const isPreloaderVisible = useDelayedPreloader(
+    isFetchingStatistics || isFetchingUser
+  );
+
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження даних статистики...' />;
   }
 

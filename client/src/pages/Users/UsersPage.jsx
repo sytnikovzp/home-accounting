@@ -35,17 +35,17 @@ function UsersPage() {
     order: 'asc',
   });
   const [emailVerificationStatus, setEmailVerificationStatus] = useState('all');
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, USERS_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: usersData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllUsersQuery({
     page: currentPage,
@@ -57,8 +57,6 @@ function UsersPage() {
 
   const users = usersData?.data ?? [];
   const totalCount = usersData?.totalCount ?? 0;
-
-  usePageTitle(location, USERS_TITLES);
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -81,9 +79,9 @@ function UsersPage() {
     setEmailVerificationStatus(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Користувачів"...' />;
   }
 

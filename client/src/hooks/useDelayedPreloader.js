@@ -2,23 +2,26 @@ import { useEffect, useState } from 'react';
 
 import { configs } from '../constants';
 
-const { DELAY_SHOW_PRELOADER } = configs;
+const { DELAY_VISIBLE_PRELOADER } = configs;
 
 function useDelayedPreloader(isLoading) {
-  const [showPreloader, setShowPreloader] = useState(false);
+  const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
 
   useEffect(() => {
     let timeout = null;
 
     if (isLoading) {
-      timeout = setTimeout(() => setShowPreloader(true), DELAY_SHOW_PRELOADER);
+      timeout = setTimeout(
+        () => setIsPreloaderVisible(true),
+        DELAY_VISIBLE_PRELOADER
+      );
     } else {
-      setShowPreloader(false);
+      setIsPreloaderVisible(false);
     }
     return () => clearTimeout(timeout);
   }, [isLoading]);
 
-  return showPreloader;
+  return isPreloaderVisible;
 }
 
 export default useDelayedPreloader;

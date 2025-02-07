@@ -36,17 +36,17 @@ const EXPENSES_PAGES = [
 function ExpensesPage() {
   const [sortModel, setSortModel] = useState({ field: 'date', order: 'desc' });
   const [selectedPeriod, setSelectedPeriod] = useState('allTime');
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, EXPENSES_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: expensesData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllExpensesQuery({
     page: currentPage,
@@ -58,8 +58,6 @@ function ExpensesPage() {
 
   const expenses = expensesData?.data ?? [];
   const totalCount = expensesData?.totalCount ?? 0;
-
-  usePageTitle(location, EXPENSES_TITLES);
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -90,9 +88,9 @@ function ExpensesPage() {
     setSelectedPeriod(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Покупок"...' />;
   }
 

@@ -19,16 +19,16 @@ import Logo from './Logo';
 import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 
 function Header() {
-  const [openNavBar, setOpenNavBar] = useState(false);
+  const [isNavBarOpen, setIsNavBarOpen] = useState(false);
   const { isAuthenticated } = useAuthUser();
   const navigate = useNavigate();
 
   const handleToggleNavBar = useCallback(
-    () => setOpenNavBar((prev) => !prev),
+    () => setIsNavBarOpen((prev) => !prev),
     []
   );
 
-  const handleOpenAuthModal = useCallback(() => {
+  const handleNavigateToAuth = useCallback(() => {
     navigate('/auth');
   }, [navigate]);
 
@@ -45,7 +45,7 @@ function Header() {
               <Button
                 color='success'
                 variant='contained'
-                onClick={handleOpenAuthModal}
+                onClick={handleNavigateToAuth}
               >
                 Увійти
               </Button>
@@ -54,7 +54,7 @@ function Header() {
         </Toolbar>
       </Container>
       <Divider sx={{ borderWidth: '1px' }} />
-      {openNavBar && <NavBar onClose={handleToggleNavBar} />}
+      {isNavBarOpen && <NavBar onClose={handleToggleNavBar} />}
     </AppBar>
   );
 }

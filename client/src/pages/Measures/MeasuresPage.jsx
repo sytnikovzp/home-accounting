@@ -35,17 +35,17 @@ const MEASURES_PAGES = [
 
 function MeasuresPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, MEASURES_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: measuresData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllMeasuresQuery({
     page: currentPage,
@@ -56,8 +56,6 @@ function MeasuresPage() {
 
   const measures = measuresData?.data ?? [];
   const totalCount = measuresData?.totalCount ?? 0;
-
-  usePageTitle(location, MEASURES_TITLES);
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -84,9 +82,9 @@ function MeasuresPage() {
     [handleModalOpen]
   );
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Одиниць вимірів"...' />;
   }
 

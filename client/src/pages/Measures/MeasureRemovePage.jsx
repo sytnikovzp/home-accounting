@@ -17,7 +17,7 @@ function MeasureRemovePage({ handleModalClose }) {
 
   const {
     data: measure,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchMeasureByUuidQuery(uuid, { skip: !uuid });
 

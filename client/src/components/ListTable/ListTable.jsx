@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import { columnsConfig } from '../../constants';
@@ -37,24 +38,24 @@ function ListTable({
   onRemove,
   onSortModelChange,
   onStatusChange,
-  pagination,
+  pagination = {},
   rows,
   selectedStatus,
   showStatusDropdown = false,
   sortModel,
 }) {
   const columns = COLUMNS_CONFIG[linkEntity] || [];
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const {
     currentPage,
     onPageChange,
     onRowsPerPageChange,
     pageSize,
-    rowsPerPageOptions = [6, 15, 20, 25],
+    rowsPerPageOptions = [],
     totalCount,
   } = pagination;
-
-  const isMobile = useMediaQuery('(max-width:600px)');
 
   const handleSortChange = useCallback(
     (field) => {

@@ -14,9 +14,9 @@ function PasswordField({
   required,
   touched,
 }) {
-  const [showPassword, setShowPassword] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+  const handleClickShowPassword = () => setIsPasswordVisible((prev) => !prev);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
   return (
@@ -30,12 +30,14 @@ function PasswordField({
         endAdornment: (
           <InputAdornment position='end'>
             <IconButton
-              aria-label={showPassword ? 'Приховати пароль' : 'Показати пароль'}
+              aria-label={
+                isPasswordVisible ? 'Приховати пароль' : 'Показати пароль'
+              }
               edge='end'
               onClick={handleClickShowPassword}
               onMouseDown={handleMouseDownPassword}
             >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
+              {isPasswordVisible ? <VisibilityOff /> : <Visibility />}
             </IconButton>
           </InputAdornment>
         ),
@@ -45,7 +47,7 @@ function PasswordField({
       placeholder={placeholder}
       required={required}
       sx={stylesFormFieldsHeight}
-      type={showPassword ? 'text' : 'password'}
+      type={isPasswordVisible ? 'text' : 'password'}
     />
   );
 }

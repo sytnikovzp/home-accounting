@@ -24,6 +24,8 @@ function AuthPage() {
   const [authMode, setAuthMode] = useState('login');
   const navigate = useNavigate();
 
+  usePageTitle(location, AUTH_TITLES, authMode);
+
   const [
     login,
     { isLoading: isLoggingIn, error: loginError, reset: resetLogin },
@@ -42,8 +44,6 @@ function AuthPage() {
   ] = useForgotPasswordMutation();
 
   const error = loginError || registerError || forgotPasswordError;
-
-  usePageTitle(location, AUTH_TITLES, authMode);
 
   useEffect(() => {
     if (authMode === 'login') {
@@ -64,7 +64,7 @@ function AuthPage() {
     navigate('/');
   }, [navigate]);
 
-  const navigateWithPayload = useCallback(
+  const handleNavigateWithPayload = useCallback(
     (path, payload = null) => {
       if (payload) {
         const query = new URLSearchParams(payload).toString();
@@ -80,14 +80,14 @@ function AuthPage() {
     async (action, args) => {
       const result = await action(args);
       if (result?.data) {
-        navigateWithPayload(
+        handleNavigateWithPayload(
           authMode === 'forgotPassword' ? '/notification' : '/',
           result.data
         );
         handleModalClose();
       }
     },
-    [authMode, handleModalClose, navigateWithPayload]
+    [authMode, handleModalClose, handleNavigateWithPayload]
   );
 
   const authForms = {
@@ -132,18 +132,7 @@ function AuthPage() {
     return 'warning.main';
   }, [authMode]);
 
-  const renderTitle = (
-    <Box alignItems='center' display='flex' flexDirection='column'>
-      <Avatar sx={{ ...stylesAuthPageAvatar, bgcolor: getAvatarBgColor }}>
-        <LockOutlined />
-      </Avatar>
-      <Typography sx={stylesAuthPageTitle} variant='h6'>
-        {AUTH_TITLES[authMode]}
-      </Typography>
-    </Box>
-  );
-
-  const renderActionButton = useMemo(() => {
+  const actions = useMemo(() => {
     if (authMode === 'login') {
       return (
         <Box>
@@ -170,13 +159,24 @@ function AuthPage() {
     );
   }, [authMode]);
 
+  const title = (
+    <Box alignItems='center' display='flex' flexDirection='column'>
+      <Avatar sx={{ ...stylesAuthPageAvatar, bgcolor: getAvatarBgColor }}>
+        <LockOutlined />
+      </Avatar>
+      <Typography sx={stylesAuthPageTitle} variant='h6'>
+        {AUTH_TITLES[authMode]}
+      </Typography>
+    </Box>
+  );
+
   return (
     <ModalWindow
       isOpen
-      actions={renderActionButton}
+      actions={actions}
       content={authForms[authMode]}
       error={error?.data}
-      title={renderTitle}
+      title={title}
       onClose={handleModalClose}
     />
   );

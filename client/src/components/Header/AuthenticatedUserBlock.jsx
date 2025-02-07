@@ -13,31 +13,30 @@ import { stylesAuthenticatedMenu } from '../../styles';
 const { BASE_URL } = configs;
 
 function AuthenticatedUserBlock() {
-  const [openUserMenu, setOpenUserMenu] = useState(false);
-
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { authenticatedUser } = useAuthUser();
 
   const fullName = authenticatedUser?.fullName || 'Невідомий користувач';
-  const photo = authenticatedUser?.photo;
+  const photo = authenticatedUser?.photo || null;
 
-  const toggleUserMenu = useCallback(
-    (event) => setOpenUserMenu(event.currentTarget),
+  const handleToggleUserMenu = useCallback(
+    (event) => setIsUserMenuOpen(event.currentTarget),
     []
   );
 
-  const closeUserMenu = useCallback(() => setOpenUserMenu(false), []);
+  const handleCloseUserMenu = useCallback(() => setIsUserMenuOpen(false), []);
 
   return (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>
       <Welcome />
       <Tooltip title='Обліковий запис'>
         <IconButton
-          aria-controls={openUserMenu ? 'account-menu' : null}
-          aria-expanded={openUserMenu ? 'true' : null}
+          aria-controls={isUserMenuOpen ? 'account-menu' : null}
+          aria-expanded={isUserMenuOpen ? 'true' : null}
           aria-haspopup='true'
           size='small'
           sx={{ ml: 2 }}
-          onClick={toggleUserMenu}
+          onClick={handleToggleUserMenu}
         >
           <Avatar
             alt={fullName}
@@ -51,15 +50,15 @@ function AuthenticatedUserBlock() {
         </IconButton>
       </Tooltip>
       <Menu
-        anchorEl={openUserMenu}
+        anchorEl={isUserMenuOpen}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         id='account-menu'
-        open={Boolean(openUserMenu)}
+        open={Boolean(isUserMenuOpen)}
         slotProps={{ paper: { elevation: 0, sx: stylesAuthenticatedMenu } }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        onClose={closeUserMenu}
+        onClose={handleCloseUserMenu}
       >
-        <UserMenu closeUserMenu={closeUserMenu} />
+        <UserMenu closeUserMenu={handleCloseUserMenu} />
       </Menu>
     </Box>
   );

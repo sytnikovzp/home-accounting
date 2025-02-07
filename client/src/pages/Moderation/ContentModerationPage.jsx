@@ -43,21 +43,21 @@ function ContentModerationPage({ handleModalClose }) {
 
   const {
     data: moderation,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = fetchEntityQuery(uuid, { skip: !uuid });
 
   const [
     moderateProduct,
-    { isLoading: isProductModerating, error: productError },
+    { isLoading: isProductSubmitting, error: submitProductError },
   ] = useModerationProductMutation();
   const [
     moderateCategory,
-    { isLoading: isCategoryModerating, error: categoryError },
+    { isLoading: isCategorySubmitting, error: submitCategoryError },
   ] = useModerationCategoryMutation();
   const [
     moderateEstablishment,
-    { isLoading: isEstablishmentModerating, error: establishmentError },
+    { isLoading: isEstablishmentSubmitting, error: submitEstablishmentError },
   ] = useModerationEstablishmentMutation();
 
   const moderateEntity = {
@@ -66,17 +66,26 @@ function ContentModerationPage({ handleModalClose }) {
     establishment: moderateEstablishment,
   }[path];
 
-  const isModerating = {
-    product: isProductModerating,
-    category: isCategoryModerating,
-    establishment: isEstablishmentModerating,
+  const isSubmiting = {
+    product: isProductSubmitting,
+    category: isCategorySubmitting,
+    establishment: isEstablishmentSubmitting,
   }[path];
 
-  const moderationError = {
-    product: productError,
-    category: categoryError,
-    establishment: establishmentError,
+  const submitError = {
+    product: submitProductError,
+    category: submitCategoryError,
+    establishment: submitEstablishmentError,
   }[path];
+
+  const pathMapping = useMemo(
+    () => ({
+      category: 'categories',
+      product: 'products',
+      establishment: 'establishments',
+    }),
+    []
+  );
 
   const handleModerationAction = useCallback(
     async (status) => {
@@ -86,15 +95,6 @@ function ContentModerationPage({ handleModalClose }) {
       await moderateEntity({ [`${path}Uuid`]: uuid, status });
     },
     [moderateEntity, path, uuid]
-  );
-
-  const pathMapping = useMemo(
-    () => ({
-      category: 'categories',
-      product: 'products',
-      establishment: 'establishments',
-    }),
-    []
   );
 
   const handleEditAndApprove = useCallback(() => {
@@ -208,7 +208,7 @@ function ContentModerationPage({ handleModalClose }) {
         key='approve'
         fullWidth
         color='success'
-        disabled={isFetching || isModerating}
+        disabled={isFetching || isSubmiting}
         size='large'
         variant='contained'
         onClick={() => handleModerationAction('approved')}
@@ -219,7 +219,7 @@ function ContentModerationPage({ handleModalClose }) {
         key='edit'
         fullWidth
         color='warning'
-        disabled={isFetching || isModerating}
+        disabled={isFetching || isSubmiting}
         size='large'
         variant='contained'
         onClick={handleEditAndApprove}
@@ -230,7 +230,7 @@ function ContentModerationPage({ handleModalClose }) {
         key='reject'
         fullWidth
         color='error'
-        disabled={isFetching || isModerating}
+        disabled={isFetching || isSubmiting}
         size='large'
         variant='contained'
         onClick={() => handleModerationAction('rejected')}
@@ -238,7 +238,7 @@ function ContentModerationPage({ handleModalClose }) {
         Відхилити
       </Button>,
     ],
-    [handleEditAndApprove, handleModerationAction, isFetching, isModerating]
+    [handleEditAndApprove, handleModerationAction, isFetching, isSubmiting]
   );
 
   const content = useMemo(() => {
@@ -257,7 +257,7 @@ function ContentModerationPage({ handleModalClose }) {
       isOpen
       actions={actions}
       content={content}
-      error={fetchError?.data || moderationError?.data}
+      error={fetchError?.data || submitError?.data}
       title='Модерація контенту...'
       onClose={handleModalClose}
     />

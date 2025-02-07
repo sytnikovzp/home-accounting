@@ -3,9 +3,7 @@ import { FORGOT_PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSche
 import BaseForm from '../BaseForm/BaseForm';
 
 function ForgotPasswordForm({ isSubmitting, onSubmit }) {
-  const initialValues = {
-    email: '',
-  };
+  const initialValues = { email: '' };
 
   const fields = [
     {

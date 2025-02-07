@@ -35,17 +35,17 @@ const ROLES_PAGES = [
 
 function RolesPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, ROLES_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: rolesData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllRolesQuery({
     page: currentPage,
@@ -56,8 +56,6 @@ function RolesPage() {
 
   const roles = rolesData?.data ?? [];
   const totalCount = rolesData?.totalCount ?? 0;
-
-  usePageTitle(location, ROLES_TITLES);
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -84,9 +82,9 @@ function RolesPage() {
     [handleModalOpen]
   );
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Ролей користувачів"...' />;
   }
 

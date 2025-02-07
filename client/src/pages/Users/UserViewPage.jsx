@@ -38,7 +38,7 @@ function UserViewPage() {
 
   const {
     data: user,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchUserByUuidQuery(uuid, { skip: isAuthenticatedUser });
 
@@ -51,13 +51,17 @@ function UserViewPage() {
     userData ?? {};
   const { createdAt, updatedAt } = creation ?? {};
 
+  const [
+    resendVerifyEmail,
+    { isLoading: isEmailSubmitting, error: submitEmailError },
+  ] = useResendVerifyEmailMutation();
+
+  const error = fetchError || submitEmailError;
+
   const photoPath = useMemo(() => {
     const baseUrl = BASE_URL.replace('/api', '');
     return photo ? `${baseUrl}/images/users/${photo}` : null;
   }, [photo]);
-
-  const [resendVerifyEmail, { isLoading: emailVerificationLoading }] =
-    useResendVerifyEmailMutation();
 
   const handleModalClose = useCallback(() => {
     if (uuid) {
@@ -112,7 +116,7 @@ function UserViewPage() {
               extra: emailVerificationStatus === 'Очікує веріфікації' && (
                 <Tooltip title='Повторно відправити email'>
                   <Button
-                    disabled={emailVerificationLoading}
+                    disabled={isEmailSubmitting}
                     size='small'
                     sx={stylesUserViewPageEmailButton}
                     variant='text'
@@ -145,7 +149,7 @@ function UserViewPage() {
       role,
       email,
       emailVerificationStatus,
-      emailVerificationLoading,
+      isEmailSubmitting,
       handleResendClick,
       createdAt,
       updatedAt,
@@ -167,7 +171,7 @@ function UserViewPage() {
     <ModalWindow
       isOpen
       content={content}
-      error={fetchError?.data}
+      error={error?.data}
       title='Деталі користувача...'
       onClose={handleModalClose}
     />

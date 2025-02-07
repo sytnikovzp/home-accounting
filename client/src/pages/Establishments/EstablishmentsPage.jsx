@@ -36,17 +36,17 @@ const ESTABLISHMENTS_PAGES = [
 function EstablishmentsPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, ESTABLISHMENTS_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: establishmentsData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllEstablishmentsQuery({
     page: currentPage,
@@ -58,8 +58,6 @@ function EstablishmentsPage() {
 
   const establishments = establishmentsData?.data ?? [];
   const totalCount = establishmentsData?.totalCount ?? 0;
-
-  usePageTitle(location, ESTABLISHMENTS_TITLES);
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -90,9 +88,9 @@ function EstablishmentsPage() {
     setSelectedStatus(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Закладів"...' />;
   }
 

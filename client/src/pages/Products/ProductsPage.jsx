@@ -36,17 +36,17 @@ const PRODUCTS_PAGES = [
 function ProductsPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, PRODUCTS_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: productsData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllProductsQuery({
     page: currentPage,
@@ -58,8 +58,6 @@ function ProductsPage() {
 
   const products = productsData?.data ?? [];
   const totalCount = productsData?.totalCount ?? 0;
-
-  usePageTitle(location, PRODUCTS_TITLES);
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -90,9 +88,9 @@ function ProductsPage() {
     setSelectedStatus(event.target.value);
   }, []);
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Товарів та послуг"...' />;
   }
 

@@ -34,12 +34,8 @@ function UserChangePasswordPage() {
   const error = submitUserPasswordError || submitUserProfilePasswordError;
 
   const handleModalClose = useCallback(() => {
-    if (uuid) {
-      navigate(-1);
-    } else {
-      navigate('/');
-    }
-  }, [uuid, navigate]);
+    navigate(-1);
+  }, [navigate]);
 
   const handleSubmitPassword = useCallback(
     async (values) => {

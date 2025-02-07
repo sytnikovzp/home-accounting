@@ -15,7 +15,7 @@ function RoleEditPage({ handleModalClose }) {
 
   const {
     data: role,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchRoleByUuidQuery(uuid, { skip: !uuid });
 

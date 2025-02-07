@@ -17,7 +17,7 @@ function ProductRemovePage({ handleModalClose }) {
 
   const {
     data: product,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchProductByUuidQuery(uuid, { skip: !uuid });
 

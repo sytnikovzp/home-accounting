@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box, Container, Grid2, useMediaQuery } from '@mui/material';
+import { Box, Container, Grid2, useMediaQuery, useTheme } from '@mui/material';
 
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
@@ -20,17 +20,18 @@ import {
 
 function Layout() {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
-  const isMobile = useMediaQuery('(max-width:600px)');
-
-  const handleToggleNavBar = useCallback(() => {
-    setIsNavBarOpen((prev) => !prev);
-  }, []);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (!isMobile) {
       setIsNavBarOpen(false);
     }
   }, [isMobile]);
+
+  const handleToggleNavBar = useCallback(() => {
+    setIsNavBarOpen((prev) => !prev);
+  }, []);
 
   return (
     <Box sx={stylesLayoutBox}>

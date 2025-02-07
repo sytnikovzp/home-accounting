@@ -25,17 +25,17 @@ const MODERATIONS_PAGES = [
 
 function ModerationPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  usePageTitle(location, MODERATIONS_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);
 
   const {
     data: moderationData,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchAllPendingItemsQuery({
     page: currentPage,
@@ -46,8 +46,6 @@ function ModerationPage() {
 
   const moderations = moderationData?.data ?? [];
   const totalCount = moderationData?.totalCount ?? 0;
-
-  usePageTitle(location, MODERATIONS_TITLES);
 
   const handleModalOpen = useCallback(
     (moderation) => {
@@ -61,9 +59,9 @@ function ModerationPage() {
     navigate('/moderation');
   }, [navigate]);
 
-  const showPreloader = useDelayedPreloader(isFetching);
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
-  if (showPreloader) {
+  if (isPreloaderVisible) {
     return <Preloader message='Завантаження списку "Модерацій"...' />;
   }
 

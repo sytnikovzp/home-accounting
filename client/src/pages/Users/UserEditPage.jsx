@@ -28,7 +28,7 @@ function UserEditPage() {
 
   const {
     data: user,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchUserByUuidQuery(uuid, {
     skip: isAuthenticatedUser,

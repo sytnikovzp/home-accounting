@@ -17,7 +17,7 @@ function ExpenseRemovePage({ handleModalClose }) {
 
   const {
     data: expense,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchExpenseByUuidQuery(uuid, { skip: !uuid });
 

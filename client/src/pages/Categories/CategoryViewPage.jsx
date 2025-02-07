@@ -17,7 +17,7 @@ function CategoryViewPage({ handleModalClose }) {
 
   const {
     data: category,
-    isLoading: isFetching,
+    isFetching,
     error: fetchError,
   } = useFetchCategoryByUuidQuery(uuid, { skip: !uuid });
 
