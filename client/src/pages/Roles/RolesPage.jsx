@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
-import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 import { useFetchAllRolesQuery } from '../../store/services';
 
@@ -25,7 +23,6 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
-const { ROLES_TITLES } = pageTitles;
 const ROLES_PAGES = [
   { path: 'add', Component: RoleAddPage },
   { path: 'edit/:uuid', Component: RoleEditPage },
@@ -36,9 +33,7 @@ const ROLES_PAGES = [
 function RolesPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const navigate = useNavigate();
-  const location = useLocation();
 
-  usePageTitle(location, ROLES_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);

@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import {
   Box,
   FormControl,
@@ -9,10 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { pageTitles } from '../../constants';
 import useAuthUser from '../../hooks/useAuthUser';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
-import usePageTitle from '../../hooks/usePageTitle';
 import {
   useFetchCostByCategoriesQuery,
   useFetchCostByEstablishmentsQuery,
@@ -30,15 +27,10 @@ import {
   stylesHomePagePeriodSelect,
 } from '../../styles';
 
-const { HOME_PAGE_TITLES } = pageTitles;
-
 function HomePage() {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
-  const location = useLocation();
   const { isFetchingUser, authenticatedUser, isAuthenticated } = useAuthUser();
-
-  usePageTitle(location, HOME_PAGE_TITLES);
 
   const creatorUuid = authenticatedUser?.uuid;
 

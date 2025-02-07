@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
-import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 import { useFetchAllPendingItemsQuery } from '../../store/services';
 
@@ -18,7 +16,6 @@ import ContentModerationPage from './ContentModerationPage';
 
 import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
-const { MODERATIONS_TITLES } = pageTitles;
 const MODERATIONS_PAGES = [
   { path: ':path/:uuid', Component: ContentModerationPage },
 ];
@@ -26,9 +23,7 @@ const MODERATIONS_PAGES = [
 function ModerationPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const navigate = useNavigate();
-  const location = useLocation();
 
-  usePageTitle(location, MODERATIONS_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);

@@ -1,7 +1,5 @@
-const AUTH_TITLES = {
-  login: 'Авторизація',
-  register: 'Реєстрація',
-  forgotPassword: 'Відновлення паролю',
+const AUTH_PAGE_TITLES = {
+  default: 'Авторизація | Моя бухгалтерія',
 };
 
 const CATEGORIES_TITLES = {
@@ -36,10 +34,6 @@ const EXPENSES_TITLES = {
   default: 'Витрати | Моя бухгалтерія',
 };
 
-const HOME_PAGE_TITLES = {
-  default: 'Моя бухгалтерія',
-};
-
 const MEASURES_TITLES = {
   view: 'Деталі одиниці | Моя бухгалтерія',
   add: 'Додавання одиниці | Моя бухгалтерія',
@@ -48,17 +42,9 @@ const MEASURES_TITLES = {
   default: 'Одиниці вимірів | Моя бухгалтерія',
 };
 
-const MODERATIONS_TITLES = {
+const MODERATION_TITLES = {
   view: 'Модерація контенту | Моя бухгалтерія',
   default: 'Підлягають модерації | Моя бухгалтерія',
-};
-
-const NOT_FOUND_PAGE_TITLES = {
-  default: 'Помилка 404 | Моя бухгалтерія',
-};
-
-const NOTIFICATION_PAGE_TITLES = {
-  default: 'Повідомлення | Моя бухгалтерія',
 };
 
 const PRODUCTS_TITLES = {
@@ -67,10 +53,6 @@ const PRODUCTS_TITLES = {
   edit: 'Редагування товару/послуги | Моя бухгалтерія',
   remove: 'Видалення товару/послуги | Моя бухгалтерія',
   default: 'Товари та послуги | Моя бухгалтерія',
-};
-
-const RESET_PASSWORD_TITLES = {
-  default: 'Скидання паролю | Моя бухгалтерія',
 };
 
 const ROLES_TITLES = {
@@ -89,18 +71,59 @@ const USERS_TITLES = {
   default: 'Користувачі | Моя бухгалтерія',
 };
 
+const HOME_PAGE_TITLES = {
+  default: 'Моя бухгалтерія',
+};
+
+const NOTIFICATION_PAGE_TITLES = {
+  default: 'Повідомлення | Моя бухгалтерія',
+};
+
+const RESET_PASSWORD_TITLES = {
+  default: 'Скидання паролю | Моя бухгалтерія',
+};
+
+const PROFILE_TITLES = {
+  default: 'Деталі профілю | Моя бухгалтерія',
+};
+
+const EDIT_PROFILE_TITLES = {
+  default: 'Редагування профілю | Моя бухгалтерія',
+};
+
+const PERMISSIONS_PROFILE_TITLES = {
+  default: 'Деталі ролі | Моя бухгалтерія',
+};
+
+const CHANGE_PASSWORD_TITLES = {
+  default: 'Зміна паролю | Моя бухгалтерія',
+};
+
+const REMOVE_PROFILE_TITLES = {
+  default: 'Видалення профілю | Моя бухгалтерія',
+};
+
+const NOT_FOUND_PAGE_TITLES = {
+  default: 'Помилка 404 | Моя бухгалтерія',
+};
+
 export {
-  AUTH_TITLES,
+  AUTH_PAGE_TITLES,
   CATEGORIES_TITLES,
+  CHANGE_PASSWORD_TITLES,
   CURRENCIES_TITLES,
+  EDIT_PROFILE_TITLES,
   ESTABLISHMENTS_TITLES,
   EXPENSES_TITLES,
   HOME_PAGE_TITLES,
   MEASURES_TITLES,
-  MODERATIONS_TITLES,
+  MODERATION_TITLES,
   NOT_FOUND_PAGE_TITLES,
   NOTIFICATION_PAGE_TITLES,
+  PERMISSIONS_PROFILE_TITLES,
   PRODUCTS_TITLES,
+  PROFILE_TITLES,
+  REMOVE_PROFILE_TITLES,
   RESET_PASSWORD_TITLES,
   ROLES_TITLES,
   USERS_TITLES,

@@ -2,19 +2,12 @@ import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 
-import { pageTitles } from '../../constants';
-import usePageTitle from '../../hooks/usePageTitle';
-
 import InfoMessage from '../../components/InfoMessage/InfoMessage';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-
-const { NOTIFICATION_PAGE_TITLES } = pageTitles;
 
 function NotificationsPage() {
   const navigate = useNavigate();
   const location = useLocation();
-
-  usePageTitle(location, NOTIFICATION_PAGE_TITLES);
 
   const params = new URLSearchParams(location.search);
   const severity = params.get('severity') || 'info';

@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
-import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 import { useFetchAllExpensesQuery } from '../../store/services';
 
@@ -25,7 +23,6 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
-const { EXPENSES_TITLES } = pageTitles;
 const EXPENSES_PAGES = [
   { path: 'add', Component: ExpenseAddPage },
   { path: 'edit/:uuid', Component: ExpenseEditPage },
@@ -37,9 +34,7 @@ function ExpensesPage() {
   const [sortModel, setSortModel] = useState({ field: 'date', order: 'desc' });
   const [selectedPeriod, setSelectedPeriod] = useState('allTime');
   const navigate = useNavigate();
-  const location = useLocation();
 
-  usePageTitle(location, EXPENSES_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);

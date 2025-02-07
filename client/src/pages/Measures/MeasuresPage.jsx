@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
-import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 import { useFetchAllMeasuresQuery } from '../../store/services';
 
@@ -25,7 +23,6 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
-const { MEASURES_TITLES } = pageTitles;
 const MEASURES_PAGES = [
   { path: 'add', Component: MeasureAddPage },
   { path: 'edit/:uuid', Component: MeasureEditPage },
@@ -36,9 +33,7 @@ const MEASURES_PAGES = [
 function MeasuresPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const navigate = useNavigate();
-  const location = useLocation();
 
-  usePageTitle(location, MEASURES_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);

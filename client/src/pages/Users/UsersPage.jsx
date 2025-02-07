@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
-import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 import { useFetchAllUsersQuery } from '../../store/services';
 
@@ -21,7 +19,6 @@ import UserViewPage from './UserViewPage';
 
 import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
-const { USERS_TITLES } = pageTitles;
 const USERS_PAGES = [
   { path: 'password/:uuid', Component: UserChangePasswordPage },
   { path: 'edit/:uuid', Component: UserEditPage },
@@ -36,9 +33,7 @@ function UsersPage() {
   });
   const [emailVerificationStatus, setEmailVerificationStatus] = useState('all');
   const navigate = useNavigate();
-  const location = useLocation();
 
-  usePageTitle(location, USERS_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);

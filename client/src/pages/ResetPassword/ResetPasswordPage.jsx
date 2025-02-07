@@ -1,22 +1,16 @@
 import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { pageTitles } from '../../constants';
-import usePageTitle from '../../hooks/usePageTitle';
 import { useResetPasswordMutation } from '../../store/services';
 
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-
-const { RESET_PASSWORD_TITLES } = pageTitles;
 
 function ResetPasswordPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const token = params.get('token');
-
-  usePageTitle(location, RESET_PASSWORD_TITLES);
 
   const [resetPassword, { isLoading: isSubmitting, error: submitError }] =
     useResetPasswordMutation();

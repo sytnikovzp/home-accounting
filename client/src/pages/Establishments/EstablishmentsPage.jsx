@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
-import { pageTitles } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePageTitle from '../../hooks/usePageTitle';
 import usePagination from '../../hooks/usePagination';
 import { useFetchAllEstablishmentsQuery } from '../../store/services';
 
@@ -25,7 +23,6 @@ import {
   stylesEntityPageTypography,
 } from '../../styles';
 
-const { ESTABLISHMENTS_TITLES } = pageTitles;
 const ESTABLISHMENTS_PAGES = [
   { path: 'add', Component: EstablishmentAddPage },
   { path: 'edit/:uuid', Component: EstablishmentEditPage },
@@ -37,9 +34,7 @@ function EstablishmentsPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
   const navigate = useNavigate();
-  const location = useLocation();
 
-  usePageTitle(location, ESTABLISHMENTS_TITLES);
   const itemsPerPage = useItemsPerPage();
   const { currentPage, pageSize, handlePageChange, handleRowsPerPageChange } =
     usePagination(itemsPerPage);

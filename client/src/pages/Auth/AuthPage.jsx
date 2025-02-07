@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Typography } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
 
-import { pageTitles } from '../../constants';
-import usePageTitle from '../../hooks/usePageTitle';
 import {
   useForgotPasswordMutation,
   useLoginMutation,
@@ -18,13 +16,15 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 import { stylesAuthPageAvatar, stylesAuthPageTitle } from '../../styles';
 
-const { AUTH_TITLES } = pageTitles;
+const titles = {
+  login: 'Авторизація',
+  register: 'Реєстрація',
+  forgotPassword: 'Відновлення паролю',
+};
 
 function AuthPage() {
   const [authMode, setAuthMode] = useState('login');
   const navigate = useNavigate();
-
-  usePageTitle(location, AUTH_TITLES, authMode);
 
   const [
     login,
@@ -165,7 +165,7 @@ function AuthPage() {
         <LockOutlined />
       </Avatar>
       <Typography sx={stylesAuthPageTitle} variant='h6'>
-        {AUTH_TITLES[authMode]}
+        {titles[authMode]}
       </Typography>
     </Box>
   );

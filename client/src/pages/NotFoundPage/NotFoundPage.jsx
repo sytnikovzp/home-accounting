@@ -2,25 +2,21 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 
-import { errorMessages, pageTitles } from '../../constants';
-import usePageTitle from '../../hooks/usePageTitle';
+import { errorMessages } from '../../constants';
 
 import { stylesNotFoundBox } from '../../styles';
 
 const { ERROR_MESSAGES } = errorMessages;
-const { NOT_FOUND_PAGE_TITLES } = pageTitles;
 
 function NotFoundPage() {
   const navigate = useNavigate();
-
-  usePageTitle(location, NOT_FOUND_PAGE_TITLES);
 
   const randomMessage = useMemo(
     () => ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)],
     []
   );
 
-  const handleGoHome = () => navigate('/');
+  const handleNavigateToHome = () => navigate('/');
 
   return (
     <Box sx={stylesNotFoundBox}>
@@ -35,7 +31,7 @@ function NotFoundPage() {
         color='success'
         sx={{ m: 3 }}
         variant='contained'
-        onClick={handleGoHome}
+        onClick={handleNavigateToHome}
       >
         На головну
       </Button>
