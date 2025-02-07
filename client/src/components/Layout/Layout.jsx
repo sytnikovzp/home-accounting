@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Box, Container, Grid2, useMediaQuery, useTheme } from '@mui/material';
 
@@ -42,25 +42,25 @@ const {
   USERS_TITLES,
 } = pageTitles;
 
-const TITLES_MAP = {
-  '/auth': AUTH_PAGE_TITLES,
-  '/categories': CATEGORIES_TITLES,
-  '/currencies': CURRENCIES_TITLES,
-  '/establishments': ESTABLISHMENTS_TITLES,
-  '/expenses': EXPENSES_TITLES,
-  '/measures': MEASURES_TITLES,
-  '/moderation': MODERATION_TITLES,
-  '/products': PRODUCTS_TITLES,
-  '/roles': ROLES_TITLES,
-  '/users': USERS_TITLES,
-  '/notification': NOTIFICATION_PAGE_TITLES,
-  '/reset-password': RESET_PASSWORD_TITLES,
-  '/profile': PROFILE_TITLES,
-  '/edit-profile': EDIT_PROFILE_TITLES,
-  '/permissions': PERMISSIONS_PROFILE_TITLES,
-  '/password': CHANGE_PASSWORD_TITLES,
-  '/remove-profile': REMOVE_PROFILE_TITLES,
-};
+const TITLES_MAP = new Map([
+  ['/auth', AUTH_PAGE_TITLES],
+  ['/categories', CATEGORIES_TITLES],
+  ['/currencies', CURRENCIES_TITLES],
+  ['/establishments', ESTABLISHMENTS_TITLES],
+  ['/expenses', EXPENSES_TITLES],
+  ['/measures', MEASURES_TITLES],
+  ['/moderation', MODERATION_TITLES],
+  ['/products', PRODUCTS_TITLES],
+  ['/roles', ROLES_TITLES],
+  ['/users', USERS_TITLES],
+  ['/notification', NOTIFICATION_PAGE_TITLES],
+  ['/reset-password', RESET_PASSWORD_TITLES],
+  ['/profile', PROFILE_TITLES],
+  ['/edit-profile', EDIT_PROFILE_TITLES],
+  ['/permissions', PERMISSIONS_PROFILE_TITLES],
+  ['/password', CHANGE_PASSWORD_TITLES],
+  ['/remove-profile', REMOVE_PROFILE_TITLES],
+]);
 
 function Layout() {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
@@ -68,10 +68,14 @@ function Layout() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const currentTitles =
-    Object.entries(TITLES_MAP).find(([path]) =>
-      location.pathname.startsWith(path)
-    )?.[1] || HOME_PAGE_TITLES;
+  const currentTitles = useMemo(() => {
+    for (const [path, titles] of TITLES_MAP) {
+      if (location.pathname.startsWith(path)) {
+        return titles;
+      }
+    }
+    return HOME_PAGE_TITLES;
+  }, [location.pathname]);
 
   usePageTitle(currentTitles);
 
