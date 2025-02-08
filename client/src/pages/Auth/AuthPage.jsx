@@ -19,7 +19,7 @@ import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-import { stylesAuthPageAvatar, stylesAuthPageTitle } from '../../styles';
+import { stylesAuthPageTitle } from '../../styles';
 
 const titles = {
   login: 'Авторизація',
@@ -164,7 +164,15 @@ function AuthPage() {
 
   const title = (
     <Box alignItems='center' display='flex' flexDirection='column'>
-      <Avatar sx={{ ...stylesAuthPageAvatar, bgcolor: getAvatarBgColor }}>
+      <Avatar
+        sx={{
+          height: 50,
+          mb: 2,
+          mx: 'auto',
+          width: 50,
+          bgcolor: getAvatarBgColor,
+        }}
+      >
         <LockOutlinedIcon />
       </Avatar>
       <Typography sx={stylesAuthPageTitle} variant='h6'>

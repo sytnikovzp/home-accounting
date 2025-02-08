@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
@@ -17,22 +18,29 @@ import {
 
 const { BASE_URL } = configs;
 
-function EntityTableCell({ col, row, linkEntity }) {
-  let avatarPath = null;
-  if (row[col.field]) {
-    avatarPath = `${BASE_URL.replace('/api', '')}/images/${
-      col.field === 'logo' ? 'establishments' : 'users'
-    }/${row[col.field]}`;
-  } else if (col.field === 'logo') {
-    avatarPath = `${BASE_URL.replace('/api', '')}/images/noLogo.png`;
+const getAvatarPath = (field, value) => {
+  const basePath = `${BASE_URL.replace('/api', '')}/images/`;
+  if (!value) {
+    return field === 'logo' ? `${basePath}noLogo.png` : null;
   }
+  return `${basePath}${field === 'logo' ? 'establishments' : 'users'}/${value}`;
+};
 
-  if (col.field === 'logo' || col.field === 'photo') {
+function EntityTableCell({ col, row, linkEntity }) {
+  const { field, align = 'center' } = col;
+  const cellValue = row[field];
+
+  const avatarPath = useMemo(
+    () => getAvatarPath(field, cellValue),
+    [field, cellValue]
+  );
+
+  if (field === 'logo' || field === 'photo') {
     return (
-      <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
+      <TableCell align={align} sx={stylesListTableCell}>
         <Box sx={stylesListTableAvatarBox}>
           <Avatar
-            alt={col.field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
+            alt={field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
             src={avatarPath}
             sx={stylesListTableAvatarSize}
             variant='rounded'
@@ -42,19 +50,21 @@ function EntityTableCell({ col, row, linkEntity }) {
     );
   }
 
-  if (col.field === 'title' && linkEntity === 'moderation') {
+  if (field === 'title' && linkEntity === 'moderation') {
     return (
-      <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
+      <TableCell align={align} sx={stylesListTableCell}>
         <Typography sx={stylesListTableTextColor} variant='body1'>
-          {row[col.field]}
+          {cellValue}
         </Typography>
       </TableCell>
     );
   }
 
-  if (['title', 'product', 'fullName'].includes(col.field)) {
-    return (
-      <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
+  const isLinkedField = ['title', 'product', 'fullName'].includes(field);
+
+  return (
+    <TableCell align={align} sx={stylesListTableCell}>
+      {isLinkedField ? (
         <RouterLink
           style={{ textDecoration: 'none' }}
           to={`/${linkEntity}/${row.uuid}`}
@@ -64,18 +74,14 @@ function EntityTableCell({ col, row, linkEntity }) {
             sx={stylesListTableTableTypography}
             variant='body1'
           >
-            {row[col.field]}
+            {cellValue}
           </Typography>
         </RouterLink>
-      </TableCell>
-    );
-  }
-
-  return (
-    <TableCell align={col.align || 'center'} sx={stylesListTableCell}>
-      <Typography sx={stylesListTableTextColor} variant='body1'>
-        {row[col.field]}
-      </Typography>
+      ) : (
+        <Typography sx={stylesListTableTextColor} variant='body1'>
+          {cellValue}
+        </Typography>
+      )}
     </TableCell>
   );
 }

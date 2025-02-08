@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -24,7 +24,6 @@ import {
   stylesListTableActionsHeadTableCell,
   stylesListTableContainer,
   stylesListTableHeadBackgroundColor,
-  stylesListTableHeadCell,
   stylesListTableTable,
   stylesListTableTableRow,
 } from '../../styles';
@@ -44,7 +43,7 @@ function ListTable({
   showStatusDropdown = false,
   sortModel,
 }) {
-  const columns = COLUMNS_CONFIG[linkEntity] || [];
+  const columns = useMemo(() => COLUMNS_CONFIG[linkEntity] || [], [linkEntity]);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -57,14 +56,50 @@ function ListTable({
     totalCount,
   } = pagination;
 
+  const memoizedSortModel = useMemo(() => sortModel, [sortModel]);
+
+  const tableRows = useMemo(
+    () =>
+      rows.map((row) => (
+        <TableRow key={row.uuid} sx={stylesListTableTableRow}>
+          {columns.map((col) => (
+            <EntityTableCell
+              key={col.field}
+              col={col}
+              linkEntity={linkEntity}
+              row={row}
+            />
+          ))}
+          {!isMobile && (
+            <ActionButtons
+              linkEntity={linkEntity}
+              row={row}
+              onEdit={onEdit}
+              onModerate={onModerate}
+              onRemove={onRemove}
+            />
+          )}
+        </TableRow>
+      )),
+    [rows, columns, linkEntity, isMobile, onEdit, onModerate, onRemove]
+  );
+
+  const emptyDataMessage = (
+    <TableRow>
+      <TableCell align='center' colSpan={columns.length + 1}>
+        <Typography variant='body1'>Немає даних для відображення</Typography>
+      </TableCell>
+    </TableRow>
+  );
+
   const handleSortChange = useCallback(
     (field) => {
-      const isSameField = sortModel.field === field;
+      const isSameField = memoizedSortModel.field === field;
       const newOrder =
-        isSameField && sortModel.order === 'asc' ? 'desc' : 'asc';
+        isSameField && memoizedSortModel.order === 'asc' ? 'desc' : 'asc';
       onSortModelChange({ field, order: newOrder });
     },
-    [onSortModelChange, sortModel]
+    [onSortModelChange, memoizedSortModel]
   );
 
   return (
@@ -77,7 +112,10 @@ function ListTable({
                 key={field}
                 align={align}
                 sx={{
-                  ...stylesListTableHeadCell,
+                  borderBottom: '1px solid #ccc',
+                  color: 'common.white',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
                   borderRight:
                     index < columns.length - 1 ? '1px solid darkgreen' : 'none',
                   width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
@@ -101,37 +139,7 @@ function ListTable({
         </TableHead>
 
         <TableBody>
-          {rows.length > 0 ? (
-            rows.map((row) => (
-              <TableRow key={row.uuid} sx={stylesListTableTableRow}>
-                {columns.map((col) => (
-                  <EntityTableCell
-                    key={col.field}
-                    col={col}
-                    linkEntity={linkEntity}
-                    row={row}
-                  />
-                ))}
-                {!isMobile && (
-                  <ActionButtons
-                    linkEntity={linkEntity}
-                    row={row}
-                    onEdit={onEdit}
-                    onModerate={onModerate}
-                    onRemove={onRemove}
-                  />
-                )}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell align='center' colSpan={columns.length + 1}>
-                <Typography variant='body1'>
-                  Немає даних для відображення
-                </Typography>
-              </TableCell>
-            </TableRow>
-          )}
+          {rows.length > 0 ? tableRows : emptyDataMessage}
           <EmptyRows
             columns={columns}
             isMobile={isMobile}

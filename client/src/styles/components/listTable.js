@@ -1,10 +1,3 @@
-export const stylesListTableHeadCell = {
-  borderBottom: '1px solid #ccc',
-  color: 'common.white',
-  cursor: 'pointer',
-  fontWeight: 'bold',
-};
-
 export const stylesListTableCell = {
   borderBottom: '1px solid #ccc',
   borderRight: '1px solid #ccc',
