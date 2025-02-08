@@ -1,16 +1,15 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Avatar, Box, Button } from '@mui/material';
-import {
-  CalendarToday,
-  Category,
-  ContentPasteSearch,
-  Description,
-  Info,
-  Link as LinkIcon,
-  Person,
-  Update,
-} from '@mui/icons-material';
+
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CategoryIcon from '@mui/icons-material/Category';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import DescriptionIcon from '@mui/icons-material/Description';
+import InfoIcon from '@mui/icons-material/Info';
+import LinkIcon from '@mui/icons-material/Link';
+import PersonIcon from '@mui/icons-material/Person';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import { configs } from '../../constants';
 import {
@@ -131,19 +130,19 @@ function ContentModerationPage({ handleModalClose }) {
             variant='rounded'
           />
         ) : null,
-        icon: Info,
+        icon: InfoIcon,
         label: 'Назва',
         value: title,
       },
       {
-        icon: ContentPasteSearch,
+        icon: ContentPasteSearchIcon,
         label: 'Тип контенту',
         value: contentType || '*Немає даних*',
       },
       ...(description
         ? [
             {
-              icon: Description,
+              icon: DescriptionIcon,
               label: 'Опис',
               value: description || '*Немає даних*',
             },
@@ -163,7 +162,7 @@ function ContentModerationPage({ handleModalClose }) {
       ...(category
         ? [
             {
-              icon: Category,
+              icon: CategoryIcon,
               isLink: Boolean(category?.title),
               label: 'Категорія',
               linkTo: category ? `/categories/${category?.uuid}` : '',
@@ -177,14 +176,14 @@ function ContentModerationPage({ handleModalClose }) {
         value: status,
       },
       {
-        icon: Person,
+        icon: PersonIcon,
         isLink: Boolean(creatorFullName),
         label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
         value: creatorFullName,
       },
-      { icon: CalendarToday, label: 'Створено', value: createdAt },
-      { icon: Update, label: 'Редаговано', value: updatedAt },
+      { icon: CalendarTodayIcon, label: 'Створено', value: createdAt },
+      { icon: UpdateIcon, label: 'Редаговано', value: updatedAt },
     ],
     [
       category,

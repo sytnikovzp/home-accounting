@@ -1,33 +1,32 @@
 import { useCallback } from 'react';
 import { Box, List } from '@mui/material';
-import {
-  AttachMoney,
-  Category,
-  DryCleaning,
-  Gavel,
-  Home,
-  ManageAccounts,
-  People,
-  ShoppingCart,
-  SquareFoot,
-  Store,
-} from '@mui/icons-material';
+
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CategoryIcon from '@mui/icons-material/Category';
+import DryCleaningIcon from '@mui/icons-material/DryCleaning';
+import GavelIcon from '@mui/icons-material/Gavel';
+import HomeIcon from '@mui/icons-material/Home';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PeopleIcon from '@mui/icons-material/People';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SquareFootIcon from '@mui/icons-material/SquareFoot';
+import StoreIcon from '@mui/icons-material/Store';
 
 import NavItem from './NavItem';
 
 import { stylesNavBarBox } from '../../styles';
 
 const navItems = [
-  { icon: Home, label: 'Головна', to: '/' },
-  { icon: ShoppingCart, label: 'Витрати', to: '/expenses' },
-  { icon: Store, label: 'Заклади', to: '/establishments' },
-  { icon: DryCleaning, label: 'Товари', to: '/products' },
-  { icon: Category, label: 'Категорії', to: '/categories' },
-  { icon: AttachMoney, label: 'Валюти', to: '/currencies' },
-  { icon: SquareFoot, label: 'Одиниці', to: '/measures' },
-  { icon: Gavel, label: 'Модерація', to: '/moderation' },
-  { icon: People, label: 'Користувачі', to: '/users' },
-  { icon: ManageAccounts, label: 'Ролі', to: '/roles' },
+  { icon: HomeIcon, label: 'Головна', to: '/' },
+  { icon: ShoppingCartIcon, label: 'Витрати', to: '/expenses' },
+  { icon: StoreIcon, label: 'Заклади', to: '/establishments' },
+  { icon: DryCleaningIcon, label: 'Товари', to: '/products' },
+  { icon: CategoryIcon, label: 'Категорії', to: '/categories' },
+  { icon: AttachMoneyIcon, label: 'Валюти', to: '/currencies' },
+  { icon: SquareFootIcon, label: 'Одиниці', to: '/measures' },
+  { icon: GavelIcon, label: 'Модерація', to: '/moderation' },
+  { icon: PeopleIcon, label: 'Користувачі', to: '/users' },
+  { icon: ManageAccountsIcon, label: 'Ролі', to: '/roles' },
 ];
 
 function NavBar({ onClose }) {

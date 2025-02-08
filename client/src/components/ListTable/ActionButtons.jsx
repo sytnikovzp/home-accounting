@@ -1,5 +1,8 @@
 import { IconButton, TableCell, Tooltip } from '@mui/material';
-import { Delete, Edit, Task } from '@mui/icons-material';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import TaskIcon from '@mui/icons-material/Task';
 
 import { stylesListTableActionsBodyTableCell } from '../../styles';
 
@@ -9,19 +12,19 @@ function ActionButtons({ row, linkEntity, onEdit, onRemove, onModerate }) {
       {linkEntity === 'moderation' ? (
         <Tooltip title='Модерувати'>
           <IconButton onClick={() => onModerate(row)}>
-            <Task />
+            <TaskIcon />
           </IconButton>
         </Tooltip>
       ) : (
         <>
           <Tooltip title='Редагувати'>
             <IconButton onClick={() => onEdit(row)}>
-              <Edit />
+              <EditIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title='Видалити'>
             <IconButton onClick={() => onRemove(row)}>
-              <Delete />
+              <DeleteIcon />
             </IconButton>
           </Tooltip>
         </>

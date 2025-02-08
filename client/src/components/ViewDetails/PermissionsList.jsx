@@ -7,7 +7,8 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { Lock } from '@mui/icons-material';
+
+import LockIcon from '@mui/icons-material/Lock';
 
 import {
   stylesPermissionsListBox,
@@ -17,7 +18,7 @@ import {
 function PermissionsList({ permissions = [] }) {
   const renderEmptyState = () => (
     <Box sx={stylesPermissionsListBoxEmpty}>
-      <Lock color='disabled' sx={{ mr: 12 }} />
+      <LockIcon color='disabled' sx={{ mr: 12 }} />
       <Typography>*Дозволи відсутні*</Typography>
     </Box>
   );
@@ -32,7 +33,7 @@ function PermissionsList({ permissions = [] }) {
         {permissions.map(({ uuid, title, description }) => (
           <ListItem key={uuid} disableGutters>
             <ListItemIcon>
-              <Lock color='primary' />
+              <LockIcon color='primary' />
             </ListItemIcon>
             <ListItemText
               primary={<Typography variant='body1'>{title}</Typography>}

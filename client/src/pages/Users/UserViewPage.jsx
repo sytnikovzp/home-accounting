@@ -1,13 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Avatar, Box, Button, Tooltip } from '@mui/material';
-import {
-  AlternateEmail,
-  AssignmentInd,
-  CalendarToday,
-  Info,
-  Update,
-} from '@mui/icons-material';
+
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import InfoIcon from '@mui/icons-material/Info';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import { configs } from '../../constants';
 import useAuthUser from '../../hooks/useAuthUser';
@@ -88,12 +87,12 @@ function UserViewPage() {
             variant='rounded'
           />
         ),
-        icon: Info,
+        icon: InfoIcon,
         label: 'Повне ім’я',
         value: fullName,
       },
       {
-        icon: AssignmentInd,
+        icon: AssignmentIndIcon,
         isLink: Boolean(role),
         label: 'Роль',
         linkTo: role ? `/roles/${role?.uuid}` : '',
@@ -102,7 +101,7 @@ function UserViewPage() {
       ...(email
         ? [
             {
-              icon: AlternateEmail,
+              icon: AlternateEmailIcon,
               isLink: true,
               label: 'Email',
               linkTo: `mailto:${email}`,
@@ -133,12 +132,12 @@ function UserViewPage() {
           ]
         : []),
       {
-        icon: CalendarToday,
+        icon: CalendarTodayIcon,
         label: 'Зареєстровано',
         value: createdAt,
       },
       {
-        icon: Update,
+        icon: UpdateIcon,
         label: 'Редаговано',
         value: updatedAt,
       },

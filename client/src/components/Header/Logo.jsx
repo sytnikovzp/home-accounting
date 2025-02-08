@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
-import accountingIcon from '../../assets/accounting.png';
+import accountingLogo from '../../assets/logo.png';
 import {
   stylesLogoBoxDesktop,
   stylesLogoBoxMobile,
@@ -18,7 +18,7 @@ function Logo({ isMobile, onClick }) {
       to='/'
       onClick={isMobile ? onClick : null}
     >
-      <img alt='Home Accounting' src={accountingIcon} style={stylesLogoIcon} />
+      <img alt='Home Accounting' src={accountingLogo} style={stylesLogoIcon} />
       <Typography
         noWrap
         sx={isMobile ? stylesLogoTypographyMobile : stylesLogoTypographyDesktop}

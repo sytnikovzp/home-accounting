@@ -7,7 +7,8 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { Clear } from '@mui/icons-material';
+
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { configs } from '../../constants';
 
@@ -62,7 +63,7 @@ function FileUpload({ entity, file, isChanging, label, onReset, onUpload }) {
                   sx={stylesFileUploadIconButton}
                   onClick={onReset}
                 >
-                  <Clear fontSize='small' />
+                  <ClearIcon fontSize='small' />
                 </IconButton>
               </Tooltip>
             )}

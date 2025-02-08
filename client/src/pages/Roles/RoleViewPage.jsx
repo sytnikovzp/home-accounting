@@ -1,7 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Divider, Typography } from '@mui/material';
-import { CalendarToday, Description, Info, Update } from '@mui/icons-material';
+
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DescriptionIcon from '@mui/icons-material/Description';
+import InfoIcon from '@mui/icons-material/Info';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import useAuthUser from '../../hooks/useAuthUser';
 import { useFetchRoleByUuidQuery } from '../../store/services';
@@ -38,10 +42,10 @@ function RoleViewPage() {
 
   const data = useMemo(
     () => [
-      { icon: Info, label: 'Назва', value: title },
-      { icon: Description, label: 'Опис', value: description },
-      { icon: CalendarToday, label: 'Створено', value: createdAt },
-      { icon: Update, label: 'Редаговано', value: updatedAt },
+      { icon: InfoIcon, label: 'Назва', value: title },
+      { icon: DescriptionIcon, label: 'Опис', value: description },
+      { icon: CalendarTodayIcon, label: 'Створено', value: createdAt },
+      { icon: UpdateIcon, label: 'Редаговано', value: updatedAt },
     ],
     [title, description, createdAt, updatedAt]
   );

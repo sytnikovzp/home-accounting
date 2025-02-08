@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Field } from 'formik';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import { stylesFormFieldsHeight } from '../../../styles';
 
@@ -37,7 +39,7 @@ function PasswordField({
               onClick={handleClickShowPassword}
               onMouseDown={handleMouseDownPassword}
             >
-              {isPasswordVisible ? <VisibilityOff /> : <Visibility />}
+              {isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
             </IconButton>
           </InputAdornment>
         ),

@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
-import {
-  CalendarToday,
-  Description,
-  Info,
-  Person,
-  Update,
-} from '@mui/icons-material';
+
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DescriptionIcon from '@mui/icons-material/Description';
+import InfoIcon from '@mui/icons-material/Info';
+import PersonIcon from '@mui/icons-material/Person';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchMeasureByUuidQuery } from '../../store/services';
 
@@ -31,17 +30,17 @@ function MeasureViewPage({ handleModalClose }) {
 
   const data = useMemo(
     () => [
-      { icon: Info, label: 'Назва', value: title },
-      { icon: Description, label: 'Опис', value: description },
+      { icon: InfoIcon, label: 'Назва', value: title },
+      { icon: DescriptionIcon, label: 'Опис', value: description },
       {
-        icon: Person,
+        icon: PersonIcon,
         isLink: Boolean(creatorFullName),
         label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
         value: creatorFullName,
       },
-      { icon: CalendarToday, label: 'Створено', value: createdAt },
-      { icon: Update, label: 'Редаговано', value: updatedAt },
+      { icon: CalendarTodayIcon, label: 'Створено', value: createdAt },
+      { icon: UpdateIcon, label: 'Редаговано', value: updatedAt },
     ],
     [title, description, creatorFullName, creatorUuid, createdAt, updatedAt]
   );

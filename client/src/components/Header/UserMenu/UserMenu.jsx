@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  AdminPanelSettings,
-  ListAlt,
-  Logout,
-  Password,
-  Portrait,
-} from '@mui/icons-material';
+
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PasswordIcon from '@mui/icons-material/Password';
+import PortraitIcon from '@mui/icons-material/Portrait';
 
 import useAuthUser from '../../../hooks/useAuthUser';
 import { useLogoutMutation } from '../../../store/services';
@@ -16,27 +15,27 @@ import UserMenuItem from './UserMenuItem';
 const menuItems = [
   {
     action: () => `/profile`,
-    icon: <Portrait fontSize='small' />,
+    icon: <PortraitIcon fontSize='small' />,
     label: 'Переглянути профіль',
   },
   {
     action: () => `/edit-profile`,
-    icon: <ListAlt fontSize='small' />,
+    icon: <ListAltIcon fontSize='small' />,
     label: 'Редагувати профіль',
   },
   {
     action: () => `/permissions`,
-    icon: <AdminPanelSettings fontSize='small' />,
+    icon: <AdminPanelSettingsIcon fontSize='small' />,
     label: 'Переглянути дозволи',
   },
   {
     action: () => `/password`,
-    icon: <Password fontSize='small' />,
+    icon: <PasswordIcon fontSize='small' />,
     label: 'Змінити пароль',
   },
   {
     action: 'handleLogout',
-    icon: <Logout fontSize='small' />,
+    icon: <LogoutIcon fontSize='small' />,
     isLogout: true,
     label: 'Вийти',
   },

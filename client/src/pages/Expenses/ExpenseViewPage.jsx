@@ -1,16 +1,15 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
-import {
-  AttachMoney,
-  CalendarToday,
-  DryCleaning,
-  Person,
-  ProductionQuantityLimits,
-  Shop,
-  Store,
-  Update,
-} from '@mui/icons-material';
+
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DryCleaningIcon from '@mui/icons-material/DryCleaning';
+import PersonIcon from '@mui/icons-material/Person';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import ShopIcon from '@mui/icons-material/Shop';
+import StoreIcon from '@mui/icons-material/Store';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchExpenseByUuidQuery } from '../../store/services';
 
@@ -45,45 +44,45 @@ function ExpenseViewPage({ handleModalClose }) {
   const data = useMemo(
     () => [
       {
-        icon: DryCleaning,
+        icon: DryCleaningIcon,
         isLink: Boolean(product),
         label: 'Товар',
         linkTo: establishment ? `/products/${product?.uuid}` : '',
         value: product?.title || '*Немає даних*',
       },
       {
-        icon: ProductionQuantityLimits,
+        icon: ProductionQuantityLimitsIcon,
         label: 'Кількість',
         value: `${quantity || '*Немає даних*'} ${measure?.title || '*Немає даних*'}`,
       },
       {
-        icon: AttachMoney,
+        icon: AttachMoneyIcon,
         label: 'Ціна за одиницю',
         value: `${unitPrice || '*Немає даних*'} ${currency?.code || '*Немає даних*'}`,
       },
       {
-        icon: AttachMoney,
+        icon: AttachMoneyIcon,
         iconColor: 'secondary',
         label: 'Сума',
         value: `${totalPrice || '*Немає даних*'} ${currency?.code || '*Немає даних*'}`,
       },
       {
-        icon: Store,
+        icon: StoreIcon,
         isLink: Boolean(establishment),
         label: 'Заклад',
         linkTo: establishment ? `/establishments/${establishment?.uuid}` : '',
         value: establishment?.title || '*Немає даних*',
       },
       {
-        icon: Person,
+        icon: PersonIcon,
         isLink: Boolean(creatorFullName),
         label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
         value: creatorFullName,
       },
-      { icon: Shop, label: 'Дата витрати', value: date || '*Немає даних*' },
-      { icon: CalendarToday, label: 'Створено', value: createdAt },
-      { icon: Update, label: 'Редаговано', value: updatedAt },
+      { icon: ShopIcon, label: 'Дата витрати', value: date || '*Немає даних*' },
+      { icon: CalendarTodayIcon, label: 'Створено', value: createdAt },
+      { icon: UpdateIcon, label: 'Редаговано', value: updatedAt },
     ],
     [
       product,

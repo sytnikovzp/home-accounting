@@ -13,7 +13,10 @@ import {
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Bar, Doughnut, Pie, PolarArea } from 'react-chartjs-2';
 import { Box, Button, Stack, useMediaQuery, useTheme } from '@mui/material';
-import { BarChart, PieChart, Radar } from '@mui/icons-material';
+
+import BarChartIcon from '@mui/icons-material/BarChart';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import RadarIcon from '@mui/icons-material/Radar';
 
 import Error from '../../components/Error/Error';
 
@@ -141,7 +144,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<PieChart />}
+          startIcon={<PieChartIcon />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={chartHandlers.doughnut}
@@ -151,7 +154,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<PieChart />}
+          startIcon={<PieChartIcon />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={chartHandlers.pie}
@@ -161,7 +164,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<BarChart />}
+          startIcon={<BarChartIcon />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={chartHandlers.bar}
@@ -171,7 +174,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<Radar />}
+          startIcon={<RadarIcon />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={chartHandlers.polar}

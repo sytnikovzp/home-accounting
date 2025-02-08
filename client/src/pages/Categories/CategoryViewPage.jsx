@@ -1,7 +1,11 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { CalendarToday, Info, Person, Update } from '@mui/icons-material';
+
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import InfoIcon from '@mui/icons-material/Info';
+import PersonIcon from '@mui/icons-material/Person';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchCategoryByUuidQuery } from '../../store/services';
 
@@ -27,14 +31,14 @@ function CategoryViewPage({ handleModalClose }) {
 
   const data = useMemo(
     () => [
-      { icon: Info, label: 'Назва', value: title },
+      { icon: InfoIcon, label: 'Назва', value: title },
       {
         icon: () => <StatusIcon status={status} />,
         label: 'Статус',
         value: status,
       },
       {
-        icon: Person,
+        icon: PersonIcon,
         isLink: Boolean(creatorFullName),
         label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
@@ -43,7 +47,7 @@ function CategoryViewPage({ handleModalClose }) {
       ...(moderatorFullName
         ? [
             {
-              icon: Person,
+              icon: PersonIcon,
               isLink: Boolean(moderatorFullName),
               label: 'Модератор',
               linkTo: moderatorFullName ? `/users/${moderatorUuid}` : '',
@@ -51,8 +55,8 @@ function CategoryViewPage({ handleModalClose }) {
             },
           ]
         : []),
-      { icon: CalendarToday, label: 'Створено', value: createdAt },
-      { icon: Update, label: 'Редаговано', value: updatedAt },
+      { icon: CalendarTodayIcon, label: 'Створено', value: createdAt },
+      { icon: UpdateIcon, label: 'Редаговано', value: updatedAt },
     ],
     [
       title,

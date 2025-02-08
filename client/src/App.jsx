@@ -33,6 +33,23 @@ import UserRemovePage from './pages/Users/UserRemovePage';
 import UsersPage from './pages/Users/UsersPage';
 import UserViewPage from './pages/Users/UserViewPage';
 
+const privateRoutes = [
+  { path: 'expenses/*', element: ExpensesPage },
+  { path: 'establishments/*', element: EstablishmentsPage },
+  { path: 'products/*', element: ProductsPage },
+  { path: 'categories/*', element: CategoriesPage },
+  { path: 'currencies/*', element: CurrenciesPage },
+  { path: 'measures/*', element: MeasuresPage },
+  { path: 'moderation/*', element: ModerationPage },
+  { path: 'users/*', element: UsersPage },
+  { path: 'roles/*', element: RolesPage },
+  { path: 'profile', element: UserViewPage },
+  { path: 'edit-profile', element: UserEditPage },
+  { path: 'permissions', element: RoleViewPage },
+  { path: 'password', element: UserChangePasswordPage },
+  { path: 'remove-profile', element: UserRemovePage },
+];
+
 function App() {
   const { isAuthenticated, isFetchingUser } = useAuthUser();
 
@@ -47,66 +64,23 @@ function App() {
     );
   }
 
-  const renderPrivateRoute = (Component) => (
-    <PrivateRoute>{Component}</PrivateRoute>
-  );
-
   return (
     <HelmetProvider>
       <Router>
         <Routes>
           <Route element={<Layout />} path='/'>
             <Route index element={<HomePage />} />
-            <Route
-              element={renderPrivateRoute(<ExpensesPage />)}
-              path='expenses/*'
-            />
-            <Route
-              element={renderPrivateRoute(<EstablishmentsPage />)}
-              path='establishments/*'
-            />
-            <Route
-              element={renderPrivateRoute(<ProductsPage />)}
-              path='products/*'
-            />
-            <Route
-              element={renderPrivateRoute(<CategoriesPage />)}
-              path='categories/*'
-            />
-            <Route
-              element={renderPrivateRoute(<CurrenciesPage />)}
-              path='currencies/*'
-            />
-            <Route
-              element={renderPrivateRoute(<MeasuresPage />)}
-              path='measures/*'
-            />
-            <Route
-              element={renderPrivateRoute(<ModerationPage />)}
-              path='moderation/*'
-            />
-            <Route element={renderPrivateRoute(<UsersPage />)} path='users/*' />
-            <Route element={renderPrivateRoute(<RolesPage />)} path='roles/*' />
-            <Route
-              element={renderPrivateRoute(<UserViewPage />)}
-              path='profile'
-            />
-            <Route
-              element={renderPrivateRoute(<UserEditPage />)}
-              path='edit-profile'
-            />
-            <Route
-              element={renderPrivateRoute(<RoleViewPage />)}
-              path='permissions'
-            />
-            <Route
-              element={renderPrivateRoute(<UserChangePasswordPage />)}
-              path='password'
-            />
-            <Route
-              element={renderPrivateRoute(<UserRemovePage />)}
-              path='remove-profile'
-            />
+            {privateRoutes.map(({ path, element: Component }) => (
+              <Route
+                key={path}
+                element={
+                  <PrivateRoute>
+                    <Component />
+                  </PrivateRoute>
+                }
+                path={path}
+              />
+            ))}
             <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ResetPasswordPage />} path='reset-password' />
             <Route

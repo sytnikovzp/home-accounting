@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar, Box } from '@mui/material';
-import {
-  CalendarToday,
-  Description,
-  Info,
-  Link as LinkIcon,
-  Person,
-  Update,
-} from '@mui/icons-material';
+
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DescriptionIcon from '@mui/icons-material/Description';
+import InfoIcon from '@mui/icons-material/Info';
+import LinkIcon from '@mui/icons-material/Link';
+import PersonIcon from '@mui/icons-material/Person';
+import UpdateIcon from '@mui/icons-material/Update';
 
 import { configs } from '../../constants';
 import { useFetchEstablishmentByUuidQuery } from '../../store/services';
@@ -54,12 +53,12 @@ function EstablishmentViewPage({ handleModalClose }) {
             variant='rounded'
           />
         ),
-        icon: Info,
+        icon: InfoIcon,
         label: 'Назва',
         value: title,
       },
       {
-        icon: Description,
+        icon: DescriptionIcon,
         label: 'Опис',
         value: description || '*Немає даних*',
       },
@@ -76,7 +75,7 @@ function EstablishmentViewPage({ handleModalClose }) {
         value: status,
       },
       {
-        icon: Person,
+        icon: PersonIcon,
         isLink: Boolean(creatorFullName),
         label: 'Автор',
         linkTo: creatorFullName ? `/users/${creatorUuid}` : '',
@@ -85,7 +84,7 @@ function EstablishmentViewPage({ handleModalClose }) {
       ...(moderatorFullName
         ? [
             {
-              icon: Person,
+              icon: PersonIcon,
               isLink: Boolean(moderatorFullName),
               label: 'Модератор',
               linkTo: moderatorFullName ? `/users/${moderatorUuid}` : '',
@@ -93,8 +92,8 @@ function EstablishmentViewPage({ handleModalClose }) {
             },
           ]
         : []),
-      { icon: CalendarToday, label: 'Створено', value: createdAt },
-      { icon: Update, label: 'Редаговано', value: updatedAt },
+      { icon: CalendarTodayIcon, label: 'Створено', value: createdAt },
+      { icon: UpdateIcon, label: 'Редаговано', value: updatedAt },
     ],
     [
       title,

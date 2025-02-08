@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Typography } from '@mui/material';
-import { LockOutlined } from '@mui/icons-material';
+
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import {
   useForgotPasswordMutation,
@@ -162,7 +163,7 @@ function AuthPage() {
   const title = (
     <Box alignItems='center' display='flex' flexDirection='column'>
       <Avatar sx={{ ...stylesAuthPageAvatar, bgcolor: getAvatarBgColor }}>
-        <LockOutlined />
+        <LockOutlinedIcon />
       </Avatar>
       <Typography sx={stylesAuthPageTitle} variant='h6'>
         {titles[authMode]}

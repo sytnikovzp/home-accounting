@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { Box, Container, Link, Typography } from '@mui/material';
-import { GitHub, LinkedIn } from '@mui/icons-material';
+
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 import {
   stylesFooterBox,
@@ -11,11 +13,11 @@ import {
 const socialLinks = [
   {
     href: 'https://github.com/sytnikovzp',
-    icon: <GitHub />,
+    icon: <GitHubIcon />,
   },
   {
     href: 'https://www.linkedin.com/in/sytnikovzp',
-    icon: <LinkedIn />,
+    icon: <LinkedInIcon />,
   },
 ];
 

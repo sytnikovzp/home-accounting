@@ -416,10 +416,10 @@ export default [
               '^yup',
               '^@mui/',
               '^@mui/x-date-pickers',
-              '^@mui/icons-material',
               '^@mui/material/styles',
               '^@?\\w',
             ],
+            ['^@mui/icons-material'],
             [
               '^.*\\/constants($|\\/.*$)',
               '^.*\\/utils($|\\/.*$)',

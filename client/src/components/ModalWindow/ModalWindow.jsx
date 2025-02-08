@@ -7,7 +7,8 @@ import {
   Modal,
   Typography,
 } from '@mui/material';
-import { Close } from '@mui/icons-material';
+
+import CloseIcon from '@mui/icons-material/Close';
 
 import {
   stylesModalWindowContentBox,
@@ -41,7 +42,7 @@ function ModalWindow({
               sx={stylesModalWindowIconButton}
               onClick={onClose}
             >
-              <Close />
+              <CloseIcon />
             </IconButton>
           )}
           {title && (
