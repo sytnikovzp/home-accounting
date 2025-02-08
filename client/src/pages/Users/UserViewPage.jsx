@@ -1,6 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Avatar, Box, Button, Tooltip } from '@mui/material';
+
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';

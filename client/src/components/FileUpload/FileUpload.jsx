@@ -1,12 +1,11 @@
 import { useCallback, useMemo } from 'react';
-import {
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  IconButton,
-  Tooltip,
-} from '@mui/material';
+
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 import ClearIcon from '@mui/icons-material/Clear';
 

@@ -1,4 +1,4 @@
-import { useMediaQuery } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function useItemsPerPage() {
   const isXs = useMediaQuery((theme) => theme.breakpoints.down('xs'));

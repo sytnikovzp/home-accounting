@@ -1,6 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Box, Container, Grid2, useMediaQuery, useTheme } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid2';
+
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { pageTitles } from '../../constants';
 import usePageTitle from '../../hooks/usePageTitle';
@@ -85,45 +91,43 @@ function Layout() {
     }
   }, [isMobile]);
 
-  const handleToggleNavBar = useCallback(() => {
+  const handleToggleNavBar = () => {
     setIsNavBarOpen((prev) => !prev);
-  }, []);
+  };
 
   return (
     <Box sx={stylesLayoutBox}>
-      <Grid2
+      <Grid
         container
         direction='column'
         rowSpacing={2}
         sx={stylesLayoutGridContainer}
       >
-        <Grid2>
-          <Header />
-        </Grid2>
+        <Header />
         <Container maxWidth='xl' sx={stylesLayoutXLContainer}>
-          <Grid2 container columnSpacing={2} sx={stylesLayoutXLGridContainer}>
+          <Grid container columnSpacing={2} sx={stylesLayoutXLGridContainer}>
             {!isMobile && (
-              <Grid2 md={2} sx={stylesLayoutNavBarDesktop}>
+              <Grid md={2} sx={stylesLayoutNavBarDesktop}>
                 <NavBar />
-              </Grid2>
+              </Grid>
             )}
             {isMobile && isNavBarOpen && (
-              <Grid2 sx={stylesLayoutNavBarMobile}>
+              <Grid sx={stylesLayoutNavBarMobile}>
                 <NavBar onClose={handleToggleNavBar} />
-              </Grid2>
+              </Grid>
             )}
-            <Grid2 sx={stylesLayoutOutlet}>
+            <Grid sx={stylesLayoutOutlet}>
               <Outlet />
-            </Grid2>
-            <Grid2 md='auto' sx={stylesLayoutServiceBlock} xs={12}>
+            </Grid>
+            <Grid md='auto' sx={stylesLayoutServiceBlock} xs={12}>
               <ServiceBlock />
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Container>
-      </Grid2>
-      <Grid2 sx={{ flexShrink: 0 }}>
+      </Grid>
+      <Grid sx={{ flexShrink: 0 }}>
         <Footer />
-      </Grid2>
+      </Grid>
     </Box>
   );
 }

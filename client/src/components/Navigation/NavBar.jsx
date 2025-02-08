@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
-import { Box, List } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CategoryIcon from '@mui/icons-material/Category';

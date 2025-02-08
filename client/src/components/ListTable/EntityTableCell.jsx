@@ -1,5 +1,9 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Avatar, Box, TableCell, Typography } from '@mui/material';
+
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import TableCell from '@mui/material/TableCell';
+import Typography from '@mui/material/Typography';
 
 import { configs } from '../../constants';
 

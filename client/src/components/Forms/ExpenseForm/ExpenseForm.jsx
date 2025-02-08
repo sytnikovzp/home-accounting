@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { uk } from 'date-fns/locale/uk';
 
 import {
   formatItems,

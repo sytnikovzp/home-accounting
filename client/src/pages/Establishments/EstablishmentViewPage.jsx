@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Avatar, Box } from '@mui/material';
+
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';

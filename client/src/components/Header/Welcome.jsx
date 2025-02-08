@@ -1,8 +1,9 @@
-import { Box, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
-import { stylesWelcomeBlockBox } from '../../styles';
+import { stylesWelcomeBox } from '../../styles';
 
 function Welcome() {
   const { authenticatedUser } = useAuthUser();
@@ -11,7 +12,7 @@ function Welcome() {
   const roleTitle = authenticatedUser?.role?.title || 'невідома роль';
 
   return (
-    <Box sx={stylesWelcomeBlockBox}>
+    <Box sx={stylesWelcomeBox}>
       <Typography variant='body1'>Привіт, {fullName}!</Typography>
       <Typography color='text.secondary' variant='body2'>
         Ваша роль на сайті: {roleTitle}

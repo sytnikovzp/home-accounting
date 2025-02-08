@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+
+import Button from '@mui/material/Button';
 
 import InfoMessage from '../../components/InfoMessage/InfoMessage';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';

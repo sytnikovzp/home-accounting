@@ -1,4 +1,5 @@
-import { uk } from 'date-fns/locale';
+import { uk } from 'date-fns/locale/uk';
+
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';

@@ -1,5 +1,6 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Link } from '@mui/material';
+
+import Link from '@mui/material/Link';
 
 function ValueWithLink({ value, isLink, linkTo = '' }) {
   const isExternalLink = /^https?:\/\//.test(linkTo ?? '');

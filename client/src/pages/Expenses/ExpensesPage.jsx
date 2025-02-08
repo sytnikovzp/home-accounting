@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Typography } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
@@ -79,9 +82,7 @@ function ExpensesPage() {
     [handleModalOpen]
   );
 
-  const handlePeriodChange = useCallback((event) => {
-    setSelectedPeriod(event.target.value);
-  }, []);
+  const handlePeriodChange = (event) => setSelectedPeriod(event.target.value);
 
   const isPreloaderVisible = useDelayedPreloader(isFetching);
 

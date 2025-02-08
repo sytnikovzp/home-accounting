@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import ValueWithLink from './ValueWithLink';
 
@@ -18,7 +19,7 @@ function ViewDetailRow({ icon: Icon, label, value, isLink, linkTo, extra }) {
           <ValueWithLink isLink={isLink} linkTo={linkTo} value={value} />
         </Typography>
       </Box>
-      {extra && <Box>{extra}</Box>}
+      {extra && <>{extra}</>}
     </Box>
   );
 }

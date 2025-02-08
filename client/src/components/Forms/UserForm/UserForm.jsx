@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import { formatItems } from '../../../utils/sharedFunctions';
 import { USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';

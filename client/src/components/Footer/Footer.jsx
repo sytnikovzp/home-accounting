@@ -1,5 +1,7 @@
-import { useMemo } from 'react';
-import { Box, Container, Link, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -22,7 +24,7 @@ const socialLinks = [
 ];
 
 function Footer() {
-  const currentYear = useMemo(() => new Date().getFullYear(), []);
+  const currentYear = new Date().getFullYear();
 
   return (
     <Box component='footer' sx={stylesFooterBox}>

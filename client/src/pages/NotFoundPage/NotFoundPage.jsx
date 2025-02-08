@@ -1,6 +1,8 @@
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Typography } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import { errorMessages } from '../../constants';
 
@@ -11,10 +13,8 @@ const { ERROR_MESSAGES } = errorMessages;
 function NotFoundPage() {
   const navigate = useNavigate();
 
-  const randomMessage = useMemo(
-    () => ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)],
-    []
-  );
+  const randomMessage =
+    ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)];
 
   const handleNavigateToHome = () => navigate('/');
 

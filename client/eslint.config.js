@@ -414,10 +414,14 @@ export default [
               '^date-fns',
               '^formik',
               '^yup',
-              '^@mui/',
-              '^@mui/x-date-pickers',
-              '^@mui/material/styles',
               '^@?\\w',
+            ],
+            ['^@mui/material'],
+            ['^@mui/x-date-pickers'],
+            [
+              '^@mui/material/styles',
+              '^@mui/material/useMediaQuery',
+              '^@mui/material/locale',
             ],
             ['^@mui/icons-material'],
             [

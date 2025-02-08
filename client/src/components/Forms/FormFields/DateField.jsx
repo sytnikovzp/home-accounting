@@ -1,7 +1,10 @@
 import { format, parse } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { uk } from 'date-fns/locale/uk';
 import { Field } from 'formik';
-import { FormControl, FormHelperText } from '@mui/material';
+
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+
 import { DatePicker } from '@mui/x-date-pickers';
 
 function DateField({ name, label, required, touched, error }) {

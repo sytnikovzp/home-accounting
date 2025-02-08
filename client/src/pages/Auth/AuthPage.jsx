@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Box, Button, Typography } from '@mui/material';
+
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
@@ -136,16 +140,14 @@ function AuthPage() {
   const actions = useMemo(() => {
     if (authMode === 'login') {
       return (
-        <Box>
-          <Button
-            fullWidth
-            color='secondary'
-            variant='text'
-            onClick={() => setAuthMode('register')}
-          >
-            Перейти до реєстрації
-          </Button>
-        </Box>
+        <Button
+          fullWidth
+          color='secondary'
+          variant='text'
+          onClick={() => setAuthMode('register')}
+        >
+          Перейти до реєстрації
+        </Button>
       );
     }
     return (

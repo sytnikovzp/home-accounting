@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
-import { ListItemIcon, MenuItem } from '@mui/material';
+
+import ListItemIcon from '@mui/material/ListItemIcon';
+import MenuItem from '@mui/material/MenuItem';
 
 function UserMenuItem({ label, icon, action, isLogout, onAction }) {
   const handleClick = useCallback(() => {

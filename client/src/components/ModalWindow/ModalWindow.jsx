@@ -1,12 +1,10 @@
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  Fade,
-  IconButton,
-  Modal,
-  Typography,
-} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Box from '@mui/material/Box';
+import Fade from '@mui/material/Fade';
+import IconButton from '@mui/material/IconButton';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
 
 import CloseIcon from '@mui/icons-material/Close';
 

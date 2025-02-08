@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  Divider,
-  Toolbar,
-} from '@mui/material';
+
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Toolbar from '@mui/material/Toolbar';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -23,10 +22,7 @@ function Header() {
   const { isAuthenticated } = useAuthUser();
   const navigate = useNavigate();
 
-  const handleToggleNavBar = useCallback(
-    () => setIsNavBarOpen((prev) => !prev),
-    []
-  );
+  const handleToggleNavBar = () => setIsNavBarOpen((prev) => !prev);
 
   const handleNavigateToAuth = useCallback(() => {
     navigate('/auth');

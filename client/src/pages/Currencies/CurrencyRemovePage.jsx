@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Typography } from '@mui/material';
+
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import {
   useFetchCurrencyByUuidQuery,

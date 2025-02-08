@@ -1,8 +1,10 @@
-import { uk } from 'date-fns/locale';
+import { uk } from 'date-fns/locale/uk';
 import { Field } from 'formik';
-import { TextField } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+
+import TextField from '@mui/material/TextField';
+
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import AutocompleteField from './AutocompleteField';
 import DateField from './DateField';

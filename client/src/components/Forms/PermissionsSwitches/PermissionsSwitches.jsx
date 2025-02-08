@@ -1,13 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { FieldArray, useFormikContext } from 'formik';
-import {
-  Box,
-  FormControlLabel,
-  List,
-  ListItem,
-  Switch,
-  Typography,
-} from '@mui/material';
+
+import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 
 import {
   stylesPermissionsSwitchesFontDescription,
@@ -62,7 +61,7 @@ function PermissionsSwitches({ permissionsList }) {
                     />
                   }
                   label={
-                    <Box>
+                    <>
                       <Typography
                         sx={stylesPermissionsSwitchesFontTitle}
                         variant='body1'
@@ -75,7 +74,7 @@ function PermissionsSwitches({ permissionsList }) {
                       >
                         {description || '*Немає даних*'}
                       </Typography>
-                    </Box>
+                    </>
                   }
                 />
               </ListItem>

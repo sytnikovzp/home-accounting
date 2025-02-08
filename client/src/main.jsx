@@ -1,14 +1,14 @@
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { CssBaseline } from '@mui/material';
-import { ukUA } from '@mui/material/locale';
+
+import CssBaseline from '@mui/material/CssBaseline';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ukUA } from '@mui/material/locale';
 
 import store from './store';
 
 import App from './App.jsx';
-
-import './index.css';
 
 const theme = createTheme({}, ukUA);
 

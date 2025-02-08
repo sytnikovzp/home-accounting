@@ -1,5 +1,10 @@
-import { useCallback, useState } from 'react';
-import { Avatar, Box, IconButton, Menu, Tooltip } from '@mui/material';
+import { useState } from 'react';
+
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import Tooltip from '@mui/material/Tooltip';
 
 import { configs } from '../../constants';
 import { stringAvatar } from '../../utils/sharedFunctions';
@@ -19,12 +24,10 @@ function AuthenticatedUserBlock() {
   const fullName = authenticatedUser?.fullName || 'Невідомий користувач';
   const photo = authenticatedUser?.photo || null;
 
-  const handleToggleUserMenu = useCallback(
-    (event) => setIsUserMenuOpen(event.currentTarget),
-    []
-  );
+  const handleToggleUserMenu = (event) =>
+    setIsUserMenuOpen(event.currentTarget);
 
-  const handleCloseUserMenu = useCallback(() => setIsUserMenuOpen(false), []);
+  const handleCloseUserMenu = () => setIsUserMenuOpen(false);
 
   return (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>

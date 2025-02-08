@@ -1,5 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import accountingLogo from '../../assets/logo.png';
 import {

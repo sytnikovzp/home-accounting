@@ -1,4 +1,6 @@
-import { IconButton, TableCell, Tooltip } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import TableCell from '@mui/material/TableCell';
+import Tooltip from '@mui/material/Tooltip';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';

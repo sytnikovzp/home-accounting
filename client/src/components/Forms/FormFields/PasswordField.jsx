@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Field } from 'formik';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
+
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -18,7 +21,7 @@ function PasswordField({
 }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const handleClickShowPassword = () => setIsPasswordVisible((prev) => !prev);
+  const handleToggleShowPassword = () => setIsPasswordVisible((prev) => !prev);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
   return (
@@ -36,7 +39,7 @@ function PasswordField({
                 isPasswordVisible ? 'Приховати пароль' : 'Показати пароль'
               }
               edge='end'
-              onClick={handleClickShowPassword}
+              onClick={handleToggleShowPassword}
               onMouseDown={handleMouseDownPassword}
             >
               {isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}

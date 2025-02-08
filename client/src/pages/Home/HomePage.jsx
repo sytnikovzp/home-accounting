@@ -1,12 +1,11 @@
-import { useCallback, useState } from 'react';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from '@mui/material';
+import { useState } from 'react';
+
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
 
 import useAuthUser from '../../hooks/useAuthUser';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
@@ -49,13 +48,9 @@ function HomePage() {
     { skip: !ago }
   );
 
-  const handleCriteriaChange = useCallback((e) => {
-    setCriteria(e.target.value);
-  }, []);
+  const handleCriteriaChange = (event) => setCriteria(event.target.value);
 
-  const handleAgoChange = useCallback((e) => {
-    setAgo(e.target.value);
-  }, []);
+  const handleAgoChange = (event) => setAgo(event.target.value);
 
   const isPreloaderVisible = useDelayedPreloader(
     isFetchingStatistics || isFetchingUser

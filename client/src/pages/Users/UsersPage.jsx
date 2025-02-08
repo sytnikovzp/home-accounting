@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
@@ -70,9 +72,8 @@ function UsersPage() {
     [handleModalOpen]
   );
 
-  const handleStatusChange = useCallback((event) => {
+  const handleStatusChange = (event) =>
     setEmailVerificationStatus(event.target.value);
-  }, []);
 
   const isPreloaderVisible = useDelayedPreloader(isFetching);
 

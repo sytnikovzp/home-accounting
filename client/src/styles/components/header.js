@@ -71,7 +71,7 @@ export const stylesAuthenticatedMenu = {
   overflow: 'visible',
 };
 
-export const stylesWelcomeBlockBox = {
+export const stylesWelcomeBox = {
   alignItems: 'center',
   display: { sm: 'block', xs: 'none' },
   marginRight: 2,
