@@ -8,6 +8,7 @@ import PasswordIcon from '@mui/icons-material/Password';
 import PortraitIcon from '@mui/icons-material/Portrait';
 
 import useAuthUser from '../../../hooks/useAuthUser';
+
 import { useLogoutMutation } from '../../../store/services';
 
 import UserMenuItem from './UserMenuItem';

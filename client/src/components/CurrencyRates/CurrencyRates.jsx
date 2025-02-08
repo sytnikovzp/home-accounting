@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
+
 import { useFetchNBURatesQuery } from '../../store/services';
 
 import Error from '../Error/Error';

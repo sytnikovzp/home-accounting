@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 
 import useAuthUser from '../../hooks/useAuthUser';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
+
 import {
   useFetchCostByCategoriesQuery,
   useFetchCostByEstablishmentsQuery,

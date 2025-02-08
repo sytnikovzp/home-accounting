@@ -11,6 +11,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 
 import useAuthUser from '../../hooks/useAuthUser';
+
 import { useFetchRoleByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';

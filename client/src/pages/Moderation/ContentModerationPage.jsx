@@ -15,6 +15,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import UpdateIcon from '@mui/icons-material/Update';
 
 import { configs } from '../../constants';
+
 import {
   useFetchCategoryByUuidQuery,
   useFetchEstablishmentByUuidQuery,

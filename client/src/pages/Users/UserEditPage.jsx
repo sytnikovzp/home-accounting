@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import useAuthUser from '../../hooks/useAuthUser';
+
 import {
   useChangeUserPhotoMutation,
   useChangeUserProfilePhotoMutation,

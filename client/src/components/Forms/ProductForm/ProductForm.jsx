@@ -1,5 +1,6 @@
 import { groupByFirstLetter } from '../../../utils/sharedFunctions';
 import { PRODUCT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+
 import { useFetchAllCategoriesQuery } from '../../../store/services';
 
 import Preloader from '../../Preloader/Preloader';

@@ -7,7 +7,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 function Calendar() {
   return (
     <LocalizationProvider adapterLocale={uk} dateAdapter={AdapterDateFns}>
-      <DateCalendar />
+      <DateCalendar
+        readOnly
+        showDaysOutsideCurrentMonth
+        fixedWeekNumber={6}
+        views={['day']}
+      />
     </LocalizationProvider>
   );
 }

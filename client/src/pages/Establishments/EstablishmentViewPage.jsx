@@ -12,6 +12,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import UpdateIcon from '@mui/icons-material/Update';
 
 import { configs } from '../../constants';
+
 import { useFetchEstablishmentByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';

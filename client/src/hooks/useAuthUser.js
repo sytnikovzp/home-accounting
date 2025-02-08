@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getAccessToken } from '../utils/sharedFunctions';
-import { useFetchUserProfileQuery } from '../store/services';
 
+import { useFetchUserProfileQuery } from '../store/services';
 import { logout } from '../store/slices/authUserSlice';
 
 function useAuthUser() {

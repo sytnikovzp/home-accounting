@@ -18,7 +18,6 @@ import {
   userProfileApi,
   usersApi,
 } from './services';
-
 import authUserReducer from './slices/authUserSlice';
 
 const store = configureStore({

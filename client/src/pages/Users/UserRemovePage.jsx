@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import useAuthUser from '../../hooks/useAuthUser';
+
 import {
   useFetchUserByUuidQuery,
   useLogoutMutation,

@@ -14,6 +14,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { configs } from '../../constants';
 import useAuthUser from '../../hooks/useAuthUser';
+
 import {
   useFetchUserByUuidQuery,
   useResendVerifyEmailMutation,
