@@ -62,7 +62,7 @@ export const stylesListTableError = {
   zIndex: 3,
 };
 
-export const stylesListTableActionsHeadTableCell = {
+export const stylesListTableActionsHeadTableCell = { // !!!
   borderBottom: '1px solid #ccc',
   borderLeft: '1px solid darkgreen',
   color: 'common.white',

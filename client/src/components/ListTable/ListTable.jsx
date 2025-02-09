@@ -9,7 +9,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -92,14 +91,6 @@ function ListTable({
     [rows, columns, linkEntity, isMobile, onEdit, onModerate, onRemove]
   );
 
-  const emptyDataMessage = (
-    <TableRow>
-      <TableCell align='center' colSpan={columns.length + 1}>
-        <Typography variant='body1'>Немає даних для відображення</Typography>
-      </TableCell>
-    </TableRow>
-  );
-
   const handleSortChange = useCallback(
     (field) => {
       const isSameField = memoizedSortModel.field === field;
@@ -159,7 +150,13 @@ function ListTable({
               {!isMobile && (
                 <TableCell
                   align='center'
-                  sx={stylesListTableActionsHeadTableCell}
+                  sx={{
+                    borderBottom: '1px solid #ccc',
+                    borderLeft: '1px solid darkgreen',
+                    color: 'common.white',
+                    fontWeight: 'bold',
+                    width: '150px',
+                  }}
                 >
                   {linkEntity === 'moderation' ? 'Модерувати' : 'Редаг./Видал.'}
                 </TableCell>
@@ -167,7 +164,7 @@ function ListTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableRows.length > 0 ? tableRows : emptyDataMessage}
+            {tableRows}
             <EmptyRows
               columns={columns}
               isMobile={isMobile}
