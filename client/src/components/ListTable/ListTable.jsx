@@ -17,6 +17,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { columnsConfig } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
+import Error from '../../components/Error/Error';
+
 import ActionButtons from './ActionButtons';
 import EmptyRows from './EmptyRows';
 import EntityTableCell from './EntityTableCell';
@@ -25,9 +27,8 @@ import StatusDropdown from './StatusDropdown';
 import {
   stylesListTableActionsHeadTableCell,
   stylesListTableContainer,
-  stylesListTableHeadBackgroundColor,
+  stylesListTableError,
   stylesListTablePreloader,
-  stylesListTableTable,
   stylesListTableTableRow,
 } from '../../styles';
 
@@ -53,14 +54,15 @@ function ListTable({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isPreloaderVisible = useDelayedPreloader(isFetching);
 
+  const totalCount = fetchError ? 0 : pagination?.totalCount;
+
   const {
     currentPage,
     onPageChange,
     onRowsPerPageChange,
     pageSize,
     rowsPerPageOptions = [],
-    totalCount,
-  } = pagination;
+  } = pagination || {};
 
   const memoizedSortModel = useMemo(() => sortModel, [sortModel]);
 
@@ -116,9 +118,22 @@ function ListTable({
             <CircularProgress size='3rem' />
           </Box>
         )}
-        <Table sx={stylesListTableTable}>
+
+        {fetchError && (
+          <Box sx={stylesListTableError}>
+            <Error error={fetchError?.data?.message} />
+          </Box>
+        )}
+
+        <Table
+          sx={{
+            borderCollapse: 'collapse',
+            width: '100%',
+            opacity: fetchError ? 0 : 1,
+          }}
+        >
           <TableHead>
-            <TableRow sx={stylesListTableHeadBackgroundColor}>
+            <TableRow sx={{ backgroundColor: 'success.main' }}>
               {columns.map(({ field, align = 'center', headerName }, index) => (
                 <TableCell
                   key={field}
@@ -132,7 +147,6 @@ function ListTable({
                       index < columns.length - 1
                         ? '1px solid darkgreen'
                         : 'none',
-
                     width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
                   }}
                   onClick={() => handleSortChange(field)}
@@ -152,7 +166,6 @@ function ListTable({
               )}
             </TableRow>
           </TableHead>
-
           <TableBody>
             {tableRows.length > 0 ? tableRows : emptyDataMessage}
             <EmptyRows

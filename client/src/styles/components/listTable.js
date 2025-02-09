@@ -15,10 +15,6 @@ export const stylesListTableAvatarSize = {
   width: 40,
 };
 
-export const stylesListTableHeadBackgroundColor = {
-  backgroundColor: 'success.main',
-};
-
 export const stylesListTableTextColor = {
   color: 'common.black',
 };
@@ -53,9 +49,17 @@ export const stylesListTablePreloader = {
   zIndex: 1,
 };
 
-export const stylesListTableTable = {
-  borderCollapse: 'collapse',
+export const stylesListTableError = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
   width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'rgba(185, 222, 187, 0.3)',
+  zIndex: 3,
 };
 
 export const stylesListTableActionsHeadTableCell = {
