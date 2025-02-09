@@ -4,16 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
 import { useFetchAllPendingItemsQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
-import Preloader from '../../components/Preloader/Preloader';
 
 import ContentModerationPage from './ContentModerationPage';
 
@@ -57,16 +54,6 @@ function ModerationPage() {
     navigate('/moderation');
   }, [navigate]);
 
-  const isPreloaderVisible = useDelayedPreloader(isFetching);
-
-  if (isPreloaderVisible) {
-    return <Preloader message='Завантаження списку "Модерацій"...' />;
-  }
-
-  if (fetchError) {
-    return <Error error={fetchError.data.message} />;
-  }
-
   return (
     <>
       <Box
@@ -81,6 +68,8 @@ function ModerationPage() {
         </Typography>
       </Box>
       <ListTable
+        fetchError={fetchError}
+        isFetching={isFetching}
         linkEntity='moderation'
         pagination={{
           currentPage,

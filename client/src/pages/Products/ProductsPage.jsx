@@ -5,16 +5,13 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
 import { useFetchAllProductsQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
-import Preloader from '../../components/Preloader/Preloader';
 
 import ProductAddPage from './ProductAddPage';
 import ProductEditPage from './ProductEditPage';
@@ -83,17 +80,7 @@ function ProductsPage() {
     [handleModalOpen]
   );
 
-  const handleStatusChange = (event) => setSelectedStatus(event.target.value);
-
-  const isPreloaderVisible = useDelayedPreloader(isFetching);
-
-  if (isPreloaderVisible) {
-    return <Preloader message='Завантаження списку "Товарів та послуг"...' />;
-  }
-
-  if (fetchError) {
-    return <Error error={fetchError.data.message} />;
-  }
+  const handleStatusChange = (newStatus) => setSelectedStatus(newStatus);
 
   return (
     <>
@@ -118,6 +105,8 @@ function ProductsPage() {
       </Box>
       <ListTable
         showStatusDropdown
+        fetchError={fetchError}
+        isFetching={isFetching}
         linkEntity='products'
         pagination={{
           currentPage,

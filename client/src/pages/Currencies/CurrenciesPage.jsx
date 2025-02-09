@@ -5,16 +5,13 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
 import { useFetchAllCurrenciesQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
-import Preloader from '../../components/Preloader/Preloader';
 
 import CurrencyAddPage from './CurrencyAddPage';
 import CurrencyEditPage from './CurrencyEditPage';
@@ -81,16 +78,6 @@ function CurrenciesPage() {
     [handleModalOpen]
   );
 
-  const isPreloaderVisible = useDelayedPreloader(isFetching);
-
-  if (isPreloaderVisible) {
-    return <Preloader message='Завантаження списку "Валют"...' />;
-  }
-
-  if (fetchError) {
-    return <Error error={fetchError.data.message} />;
-  }
-
   return (
     <>
       <Box
@@ -113,6 +100,8 @@ function CurrenciesPage() {
         </Button>
       </Box>
       <ListTable
+        fetchError={fetchError}
+        isFetching={isFetching}
         linkEntity='currencies'
         pagination={{
           currentPage,

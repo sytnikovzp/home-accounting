@@ -40,6 +40,19 @@ export const stylesListTableContainer = {
   width: '100%',
 };
 
+export const stylesListTablePreloader = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'rgba(185, 222, 187, 0.3)',
+  zIndex: 1,
+};
+
 export const stylesListTableTable = {
   borderCollapse: 'collapse',
   width: '100%',
@@ -50,6 +63,7 @@ export const stylesListTableActionsHeadTableCell = {
   borderLeft: '1px solid darkgreen',
   color: 'common.white',
   fontWeight: 'bold',
+  width: '150px',
 };
 
 export const stylesListTableActionsBodyTableCell = {

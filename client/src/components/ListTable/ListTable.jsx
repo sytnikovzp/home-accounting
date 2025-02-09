@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,6 +15,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { columnsConfig } from '../../constants';
+import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import ActionButtons from './ActionButtons';
 import EmptyRows from './EmptyRows';
@@ -24,6 +26,7 @@ import {
   stylesListTableActionsHeadTableCell,
   stylesListTableContainer,
   stylesListTableHeadBackgroundColor,
+  stylesListTablePreloader,
   stylesListTableTable,
   stylesListTableTableRow,
 } from '../../styles';
@@ -31,21 +34,24 @@ import {
 const { COLUMNS_CONFIG } = columnsConfig;
 
 function ListTable({
+  showStatusDropdown = false,
+  fetchError,
+  isFetching,
   linkEntity = '',
-  onEdit,
-  onModerate,
-  onRemove,
-  onSortModelChange,
-  onStatusChange,
   pagination = {},
   rows,
   selectedStatus,
-  showStatusDropdown = false,
   sortModel,
+  onEdit,
+  onRemove,
+  onModerate,
+  onSortModelChange,
+  onStatusChange,
 }) {
   const columns = useMemo(() => COLUMNS_CONFIG[linkEntity] || [], [linkEntity]);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
 
   const {
     currentPage,
@@ -104,50 +110,60 @@ function ListTable({
 
   return (
     <TableContainer sx={stylesListTableContainer}>
-      <Table sx={stylesListTableTable}>
-        <TableHead>
-          <TableRow sx={stylesListTableHeadBackgroundColor}>
-            {columns.map(({ field, align = 'center', headerName }, index) => (
-              <TableCell
-                key={field}
-                align={align}
-                sx={{
-                  borderBottom: '1px solid #ccc',
-                  color: 'common.white',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  borderRight:
-                    index < columns.length - 1 ? '1px solid darkgreen' : 'none',
-                  width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
-                }}
-                onClick={() => handleSortChange(field)}
-              >
-                {headerName}
-                {sortModel.field === field &&
-                  (sortModel.order === 'asc' ? ' ↑' : ' ↓')}
-              </TableCell>
-            ))}
-            {!isMobile && (
-              <TableCell
-                align='center'
-                sx={stylesListTableActionsHeadTableCell}
-              >
-                {linkEntity === 'moderation' ? 'Модерувати' : 'Редаг./Видал.'}
-              </TableCell>
-            )}
-          </TableRow>
-        </TableHead>
+      <Box sx={{ position: 'relative' }}>
+        {isPreloaderVisible && (
+          <Box sx={stylesListTablePreloader}>
+            <CircularProgress size='3rem' />
+          </Box>
+        )}
+        <Table sx={stylesListTableTable}>
+          <TableHead>
+            <TableRow sx={stylesListTableHeadBackgroundColor}>
+              {columns.map(({ field, align = 'center', headerName }, index) => (
+                <TableCell
+                  key={field}
+                  align={align}
+                  sx={{
+                    borderBottom: '1px solid #ccc',
+                    color: 'common.white',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    borderRight:
+                      index < columns.length - 1
+                        ? '1px solid darkgreen'
+                        : 'none',
 
-        <TableBody>
-          {rows.length > 0 ? tableRows : emptyDataMessage}
-          <EmptyRows
-            columns={columns}
-            isMobile={isMobile}
-            pageSize={pageSize}
-            rows={rows}
-          />
-        </TableBody>
-      </Table>
+                    width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
+                  }}
+                  onClick={() => handleSortChange(field)}
+                >
+                  {headerName}
+                  {sortModel.field === field &&
+                    (sortModel.order === 'asc' ? ' ↑' : ' ↓')}
+                </TableCell>
+              ))}
+              {!isMobile && (
+                <TableCell
+                  align='center'
+                  sx={stylesListTableActionsHeadTableCell}
+                >
+                  {linkEntity === 'moderation' ? 'Модерувати' : 'Редаг./Видал.'}
+                </TableCell>
+              )}
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {tableRows.length > 0 ? tableRows : emptyDataMessage}
+            <EmptyRows
+              columns={columns}
+              isMobile={isMobile}
+              pageSize={pageSize}
+              rows={rows}
+            />
+          </TableBody>
+        </Table>
+      </Box>
 
       <Box
         alignItems='center'
@@ -167,9 +183,6 @@ function ListTable({
         <TablePagination
           component='div'
           count={totalCount}
-          labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to} из ${count}`
-          }
           page={currentPage - 1}
           rowsPerPage={pageSize}
           rowsPerPageOptions={rowsPerPageOptions}

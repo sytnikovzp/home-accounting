@@ -15,11 +15,11 @@ function StatusDropdown({
   onPageChange,
   onStatusChange,
 }) {
-  const statusOptions = STATUS_OPTIONS[linkEntity] ?? STATUS_OPTIONS.default;
+  const options = STATUS_OPTIONS[linkEntity] ?? STATUS_OPTIONS.default;
 
   const handleStatusChange = (event) => {
-    // onStatusChange(event.target.value);
-    onStatusChange(event);
+    const newStatus = event.target.value;
+    onStatusChange(newStatus);
     onPageChange(1);
   };
 
@@ -33,7 +33,7 @@ function StatusDropdown({
         value={selectedStatus}
         onChange={handleStatusChange}
       >
-        {statusOptions.map(({ value, label }) => (
+        {options.map(({ value, label }) => (
           <MenuItem key={value} value={value}>
             {label}
           </MenuItem>

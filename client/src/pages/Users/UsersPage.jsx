@@ -4,16 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
 import { useFetchAllUsersQuery } from '../../store/services';
 
 import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import Error from '../../components/Error/Error';
 import ListTable from '../../components/ListTable/ListTable';
-import Preloader from '../../components/Preloader/Preloader';
 
 import UserChangePasswordPage from './UserChangePasswordPage';
 import UserEditPage from './UserEditPage';
@@ -73,18 +70,8 @@ function UsersPage() {
     [handleModalOpen]
   );
 
-  const handleStatusChange = (event) =>
-    setEmailVerificationStatus(event.target.value);
-
-  const isPreloaderVisible = useDelayedPreloader(isFetching);
-
-  if (isPreloaderVisible) {
-    return <Preloader message='Завантаження списку "Користувачів"...' />;
-  }
-
-  if (fetchError) {
-    return <Error error={fetchError.data.message} />;
-  }
+  const handleStatusChange = (newStatus) =>
+    setEmailVerificationStatus(newStatus);
 
   return (
     <>
@@ -101,6 +88,8 @@ function UsersPage() {
       </Box>
       <ListTable
         showStatusDropdown
+        fetchError={fetchError}
+        isFetching={isFetching}
         linkEntity='users'
         pagination={{
           currentPage,
