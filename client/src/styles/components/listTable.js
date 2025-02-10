@@ -62,19 +62,32 @@ export const stylesListTableError = {
   zIndex: 3,
 };
 
-export const stylesListTableActionsHeadTableCell = { // !!!
+export const stylesListTableActionsHeadTableCellModeration = {
   borderBottom: '1px solid #ccc',
   borderLeft: '1px solid darkgreen',
   color: 'common.white',
   fontWeight: 'bold',
-  width: '150px',
+  width: '120px',
 };
 
-export const stylesListTableActionsBodyTableCell = {
+export const stylesListTableActionsHeadTableCellNotModeration = {
+  borderBottom: '1px solid #ccc',
+  borderLeft: '1px solid darkgreen',
+  color: 'common.white',
+  fontWeight: 'bold',
+  width: '85px',
+};
+
+export const stylesListTableActionsModeration = {
   borderBottom: '1px solid #ccc',
   borderLeft: '1px solid #ccc',
   padding: '8px 16px',
-  width: '140px',
+};
+
+export const stylesListTableActionsNotModeration = {
+  borderBottom: '1px solid #ccc',
+  borderLeft: '1px solid #ccc',
+  padding: '8px 16px',
 };
 
 export const stylesListTableTableRow = {

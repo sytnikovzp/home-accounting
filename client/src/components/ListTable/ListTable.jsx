@@ -24,7 +24,8 @@ import EntityTableCell from './EntityTableCell';
 import StatusDropdown from './StatusDropdown';
 
 import {
-  stylesListTableActionsHeadTableCell,
+  stylesListTableActionsHeadTableCellModeration,
+  stylesListTableActionsHeadTableCellNotModeration,
   stylesListTableContainer,
   stylesListTableError,
   stylesListTablePreloader,
@@ -63,42 +64,14 @@ function ListTable({
     rowsPerPageOptions = [],
   } = pagination || {};
 
-  const memoizedSortModel = useMemo(() => sortModel, [sortModel]);
-
-  const tableRows = useMemo(
-    () =>
-      rows.map((row) => (
-        <TableRow key={row.uuid} sx={stylesListTableTableRow}>
-          {columns.map((col) => (
-            <EntityTableCell
-              key={col.field}
-              col={col}
-              linkEntity={linkEntity}
-              row={row}
-            />
-          ))}
-          {!isMobile && (
-            <ActionButtons
-              linkEntity={linkEntity}
-              row={row}
-              onEdit={onEdit}
-              onModerate={onModerate}
-              onRemove={onRemove}
-            />
-          )}
-        </TableRow>
-      )),
-    [rows, columns, linkEntity, isMobile, onEdit, onModerate, onRemove]
-  );
-
   const handleSortChange = useCallback(
     (field) => {
-      const isSameField = memoizedSortModel.field === field;
+      const isSameField = sortModel.field === field;
       const newOrder =
-        isSameField && memoizedSortModel.order === 'asc' ? 'desc' : 'asc';
+        isSameField && sortModel.order === 'asc' ? 'desc' : 'asc';
       onSortModelChange({ field, order: newOrder });
     },
-    [onSortModelChange, memoizedSortModel]
+    [onSortModelChange, sortModel]
   );
 
   return (
@@ -147,24 +120,63 @@ function ListTable({
                     (sortModel.order === 'asc' ? ' ↑' : ' ↓')}
                 </TableCell>
               ))}
-              {!isMobile && (
+
+              {linkEntity === 'moderation' && (
                 <TableCell
                   align='center'
-                  sx={{
-                    borderBottom: '1px solid #ccc',
-                    borderLeft: '1px solid darkgreen',
-                    color: 'common.white',
-                    fontWeight: 'bold',
-                    width: '150px',
-                  }}
+                  sx={stylesListTableActionsHeadTableCellModeration}
                 >
-                  {linkEntity === 'moderation' ? 'Модерувати' : 'Редаг./Видал.'}
+                  Модерувати
                 </TableCell>
+              )}
+
+              {linkEntity !== 'moderation' && (
+                <>
+                  <TableCell
+                    align='center'
+                    sx={stylesListTableActionsHeadTableCellNotModeration}
+                  >
+                    Редаг.
+                  </TableCell>
+                  <TableCell
+                    align='center'
+                    sx={stylesListTableActionsHeadTableCellNotModeration}
+                  >
+                    Видал.
+                  </TableCell>
+                </>
               )}
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {tableRows}
+            {rows.map((row) => (
+              <TableRow key={row.uuid} sx={stylesListTableTableRow}>
+                {columns.map((col) => (
+                  <EntityTableCell
+                    key={col.field}
+                    col={col}
+                    linkEntity={linkEntity}
+                    row={row}
+                  />
+                ))}
+
+                {linkEntity === 'moderation' ? (
+                  <ActionButtons
+                    linkEntity={linkEntity}
+                    row={row}
+                    onModerate={onModerate}
+                  />
+                ) : (
+                  <ActionButtons
+                    linkEntity={linkEntity}
+                    row={row}
+                    onEdit={onEdit}
+                    onRemove={onRemove}
+                  />
+                )}
+              </TableRow>
+            ))}
             <EmptyRows
               columns={columns}
               isMobile={isMobile}

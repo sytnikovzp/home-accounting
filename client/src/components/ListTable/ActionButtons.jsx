@@ -8,45 +8,47 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import TaskIcon from '@mui/icons-material/Task';
 
-import { stylesListTableActionsBodyTableCell } from '../../styles';
+import {
+  stylesListTableActionsModeration,
+  stylesListTableActionsNotModeration,
+} from '../../styles';
 
 function ActionButtons({ row, linkEntity, onEdit, onRemove, onModerate }) {
-  const handleEdit = useCallback(() => onEdit(row), [onEdit, row]);
-  const handleRemove = useCallback(() => onRemove(row), [onRemove, row]);
-  const handleModerate = useCallback(() => onModerate(row), [onModerate, row]);
+  const handleAction = useCallback((action) => () => action(row), [row]);
 
-  const actions = useMemo(() => {
+  return useMemo(() => {
     if (linkEntity === 'moderation') {
-      return [
-        {
-          title: 'Модерувати',
-          icon: <TaskIcon />,
-          onClick: handleModerate,
-        },
-      ];
+      return (
+        <TableCell align='center' sx={stylesListTableActionsModeration}>
+          <Tooltip title='Модерувати'>
+            <IconButton onClick={handleAction(onModerate)}>
+              <TaskIcon />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+      );
     }
-    return [
-      {
-        title: 'Редагувати',
-        icon: <EditIcon />,
-        onClick: handleEdit,
-      },
-      {
-        title: 'Видалити',
-        icon: <DeleteIcon />,
-        onClick: handleRemove,
-      },
-    ];
-  }, [linkEntity, handleEdit, handleRemove, handleModerate]);
 
-  return (
-    <TableCell align='center' sx={stylesListTableActionsBodyTableCell}>
-      {actions.map(({ title, icon, onClick }) => (
-        <Tooltip key={title} title={title}>
-          <IconButton onClick={onClick}>{icon}</IconButton>
-        </Tooltip>
-      ))}
-    </TableCell>
-  );
+    return (
+      <>
+        <TableCell align='center' sx={stylesListTableActionsNotModeration}>
+          <Tooltip title='Редагувати'>
+            <IconButton onClick={handleAction(onEdit)}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+
+        <TableCell align='center' sx={stylesListTableActionsNotModeration}>
+          <Tooltip title='Видалити'>
+            <IconButton onClick={handleAction(onRemove)}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+      </>
+    );
+  }, [linkEntity, onEdit, onRemove, onModerate, handleAction]);
 }
+
 export default ActionButtons;
