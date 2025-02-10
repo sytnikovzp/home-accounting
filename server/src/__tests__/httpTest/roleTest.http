@@ -1,22 +1,22 @@
 ### Get list all roles (default pagination, without sort)
 GET http://localhost:5000/api/roles HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMzU3NTU1ZDctMjAyZi00ZDI2LWEyODItMjlhNWRlZTNiM2ViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzcyMzc2NjUsImV4cCI6MTczODUzMzY2NX0.xY0D3xG7Yk-i9iDNat4lt_6U-KGMS48HkUG4MGkgOU0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJkMzBhMGQ3NC03NTdiLTQ2MGItOTE1YS1jNDEyMzUzMjgxMWQiLCJpYXQiOjE3MzkyMDQ2NzYsImV4cCI6MTczOTIwNTU3Nn0.IlmbMcXLITcXujbCowwuiVLZ7lGPCEYRmz3h_ge-VPo
 
 ### Get list all roles (custom pagination, without sort)
 GET http://localhost:5000/api/roles?page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMzU3NTU1ZDctMjAyZi00ZDI2LWEyODItMjlhNWRlZTNiM2ViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzcyMzc2NjUsImV4cCI6MTczODUzMzY2NX0.xY0D3xG7Yk-i9iDNat4lt_6U-KGMS48HkUG4MGkgOU0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJkMzBhMGQ3NC03NTdiLTQ2MGItOTE1YS1jNDEyMzUzMjgxMWQiLCJpYXQiOjE3MzkyMDQ2NzYsImV4cCI6MTczOTIwNTU3Nn0.IlmbMcXLITcXujbCowwuiVLZ7lGPCEYRmz3h_ge-VPo
 
 ### Get list all roles (custom pagination, with sort by title (asc))
 GET http://localhost:5000/api/roles?sort=title&order=asc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMzU3NTU1ZDctMjAyZi00ZDI2LWEyODItMjlhNWRlZTNiM2ViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzcyMzc2NjUsImV4cCI6MTczODUzMzY2NX0.xY0D3xG7Yk-i9iDNat4lt_6U-KGMS48HkUG4MGkgOU0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJkMzBhMGQ3NC03NTdiLTQ2MGItOTE1YS1jNDEyMzUzMjgxMWQiLCJpYXQiOjE3MzkyMDQ2NzYsImV4cCI6MTczOTIwNTU3Nn0.IlmbMcXLITcXujbCowwuiVLZ7lGPCEYRmz3h_ge-VPo
 
 ### Create role
 POST http://localhost:5000/api/roles HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMzU3NTU1ZDctMjAyZi00ZDI2LWEyODItMjlhNWRlZTNiM2ViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzcyMzc2NjUsImV4cCI6MTczODUzMzY2NX0.xY0D3xG7Yk-i9iDNat4lt_6U-KGMS48HkUG4MGkgOU0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIxNDNhNTA0NS03NzkzLTRjZTktYTc3Ni1jZjRhMTdjMzE1NGEiLCJpYXQiOjE3MzkyMDQ3NjcsImV4cCI6MTczOTIwNTY2N30.97vY96HySgRQrN-7p6f3ylkj3M-msz5xaeZ2xsNu7Z8
 
 {
   "title": "Нова роль користувача",
@@ -25,23 +25,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMzU3NTU1Z
 }
 
 ### Get role by id
-GET http://localhost:5000/api/roles/25b12ad8-1516-4df3-bc7c-791adbdaef45 HTTP/1.1
+GET http://localhost:5000/api/roles/e73542df-f29b-4c1c-a3ab-2476acbd1b66 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMzU3NTU1ZDctMjAyZi00ZDI2LWEyODItMjlhNWRlZTNiM2ViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzcyMzc2NjUsImV4cCI6MTczODUzMzY2NX0.xY0D3xG7Yk-i9iDNat4lt_6U-KGMS48HkUG4MGkgOU0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIxNDNhNTA0NS03NzkzLTRjZTktYTc3Ni1jZjRhMTdjMzE1NGEiLCJpYXQiOjE3MzkyMDQ3NjcsImV4cCI6MTczOTIwNTY2N30.97vY96HySgRQrN-7p6f3ylkj3M-msz5xaeZ2xsNu7Z8
 
 ### Update role data
-PATCH http://localhost:5000/api/roles/25b12ad8-1516-4df3-bc7c-791adbdaef45 HTTP/1.1
+PATCH http://localhost:5000/api/roles/e73542df-f29b-4c1c-a3ab-2476acbd1b66 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMzU3NTU1ZDctMjAyZi00ZDI2LWEyODItMjlhNWRlZTNiM2ViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzcyMzc2NjUsImV4cCI6MTczODUzMzY2NX0.xY0D3xG7Yk-i9iDNat4lt_6U-KGMS48HkUG4MGkgOU0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIxNDNhNTA0NS03NzkzLTRjZTktYTc3Ni1jZjRhMTdjMzE1NGEiLCJpYXQiOjE3MzkyMDQ3NjcsImV4cCI6MTczOTIwNTY2N30.97vY96HySgRQrN-7p6f3ylkj3M-msz5xaeZ2xsNu7Z8
 
 {
   "title": "Оновлена назва ролі користувача",
   "description": "Оновлений опис ролі користувача",
-  "permissions": [ "MANAGE_ESTABLISHMENTS"]
+  "permissions": [ "EDIT_ESTABLISHMENTS"]
   # "permissions": []
 }
 
 ### Delete role by id
-DELETE http://localhost:5000/api/roles/25b12ad8-1516-4df3-bc7c-791adbdaef45 HTTP/1.1
+DELETE http://localhost:5000/api/roles/e73542df-f29b-4c1c-a3ab-2476acbd1b66 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMzU3NTU1ZDctMjAyZi00ZDI2LWEyODItMjlhNWRlZTNiM2ViIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzcyMzc2NjUsImV4cCI6MTczODUzMzY2NX0.xY0D3xG7Yk-i9iDNat4lt_6U-KGMS48HkUG4MGkgOU0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIxNDNhNTA0NS03NzkzLTRjZTktYTc3Ni1jZjRhMTdjMzE1NGEiLCJpYXQiOjE3MzkyMDQ3NjcsImV4cCI6MTczOTIwNTY2N30.97vY96HySgRQrN-7p6f3ylkj3M-msz5xaeZ2xsNu7Z8

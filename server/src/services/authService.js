@@ -28,9 +28,8 @@ const { generateTokens, validateRefreshToken } = require('./tokenService');
 class AuthService {
   static async registration(fullName, email, password) {
     const emailToLower = emailToLowerCase(email);
-    const duplicateUser = await User.findOne({ email: emailToLower });
-    if (duplicateUser) {
-      throw badRequest('Цей користувач вже існує');
+    if (await User.findOne({ email: emailToLower })) {
+      throw badRequest('Цей користувач вже зареєстрований');
     }
     const foundRole = await Role.findOne({ title: 'User' });
     if (!foundRole) {

@@ -160,20 +160,20 @@ class UsersService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const hasPermission =
+    const foundUser = await User.findOne({ uuid });
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
+    const canEditUsers =
       currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USERS'));
-    if (!hasPermission) {
+      (await checkPermission(currentUser, 'EDIT_USERS'));
+    if (!canEditUsers) {
       throw forbidden(
         'У Вас немає дозволу на оновлення паролю цього користувача'
       );
     }
     if (newPassword !== confirmNewPassword) {
       throw badRequest('Новий пароль та підтвердження пароля не збігаються');
-    }
-    const foundUser = await User.findOne({ uuid });
-    if (!foundUser) {
-      throw notFound('Користувача не знайдено');
     }
     const hashedNewPassword = await hashPassword(newPassword);
     foundUser.password = hashedNewPassword;
@@ -210,17 +210,17 @@ class UsersService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const hasPermission =
-      currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USERS'));
-    if (!hasPermission) {
-      throw forbidden(
-        'У Вас немає дозволу на оновлення даних цього користувача'
-      );
-    }
     const foundUser = await User.findOne({ uuid });
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
+    }
+    const canEditUsers =
+      currentUser.uuid === uuid ||
+      (await checkPermission(currentUser, 'EDIT_USERS'));
+    if (!canEditUsers) {
+      throw forbidden(
+        'У Вас немає дозволу на оновлення даних цього користувача'
+      );
     }
     const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!foundRole) {
@@ -302,20 +302,20 @@ class UsersService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const hasPermission =
+    const foundUser = await User.findOne({ uuid });
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
+    const canEditUsers =
       currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USERS'));
-    if (!hasPermission) {
+      (await checkPermission(currentUser, 'EDIT_USERS'));
+    if (!canEditUsers) {
       throw forbidden(
         'Ви не маєте дозволу на оновлення фотографії цього користувача'
       );
     }
     if (!filename) {
       throw badRequest('Файл не завантажено');
-    }
-    const foundUser = await User.findOne({ uuid });
-    if (!foundUser) {
-      throw notFound('Користувача не знайдено');
     }
     foundUser.photo = filename;
     const updatedUser = await foundUser.save();
@@ -329,17 +329,17 @@ class UsersService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const hasPermission =
-      currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USERS'));
-    if (!hasPermission) {
-      throw forbidden(
-        'Ви не маєте дозволу на видалення фотографії цього користувача'
-      );
-    }
     const foundUser = await User.findOne({ uuid });
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
+    }
+    const canEditUsers =
+      currentUser.uuid === uuid ||
+      (await checkPermission(currentUser, 'EDIT_USERS'));
+    if (!canEditUsers) {
+      throw forbidden(
+        'Ви не маєте дозволу на видалення фотографії цього користувача'
+      );
     }
     foundUser.photo = null;
     const updatedUser = await foundUser.save();
@@ -353,17 +353,17 @@ class UsersService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const hasPermission =
-      currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USERS'));
-    if (!hasPermission) {
-      throw forbidden(
-        'Ви не маєте дозволу на видалення цього профілю користувача'
-      );
-    }
     const foundUser = await User.findOne({ uuid });
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
+    }
+    const canEditUsers =
+      currentUser.uuid === uuid ||
+      (await checkPermission(currentUser, 'EDIT_USERS'));
+    if (!canEditUsers) {
+      throw forbidden(
+        'Ви не маєте дозволу на видалення цього профілю користувача'
+      );
     }
     const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
     if (!foundRole) {

@@ -58,20 +58,21 @@ class CurrenciesService {
   }
 
   static async createCurrency(title, code, currentUser, transaction) {
-    const canManageCurrencies = await checkPermission(
-      currentUser,
-      'MANAGE_CURRENCIES'
-    );
-    if (!canManageCurrencies) {
-      throw forbidden('Ви не маєте дозволу на створення валют');
-    }
-    const duplicateCurrency = await Currency.findOne({
-      where: {
-        [Op.or]: [{ title }, { code }],
-      },
-    });
-    if (duplicateCurrency) {
+    if (
+      await Currency.findOne({
+        where: {
+          [Op.or]: [{ title }, { code }],
+        },
+      })
+    ) {
       throw badRequest('Ця валюта вже існує');
+    }
+    const canAddCurrencies = await checkPermission(
+      currentUser,
+      'ADD_CURRENCIES'
+    );
+    if (!canAddCurrencies) {
+      throw forbidden('Ви не маєте дозволу на додавання валют');
     }
     const newCurrency = await Currency.create(
       {
@@ -96,11 +97,11 @@ class CurrenciesService {
     if (!foundCurrency) {
       throw notFound('Валюту не знайдено');
     }
-    const canManageCurrencies = await checkPermission(
+    const canEditCurrencies = await checkPermission(
       currentUser,
-      'MANAGE_CURRENCIES'
+      'EDIT_CURRENCIES'
     );
-    if (!canManageCurrencies) {
+    if (!canEditCurrencies) {
       throw forbidden('Ви не маєте дозволу на редагування цієї валюти');
     }
     if (title && title !== foundCurrency.title) {
@@ -129,16 +130,16 @@ class CurrenciesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const canManageCurrencies = await checkPermission(
-      currentUser,
-      'MANAGE_CURRENCIES'
-    );
-    if (!canManageCurrencies) {
-      throw forbidden('Ви не маєте дозволу на видалення цієї валюти');
-    }
     const foundCurrency = await Currency.findOne({ where: { uuid } });
     if (!foundCurrency) {
       throw notFound('Валюту не знайдено');
+    }
+    const canRemoveCurrencies = await checkPermission(
+      currentUser,
+      'REMOVE_CURRENCIES'
+    );
+    if (!canRemoveCurrencies) {
+      throw forbidden('Ви не маєте дозволу на видалення цієї валюти');
     }
     const deletedCurrency = await Currency.destroy({
       where: { uuid },

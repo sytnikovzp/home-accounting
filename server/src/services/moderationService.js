@@ -104,16 +104,16 @@ class ModerationService {
     if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
     }
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MODERATION_CATEGORIES'
-    );
-    if (!hasPermission) {
-      throw forbidden('Ви не маєте дозволу на модерацію категорій');
-    }
     const foundCategory = await Category.findOne({ where: { uuid } });
     if (!foundCategory) {
       throw notFound('Категорію не знайдено');
+    }
+    const canModerationCategories = await checkPermission(
+      currentUser,
+      'MODERATION_CATEGORIES'
+    );
+    if (!canModerationCategories) {
+      throw forbidden('Ви не маєте дозволу на модерацію категорій');
     }
     const [affectedRows, [moderatedCategory]] = await Category.update(
       {
@@ -136,16 +136,16 @@ class ModerationService {
     if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
     }
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MODERATION_PRODUCTS'
-    );
-    if (!hasPermission) {
-      throw forbidden('Ви не маєте дозволу на модерацію товарів');
-    }
     const foundProduct = await Product.findOne({ where: { uuid } });
     if (!foundProduct) {
       throw notFound('Товар не знайдено');
+    }
+    const canModerationProducts = await checkPermission(
+      currentUser,
+      'MODERATION_PRODUCTS'
+    );
+    if (!canModerationProducts) {
+      throw forbidden('Ви не маєте дозволу на модерацію товарів');
     }
     const [affectedRows, [moderatedProduct]] = await Product.update(
       {
@@ -173,16 +173,16 @@ class ModerationService {
     if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
     }
-    const hasPermission = await checkPermission(
-      currentUser,
-      'MODERATION_ESTABLISHMENTS'
-    );
-    if (!hasPermission) {
-      throw forbidden('Ви не маєте дозволу на модерацію закладів');
-    }
     const foundEstablishment = await Establishment.findOne({ where: { uuid } });
     if (!foundEstablishment) {
       throw notFound('Заклад не знайдено');
+    }
+    const canModerationEstablishments = await checkPermission(
+      currentUser,
+      'MODERATION_ESTABLISHMENTS'
+    );
+    if (!canModerationEstablishments) {
+      throw forbidden('Ви не маєте дозволу на модерацію закладів');
     }
     const [affectedRows, [moderatedCategory]] = await Establishment.update(
       {

@@ -202,7 +202,7 @@ describe('ProductsController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на створення товарів'
+        'Ви не маєте дозволу на додавання товарів'
       );
     });
   });

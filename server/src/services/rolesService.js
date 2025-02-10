@@ -61,15 +61,14 @@ class RolesService {
     permissionsTitles,
     currentUser
   ) {
-    const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
-    if (!hasPermission) {
-      throw forbidden(
-        'Ви не маєте дозволу на створення ролей для користувачів'
-      );
-    }
-    const duplicateRole = await Role.findOne({ title });
-    if (duplicateRole) {
+    if (await Role.findOne({ title })) {
       throw badRequest('Ця роль для користувача вже існує');
+    }
+    const canAddRoles = await checkPermission(currentUser, 'ADD_ROLES');
+    if (!canAddRoles) {
+      throw forbidden(
+        'Ви не маєте дозволу на додавання ролей для користувачів'
+      );
     }
     const allPermissions = await Permission.find();
     const foundPermissions = allPermissions.filter((permission) =>
@@ -116,15 +115,15 @@ class RolesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
-    if (!hasPermission) {
-      throw forbidden(
-        'Ви не маєте дозволу на редагування цієї ролі для користувачів'
-      );
-    }
     const foundRole = await Role.findOne({ uuid });
     if (!foundRole) {
       throw notFound('Роль для користувача не знайдено');
+    }
+    const canEditRoles = await checkPermission(currentUser, 'EDIT_ROLES');
+    if (!canEditRoles) {
+      throw forbidden(
+        'Ви не маєте дозволу на редагування цієї ролі для користувачів'
+      );
     }
     const updateData = {};
     if (title && title !== foundRole.title) {
@@ -186,15 +185,15 @@ class RolesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const hasPermission = await checkPermission(currentUser, 'MANAGE_ROLES');
-    if (!hasPermission) {
-      throw forbidden(
-        'Ви не маєте дозволу на видалення цієї ролі для користувачів'
-      );
-    }
     const foundRole = await Role.findOne({ uuid });
     if (!foundRole) {
       throw notFound('Роль для користувача не знайдено');
+    }
+    const canRemoveRoles = await checkPermission(currentUser, 'REMOVE_ROLES');
+    if (!canRemoveRoles) {
+      throw forbidden(
+        'Ви не маєте дозволу на видалення цієї ролі для користувачів'
+      );
     }
     const usersWithRole = await User.countDocuments({ roleUuid: uuid });
     if (usersWithRole > 0) {

@@ -1,11 +1,11 @@
 const ENTITY_PERMISSIONS = {
-  categories: 'MANAGE_CATEGORIES',
-  establishments: 'MANAGE_ESTABLISHMENTS',
-  products: 'MANAGE_PRODUCTS',
-  currencies: 'MANAGE_CURRENCIES',
-  measures: 'MANAGE_MEASURES',
-  users: 'MANAGE_USERS',
-  roles: 'MANAGE_ROLES',
+  categories: 'EDIT_CATEGORIES',
+  establishments: 'EDIT_ESTABLISHMENTS',
+  products: 'EDIT_PRODUCTS',
+  currencies: 'EDIT_CURRENCIES',
+  measures: 'EDIT_MEASURES',
+  users: 'EDIT_USERS',
+  roles: 'EDIT_ROLES',
 };
 
 export { ENTITY_PERMISSIONS };

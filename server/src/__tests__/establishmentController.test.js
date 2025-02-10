@@ -196,7 +196,7 @@ describe('EstablishmentsController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на створення закладів'
+        'Ви не маєте дозволу на додавання закладів'
       );
     });
   });

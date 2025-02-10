@@ -60,26 +60,28 @@ class CategoriesService {
   }
 
   static async createCategory(title, currentUser, transaction) {
+    if (await Category.findOne({ where: { title } })) {
+      throw badRequest('Ця категорія вже існує');
+    }
     const canAddCategories = await checkPermission(
       currentUser,
       'ADD_CATEGORIES'
     );
-    const canManageCategories = await checkPermission(
+    const canModerationCategories = await checkPermission(
       currentUser,
-      'MANAGE_CATEGORIES'
+      'MODERATION_CATEGORIES'
     );
-    if (!canAddCategories && !canManageCategories) {
-      throw forbidden('Ви не маєте дозволу на створення категорій');
-    }
-    if (await Category.findOne({ where: { title } })) {
-      throw badRequest('Ця категорія вже існує');
+    if (!canAddCategories) {
+      throw forbidden('Ви не маєте дозволу на додавання категорій');
     }
     const newCategory = await Category.create(
       {
         title,
-        status: canManageCategories ? 'approved' : 'pending',
-        moderatorUuid: canManageCategories ? currentUser.uuid : null,
-        moderatorFullName: canManageCategories ? currentUser.fullName : null,
+        status: canModerationCategories ? 'approved' : 'pending',
+        moderatorUuid: canModerationCategories ? currentUser.uuid : null,
+        moderatorFullName: canModerationCategories
+          ? currentUser.fullName
+          : null,
         creatorUuid: currentUser.uuid,
         creatorFullName: currentUser.fullName,
       },
@@ -99,12 +101,15 @@ class CategoriesService {
     if (!foundCategory) {
       throw notFound('Категорію не знайдено');
     }
-    const isOwner = currentUser.uuid === foundCategory.creatorUuid;
-    const canManageCategories = await checkPermission(
+    const canEditCategories = await checkPermission(
       currentUser,
-      'MANAGE_CATEGORIES'
+      'EDIT_CATEGORIES'
     );
-    if (!isOwner && !canManageCategories) {
+    const canModerationCategories = await checkPermission(
+      currentUser,
+      'MODERATION_CATEGORIES'
+    );
+    if (!canEditCategories && !canModerationCategories) {
       throw forbidden('Ви не маєте дозволу на редагування цієї категорії');
     }
     if (title && title !== foundCategory.title) {
@@ -116,9 +121,11 @@ class CategoriesService {
     const [affectedRows, [updatedCategory]] = await Category.update(
       {
         title,
-        status: canManageCategories ? 'approved' : 'pending',
-        moderatorUuid: canManageCategories ? currentUser.uuid : null,
-        moderatorFullName: canManageCategories ? currentUser.fullName : null,
+        status: canModerationCategories ? 'approved' : 'pending',
+        moderatorUuid: canModerationCategories ? currentUser.uuid : null,
+        moderatorFullName: canModerationCategories
+          ? currentUser.fullName
+          : null,
       },
       { where: { uuid }, returning: true, transaction }
     );
@@ -132,16 +139,16 @@ class CategoriesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const canManageCategories = await checkPermission(
-      currentUser,
-      'MANAGE_CATEGORIES'
-    );
-    if (!canManageCategories) {
-      throw forbidden('Ви не маєте дозволу на видалення цієї категорії');
-    }
     const foundCategory = await Category.findOne({ where: { uuid } });
     if (!foundCategory) {
       throw notFound('Категорію не знайдено');
+    }
+    const canRemoveCategories = await checkPermission(
+      currentUser,
+      'REMOVE_CATEGORIES'
+    );
+    if (!canRemoveCategories) {
+      throw forbidden('Ви не маєте дозволу на видалення цієї категорії');
     }
     const deletedCategory = await Category.destroy({
       where: { uuid },

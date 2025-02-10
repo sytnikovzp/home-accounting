@@ -190,7 +190,7 @@ describe('ExpensesController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на створення витрат'
+        'Ви не маєте дозволу на додавання витрат'
       );
     });
   });

@@ -8,12 +8,105 @@ const {
 
 module.exports.permissions = [
   {
-    description: 'Повний CRUD для ролей користувачів',
-    title: 'MANAGE_ROLES',
+    description: 'Додавання нових ролей користувачів',
+    title: 'ADD_ROLES',
   },
   {
-    description: 'Зміна ролей для користувачів',
+    description: 'Редагування ролей користувачів',
+    title: 'EDIT_ROLES',
+  },
+  {
+    description: 'Видалення ролей користувачів',
+    title: 'REMOVE_ROLES',
+  },
+  {
+    description: 'Призначення та зміна ролей користувачам',
     title: 'ASSIGN_ROLES',
+  },
+  {
+    description: 'Редагування облікових записів користувачів',
+    title: 'EDIT_USERS',
+  },
+  {
+    description: 'Видалення облікових записів користувачів',
+    title: 'REMOVE_USERS',
+  },
+  {
+    description: 'Додавання нових категорій',
+    title: 'ADD_CATEGORIES',
+  },
+  {
+    description: 'Редагування категорій',
+    title: 'EDIT_CATEGORIES',
+  },
+  {
+    description: 'Видалення категорій',
+    title: 'REMOVE_CATEGORIES',
+  },
+  {
+    description: 'Перегляд, зміна статусу публікації та модерація категорій',
+    title: 'MODERATION_CATEGORIES',
+  },
+  {
+    description: 'Додавання нових закладів',
+    title: 'ADD_ESTABLISHMENTS',
+  },
+  {
+    description: 'Редагування закладів',
+    title: 'EDIT_ESTABLISHMENTS',
+  },
+  {
+    description: 'Видалення закладів',
+    title: 'REMOVE_ESTABLISHMENTS',
+  },
+  {
+    description: 'Перегляд, зміна статусу публікації та модерація закладів',
+    title: 'MODERATION_ESTABLISHMENTS',
+  },
+  {
+    description: 'Додавання нових товарів',
+    title: 'ADD_PRODUCTS',
+  },
+  {
+    description: 'Редагування товарів',
+    title: 'EDIT_PRODUCTS',
+  },
+  {
+    description: 'Видалення товарів',
+    title: 'REMOVE_PRODUCTS',
+  },
+  {
+    description: 'Перегляд, зміна статусу публікації та модерація товарів',
+    title: 'MODERATION_PRODUCTS',
+  },
+  {
+    description: 'Додавання нових валют',
+    title: 'ADD_CURRENCIES',
+  },
+  {
+    description: 'Редагування валют',
+    title: 'EDIT_CURRENCIES',
+  },
+  {
+    description: 'Видалення валют',
+    title: 'REMOVE_CURRENCIES',
+  },
+  {
+    description: 'Додавання нових одиниць вимірів',
+    title: 'ADD_MEASURES',
+  },
+  {
+    description: 'Редагування одиниць вимірів',
+    title: 'EDIT_MEASURES',
+  },
+  {
+    description: 'Видалення одиниць вимірів',
+    title: 'REMOVE_MEASURES',
+  },
+
+  {
+    description: 'Керування своїми записами про витрати',
+    title: 'MANAGE_EXPENSES',
   },
   {
     description: 'Перегляд повної інформації в профілях інших користувачів',
@@ -23,96 +116,60 @@ module.exports.permissions = [
     description: 'Перегляд обмеженої інформації в профілях інших користувачів',
     title: 'LIMITED_PROFILE_VIEWER',
   },
-  {
-    description: 'Повний CRUD інформації в профілях інших користувачів',
-    title: 'MANAGE_USERS',
-  },
-  {
-    description: 'Повний CRUD для категорій без модерації',
-    title: 'MANAGE_CATEGORIES',
-  },
-  {
-    description: 'Повний CRUD для товарів без модерації',
-    title: 'MANAGE_PRODUCTS',
-  },
-  {
-    description: 'Повний CRUD для закладів без модерації',
-    title: 'MANAGE_ESTABLISHMENTS',
-  },
-  {
-    description: 'Повний CRUD для валют без модерації',
-    title: 'MANAGE_CURRENCIES',
-  },
-  {
-    description: 'Повний CRUD для одиниць вимірів без модерації',
-    title: 'MANAGE_MEASURES',
-  },
-  {
-    description: 'Додавання нових записів про витрати без модерації',
-    title: 'ADD_EXPENSES',
-  },
-  {
-    description: 'Додавання нових закладів, потребують модерації',
-    title: 'ADD_ESTABLISHMENTS',
-  },
-  {
-    description: 'Перегляд та зміна статусу публікації для закладів',
-    title: 'MODERATION_ESTABLISHMENTS',
-  },
-  {
-    description: 'Додавання нових товарів, потребують модерації',
-    title: 'ADD_PRODUCTS',
-  },
-  {
-    description: 'Перегляд та зміна статусу публікації для товарів',
-    title: 'MODERATION_PRODUCTS',
-  },
-  {
-    description: 'Додавання нових категорій, потребують модерації',
-    title: 'ADD_CATEGORIES',
-  },
-  {
-    description: 'Перегляд та зміна статусу публікації для категорій',
-    title: 'MODERATION_CATEGORIES',
-  },
 ];
 
 module.exports.roles = (permissionUuids) => [
   {
+    title: 'Administrator',
     description: 'Має повний доступ до керування користувачами та ролями',
     permissions: [
-      permissionUuids['MANAGE_ROLES'],
+      permissionUuids['ADD_ROLES'],
+      permissionUuids['EDIT_ROLES'],
+      permissionUuids['REMOVE_ROLES'],
       permissionUuids['ASSIGN_ROLES'],
-      permissionUuids['MANAGE_USERS'],
+      permissionUuids['EDIT_USERS'],
+      permissionUuids['REMOVE_USERS'],
       permissionUuids['FULL_PROFILE_VIEWER'],
     ],
-    title: 'Administrator',
   },
   {
+    title: 'Moderator',
     description: 'Моніторинг та відстеження публікацій й контенту',
     permissions: [
-      permissionUuids['MANAGE_CATEGORIES'],
-      permissionUuids['MANAGE_PRODUCTS'],
-      permissionUuids['MANAGE_ESTABLISHMENTS'],
-      permissionUuids['MANAGE_CURRENCIES'],
-      permissionUuids['MANAGE_MEASURES'],
+      permissionUuids['ADD_CATEGORIES'],
+      permissionUuids['EDIT_CATEGORIES'],
+      permissionUuids['REMOVE_CATEGORIES'],
+      permissionUuids['ADD_ESTABLISHMENTS'],
+      permissionUuids['EDIT_ESTABLISHMENTS'],
+      permissionUuids['REMOVE_ESTABLISHMENTS'],
+      permissionUuids['ADD_PRODUCTS'],
+      permissionUuids['EDIT_PRODUCTS'],
+      permissionUuids['REMOVE_PRODUCTS'],
+      permissionUuids['ADD_CURRENCIES'],
+      permissionUuids['EDIT_CURRENCIES'],
+      permissionUuids['REMOVE_CURRENCIES'],
+      permissionUuids['ADD_MEASURES'],
+      permissionUuids['EDIT_MEASURES'],
+      permissionUuids['REMOVE_MEASURES'],
       permissionUuids['MODERATION_CATEGORIES'],
       permissionUuids['MODERATION_PRODUCTS'],
       permissionUuids['MODERATION_ESTABLISHMENTS'],
       permissionUuids['LIMITED_PROFILE_VIEWER'],
     ],
-    title: 'Moderator',
   },
   {
+    title: 'User',
     description: 'Використання цього додатку для відстеження витрат',
     permissions: [
-      permissionUuids['ADD_EXPENSES'],
+      permissionUuids['MANAGE_EXPENSES'],
       permissionUuids['ADD_ESTABLISHMENTS'],
+      permissionUuids['EDIT_ESTABLISHMENTS'],
       permissionUuids['ADD_PRODUCTS'],
+      permissionUuids['EDIT_PRODUCTS'],
       permissionUuids['ADD_CATEGORIES'],
+      permissionUuids['EDIT_CATEGORIES'],
       permissionUuids['LIMITED_PROFILE_VIEWER'],
     ],
-    title: 'User',
   },
 ];
 

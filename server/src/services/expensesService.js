@@ -140,9 +140,12 @@ class ExpensesService {
     currentUser,
     transaction
   ) {
-    const hasPermission = await checkPermission(currentUser, 'ADD_EXPENSES');
-    if (!hasPermission) {
-      throw forbidden('Ви не маєте дозволу на створення витрат');
+    const canManageExpenses = await checkPermission(
+      currentUser,
+      'MANAGE_EXPENSES'
+    );
+    if (!canManageExpenses) {
+      throw forbidden('Ви не маєте дозволу на додавання витрат');
     }
     const [
       foundProduct,

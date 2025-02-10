@@ -208,7 +208,7 @@ describe('RolesController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на створення ролей для користувачів'
+        'Ви не маєте дозволу на додавання ролей для користувачів'
       );
     });
 

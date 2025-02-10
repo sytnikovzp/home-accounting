@@ -56,15 +56,12 @@ class MeasuresService {
   }
 
   static async createMeasure(title, description, currentUser, transaction) {
-    const canManageMeasures = await checkPermission(
-      currentUser,
-      'MANAGE_MEASURES'
-    );
-    if (!canManageMeasures) {
-      throw forbidden('Ви не маєте дозволу на створення одиниць вимірів');
-    }
     if (await Measure.findOne({ where: { title } })) {
       throw badRequest('Ця одиниця вимірів вже існує');
+    }
+    const canAddMeasures = await checkPermission(currentUser, 'ADD_MEASURES');
+    if (!canAddMeasures) {
+      throw forbidden('Ви не маєте дозволу на додавання одиниць вимірів');
     }
     const newMeasure = await Measure.create(
       {
@@ -95,11 +92,8 @@ class MeasuresService {
     if (!foundMeasure) {
       throw notFound('Одиницю вимірів не знайдено');
     }
-    const canManageMeasures = await checkPermission(
-      currentUser,
-      'MANAGE_MEASURES'
-    );
-    if (!canManageMeasures) {
+    const canEditMeasures = await checkPermission(currentUser, 'EDIT_MEASURES');
+    if (!canEditMeasures) {
       throw forbidden(
         'Ви не маєте дозволу на редагування цієї одиниці вимірів'
       );
@@ -124,16 +118,16 @@ class MeasuresService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const canManageMeasures = await checkPermission(
-      currentUser,
-      'MANAGE_MEASURES'
-    );
-    if (!canManageMeasures) {
-      throw forbidden('Ви не маєте дозволу на видалення цієї одиниці вимірів');
-    }
     const foundMeasure = await Measure.findOne({ where: { uuid } });
     if (!foundMeasure) {
       throw notFound('Одиницю вимірів не знайдено');
+    }
+    const canRemoveMeasures = await checkPermission(
+      currentUser,
+      'REMOVE_MEASURES'
+    );
+    if (!canRemoveMeasures) {
+      throw forbidden('Ви не маєте дозволу на видалення цієї одиниці вимірів');
     }
     const deletedMeasure = await Measure.destroy({
       where: { uuid },
