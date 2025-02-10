@@ -78,13 +78,7 @@ export const stylesListTableActionsHeadTableCellNotModeration = {
   width: '85px',
 };
 
-export const stylesListTableActionsModeration = {
-  borderBottom: '1px solid #ccc',
-  borderLeft: '1px solid #ccc',
-  padding: '8px 16px',
-};
-
-export const stylesListTableActionsNotModeration = {
+export const stylesListTableActions = {
   borderBottom: '1px solid #ccc',
   borderLeft: '1px solid #ccc',
   padding: '8px 16px',

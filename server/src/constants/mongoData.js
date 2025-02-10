@@ -25,7 +25,7 @@ module.exports.permissions = [
   },
   {
     description: 'Повний CRUD інформації в профілях інших користувачів',
-    title: 'MANAGE_USER_PROFILES',
+    title: 'MANAGE_USERS',
   },
   {
     description: 'Повний CRUD для категорій без модерації',
@@ -83,7 +83,7 @@ module.exports.roles = (permissionUuids) => [
     permissions: [
       permissionUuids['MANAGE_ROLES'],
       permissionUuids['ASSIGN_ROLES'],
-      permissionUuids['MANAGE_USER_PROFILES'],
+      permissionUuids['MANAGE_USERS'],
       permissionUuids['FULL_PROFILE_VIEWER'],
     ],
     title: 'Administrator',

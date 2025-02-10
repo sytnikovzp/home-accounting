@@ -162,7 +162,7 @@ class UsersService {
     }
     const hasPermission =
       currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USERS'));
     if (!hasPermission) {
       throw forbidden(
         'У Вас немає дозволу на оновлення паролю цього користувача'
@@ -212,7 +212,7 @@ class UsersService {
     }
     const hasPermission =
       currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USERS'));
     if (!hasPermission) {
       throw forbidden(
         'У Вас немає дозволу на оновлення даних цього користувача'
@@ -304,7 +304,7 @@ class UsersService {
     }
     const hasPermission =
       currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USERS'));
     if (!hasPermission) {
       throw forbidden(
         'Ви не маєте дозволу на оновлення фотографії цього користувача'
@@ -331,7 +331,7 @@ class UsersService {
     }
     const hasPermission =
       currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USERS'));
     if (!hasPermission) {
       throw forbidden(
         'Ви не маєте дозволу на видалення фотографії цього користувача'
@@ -355,7 +355,7 @@ class UsersService {
     }
     const hasPermission =
       currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'MANAGE_USER_PROFILES'));
+      (await checkPermission(currentUser, 'MANAGE_USERS'));
     if (!hasPermission) {
       throw forbidden(
         'Ви не маєте дозволу на видалення цього профілю користувача'
