@@ -18,7 +18,7 @@ import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import Error from '../../components/Error/Error';
 
-import ActionButtons from './ActionButtons';
+import ActionBlock from './ActionBlock';
 import EmptyRows from './EmptyRows';
 import EntityTableCell from './EntityTableCell';
 import StatusDropdown from './StatusDropdown';
@@ -162,13 +162,13 @@ function ListTable({
                 ))}
 
                 {linkEntity === 'moderation' ? (
-                  <ActionButtons
+                  <ActionBlock
                     linkEntity={linkEntity}
                     row={row}
                     onModerate={onModerate}
                   />
                 ) : (
-                  <ActionButtons
+                  <ActionBlock
                     linkEntity={linkEntity}
                     row={row}
                     onEdit={onEdit}
