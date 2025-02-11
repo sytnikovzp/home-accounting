@@ -125,6 +125,9 @@ class RolesService {
         'Ви не маєте дозволу на редагування цієї ролі для користувачів'
       );
     }
+    if (foundRole.title === 'Users' || foundRole.title === 'Administrators') {
+      throw forbidden('Не можна редагувати системну роль');
+    }
     const updateData = {};
     if (title && title !== foundRole.title) {
       const duplicateRole = await Role.findOne({ title });
@@ -194,6 +197,9 @@ class RolesService {
       throw forbidden(
         'Ви не маєте дозволу на видалення цієї ролі для користувачів'
       );
+    }
+    if (foundRole.title === 'Users' || foundRole.title === 'Administrators') {
+      throw forbidden('Не можна видалити системну роль');
     }
     const usersWithRole = await User.countDocuments({ roleUuid: uuid });
     if (usersWithRole > 0) {

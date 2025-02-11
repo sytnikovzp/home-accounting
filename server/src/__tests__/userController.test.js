@@ -26,7 +26,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
-      expect(response.body.user.role).toBe('User');
+      expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
@@ -40,7 +40,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
-      expect(response.body.user.role).toBe('Moderator');
+      expect(response.body.user.role).toBe('Moderators');
       expect(response.body.user).toHaveProperty('photo');
       authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
@@ -54,7 +54,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
-      expect(response.body.user.role).toBe('Administrator');
+      expect(response.body.user.role).toBe('Administrators');
       expect(response.body.user).toHaveProperty('photo');
       authData.admin.uuid = response.body.user.uuid;
       authData.admin.accessToken = response.body.accessToken;
@@ -105,7 +105,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', authData.user.uuid);
       expect(response.body.fullName).toBe('Ганна Шевченко');
-      expect(response.body.role).toBe('User');
+      expect(response.body.role).toBe('Users');
       expect(response.body).toHaveProperty('photo');
       expect(response.body.email).toBe('hanna.shevchenko@gmail.com');
       expect(response.body.createdAt).toBeDefined();
@@ -141,7 +141,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', authData.user.uuid);
       expect(response.body.fullName).toBe('Ганна Шевченко');
-      expect(response.body.role).toBe('User');
+      expect(response.body.role).toBe('Users');
       expect(response.body).toHaveProperty('photo');
       expect(response.body.email).toBe('hanna.shevchenko@gmail.com');
       expect(response.body.createdAt).toBeDefined();
@@ -167,12 +167,12 @@ describe('UserController', () => {
         .send({
           email: 'Charlie.Updated@Gmail.com',
           fullName: 'Charlie Updated',
-          role: 'User',
+          role: 'Users',
         });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Charlie Updated');
-      expect(response.body.user.role).toBe('User');
+      expect(response.body.user.role).toBe('Users');
       if (response.body.accessToken !== authData.user.accessToken) {
         authData.user.accessToken = response.body.accessToken;
       }
@@ -185,7 +185,7 @@ describe('UserController', () => {
         .send({
           email: 'Charlie.Updated@Gmail.com',
           fullName: 'Charlie Updated',
-          role: 'Moderator',
+          role: 'Moderators',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -213,7 +213,7 @@ describe('UserController', () => {
         .send({
           email: 'Charlie.Updated@Gmail.com',
           fullName: 'Charlie Updated',
-          role: 'Moderator',
+          role: 'Moderators',
         });
       expect(response.status).toBe(403);
       expect(response.body.errors[0].title).toBe(
@@ -227,7 +227,7 @@ describe('UserController', () => {
         .send({
           email: 'Charlie.Updated@Gmail.com',
           fullName: 'Charlie Updated',
-          role: 'User',
+          role: 'Users',
         });
       expect(response.status).toBe(401);
     });
@@ -250,12 +250,12 @@ describe('UserController', () => {
         .send({
           email: 'Charlie.Updated@Gmail.com',
           fullName: 'Charlie Updated',
-          role: 'Moderator',
+          role: 'Moderators',
         });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Charlie Updated');
-      expect(response.body.user.role).toBe('Moderator');
+      expect(response.body.user.role).toBe('Moderators');
     });
   });
 

@@ -21,7 +21,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(201);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user.role).toBe('User');
+      expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       refreshToken = response.body.refreshToken;
     });
@@ -46,7 +46,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user.role).toBe('User');
+      expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       refreshToken = response.body.refreshToken;
     });
@@ -68,7 +68,7 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user.role).toBe('User');
+      expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
     });
 

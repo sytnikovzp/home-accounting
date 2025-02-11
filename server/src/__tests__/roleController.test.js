@@ -26,7 +26,7 @@ describe('RolesController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
-      expect(response.body.user.role).toBe('User');
+      expect(response.body.user.role).toBe('Users');
       authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
@@ -39,7 +39,7 @@ describe('RolesController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
-      expect(response.body.user.role).toBe('Moderator');
+      expect(response.body.user.role).toBe('Moderators');
       authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
@@ -52,7 +52,7 @@ describe('RolesController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
-      expect(response.body.user.role).toBe('Administrator');
+      expect(response.body.user.role).toBe('Administrators');
       authData.admin.uuid = response.body.user.uuid;
       authData.admin.accessToken = response.body.accessToken;
     });
@@ -290,7 +290,7 @@ describe('RolesController', () => {
         .patch(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`)
         .send({
-          title: 'Administrator',
+          title: 'Administrators',
         });
       expect(response.status).toBe(400);
       expect(response.body.errors[0].title).toBe(

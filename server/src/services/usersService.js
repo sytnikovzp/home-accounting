@@ -240,7 +240,7 @@ class UsersService {
           'У Вас немає дозволу на редагування ролі цього користувача'
         );
       }
-      if (foundRole.title === 'Administrator') {
+      if (foundRole.title === 'Administrators') {
         const adminCount = await User.countDocuments({
           roleUuid: foundUser.roleUuid,
         });
@@ -369,7 +369,7 @@ class UsersService {
     if (!foundRole) {
       throw badRequest('Роль для користувача не знайдено');
     }
-    if (foundRole.title === 'Administrator') {
+    if (foundRole.title === 'Administrators') {
       const adminCount = await User.countDocuments({
         roleUuid: foundUser.roleUuid,
       });

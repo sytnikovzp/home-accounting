@@ -120,7 +120,7 @@ module.exports.permissions = [
 
 module.exports.roles = (permissionUuids) => [
   {
-    title: 'Administrator',
+    title: 'Administrators',
     description: 'Має повний доступ до керування користувачами та ролями',
     permissions: [
       permissionUuids['ADD_ROLES'],
@@ -133,7 +133,7 @@ module.exports.roles = (permissionUuids) => [
     ],
   },
   {
-    title: 'Moderator',
+    title: 'Moderators',
     description: 'Моніторинг та відстеження публікацій й контенту',
     permissions: [
       permissionUuids['ADD_CATEGORIES'],
@@ -158,7 +158,7 @@ module.exports.roles = (permissionUuids) => [
     ],
   },
   {
-    title: 'User',
+    title: 'Users',
     description: 'Використання цього додатку для відстеження витрат',
     permissions: [
       permissionUuids['MANAGE_EXPENSES'],
@@ -180,7 +180,7 @@ module.exports.users = async (roleUuids) => [
     fullName: 'Іван Петренко',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     photo: '1730686056955-ivan.petrenko.jpg',
-    roleUuid: roleUuids['Administrator'],
+    roleUuid: roleUuids['Administrators'],
   },
   {
     email: 'o.ivanchuk@gmail.com',
@@ -188,7 +188,7 @@ module.exports.users = async (roleUuids) => [
     fullName: 'Олександра Іванчук',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     photo: '1730686066968-oleksandra.ivanchuk.jpg',
-    roleUuid: roleUuids['Moderator'],
+    roleUuid: roleUuids['Moderators'],
   },
   {
     email: 'hanna.shevchenko@gmail.com',
@@ -196,6 +196,6 @@ module.exports.users = async (roleUuids) => [
     fullName: 'Ганна Шевченко',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     photo: '1730713464386-hanna.shevchenko.jpg',
-    roleUuid: roleUuids['User'],
+    roleUuid: roleUuids['Users'],
   },
 ];

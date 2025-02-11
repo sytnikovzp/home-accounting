@@ -59,7 +59,7 @@ function UserForm({
       label: 'Роль',
       type: 'select',
       options: formatItems(roles, 'title', 'title'),
-      placeholder: 'Наприклад "User"',
+      placeholder: 'Наприклад "Users"',
     },
   ];
 
