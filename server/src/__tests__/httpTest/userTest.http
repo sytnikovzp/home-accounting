@@ -1,7 +1,7 @@
 ### Get list all users (default pagination, without sort)
 GET http://localhost:5000/api/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmMzctZmRlYy00ZTk1LTg0YjUtMmQ3ZGExMWZmZmU2IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjQ5NTcsImV4cCI6MTczODYyMDk1N30.7DAh3n_3iYtGNpngBp5dWj9b-n-hK_bhm6q9Rr2pDtE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2ZTJiMmE3ZC02Nzg5LTQ4ZTctOWViYi1jYmIzZTRjYTYzNjYiLCJpYXQiOjE3MzkyNTQwMzMsImV4cCI6MTczOTI1NDkzM30.DTqGpi6e-gZJJf7n800DWMbR0W24r4UWTFh5Dj4BXM8
 
 ### Get list all users (custom pagination, without sort)
 GET http://localhost:5000/api/users?page=1&limit=10 HTTP/1.1

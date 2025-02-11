@@ -104,6 +104,12 @@ class CurrenciesService {
     if (!canEditCurrencies) {
       throw forbidden('Ви не маєте дозволу на редагування цієї валюти');
     }
+    if (
+      foundCurrency.title === 'Українська гривня' ||
+      foundCurrency.code === 'UAH'
+    ) {
+      throw forbidden('Не можна редагувати Державну Валюту');
+    }
     if (title && title !== foundCurrency.title) {
       const duplicateCurrency = await Currency.findOne({ where: { title } });
       if (duplicateCurrency) {
@@ -140,6 +146,12 @@ class CurrenciesService {
     );
     if (!canRemoveCurrencies) {
       throw forbidden('Ви не маєте дозволу на видалення цієї валюти');
+    }
+    if (
+      foundCurrency.title === 'Українська гривня' ||
+      foundCurrency.code === 'UAH'
+    ) {
+      throw forbidden('Не можна видалити Державну Валюту');
     }
     const deletedCurrency = await Currency.destroy({
       where: { uuid },
