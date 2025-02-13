@@ -44,7 +44,7 @@ module.exports.permissions = [
     title: 'REMOVE_CATEGORIES',
   },
   {
-    description: 'Перегляд, зміна статусу публікації та модерація категорій',
+    description: 'Зміна статусу публікації та модерація категорій',
     title: 'MODERATION_CATEGORIES',
   },
   {
@@ -60,7 +60,7 @@ module.exports.permissions = [
     title: 'REMOVE_ESTABLISHMENTS',
   },
   {
-    description: 'Перегляд, зміна статусу публікації та модерація закладів',
+    description: 'Зміна статусу публікації та модерація закладів',
     title: 'MODERATION_ESTABLISHMENTS',
   },
   {
@@ -76,7 +76,7 @@ module.exports.permissions = [
     title: 'REMOVE_PRODUCTS',
   },
   {
-    description: 'Перегляд, зміна статусу публікації та модерація товарів',
+    description: 'Зміна статусу публікації та модерація товарів',
     title: 'MODERATION_PRODUCTS',
   },
   {

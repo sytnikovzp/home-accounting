@@ -7,6 +7,8 @@ import {
   saveAccessToken,
 } from '../../utils/sharedFunctions';
 
+import { logout } from '../slices/authUserSlice';
+
 const { BASE_URL } = configs;
 
 const baseQuery = fetchBaseQuery({
@@ -21,45 +23,32 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-let refreshSubscribers = [];
-
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-  const result = await baseQuery(args, api, extraOptions);
+  let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error?.status === 401) {
-    const originalRequest = args;
+  if (result.error && result.error.status === 401) {
+    console.warn('Access token expired. Trying to refresh...');
 
-    if (originalRequest._retry) {
-      return result;
-    }
+    const refreshResult = await baseQuery(
+      { url: '/auth/refresh', method: 'GET' },
+      api,
+      extraOptions
+    );
 
-    originalRequest._retry = true;
+    if (refreshResult.data) {
+      const newToken = refreshResult.data.accessToken;
+      saveAccessToken(newToken);
+      const newArgs =
+        typeof args === 'string'
+          ? { url: args, method: 'GET', headers: new Headers() }
+          : { ...args, headers: new Headers(args.headers) };
 
-    try {
-      const response = await baseQuery(
-        { url: '/auth/refresh', method: 'GET' },
-        api,
-        extraOptions
-      );
-
-      if (response.data) {
-        saveAccessToken(response.data.accessToken);
-
-        originalRequest.headers = originalRequest.headers || {};
-        originalRequest.headers['Authorization'] =
-          `Bearer ${response.data.accessToken}`;
-
-        for (const callback of refreshSubscribers) {
-          callback(response.data.accessToken);
-        }
-        refreshSubscribers = [];
-
-        return baseQuery(originalRequest, api, extraOptions);
-      }
-    } catch (error) {
-      console.warn('Token refresh failed', error);
+      newArgs.headers.set('Authorization', `Bearer ${newToken}`);
+      result = await baseQuery(newArgs, api, extraOptions);
+    } else {
+      console.warn('Token refresh failed. Logging out...');
       removeAccessToken();
-      refreshSubscribers = [];
+      api.dispatch(logout());
     }
   }
 
