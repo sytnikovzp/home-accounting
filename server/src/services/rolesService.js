@@ -125,14 +125,17 @@ class RolesService {
         'Ви не маєте дозволу на редагування цієї ролі для користувачів'
       );
     }
-    if (foundRole.title === 'Users' || foundRole.title === 'Administrators') {
-      throw forbidden('Не можна редагувати системну роль');
+    if (foundRole.title === 'Administrators') {
+      throw forbidden('Не можна редагувати системну роль Administrators');
     }
     const updateData = {};
     if (title && title !== foundRole.title) {
       const duplicateRole = await Role.findOne({ title });
       if (duplicateRole) {
         throw badRequest('Ця роль для користувача вже існує');
+      }
+      if (foundRole.title === 'Users' && title !== foundRole.title) {
+        throw badRequest('Не можна перейменувати системну роль Users');
       }
       updateData.title = title;
     }

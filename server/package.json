@@ -69,7 +69,7 @@
     "jest-serial-runner": "^1.2.1",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.9",
-    "prettier": "^3.5.0",
+    "prettier": "^3.5.1",
     "sequelize-cli": "^6.6.2",
     "supertest": "^7.0.0"
   }
