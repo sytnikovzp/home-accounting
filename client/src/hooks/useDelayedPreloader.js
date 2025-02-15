@@ -18,6 +18,7 @@ function useDelayedPreloader(isLoading) {
     } else {
       setIsPreloaderVisible(false);
     }
+
     return () => clearTimeout(timeout);
   }, [isLoading]);
 
