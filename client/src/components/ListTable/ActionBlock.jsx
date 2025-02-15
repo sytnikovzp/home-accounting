@@ -9,37 +9,28 @@ import ActionButton from './ActionButton';
 function ActionBlock({ row, linkEntity, onEdit, onRemove, onModerate }) {
   const { hasPermission } = useHasPermission();
 
-  const canEdit = hasPermission(linkEntity, 'edit');
-  const canRemove = hasPermission(linkEntity, 'remove');
-  const canModerate =
-    linkEntity === 'moderation'
-      ? hasPermission(row.path, 'moderate')
-      : hasPermission(linkEntity, 'moderate');
-
   return (
     <>
-      {linkEntity === 'moderation' ? (
+      {hasPermission(linkEntity, 'edit') && (
         <ActionButton
-          disabled={!canModerate}
+          Icon={EditIcon}
+          title='Редагувати'
+          onClick={() => onEdit(row)}
+        />
+      )}
+      {hasPermission(linkEntity, 'remove') && (
+        <ActionButton
+          Icon={DeleteIcon}
+          title='Видалити'
+          onClick={() => onRemove(row)}
+        />
+      )}
+      {linkEntity === 'moderation' && hasPermission(row.path, 'moderate') && (
+        <ActionButton
           Icon={TaskIcon}
           title='Модерувати'
           onClick={() => onModerate(row)}
         />
-      ) : (
-        <>
-          <ActionButton
-            disabled={!canEdit}
-            Icon={EditIcon}
-            title='Редагувати'
-            onClick={() => onEdit(row)}
-          />
-          <ActionButton
-            disabled={!canRemove}
-            Icon={DeleteIcon}
-            title='Видалити'
-            onClick={() => onRemove(row)}
-          />
-        </>
       )}
     </>
   );
