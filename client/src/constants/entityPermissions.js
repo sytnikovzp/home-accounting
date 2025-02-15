@@ -1,13 +1,16 @@
 const ENTITY_PERMISSIONS = {
   establishments: {
+    add: 'ADD_ESTABLISHMENTS',
     edit: 'EDIT_ESTABLISHMENTS',
     remove: 'REMOVE_ESTABLISHMENTS',
   },
   products: {
+    add: 'ADD_PRODUCTS',
     edit: 'EDIT_PRODUCTS',
     remove: 'REMOVE_PRODUCTS',
   },
   categories: {
+    add: 'ADD_CATEGORIES',
     edit: 'EDIT_CATEGORIES',
     remove: 'REMOVE_CATEGORIES',
   },
@@ -17,10 +20,12 @@ const ENTITY_PERMISSIONS = {
     establishment: 'MODERATION_ESTABLISHMENTS',
   },
   currencies: {
+    add: 'ADD_CURRENCIES',
     edit: 'EDIT_CURRENCIES',
     remove: 'REMOVE_CURRENCIES',
   },
   measures: {
+    add: 'ADD_MEASURES',
     edit: 'EDIT_MEASURES',
     remove: 'REMOVE_MEASURES',
   },
@@ -29,12 +34,15 @@ const ENTITY_PERMISSIONS = {
     remove: 'REMOVE_USERS',
   },
   roles: {
+    add: 'ADD_ROLES',
     edit: 'EDIT_ROLES',
     remove: 'REMOVE_ROLES',
     assign: 'ASSIGN_ROLES',
   },
   expenses: {
-    manage: 'MANAGE_EXPENSES',
+    add: 'ADD_EXPENSES',
+    edit: 'EDIT_EXPENSES',
+    remove: 'REMOVE_EXPENSES',
   },
 };
 

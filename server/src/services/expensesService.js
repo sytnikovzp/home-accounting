@@ -142,7 +142,7 @@ class ExpensesService {
   ) {
     const canManageExpenses = await checkPermission(
       currentUser,
-      'MANAGE_EXPENSES'
+      'ADD_EXPENSES'
     );
     if (!canManageExpenses) {
       throw forbidden('Ви не маєте дозволу на додавання витрат');
@@ -238,8 +238,10 @@ class ExpensesService {
     if (!foundExpense) {
       throw notFound('Витрату не знайдено');
     }
-    const isOwner = currentUser.uuid.toString() === foundExpense.creatorUuid;
-    if (!isOwner) {
+    const canEditExpenses =
+      currentUser.uuid.toString() === foundExpense.creatorUuid &&
+      (await checkPermission(currentUser, 'EDIT_EXPENSES'));
+    if (!canEditExpenses) {
       throw forbidden('Ви не маєте дозволу на редагування цієї витрати');
     }
     const [
@@ -321,8 +323,10 @@ class ExpensesService {
     if (!foundExpense) {
       throw notFound('Витрату не знайдено');
     }
-    const isOwner = currentUser.uuid.toString() === foundExpense.creatorUuid;
-    if (!isOwner) {
+    const canRemoveExpenses =
+      currentUser.uuid.toString() === foundExpense.creatorUuid &&
+      (await checkPermission(currentUser, 'REMOVE_EXPENSES'));
+    if (!canRemoveExpenses) {
       throw forbidden('Ви не маєте дозволу на видалення цієї витрати');
     }
     const deletedExpense = await Expense.destroy({

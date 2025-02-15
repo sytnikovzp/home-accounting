@@ -103,10 +103,17 @@ module.exports.permissions = [
     description: 'Видалення одиниць вимірів',
     title: 'REMOVE_MEASURES',
   },
-
   {
-    description: 'Керування своїми записами про витрати',
-    title: 'MANAGE_EXPENSES',
+    description: 'Додавання нових записів про витрати',
+    title: 'ADD_EXPENSES',
+  },
+  {
+    description: 'Редагування записів про витрати',
+    title: 'EDIT_EXPENSES',
+  },
+  {
+    description: 'Видалення записів про витрати',
+    title: 'REMOVE_EXPENSES',
   },
   {
     description: 'Перегляд повної інформації в профілях інших користувачів',
@@ -161,7 +168,9 @@ module.exports.roles = (permissionUuids) => [
     title: 'Users',
     description: 'Використання цього додатку для відстеження витрат',
     permissions: [
-      permissionUuids['MANAGE_EXPENSES'],
+      permissionUuids['ADD_EXPENSES'],
+      permissionUuids['EDIT_EXPENSES'],
+      permissionUuids['REMOVE_EXPENSES'],
       permissionUuids['ADD_ESTABLISHMENTS'],
       permissionUuids['EDIT_ESTABLISHMENTS'],
       permissionUuids['ADD_PRODUCTS'],
