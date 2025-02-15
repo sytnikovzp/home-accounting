@@ -2,11 +2,10 @@
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 describe('AuthController', () => {
   let refreshToken = null;
@@ -14,8 +13,8 @@ describe('AuthController', () => {
   describe('POST /api/auth/registration', () => {
     it('should register a new user', async () => {
       const response = await request(app).post('/api/auth/registration').send({
-        email: 'evgen.stupka@gmail.com',
         fullName: 'Євген Ступка',
+        email: 'nepushkin93@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(201);
@@ -33,30 +32,39 @@ describe('AuthController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Цей користувач вже існує');
+      expect(response.body.message).toBe('Цей користувач вже зареєстрований');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'evgen.stupka@gmail.com',
+        email: 'nepushkin93@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('accessToken');
+      expect(response.body).toHaveProperty('refreshToken');
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
+      expect(response.body.user).toHaveProperty('emailVerificationStatus');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
+      expect(response.body).toHaveProperty('permissions');
       refreshToken = response.body.refreshToken;
     });
 
     it('should return 401 for invalid credentials', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'WrongUser@gmail.com',
-        password: 'wrongpassword',
+        email: 'nepushkin93@gmail.com',
+        password: 'Qwerty21',
       });
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -66,15 +74,22 @@ describe('AuthController', () => {
         .get('/api/auth/refresh')
         .set('Cookie', `refreshToken=${refreshToken}`);
       expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('accessToken');
+      expect(response.body).toHaveProperty('refreshToken');
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
+      expect(response.body.user).toHaveProperty('emailVerificationStatus');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
+      expect(response.body).toHaveProperty('permissions');
     });
 
     it('should return 401 if refresh token is missing', async () => {
       const response = await request(app).get('/api/auth/refresh');
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -82,6 +97,31 @@ describe('AuthController', () => {
     it('should logout the user', async () => {
       const response = await request(app).get('/api/auth/logout');
       expect(response.status).toBe(200);
+      expect(response.body).toBe('OK');
+    });
+  });
+
+  describe('POST /api/auth/forgot', () => {
+    it('should forgot password an existing user', async () => {
+      const response = await request(app).post('/api/auth/forgot').send({
+        email: 'nepushkin93@gmail.com',
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe(
+        'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями'
+      );
+      expect(response.body.severity).toBe('success');
+      expect(response.body.title).toBe('Зміна паролю...');
+    });
+
+    it('should return 401 for invalid credentials', async () => {
+      const response = await request(app).post('/api/auth/forgot').send({
+        email: 'nepushkin@gmail.com',
+      });
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Користувача не знайдено');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

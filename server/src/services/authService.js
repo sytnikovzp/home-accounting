@@ -31,7 +31,7 @@ class AuthService {
     if (await User.findOne({ email: emailToLower })) {
       throw badRequest('Цей користувач вже зареєстрований');
     }
-    const foundRole = await Role.findOne({ title: 'User' });
+    const foundRole = await Role.findOne({ title: 'Users' });
     if (!foundRole) {
       throw notFound('Роль для користувача не знайдено');
     }
