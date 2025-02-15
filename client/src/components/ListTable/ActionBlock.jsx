@@ -24,39 +24,44 @@ function ActionBlock({ row, linkEntity, onEdit, onRemove, onModerate }) {
     return (permission) => permissionsSet.has(permission);
   }, [authenticatedUser?.permissions]);
 
-  if (linkEntity === 'moderation') {
-    const canModerate =
-      hasPermission('MODERATION_ESTABLISHMENTS') ||
-      hasPermission('MODERATION_PRODUCTS') ||
-      hasPermission('MODERATION_CATEGORIES');
+  const entityPerms = ENTITY_PERMISSIONS[linkEntity];
 
-    return (
-      <ActionButton
-        disabled={!canModerate}
-        Icon={TaskIcon}
-        title='Модерувати'
-        onClick={() => onModerate(row)}
-      />
-    );
+  if (!entityPerms) {
+    return null;
   }
 
-  const permission = ENTITY_PERMISSIONS[linkEntity];
-  const canManage = permission ? hasPermission(permission) : true;
+  const canEdit = hasPermission(entityPerms.edit);
+  const canRemove = hasPermission(entityPerms.remove);
+  const canModerate =
+    linkEntity === 'moderation'
+      ? entityPerms[row.path] && hasPermission(entityPerms[row.path])
+      : entityPerms.moderate && hasPermission(entityPerms.moderate);
 
   return (
     <>
-      <ActionButton
-        disabled={!canManage}
-        Icon={EditIcon}
-        title='Редагувати'
-        onClick={() => onEdit(row)}
-      />
-      <ActionButton
-        disabled={!canManage}
-        Icon={DeleteIcon}
-        title='Видалити'
-        onClick={() => onRemove(row)}
-      />
+      {linkEntity === 'moderation' ? (
+        <ActionButton
+          disabled={!canModerate}
+          Icon={TaskIcon}
+          title='Модерувати'
+          onClick={() => onModerate(row)}
+        />
+      ) : (
+        <>
+          <ActionButton
+            disabled={!canEdit}
+            Icon={EditIcon}
+            title='Редагувати'
+            onClick={() => onEdit(row)}
+          />
+          <ActionButton
+            disabled={!canRemove}
+            Icon={DeleteIcon}
+            title='Видалити'
+            onClick={() => onRemove(row)}
+          />
+        </>
+      )}
     </>
   );
 }
