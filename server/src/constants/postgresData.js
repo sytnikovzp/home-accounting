@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
-const { getUserDetailsByEmail } = require('../utils/sharedFunctions');
+const { getSeededData } = require('../utils/seedMongo');
 
 async function postgresData() {
-  const moderatorDetails = await getUserDetailsByEmail('o.ivanchuk@gmail.com');
-  const userDetails = await getUserDetailsByEmail('hanna.shevchenko@gmail.com');
+  const { moderatorDetails, userDetails } = await getSeededData();
 
   return {
     categories: [
