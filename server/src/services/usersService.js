@@ -10,7 +10,7 @@ const {
     SERVER: { HOST, PORT },
     TOKEN_LIFETIME: { VERIFICATION },
   },
-  dataMapping: { USER_VERIFICATION_MAPPING },
+  dataMapping: { EMAIL_VERIFICATION_MAPPING },
 } = require('../constants');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 const {
@@ -25,20 +25,14 @@ const mailService = require('./mailService');
 const { generateTokens } = require('./tokenService');
 
 class UsersService {
-  static async getAllUsers(
-    emailVerificationStatus,
-    limit,
-    offset,
-    sort,
-    order
-  ) {
+  static async getAllUsers(emailVerified, limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
     const query = {};
-    if (emailVerificationStatus === 'verified') {
-      query.emailVerificationStatus = 'verified';
-    } else if (emailVerificationStatus === 'pending') {
-      query.emailVerificationStatus = 'pending';
+    if (emailVerified === 'verified') {
+      query.emailVerified = 'verified';
+    } else if (emailVerified === 'pending') {
+      query.emailVerified = 'pending';
     }
     const foundUsers = await User.find(query)
       .sort(sortOptions)
@@ -91,9 +85,9 @@ class UsersService {
     const fullUserData = {
       ...limitUserData,
       email: foundUser.email,
-      emailVerificationStatus: mapValue(
-        foundUser.emailVerificationStatus,
-        USER_VERIFICATION_MAPPING
+      emailVerified: mapValue(
+        foundUser.emailVerified,
+        EMAIL_VERIFICATION_MAPPING
       ),
       permissions: permissions.map((permission) => ({
         uuid: permission.uuid,
@@ -136,9 +130,9 @@ class UsersService {
       },
       photo: foundUser.photo || '',
       email: foundUser.email,
-      emailVerificationStatus: mapValue(
-        foundUser.emailVerificationStatus,
-        USER_VERIFICATION_MAPPING
+      emailVerified: mapValue(
+        foundUser.emailVerified,
+        EMAIL_VERIFICATION_MAPPING
       ),
       creation: {
         createdAt: formatDateTime(foundUser.createdAt),
@@ -195,9 +189,9 @@ class UsersService {
       user: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        emailVerificationStatus: mapValue(
-          updatedUser.emailVerificationStatus,
-          USER_VERIFICATION_MAPPING
+        emailVerified: mapValue(
+          updatedUser.emailVerified,
+          EMAIL_VERIFICATION_MAPPING
         ),
         role: foundRole.title || '',
         photo: foundUser.photo || '',
@@ -261,7 +255,7 @@ class UsersService {
         throw badRequest('Ця електронна адреса вже використовується');
       }
       updateData.email = newEmail;
-      updateData.emailVerificationStatus = 'pending';
+      updateData.emailVerified = 'pending';
       updateData.tokenVersion = foundUser.tokenVersion + 1;
       const verificationToken = await VerificationToken.create({
         userUuid: foundUser.uuid,
@@ -287,9 +281,9 @@ class UsersService {
       user: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        emailVerificationStatus: mapValue(
-          updatedUser.emailVerificationStatus,
-          USER_VERIFICATION_MAPPING
+        emailVerified: mapValue(
+          updatedUser.emailVerified,
+          EMAIL_VERIFICATION_MAPPING
         ),
         role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,
         photo: foundUser.photo || '',

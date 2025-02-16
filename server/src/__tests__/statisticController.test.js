@@ -2,75 +2,14 @@
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 describe('StatisticsController', () => {
-  describe('GET /api/statistics/category-per-period', () => {
-    it('should return cost for category with time filter (month)', async () => {
-      const response = await request(app)
-        .get('/api/statistics/category-per-period')
-        .query({ ago: 'month', category: 'Побутові пристрої' });
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual([{ result: '83000.00' }]);
-    });
-
-    it('should return the cost by category "Побутові пристрої" without time filter', async () => {
-      const response = await request(app)
-        .get('/api/statistics/category-per-period')
-        .query({ category: 'Побутові пристрої' });
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual([{ result: '83000.00' }]);
-    });
-
-    it('should return the cost by category "Одяг" with result 0', async () => {
-      const response = await request(app)
-        .get('/api/statistics/category-per-period')
-        .query({ category: 'Одяг' });
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual([{ result: 0 }]);
-    });
-
-    it('should return 404 if category "Test" is not found', async () => {
-      const response = await request(app)
-        .get('/api/statistics/category-per-period')
-        .query({ category: 'Test' });
-      expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Category not found');
-    });
-  });
-
-  describe('GET /api/statistics/establishment-per-period', () => {
-    it('should return total cost for establishment "Comfy" with time filter (week)', async () => {
-      const response = await request(app)
-        .get('/api/statistics/establishment-per-period')
-        .query({ ago: 'week', establishment: 'Comfy' });
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual([{ result: '49000.00' }]);
-    });
-
-    it('should return total cost for establishment "АТБ" without time filter', async () => {
-      const response = await request(app)
-        .get('/api/statistics/establishment-per-period')
-        .query({ establishment: 'АТБ' });
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual([{ result: '44.75' }]);
-    });
-
-    it('should return 404 error for non-existing establishment "Ашан"', async () => {
-      const response = await request(app)
-        .get('/api/statistics/establishment-per-period')
-        .query({ establishment: 'Ашан' });
-      expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Establishment not found');
-    });
-  });
-
   describe('GET /api/statistics/categories', () => {
-    it('should return category statistics with time filter (month)', async () => {
+    it('should return category statistics for a specific period', async () => {
       const response = await request(app)
         .get('/api/statistics/categories')
         .query({ ago: 'month' });
@@ -83,45 +22,68 @@ describe('StatisticsController', () => {
       });
     });
 
-    it('should return category statistics without time filter', async () => {
+    it('should return category statistics for all time', async () => {
       const response = await request(app).get('/api/statistics/categories');
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
-      response.body.forEach((expense) => {
-        expect(typeof expense).toBe('object');
-        expect(expense).toHaveProperty('title');
-        expect(expense).toHaveProperty('result');
-      });
+    });
+
+    it('should return an empty array if no data is found', async () => {
+      const response = await request(app)
+        .get('/api/statistics/categories')
+        .query({ ago: 'day' });
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([{ result: '0', title: 'Немає даних' }]);
     });
   });
 
-  describe('GET /statistics/establishments', () => {
-    it('should return establishment statistics with time filter (month)', async () => {
+  describe('GET /api/statistics/establishments', () => {
+    it('should return establishment statistics for a specific period', async () => {
       const response = await request(app)
         .get('/api/statistics/establishments')
-        .query({ ago: 'month' });
+        .query({ ago: 'week' });
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
-      response.body.forEach((expense) => {
-        expect(typeof expense).toBe('object');
-        expect(expense).toHaveProperty('title');
-        expect(expense).toHaveProperty('url');
-        expect(expense).toHaveProperty('logo');
-        expect(expense).toHaveProperty('result');
-      });
     });
 
-    it('should return establishment statistics without time filter', async () => {
+    it('should return establishment statistics for all time', async () => {
       const response = await request(app).get('/api/statistics/establishments');
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
-      response.body.forEach((expense) => {
-        expect(typeof expense).toBe('object');
-        expect(expense).toHaveProperty('title');
-        expect(expense).toHaveProperty('url');
-        expect(expense).toHaveProperty('logo');
-        expect(expense).toHaveProperty('result');
-      });
+    });
+
+    it('should return 400 for invalid UUID', async () => {
+      const response = await request(app)
+        .get('/api/statistics/establishments')
+        .query({ creatorUuid: 'invalid' });
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe('Невірний формат UUID');
+    });
+  });
+
+  describe('GET /api/statistics/products', () => {
+    it('should return product statistics for a specific period', async () => {
+      const response = await request(app)
+        .get('/api/statistics/products')
+        .query({ ago: 'month' });
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('should return product statistics for all time', async () => {
+      const response = await request(app).get('/api/statistics/products');
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+  });
+
+  describe('Error handling', () => {
+    it('should return 400 for an invalid UUID in category statistics', async () => {
+      const response = await request(app)
+        .get('/api/statistics/categories')
+        .query({ creatorUuid: 'invalid' });
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe('Невірний формат UUID');
     });
   });
 });

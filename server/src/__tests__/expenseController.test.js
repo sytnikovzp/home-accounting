@@ -2,14 +2,13 @@
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 const authData = {
-  admin: { accessToken: null, uuid: null },
+  administrator: { accessToken: null, uuid: null },
   moderator: { accessToken: null, uuid: null },
   user: { accessToken: null, uuid: null },
 };
@@ -125,7 +124,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Establishment not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 if you specify product that don`t exist', async () => {
@@ -141,7 +142,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Product not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 if you specify measure that don`t exist', async () => {
@@ -157,7 +160,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Measure not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 if you specify currency that don`t exist', async () => {
@@ -173,7 +178,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Currency not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to create expenses', async () => {
@@ -189,9 +196,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на додавання витрат'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -219,7 +226,9 @@ describe('ExpensesController', () => {
         .get('/api/expenses/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Витрату не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -266,7 +275,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Establishment not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 if you specify product that don`t exist', async () => {
@@ -282,7 +293,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Product not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 if you specify measure that don`t exist', async () => {
@@ -298,7 +311,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Measure not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 if you specify currency that don`t exist', async () => {
@@ -314,7 +329,9 @@ describe('ExpensesController', () => {
           unitPrice: 100,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Currency not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to edit expenses', async () => {
@@ -330,9 +347,9 @@ describe('ExpensesController', () => {
           unitPrice: 850.0,
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цієї витрати'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 for non-existing expense update', async () => {
@@ -348,7 +365,9 @@ describe('ExpensesController', () => {
           unitPrice: 850.0,
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Витрату не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -358,9 +377,9 @@ describe('ExpensesController', () => {
         .delete(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цієї витрати'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to delete expenses', async () => {
@@ -375,7 +394,9 @@ describe('ExpensesController', () => {
         .delete('/api/expenses/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Витрату не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

@@ -18,7 +18,7 @@ class EmailService {
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    foundUser.emailVerificationStatus = 'verified';
+    foundUser.emailVerified = 'verified';
     await foundUser.save();
     await VerificationToken.deleteOne({ token });
   }
@@ -29,7 +29,7 @@ class EmailService {
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    if (foundUser.emailVerificationStatus === 'verified') {
+    if (foundUser.emailVerified === 'verified') {
       throw badRequest('Цей email вже підтверджений');
     }
     await VerificationToken.deleteMany({ userUuid: foundUser.uuid });

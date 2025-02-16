@@ -2,14 +2,13 @@
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 const authData = {
-  admin: { accessToken: null, uuid: null },
+  administrator: { accessToken: null, uuid: null },
   moderator: { accessToken: null, uuid: null },
   user: { accessToken: null, uuid: null },
 };
@@ -110,7 +109,9 @@ describe('CurrenciesController', () => {
           title: 'Нова валюта',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Ця валюта вже існує');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to create currencies', async () => {
@@ -122,9 +123,9 @@ describe('CurrenciesController', () => {
           title: 'Нова валюта',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на додавання валют'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 400 for missing currency title', async () => {
@@ -135,7 +136,9 @@ describe('CurrenciesController', () => {
           description: 'Відсутня назва',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Validation Error');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -157,7 +160,9 @@ describe('CurrenciesController', () => {
         .get('/api/currencies/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Валюту не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -191,7 +196,9 @@ describe('CurrenciesController', () => {
           title: 'USD',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Ця валюта вже існує');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to edit currencies', async () => {
@@ -203,9 +210,9 @@ describe('CurrenciesController', () => {
           title: 'Оновлена назва валюти',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цієї валюти'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 for non-existing currency update', async () => {
@@ -216,7 +223,9 @@ describe('CurrenciesController', () => {
           title: 'Оновлена назва валюти',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Валюту не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -226,9 +235,9 @@ describe('CurrenciesController', () => {
         .delete(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цієї валюти'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to delete currencies', async () => {
@@ -243,7 +252,9 @@ describe('CurrenciesController', () => {
         .delete('/api/currencies/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Валюту не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

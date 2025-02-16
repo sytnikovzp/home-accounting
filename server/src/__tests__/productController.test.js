@@ -2,14 +2,13 @@
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 const authData = {
-  admin: { accessToken: null, uuid: null },
+  administrator: { accessToken: null, uuid: null },
   moderator: { accessToken: null, uuid: null },
   user: { accessToken: null, uuid: null },
 };
@@ -179,7 +178,9 @@ describe('ProductsController', () => {
           title: 'Новий товар',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Category not found');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -190,7 +191,9 @@ describe('ProductsController', () => {
           title: 'Новий модераторський товар',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Цей товар вже існує');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to create products', async () => {
@@ -201,9 +204,9 @@ describe('ProductsController', () => {
           title: 'Новий товар',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на додавання товарів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -229,7 +232,9 @@ describe('ProductsController', () => {
         .get('/api/products/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -247,9 +252,9 @@ describe('ProductsController', () => {
           status: 'approved',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на модерацію товарів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to moderation products', async () => {
@@ -313,7 +318,9 @@ describe('ProductsController', () => {
           title: 'Помідори',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Цей товар вже існує');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to edit products', async () => {
@@ -324,9 +331,9 @@ describe('ProductsController', () => {
           title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цього товару'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 for non-existing product update', async () => {
@@ -337,7 +344,9 @@ describe('ProductsController', () => {
           title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -347,9 +356,9 @@ describe('ProductsController', () => {
         .delete(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цього товару'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to delete products', async () => {
@@ -364,7 +373,9 @@ describe('ProductsController', () => {
         .delete('/api/products/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

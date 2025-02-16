@@ -4,14 +4,13 @@ const path = require('path');
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 const authData = {
-  admin: { accessToken: null, uuid: null },
+  administrator: { accessToken: null, uuid: null },
   moderator: { accessToken: null, uuid: null },
   user: { accessToken: null, uuid: null },
 };
@@ -184,7 +183,9 @@ describe('EstablishmentsController', () => {
           title: 'Новий модераторський заклад',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Цей заклад вже існує');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to create establishments', async () => {
@@ -195,9 +196,9 @@ describe('EstablishmentsController', () => {
           title: 'Новий заклад',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на додавання закладів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -225,7 +226,9 @@ describe('EstablishmentsController', () => {
         .get('/api/establishments/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Заклад не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -245,9 +248,9 @@ describe('EstablishmentsController', () => {
           status: 'approved',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на модерацію закладів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to moderation establishments', async () => {
@@ -315,7 +318,9 @@ describe('EstablishmentsController', () => {
           title: 'Varus',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Цей заклад вже існує');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to edit establishments', async () => {
@@ -326,9 +331,9 @@ describe('EstablishmentsController', () => {
           title: 'Оновлена назва закладу',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цього закладу'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 for non-existing establishment update', async () => {
@@ -339,7 +344,9 @@ describe('EstablishmentsController', () => {
           title: 'Оновлена назва закладу',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Заклад не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -389,9 +396,9 @@ describe('EstablishmentsController', () => {
         .delete(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цього закладу'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to delete establishments', async () => {
@@ -406,7 +413,9 @@ describe('EstablishmentsController', () => {
         .delete('/api/establishments/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Заклад не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

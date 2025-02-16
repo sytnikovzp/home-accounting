@@ -2,14 +2,13 @@
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 const authData = {
-  admin: { accessToken: null, uuid: null },
+  administrator: { accessToken: null, uuid: null },
   moderator: { accessToken: null, uuid: null },
   user: { accessToken: null, uuid: null },
 };
@@ -173,7 +172,9 @@ describe('CategoriesController', () => {
           title: 'Нова модераторська категорія',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Ця категорія вже існує');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to create categories', async () => {
@@ -184,9 +185,9 @@ describe('CategoriesController', () => {
           title: 'Нова категорія',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на додавання категорій'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -211,7 +212,9 @@ describe('CategoriesController', () => {
         .get('/api/categories/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Категорію не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -231,9 +234,9 @@ describe('CategoriesController', () => {
           status: 'approved',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на модерацію категорій'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to moderation categories', async () => {
@@ -293,7 +296,9 @@ describe('CategoriesController', () => {
           title: 'Пристрої',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Ця категорія вже існує');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to edit categories', async () => {
@@ -304,9 +309,9 @@ describe('CategoriesController', () => {
           title: 'Оновлена назва категорії',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цієї категорії'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 for non-existing category update', async () => {
@@ -317,7 +322,9 @@ describe('CategoriesController', () => {
           title: 'Оновлена назва категорії',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Категорію не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -327,9 +334,9 @@ describe('CategoriesController', () => {
         .delete(`/api/categories/${categoryUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цієї категорії'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to delete categories', async () => {
@@ -344,7 +351,9 @@ describe('CategoriesController', () => {
         .delete('/api/categories/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Категорію не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

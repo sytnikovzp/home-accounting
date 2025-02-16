@@ -49,7 +49,7 @@ describe('AuthController', () => {
       expect(response.body).toHaveProperty('refreshToken');
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user).toHaveProperty('emailVerificationStatus');
+      expect(response.body.user).toHaveProperty('emailVerified');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
@@ -78,7 +78,7 @@ describe('AuthController', () => {
       expect(response.body).toHaveProperty('refreshToken');
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user).toHaveProperty('emailVerificationStatus');
+      expect(response.body.user).toHaveProperty('emailVerified');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
@@ -102,7 +102,7 @@ describe('AuthController', () => {
   });
 
   describe('POST /api/auth/forgot', () => {
-    it('should forgot password an existing user', async () => {
+    it('should send password reset email to existing user', async () => {
       const response = await request(app).post('/api/auth/forgot').send({
         email: 'nepushkin93@gmail.com',
       });
@@ -114,7 +114,7 @@ describe('AuthController', () => {
       expect(response.body.title).toBe('Зміна паролю...');
     });
 
-    it('should return 401 for invalid credentials', async () => {
+    it('should return 404 for non-existent user', async () => {
       const response = await request(app).post('/api/auth/forgot').send({
         email: 'nepushkin@gmail.com',
       });

@@ -2,14 +2,13 @@
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 const authData = {
-  admin: { accessToken: null, uuid: null },
+  administrator: { accessToken: null, uuid: null },
   moderator: { accessToken: null, uuid: null },
   user: { accessToken: null, uuid: null },
 };
@@ -110,9 +109,9 @@ describe('MeasuresController', () => {
           title: 'Нова одиниця вимірів',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'Ця одиниця вимірів вже існує'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to create measures', async () => {
@@ -124,9 +123,9 @@ describe('MeasuresController', () => {
           title: 'Нова одиниця вимірів',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на додавання одиниць вимірів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 400 for missing measure title', async () => {
@@ -137,7 +136,9 @@ describe('MeasuresController', () => {
           description: 'Відсутня назва',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Validation Error');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -159,7 +160,9 @@ describe('MeasuresController', () => {
         .get('/api/measures/999')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Одиницю вимірів не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -191,9 +194,9 @@ describe('MeasuresController', () => {
           title: 'кг',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'Ця одиниця вимірів вже існує'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to edit measures', async () => {
@@ -205,9 +208,9 @@ describe('MeasuresController', () => {
           title: 'Оновлена назва одиниці вимірів',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цієї одиниці вимірів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 for non-existing measure update', async () => {
@@ -218,7 +221,9 @@ describe('MeasuresController', () => {
           title: 'Оновлена назва одиниці вимірів',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Одиницю вимірів не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -228,9 +233,9 @@ describe('MeasuresController', () => {
         .delete(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цієї одиниці вимірів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to delete measures', async () => {
@@ -245,7 +250,9 @@ describe('MeasuresController', () => {
         .delete('/api/measures/999')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Одиницю вимірів не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

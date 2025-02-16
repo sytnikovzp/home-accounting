@@ -4,12 +4,12 @@ const STATUS_MODERATION_MAPPING = {
   rejected: 'Відхилено',
 };
 
-const USER_VERIFICATION_MAPPING = {
+const EMAIL_VERIFICATION_MAPPING = {
   pending: 'Очікує веріфікації',
   verified: 'Веріфікований',
 };
 
 module.exports = {
   STATUS_MODERATION_MAPPING,
-  USER_VERIFICATION_MAPPING,
+  EMAIL_VERIFICATION_MAPPING,
 };

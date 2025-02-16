@@ -2,14 +2,13 @@
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 const authData = {
-  admin: { accessToken: null, uuid: null },
+  administrator: { accessToken: null, uuid: null },
   moderator: { accessToken: null, uuid: null },
   user: { accessToken: null, uuid: null },
 };
@@ -180,9 +179,9 @@ describe('RolesController', () => {
           title: 'Нова  наступна роль користувача',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe(
-        'Не вдалося знайти деякі дозволи: ADD_CATEGORIES1'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -193,9 +192,9 @@ describe('RolesController', () => {
           title: 'Нова роль користувача',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'Ця роль для користувача вже існує'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to create user roles', async () => {
@@ -207,9 +206,9 @@ describe('RolesController', () => {
           title: 'Нова роль користувача',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на додавання ролей для користувачів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 400 for missing role title', async () => {
@@ -220,7 +219,9 @@ describe('RolesController', () => {
           description: 'Відсутня назва',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe('Validation Error');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -257,9 +258,9 @@ describe('RolesController', () => {
         .get('/api/roles/672b1351a8dc7c9f08add3b6')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe(
-        'Роль для користувача не знайдено'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -293,9 +294,9 @@ describe('RolesController', () => {
           title: 'Administrators',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'Ця роль для користувача вже існує'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to edit user roles', async () => {
@@ -308,9 +309,9 @@ describe('RolesController', () => {
           title: 'Оновлена назва ролі',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на редагування цієї ролі для користувачів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 404 for non-existing role update', async () => {
@@ -321,9 +322,9 @@ describe('RolesController', () => {
           title: 'Оновлена назва ролі',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe(
-        'Роль для користувача не знайдено'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
@@ -333,9 +334,9 @@ describe('RolesController', () => {
         .delete(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цієї ролі для користувачів'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to delete user roles', async () => {
@@ -350,9 +351,9 @@ describe('RolesController', () => {
         .delete('/api/roles/6733c59555558d3a0383717c')
         .set('Authorization', `Bearer ${authData.admin.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe(
-        'Роль для користувача не знайдено'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

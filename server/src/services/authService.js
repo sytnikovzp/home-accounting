@@ -11,7 +11,7 @@ const {
     SERVER: { HOST, PORT },
     TOKEN_LIFETIME: { VERIFICATION, RESET_PASSWORD },
   },
-  dataMapping: { USER_VERIFICATION_MAPPING },
+  dataMapping: { EMAIL_VERIFICATION_MAPPING },
 } = require('../constants');
 const { unAuthorizedError } = require('../errors/authErrors');
 const { badRequest, notFound } = require('../errors/generalErrors');
@@ -62,10 +62,7 @@ class AuthService {
       user: {
         uuid: user.uuid,
         fullName: user.fullName,
-        emailVerificationStatus: mapValue(
-          user.emailVerificationStatus,
-          USER_VERIFICATION_MAPPING
-        ),
+        emailVerified: mapValue(user.emailVerified, EMAIL_VERIFICATION_MAPPING),
         role: foundRole.title || '',
         photo: user.photo || '',
       },
@@ -96,9 +93,9 @@ class AuthService {
       user: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
-        emailVerificationStatus: mapValue(
-          foundUser.emailVerificationStatus,
-          USER_VERIFICATION_MAPPING
+        emailVerified: mapValue(
+          foundUser.emailVerified,
+          EMAIL_VERIFICATION_MAPPING
         ),
         role: foundRole.title || '',
         photo: foundUser.photo || '',
@@ -133,9 +130,9 @@ class AuthService {
       user: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
-        emailVerificationStatus: mapValue(
-          foundUser.emailVerificationStatus,
-          USER_VERIFICATION_MAPPING
+        emailVerified: mapValue(
+          foundUser.emailVerified,
+          EMAIL_VERIFICATION_MAPPING
         ),
         role: foundRole.title || '',
         photo: foundUser.photo || '',

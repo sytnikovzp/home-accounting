@@ -4,14 +4,13 @@ const path = require('path');
 const request = require('supertest');
 
 const app = require('../app');
+const { connectMongoDB, closeMongoDB } = require('../db/dbMongo');
 
-const { initializeDatabase, closeDatabase } = require('../utils/seedMongo');
-
-beforeAll(initializeDatabase);
-afterAll(closeDatabase);
+beforeAll(connectMongoDB);
+afterAll(closeMongoDB);
 
 const authData = {
-  admin: { accessToken: null, uuid: null },
+  administrator: { accessToken: null, uuid: null },
   moderator: { accessToken: null, uuid: null },
   user: { accessToken: null, uuid: null },
 };
@@ -122,7 +121,9 @@ describe('UserController', () => {
         .get('/api/users/6725684760b29fc86d0683bd')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Користувача не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -188,9 +189,9 @@ describe('UserController', () => {
           role: 'Moderators',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'У Вас немає дозволу на оновлення даних цього користувача'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 400 if an element with that email already exists', async () => {
@@ -201,9 +202,9 @@ describe('UserController', () => {
           email: 'o.ivanchuk@gmail.com',
         });
       expect(response.status).toBe(400);
-      expect(response.body.errors[0].title).toBe(
-        'Ця електронна адреса вже використовується'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 403 for current user not having permission to change user roles', async () => {
@@ -216,9 +217,9 @@ describe('UserController', () => {
           role: 'Moderators',
         });
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'У Вас немає дозволу на редагування ролі цього користувача'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
@@ -240,7 +241,9 @@ describe('UserController', () => {
           fullName: 'Невірний користувач',
         });
       expect(response.status).toBe(404);
-      expect(response.body.errors[0].title).toBe('Користувача не знайдено');
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to change user roles', async () => {
@@ -294,9 +297,9 @@ describe('UserController', () => {
         .delete(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.errors[0].title).toBe(
-        'Ви не маєте дозволу на видалення цього профілю користувача'
-      );
+      expect(response.body.message).toBe('Помилка');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 200 for current user having permission to delete myself user', async () => {

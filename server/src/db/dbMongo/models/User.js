@@ -27,7 +27,7 @@ const usersSchema = new Schema(
       default: 0,
     },
     photo: String,
-    emailVerificationStatus: {
+    emailVerified: {
       type: String,
       enum: ['pending', 'verified'],
       required: true,
