@@ -61,8 +61,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNjQ5NjRkZ
 
 {
   "fullName": "Оновлений користувач"
-  # "email": "New.User@Gmail.com",
-  # "email": "sytnikov.zp@Gmail.com",
+  # "email": "nepushkin93@Gmail.com",
   # "role": "User"
 }
 

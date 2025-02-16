@@ -211,7 +211,7 @@ describe('ExpensesController', () => {
         .get(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', expenseUuid);
+      expect(response.body.uuid).toBe(expenseUuid);
       expect(response.body.product).toBe('Навушники');
       expect(response.body.quantity).toBe('2.00');
       expect(response.body.unitPrice).toBe('500.00');
@@ -257,7 +257,7 @@ describe('ExpensesController', () => {
           unitPrice: 850.0,
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', expenseUuid);
+      expect(response.body.uuid).toBe(expenseUuid);
       expect(response.body.product).toBe('Ноутбук');
       expect(response.body.quantity).toBe('1.00');
       expect(response.body.unitPrice).toBe('850.00');

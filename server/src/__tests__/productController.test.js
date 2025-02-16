@@ -266,7 +266,7 @@ describe('ProductsController', () => {
           title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', productUuid);
+      expect(response.body.uuid).toBe(productUuid);
       expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.contentType).toBe('Товар');
       expect(response.body.status).toBe('Затверджено');

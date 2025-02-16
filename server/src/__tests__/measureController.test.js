@@ -151,7 +151,7 @@ describe('MeasuresController', () => {
         .get(`/api/measures/${measureUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', measureUuid);
+      expect(response.body.uuid).toBe(measureUuid);
       expect(response.body.title).toBe('Нова одиниця вимірів');
       expect(response.body.description).toBe('');
       expect(response.body.creation.createdAt).toBeDefined();
@@ -187,7 +187,7 @@ describe('MeasuresController', () => {
           title: 'Оновлена назва одиниці вимірів',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', measureUuid);
+      expect(response.body.uuid).toBe(measureUuid);
       expect(response.body.title).toBe('Оновлена назва одиниці вимірів');
       expect(response.body.description).toBe('Оновлений опис одиниці вимірів');
     });

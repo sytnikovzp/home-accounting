@@ -151,7 +151,7 @@ describe('CurrenciesController', () => {
         .get(`/api/currencies/${currencyUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', currencyUuid);
+      expect(response.body.uuid).toBe(currencyUuid);
       expect(response.body.title).toBe('Нова валюта');
       expect(response.body.description).toBe('');
       expect(response.body.creation.createdAt).toBeDefined();
@@ -189,7 +189,7 @@ describe('CurrenciesController', () => {
           title: 'Оновлена назва валюти',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', currencyUuid);
+      expect(response.body.uuid).toBe(currencyUuid);
       expect(response.body.title).toBe('Оновлена назва валюти');
       expect(response.body.description).toBe('Оновлений опис валюти');
     });

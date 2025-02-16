@@ -237,7 +237,7 @@ describe('RolesController', () => {
         .get(`/api/roles/${roleUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', roleUuid);
+      expect(response.body.uuid).toBe(roleUuid);
       expect(response.body.title).toBe('Нова роль користувача');
       expect(response.body.description).toBe('');
       expect(response.body.permissions).toHaveLength(3);
@@ -289,7 +289,7 @@ describe('RolesController', () => {
           title: 'Оновлена назва ролі',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', roleUuid);
+      expect(response.body.uuid).toBe(roleUuid);
       expect(response.body.title).toBe('Оновлена назва ролі');
       expect(response.body.description).toBe('Оновлений опис ролі');
       expect(response.body.permissions).toHaveLength(0);

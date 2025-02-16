@@ -276,9 +276,46 @@ describe('UserController', () => {
         .delete(`/api/users/${authData.user.uuid}/photo`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', authData.user.uuid);
+      expect(response.body.uuid).toBe(authData.user.uuid);
       expect(response.body).toHaveProperty('photo');
       expect(response.body.photo).toBe('');
+    });
+  });
+
+  describe('PATCH /api/users/:userUuid/password', () => {
+    it('should change user password', async () => {
+      const response = await request(app)
+        .patch(`/api/users/${authData.user.uuid}/password`)
+        .set('Authorization', `Bearer ${authData.user.accessToken}`)
+        .send({
+          newPassword: 'Qwerty1234567',
+          confirmNewPassword: 'Qwerty1234567',
+        });
+      expect(response.status).toBe(200);
+      expect(response.body.user.uuid).toBe(authData.user.uuid);
+      expect(response.body.user.fullName).toBe('Updated User');
+      expect(response.body.user.emailVerified).toBe('Очікує веріфікації');
+      expect(response.body.user.role).toBe('Moderators');
+      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body).toHaveProperty('permissions');
+      expect(Array.isArray(response.body.permissions)).toBe(true);
+      if (response.body.accessToken !== authData.user.accessToken) {
+        authData.user.accessToken = response.body.accessToken;
+      }
+    });
+
+    it('should return 400 for incorrect current password', async () => {
+      const response = await request(app)
+        .patch(`/api/users/${authData.user.uuid}/password`)
+        .set('Authorization', `Bearer ${authData.user.accessToken}`)
+        .send({
+          newPassword: 'Qwerty12345',
+          confirmNewPassword: 'Qwerty1234567',
+        });
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe('Паролі повинні співпадати');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка валідації');
     });
   });
 
