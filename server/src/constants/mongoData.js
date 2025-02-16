@@ -207,4 +207,20 @@ module.exports.users = async (roleUuids) => [
     photo: '1730713464386-hanna.shevchenko.jpg',
     roleUuid: roleUuids['Users'],
   },
+  {
+    email: 'evgen.kovalenko@gmail.com',
+    emailVerified: 'verified',
+    fullName: 'Євген Коваленко',
+    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
+    photo: '1730713568386-evgen.kovalenko.jpg',
+    roleUuid: roleUuids['Users'],
+  },
+  {
+    email: 'mykola.scherbak@gmail.com',
+    emailVerified: 'verified',
+    fullName: 'Микола Щербак',
+    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
+    photo: '1730743569326-mykola.scherbak.jpg',
+    roleUuid: roleUuids['Users'],
+  },
 ];

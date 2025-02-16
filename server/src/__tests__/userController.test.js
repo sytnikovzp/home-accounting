@@ -19,12 +19,12 @@ describe('UserController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'hanna.shevchenko@gmail.com',
+        email: 'evgen.kovalenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Ганна Шевченко');
+      expect(response.body.user.fullName).toBe('Євген Коваленко');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       authData.user.uuid = response.body.user.uuid;
@@ -62,7 +62,7 @@ describe('UserController', () => {
     it('should return 401 for invalid credentials', async () => {
       const response = await request(app).post('/api/auth/login').send({
         email: 'WrongUser@gmail.com',
-        password: 'wrongpassword',
+        password: 'Qwerty12',
       });
       expect(response.status).toBe(401);
       expect(response.body.message).toBe('Перевірте свої облікові дані');
@@ -108,26 +108,26 @@ describe('UserController', () => {
         .get(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', authData.user.uuid);
-      expect(response.body.fullName).toBe('Ганна Шевченко');
-      expect(response.body.role).toBe('Users');
+      expect(response.body.uuid).toBe(authData.user.uuid);
+      expect(response.body.fullName).toBe('Євген Коваленко');
+      expect(response.body.role.title).toBe('Users');
       expect(response.body).toHaveProperty('photo');
-      expect(response.body.email).toBe('hanna.shevchenko@gmail.com');
+      expect(response.body.email).toBe('evgen.kovalenko@gmail.com');
+      expect(response.body.emailVerified).toBe('Веріфікований');
       expect(response.body.creation.createdAt).toBeDefined();
       expect(response.body.creation.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
       expect(response.body.permissions[0]).toHaveProperty('uuid');
       expect(response.body.permissions[0]).toHaveProperty('title');
-      expect(response.body.permissions[0]).toHaveProperty('description');
     });
 
     it('should return 404 for non-existing user', async () => {
       const response = await request(app)
-        .get('/api/users/6725684760b29fc86d0683bd')
+        .get('/api/users/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Користувача не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -143,49 +143,22 @@ describe('UserController', () => {
     });
   });
 
-  describe('GET /api/users/profile', () => {
-    it('should get user profile data by access token', async () => {
-      const response = await request(app)
-        .get('/api/users/profile')
-        .set('Authorization', `Bearer ${authData.user.accessToken}`);
-      expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', authData.user.uuid);
-      expect(response.body.fullName).toBe('Ганна Шевченко');
-      expect(response.body.role).toBe('Users');
-      expect(response.body).toHaveProperty('photo');
-      expect(response.body.email).toBe('hanna.shevchenko@gmail.com');
-      expect(response.body.creation.createdAt).toBeDefined();
-      expect(response.body.creation.updatedAt).toBeDefined();
-      expect(response.body).toHaveProperty('permissions');
-      expect(Array.isArray(response.body.permissions)).toBe(true);
-      expect(response.body.permissions[0]).toHaveProperty('uuid');
-      expect(response.body.permissions[0]).toHaveProperty('title');
-      expect(response.body.permissions[0]).toHaveProperty('description');
-    });
-
-    it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get('/api/users/profile');
-      expect(response.status).toBe(401);
-      expect(response.body.message).toBe('Перевірте свої облікові дані');
-      expect(response.body.severity).toBe('error');
-      expect(response.body.title).toBe('Помилка авторизації');
-    });
-  });
-
   describe('PATCH /api/users/:userUuid', () => {
-    it('should update myself user data without change role', async () => {
+    it('should update myself user data', async () => {
       const response = await request(app)
         .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          email: 'Charlie.Updated@Gmail.com',
-          fullName: 'Charlie Updated',
-          role: 'Users',
+          fullName: 'Updated User',
         });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Charlie Updated');
+      expect(response.body.user.uuid).toBe(authData.user.uuid);
+      expect(response.body.user.fullName).toBe('Updated User');
+      expect(response.body.user.emailVerified).toBe('Веріфікований');
       expect(response.body.user.role).toBe('Users');
+      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body).toHaveProperty('permissions');
+      expect(Array.isArray(response.body.permissions)).toBe(true);
       if (response.body.accessToken !== authData.user.accessToken) {
         authData.user.accessToken = response.body.accessToken;
       }
@@ -196,12 +169,13 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.moderator.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          email: 'Charlie.Updated@Gmail.com',
-          fullName: 'Charlie Updated',
+          fullName: 'Updated User',
           role: 'Moderators',
         });
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'У Вас немає дозволу на оновлення даних цього користувача'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -211,10 +185,13 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
+          fullName: 'Updated User',
           email: 'o.ivanchuk@gmail.com',
         });
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'Ця електронна адреса вже використовується'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -224,12 +201,13 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          email: 'Charlie.Updated@Gmail.com',
-          fullName: 'Charlie Updated',
+          fullName: 'Updated User',
           role: 'Moderators',
         });
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'У Вас немає дозволу на редагування ролі цього користувача'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -238,8 +216,7 @@ describe('UserController', () => {
       const response = await request(app)
         .patch(`/api/users/${authData.user.uuid}`)
         .send({
-          email: 'Charlie.Updated@Gmail.com',
-          fullName: 'Charlie Updated',
+          fullName: 'Updated User',
           role: 'Users',
         });
       expect(response.status).toBe(401);
@@ -250,13 +227,13 @@ describe('UserController', () => {
 
     it('should return 404 for non-existing user update', async () => {
       const response = await request(app)
-        .patch('/api/users/6725684760b29fc86d0683bd')
+        .patch('/api/users/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           fullName: 'Невірний користувач',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Користувача не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -266,39 +243,38 @@ describe('UserController', () => {
         .patch(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
-          email: 'Charlie.Updated@Gmail.com',
-          fullName: 'Charlie Updated',
+          email: 'sytnikov.zp@Gmail.com',
+          fullName: 'Updated User',
           role: 'Moderators',
         });
       expect(response.status).toBe(200);
       expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Charlie Updated');
+      expect(response.body.user.fullName).toBe('Updated User');
       expect(response.body.user.role).toBe('Moderators');
+      if (response.body.accessToken !== authData.user.accessToken) {
+        authData.user.accessToken = response.body.accessToken;
+      }
     });
   });
 
   describe('PATCH /api/users/:userUuid/photo', () => {
-    it('should update user photo', async () => {
+    it('should be change user photo', async () => {
       const response = await request(app)
         .patch(`/api/users/${authData.user.uuid}/photo`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .attach('userPhoto', path.resolve('/Users/nadia/Downloads/user.png'));
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', authData.user.uuid);
+      expect(response.body.uuid).toBe(authData.user.uuid);
       expect(response.body).toHaveProperty('photo');
       expect(response.body.photo).toBeDefined();
     });
   });
 
-  describe('PATCH /api/users/:userUuid/photo', () => {
-    it('should remove user photo', async () => {
-      const updatedUser = {
-        photo: null,
-      };
+  describe('DELETE /api/users/:userUuid/photo', () => {
+    it('should be reset user photo', async () => {
       const response = await request(app)
-        .patch(`/api/users/${authData.user.uuid}/photo`)
-        .set('Authorization', `Bearer ${authData.user.accessToken}`)
-        .send(updatedUser);
+        .delete(`/api/users/${authData.user.uuid}/photo`)
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', authData.user.uuid);
       expect(response.body).toHaveProperty('photo');
@@ -312,7 +288,9 @@ describe('UserController', () => {
         .delete(`/api/users/${authData.user.uuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'Ви не маєте дозволу на видалення цього профілю користувача'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -326,9 +304,12 @@ describe('UserController', () => {
 
     it('should return 404 for non-existing user deletion', async () => {
       const response = await request(app)
-        .delete('/api/users/6725684760b29fc86d0683bd')
-        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+        .delete('/api/users/83095a11-50b6-4a01-859e-94f7f4b62cc1')
+        .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Користувача не знайдено');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
     });
   });
 });

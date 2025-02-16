@@ -327,7 +327,7 @@ describe('EstablishmentsController', () => {
   });
 
   describe('PATCH /api/establishments/:establishmentUuid/logo', () => {
-    it('should change establishment logo', async () => {
+    it('should be change establishment logo', async () => {
       const response = await request(app)
         .patch(`/api/establishments/${establishmentUuid}/logo`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
@@ -354,7 +354,7 @@ describe('EstablishmentsController', () => {
   });
 
   describe('DELETE /api/establishments/:establishmentUuid/logo', () => {
-    it('should reset establishment logo', async () => {
+    it('should be reset establishment logo', async () => {
       const response = await request(app)
         .delete(`/api/establishments/${establishmentUuid}/logo`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
