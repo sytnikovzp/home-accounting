@@ -65,6 +65,9 @@ describe('UserController', () => {
         password: 'wrongpassword',
       });
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -93,6 +96,9 @@ describe('UserController', () => {
     it('should return 401 if access token is missing', async () => {
       const response = await request(app).get('/api/users');
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -131,6 +137,9 @@ describe('UserController', () => {
         `/api/users/${authData.user.uuid}`
       );
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -157,6 +166,9 @@ describe('UserController', () => {
     it('should return 401 if access token is missing', async () => {
       const response = await request(app).get('/api/users/profile');
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -231,6 +243,9 @@ describe('UserController', () => {
           role: 'Users',
         });
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
 
     it('should return 404 for non-existing user update', async () => {

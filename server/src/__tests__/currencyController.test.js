@@ -82,6 +82,9 @@ describe('CurrenciesController', () => {
     it('should return 401 if access token is missing', async () => {
       const response = await request(app).get('/api/currencies');
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -170,6 +173,9 @@ describe('CurrenciesController', () => {
         `/api/currencies/${currencyUuid}`
       );
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 

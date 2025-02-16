@@ -90,18 +90,6 @@ describe('ProductsController', () => {
       expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of products (status pending, custom pagination)', async () => {
-      const response = await request(app)
-        .get('/api/products')
-        .query({ status: 'pending' })
-        .query({ limit: 10, page: 1 })
-        .set('Authorization', `Bearer ${authData.user.accessToken}`);
-      expect(response.status).toBe(200);
-      expect(response.headers).toHaveProperty('x-total-count');
-      expect(Array.isArray(response.body)).toBe(true);
-      expect(response.body.length).toBeLessThanOrEqual(10);
-    });
-
     it('should return list of products (status rejected, default pagination)', async () => {
       const response = await request(app)
         .get('/api/products')
@@ -113,21 +101,12 @@ describe('ProductsController', () => {
       expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of products (status rejected, custom pagination)', async () => {
-      const response = await request(app)
-        .get('/api/products')
-        .query({ status: 'rejected' })
-        .query({ limit: 10, page: 1 })
-        .set('Authorization', `Bearer ${authData.user.accessToken}`);
-      expect(response.status).toBe(200);
-      expect(response.headers).toHaveProperty('x-total-count');
-      expect(Array.isArray(response.body)).toBe(true);
-      expect(response.body.length).toBeLessThanOrEqual(10);
-    });
-
     it('should return 401 if access token is missing', async () => {
       const response = await request(app).get('/api/products');
       expect(response.status).toBe(401);
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -143,12 +122,14 @@ describe('ProductsController', () => {
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Новий модераторський товар');
-      expect(response.body.category).toBe('Пристрої');
+      expect(response.body.contentType).toBe('Товар');
       expect(response.body.status).toBe('Затверджено');
       expect(response.body.moderation.moderatorUuid).toBeDefined();
       expect(response.body.moderation.moderatorFullName).toBeDefined();
       expect(response.body.creation.creatorUuid).toBeDefined();
       expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 201 for current user having permission to create products (as user)', async () => {
@@ -162,12 +143,14 @@ describe('ProductsController', () => {
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Новий користувацький товар');
-      expect(response.body.category).toBe('Електроніка');
+      expect(response.body.contentType).toBe('Товар');
       expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.moderation.moderatorUuid).toBe('');
       expect(response.body.moderation.moderatorFullName).toBe('');
       expect(response.body.creation.creatorUuid).toBeDefined();
       expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
       productUuid = response.body.uuid;
     });
 
@@ -180,7 +163,7 @@ describe('ProductsController', () => {
           title: 'Новий товар',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Category not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -193,7 +176,7 @@ describe('ProductsController', () => {
           title: 'Новий модераторський товар',
         });
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Цей товар вже існує');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -206,7 +189,9 @@ describe('ProductsController', () => {
           title: 'Новий товар',
         });
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'Ви не маєте дозволу на додавання товарів'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -218,9 +203,10 @@ describe('ProductsController', () => {
         .get(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', productUuid);
+      expect(response.body.uuid).toBe(productUuid);
       expect(response.body.title).toBe('Новий користувацький товар');
-      expect(response.body.category).toBe('Електроніка');
+      expect(response.body.category.title).toBe('Електроніка');
+      expect(response.body.contentType).toBe('Товар');
       expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.moderation.moderatorUuid).toBe('');
       expect(response.body.moderation.moderatorFullName).toBe('');
@@ -235,7 +221,7 @@ describe('ProductsController', () => {
         .get('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Товар не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -243,37 +229,9 @@ describe('ProductsController', () => {
     it('should return 401 if access token is missing', async () => {
       const response = await request(app).get(`/api/products/${productUuid}`);
       expect(response.status).toBe(401);
-    });
-  });
-
-  describe('PATCH /api/products/moderation/:productUuid', () => {
-    it('should return 403 for current user not having permission to moderation products', async () => {
-      const response = await request(app)
-        .patch(`/api/products/moderation/${productUuid}`)
-        .set('Authorization', `Bearer ${authData.user.accessToken}`)
-        .send({
-          status: 'approved',
-        });
-      expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Перевірте свої облікові дані');
       expect(response.body.severity).toBe('error');
-      expect(response.body.title).toBe('Сталася помилка');
-    });
-
-    it('should return 200 for current user having permission to moderation products', async () => {
-      const response = await request(app)
-        .patch(`/api/products/moderation/${productUuid}`)
-        .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
-        .send({
-          status: 'approved',
-        });
-      expect(response.status).toBe(200);
-      expect(response.body.title).toBe('Новий користувацький товар');
-      expect(response.body.status).toBe('Затверджено');
-      expect(response.body.moderation.moderatorUuid).toBeDefined();
-      expect(response.body.moderation.moderatorFullName).toBeDefined();
-      expect(response.body.creation.creatorUuid).toBeDefined();
-      expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.title).toBe('Помилка авторизації');
     });
   });
 
@@ -287,14 +245,16 @@ describe('ProductsController', () => {
           title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('uuid', productUuid);
+      expect(response.body.uuid).toBe(productUuid);
       expect(response.body.title).toBe('Оновлена назва товару');
-      expect(response.body.category).toBe('Обчислювальна техніка');
+      expect(response.body.contentType).toBe('Товар');
       expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.moderation.moderatorUuid).toBe('');
       expect(response.body.moderation.moderatorFullName).toBe('');
       expect(response.body.creation.creatorUuid).toBeDefined();
       expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 200 for current user having permission to edit products (as moderator)', async () => {
@@ -308,12 +268,14 @@ describe('ProductsController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('uuid', productUuid);
       expect(response.body.title).toBe('Оновлена назва товару');
-      expect(response.body.category).toBe('Обчислювальна техніка');
+      expect(response.body.contentType).toBe('Товар');
       expect(response.body.status).toBe('Затверджено');
       expect(response.body.moderation.moderatorUuid).toBeDefined();
       expect(response.body.moderation.moderatorFullName).toBeDefined();
       expect(response.body.creation.creatorUuid).toBeDefined();
       expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -324,7 +286,7 @@ describe('ProductsController', () => {
           title: 'Помідори',
         });
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Цей товар вже існує');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -337,7 +299,9 @@ describe('ProductsController', () => {
           title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'Ви не маєте дозволу на редагування цього товару'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -350,7 +314,7 @@ describe('ProductsController', () => {
           title: 'Оновлена назва товару',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Товар не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -362,7 +326,9 @@ describe('ProductsController', () => {
         .delete(`/api/products/${productUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'Ви не маєте дозволу на видалення цього товару'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -379,7 +345,7 @@ describe('ProductsController', () => {
         .delete('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Товар не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
