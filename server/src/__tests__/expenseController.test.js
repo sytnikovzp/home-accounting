@@ -26,6 +26,7 @@ describe('ExpensesController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Ганна Шевченко');
       expect(response.body.user.role).toBe('Users');
+      expect(response.body.user).toHaveProperty('photo');
       authData.user.uuid = response.body.user.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
@@ -39,6 +40,7 @@ describe('ExpensesController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Олександра Іванчук');
       expect(response.body.user.role).toBe('Moderators');
+      expect(response.body.user).toHaveProperty('photo');
       authData.moderator.uuid = response.body.user.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
@@ -52,6 +54,7 @@ describe('ExpensesController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrators');
+      expect(response.body.user).toHaveProperty('photo');
       authData.administrator.uuid = response.body.user.uuid;
       authData.administrator.accessToken = response.body.accessToken;
     });
