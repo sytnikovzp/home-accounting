@@ -52,8 +52,8 @@ describe('ExpensesController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrators');
-      authData.admin.uuid = response.body.user.uuid;
-      authData.admin.accessToken = response.body.accessToken;
+      authData.administrator.uuid = response.body.user.uuid;
+      authData.administrator.accessToken = response.body.accessToken;
     });
   });
 
@@ -217,13 +217,13 @@ describe('ExpensesController', () => {
       expect(response.body.measure).toBe('шт');
       expect(response.body.currency).toBe('UAH');
       expect(response.body.creatorUuid).toBeDefined();
-      expect(response.body.createdAt).toBeDefined();
-      expect(response.body.updatedAt).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 404 for non-existing expense', async () => {
       const response = await request(app)
-        .get('/api/expenses/999')
+        .get('/api/expenses/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');
@@ -337,7 +337,7 @@ describe('ExpensesController', () => {
     it('should return 403 for current user not having permission to edit expenses', async () => {
       const response = await request(app)
         .patch(`/api/expenses/${expenseUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           currency: 'USD',
           establishment: 'Епіцентр',
@@ -354,7 +354,7 @@ describe('ExpensesController', () => {
 
     it('should return 404 for non-existing expense update', async () => {
       const response = await request(app)
-        .patch('/api/expenses/999')
+        .patch('/api/expenses/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           currency: 'USD',
@@ -391,7 +391,7 @@ describe('ExpensesController', () => {
 
     it('should return 404 for non-existing expense deletion', async () => {
       const response = await request(app)
-        .delete('/api/expenses/999')
+        .delete('/api/expenses/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');

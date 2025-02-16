@@ -52,8 +52,8 @@ describe('MeasuresController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrators');
-      authData.admin.uuid = response.body.user.uuid;
-      authData.admin.accessToken = response.body.accessToken;
+      authData.administrator.uuid = response.body.user.uuid;
+      authData.administrator.accessToken = response.body.accessToken;
     });
   });
 
@@ -117,7 +117,7 @@ describe('MeasuresController', () => {
     it('should return 403 for current user not having permission to create measures', async () => {
       const response = await request(app)
         .post('/api/measures')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: '',
           title: 'Нова одиниця вимірів',
@@ -131,7 +131,7 @@ describe('MeasuresController', () => {
     it('should return 400 for missing measure title', async () => {
       const response = await request(app)
         .post('/api/measures')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: 'Відсутня назва',
         });
@@ -151,13 +151,13 @@ describe('MeasuresController', () => {
       expect(response.body).toHaveProperty('uuid', measureUuid);
       expect(response.body.title).toBe('Нова одиниця вимірів');
       expect(response.body.description).toBe('');
-      expect(response.body.createdAt).toBeDefined();
-      expect(response.body.updatedAt).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 404 for non-existing measure', async () => {
       const response = await request(app)
-        .get('/api/measures/999')
+        .get('/api/measures/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');
@@ -202,7 +202,7 @@ describe('MeasuresController', () => {
     it('should return 403 for current user not having permission to edit measures', async () => {
       const response = await request(app)
         .patch(`/api/measures/${measureUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: 'Оновлений опис одиниці вимірів',
           title: 'Оновлена назва одиниці вимірів',
@@ -215,7 +215,7 @@ describe('MeasuresController', () => {
 
     it('should return 404 for non-existing measure update', async () => {
       const response = await request(app)
-        .patch('/api/measures/999')
+        .patch('/api/measures/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва одиниці вимірів',
@@ -231,7 +231,7 @@ describe('MeasuresController', () => {
     it('should return 403 for current user not having permission to delete measures', async () => {
       const response = await request(app)
         .delete(`/api/measures/${measureUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`);
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.message).toBe('Помилка');
       expect(response.body.severity).toBe('error');
@@ -247,7 +247,7 @@ describe('MeasuresController', () => {
 
     it('should return 404 for non-existing measure deletion', async () => {
       const response = await request(app)
-        .delete('/api/measures/999')
+        .delete('/api/measures/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');

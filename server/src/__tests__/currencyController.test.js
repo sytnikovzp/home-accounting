@@ -52,8 +52,8 @@ describe('CurrenciesController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrators');
-      authData.admin.uuid = response.body.user.uuid;
-      authData.admin.accessToken = response.body.accessToken;
+      authData.administrator.uuid = response.body.user.uuid;
+      authData.administrator.accessToken = response.body.accessToken;
     });
   });
 
@@ -117,7 +117,7 @@ describe('CurrenciesController', () => {
     it('should return 403 for current user not having permission to create currencies', async () => {
       const response = await request(app)
         .post('/api/currencies')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: '',
           title: 'Нова валюта',
@@ -131,7 +131,7 @@ describe('CurrenciesController', () => {
     it('should return 400 for missing currency title', async () => {
       const response = await request(app)
         .post('/api/currencies')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: 'Відсутня назва',
         });
@@ -151,13 +151,13 @@ describe('CurrenciesController', () => {
       expect(response.body).toHaveProperty('uuid', currencyUuid);
       expect(response.body.title).toBe('Нова валюта');
       expect(response.body.description).toBe('');
-      expect(response.body.createdAt).toBeDefined();
-      expect(response.body.updatedAt).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 404 for non-existing currency', async () => {
       const response = await request(app)
-        .get('/api/currencies/999')
+        .get('/api/currencies/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');
@@ -204,7 +204,7 @@ describe('CurrenciesController', () => {
     it('should return 403 for current user not having permission to edit currencies', async () => {
       const response = await request(app)
         .patch(`/api/currencies/${currencyUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: 'Оновлений опис валюти',
           title: 'Оновлена назва валюти',
@@ -217,7 +217,7 @@ describe('CurrenciesController', () => {
 
     it('should return 404 for non-existing currency update', async () => {
       const response = await request(app)
-        .patch('/api/currencies/999')
+        .patch('/api/currencies/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва валюти',
@@ -233,7 +233,7 @@ describe('CurrenciesController', () => {
     it('should return 403 for current user not having permission to delete currencies', async () => {
       const response = await request(app)
         .delete(`/api/currencies/${currencyUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`);
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.message).toBe('Помилка');
       expect(response.body.severity).toBe('error');
@@ -249,7 +249,7 @@ describe('CurrenciesController', () => {
 
     it('should return 404 for non-existing currency deletion', async () => {
       const response = await request(app)
-        .delete('/api/currencies/999')
+        .delete('/api/currencies/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');

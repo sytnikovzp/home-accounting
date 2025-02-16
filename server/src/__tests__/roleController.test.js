@@ -52,8 +52,8 @@ describe('RolesController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrators');
-      authData.admin.uuid = response.body.user.uuid;
-      authData.admin.accessToken = response.body.accessToken;
+      authData.administrator.uuid = response.body.user.uuid;
+      authData.administrator.accessToken = response.body.accessToken;
     });
   });
 
@@ -139,7 +139,7 @@ describe('RolesController', () => {
     it('should return 201 for current user having permission to create user roles', async () => {
       const response = await request(app)
         .post('/api/roles')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: '',
           permissions: ['ADD_CATEGORIES', 'ADD_ESTABLISHMENTS', 'ADD_PRODUCTS'],
@@ -172,7 +172,7 @@ describe('RolesController', () => {
     it('should return 404 if you specify permissions that don`t exist', async () => {
       const response = await request(app)
         .post('/api/roles')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: '',
           permissions: ['ADD_CATEGORIES1'],
@@ -187,7 +187,7 @@ describe('RolesController', () => {
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
         .post('/api/roles')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           title: 'Нова роль користувача',
         });
@@ -214,7 +214,7 @@ describe('RolesController', () => {
     it('should return 400 for missing role title', async () => {
       const response = await request(app)
         .post('/api/roles')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: 'Відсутня назва',
         });
@@ -273,7 +273,7 @@ describe('RolesController', () => {
     it('should return 200 for current user having permission to edit user roles', async () => {
       const response = await request(app)
         .patch(`/api/roles/${roleUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           description: 'Оновлений опис ролі',
           permissions: [],
@@ -289,7 +289,7 @@ describe('RolesController', () => {
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
         .patch(`/api/roles/${roleUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           title: 'Administrators',
         });
@@ -317,7 +317,7 @@ describe('RolesController', () => {
     it('should return 404 for non-existing role update', async () => {
       const response = await request(app)
         .patch('/api/roles/6733c59555558d3a0383717c')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           title: 'Оновлена назва ролі',
         });
@@ -342,14 +342,14 @@ describe('RolesController', () => {
     it('should return 200 for current user having permission to delete user roles', async () => {
       const response = await request(app)
         .delete(`/api/roles/${roleUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`);
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`);
       expect(response.status).toBe(200);
     });
 
     it('should return 404 for non-existing role deletion', async () => {
       const response = await request(app)
         .delete('/api/roles/6733c59555558d3a0383717c')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`);
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');
       expect(response.body.severity).toBe('error');

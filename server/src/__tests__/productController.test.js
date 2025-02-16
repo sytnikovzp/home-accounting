@@ -52,8 +52,8 @@ describe('ProductsController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrators');
-      authData.admin.uuid = response.body.user.uuid;
-      authData.admin.accessToken = response.body.accessToken;
+      authData.administrator.uuid = response.body.user.uuid;
+      authData.administrator.accessToken = response.body.accessToken;
     });
   });
 
@@ -144,10 +144,11 @@ describe('ProductsController', () => {
       expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Новий модераторський товар');
       expect(response.body.category).toBe('Пристрої');
-      expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorUuid).toBeDefined();
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Затверджено');
+      expect(response.body.moderation.moderatorUuid).toBeDefined();
+      expect(response.body.moderation.moderatorFullName).toBeDefined();
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
 
     it('should return 201 for current user having permission to create products (as user)', async () => {
@@ -162,10 +163,11 @@ describe('ProductsController', () => {
       expect(response.body).toHaveProperty('uuid');
       expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.category).toBe('Електроніка');
-      expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorUuid).toBe('');
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
       productUuid = response.body.uuid;
     });
 
@@ -199,7 +201,7 @@ describe('ProductsController', () => {
     it('should return 403 for current user not having permission to create products', async () => {
       const response = await request(app)
         .post('/api/products')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           title: 'Новий товар',
         });
@@ -220,16 +222,17 @@ describe('ProductsController', () => {
       expect(response.body.title).toBe('Новий користувацький товар');
       expect(response.body.category).toBe('Електроніка');
       expect(response.body.status).toBe('Очікує модерації');
-      expect(response.body.moderatorUuid).toBe('');
-
-      expect(response.body.creatorUuid).toBeDefined();
-      expect(response.body.createdAt).toBeDefined();
-      expect(response.body.updatedAt).toBeDefined();
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 404 for non-existing product', async () => {
       const response = await request(app)
-        .get('/api/products/999')
+        .get('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');
@@ -266,10 +269,11 @@ describe('ProductsController', () => {
         });
       expect(response.status).toBe(200);
       expect(response.body.title).toBe('Новий користувацький товар');
-      expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorUuid).toBeDefined();
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Затверджено');
+      expect(response.body.moderation.moderatorUuid).toBeDefined();
+      expect(response.body.moderation.moderatorFullName).toBeDefined();
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
   });
 
@@ -286,10 +290,11 @@ describe('ProductsController', () => {
       expect(response.body).toHaveProperty('uuid', productUuid);
       expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.category).toBe('Обчислювальна техніка');
-      expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorUuid).toBe('');
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
 
     it('should return 200 for current user having permission to edit products (as moderator)', async () => {
@@ -304,10 +309,11 @@ describe('ProductsController', () => {
       expect(response.body).toHaveProperty('uuid', productUuid);
       expect(response.body.title).toBe('Оновлена назва товару');
       expect(response.body.category).toBe('Обчислювальна техніка');
-      expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorUuid).toBeDefined();
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Затверджено');
+      expect(response.body.moderation.moderatorUuid).toBeDefined();
+      expect(response.body.moderation.moderatorFullName).toBeDefined();
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -326,7 +332,7 @@ describe('ProductsController', () => {
     it('should return 403 for current user not having permission to edit products', async () => {
       const response = await request(app)
         .patch(`/api/products/${productUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           title: 'Оновлена назва товару',
         });
@@ -338,7 +344,7 @@ describe('ProductsController', () => {
 
     it('should return 404 for non-existing product update', async () => {
       const response = await request(app)
-        .patch('/api/products/999')
+        .patch('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва товару',
@@ -370,7 +376,7 @@ describe('ProductsController', () => {
 
     it('should return 404 for non-existing product deletion', async () => {
       const response = await request(app)
-        .delete('/api/products/999')
+        .delete('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');

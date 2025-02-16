@@ -54,8 +54,8 @@ describe('EstablishmentsController', () => {
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrators');
-      authData.admin.uuid = response.body.user.uuid;
-      authData.admin.accessToken = response.body.accessToken;
+      authData.administrator.uuid = response.body.user.uuid;
+      authData.administrator.accessToken = response.body.accessToken;
     });
   });
 
@@ -148,10 +148,11 @@ describe('EstablishmentsController', () => {
       expect(response.body.title).toBe('Новий модераторський заклад');
       expect(response.body.description).toBe('Тестовий опис закладу');
       expect(response.body.url).toBe('https://www.moderator.com');
-      expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorUuid).toBeDefined();
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Затверджено');
+      expect(response.body.moderation.moderatorUuid).toBeDefined();
+      expect(response.body.moderation.moderatorFullName).toBeDefined();
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
 
     it('should return 201 for current user having permission to create establishments (as user)', async () => {
@@ -168,10 +169,11 @@ describe('EstablishmentsController', () => {
       expect(response.body.title).toBe('Новий користувацький заклад');
       expect(response.body.description).toBe('Тестовий опис закладу');
       expect(response.body.url).toBe('https://www.user.com');
-      expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorUuid).toBe('');
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
       establishmentUuid = response.body.uuid;
     });
 
@@ -191,7 +193,7 @@ describe('EstablishmentsController', () => {
     it('should return 403 for current user not having permission to create establishments', async () => {
       const response = await request(app)
         .post('/api/establishments')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           title: 'Новий заклад',
         });
@@ -214,16 +216,17 @@ describe('EstablishmentsController', () => {
       expect(response.body.url).toBe('https://www.user.com');
       expect(response.body).toHaveProperty('logo');
       expect(response.body.status).toBe('Очікує модерації');
-      expect(response.body.moderatorUuid).toBe('');
-
-      expect(response.body.creatorUuid).toBeDefined();
-      expect(response.body.createdAt).toBeDefined();
-      expect(response.body.updatedAt).toBeDefined();
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 404 for non-existing establishment', async () => {
       const response = await request(app)
-        .get('/api/establishments/999')
+        .get('/api/establishments/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');
@@ -262,10 +265,11 @@ describe('EstablishmentsController', () => {
         });
       expect(response.status).toBe(200);
       expect(response.body.title).toBe('Новий користувацький заклад');
-      expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorUuid).toBeDefined();
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Затверджено');
+      expect(response.body.moderation.moderatorUuid).toBeDefined();
+      expect(response.body.moderation.moderatorFullName).toBeDefined();
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
   });
 
@@ -284,10 +288,11 @@ describe('EstablishmentsController', () => {
       expect(response.body.title).toBe('Оновлена назва закладу');
       expect(response.body.description).toBe('Оновлений опис закладу');
       expect(response.body.url).toBe('https://www.updated.com');
-      expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorUuid).toBe('');
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
 
     it('should return 200 for current user having permission to edit establishments (as moderator)', async () => {
@@ -304,10 +309,11 @@ describe('EstablishmentsController', () => {
       expect(response.body.title).toBe('Оновлена назва закладу');
       expect(response.body.description).toBe('Оновлений опис закладу');
       expect(response.body.url).toBe('https://www.updated.com');
-      expect(response.body.status).toBe('approved');
-      expect(response.body.moderatorUuid).toBeDefined();
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Затверджено');
+      expect(response.body.moderation.moderatorUuid).toBeDefined();
+      expect(response.body.moderation.moderatorFullName).toBeDefined();
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
 
     it('should return 400 if an element with that title already exists', async () => {
@@ -326,7 +332,7 @@ describe('EstablishmentsController', () => {
     it('should return 403 for current user not having permission to edit establishments', async () => {
       const response = await request(app)
         .patch(`/api/establishments/${establishmentUuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           title: 'Оновлена назва закладу',
         });
@@ -338,7 +344,7 @@ describe('EstablishmentsController', () => {
 
     it('should return 404 for non-existing establishment update', async () => {
       const response = await request(app)
-        .patch('/api/establishments/999')
+        .patch('/api/establishments/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
           title: 'Оновлена назва закладу',
@@ -363,10 +369,11 @@ describe('EstablishmentsController', () => {
       expect(response.body).toHaveProperty('uuid', establishmentUuid);
       expect(response.body).toHaveProperty('logo');
       expect(response.body.logo).toBeDefined();
-      expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorUuid).toBe('');
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
   });
 
@@ -383,10 +390,11 @@ describe('EstablishmentsController', () => {
       expect(response.body).toHaveProperty('uuid', establishmentUuid);
       expect(response.body).toHaveProperty('logo');
       expect(response.body.logo).toBe('');
-      expect(response.body.status).toBe('pending');
-      expect(response.body.moderatorUuid).toBe('');
-
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
     });
   });
 
@@ -410,7 +418,7 @@ describe('EstablishmentsController', () => {
 
     it('should return 404 for non-existing establishment deletion', async () => {
       const response = await request(app)
-        .delete('/api/establishments/999')
+        .delete('/api/establishments/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
       expect(response.body.message).toBe('Помилка');

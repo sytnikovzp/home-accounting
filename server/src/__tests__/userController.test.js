@@ -55,8 +55,8 @@ describe('UserController', () => {
       expect(response.body.user.fullName).toBe('Іван Петренко');
       expect(response.body.user.role).toBe('Administrators');
       expect(response.body.user).toHaveProperty('photo');
-      authData.admin.uuid = response.body.user.uuid;
-      authData.admin.accessToken = response.body.accessToken;
+      authData.administrator.uuid = response.body.user.uuid;
+      authData.administrator.accessToken = response.body.accessToken;
     });
 
     it('should return 401 for invalid credentials', async () => {
@@ -107,8 +107,8 @@ describe('UserController', () => {
       expect(response.body.role).toBe('Users');
       expect(response.body).toHaveProperty('photo');
       expect(response.body.email).toBe('hanna.shevchenko@gmail.com');
-      expect(response.body.createdAt).toBeDefined();
-      expect(response.body.updatedAt).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
       expect(response.body.permissions[0]).toHaveProperty('uuid');
@@ -145,8 +145,8 @@ describe('UserController', () => {
       expect(response.body.role).toBe('Users');
       expect(response.body).toHaveProperty('photo');
       expect(response.body.email).toBe('hanna.shevchenko@gmail.com');
-      expect(response.body.createdAt).toBeDefined();
-      expect(response.body.updatedAt).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
       expect(response.body.permissions[0]).toHaveProperty('uuid');
@@ -236,7 +236,7 @@ describe('UserController', () => {
     it('should return 404 for non-existing user update', async () => {
       const response = await request(app)
         .patch('/api/users/6725684760b29fc86d0683bd')
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           fullName: 'Невірний користувач',
         });
@@ -249,7 +249,7 @@ describe('UserController', () => {
     it('should return 200 for current user having permission to change user roles', async () => {
       const response = await request(app)
         .patch(`/api/users/${authData.user.uuid}`)
-        .set('Authorization', `Bearer ${authData.admin.accessToken}`)
+        .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
           email: 'Charlie.Updated@Gmail.com',
           fullName: 'Charlie Updated',
