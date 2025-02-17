@@ -93,15 +93,15 @@ describe('UserController', () => {
       expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
-    it('should get all not verified users (default pagination)', async () => {
+    it('should get all verified users (default pagination)', async () => {
       const response = await request(app)
         .get('/api/users')
-        .query({ emailVerified: 'pending' })
+        .query({ emailVerified: 'verified' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
-      expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Користувачів не знайдено');
-      expect(response.body.severity).toBe('error');
-      expect(response.body.title).toBe('Сталася помилка');
+      expect(response.status).toBe(200);
+      expect(response.headers).toHaveProperty('x-total-count');
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
     it('should return 401 if access token is missing', async () => {

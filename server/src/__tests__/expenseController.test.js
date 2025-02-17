@@ -19,7 +19,7 @@ describe('ExpensesController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'hanna.shevchenko@gmail.com',
+        email: 'a.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
@@ -47,7 +47,7 @@ describe('ExpensesController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'ivan.petrenko@gmail.com',
+        email: 'i.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
@@ -97,23 +97,28 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'UAH',
-          establishment: 'Comfy',
-          measure: 'шт',
           product: 'Навушники',
           quantity: 2,
+          measure: 'шт',
           unitPrice: 500,
+          currency: 'Українська гривня',
+          establishment: 'Comfy',
+          date: '12 січня 2025',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
-      expect(response.body.product).toBe('Навушники');
+      expect(response.body.product.title).toBe('Навушники');
       expect(response.body.quantity).toBe('2.00');
       expect(response.body.unitPrice).toBe('500.00');
-      expect(response.body.summ).toBe('1000.00');
-      expect(response.body.establishment).toBe('Comfy');
-      expect(response.body.measure).toBe('шт');
-      expect(response.body.currency).toBe('UAH');
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.totalPrice).toBe('1000.00');
+      expect(response.body.establishment.title).toBe('Comfy');
+      expect(response.body.measure.title).toBe('шт');
+      expect(response.body.currency.title).toBe('Українська гривня');
+      expect(response.body.date).toBe('12 січня 2025');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
       expenseUuid = response.body.uuid;
     });
 
@@ -122,15 +127,16 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Велика кишеня',
-          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
+          measure: 'шт',
           unitPrice: 100,
+          currency: 'Українська гривня',
+          establishment: 'Велика кишеня',
+          date: '12 січня 2025',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Establishment not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -140,15 +146,16 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Comfy',
-          measure: 'шт',
           product: 'Ноутбуки',
           quantity: 2,
+          measure: 'шт',
           unitPrice: 100,
+          currency: 'Українська гривня',
+          establishment: 'Comfy',
+          date: '12 січня 2025',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Product not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -158,15 +165,16 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Comfy',
-          measure: 'літр',
           product: 'Ноутбук',
           quantity: 2,
+          measure: 'літр',
           unitPrice: 100,
+          currency: 'Українська гривня',
+          establishment: 'Comfy',
+          date: '12 січня 2025',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Measure not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -176,15 +184,16 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'YYY',
-          establishment: 'Comfy',
-          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
+          measure: 'шт',
           unitPrice: 100,
+          currency: 'YYY',
+          establishment: 'Comfy',
+          date: '12 січня 2025',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Currency not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -194,15 +203,18 @@ describe('ExpensesController', () => {
         .post('/api/expenses')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Comfy',
-          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
+          measure: 'шт',
           unitPrice: 100,
+          currency: 'Українська гривня',
+          establishment: 'Comfy',
+          date: '12 січня 2025',
         });
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'Ви не маєте дозволу на додавання витрат'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -215,14 +227,16 @@ describe('ExpensesController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.body.uuid).toBe(expenseUuid);
-      expect(response.body.product).toBe('Навушники');
+      expect(response.body.product.title).toBe('Навушники');
       expect(response.body.quantity).toBe('2.00');
+      expect(response.body.measure.title).toBe('шт');
       expect(response.body.unitPrice).toBe('500.00');
-      expect(response.body.summ).toBe('1000.00');
-      expect(response.body.establishment).toBe('Comfy');
-      expect(response.body.measure).toBe('шт');
-      expect(response.body.currency).toBe('UAH');
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.totalPrice).toBe('1000.00');
+      expect(response.body.currency.title).toBe('Українська гривня');
+      expect(response.body.establishment.title).toBe('Comfy');
+      expect(response.body.date).toBe('12 січня 2025');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
       expect(response.body.creation.createdAt).toBeDefined();
       expect(response.body.creation.updatedAt).toBeDefined();
     });
@@ -232,7 +246,7 @@ describe('ExpensesController', () => {
         .get('/api/expenses/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Витрату не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -252,23 +266,28 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Епіцентр',
-          measure: 'шт',
           product: 'Ноутбук',
           quantity: 1,
-          unitPrice: 850.0,
+          measure: 'шт',
+          unitPrice: 8500.0,
+          currency: 'Українська гривня',
+          establishment: 'Епіцентр',
+          date: '15 січня 2025',
         });
       expect(response.status).toBe(200);
       expect(response.body.uuid).toBe(expenseUuid);
-      expect(response.body.product).toBe('Ноутбук');
+      expect(response.body.product.title).toBe('Ноутбук');
       expect(response.body.quantity).toBe('1.00');
-      expect(response.body.unitPrice).toBe('850.00');
-      expect(response.body.summ).toBe('850.00');
-      expect(response.body.establishment).toBe('Епіцентр');
-      expect(response.body.measure).toBe('шт');
-      expect(response.body.currency).toBe('USD');
-      expect(response.body.creatorUuid).toBeDefined();
+      expect(response.body.measure.title).toBe('шт');
+      expect(response.body.unitPrice).toBe('8500.00');
+      expect(response.body.totalPrice).toBe('8500.00');
+      expect(response.body.currency.title).toBe('Українська гривня');
+      expect(response.body.establishment.title).toBe('Епіцентр');
+      expect(response.body.date).toBe('15 січня 2025');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
     });
 
     it('should return 404 if you specify establishment that don`t exist', async () => {
@@ -276,15 +295,16 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Велика кишеня',
-          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
+          measure: 'шт',
           unitPrice: 100,
+          currency: 'Українська гривня',
+          establishment: 'Велика кишеня',
+          date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Establishment not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -294,15 +314,16 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Comfy',
-          measure: 'шт',
           product: 'Ноутбуки',
           quantity: 2,
+          measure: 'шт',
           unitPrice: 100,
+          currency: 'Українська гривня',
+          establishment: 'Comfy',
+          date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Product not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -312,15 +333,16 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Comfy',
-          measure: 'літр',
           product: 'Ноутбук',
           quantity: 2,
+          measure: 'літр',
           unitPrice: 100,
+          currency: 'Українська гривня',
+          establishment: 'Comfy',
+          date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Measure not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -330,15 +352,16 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          currency: 'YYY',
-          establishment: 'Comfy',
-          measure: 'шт',
           product: 'Ноутбук',
           quantity: 2,
+          measure: 'шт',
           unitPrice: 100,
+          currency: 'YYY',
+          establishment: 'Comfy',
+          date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Currency not found');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -348,15 +371,18 @@ describe('ExpensesController', () => {
         .patch(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Епіцентр',
-          measure: 'шт',
           product: 'Ноутбук',
           quantity: 1,
+          measure: 'шт',
           unitPrice: 850.0,
+          currency: 'Українська гривня',
+          establishment: 'Епіцентр',
+          date: '15 грудня 2024',
         });
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'Ви не маєте дозволу на редагування цієї витрати'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -366,15 +392,16 @@ describe('ExpensesController', () => {
         .patch('/api/expenses/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          currency: 'USD',
-          establishment: 'Епіцентр',
-          measure: 'шт',
           product: 'Ноутбук',
           quantity: 1,
+          measure: 'шт',
           unitPrice: 850.0,
+          currency: 'Українська гривня',
+          establishment: 'Епіцентр',
+          date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Витрату не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -386,7 +413,9 @@ describe('ExpensesController', () => {
         .delete(`/api/expenses/${expenseUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(403);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe(
+        'Ви не маєте дозволу на видалення цієї витрати'
+      );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -403,7 +432,7 @@ describe('ExpensesController', () => {
         .delete('/api/expenses/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Помилка');
+      expect(response.body.message).toBe('Витрату не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });

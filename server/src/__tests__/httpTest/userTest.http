@@ -31,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmM
 ### Get list not verified users (default pagination, without sort)
 GET http://localhost:5000/api/users?emailVerified=pending HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlZGE3ZjcyNC03NjExLTRmMDEtYTY2Ny1lNGMxZDQ3NDdmMTIiLCJpYXQiOjE3Mzk3NzQ0ODMsImV4cCI6MTczOTc3NTM4M30.5guzcZ_LiZsSWmKA2XDd9_skvX9k4g6woDqEDgukQRE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1Yzk0NWU1NC1hYjQwLTRiMjQtYWNlMi0zNTZhNTk3MjE3MzAiLCJpYXQiOjE3Mzk3NzY5MzgsImV4cCI6MTczOTc3NzgzOH0.dfOFbv92ChU8cVoM2w_cdpsRbGiEiGNpF16JGB8BPYw
 
 // ==============================================================
 
