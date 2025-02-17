@@ -1,4 +1,6 @@
 /* eslint-disable no-undef */
+const path = require('path');
+
 const request = require('supertest');
 
 const app = require('../app');
@@ -13,8 +15,8 @@ const authData = {
   user: { accessToken: null, uuid: null },
 };
 
-describe('ProductsController', () => {
-  let productUuid = null;
+describe('EstablishmentsController', () => {
+  let establishmentUuid = null;
 
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
@@ -60,10 +62,10 @@ describe('ProductsController', () => {
     });
   });
 
-  describe('GET /api/products', () => {
-    it('should return list of products (status approved, default pagination)', async () => {
+  describe('GET /api/establishments', () => {
+    it('should return list of establishments (status approved, default pagination)', async () => {
       const response = await request(app)
-        .get('/api/products')
+        .get('/api/establishments')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -71,9 +73,9 @@ describe('ProductsController', () => {
       expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of products (status approved, custom pagination)', async () => {
+    it('should return list of establishments (status approved, custom pagination)', async () => {
       const response = await request(app)
-        .get('/api/products')
+        .get('/api/establishments')
         .query({ limit: 10, page: 1 })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
@@ -82,9 +84,9 @@ describe('ProductsController', () => {
       expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
-    it('should return list of products (status pending, default pagination)', async () => {
+    it('should return list of establishments (status pending, default pagination)', async () => {
       const response = await request(app)
-        .get('/api/products')
+        .get('/api/establishments')
         .query({ status: 'pending' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
@@ -93,9 +95,9 @@ describe('ProductsController', () => {
       expect(response.body.length).toBeLessThanOrEqual(5);
     });
 
-    it('should return list of products (status rejected, default pagination)', async () => {
+    it('should return list of establishments (status rejected, default pagination)', async () => {
       const response = await request(app)
-        .get('/api/products')
+        .get('/api/establishments')
         .query({ status: 'rejected' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
@@ -105,7 +107,7 @@ describe('ProductsController', () => {
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get('/api/products');
+      const response = await request(app).get('/api/establishments');
       expect(response.status).toBe(401);
       expect(response.body.message).toBe('Перевірте свої облікові дані');
       expect(response.body.severity).toBe('error');
@@ -113,19 +115,22 @@ describe('ProductsController', () => {
     });
   });
 
-  describe('POST /api/products', () => {
-    it('should return 201 for current user having permission to create products (as moderator)', async () => {
+  describe('POST /api/establishments', () => {
+    it('should return 201 for current user having permission to create establishments (as moderator)', async () => {
       const response = await request(app)
-        .post('/api/products')
+        .post('/api/establishments')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          category: 'Пристрої',
-          title: 'Новий модераторський товар',
+          title: 'Новий модераторський заклад',
+          description: 'Тестовий опис закладу',
+          url: 'https://www.moderator.com',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
-      expect(response.body.title).toBe('Новий модераторський товар');
-      expect(response.body.contentType).toBe('Товар');
+      expect(response.body.title).toBe('Новий модераторський заклад');
+      expect(response.body.description).toBe('Тестовий опис закладу');
+      expect(response.body.url).toBe('https://www.moderator.com');
+      expect(response.body.contentType).toBe('Заклад');
       expect(response.body.status).toBe('Затверджено');
       expect(response.body.moderation.moderatorUuid).toBeDefined();
       expect(response.body.moderation.moderatorFullName).toBeDefined();
@@ -135,18 +140,21 @@ describe('ProductsController', () => {
       expect(response.body.creation.updatedAt).toBeDefined();
     });
 
-    it('should return 201 for current user having permission to create products (as user)', async () => {
+    it('should return 201 for current user having permission to create establishments (as user)', async () => {
       const response = await request(app)
-        .post('/api/products')
+        .post('/api/establishments')
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          category: 'Електроніка',
-          title: 'Новий користувацький товар',
+          title: 'Новий користувацький заклад',
+          description: 'Тестовий опис закладу',
+          url: 'https://www.user.com',
         });
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('uuid');
-      expect(response.body.title).toBe('Новий користувацький товар');
-      expect(response.body.contentType).toBe('Товар');
+      expect(response.body.title).toBe('Новий користувацький заклад');
+      expect(response.body.description).toBe('Тестовий опис закладу');
+      expect(response.body.url).toBe('https://www.user.com');
+      expect(response.body.contentType).toBe('Заклад');
       expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.moderation.moderatorUuid).toBe('');
       expect(response.body.moderation.moderatorFullName).toBe('');
@@ -154,62 +162,54 @@ describe('ProductsController', () => {
       expect(response.body.creation.creatorFullName).toBeDefined();
       expect(response.body.creation.createdAt).toBeDefined();
       expect(response.body.creation.updatedAt).toBeDefined();
-      productUuid = response.body.uuid;
-    });
-
-    it('should return 404 if you specify category that don`t exist', async () => {
-      const response = await request(app)
-        .post('/api/products')
-        .set('Authorization', `Bearer ${authData.user.accessToken}`)
-        .send({
-          category: 'Машини',
-          title: 'Новий товар',
-        });
-      expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Category not found');
-      expect(response.body.severity).toBe('error');
-      expect(response.body.title).toBe('Сталася помилка');
+      establishmentUuid = response.body.uuid;
     });
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .post('/api/products')
+        .post('/api/establishments')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Новий модераторський товар',
+          title: 'Новий модераторський заклад',
+          description: 'Тестовий опис закладу',
+          url: 'https://www.moderator.com',
         });
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Цей товар вже існує');
+      expect(response.body.message).toBe('Цей заклад вже існує');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
 
-    it('should return 403 for current user not having permission to create products', async () => {
+    it('should return 403 for current user not having permission to create establishments', async () => {
       const response = await request(app)
-        .post('/api/products')
+        .post('/api/establishments')
         .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
-          title: 'Новий товар',
+          title: 'Новий заклад',
+          description: '',
+          url: '',
         });
       expect(response.status).toBe(403);
       expect(response.body.message).toBe(
-        'Ви не маєте дозволу на додавання товарів'
+        'Ви не маєте дозволу на додавання закладів'
       );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
-  describe('GET /api/products/:productUuid', () => {
-    it('should get product by id', async () => {
+  describe('GET /api/establishments/:establishmentUuid', () => {
+    it('should get establishment by id', async () => {
       const response = await request(app)
-        .get(`/api/products/${productUuid}`)
+        .get(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
-      expect(response.body.uuid).toBe(productUuid);
-      expect(response.body.title).toBe('Новий користувацький товар');
-      expect(response.body.category.title).toBe('Електроніка');
-      expect(response.body.contentType).toBe('Товар');
+      expect(response.body.uuid).toBe(establishmentUuid);
+      expect(response.body.title).toBe('Новий користувацький заклад');
+      expect(response.body.description).toBe('Тестовий опис закладу');
+      expect(response.body.url).toBe('https://www.user.com');
+      expect(response.body).toHaveProperty('logo');
+      expect(response.body.contentType).toBe('Заклад');
       expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.moderation.moderatorUuid).toBe('');
       expect(response.body.moderation.moderatorFullName).toBe('');
@@ -219,18 +219,20 @@ describe('ProductsController', () => {
       expect(response.body.creation.updatedAt).toBeDefined();
     });
 
-    it('should return 404 for non-existing product', async () => {
+    it('should return 404 for non-existing establishment', async () => {
       const response = await request(app)
-        .get('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
+        .get('/api/establishments/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Заклад не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
 
     it('should return 401 if access token is missing', async () => {
-      const response = await request(app).get(`/api/products/${productUuid}`);
+      const response = await request(app).get(
+        `/api/establishments/${establishmentUuid}`
+      );
       expect(response.status).toBe(401);
       expect(response.body.message).toBe('Перевірте свої облікові дані');
       expect(response.body.severity).toBe('error');
@@ -238,19 +240,22 @@ describe('ProductsController', () => {
     });
   });
 
-  describe('PATCH /api/products/:productUuid', () => {
-    it('should return 200 for current user having permission to edit products (as user)', async () => {
+  describe('PATCH /api/establishments/:establishmentUuid', () => {
+    it('should return 200 for current user having permission to edit establishments (as user)', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productUuid}`)
+        .patch(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`)
         .send({
-          category: 'Обчислювальна техніка',
-          title: 'Оновлена назва товару',
+          title: 'Оновлена назва закладу',
+          description: 'Оновлений опис закладу',
+          url: 'https://www.updated.com',
         });
       expect(response.status).toBe(200);
-      expect(response.body.uuid).toBe(productUuid);
-      expect(response.body.title).toBe('Оновлена назва товару');
-      expect(response.body.contentType).toBe('Товар');
+      expect(response.body.uuid).toBe(establishmentUuid);
+      expect(response.body.title).toBe('Оновлена назва закладу');
+      expect(response.body.description).toBe('Оновлений опис закладу');
+      expect(response.body.url).toBe('https://www.updated.com');
+      expect(response.body.contentType).toBe('Заклад');
       expect(response.body.status).toBe('Очікує модерації');
       expect(response.body.moderation.moderatorUuid).toBe('');
       expect(response.body.moderation.moderatorFullName).toBe('');
@@ -260,18 +265,21 @@ describe('ProductsController', () => {
       expect(response.body.creation.updatedAt).toBeDefined();
     });
 
-    it('should return 200 for current user having permission to edit products (as moderator)', async () => {
+    it('should return 200 for current user having permission to edit establishments (as moderator)', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productUuid}`)
+        .patch(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          category: 'Обчислювальна техніка',
-          title: 'Оновлена назва товару',
+          title: 'Оновлена назва закладу',
+          description: 'Оновлений опис закладу',
+          url: 'https://www.updated.com',
         });
       expect(response.status).toBe(200);
-      expect(response.body.uuid).toBe(productUuid);
-      expect(response.body.title).toBe('Оновлена назва товару');
-      expect(response.body.contentType).toBe('Товар');
+      expect(response.body.uuid).toBe(establishmentUuid);
+      expect(response.body.title).toBe('Оновлена назва закладу');
+      expect(response.body.description).toBe('Оновлений опис закладу');
+      expect(response.body.url).toBe('https://www.updated.com');
+      expect(response.body.contentType).toBe('Заклад');
       expect(response.body.status).toBe('Затверджено');
       expect(response.body.moderation.moderatorUuid).toBeDefined();
       expect(response.body.moderation.moderatorFullName).toBeDefined();
@@ -283,72 +291,128 @@ describe('ProductsController', () => {
 
     it('should return 400 if an element with that title already exists', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productUuid}`)
+        .patch(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Помідори',
+          title: 'Varus',
+          description: 'Варус',
+          url: 'https://www.varus.ua',
         });
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Цей товар вже існує');
+      expect(response.body.message).toBe('Цей заклад вже існує');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
 
-    it('should return 403 for current user not having permission to edit products', async () => {
+    it('should return 403 for current user not having permission to edit establishments', async () => {
       const response = await request(app)
-        .patch(`/api/products/${productUuid}`)
+        .patch(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.administrator.accessToken}`)
         .send({
-          title: 'Оновлена назва товару',
+          title: 'Оновлена назва закладу',
+          description: '',
+          url: '',
         });
       expect(response.status).toBe(403);
       expect(response.body.message).toBe(
-        'Ви не маєте дозволу на редагування цього товару'
+        'Ви не маєте дозволу на редагування цього закладу'
       );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
 
-    it('should return 404 for non-existing product update', async () => {
+    it('should return 404 for non-existing establishment update', async () => {
       const response = await request(app)
-        .patch('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
+        .patch('/api/establishments/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`)
         .send({
-          title: 'Оновлена назва товару',
+          title: 'Оновлена назва закладу',
+          description: '',
+          url: '',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Заклад не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
   });
 
-  describe('DELETE /api/products/:productUuid', () => {
-    it('should return 403 for current user not having permission to delete products', async () => {
+  describe('PATCH /api/establishments/:establishmentUuid/logo', () => {
+    it('should be change establishment logo', async () => {
       const response = await request(app)
-        .delete(`/api/products/${productUuid}`)
+        .patch(`/api/establishments/${establishmentUuid}/logo`)
+        .set('Authorization', `Bearer ${authData.user.accessToken}`)
+        .attach(
+          'establishmentLogo',
+          path.resolve('/Users/nadia/Downloads/atb.png')
+        );
+      expect(response.status).toBe(200);
+      expect(response.body.uuid).toBe(establishmentUuid);
+      expect(response.body.title).toBe('Оновлена назва закладу');
+      expect(response.body.description).toBe('Оновлений опис закладу');
+      expect(response.body.url).toBe('https://www.updated.com');
+      expect(response.body).toHaveProperty('logo');
+      expect(response.body.logo).toBeDefined();
+      expect(response.body.contentType).toBe('Заклад');
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderation.moderatorUuid).toBeDefined();
+      expect(response.body.moderation.moderatorFullName).toBeDefined();
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
+    });
+  });
+
+  describe('DELETE /api/establishments/:establishmentUuid/logo', () => {
+    it('should be reset establishment logo', async () => {
+      const response = await request(app)
+        .delete(`/api/establishments/${establishmentUuid}/logo`)
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(200);
+      expect(response.body.uuid).toBe(establishmentUuid);
+      expect(response.body.title).toBe('Оновлена назва закладу');
+      expect(response.body.description).toBe('Оновлений опис закладу');
+      expect(response.body.url).toBe('https://www.updated.com');
+      expect(response.body).toHaveProperty('logo');
+      expect(response.body.logo).toBe('');
+      expect(response.body.contentType).toBe('Заклад');
+      expect(response.body.status).toBe('Очікує модерації');
+      expect(response.body.moderation.moderatorUuid).toBe('');
+      expect(response.body.moderation.moderatorFullName).toBe('');
+      expect(response.body.creation.creatorUuid).toBeDefined();
+      expect(response.body.creation.creatorFullName).toBeDefined();
+      expect(response.body.creation.createdAt).toBeDefined();
+      expect(response.body.creation.updatedAt).toBeDefined();
+    });
+  });
+
+  describe('DELETE /api/establishments/:establishmentUuid', () => {
+    it('should return 403 for current user not having permission to delete establishments', async () => {
+      const response = await request(app)
+        .delete(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(403);
       expect(response.body.message).toBe(
-        'Ви не маєте дозволу на видалення цього товару'
+        'Ви не маєте дозволу на видалення цього закладу'
       );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
 
-    it('should return 200 for current user having permission to delete products', async () => {
+    it('should return 200 for current user having permission to delete establishments', async () => {
       const response = await request(app)
-        .delete(`/api/products/${productUuid}`)
+        .delete(`/api/establishments/${establishmentUuid}`)
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(200);
     });
 
-    it('should return 404 for non-existing product deletion', async () => {
+    it('should return 404 for non-existing establishment deletion', async () => {
       const response = await request(app)
-        .delete('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
+        .delete('/api/establishments/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Заклад не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });

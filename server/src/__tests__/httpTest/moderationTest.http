@@ -1,26 +1,26 @@
 ### Get list of pending items (default pagination, without sort)
 GET http://localhost:5000/api/moderation HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDgyMzVlMTMtNjUxNC00ZGI2LWI3ZjYtZTkxOGJiMDBlNjRhIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzY2NTY3NTIsImV4cCI6MTczNzk1Mjc1Mn0.fLoyv4IcmVk8bPR3RJ_JLB_SPSahUoKuW7fbRp2aec4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2Zjc2Y2MyNC0zZjg2LTRmNWQtYmUwOS02ZDY3ZTI3N2JjZWYiLCJpYXQiOjE3Mzk4MzMwNjEsImV4cCI6MTczOTgzMzk2MX0.P_meqMO61kjBKB5oXMhvPuTgUQxCbHB8U9_aHk-iW8E
 
 ### Get list of pending items (custom pagination, with sort by uuid (asc))
 GET http://localhost:5000/api/moderation?sort=title&order=asc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDgyMzVlMTMtNjUxNC00ZGI2LWI3ZjYtZTkxOGJiMDBlNjRhIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzY2NTY3NTIsImV4cCI6MTczNzk1Mjc1Mn0.fLoyv4IcmVk8bPR3RJ_JLB_SPSahUoKuW7fbRp2aec4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI3OWE3MTI5MC0zNThkLTQ5YWUtODQ2Ni1mMDk1NTRkNzI5ZTAiLCJpYXQiOjE3Mzk4Mjk3NzMsImV4cCI6MTczOTgzMDY3M30.pu379tXvSxYVjftglNL3Cjbd0v8xUKHmRJuGXgIas-E
 
 ### Moderation category
-PATCH http://localhost:5000/api/moderation/categories/592f2e24-a5c4-4f43-8040-c5ee3449a670 HTTP/1.1
+PATCH http://localhost:5000/api/moderation/categories/8a373fc7-c2c3-47e2-be28-656dc93192cd HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDgyMzVlMTMtNjUxNC00ZGI2LWI3ZjYtZTkxOGJiMDBlNjRhIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzY2NTY3NTIsImV4cCI6MTczNzk1Mjc1Mn0.fLoyv4IcmVk8bPR3RJ_JLB_SPSahUoKuW7fbRp2aec4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2Zjc2Y2MyNC0zZjg2LTRmNWQtYmUwOS02ZDY3ZTI3N2JjZWYiLCJpYXQiOjE3Mzk4MzEyOTMsImV4cCI6MTczOTgzMjE5M30.PWp_oQh50owb18APiN0xAQ2CHfjCUGr0Gsee7TCJdD4
 
 {
   "status": "rejected"
 }
 
 ### Moderation product
-PATCH http://localhost:5000/api/moderation/products/12342dbd-8303-4c7e-8e18-0aeb4f1693c6 HTTP/1.1
+PATCH http://localhost:5000/api/moderation/products/689a5854-6950-4164-91c2-793bda9d6c17 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDgyMzVlMTMtNjUxNC00ZGI2LWI3ZjYtZTkxOGJiMDBlNjRhIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzY2NTY3NTIsImV4cCI6MTczNzk1Mjc1Mn0.fLoyv4IcmVk8bPR3RJ_JLB_SPSahUoKuW7fbRp2aec4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2Zjc2Y2MyNC0zZjg2LTRmNWQtYmUwOS02ZDY3ZTI3N2JjZWYiLCJpYXQiOjE3Mzk4MzMwNjEsImV4cCI6MTczOTgzMzk2MX0.P_meqMO61kjBKB5oXMhvPuTgUQxCbHB8U9_aHk-iW8E
 
 {
   "status": "rejected"

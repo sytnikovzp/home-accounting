@@ -9,8 +9,7 @@ const config = {
   coverageProvider: 'v8',
 
   // Allows you to use a custom runner instead of Jest's default test runner
-  // runner: "jest-runner",
-  runner: 'jest-serial-runner',
+  // runner: 'jest-serial-runner',
 
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 
