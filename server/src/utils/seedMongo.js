@@ -46,7 +46,7 @@ const seedDatabase = async () => {
     await createUsers(roleUuids);
 
     moderatorDetails = await getUserDetailsByEmail('o.ivanchuk@gmail.com');
-    userDetails = await getUserDetailsByEmail('hanna.shevchenko@gmail.com');
+    userDetails = await getUserDetailsByEmail('a.shevchenko@gmail.com');
 
     console.log('MongoDB database seeded successfully');
   } catch (error) {

@@ -27,7 +27,7 @@ describe('AuthController', () => {
 
     it('should return 400 for existing user', async () => {
       const response = await request(app).post('/api/auth/registration').send({
-        email: 'ivan.petrenko@gmail.com',
+        email: 'i.petrenko@gmail.com',
         fullName: 'Іван Петренко',
         password: 'Qwerty12',
       });

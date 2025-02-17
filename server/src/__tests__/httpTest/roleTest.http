@@ -1,7 +1,7 @@
 ### Get list all roles (default pagination, without sort)
 GET http://localhost:5000/api/roles HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI5OGQ3NjVhNi04YTUzLTQ4MTItYjQxNC03ZjU1OGY5MzFjNzEiLCJpYXQiOjE3MzkyNTI5ODksImV4cCI6MTczOTI1Mzg4OX0.vAV44VVesaqL-_QFjKriarucQKSr8WHLLW-Obl77zCs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI0ZTljMTVlOC0xYjI1LTQ1M2YtODczZC04MGMxMDZmNWFlOTgiLCJpYXQiOjE3Mzk3NDQzMjgsImV4cCI6MTczOTc0NTIyOH0.lhJHlwffoxTN5tzxAaiKUrdSsHx9hvKDDHCXWvhOhrA
 
 ### Get list all roles (custom pagination, without sort)
 GET http://localhost:5000/api/roles?page=1&limit=10 HTTP/1.1
@@ -16,7 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 ### Create role
 POST http://localhost:5000/api/roles HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI5OGQ3NjVhNi04YTUzLTQ4MTItYjQxNC03ZjU1OGY5MzFjNzEiLCJpYXQiOjE3MzkyNTI5ODksImV4cCI6MTczOTI1Mzg4OX0.vAV44VVesaqL-_QFjKriarucQKSr8WHLLW-Obl77zCs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI0ZTljMTVlOC0xYjI1LTQ1M2YtODczZC04MGMxMDZmNWFlOTgiLCJpYXQiOjE3Mzk3Njk5OTYsImV4cCI6MTczOTc3MDg5Nn0.0jsMt7ZKlQ5yJdqQqNEYVA1xCb8pG_hEq3lK41xBRx4
 
 {
   "title": "Нова роль користувача",
@@ -30,9 +30,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI5OGQ3NjVhNi04YTUzLTQ4MTItYjQxNC03ZjU1OGY5MzFjNzEiLCJpYXQiOjE3MzkyNTI5ODksImV4cCI6MTczOTI1Mzg4OX0.vAV44VVesaqL-_QFjKriarucQKSr8WHLLW-Obl77zCs
 
 ### Update role data
-PATCH http://localhost:5000/api/roles/4e686847-1e37-41cc-b138-80d1158a10f9 HTTP/1.1
+PATCH http://localhost:5000/api/roles/83fd4702-f63a-49a0-aaa7-8c019c0f46f4 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI5OGQ3NjVhNi04YTUzLTQ4MTItYjQxNC03ZjU1OGY5MzFjNzEiLCJpYXQiOjE3MzkyNTI5ODksImV4cCI6MTczOTI1Mzg4OX0.vAV44VVesaqL-_QFjKriarucQKSr8WHLLW-Obl77zCs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI0ZTljMTVlOC0xYjI1LTQ1M2YtODczZC04MGMxMDZmNWFlOTgiLCJpYXQiOjE3Mzk3Njk5OTYsImV4cCI6MTczOTc3MDg5Nn0.0jsMt7ZKlQ5yJdqQqNEYVA1xCb8pG_hEq3lK41xBRx4
 
 {
   "title": "Оновлена назва ролі користувача",

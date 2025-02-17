@@ -17,7 +17,7 @@ describe('UserController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'mykola.scherbak@gmail.com',
+        email: 'm.scherbak@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
@@ -51,7 +51,7 @@ describe('UserController', () => {
       expect(response.body.fullName).toBe('Микола Щербак');
       expect(response.body.role.title).toBe('Users');
       expect(response.body).toHaveProperty('photo');
-      expect(response.body.email).toBe('mykola.scherbak@gmail.com');
+      expect(response.body.email).toBe('m.scherbak@gmail.com');
       expect(response.body.emailVerified).toBe('Веріфікований');
       expect(response.body.creation.createdAt).toBeDefined();
       expect(response.body.creation.updatedAt).toBeDefined();

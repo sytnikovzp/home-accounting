@@ -19,7 +19,7 @@ describe('CurrenciesController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'hanna.shevchenko@gmail.com',
+        email: 'a.shevchenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
@@ -47,7 +47,7 @@ describe('CurrenciesController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'ivan.petrenko@gmail.com',
+        email: 'i.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);

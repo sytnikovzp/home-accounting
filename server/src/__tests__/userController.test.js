@@ -19,7 +19,7 @@ describe('UserController', () => {
   describe('POST /api/auth/login', () => {
     it('should login an existing user', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'evgen.kovalenko@gmail.com',
+        email: 'e.kovalenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
@@ -47,7 +47,7 @@ describe('UserController', () => {
 
     it('should login an existing administrator', async () => {
       const response = await request(app).post('/api/auth/login').send({
-        email: 'ivan.petrenko@gmail.com',
+        email: 'i.petrenko@gmail.com',
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
@@ -93,6 +93,17 @@ describe('UserController', () => {
       expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
+    it('should get all not verified users (default pagination)', async () => {
+      const response = await request(app)
+        .get('/api/users')
+        .query({ emailVerified: 'pending' })
+        .set('Authorization', `Bearer ${authData.user.accessToken}`);
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('Користувачів не знайдено');
+      expect(response.body.severity).toBe('error');
+      expect(response.body.title).toBe('Сталася помилка');
+    });
+
     it('should return 401 if access token is missing', async () => {
       const response = await request(app).get('/api/users');
       expect(response.status).toBe(401);
@@ -112,7 +123,7 @@ describe('UserController', () => {
       expect(response.body.fullName).toBe('Євген Коваленко');
       expect(response.body.role.title).toBe('Users');
       expect(response.body).toHaveProperty('photo');
-      expect(response.body.email).toBe('evgen.kovalenko@gmail.com');
+      expect(response.body.email).toBe('e.kovalenko@gmail.com');
       expect(response.body.emailVerified).toBe('Веріфікований');
       expect(response.body.creation.createdAt).toBeDefined();
       expect(response.body.creation.updatedAt).toBeDefined();
