@@ -49,7 +49,7 @@ describe('AuthController', () => {
       expect(response.body).toHaveProperty('refreshToken');
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user).toHaveProperty('emailVerified');
+      expect(response.body.user).toHaveProperty('emailConfirmed');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
@@ -78,7 +78,7 @@ describe('AuthController', () => {
       expect(response.body).toHaveProperty('refreshToken');
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user).toHaveProperty('emailVerified');
+      expect(response.body.user).toHaveProperty('emailConfirmed');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');

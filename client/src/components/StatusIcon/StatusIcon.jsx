@@ -4,9 +4,9 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 function StatusIcon({ status }) {
   const icons = {
-    Веріфікований: <CheckCircleIcon color='success' />,
+    Підтверджений: <CheckCircleIcon color='success' />,
     Затверджено: <CheckCircleIcon color='success' />,
-    'Очікує веріфікації': <HourglassEmptyIcon color='warning' />,
+    'Очікує підтвердження': <HourglassEmptyIcon color='warning' />,
     'Очікує модерації': <HourglassEmptyIcon color='warning' />,
   };
 

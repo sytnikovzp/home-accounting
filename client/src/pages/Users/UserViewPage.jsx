@@ -17,7 +17,7 @@ import useAuthUser from '../../hooks/useAuthUser';
 
 import {
   useFetchUserByUuidQuery,
-  useResendVerifyEmailMutation,
+  useResendConfirmEmailMutation,
 } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
@@ -51,14 +51,14 @@ function UserViewPage() {
     [isAuthenticatedUser, authenticatedUser, user]
   );
 
-  const { fullName, role, photo, email, emailVerified, creation } =
+  const { fullName, role, photo, email, emailConfirmed, creation } =
     userData ?? {};
   const { createdAt, updatedAt } = creation ?? {};
 
   const [
-    resendVerifyEmail,
+    resendConfirmEmail,
     { isLoading: isEmailSubmitting, error: submitEmailError },
-  ] = useResendVerifyEmailMutation();
+  ] = useResendConfirmEmailMutation();
 
   const error = fetchError || submitEmailError;
 
@@ -77,9 +77,9 @@ function UserViewPage() {
 
   const handleResendClick = useCallback(() => {
     if (email) {
-      resendVerifyEmail(email);
+      resendConfirmEmail(email);
     }
-  }, [email, resendVerifyEmail]);
+  }, [email, resendConfirmEmail]);
 
   const data = useMemo(
     () => [
@@ -114,10 +114,10 @@ function UserViewPage() {
             },
           ]
         : []),
-      ...(emailVerified
+      ...(emailConfirmed
         ? [
             {
-              extra: emailVerified === 'Очікує веріфікації' && (
+              extra: emailConfirmed === 'Очікує підтвердження' && (
                 <Tooltip title='Повторно відправити email'>
                   <Button
                     disabled={isEmailSubmitting}
@@ -130,9 +130,9 @@ function UserViewPage() {
                   </Button>
                 </Tooltip>
               ),
-              icon: () => <StatusIcon status={emailVerified} />,
+              icon: () => <StatusIcon status={emailConfirmed} />,
               label: 'Обліковий запис',
-              value: emailVerified,
+              value: emailConfirmed,
             },
           ]
         : []),
@@ -152,7 +152,7 @@ function UserViewPage() {
       photoPath,
       role,
       email,
-      emailVerified,
+      emailConfirmed,
       isEmailSubmitting,
       handleResendClick,
       createdAt,

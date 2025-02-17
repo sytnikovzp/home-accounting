@@ -2,22 +2,22 @@ const {
   User,
   Role,
   Permission,
-  VerificationToken,
+  ConfirmationToken,
   PasswordResetToken,
 } = require('../db/dbMongo/models');
 
 const {
   configs: {
     SERVER: { HOST, PORT },
-    TOKEN_LIFETIME: { VERIFICATION, RESET_PASSWORD },
+    TOKEN_LIFETIME: { CONFIRMATION, RESET_PASSWORD },
   },
-  dataMapping: { EMAIL_VERIFICATION_MAPPING },
+  dataMapping: { EMAIL_CONFIRMATION_MAPPING },
 } = require('../constants');
 const { unAuthorizedError } = require('../errors/authErrors');
 const { badRequest, notFound } = require('../errors/generalErrors');
 const {
   hashPassword,
-  verifyPassword,
+  confirmPassword,
   emailToLowerCase,
   mapValue,
 } = require('../utils/sharedFunctions');
@@ -45,13 +45,13 @@ class AuthService {
     if (!user) {
       throw badRequest('Користувач не зареєстрований');
     }
-    const verificationToken = await VerificationToken.create({
+    const confirmationToken = await ConfirmationToken.create({
       userUuid: user.uuid,
-      expiresAt: new Date(Date.now() + VERIFICATION),
+      expiresAt: new Date(Date.now() + CONFIRMATION),
     });
-    await mailService.sendVerificationMail(
+    await mailService.sendConfirmationMail(
       email,
-      `http://${HOST}:${PORT}/api/email/verify?token=${verificationToken.token}`
+      `http://${HOST}:${PORT}/api/email/confirm?token=${confirmationToken.token}`
     );
     const permissions = await Permission.find({
       uuid: { $in: foundRole.permissions },
@@ -62,7 +62,10 @@ class AuthService {
       user: {
         uuid: user.uuid,
         fullName: user.fullName,
-        emailVerified: mapValue(user.emailVerified, EMAIL_VERIFICATION_MAPPING),
+        emailConfirmed: mapValue(
+          user.emailConfirmed,
+          EMAIL_CONFIRMATION_MAPPING
+        ),
         role: foundRole.title || '',
         photo: user.photo || '',
       },
@@ -76,7 +79,7 @@ class AuthService {
     if (!foundUser) {
       throw unAuthorizedError();
     }
-    const isPasswordValid = await verifyPassword(password, foundUser.password);
+    const isPasswordValid = await confirmPassword(password, foundUser.password);
     if (!isPasswordValid) {
       throw unAuthorizedError();
     }
@@ -93,9 +96,9 @@ class AuthService {
       user: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
-        emailVerified: mapValue(
-          foundUser.emailVerified,
-          EMAIL_VERIFICATION_MAPPING
+        emailConfirmed: mapValue(
+          foundUser.emailConfirmed,
+          EMAIL_CONFIRMATION_MAPPING
         ),
         role: foundRole.title || '',
         photo: foundUser.photo || '',
@@ -130,9 +133,9 @@ class AuthService {
       user: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
-        emailVerified: mapValue(
-          foundUser.emailVerified,
-          EMAIL_VERIFICATION_MAPPING
+        emailConfirmed: mapValue(
+          foundUser.emailConfirmed,
+          EMAIL_CONFIRMATION_MAPPING
         ),
         role: foundRole.title || '',
         photo: foundUser.photo || '',
@@ -152,7 +155,7 @@ class AuthService {
       userUuid: foundUser.uuid,
       expiresAt: new Date(Date.now() + RESET_PASSWORD),
     });
-    await mailService.sendResetPasswordEmail(
+    await mailService.sendResetPasswordMail(
       foundUser.email,
       `http://${HOST}:${PORT}/api/auth/reset-password?token=${resetToken.token}`
     );

@@ -1,8 +1,8 @@
 const STATUS_OPTIONS = {
   users: [
     { label: 'Всі користувачі', value: 'all' },
-    { label: 'Очікують веріфікації', value: 'pending' },
-    { label: 'Веріфіковані', value: 'verified' },
+    { label: 'Очікують підтвердження', value: 'pending' },
+    { label: 'Підтверджені', value: 'confirmed' },
   ],
   expenses: [
     { label: 'За останній день', value: 'day' },

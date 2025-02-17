@@ -4,7 +4,7 @@ const {
   Role,
   Permission,
   PasswordResetToken,
-  VerificationToken,
+  ConfirmationToken,
 } = require('../db/dbMongo/models');
 
 const {
@@ -36,7 +36,7 @@ const seedDatabase = async () => {
     await connectMongoDB();
 
     await PasswordResetToken.deleteMany({});
-    await VerificationToken.deleteMany({});
+    await ConfirmationToken.deleteMany({});
     await User.deleteMany({});
     await Role.deleteMany({});
     await Permission.deleteMany({});

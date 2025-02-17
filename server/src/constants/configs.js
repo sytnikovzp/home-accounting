@@ -43,6 +43,6 @@ module.exports = {
   },
   TOKEN_LIFETIME: {
     RESET_PASSWORD: 1 * 60 * 60 * 1000,
-    VERIFICATION: 24 * 60 * 60 * 1000,
+    CONFIRMATION: 24 * 60 * 60 * 1000,
   },
 };

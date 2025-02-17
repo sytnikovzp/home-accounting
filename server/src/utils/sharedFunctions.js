@@ -8,7 +8,7 @@ const {
   Role,
   Permission,
   PasswordResetToken,
-  VerificationToken,
+  ConfirmationToken,
 } = require('../db/dbMongo/models');
 
 const {
@@ -22,7 +22,7 @@ const hashPassword = function (password) {
   return bcrypt.hash(password, SALT_ROUNDS);
 };
 
-const verifyPassword = function (password, userPassword) {
+const confirmPassword = function (password, userPassword) {
   return bcrypt.compare(password, userPassword);
 };
 
@@ -164,8 +164,8 @@ const checkToken = async (token, type = 'reset') => {
   let checkedToken = null;
   if (type === 'reset') {
     checkedToken = await PasswordResetToken.findOne({ token });
-  } else if (type === 'verify') {
-    checkedToken = await VerificationToken.findOne({ token });
+  } else if (type === 'confirm') {
+    checkedToken = await ConfirmationToken.findOne({ token });
   } else {
     throw badRequest('Невідомий тип токена');
   }
@@ -194,5 +194,5 @@ module.exports = {
   mapValue,
   parseDateString,
   setRefreshTokenCookie,
-  verifyPassword,
+  confirmPassword,
 };

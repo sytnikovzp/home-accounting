@@ -1,9 +1,9 @@
-const { User, VerificationToken } = require('../db/dbMongo/models');
+const { User, ConfirmationToken } = require('../db/dbMongo/models');
 
 const {
   configs: {
     SERVER: { HOST, PORT },
-    TOKEN_LIFETIME: { VERIFICATION },
+    TOKEN_LIFETIME: { CONFIRMATION },
   },
 } = require('../constants');
 const { badRequest, notFound } = require('../errors/generalErrors');
@@ -12,34 +12,34 @@ const { emailToLowerCase } = require('../utils/sharedFunctions');
 const mailService = require('./mailService');
 
 class EmailService {
-  static async verifyEmail(token) {
-    const tokenRecord = await VerificationToken.findOne({ token });
+  static async confirmEmail(token) {
+    const tokenRecord = await ConfirmationToken.findOne({ token });
     const foundUser = await User.findOne({ uuid: tokenRecord.userUuid });
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    foundUser.emailVerified = 'verified';
+    foundUser.emailConfirmed = 'confirmed';
     await foundUser.save();
-    await VerificationToken.deleteOne({ token });
+    await ConfirmationToken.deleteOne({ token });
   }
 
-  static async resendVerifyEmail(email) {
+  static async resendConfirmEmail(email) {
     const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    if (foundUser.emailVerified === 'verified') {
+    if (foundUser.emailConfirmed === 'confirmed') {
       throw badRequest('Цей email вже підтверджений');
     }
-    await VerificationToken.deleteMany({ userUuid: foundUser.uuid });
-    const verificationToken = await VerificationToken.create({
-      expiresAt: new Date(Date.now() + VERIFICATION),
+    await ConfirmationToken.deleteMany({ userUuid: foundUser.uuid });
+    const confirmationToken = await ConfirmationToken.create({
+      expiresAt: new Date(Date.now() + CONFIRMATION),
       userUuid: foundUser.uuid,
     });
-    await mailService.sendVerificationMail(
+    await mailService.sendConfirmationMail(
       foundUser.email,
-      `http://${HOST}:${PORT}/api/email/verify?token=${verificationToken.token}`
+      `http://${HOST}:${PORT}/api/email/confirm?token=${confirmationToken.token}`
     );
   }
 }

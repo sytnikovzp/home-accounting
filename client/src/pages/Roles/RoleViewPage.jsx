@@ -34,7 +34,8 @@ function RoleViewPage() {
     error: fetchError,
   } = useFetchRoleByUuidQuery(uuid, { skip: !uuid });
 
-  const { title, description, permissions, createdAt, updatedAt } = role ?? {};
+  const { title, description, permissions, creation } = role ?? {};
+  const { createdAt, updatedAt } = creation ?? {};
 
   const handleModalClose = useCallback(() => {
     if (paramUuid) {

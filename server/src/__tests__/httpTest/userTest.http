@@ -18,18 +18,18 @@ GET http://localhost:5000/api/users?sort=uuid&order=desc&page=1&limit=10 HTTP/1.
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmMzctZmRlYy00ZTk1LTg0YjUtMmQ3ZGExMWZmZmU2IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjQ5NTcsImV4cCI6MTczODYyMDk1N30.7DAh3n_3iYtGNpngBp5dWj9b-n-hK_bhm6q9Rr2pDtE
 
-### Get list verified users (default pagination, without sort)
-GET http://localhost:5000/api/users?emailVerified=verified HTTP/1.1
+### Get list confirmed users (default pagination, without sort)
+GET http://localhost:5000/api/users?emailConfirmed=confirmed HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmMzctZmRlYy00ZTk1LTg0YjUtMmQ3ZGExMWZmZmU2IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjQ5NTcsImV4cCI6MTczODYyMDk1N30.7DAh3n_3iYtGNpngBp5dWj9b-n-hK_bhm6q9Rr2pDtE
 
-### Get list verified users (custom pagination, without sort)
-GET http://localhost:5000/api/users?emailVerified=verified&page=1&limit=10 HTTP/1.1
+### Get list confirmed users (custom pagination, without sort)
+GET http://localhost:5000/api/users?emailConfirmed=confirmed&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmMzctZmRlYy00ZTk1LTg0YjUtMmQ3ZGExMWZmZmU2IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzczMjQ5NTcsImV4cCI6MTczODYyMDk1N30.7DAh3n_3iYtGNpngBp5dWj9b-n-hK_bhm6q9Rr2pDtE
 
-### Get list not verified users (default pagination, without sort)
-GET http://localhost:5000/api/users?emailVerified=pending HTTP/1.1
+### Get list not confirmed users (default pagination, without sort)
+GET http://localhost:5000/api/users?emailConfirmed=pending HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1Yzk0NWU1NC1hYjQwLTRiMjQtYWNlMi0zNTZhNTk3MjE3MzAiLCJpYXQiOjE3Mzk3NzY5MzgsImV4cCI6MTczOTc3NzgzOH0.dfOFbv92ChU8cVoM2w_cdpsRbGiEiGNpF16JGB8BPYw
 

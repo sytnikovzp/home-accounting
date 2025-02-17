@@ -2,15 +2,15 @@ const {
   User,
   Role,
   Permission,
-  VerificationToken,
+  ConfirmationToken,
 } = require('../db/dbMongo/models');
 
 const {
   configs: {
     SERVER: { HOST, PORT },
-    TOKEN_LIFETIME: { VERIFICATION },
+    TOKEN_LIFETIME: { CONFIRMATION },
   },
-  dataMapping: { EMAIL_VERIFICATION_MAPPING },
+  dataMapping: { EMAIL_CONFIRMATION_MAPPING },
 } = require('../constants');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 const {
@@ -25,14 +25,14 @@ const mailService = require('./mailService');
 const { generateTokens } = require('./tokenService');
 
 class UsersService {
-  static async getAllUsers(emailVerified, limit, offset, sort, order) {
+  static async getAllUsers(emailConfirmed, limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
     const query = {};
-    if (emailVerified === 'verified') {
-      query.emailVerified = 'verified';
-    } else if (emailVerified === 'pending') {
-      query.emailVerified = 'pending';
+    if (emailConfirmed === 'confirmed') {
+      query.emailConfirmed = 'confirmed';
+    } else if (emailConfirmed === 'pending') {
+      query.emailConfirmed = 'pending';
     }
     const foundUsers = await User.find(query)
       .sort(sortOptions)
@@ -85,9 +85,9 @@ class UsersService {
     const fullUserData = {
       ...limitUserData,
       email: foundUser.email,
-      emailVerified: mapValue(
-        foundUser.emailVerified,
-        EMAIL_VERIFICATION_MAPPING
+      emailConfirmed: mapValue(
+        foundUser.emailConfirmed,
+        EMAIL_CONFIRMATION_MAPPING
       ),
       permissions: permissions.map((permission) => ({
         uuid: permission.uuid,
@@ -130,9 +130,9 @@ class UsersService {
       },
       photo: foundUser.photo || '',
       email: foundUser.email,
-      emailVerified: mapValue(
-        foundUser.emailVerified,
-        EMAIL_VERIFICATION_MAPPING
+      emailConfirmed: mapValue(
+        foundUser.emailConfirmed,
+        EMAIL_CONFIRMATION_MAPPING
       ),
       creation: {
         createdAt: formatDateTime(foundUser.createdAt),
@@ -189,9 +189,9 @@ class UsersService {
       user: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        emailVerified: mapValue(
-          updatedUser.emailVerified,
-          EMAIL_VERIFICATION_MAPPING
+        emailConfirmed: mapValue(
+          updatedUser.emailConfirmed,
+          EMAIL_CONFIRMATION_MAPPING
         ),
         role: foundRole.title || '',
         photo: foundUser.photo || '',
@@ -255,15 +255,15 @@ class UsersService {
         throw badRequest('Ця електронна адреса вже використовується');
       }
       updateData.email = newEmail;
-      updateData.emailVerified = 'pending';
+      updateData.emailConfirmed = 'pending';
       updateData.tokenVersion = foundUser.tokenVersion + 1;
-      const verificationToken = await VerificationToken.create({
+      const confirmationToken = await ConfirmationToken.create({
         userUuid: foundUser.uuid,
-        expiresAt: new Date(Date.now() + VERIFICATION),
+        expiresAt: new Date(Date.now() + CONFIRMATION),
       });
-      await mailService.sendEmailChangeVerification(
+      await mailService.sendEmailChangeConfirmationMail(
         newEmail,
-        `http://${HOST}:${PORT}/api/email/verify?token=${verificationToken.token}`
+        `http://${HOST}:${PORT}/api/email/confirm?token=${confirmationToken.token}`
       );
     }
     const updatedUser = await User.findOneAndUpdate({ uuid }, updateData, {
@@ -281,9 +281,9 @@ class UsersService {
       user: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        emailVerified: mapValue(
-          updatedUser.emailVerified,
-          EMAIL_VERIFICATION_MAPPING
+        emailConfirmed: mapValue(
+          updatedUser.emailConfirmed,
+          EMAIL_CONFIRMATION_MAPPING
         ),
         role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,
         photo: foundUser.photo || '',

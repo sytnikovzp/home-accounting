@@ -93,10 +93,10 @@ describe('UserController', () => {
       expect(response.body.length).toBeLessThanOrEqual(10);
     });
 
-    it('should get all verified users (default pagination)', async () => {
+    it('should get all confirmed users (default pagination)', async () => {
       const response = await request(app)
         .get('/api/users')
-        .query({ emailVerified: 'verified' })
+        .query({ emailConfirmed: 'confirmed' })
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
@@ -124,7 +124,7 @@ describe('UserController', () => {
       expect(response.body.role.title).toBe('Users');
       expect(response.body).toHaveProperty('photo');
       expect(response.body.email).toBe('e.kovalenko@gmail.com');
-      expect(response.body.emailVerified).toBe('Веріфікований');
+      expect(response.body.emailConfirmed).toBe('Підтверджений');
       expect(response.body.creation.createdAt).toBeDefined();
       expect(response.body.creation.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
@@ -165,7 +165,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user.uuid).toBe(authData.user.uuid);
       expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.emailVerified).toBe('Веріфікований');
+      expect(response.body.user.emailConfirmed).toBe('Підтверджений');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
@@ -305,7 +305,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user.uuid).toBe(authData.user.uuid);
       expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.emailVerified).toBe('Очікує веріфікації');
+      expect(response.body.user.emailConfirmed).toBe('Очікує підтвердження');
       expect(response.body.user.role).toBe('Moderators');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');

@@ -2,23 +2,23 @@ const { Router } = require('express');
 
 const {
   auth: { authHandler },
-  validation: { validateResendVerify },
+  validation: { validateResendConfirm },
 } = require('../middlewares');
 
 const {
-  verifyEmail,
-  resendVerifyEmail,
+  confirmEmail,
+  resendConfirmEmail,
 } = require('../controllers/emailController');
 
 const emailRouter = new Router();
 
-emailRouter.get('/verify', verifyEmail);
+emailRouter.get('/confirm', confirmEmail);
 
 emailRouter.post(
-  '/resend-verify',
+  '/resend-confirm',
   authHandler,
-  validateResendVerify,
-  resendVerifyEmail
+  validateResendConfirm,
+  resendConfirmEmail
 );
 
 module.exports = emailRouter;

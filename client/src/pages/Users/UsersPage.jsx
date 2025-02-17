@@ -31,7 +31,7 @@ function UsersPage() {
     field: 'fullName',
     order: 'asc',
   });
-  const [emailVerified, setEmailVerified] = useState('all');
+  const [emailConfirmed, setEmailConfirmed] = useState('all');
   const navigate = useNavigate();
 
   const itemsPerPage = useItemsPerPage();
@@ -45,7 +45,7 @@ function UsersPage() {
   } = useFetchAllUsersQuery({
     page: currentPage,
     limit: pageSize,
-    emailVerified,
+    emailConfirmed,
     sort: sortModel.field,
     order: sortModel.order,
   });
@@ -70,7 +70,7 @@ function UsersPage() {
     [handleModalOpen]
   );
 
-  const handleStatusChange = (newStatus) => setEmailVerified(newStatus);
+  const handleStatusChange = (newStatus) => setEmailConfirmed(newStatus);
 
   return (
     <>
@@ -99,7 +99,7 @@ function UsersPage() {
           totalCount,
         }}
         rows={users}
-        selectedStatus={emailVerified}
+        selectedStatus={emailConfirmed}
         sortModel={sortModel}
         onEdit={handleEdit}
         onRemove={handleRemove}

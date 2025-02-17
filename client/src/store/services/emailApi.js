@@ -6,9 +6,9 @@ export const emailApi = createApi({
   reducerPath: 'emailApi',
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
-    resendVerifyEmail: builder.mutation({
+    resendConfirmEmail: builder.mutation({
       query: (email) => ({
-        url: '/email/resend-verify',
+        url: '/email/resend-confirm',
         method: 'POST',
         body: { email },
       }),
@@ -16,4 +16,4 @@ export const emailApi = createApi({
   }),
 });
 
-export const { useResendVerifyEmailMutation } = emailApi;
+export const { useResendConfirmEmailMutation } = emailApi;

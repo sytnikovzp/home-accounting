@@ -9,7 +9,7 @@ export const usersApi = createApi({
   endpoints: (builder) => ({
     fetchAllUsers: builder.query({
       query: ({
-        emailVerified = 'all',
+        emailConfirmed = 'all',
         page = 1,
         limit = 6,
         sort = 'uuid',
@@ -17,7 +17,7 @@ export const usersApi = createApi({
       }) => ({
         url: '/users',
         method: 'GET',
-        params: { emailVerified, page, limit, sort, order },
+        params: { emailConfirmed, page, limit, sort, order },
       }),
       transformResponse: (response, meta) => ({
         data: response,

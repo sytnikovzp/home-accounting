@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
-const verificationTokenSchema = new Schema(
+const confirmationTokenSchema = new Schema(
   {
     userUuid: {
       type: Schema.Types.UUID,
@@ -26,6 +26,6 @@ const verificationTokenSchema = new Schema(
   }
 );
 
-const VerificationToken = model('VerificationToken', verificationTokenSchema);
+const ConfirmationToken = model('ConfirmationToken', confirmationTokenSchema);
 
-module.exports = VerificationToken;
+module.exports = ConfirmationToken;

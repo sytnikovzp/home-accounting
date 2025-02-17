@@ -20,22 +20,22 @@ class MailService {
     });
   }
 
-  async sendVerificationMail(email, verificationLink) {
+  async sendConfirmationMail(email, confirmationLink) {
     try {
       await this.transporter.sendMail({
         from: USER,
         to: email,
-        subject: `Верифікація акаунту на ${URL}`,
+        subject: `Підтвердження акаунту на ${URL}`,
         text: '',
         html: `
           <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; border: 1px solid #ddd;">
             <h1 style="color: #007BFF; text-align: center;">Вітаємо на ${URL}!</h1>
-            <p style="font-size: 16px; text-align: justify;">Дякуємо, що приєдналися до нас. Для завершення реєстрації та веріфікації Вашого облікового запису, будь ласка, підтвердіть Вашу електронну адресу, натиснувши на кнопку нижче:</p>
+            <p style="font-size: 16px; text-align: justify;">Дякуємо, що приєдналися до нас. Для завершення реєстрації та підтвердження Вашого облікового запису, будь ласка, підтвердіть Вашу електронну адресу, натиснувши на кнопку нижче:</p>
             <div style="text-align: center; margin: 20px 0;">
-              <a href="${verificationLink}" style="background-color: #007BFF; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px;">Підтвердити Email</a>
+              <a href="${confirmationLink}" style="background-color: #007BFF; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px;">Підтвердити Email</a>
             </div>
             <p style="font-size: 14px; color: #666;">Якщо кнопка не працює, скопіюйте та вставте це посилання у Ваш браузер:</p>
-            <p style="font-size: 14px; word-break: break-word;"><a href="${verificationLink}" style="color: #007BFF;">${verificationLink}</a></p>
+            <p style="font-size: 14px; word-break: break-word;"><a href="${confirmationLink}" style="color: #007BFF;">${confirmationLink}</a></p>
             <p style="font-size: 14px; color: #666;">Це посилання буде дійсним протягом 24 годин.</p>
             <p style="font-size: 14px; color: #666;">Якщо Ви не реєструвалися на нашому сайті, просто ігноруйте це повідомлення.</p>
             <p style="font-size: 14px; text-align: center; color: #999;">З найкращими побажаннями,<br>Команда ${URL}</p>
@@ -49,7 +49,7 @@ class MailService {
     }
   }
 
-  async sendEmailChangeVerification(email, newVerificationLink) {
+  async sendEmailChangeConfirmationMail(email, newConfirmationLink) {
     try {
       await this.transporter.sendMail({
         from: USER,
@@ -61,10 +61,10 @@ class MailService {
           <h1 style="color: #007BFF; text-align: center;">Підтвердіть зміну email-адреси</h1>
           <p style="font-size: 16px; text-align: justify;">Ви змінили Вашу електронну адресу на ${URL}. Щоб підтвердити нову електронну адресу, будь ласка, натисніть на кнопку нижче:</p>
           <div style="text-align: center; margin: 20px 0;">
-            <a href="${newVerificationLink}" style="background-color: #007BFF; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px;">Підтвердити новий Email</a>
+            <a href="${newConfirmationLink}" style="background-color: #007BFF; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px;">Підтвердити новий Email</a>
           </div>
           <p style="font-size: 14px; color: #666;">Якщо кнопка не працює, скопіюйте та вставте це посилання у Ваш браузер:</p>
-          <p style="font-size: 14px; word-break: break-word;"><a href="${newVerificationLink}" style="color: #007BFF;">${newVerificationLink}</a></p>
+          <p style="font-size: 14px; word-break: break-word;"><a href="${newConfirmationLink}" style="color: #007BFF;">${newConfirmationLink}</a></p>
           <p style="font-size: 14px; color: #666;">Це посилання буде дійсним протягом 24 годин.</p>
           <p style="font-size: 14px; color: #666;">Якщо Ви не змінювали електронну адресу, просто ігноруйте це повідомлення.</p>
           <p style="font-size: 14px; text-align: center; color: #999;">З найкращими побажаннями,<br>Команда ${URL}</p>
@@ -78,7 +78,7 @@ class MailService {
     }
   }
 
-  async sendResetPasswordEmail(email, resetPasswordLink) {
+  async sendResetPasswordMail(email, resetPasswordLink) {
     try {
       await this.transporter.sendMail({
         from: USER,

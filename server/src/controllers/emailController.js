@@ -5,14 +5,17 @@ const {
 } = require('../constants');
 const { checkToken } = require('../utils/sharedFunctions');
 
-const { verifyEmail, resendVerifyEmail } = require('../services/emailService');
+const {
+  confirmEmail,
+  resendConfirmEmail,
+} = require('../services/emailService');
 
 class EmailController {
-  static async verifyEmail(req, res, next) {
+  static async confirmEmail(req, res, next) {
     try {
       const { token } = req.query;
-      await checkToken(token, 'verify');
-      await verifyEmail(token);
+      await checkToken(token, 'confirm');
+      await confirmEmail(token);
       res.redirect(
         `${URL}/notification?severity=${encodeURIComponent(
           'success'
@@ -21,15 +24,15 @@ class EmailController {
         )}&message=${encodeURIComponent('Ваш email успішно підтверджений')}`
       );
     } catch (error) {
-      console.error('Verification email error: ', error.message);
+      console.error('Confirmation email error: ', error.message);
       next(error);
     }
   }
 
-  static async resendVerifyEmail(req, res, next) {
+  static async resendConfirmEmail(req, res, next) {
     try {
       const { email } = req.body;
-      await resendVerifyEmail(email);
+      await resendConfirmEmail(email);
       res.status(200).json({
         message:
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
@@ -37,7 +40,7 @@ class EmailController {
         title: 'Веріфікація облікового запису...',
       });
     } catch (error) {
-      console.error('Resend verification email error: ', error.message);
+      console.error('Resend confirmation email error: ', error.message);
       next(error);
     }
   }
