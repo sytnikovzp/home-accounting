@@ -145,6 +145,38 @@ class UsersService {
     };
   }
 
+  static async confirmEmail(token) {
+    const tokenRecord = await ConfirmationToken.findOne({ token });
+    const foundUser = await User.findOne({ uuid: tokenRecord.userUuid });
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
+    foundUser.emailConfirmed = 'confirmed';
+    await foundUser.save();
+    await ConfirmationToken.deleteOne({ token });
+    return null;
+  }
+
+  static async resendConfirmEmail(uuid) {
+    const foundUser = await User.findOne({ uuid });
+    if (!foundUser) {
+      throw notFound('Користувача не знайдено');
+    }
+    if (foundUser.emailConfirmed === 'confirmed') {
+      throw badRequest('Цей email вже підтверджений');
+    }
+    await ConfirmationToken.deleteMany({ userUuid: foundUser.uuid });
+    const confirmationToken = await ConfirmationToken.create({
+      expiresAt: new Date(Date.now() + CONFIRMATION),
+      userUuid: foundUser.uuid,
+    });
+    await mailService.sendConfirmationMail(
+      foundUser.email,
+      `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
+    );
+    return null;
+  }
+
   static async changePassword(
     uuid,
     newPassword,
@@ -263,7 +295,7 @@ class UsersService {
       });
       await mailService.sendEmailChangeConfirmationMail(
         newEmail,
-        `http://${HOST}:${PORT}/api/email/confirm?token=${confirmationToken.token}`
+        `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
       );
     }
     const updatedUser = await User.findOneAndUpdate({ uuid }, updateData, {

@@ -51,7 +51,7 @@ class AuthService {
     });
     await mailService.sendConfirmationMail(
       email,
-      `http://${HOST}:${PORT}/api/email/confirm?token=${confirmationToken.token}`
+      `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
     );
     const permissions = await Permission.find({
       uuid: { $in: foundRole.permissions },

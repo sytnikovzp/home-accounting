@@ -1,7 +1,18 @@
 ### Get current user profile
 GET http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIyYTVkYjllMi03Nzc2LTRjZWEtYmRhNS1hYzc1MTRiNjg1MTUiLCJpYXQiOjE3MzkyNTQxNzUsImV4cCI6MTczOTI1NTA3NX0.cmekaawankjc9W4ucd58RBtXea4zwvNsqPTVyf8g65A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwZjQ0N2RkZC00ZmNmLTQ2NGUtYjRhYy02YTk3ZjI2MTcwNTQiLCJpYXQiOjE3Mzk3OTcwNjgsImV4cCI6MTczOTc5Nzk2OH0.NByNEkhXTmwp_B-7i-tiBRCxwibFK4MLiq9cg1vzRRQ
+
+// ==============================================================
+
+### Confirmation new user email
+GET http://localhost:5000/api/profile/confirm?token=1e9a4906-a77a-45a4-bd79-b41ffcc6b74e HTTP/1.1
+Content-Type: application/json
+
+### Resend confirmation new user email
+GET http://localhost:5000/api/profile/resend HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwZjQ0N2RkZC00ZmNmLTQ2NGUtYjRhYy02YTk3ZjI2MTcwNTQiLCJpYXQiOjE3Mzk3OTcwNjgsImV4cCI6MTczOTc5Nzk2OH0.NByNEkhXTmwp_B-7i-tiBRCxwibFK4MLiq9cg1vzRRQ
 
 // ==============================================================
 

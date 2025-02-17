@@ -1,7 +1,6 @@
 export * from './authApi';
 export * from './categoriesApi';
 export * from './currenciesApi';
-export * from './emailApi';
 export * from './establishmentsApi';
 export * from './expensesApi';
 export * from './measuresApi';

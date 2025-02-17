@@ -30,7 +30,7 @@ class MailService {
         html: `
           <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; border: 1px solid #ddd;">
             <h1 style="color: #007BFF; text-align: center;">Вітаємо на ${URL}!</h1>
-            <p style="font-size: 16px; text-align: justify;">Дякуємо, що приєдналися до нас. Для завершення реєстрації та підтвердження Вашого облікового запису, будь ласка, підтвердіть Вашу електронну адресу, натиснувши на кнопку нижче:</p>
+            <p style="font-size: 16px; text-align: justify;">Дякуємо, що приєдналися до нас. Для завершення реєстрації, будь ласка, підтвердіть Вашу електронну адресу, натиснувши на кнопку нижче:</p>
             <div style="text-align: center; margin: 20px 0;">
               <a href="${confirmationLink}" style="background-color: #007BFF; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px;">Підтвердити Email</a>
             </div>

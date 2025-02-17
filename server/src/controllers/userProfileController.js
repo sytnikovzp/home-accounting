@@ -1,10 +1,19 @@
 const {
+  configs: {
+    CLIENT: { URL },
+  },
+} = require('../constants');
+const { checkToken } = require('../utils/sharedFunctions');
+
+const {
   getCurrentUser,
   updateUser,
   changePassword,
   changeUserPhoto,
   resetUserPhoto,
   deleteUser,
+  confirmEmail,
+  resendConfirmEmail,
 } = require('../services/usersService');
 
 class UserProfileController {
@@ -18,6 +27,43 @@ class UserProfileController {
       }
     } catch (error) {
       console.error('Get user profile error: ', error.message);
+      next(error);
+    }
+  }
+
+  static async confirmEmail(req, res, next) {
+    try {
+      const { token } = req.query;
+      await checkToken(token, 'confirm');
+      await confirmEmail(token);
+      res.redirect(
+        `${URL}/notification?severity=${encodeURIComponent(
+          'success'
+        )}&title=${encodeURIComponent(
+          'Веріфікація облікового запису...'
+        )}&message=${encodeURIComponent('Ваш email успішно підтверджений')}`
+      );
+    } catch (error) {
+      console.error('Confirmation email error: ', error.message);
+      next(error);
+    }
+  }
+
+  static async resendConfirmEmail(req, res, next) {
+    try {
+      const { uuid } = req.user;
+      await resendConfirmEmail(uuid);
+      res.redirect(
+        `${URL}/notification?severity=${encodeURIComponent(
+          'success'
+        )}&title=${encodeURIComponent(
+          'Веріфікація облікового запису...'
+        )}&message=${encodeURIComponent(
+          'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями'
+        )}`
+      );
+    } catch (error) {
+      console.error('Resend confirmation email error: ', error.message);
       next(error);
     }
   }

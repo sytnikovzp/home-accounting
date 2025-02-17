@@ -1,7 +1,6 @@
 const {
   REGISTRATION_VALIDATION_SCHEME,
   LOGIN_VALIDATION_SCHEME,
-  RESEND_CONFIRM_VALIDATION_SCHEME,
   FORGOT_PASSWORD_VALIDATION_SCHEME,
   PASSWORD_VALIDATION_SCHEME,
   USER_VALIDATION_SCHEME,
@@ -40,7 +39,6 @@ module.exports = {
   validatePassword: validateSchema(PASSWORD_VALIDATION_SCHEME),
   validateProduct: validateSchema(PRODUCT_VALIDATION_SCHEME),
   validateRegistration: validateSchema(REGISTRATION_VALIDATION_SCHEME),
-  validateResendConfirm: validateSchema(RESEND_CONFIRM_VALIDATION_SCHEME),
   validateRole: validateSchema(ROLE_VALIDATION_SCHEME),
   validateUser: validateSchema(USER_VALIDATION_SCHEME),
 };

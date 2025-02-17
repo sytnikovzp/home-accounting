@@ -11,11 +11,15 @@ const {
   changePassword,
   changeUserPhoto,
   resetUserPhoto,
-  deleteUser,
   updateUser,
+  deleteUser,
+  confirmEmail,
+  resendConfirmEmail,
 } = require('../controllers/userProfileController');
 
 const userProfileRouter = new Router();
+
+userProfileRouter.get('/confirm', confirmEmail);
 
 userProfileRouter.use(authHandler);
 
@@ -24,6 +28,8 @@ userProfileRouter
   .get(getCurrentUserProfile)
   .patch(validateUser, updateUser)
   .delete(deleteUser);
+
+userProfileRouter.route('/resend').get(resendConfirmEmail);
 
 userProfileRouter.route('/password').patch(validatePassword, changePassword);
 

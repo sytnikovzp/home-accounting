@@ -15,6 +15,13 @@ export const userProfileApi = createApi({
       providesTags: ['UserProfile'],
     }),
 
+    resendConfirmEmail: builder.mutation({
+      query: () => ({
+        url: '/profile/resend',
+        method: 'GET',
+      }),
+    }),
+
     changeUserProfilePassword: builder.mutation({
       query: ({ newPassword, confirmNewPassword }) => ({
         url: '/profile/password',
@@ -65,6 +72,7 @@ export const userProfileApi = createApi({
 
 export const {
   useFetchUserProfileQuery,
+  useResendConfirmEmailMutation,
   useChangeUserProfilePasswordMutation,
   useEditUserProfileMutation,
   useChangeUserProfilePhotoMutation,
