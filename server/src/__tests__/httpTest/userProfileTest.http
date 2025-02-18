@@ -1,37 +1,25 @@
 ### Get current user profile
 GET http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwZjQ0N2RkZC00ZmNmLTQ2NGUtYjRhYy02YTk3ZjI2MTcwNTQiLCJpYXQiOjE3Mzk3OTcwNjgsImV4cCI6MTczOTc5Nzk2OH0.NByNEkhXTmwp_B-7i-tiBRCxwibFK4MLiq9cg1vzRRQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJjMzcwYWI4Yi03ZWUxLTQzYTEtOWU0Mi0yOGU4ZDkxMDY2YTciLCJpYXQiOjE3Mzk5MjA3MTYsImV4cCI6MTc0MTIxNjcxNn0.BqqvzoAED3A35lJB1KKvfJXKrIQaMaEcmb8urcRhk3Y
 
 // ==============================================================
 
 ### Confirmation new user email
-GET http://localhost:5000/api/profile/confirm?token=1e9a4906-a77a-45a4-bd79-b41ffcc6b74e HTTP/1.1
+GET http://localhost:5000/api/profile/confirm?token=fa1ac172-1f1e-4cba-95f1-748c219dc44d HTTP/1.1
 Content-Type: application/json
 
 ### Resend confirmation new user email
 GET http://localhost:5000/api/profile/resend HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwZjQ0N2RkZC00ZmNmLTQ2NGUtYjRhYy02YTk3ZjI2MTcwNTQiLCJpYXQiOjE3Mzk3OTcwNjgsImV4cCI6MTczOTc5Nzk2OH0.NByNEkhXTmwp_B-7i-tiBRCxwibFK4MLiq9cg1vzRRQ
-
-// ==============================================================
-
-### Change current user password
-PATCH http://localhost:5000/api/profile/password HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYmRkZjFiMzItNmQwZi00MjU3LTgyNWQtOTY5MzVmZjU0NGU4IiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3Mzc0NzI5MTUsImV4cCI6MTczODc2ODkxNX0.0ua7kFL6PHl8vFIDfBTtaByAUWWATiybatwrxyHbDA8
-
-{
-  "newPassword": "Qwerty1234567",
-  "confirmNewPassword": "Qwerty1234567"
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJjMzcwYWI4Yi03ZWUxLTQzYTEtOWU0Mi0yOGU4ZDkxMDY2YTciLCJpYXQiOjE3Mzk5MjA3MTYsImV4cCI6MTc0MTIxNjcxNn0.BqqvzoAED3A35lJB1KKvfJXKrIQaMaEcmb8urcRhk3Y
 
 // ==============================================================
 
 ### Update current user data
 PATCH http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI5OGQ3NjVhNi04YTUzLTQ4MTItYjQxNC03ZjU1OGY5MzFjNzEiLCJpYXQiOjE3MzkyNTI5ODksImV4cCI6MTczOTI1Mzg4OX0.vAV44VVesaqL-_QFjKriarucQKSr8WHLLW-Obl77zCs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI0ZTJmMmVlNS03YTFkLTQ3OWQtOGU0YS0wMTdiMTRiNmJlZGMiLCJpYXQiOjE3Mzk5MTgyODgsImV4cCI6MTczOTkxOTE4OH0.SypaIO-4Pe0uaWLeGv-CcPRWRGbRp7MRW2d6T7T_lE4
 
 {
   "fullName": "Оновлений користувач"
@@ -41,10 +29,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 
 // ==============================================================
 
+### Change current user password
+PATCH http://localhost:5000/api/profile/password HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJjMzcwYWI4Yi03ZWUxLTQzYTEtOWU0Mi0yOGU4ZDkxMDY2YTciLCJpYXQiOjE3Mzk5MjA3MTYsImV4cCI6MTc0MTIxNjcxNn0.BqqvzoAED3A35lJB1KKvfJXKrIQaMaEcmb8urcRhk3Y
+
+{
+  "newPassword": "Qwerty1234567",
+  "confirmNewPassword": "Qwerty1234567"
+}
+
+// ==============================================================
+
 ### Change current user photo
 PATCH http://localhost:5000/api/profile/photo HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2ZDJmMjFmZi1mYjY4LTQyM2MtYjkxNi1lMDU0ZmYwMzVlODgiLCJpYXQiOjE3MzgzODM1OTAsImV4cCI6MTczOTY3OTU5MH0.cloXflBvKHgWA9TS-LESoYB47eI_AzadK9EeOFTKUBY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjEsInV1aWQiOiJjMzcwYWI4Yi03ZWUxLTQzYTEtOWU0Mi0yOGU4ZDkxMDY2YTciLCJpYXQiOjE3Mzk5MjExODQsImV4cCI6MTc0MTIxNzE4NH0.jv4T88gG-o3ZAWEcWSqFVaf9pqqrjCmFcsNx3-xnMwk
 
 --boundary
 Content-Disposition: form-data; name="userPhoto"; filename="user.png"
@@ -61,11 +61,11 @@ Content-Type: image/png
 ### Reset current user photo
 DELETE http://localhost:5000/api/profile/photo HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2ZDJmMjFmZi1mYjY4LTQyM2MtYjkxNi1lMDU0ZmYwMzVlODgiLCJpYXQiOjE3MzgzODM1OTAsImV4cCI6MTczOTY3OTU5MH0.cloXflBvKHgWA9TS-LESoYB47eI_AzadK9EeOFTKUBY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjEsInV1aWQiOiJjMzcwYWI4Yi03ZWUxLTQzYTEtOWU0Mi0yOGU4ZDkxMDY2YTciLCJpYXQiOjE3Mzk5MjExODQsImV4cCI6MTc0MTIxNzE4NH0.jv4T88gG-o3ZAWEcWSqFVaf9pqqrjCmFcsNx3-xnMwk
 
 // ==============================================================
 
 ### Delete current user
 DELETE http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI5OGQ3NjVhNi04YTUzLTQ4MTItYjQxNC03ZjU1OGY5MzFjNzEiLCJpYXQiOjE3MzkyNTI5ODksImV4cCI6MTczOTI1Mzg4OX0.vAV44VVesaqL-_QFjKriarucQKSr8WHLLW-Obl77zCs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjEsInV1aWQiOiJjMzcwYWI4Yi03ZWUxLTQzYTEtOWU0Mi0yOGU4ZDkxMDY2YTciLCJpYXQiOjE3Mzk5MjExODQsImV4cCI6MTc0MTIxNzE4NH0.jv4T88gG-o3ZAWEcWSqFVaf9pqqrjCmFcsNx3-xnMwk
