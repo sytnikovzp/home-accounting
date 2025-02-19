@@ -13,9 +13,9 @@ class UserController {
   static async getAllUsers(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
-      const { emailConfirmed, sort = 'uuid', order = 'asc' } = req.query;
+      const { emailConfirm, sort = 'uuid', order = 'asc' } = req.query;
       const { allUsers, total } = await getAllUsers(
-        emailConfirmed,
+        emailConfirm,
         limit,
         offset,
         sort,

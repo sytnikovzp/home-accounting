@@ -62,10 +62,7 @@ class AuthService {
       user: {
         uuid: user.uuid,
         fullName: user.fullName,
-        emailConfirmed: mapValue(
-          user.emailConfirmed,
-          EMAIL_CONFIRMATION_MAPPING
-        ),
+        emailConfirm: mapValue(user.emailConfirm, EMAIL_CONFIRMATION_MAPPING),
         role: foundRole.title || '',
         photo: user.photo || '',
       },
@@ -96,8 +93,8 @@ class AuthService {
       user: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
-        emailConfirmed: mapValue(
-          foundUser.emailConfirmed,
+        emailConfirm: mapValue(
+          foundUser.emailConfirm,
           EMAIL_CONFIRMATION_MAPPING
         ),
         role: foundRole.title || '',
@@ -133,8 +130,8 @@ class AuthService {
       user: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
-        emailConfirmed: mapValue(
-          foundUser.emailConfirmed,
+        emailConfirm: mapValue(
+          foundUser.emailConfirm,
           EMAIL_CONFIRMATION_MAPPING
         ),
         role: foundRole.title || '',

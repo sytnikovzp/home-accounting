@@ -52,7 +52,7 @@ describe('UserController', () => {
       expect(response.body.role.title).toBe('Users');
       expect(response.body).toHaveProperty('photo');
       expect(response.body.email).toBe('m.scherbak@gmail.com');
-      expect(response.body.emailConfirmed).toBe('Підтверджений');
+      expect(response.body.emailConfirm).toBe('Підтверджений');
       expect(response.body.creation.createdAt).toBeDefined();
       expect(response.body.creation.updatedAt).toBeDefined();
       expect(response.body).toHaveProperty('permissions');
@@ -81,7 +81,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user.uuid).toBe(authData.user.uuid);
       expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.emailConfirmed).toBe('Підтверджений');
+      expect(response.body.user.emailConfirm).toBe('Підтверджений');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
@@ -172,7 +172,7 @@ describe('UserController', () => {
       expect(response.status).toBe(200);
       expect(response.body.user.uuid).toBe(authData.user.uuid);
       expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.emailConfirmed).toBe('Підтверджений');
+      expect(response.body.user.emailConfirm).toBe('Підтверджений');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');

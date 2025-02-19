@@ -51,7 +51,7 @@ function UserViewPage() {
     [isAuthenticatedUser, authenticatedUser, user]
   );
 
-  const { fullName, role, photo, email, emailConfirmed, creation } =
+  const { fullName, role, photo, email, emailConfirm, creation } =
     userData ?? {};
   const { createdAt, updatedAt } = creation ?? {};
 
@@ -114,10 +114,10 @@ function UserViewPage() {
             },
           ]
         : []),
-      ...(emailConfirmed
+      ...(emailConfirm
         ? [
             {
-              extra: emailConfirmed === 'Очікує підтвердження' && (
+              extra: emailConfirm === 'Очікує підтвердження' && (
                 <Tooltip title='Повторно відправити email'>
                   <Button
                     disabled={isEmailSubmitting}
@@ -130,9 +130,9 @@ function UserViewPage() {
                   </Button>
                 </Tooltip>
               ),
-              icon: () => <StatusIcon status={emailConfirmed} />,
+              icon: () => <StatusIcon status={emailConfirm} />,
               label: 'Обліковий запис',
-              value: emailConfirmed,
+              value: emailConfirm,
             },
           ]
         : []),
@@ -152,7 +152,7 @@ function UserViewPage() {
       photoPath,
       role,
       email,
-      emailConfirmed,
+      emailConfirm,
       isEmailSubmitting,
       handleResendClick,
       createdAt,

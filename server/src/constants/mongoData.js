@@ -185,7 +185,7 @@ module.exports.roles = (permissionUuids) => [
 module.exports.users = async (roleUuids) => [
   {
     email: 'i.petrenko@gmail.com',
-    emailConfirmed: 'confirmed',
+    emailConfirm: 'confirmed',
     fullName: 'Іван Петренко',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     photo: '1730686056955-ivan.petrenko.jpg',
@@ -193,7 +193,7 @@ module.exports.users = async (roleUuids) => [
   },
   {
     email: 'o.ivanchuk@gmail.com',
-    emailConfirmed: 'confirmed',
+    emailConfirm: 'confirmed',
     fullName: 'Олександра Іванчук',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     photo: '1730686066968-oleksandra.ivanchuk.jpg',
@@ -201,7 +201,7 @@ module.exports.users = async (roleUuids) => [
   },
   {
     email: 'a.shevchenko@gmail.com',
-    emailConfirmed: 'confirmed',
+    emailConfirm: 'confirmed',
     fullName: 'Ганна Шевченко',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     photo: '1730713464386-hanna.shevchenko.jpg',
@@ -209,7 +209,7 @@ module.exports.users = async (roleUuids) => [
   },
   {
     email: 'e.kovalenko@gmail.com',
-    emailConfirmed: 'confirmed',
+    emailConfirm: 'confirmed',
     fullName: 'Євген Коваленко',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     photo: '1730713568386-evgen.kovalenko.jpg',
@@ -217,7 +217,7 @@ module.exports.users = async (roleUuids) => [
   },
   {
     email: 'm.scherbak@gmail.com',
-    emailConfirmed: 'confirmed',
+    emailConfirm: 'confirmed',
     fullName: 'Микола Щербак',
     password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
     photo: '1730743569326-mykola.scherbak.jpg',

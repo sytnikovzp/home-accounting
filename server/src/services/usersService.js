@@ -25,14 +25,14 @@ const mailService = require('./mailService');
 const { generateTokens } = require('./tokenService');
 
 class UsersService {
-  static async getAllUsers(emailConfirmed, limit, offset, sort, order) {
+  static async getAllUsers(emailConfirm, limit, offset, sort, order) {
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sort]: sortOrder };
     const query = {};
-    if (emailConfirmed === 'confirmed') {
-      query.emailConfirmed = 'confirmed';
-    } else if (emailConfirmed === 'pending') {
-      query.emailConfirmed = 'pending';
+    if (emailConfirm === 'confirmed') {
+      query.emailConfirm = 'confirmed';
+    } else if (emailConfirm === 'pending') {
+      query.emailConfirm = 'pending';
     }
     const foundUsers = await User.find(query)
       .sort(sortOptions)
@@ -85,8 +85,8 @@ class UsersService {
     const fullUserData = {
       ...limitUserData,
       email: foundUser.email,
-      emailConfirmed: mapValue(
-        foundUser.emailConfirmed,
+      emailConfirm: mapValue(
+        foundUser.emailConfirm,
         EMAIL_CONFIRMATION_MAPPING
       ),
       permissions: permissions.map((permission) => ({
@@ -130,8 +130,8 @@ class UsersService {
       },
       photo: foundUser.photo || '',
       email: foundUser.email,
-      emailConfirmed: mapValue(
-        foundUser.emailConfirmed,
+      emailConfirm: mapValue(
+        foundUser.emailConfirm,
         EMAIL_CONFIRMATION_MAPPING
       ),
       creation: {
@@ -151,7 +151,7 @@ class UsersService {
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    foundUser.emailConfirmed = 'confirmed';
+    foundUser.emailConfirm = 'confirmed';
     await foundUser.save();
     await ConfirmationToken.deleteOne({ token });
     return null;
@@ -162,7 +162,7 @@ class UsersService {
     if (!foundUser) {
       throw notFound('Користувача не знайдено');
     }
-    if (foundUser.emailConfirmed === 'confirmed') {
+    if (foundUser.emailConfirm === 'confirmed') {
       throw badRequest('Цей email вже підтверджений');
     }
     await ConfirmationToken.deleteMany({ userUuid: foundUser.uuid });
@@ -221,8 +221,8 @@ class UsersService {
       user: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        emailConfirmed: mapValue(
-          updatedUser.emailConfirmed,
+        emailConfirm: mapValue(
+          updatedUser.emailConfirm,
           EMAIL_CONFIRMATION_MAPPING
         ),
         role: foundRole.title || '',
@@ -287,7 +287,7 @@ class UsersService {
         throw badRequest('Ця електронна адреса вже використовується');
       }
       updateData.email = newEmail;
-      updateData.emailConfirmed = 'pending';
+      updateData.emailConfirm = 'pending';
       updateData.tokenVersion = foundUser.tokenVersion + 1;
       const confirmationToken = await ConfirmationToken.create({
         userUuid: foundUser.uuid,
@@ -313,8 +313,8 @@ class UsersService {
       user: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
-        emailConfirmed: mapValue(
-          updatedUser.emailConfirmed,
+        emailConfirm: mapValue(
+          updatedUser.emailConfirm,
           EMAIL_CONFIRMATION_MAPPING
         ),
         role: role || (await Role.findOne({ uuid: foundUser.roleUuid })).title,

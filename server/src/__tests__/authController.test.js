@@ -49,7 +49,7 @@ describe('AuthController', () => {
       expect(response.body).toHaveProperty('refreshToken');
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user).toHaveProperty('emailConfirmed');
+      expect(response.body.user).toHaveProperty('emailConfirm');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
@@ -78,7 +78,7 @@ describe('AuthController', () => {
       expect(response.body).toHaveProperty('refreshToken');
       expect(response.body.user).toHaveProperty('uuid');
       expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user).toHaveProperty('emailConfirmed');
+      expect(response.body.user).toHaveProperty('emailConfirm');
       expect(response.body.user.role).toBe('Users');
       expect(response.body.user).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
@@ -111,7 +111,7 @@ describe('AuthController', () => {
         'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями'
       );
       expect(response.body.severity).toBe('success');
-      expect(response.body.title).toBe('Зміна паролю...');
+      expect(response.body.title).toBe('Скидання паролю...');
     });
 
     it('should return 404 for non-existent user', async () => {
