@@ -130,7 +130,7 @@ describe('RolesController', () => {
         });
       expect(response.status).toBe(404);
       expect(response.body.message).toBe(
-        'Не вдалося знайти деякі дозволи: TEST'
+        'Не вдалося знайти деякі права доступу: TEST'
       );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');

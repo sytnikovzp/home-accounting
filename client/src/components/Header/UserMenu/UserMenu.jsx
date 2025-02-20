@@ -27,7 +27,7 @@ const menuItems = [
   {
     action: () => `/permissions`,
     icon: <AdminPanelSettingsIcon fontSize='small' />,
-    label: 'Переглянути дозволи',
+    label: 'Переглянути права доступу',
   },
   {
     action: () => `/password`,

@@ -41,7 +41,7 @@ function PermissionsSwitches({ permissionsList }) {
   return (
     <Box sx={stylesPermissionsSwitchesMainBox}>
       <Typography gutterBottom variant='h6'>
-        Дозволи (Permissions):
+        Права доступу:
       </Typography>
       <FieldArray
         name='permissions'

@@ -84,7 +84,7 @@ class RolesService {
           !foundPermissions.some((permission) => permission.title === title)
       );
       throw notFound(
-        `Не вдалося знайти деякі дозволи: ${missingPermissions.join(', ')}`
+        `Не вдалося знайти деякі права доступу: ${missingPermissions.join(', ')}`
       );
     }
     const newRole = new Role({
@@ -148,7 +148,7 @@ class RolesService {
               !foundPermissions.some((fp) => fp.title === permission)
           );
           throw notFound(
-            `Не вдалося знайти деякі дозволи: ${missingPermissions.join(', ')}`
+            `Не вдалося знайти деякі права доступу: ${missingPermissions.join(', ')}`
           );
         }
         updateData.permissions = foundPermissions.map(

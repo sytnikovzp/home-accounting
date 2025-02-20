@@ -18,7 +18,7 @@ function PermissionsList({ permissions = [] }) {
   const renderEmptyState = () => (
     <Box sx={stylesPermissionsListBoxEmpty}>
       <LockIcon color='disabled' sx={{ mr: 12 }} />
-      <Typography>*Дозволи відсутні*</Typography>
+      <Typography>*Права доступу відсутні*</Typography>
     </Box>
   );
 

@@ -63,7 +63,7 @@ function RoleViewPage() {
       <Box sx={stylesViewPageBox}>
         <ViewDetails data={data} />
         <Divider />
-        <Typography variant='body1'>Дозволи (Permissions):</Typography>
+        <Typography variant='body1'>Права доступу:</Typography>
         <PermissionsList permissions={permissions} />
       </Box>
     );

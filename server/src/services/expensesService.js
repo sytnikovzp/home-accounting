@@ -124,7 +124,7 @@ class ExpensesService {
       throw notFound('Витрату не знайдено');
     }
     if (foundExpense.creatorUuid !== currentUser.uuid) {
-      throw forbidden('У Вас немає дозволу на перегляд цієї витрати');
+      throw forbidden('Ви не маєте дозволу на перегляд цієї витрати');
     }
     return formatExpenseData(foundExpense.toJSON());
   }

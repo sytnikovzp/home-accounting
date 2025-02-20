@@ -117,7 +117,7 @@ describe('UserController', () => {
         });
       expect(response.status).toBe(403);
       expect(response.body.message).toBe(
-        'У Вас немає дозволу на редагування ролі цього користувача'
+        'Ви не маєте дозволу на редагування ролі цього користувача'
       );
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');

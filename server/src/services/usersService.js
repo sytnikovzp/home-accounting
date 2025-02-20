@@ -103,7 +103,9 @@ class UsersService {
     if (await checkPermission(currentUser, 'LIMITED_PROFILE_VIEWER')) {
       return limitUserData;
     }
-    throw forbidden('У Вас немає дозволу на перегляд цього профілю');
+    throw forbidden(
+      'Ви не маєте дозволу на перегляд профілю цього користувача'
+    );
   }
 
   static async getCurrentUser(uuid) {
@@ -195,7 +197,7 @@ class UsersService {
       (await checkPermission(currentUser, 'EDIT_USERS'));
     if (!canEditUsers) {
       throw forbidden(
-        'У Вас немає дозволу на оновлення паролю цього користувача'
+        'Ви не маєте дозволу на оновлення паролю цього користувача'
       );
     }
     if (newPassword !== confirmNewPassword) {
@@ -245,7 +247,7 @@ class UsersService {
       (await checkPermission(currentUser, 'EDIT_USERS'));
     if (!canEditUsers) {
       throw forbidden(
-        'У Вас немає дозволу на оновлення даних цього користувача'
+        'Ви не маєте дозволу на оновлення даних цього користувача'
       );
     }
     const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
@@ -263,7 +265,7 @@ class UsersService {
       );
       if (!hasPermissionToChangeRole) {
         throw forbidden(
-          'У Вас немає дозволу на редагування ролі цього користувача'
+          'Ви не маєте дозволу на редагування ролі цього користувача'
         );
       }
       if (foundRole.title === 'Administrators') {
@@ -388,7 +390,7 @@ class UsersService {
       (await checkPermission(currentUser, 'REMOVE_USERS'));
     if (!canEditUsers) {
       throw forbidden(
-        'Ви не маєте дозволу на видалення цього профілю користувача'
+        'Ви не маєте дозволу на видалення профілю цього користувача'
       );
     }
     const foundRole = await Role.findOne({ uuid: foundUser.roleUuid });
