@@ -385,7 +385,7 @@ class UsersService {
     }
     const canEditUsers =
       currentUser.uuid === uuid ||
-      (await checkPermission(currentUser, 'EDIT_USERS'));
+      (await checkPermission(currentUser, 'REMOVE_USERS'));
     if (!canEditUsers) {
       throw forbidden(
         'Ви не маєте дозволу на видалення цього профілю користувача'
