@@ -57,9 +57,9 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "fullName": "Повне ім'я користувача",
-  "email": "Email користувача",
-  "password": "Пароль"
+  "fullName": "Микола Щербак",
+  "email": "m.scherbak93801@gmail.com",
+  "password": "Qwerty12"
 }
 ```
 
@@ -71,12 +71,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "refreshToken": "JWT refresh токен",
   "user": {
     "uuid": "UUID користувача",
-    "fullName": "Повне ім'я користувача",
-    "emailConfirm": "Статус підтвердження email користувача",
-    "role": "Роль користувача",
-    "photo": "Ім'я файлу фото користувача (якщо є)"
+    "fullName": "Микола Щербак",
+    "emailConfirm": "Очікує підтвердження",
+    "role": "Users",
+    "photo": ""
   },
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "permissions": ["ADD_ESTABLISHMENTS", "EDIT_ESTABLISHMENTS"]
 }
 ```
 
@@ -93,8 +93,8 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "email": "Email користувача",
-  "password": "Пароль"
+  "email": "m.scherbak93801@gmail.com",
+  "password": "Qwerty12"
 }
 ```
 
@@ -106,12 +106,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "refreshToken": "JWT refresh токен",
   "user": {
     "uuid": "UUID користувача",
-    "fullName": "Повне ім'я користувача",
-    "emailConfirm": "Статус підтвердження email користувача",
-    "role": "Роль користувача",
-    "photo": "Ім'я файлу фото користувача (якщо є)"
+    "fullName": "Микола Щербак",
+    "emailConfirm": "Очікує підтвердження",
+    "role": "Users",
+    "photo": ""
   },
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "permissions": ["ADD_ESTABLISHMENTS", "EDIT_ESTABLISHMENTS"]
 }
 ```
 
@@ -144,12 +144,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "refreshToken": "JWT refresh токен",
   "user": {
     "uuid": "UUID користувача",
-    "fullName": "Повне ім'я користувача",
-    "emailConfirm": "Статус підтвердження email користувача",
-    "role": "Роль користувача",
-    "photo": "Ім'я файлу фото користувача (якщо є)"
+    "fullName": "Микола Щербак",
+    "emailConfirm": "Очікує підтвердження",
+    "role": "Users",
+    "photo": ""
   },
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "permissions": ["ADD_ESTABLISHMENTS", "EDIT_ESTABLISHMENTS"]
 }
 ```
 
@@ -166,7 +166,7 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "email": "Email користувача"
+  "email": "m.scherbak93801@gmail.com"
 }
 ```
 
@@ -175,8 +175,8 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "severity": "success",
-  "title": "Скидання паролю..."
-  "message": "На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями",
+  "title": "Скидання паролю...",
+  "message": "На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями"
 }
 ```
 
@@ -204,8 +204,8 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "newPassword": "Новий пароль",
-  "confirmNewPassword": "Підтвердження нового паролю"
+  "newPassword": "Qwerty12",
+  "confirmNewPassword": "Qwerty12"
 }
 ```
 
@@ -214,8 +214,8 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "severity": "success",
-  "title": "Скидання паролю..."
-  "message": "Ваш пароль успішно змінено",
+  "title": "Скидання паролю...",
+  "message": "Ваш пароль успішно змінено"
 }
 ```
 
@@ -300,9 +300,9 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "fullName": "Нове ім'я користувача",
-  "email": "Новий email користувача (необов'язково)",
-  "role": "Нова роль користувача (необов'язково)"
+  "fullName": "Євген Коваленко",
+  "email": "new_mail@gmail.com (необов'язково)",
+  "role": "Administrators (необов'язково)"
 }
 ```
 
@@ -314,12 +314,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "refreshToken": "JWT refresh токен",
   "user": {
     "uuid": "UUID користувача",
-    "fullName": "Повне ім'я користувача",
-    "emailConfirm": "Статус підтвердження email користувача",
-    "role": "Роль користувача",
-    "photo": "Ім'я файлу фото користувача (якщо є)"
+    "fullName": "Євген Коваленко",
+    "emailConfirm": "Очікує підтвердження",
+    "role": "Administrators",
+    "photo": ""
   },
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "permissions": ["ADD_ESTABLISHMENTS", "EDIT_ESTABLISHMENTS"]
 }
 ```
 
@@ -336,8 +336,8 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "newPassword": "Новий пароль",
-  "confirmNewPassword": "Підтвердження нового пароля"
+  "newPassword": "Qwerty12",
+  "confirmNewPassword": "Qwerty12"
 }
 ```
 
@@ -349,12 +349,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "refreshToken": "JWT refresh токен",
   "user": {
     "uuid": "UUID користувача",
-    "fullName": "Повне ім'я користувача",
-    "emailConfirm": "Статус підтвердження email користувача",
-    "role": "Роль користувача",
-    "photo": "Ім'я файлу фото користувача (якщо є)"
+    "fullName": "Євген Коваленко",
+    "emailConfirm": "Очікує підтвердження",
+    "role": "Administrators",
+    "photo": ""
   },
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "permissions": ["ADD_ESTABLISHMENTS", "EDIT_ESTABLISHMENTS"]
 }
 ```
 
@@ -381,7 +381,7 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID користувача",
-  "photo": "Ім'я файлу фото користувача"
+  "photo": "1730713568386-evgen.kovalenko.jpg"
 }
 ```
 
@@ -472,8 +472,8 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "uuid": "UUID користувача",
   "fullName": "Повне ім'я користувача",
   "role": {
-    "UUID ролі користувача",
-    "Назва ролі користувача"
+    "uuid": "UUID ролі користувача",
+    "title": "Назва ролі користувача"
   },
   "photo": "Ім'я файлу фото користувача (якщо є)",
   "email": "Email користувача",
@@ -499,14 +499,14 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "uuid": "UUID користувача",
   "fullName": "Повне ім'я користувача",
   "role": {
-    "UUID ролі користувача",
-    "Назва ролі користувача"
+    "uuid": "UUID ролі користувача",
+    "title": "Назва ролі користувача"
   },
   "photo": "Ім'я файлу фото користувача (якщо є)",
   "creation": {
     "createdAt": "Дата та час створення облікового запису",
     "updatedAt": "Дата та час редагування облікового запису"
-  },
+  }
 }
 ```
 
@@ -523,9 +523,9 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "fullName": "Нове ім'я користувача",
-  "email": "Новий email користувача (необов'язково)",
-  "role": "Нова роль користувача (необов'язково)"
+  "fullName": "Євген Коваленко",
+  "email": "new_mail@gmail.com (необов'язково)",
+  "role": "Administrators (необов'язково)"
 }
 ```
 
@@ -537,12 +537,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "refreshToken": "JWT refresh токен",
   "user": {
     "uuid": "UUID користувача",
-    "fullName": "Повне ім'я користувача",
-    "emailConfirm": "Статус підтвердження email користувача",
-    "role": "Роль користувача",
-    "photo": "Ім'я файлу фото користувача (якщо є)"
+    "fullName": "Євген Коваленко",
+    "emailConfirm": "Очікує підтвердження",
+    "role": "Administrators",
+    "photo": ""
   },
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "permissions": ["ADD_ESTABLISHMENTS", "EDIT_ESTABLISHMENTS"]
 }
 ```
 
@@ -559,8 +559,8 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "newPassword": "Новий пароль",
-  "confirmNewPassword": "Підтвердження нового пароля"
+  "newPassword": "Qwerty12",
+  "confirmNewPassword": "Qwerty12"
 }
 ```
 
@@ -572,12 +572,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "refreshToken": "JWT refresh токен",
   "user": {
     "uuid": "UUID користувача",
-    "fullName": "Повне ім'я користувача",
-    "emailConfirm": "Статус підтвердження email користувача",
-    "role": "Роль користувача",
-    "photo": "Ім'я файлу фото користувача (якщо є)"
+    "fullName": "Євген Коваленко",
+    "emailConfirm": "Очікує підтвердження",
+    "role": "Administrators",
+    "photo": ""
   },
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "permissions": ["ADD_ESTABLISHMENTS", "EDIT_ESTABLISHMENTS"]
 }
 ```
 
@@ -604,7 +604,7 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID користувача",
-  "photo": "Ім'я файлу фото користувача"
+  "photo": "1730713568386-evgen.kovalenko.jpg"
 }
 ```
 
@@ -721,9 +721,9 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "title": "Назва ролі",
+  "title": "Нова роль користувача",
   "description": "Опис ролі (необов'язково)",
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "permissions": ["ADD_CATEGORIES", "ADD_PRODUCTS"]
 }
 ```
 
@@ -732,13 +732,18 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID ролі",
-  "title": "Назва ролі",
+  "title": "Нова роль користувача",
   "description": "Опис ролі",
   "permissions": [
     {
       "uuid": "UUID права доступу",
-      "title": "НАЗВА_ПРАВА_ДОСТУПУ",
-      "description": "Детальний опис права доступу"
+      "title": "ADD_CATEGORIES",
+      "description": "Додавання нових товарів"
+    },
+    {
+      "uuid": "UUID права доступу",
+      "title": "ADD_PRODUCTS",
+      "description": "Додавання товарів та послуг"
     },
     ...
   ],
@@ -762,9 +767,9 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "title": "Оновлена назва ролі (необов'язково)",
-  "description": "Оновлений опис ролі (необов'язково)",
-  "permissions": ["НАЗВА_ПРАВА_ДОСТУПУ", "НАЗВА_ПРАВА_ДОСТУПУ", ...]
+  "title": "Оновлена назва ролі користувача",
+  "description": "Оновлений опис ролі користувача",
+  "permissions": ["EDIT_ESTABLISHMENTS"]
 }
 ```
 
@@ -773,15 +778,14 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID ролі",
-  "title": "Оновлена назва ролі",
-  "description": "Оновлений опис ролі",
+  "title": "Оновлена назва ролі користувача",
+  "description": "Оновлений опис ролі користувача",
   "permissions": [
     {
       "uuid": "UUID права доступу",
-      "title": "НАЗВА_ПРАВА_ДОСТУПУ",
-      "description": "Детальний опис права доступу"
-    },
-    ...
+      "title": "EDIT_ESTABLISHMENTS",
+      "description": "Редагування закладів"
+    }
   ],
   "creation": {
     "createdAt": "Дата та час створення ролі",
@@ -925,9 +929,9 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID категорії",
-  "title": "Назва категорії",
+  "title": "Нова категорія",
   "contentType": "Категорія",
-  "status": "Статус модерації",
+  "status": "Затверджено",
   "moderation": {
     "moderatorUuid": "UUID модератора",
     "moderatorFullName": "Повне ім'я модератора"
@@ -954,7 +958,7 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "title": "Оновлена назва"
+  "title": "Оновлена назва категорії"
 }
 ```
 
@@ -965,7 +969,7 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "uuid": "UUID категорії",
   "title": "Оновлена назва категорії",
   "contentType": "Категорія",
-  "status": "Статус модерації",
+  "status": "Затверджено",
   "moderation": {
     "moderatorUuid": "UUID модератора",
     "moderatorFullName": "Повне ім'я модератора"
@@ -1078,8 +1082,8 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "title": "Новий товар/послуга",
-  "category": "Категорія товару/послуги (необов'язково)"
+  "title": "Новий товар",
+  "category": "Категорія товару (необов'язково)"
 }
 ```
 
@@ -1088,12 +1092,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID товару/послуги",
-  "title": "Назва товару/послуги",
+  "title": "Новий товар",
   "contentType": "Товар",
-  "status": "Статус модерації",
+  "status": "Очікує модерації",
   "moderation": {
-    "moderatorUuid": "UUID модератора",
-    "moderatorFullName": "Повне ім'я модератора"
+    "moderatorUuid": "",
+    "moderatorFullName": ""
   },
   "creation": {
     "creatorUuid": "UUID автора",
@@ -1117,7 +1121,7 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "title": "Оновлена назва",
+  "title": "Оновлена назва товару",
   "category": "Категорія товару/послуги (необов'язково)"
 }
 ```
@@ -1127,12 +1131,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID товару/послуги",
-  "title": "Оновлена назва товару/послуги",
+  "title": "Оновлена назва товару",
   "contentType": "Товар",
-  "status": "Статус модерації",
+  "status": "Очікує модерації",
   "moderation": {
-    "moderatorUuid": "UUID модератора",
-    "moderatorFullName": "Повне ім'я модератора"
+    "moderatorUuid": "",
+    "moderatorFullName": ""
   },
   "creation": {
     "creatorUuid": "UUID автора",
@@ -1252,12 +1256,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID закладу",
-  "title": "Назва закладу",
+  "title": "Новий заклад",
   "contentType": "Заклад",
-  "description": "Опис закладу (якщо є)",
-  "url": "Посилання на сайт закладу (якщо є)",
-  "logo": "Ім'я файлу логотипу закладу (якщо є)",
-  "status": "Статус модерації",
+  "description": "",
+  "url": "",
+  "logo": "",
+  "status": "Затверджено",
   "moderation": {
     "moderatorUuid": "UUID модератора",
     "moderatorFullName": "Повне ім'я модератора"
@@ -1284,9 +1288,9 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "title": "Оновлена назва",
-  "description": "Оновлений опис закладу (необов'язково)",
-  "url": "Оновлене посилання на сайт закладу (необов'язково)"
+  "title": "АТБ",
+  "description": "Заклад АТБ",
+  "url": "https://www.atb.com.ua"
 }
 ```
 
@@ -1295,12 +1299,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID закладу",
-  "title": "Оновлена назва закладу",
+  "title": "АТБ",
   "contentType": "Заклад",
-  "description": "Оновлений опис закладу (якщо є)",
-  "url": "Оновлене посилання на сайт закладу (якщо є)",
-  "logo": "Ім'я файлу логотипу закладу (якщо є)",
-  "status": "Статус модерації",
+  "description": "Заклад АТБ",
+  "url": "https://www.atb.com.ua",
+  "logo": "",
+  "status": "Затверджено",
   "moderation": {
     "moderatorUuid": "UUID модератора",
     "moderatorFullName": "Повне ім'я модератора"
@@ -1337,12 +1341,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID закладу",
-  "title": "Назва закладу",
+  "title": "АТБ",
   "contentType": "Заклад",
-  "description": "Опис закладу (якщо є)",
-  "url": "Посилання на сайт закладу (якщо є)",
-  "logo": "Ім'я файлу логотипу закладу",
-  "status": "Статус модерації",
+  "description": "Заклад АТБ",
+  "url": "https://www.atb.com.ua",
+  "logo": "1730713465136-atb.png",
+  "status": "Затверджено",
   "moderation": {
     "moderatorUuid": "UUID модератора",
     "moderatorFullName": "Повне ім'я модератора"
@@ -1371,12 +1375,12 @@ MONGO_DB_NAME_TEST=home_accounting_test
 ```json
 {
   "uuid": "UUID закладу",
-  "title": "Назва закладу",
+  "title": "АТБ",
   "contentType": "Заклад",
-  "description": "Опис закладу (якщо є)",
-  "url": "Посилання на сайт закладу (якщо є)",
+  "description": "Заклад АТБ",
+  "url": "https://www.atb.com.ua",
   "logo": "",
-  "status": "Статус модерації",
+  "status": "Затверджено",
   "moderation": {
     "moderatorUuid": "UUID модератора",
     "moderatorFullName": "Повне ім'я модератора"
@@ -1500,13 +1504,13 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "product": "Назва товару/послуги",
-  "quantity": "Кількість",
-  "measure": "Одиниця виміру",
-  "unitPrice": "Ціна за одиницю",
-  "currency": "Назва валюти",
-  "establishment": "Назва закладу",
-  "date": "Дата здійснення покупки"
+  "product": "Навушники",
+  "quantity": "2",
+  "measure": "шт",
+  "unitPrice": "500",
+  "currency": "Українська гривня",
+  "establishment": "Comfy",
+  "date": "12 січня 2025"
 }
 ```
 
@@ -1517,25 +1521,24 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "uuid": "UUID витрати",
   "product": {
     "uuid": "UUID товару/послуги",
-    "title": "Назва товару/послуги"
+    "title": "Навушники"
   },
-  "quantity": "Кількість одиниць",
-  "unitPrice": "Ціна за одиницю",
-  "totalPrice": "Загальна ціна за покупку",
+  "quantity": "2",
+  "unitPrice": "500",
+  "totalPrice": "1000",
   "establishment": {
     "uuid": "UUID закладу",
-    "title": "Назва закладу"
+    "title": "Comfy"
   },
   "measure": {
     "uuid": "UUID одиниці виміру",
-    "title": "Назва одиниці виміру"
+    "title": "шт"
   },
   "currency": {
     "uuid": "UUID валюти",
-    "title": "Назва валюти",
-    "code": "Міжнародний код валюти"
+    "title": "Українська гривня"
   },
-  "date": "Дата здійснення покупки",
+  "date": "12 січня 2025",
   "creation": {
     "creatorUuid": "UUID автора",
     "creatorFullName": "Повне ім'я автора",
@@ -1558,13 +1561,13 @@ MONGO_DB_NAME_TEST=home_accounting_test
 
 ```json
 {
-  "product": "Інша назва товару/послуги",
-  "quantity": "Оновлена кількість",
-  "measure": "Інша одиниця виміру",
-  "unitPrice": "Оновлена ціна за одиницю",
-  "currency": "Інша валюти",
-  "establishment": "Інша назва закладу",
-  "date": "Інша дата здійснення покупки"
+  "product": "Ноутбук",
+  "quantity": "1",
+  "measure": "шт",
+  "unitPrice": "850",
+  "currency": "Долар США",
+  "establishment": "Епіцентр",
+  "date": "15 січня 2025"
 }
 ```
 
@@ -1575,25 +1578,24 @@ MONGO_DB_NAME_TEST=home_accounting_test
   "uuid": "UUID витрати",
   "product": {
     "uuid": "UUID товару/послуги",
-    "title": "Інша назва товару/послуги"
+    "title": "Ноутбук"
   },
-  "quantity": "Оновлена кількість одиниць",
-  "unitPrice": "Оновлена ціна за одиницю",
-  "totalPrice": "Оновлена загальна ціна за покупку",
+  "quantity": "1",
+  "unitPrice": "35471.86",
+  "totalPrice": "35471.86",
   "establishment": {
     "uuid": "UUID закладу",
-    "title": "Інша назва закладу"
+    "title": "Епіцентр"
   },
   "measure": {
     "uuid": "UUID одиниці виміру",
-    "title": "Інша назва одиниці виміру"
+    "title": "шт"
   },
   "currency": {
     "uuid": "UUID валюти",
-    "title": "Інша назва валюти",
-    "code": "Міжнародний код валюти"
+    "title": "Українська гривня"
   },
-  "date": "Інша дата здійснення покупки",
+  "date": "15 січня 2025",
   "creation": {
     "creatorUuid": "UUID автора",
     "creatorFullName": "Повне ім'я автора",
@@ -1610,6 +1612,150 @@ MONGO_DB_NAME_TEST=home_accounting_test
 **Метод**: DELETE  
 **URL**: `/api/expenses/{uuid}`  
 **Опис**: Видаляє витрату за UUID. Кожен користувач може видаляти ТІЛЬКИ СВОЇ записи. Потрібні права доступу `REMOVE_EXPENSES`  
+**Доступ лише для авторизованих користувачів**: Так  
+**Тіло запиту**: не потрібне  
+**Приклад відповіді**: 200 OK
+
+</details>
+
+---
+
+### Контролер Управління Валютами
+
+<details>
+  <summary><strong>Натисніть тут, щоб розгорнути</strong></summary>
+
+Цей контролер відповідає за управління валютами, перегляд, створення, редагування та видалення валют.
+
+#### 1. Отримання списку всіх валют
+
+**Метод**: GET  
+**URL**: `/api/currencies`  
+**Опис**: Повертає список валют з підтримкою пагінації та сортування  
+**Доступ лише для авторизованих користувачів**: Так  
+**Тіло запиту**: не потрібне
+
+**Параметри запиту**:
+
+- `limit` - кількість елементів на сторінку (за замовчуванням 5)
+- `offset` - кількість елементів, які потрібно пропустити
+- `sort` - поле для сортування (за замовчуванням `uuid`)
+- `order` - напрям сортування (`asc` або `desc`, за замовчуванням `asc`)
+
+**Приклад відповіді**:
+
+```json
+[
+  {
+    "uuid": "UUID валюти",
+    "title": "Назва валюти",
+    "code": "Міжнародний код валюти"
+  },
+  ...
+]
+```
+
+---
+
+#### 2. Перегляд даних валюти за UUID
+
+**Метод**: GET  
+**URL**: `/api/currencies/{uuid}`  
+**Опис**: Отримує інформацію про валюту за його UUID  
+**Доступ лише для авторизованих користувачів**: Так  
+**Тіло запиту**: не потрібне
+
+**Приклад відповіді**:
+
+```json
+{
+  "uuid": "UUID валюти",
+  "title": "Назва валюти",
+  "code": "Міжнародний код валюти",
+  "creation": {
+    "creatorUuid": "UUID автора",
+    "creatorFullName": "Повне ім'я автора",
+    "createdAt": "Дата та час створення валюти",
+    "updatedAt": "Дата та час редагування валюти"
+  }
+}
+```
+
+---
+
+#### 3. Створення нової валюти
+
+**Метод**: POST  
+**URL**: `/api/currencies`  
+**Опис**: Створює нову валюту. Потрібні права доступу `ADD_CURRENCIES`  
+**Доступ лише для авторизованих користувачів**: Так
+
+**Тіло запиту**:
+
+```json
+{
+  "title": "Нова валюта",
+  "code": "TST"
+}
+```
+
+**Приклад відповіді**:
+
+```json
+{
+  "uuid": "UUID валюти",
+  "title": "Нова валюта",
+  "code": "TST",
+  "creation": {
+    "creatorUuid": "UUID автора",
+    "creatorFullName": "Повне ім'я автора",
+    "createdAt": "Дата та час створення валюти",
+    "updatedAt": "Дата та час редагування валюти"
+  }
+}
+```
+
+---
+
+#### 4. Редагування даних валюти за UUID
+
+**Метод**: PATCH  
+**URL**: `/api/currencies/{uuid}`  
+**Опис**: Оновлює інформацію про валюту за його UUID. Потрібні права доступу `EDIT_CURRENCIES`  
+**Доступ лише для авторизованих користувачів**: Так
+
+**Тіло запиту**:
+
+```json
+{
+  "title": "Оновлена валюта",
+  "code": "TSS"
+}
+```
+
+**Приклад відповіді**:
+
+```json
+{
+  "uuid": "UUID валюти",
+  "title": "Оновлена валюта",
+  "code": "TSS",
+  "creation": {
+    "creatorUuid": "UUID автора",
+    "creatorFullName": "Повне ім'я автора",
+    "createdAt": "Дата та час створення валюти",
+    "updatedAt": "Дата та час редагування валюти"
+  }
+}
+```
+
+---
+
+#### 5. Видалення валюти за UUID
+
+**Метод**: DELETE  
+**URL**: `/api/currencies/{uuid}`  
+**Опис**: Видаляє валюту за UUID. Потрібні права доступу `REMOVE_CURRENCIES`  
 **Доступ лише для авторизованих користувачів**: Так  
 **Тіло запиту**: не потрібне  
 **Приклад відповіді**: 200 OK

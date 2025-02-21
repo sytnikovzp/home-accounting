@@ -38,7 +38,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
   "title": "Оновлена назва ролі користувача",
   "description": "Оновлений опис ролі користувача",
   "permissions": [ "EDIT_ESTABLISHMENTS"]
-  # "permissions": []
 }
 
 ### Remove role by UUID

@@ -1,7 +1,7 @@
 ### Get list all currencies (default pagination, without sort)
 GET http://localhost:5000/api/currencies HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2ZTJiMmE3ZC02Nzg5LTQ4ZTctOWViYi1jYmIzZTRjYTYzNjYiLCJpYXQiOjE3MzkyNTM4NzYsImV4cCI6MTczOTI1NDc3Nn0.9xWKSnFtD8UXQVfWwkKpQ4DpRgd8IEPNJdVh3-nkdDg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlNmYwMGEwMS01OGI4LTRiYWUtYWYxNC04MTY2MDEyZTc5MDAiLCJpYXQiOjE3NDAwOTk3ODksImV4cCI6MTc0MTM5NTc4OX0.7pIfXxH29xrZ3yuK-nQ4O4ahdvTEOjnwinTnjkrbBTo
 
 ### Get list all currencies (custom pagination, without sort)
 GET http://localhost:5000/api/currencies?page=1&limit=10 HTTP/1.1
@@ -26,7 +26,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 ### Add currency
 POST http://localhost:5000/api/currencies HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI0MWFkYmFlYy1iYWNjLTQ4YzctYjIwYy1jMzYxYTA4NWYxMGIiLCJpYXQiOjE3MzkyMDI3NDIsImV4cCI6MTczOTIwMzY0Mn0.Gr3jecf-a6CQ68aaTGkdaOLk9r9C6ytBNpK_vne4Ca8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlNmYwMGEwMS01OGI4LTRiYWUtYWYxNC04MTY2MDEyZTc5MDAiLCJpYXQiOjE3NDAwOTk3ODksImV4cCI6MTc0MTM5NTc4OX0.7pIfXxH29xrZ3yuK-nQ4O4ahdvTEOjnwinTnjkrbBTo
 
 {
   "title": "Нова валюта",
@@ -34,9 +34,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 }
 
 ### Get currency by UUID
-GET http://localhost:5000/api/currencies/5a91faad-a0b9-4396-ba2c-cda0fa2f850f HTTP/1.1
+GET http://localhost:5000/api/currencies/00818cff-8304-4ce3-952b-499e9e37863d HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIyYTVkYjllMi03Nzc2LTRjZWEtYmRhNS1hYzc1MTRiNjg1MTUiLCJpYXQiOjE3MzkyNTQyMjMsImV4cCI6MTczOTI1NTEyM30.oDFDMzL7O_4FC7jJu0_CWzMz4NkLD99pYCW9FNAGDp8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlNmYwMGEwMS01OGI4LTRiYWUtYWYxNC04MTY2MDEyZTc5MDAiLCJpYXQiOjE3NDAwOTk3ODksImV4cCI6MTc0MTM5NTc4OX0.7pIfXxH29xrZ3yuK-nQ4O4ahdvTEOjnwinTnjkrbBTo
 
 ### Edit currency by UUID
 PATCH http://localhost:5000/api/currencies/5a91faad-a0b9-4396-ba2c-cda0fa2f850f HTTP/1.1

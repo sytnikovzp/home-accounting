@@ -1,7 +1,7 @@
 ### Get list all users (default pagination, without sort)
 GET http://localhost:5000/api/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIxZmMyNTRkOS0xNmUyLTQzZGItYjNmMi0wMzhlYjA0ZGEwOGIiLCJpYXQiOjE3Mzk5MjQ4NzYsImV4cCI6MTc0MTIyMDg3Nn0.8PKBESEgJD-oSLypL27ricB1WbffqrpeeZqfbe4XXJ0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4OTAxNzZmZS00NzgzLTQ5Y2QtOTI3MS03Zjk5OWUzNjY1NDciLCJpYXQiOjE3NDAxMDI0MDYsImV4cCI6MTc0MTM5ODQwNn0.j0RI07SKNXpRVSHsbzT5Q03jbfLl5e9qiurNGnO6ZT0
 
 ### Get list all users (custom pagination, without sort)
 GET http://localhost:5000/api/users?page=1&limit=10 HTTP/1.1
@@ -36,16 +36,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 // ==============================================================
 
 ### Get user by UUID
-GET http://localhost:5000/api/users/1f91ccb4-641c-458f-9616-9e0a5c11e26e HTTP/1.1
+GET http://localhost:5000/api/users/5cbd9feb-35a6-4215-82af-d1105748138a HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIxZmMyNTRkOS0xNmUyLTQzZGItYjNmMi0wMzhlYjA0ZGEwOGIiLCJpYXQiOjE3Mzk5MjQ4NzYsImV4cCI6MTc0MTIyMDg3Nn0.8PKBESEgJD-oSLypL27ricB1WbffqrpeeZqfbe4XXJ0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4OTAxNzZmZS00NzgzLTQ5Y2QtOTI3MS03Zjk5OWUzNjY1NDciLCJpYXQiOjE3NDAxMDI0MDYsImV4cCI6MTc0MTM5ODQwNn0.j0RI07SKNXpRVSHsbzT5Q03jbfLl5e9qiurNGnO6ZT0
 
 // ==============================================================
 
 ### Edit user by UUID
-PATCH http://localhost:5000/api/users/1f91ccb4-641c-458f-9616-9e0a5c11e26e HTTP/1.1
+PATCH http://localhost:5000/api/users/5cbd9feb-35a6-4215-82af-d1105748138a HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIxZmMyNTRkOS0xNmUyLTQzZGItYjNmMi0wMzhlYjA0ZGEwOGIiLCJpYXQiOjE3Mzk5MjQ4NzYsImV4cCI6MTc0MTIyMDg3Nn0.8PKBESEgJD-oSLypL27ricB1WbffqrpeeZqfbe4XXJ0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJmZGRkZDRmNy1lYzRmLTRlNmMtODM0Mi0zNmU2YmE5YTVmYzAiLCJpYXQiOjE3NDAxMDI1MjMsImV4cCI6MTc0MTM5ODUyM30.MNj7bkZcTJBLxw_OgzOanVTJgxp3F9Mwbw8S45shWas
 
 {
   "fullName": "Оновлений користувач"

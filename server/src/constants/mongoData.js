@@ -8,120 +8,120 @@ const {
 
 module.exports.permissions = [
   {
-    description: 'Додавання нових ролей користувачів',
     title: 'ADD_ROLES',
+    description: 'Додавання нових ролей користувачів',
   },
   {
-    description: 'Редагування ролей користувачів',
     title: 'EDIT_ROLES',
+    description: 'Редагування ролей користувачів',
   },
   {
-    description: 'Видалення ролей користувачів',
     title: 'REMOVE_ROLES',
+    description: 'Видалення ролей користувачів',
   },
   {
-    description: 'Призначення та зміна ролей користувачам',
     title: 'ASSIGN_ROLES',
+    description: 'Призначення та зміна ролей користувачам',
   },
   {
-    description: 'Редагування облікових записів користувачів',
     title: 'EDIT_USERS',
+    description: 'Редагування облікових записів користувачів',
   },
   {
-    description: 'Видалення облікових записів користувачів',
     title: 'REMOVE_USERS',
+    description: 'Видалення облікових записів користувачів',
   },
   {
-    description: 'Додавання нових категорій',
     title: 'ADD_CATEGORIES',
+    description: 'Додавання нових категорій',
   },
   {
-    description: 'Редагування категорій',
     title: 'EDIT_CATEGORIES',
+    description: 'Редагування категорій',
   },
   {
-    description: 'Видалення категорій',
     title: 'REMOVE_CATEGORIES',
+    description: 'Видалення категорій',
   },
   {
-    description: 'Зміна статусу публікації та модерація категорій',
     title: 'MODERATION_CATEGORIES',
+    description: 'Зміна статусу публікації та модерація категорій',
   },
   {
-    description: 'Додавання нових закладів',
     title: 'ADD_ESTABLISHMENTS',
+    description: 'Додавання нових закладів',
   },
   {
-    description: 'Редагування закладів',
     title: 'EDIT_ESTABLISHMENTS',
+    description: 'Редагування закладів',
   },
   {
-    description: 'Видалення закладів',
     title: 'REMOVE_ESTABLISHMENTS',
+    description: 'Видалення закладів',
   },
   {
-    description: 'Зміна статусу публікації та модерація закладів',
     title: 'MODERATION_ESTABLISHMENTS',
+    description: 'Зміна статусу публікації та модерація закладів',
   },
   {
-    description: 'Додавання нових товарів',
     title: 'ADD_PRODUCTS',
+    description: 'Додавання нових товарів',
   },
   {
-    description: 'Редагування товарів',
     title: 'EDIT_PRODUCTS',
+    description: 'Редагування товарів',
   },
   {
-    description: 'Видалення товарів',
     title: 'REMOVE_PRODUCTS',
+    description: 'Видалення товарів',
   },
   {
-    description: 'Зміна статусу публікації та модерація товарів',
     title: 'MODERATION_PRODUCTS',
+    description: 'Зміна статусу публікації та модерація товарів',
   },
   {
-    description: 'Додавання нових валют',
     title: 'ADD_CURRENCIES',
+    description: 'Додавання нових валют',
   },
   {
-    description: 'Редагування валют',
     title: 'EDIT_CURRENCIES',
+    description: 'Редагування валют',
   },
   {
-    description: 'Видалення валют',
     title: 'REMOVE_CURRENCIES',
+    description: 'Видалення валют',
   },
   {
-    description: 'Додавання нових одиниць вимірів',
     title: 'ADD_MEASURES',
+    description: 'Додавання нових одиниць вимірів',
   },
   {
-    description: 'Редагування одиниць вимірів',
     title: 'EDIT_MEASURES',
+    description: 'Редагування одиниць вимірів',
   },
   {
-    description: 'Видалення одиниць вимірів',
     title: 'REMOVE_MEASURES',
+    description: 'Видалення одиниць вимірів',
   },
   {
-    description: 'Додавання нових записів про витрати',
     title: 'ADD_EXPENSES',
+    description: 'Додавання нових записів про витрати',
   },
   {
-    description: 'Редагування записів про витрати',
     title: 'EDIT_EXPENSES',
+    description: 'Редагування записів про витрати',
   },
   {
-    description: 'Видалення записів про витрати',
     title: 'REMOVE_EXPENSES',
+    description: 'Видалення записів про витрати',
   },
   {
-    description: 'Перегляд повної інформації в профілях інших користувачів',
     title: 'FULL_PROFILE_VIEWER',
+    description: 'Перегляд повної інформації в профілях інших користувачів',
   },
   {
-    description: 'Перегляд обмеженої інформації в профілях інших користувачів',
     title: 'LIMITED_PROFILE_VIEWER',
+    description: 'Перегляд обмеженої інформації в профілях інших користувачів',
   },
 ];
 
