@@ -1,36 +1,36 @@
 ### Get list of pending items (default pagination, without sort)
 GET http://localhost:5000/api/moderation HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2Zjc2Y2MyNC0zZjg2LTRmNWQtYmUwOS02ZDY3ZTI3N2JjZWYiLCJpYXQiOjE3Mzk4MzMwNjEsImV4cCI6MTczOTgzMzk2MX0.P_meqMO61kjBKB5oXMhvPuTgUQxCbHB8U9_aHk-iW8E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwNzU2MzliZi1mYjJkLTRlZmEtOTMyYS05MjRjNGYyYzVjMmUiLCJpYXQiOjE3NDAxMDQ5MTEsImV4cCI6MTc0MTQwMDkxMX0.FWWVK3mId14fQ22Nm0-S2a6CHblGSYHT2DS4VSm5EPY
 
 ### Get list of pending items (custom pagination, with sort by UUID (asc))
 GET http://localhost:5000/api/moderation?sort=title&order=asc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI3OWE3MTI5MC0zNThkLTQ5YWUtODQ2Ni1mMDk1NTRkNzI5ZTAiLCJpYXQiOjE3Mzk4Mjk3NzMsImV4cCI6MTczOTgzMDY3M30.pu379tXvSxYVjftglNL3Cjbd0v8xUKHmRJuGXgIas-E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwNzU2MzliZi1mYjJkLTRlZmEtOTMyYS05MjRjNGYyYzVjMmUiLCJpYXQiOjE3NDAxMDQ5MTEsImV4cCI6MTc0MTQwMDkxMX0.FWWVK3mId14fQ22Nm0-S2a6CHblGSYHT2DS4VSm5EPY
 
 ### Moderation category by UUID
-PATCH http://localhost:5000/api/moderation/categories/8a373fc7-c2c3-47e2-be28-656dc93192cd HTTP/1.1
+PATCH http://localhost:5000/api/moderation/categories/142b971e-8d14-4e91-b107-403e406874ad HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2Zjc2Y2MyNC0zZjg2LTRmNWQtYmUwOS02ZDY3ZTI3N2JjZWYiLCJpYXQiOjE3Mzk4MzEyOTMsImV4cCI6MTczOTgzMjE5M30.PWp_oQh50owb18APiN0xAQ2CHfjCUGr0Gsee7TCJdD4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwNzU2MzliZi1mYjJkLTRlZmEtOTMyYS05MjRjNGYyYzVjMmUiLCJpYXQiOjE3NDAxMDQ5MTEsImV4cCI6MTc0MTQwMDkxMX0.FWWVK3mId14fQ22Nm0-S2a6CHblGSYHT2DS4VSm5EPY
 
 {
   "status": "rejected"
 }
 
 ### Moderation product by UUID
-PATCH http://localhost:5000/api/moderation/products/689a5854-6950-4164-91c2-793bda9d6c17 HTTP/1.1
+PATCH http://localhost:5000/api/moderation/products/4110cacb-9702-4e4b-84f2-571549c99588 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2Zjc2Y2MyNC0zZjg2LTRmNWQtYmUwOS02ZDY3ZTI3N2JjZWYiLCJpYXQiOjE3Mzk4MzMwNjEsImV4cCI6MTczOTgzMzk2MX0.P_meqMO61kjBKB5oXMhvPuTgUQxCbHB8U9_aHk-iW8E
-
-{
-  "status": "rejected"
-}
-
-### Moderation establishment by UUID
-PATCH http://localhost:5000/api/moderation/establishments/28c8d4ce-b7f8-4a7f-9ab8-2b95f35669ed HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMDgyMzVlMTMtNjUxNC00ZGI2LWI3ZjYtZTkxOGJiMDBlNjRhIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzY2NTY3NTIsImV4cCI6MTczNzk1Mjc1Mn0.fLoyv4IcmVk8bPR3RJ_JLB_SPSahUoKuW7fbRp2aec4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwNzU2MzliZi1mYjJkLTRlZmEtOTMyYS05MjRjNGYyYzVjMmUiLCJpYXQiOjE3NDAxMDQ5MTEsImV4cCI6MTc0MTQwMDkxMX0.FWWVK3mId14fQ22Nm0-S2a6CHblGSYHT2DS4VSm5EPY
 
 {
   "status": "approved"
+}
+
+### Moderation establishment by UUID
+PATCH http://localhost:5000/api/moderation/establishments/d1a48e2c-1400-485a-8905-b0e916d43d23 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwNzU2MzliZi1mYjJkLTRlZmEtOTMyYS05MjRjNGYyYzVjMmUiLCJpYXQiOjE3NDAxMDQ5MTEsImV4cCI6MTc0MTQwMDkxMX0.FWWVK3mId14fQ22Nm0-S2a6CHblGSYHT2DS4VSm5EPY
+
+{
+  "status": "rejected"
 }
