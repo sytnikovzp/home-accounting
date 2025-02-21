@@ -13,12 +13,12 @@ GET http://localhost:5000/api/measures?sort=title&order=asc&page=1&limit=10 HTTP
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJiN2JmNTcwMi1kZDNlLTRkZWMtYTdjNy1hYzUyODc2ZWY5MGYiLCJpYXQiOjE3MzkyMDM2NzIsImV4cCI6MTczOTIwNDU3Mn0.nXVa7Q2ZvIVnCCvT4itox6Z4K2UTFvGZNHq8OBusdB0
 
-### Get list all measures (custom pagination, with sort by uuid (desc))
+### Get list all measures (custom pagination, with sort by UUID (desc))
 GET http://localhost:5000/api/measures?sort=uuid&order=desc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJiN2JmNTcwMi1kZDNlLTRkZWMtYTdjNy1hYzUyODc2ZWY5MGYiLCJpYXQiOjE3MzkyMDM2NzIsImV4cCI6MTczOTIwNDU3Mn0.nXVa7Q2ZvIVnCCvT4itox6Z4K2UTFvGZNHq8OBusdB0
 
-### Create measure
+### Add measure
 POST http://localhost:5000/api/measures HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI3N2VkOWQ2NC03OTBlLTQ1MWYtYWJiYy0zNWJmOTBjZTNkYTciLCJpYXQiOjE3MzkyMDM4MzksImV4cCI6MTczOTIwNDczOX0.pyOZjwSEvCgv-OluetHtzUp-VU9uQVedMuSGJYwon6o
@@ -28,12 +28,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
   "description": "Тестовий опис"
 }
 
-### Get measure by uuid
+### Get measure by UUID
 GET http://localhost:5000/api/measures/dceaade9-8aa6-4671-a0c0-549c48871b5a HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI3N2VkOWQ2NC03OTBlLTQ1MWYtYWJiYy0zNWJmOTBjZTNkYTciLCJpYXQiOjE3MzkyMDM4MzksImV4cCI6MTczOTIwNDczOX0.pyOZjwSEvCgv-OluetHtzUp-VU9uQVedMuSGJYwon6o
 
-### Update measure
+### Edit measure by UUID
 PATCH http://localhost:5000/api/measures/dceaade9-8aa6-4671-a0c0-549c48871b5a HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI3N2VkOWQ2NC03OTBlLTQ1MWYtYWJiYy0zNWJmOTBjZTNkYTciLCJpYXQiOjE3MzkyMDM4MzksImV4cCI6MTczOTIwNDczOX0.pyOZjwSEvCgv-OluetHtzUp-VU9uQVedMuSGJYwon6o
@@ -43,7 +43,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
   "description": "Оновлений опис"
 }
 
-### Delete measure
+### Remove measure by UUID
 DELETE http://localhost:5000/api/measures/dceaade9-8aa6-4671-a0c0-549c48871b5a HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI3N2VkOWQ2NC03OTBlLTQ1MWYtYWJiYy0zNWJmOTBjZTNkYTciLCJpYXQiOjE3MzkyMDM4MzksImV4cCI6MTczOTIwNDczOX0.pyOZjwSEvCgv-OluetHtzUp-VU9uQVedMuSGJYwon6o

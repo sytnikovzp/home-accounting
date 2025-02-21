@@ -13,7 +13,7 @@ GET http://localhost:5000/api/categories?sort=title&order=asc&page=1&limit=10 HT
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1OTdmY2VlMi1lMWRhLTQzM2UtYjhjOC1mMThiY2E5YjMzMGUiLCJpYXQiOjE3MzkxOTc5NTAsImV4cCI6MTczOTE5ODg1MH0.AEyUSbb6ptDOMwmSl97VCTbMhDh6xf29EUKdH1lQpCg
 
-### Get list all categories (status approved, custom pagination, with sort by uuid (desc))
+### Get list all categories (status approved, custom pagination, with sort by UUID (desc))
 GET http://localhost:5000/api/categories?sort=uuid&order=desc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1OTdmY2VlMi1lMWRhLTQzM2UtYjhjOC1mMThiY2E5YjMzMGUiLCJpYXQiOjE3MzkxOTc5NTAsImV4cCI6MTczOTE5ODg1MH0.AEyUSbb6ptDOMwmSl97VCTbMhDh6xf29EUKdH1lQpCg
@@ -38,7 +38,7 @@ GET http://localhost:5000/api/categories?status=rejected&page=1&limit=10 HTTP/1.
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1OTdmY2VlMi1lMWRhLTQzM2UtYjhjOC1mMThiY2E5YjMzMGUiLCJpYXQiOjE3MzkxOTc5NTAsImV4cCI6MTczOTE5ODg1MH0.AEyUSbb6ptDOMwmSl97VCTbMhDh6xf29EUKdH1lQpCg
 
-### Create category
+### Add category
 POST http://localhost:5000/api/categories HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2MzIyZTA1YS05NGU2LTQ3YTMtYTM4Yy03OWMxNWYzNGI2YzkiLCJpYXQiOjE3NDAwMTM1MDMsImV4cCI6MTc0MTMwOTUwM30._ASB7sk0vPa350qWouW4-3_7mq-hYrb9VkPpc4wyT_o
@@ -47,12 +47,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
   "title": "Нова категорія"
 }
 
-### Get category by uuid
+### Get category by UUID
 GET http://localhost:5000/api/categories/d9c18455-81d4-46db-9c43-d11f3ce9cd51 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2MzIyZTA1YS05NGU2LTQ3YTMtYTM4Yy03OWMxNWYzNGI2YzkiLCJpYXQiOjE3NDAwMTM1MDMsImV4cCI6MTc0MTMwOTUwM30._ASB7sk0vPa350qWouW4-3_7mq-hYrb9VkPpc4wyT_o
 
-### Update category
+### Edit category by UUID
 PATCH http://localhost:5000/api/categories/d9c18455-81d4-46db-9c43-d11f3ce9cd51 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2MzIyZTA1YS05NGU2LTQ3YTMtYTM4Yy03OWMxNWYzNGI2YzkiLCJpYXQiOjE3NDAwMTM1MDMsImV4cCI6MTc0MTMwOTUwM30._ASB7sk0vPa350qWouW4-3_7mq-hYrb9VkPpc4wyT_o
@@ -61,7 +61,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
   "title": "Оновлена назва"
 }
 
-### Delete category
+### Remove category by UUID
 DELETE http://localhost:5000/api/categories/83095a11-50b6-4a01-859e-94f7f4b62cc1 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwNjhiMTdiOC1jZWMyLTQxM2YtODIwYi02YzExZDU2OTQ0MTQiLCJpYXQiOjE3MzkxOTgyMjMsImV4cCI6MTczOTE5OTEyM30.bytkWZVODsFzspVkoXDzmpWfRXswIIlXh2Ca_GJGvt0

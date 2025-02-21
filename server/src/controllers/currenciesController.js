@@ -41,7 +41,7 @@ class CurrenciesController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get currency by uuid error: ', error.message);
+      console.error('Get currency by UUID error: ', error.message);
       next(error);
     }
   }

@@ -41,7 +41,7 @@ class MeasuresController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get measure by uuid error: ', error.message);
+      console.error('Get measure by UUID error: ', error.message);
       next(error);
     }
   }

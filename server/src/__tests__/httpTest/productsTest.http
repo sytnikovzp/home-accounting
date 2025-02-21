@@ -13,7 +13,7 @@ GET http://localhost:5000/api/products?sort=category&order=asc&page=1&limit=10 H
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJjN2NhZjhjNi1mN2IxLTRlYTktYTU4YS1jOGExM2Y3NTNlZDciLCJpYXQiOjE3MzkyMDA5MjUsImV4cCI6MTczOTIwMTgyNX0.tNsLHChc_oJaZkevC9qHG_fATYFsEuQT9rNeUFetiig
 
-### Get list all products (status approved, custom pagination, with sort by uuid (desc))
+### Get list all products (status approved, custom pagination, with sort by UUID (desc))
 GET http://localhost:5000/api/products?sort=uuid&order=desc&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJjN2NhZjhjNi1mN2IxLTRlYTktYTU4YS1jOGExM2Y3NTNlZDciLCJpYXQiOjE3MzkyMDA5MjUsImV4cCI6MTczOTIwMTgyNX0.tNsLHChc_oJaZkevC9qHG_fATYFsEuQT9rNeUFetiig
@@ -38,7 +38,7 @@ GET http://localhost:5000/api/products?status=rejected&page=1&limit=10 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJjN2NhZjhjNi1mN2IxLTRlYTktYTU4YS1jOGExM2Y3NTNlZDciLCJpYXQiOjE3MzkyMDA5MjUsImV4cCI6MTczOTIwMTgyNX0.tNsLHChc_oJaZkevC9qHG_fATYFsEuQT9rNeUFetiig
 
-### Create product
+### Add product
 POST http://localhost:5000/api/products HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2MzIyZTA1YS05NGU2LTQ3YTMtYTM4Yy03OWMxNWYzNGI2YzkiLCJpYXQiOjE3NDAwOTAwNTgsImV4cCI6MTc0MTM4NjA1OH0.xCls6w_oqk18t24Ov_gci1PfiybkLsbJMFO6IaVorxI
@@ -48,12 +48,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
   "category": ""
 }
 
-### Get product by uuid
+### Get product by UUID
 GET http://localhost:5000/api/products/0b46885a-5df0-4a45-8c6e-619b015a37a7 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2MzIyZTA1YS05NGU2LTQ3YTMtYTM4Yy03OWMxNWYzNGI2YzkiLCJpYXQiOjE3NDAwOTAwNTgsImV4cCI6MTc0MTM4NjA1OH0.xCls6w_oqk18t24Ov_gci1PfiybkLsbJMFO6IaVorxI
 
-### Update product
+### Edit product by UUID
 PATCH http://localhost:5000/api/products/2c5d9b8f-d4e2-4c89-ba49-35863a68865a HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI2MzIyZTA1YS05NGU2LTQ3YTMtYTM4Yy03OWMxNWYzNGI2YzkiLCJpYXQiOjE3NDAwOTAwNTgsImV4cCI6MTc0MTM4NjA1OH0.xCls6w_oqk18t24Ov_gci1PfiybkLsbJMFO6IaVorxI
@@ -63,7 +63,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
   "category": "Пристрої"
 }
 
-### Delete product
+### Remove product by UUID
 DELETE http://localhost:5000/api/products/3c123e96-463f-47cd-b335-9c0ecb7242b8 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIxMTA2ODg2My0yYTIwLTQzMGEtYjU2MS04OWQ3YjRmMzljOWMiLCJpYXQiOjE3MzkyMDEyMDUsImV4cCI6MTczOTIwMjEwNX0.GGf1ssjjabHzpHCPbMlknm454ldHZx_sRk25WM7ltww

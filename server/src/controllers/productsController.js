@@ -42,7 +42,7 @@ class ProductsController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get product by uuid error: ', error.message);
+      console.error('Get product by UUID error: ', error.message);
       next(error);
     }
   }

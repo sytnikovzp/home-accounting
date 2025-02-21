@@ -44,7 +44,7 @@ class EstablishmentsController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get establishment by uuid error: ', error.message);
+      console.error('Get establishment by UUID error: ', error.message);
       next(error);
     }
   }

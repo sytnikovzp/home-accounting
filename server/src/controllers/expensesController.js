@@ -45,7 +45,7 @@ class ExpensesController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get expense by uuid error:', error.message);
+      console.error('Get expense by UUID error:', error.message);
       next(error);
     }
   }
