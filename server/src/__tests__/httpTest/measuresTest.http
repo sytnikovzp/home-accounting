@@ -1,7 +1,7 @@
 ### Get list all measures (default pagination, without sort)
 GET http://localhost:5000/api/measures HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJiN2JmNTcwMi1kZDNlLTRkZWMtYTdjNy1hYzUyODc2ZWY5MGYiLCJpYXQiOjE3MzkyMDM2NzIsImV4cCI6MTczOTIwNDU3Mn0.nXVa7Q2ZvIVnCCvT4itox6Z4K2UTFvGZNHq8OBusdB0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwNzU2MzliZi1mYjJkLTRlZmEtOTMyYS05MjRjNGYyYzVjMmUiLCJpYXQiOjE3NDAxMDQwNDUsImV4cCI6MTc0MTQwMDA0NX0.rNowO8hs1TaNp_Mr7hnFmBkR-YtkeCQV5tTyDm4bIws
 
 ### Get list all measures (custom pagination, without sort)
 GET http://localhost:5000/api/measures?page=1&limit=10 HTTP/1.1
@@ -25,13 +25,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 
 {
   "title": "Нова одиниця вимірів",
-  "description": "Тестовий опис"
+  "description": "Опис одиниці вимірів"
 }
 
 ### Get measure by UUID
-GET http://localhost:5000/api/measures/dceaade9-8aa6-4671-a0c0-549c48871b5a HTTP/1.1
+GET http://localhost:5000/api/measures/2ad28bd8-513e-4ad6-9968-0263af0bb44a HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI3N2VkOWQ2NC03OTBlLTQ1MWYtYWJiYy0zNWJmOTBjZTNkYTciLCJpYXQiOjE3MzkyMDM4MzksImV4cCI6MTczOTIwNDczOX0.pyOZjwSEvCgv-OluetHtzUp-VU9uQVedMuSGJYwon6o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiIwNzU2MzliZi1mYjJkLTRlZmEtOTMyYS05MjRjNGYyYzVjMmUiLCJpYXQiOjE3NDAxMDQwNDUsImV4cCI6MTc0MTQwMDA0NX0.rNowO8hs1TaNp_Mr7hnFmBkR-YtkeCQV5tTyDm4bIws
 
 ### Edit measure by UUID
 PATCH http://localhost:5000/api/measures/dceaade9-8aa6-4671-a0c0-549c48871b5a HTTP/1.1
@@ -40,7 +40,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 
 {
   "title": "Оновлена назва одиниці вимірів",
-  "description": "Оновлений опис"
+  "description": "Оновлений опис одиниці вимірів"
 }
 
 ### Remove measure by UUID
