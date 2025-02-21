@@ -1,7 +1,7 @@
 ### Get list all expenses (default pagination, without sort, period All Time)
 GET http://localhost:5000/api/expenses HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1Yzk0NWU1NC1hYjQwLTRiMjQtYWNlMi0zNTZhNTk3MjE3MzAiLCJpYXQiOjE3Mzk3NzY1MDQsImV4cCI6MTczOTc3NzQwNH0.gFy2dbiJ5ap5oc5rKbnOV8sWFHwGAdBcWnnaBC-vVZY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4OTAxNzZmZS00NzgzLTQ5Y2QtOTI3MS03Zjk5OWUzNjY1NDciLCJpYXQiOjE3NDAwOTc0NjIsImV4cCI6MTc0MTM5MzQ2Mn0.DGeeejByXhvwRLcbnyiWSChKD48xdJFP4loPfJK-ekM
 
 ### Get list all expenses (custom pagination, without sort, period All Time)
 GET http://localhost:5000/api/expenses?page=1&limit=10 HTTP/1.1
@@ -21,7 +21,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiODA1OWU3O
 ### Add expense
 POST http://localhost:5000/api/expenses HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1Yzk0NWU1NC1hYjQwLTRiMjQtYWNlMi0zNTZhNTk3MjE3MzAiLCJpYXQiOjE3Mzk3NzczNzcsImV4cCI6MTczOTc3ODI3N30.X5_xYwaLVe2Q_RJ0wwKboEKBcUYXdek3XN_ZrC02oIA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4OTAxNzZmZS00NzgzLTQ5Y2QtOTI3MS03Zjk5OWUzNjY1NDciLCJpYXQiOjE3NDAwOTc0NjIsImV4cCI6MTc0MTM5MzQ2Mn0.DGeeejByXhvwRLcbnyiWSChKD48xdJFP4loPfJK-ekM
 
 {
   "product": "Навушники",
@@ -36,14 +36,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 }
 
 ### Get expense by UUID
-GET http://localhost:5000/api/expenses/01dd4b2d-fad8-4280-882f-bec20c2649c8 HTTP/1.1
+GET http://localhost:5000/api/expenses/016e5ca1-d83a-4766-bc39-192110e78496 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1Yzk0NWU1NC1hYjQwLTRiMjQtYWNlMi0zNTZhNTk3MjE3MzAiLCJpYXQiOjE3Mzk3NzY1MDQsImV4cCI6MTczOTc3NzQwNH0.gFy2dbiJ5ap5oc5rKbnOV8sWFHwGAdBcWnnaBC-vVZY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlNmYwMGEwMS01OGI4LTRiYWUtYWYxNC04MTY2MDEyZTc5MDAiLCJpYXQiOjE3NDAwOTkyOTgsImV4cCI6MTc0MTM5NTI5OH0.Li1MSw7oxrplfLdaEv2BzoaFrJvR7xoEcZjT-YkOHjg
 
 ### Edit expense by UUID
-PATCH http://localhost:5000/api/expenses/fcd66364-7585-41ae-b4f6-71e39adfe5d1 HTTP/1.1
+PATCH http://localhost:5000/api/expenses/9f6836c1-0018-4360-a5b4-d1705e16998f HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1Yzk0NWU1NC1hYjQwLTRiMjQtYWNlMi0zNTZhNTk3MjE3MzAiLCJpYXQiOjE3Mzk3NzczNzcsImV4cCI6MTczOTc3ODI3N30.X5_xYwaLVe2Q_RJ0wwKboEKBcUYXdek3XN_ZrC02oIA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4OTAxNzZmZS00NzgzLTQ5Y2QtOTI3MS03Zjk5OWUzNjY1NDciLCJpYXQiOjE3NDAwOTc0NjIsImV4cCI6MTc0MTM5MzQ2Mn0.DGeeejByXhvwRLcbnyiWSChKD48xdJFP4loPfJK-ekM
 
 {
   "product": "Ноутбук",
