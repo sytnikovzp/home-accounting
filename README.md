@@ -1,13 +1,13 @@
-# Home Accounting (aka Моя Бухгалтерія)
+# Home accounting (aka Моя бухгалтерія)
 
 <p align="center">
   <img src="./screenshots/9_Expenses_edit.png" alt="Home Accounting" style="max-width: 80%;">
   <img src="https://img.shields.io/github/last-commit/sytnikovzp/home-accounting" alt="Last Commit">
 </p>
 
-## Опис Додатку
+## Опис додатку
 
-Додаток для відстеження особистих фінансів. Дозволяє контролювати витрати та доходи. **Наразі в розробці**.
+Додаток для відстеження особистих фінансів. Дозволяє контролювати витрати та доходи. **Наразі перебуває в розробці**.
 
 <details>
   <summary><strong>Основна функціональність додатку</strong></summary>
@@ -38,15 +38,22 @@
 
 - **Node.js** – середовище виконання JavaScript на сервері.
 - **Express** – веб-фреймворк для створення серверних застосунків. Забезпечує маршрутизацію та обробку запитів.
-- **Sequelize** – ORM (Object-Relational Mapping) для роботи з базою даних PostgreSQL. Дозволяє взаємодіяти з базою даних через моделі, а також керувати міграціями та сидуванням даних.
 - **PostgreSQL** – реляційна база даних, що використовується для зберігання даних застосунку.
+- **Sequelize** – ORM (Object-Relational Mapping) для роботи з базою даних PostgreSQL. Дозволяє взаємодіяти з базою даних через моделі, а також керувати міграціями та сидуванням даних.
+- **pg** і **pg-hstore** – бібліотеки для взаємодії з PostgreSQL з використанням Sequelize.
+- **MongoDB** – NoSQL база даних, яка використовується для зберігання користувачів, ролей і прав доступу.
+- **Mongoose** – ODM (Object-Document Mapping) для роботи з MongoDB. Дозволяє створювати схеми та моделі для взаємодії з базою даних.
+- **Axios** – бібліотека для виконання HTTP-запитів. Використовується для комунікації з сервером і API НБУ для завантаження курсів валют.
 - **bcrypt** – бібліотека для хешування паролів, що використовується для підвищення безпеки даних користувачів.
 - **jsonwebtoken** – бібліотека для роботи з JWT (JSON Web Token), яка використовується для авторизації та створення токенів доступу.
 - **cookie-parser** – middleware для обробки файлів cookie в Express.
 - **cors** – middleware для керування політикою доступу між доменами (CORS).
 - **dotenv** – бібліотека для завантаження змінних оточення з `.env` файлу.
-- **pg** і **pg-hstore** – бібліотеки для взаємодії з PostgreSQL з використанням Sequelize.
 - **yup** – бібліотека для валідації даних на сервері.
+- **multer** – middleware для обробки завантаження файлів на сервер (наприклад, зображень або документів).
+- **nodemailer** – бібліотека для відправки email-листів через SMTP.
+- **uuid** – бібліотека для генерації унікальних ідентифікаторів (UUID).
+- **date-fns** – бібліотека для роботи з датами, що дозволяє форматувати, парсити та виконувати операції з датами.
 
 </details>
 
@@ -54,27 +61,58 @@
   <summary><strong>Клієнтські технології</strong></summary>
 
 - **React** – бібліотека для побудови інтерфейсів користувача. Використовується для створення компонентів і управління станом.
-- **Chart.js** – бібліотека для створення графіків і діаграм. Використовується для відображення погодних даних у вигляді графіків.
+- **React DOM** – бібліотека для взаємодії React з DOM.
+- **React Router DOM** – бібліотека для роботи з маршрутизацією в React. Використовується для організації навігації між сторінками.
+- **Redux Toolkit** – набір інструментів для роботи з глобальним станом у Redux.
+- **React Redux** – офіційна бібліотека для інтеграції Redux з React.
+- **Redux Logger** – middleware для логування дій Redux у консолі.
+- **MUI (Material-UI)** – бібліотека компонентів для React, що реалізує Material Design.
+- **MUI Icons** – набір іконок для Material-UI.
+- **MUI Date Pickers** – набір компонентів для вибору дати та часу.
+- **Emotion (React & Styled)** – бібліотека для роботи зі стилями в React.
+- **Chart.js** – бібліотека для створення графіків і діаграм.
 - **React-Chartjs-2** – обгортка для інтеграції Chart.js з React.
-- **react-router-dom** – бібліотека для роботи з маршрутизацією в React. Використовується для організації навігації між сторінками.
-- **date-fns** – бібліотека для роботи з датами, яка використовується для форматування і обробки часу.
-- **Formik** – бібліотека для керування формами в React, що спрощує обробку стану, валідації та обробки подій у формах.
-- **yup** – бібліотека для валідації даних на клієнті.
-- **Vite** – інструмент для збірки проєктів, що забезпечує швидку розробку та збірку клієнтської частини.
+- **Chart.js Plugin Datalabels** – плагін для Chart.js, що дозволяє відображати підписи на діаграмах.
+- **Formik** – бібліотека для керування формами в React, що спрощує обробку стану, валідації та подій у формах.
+- **Yup** – бібліотека для валідації даних на клієнті.
+- **Date-fns** – бібліотека для роботи з датами, яка використовується для форматування і обробки часу.
+- **React Helmet Async** – бібліотека для роботи з мета-тегами та заголовками сторінок в React.
 
 </details>
 
 <details>
-  <summary><strong>Dev Dependencies</strong></summary>
+  <summary><strong>Загальні для клієнта та сервера Dev Dependencies</strong></summary>
 
 - **ESLint** – інструмент для аналізу коду, що допомагає дотримуватися кращих практик програмування.
+- **ESLint Config Prettier** – конфігурація ESLint для сумісності з Prettier.
+- **ESLint Plugins**:
+  - **eslint-plugin-import** – перевіряє правильність імпорту модулів.
+  - **eslint-plugin-jsx-a11y** – допомагає покращити доступність JSX-коду.
+  - **eslint-plugin-no-secrets** – виявляє випадкове розміщення секретів (API-ключів, паролів) у коді.
+  - **eslint-plugin-optimize-regex** – оптимізує регулярні вирази.
+  - **eslint-plugin-prettier** – інтеграція Prettier з ESLint.
+  - **eslint-plugin-promise** – забезпечує дотримання кращих практик при роботі з промісами.
+  - **eslint-plugin-react** – лінтинг специфічного для React коду.
+  - **eslint-plugin-react-hooks** – перевіряє коректне використання React-хуків.
+  - **eslint-plugin-react-refresh** – підтримка React Fast Refresh.
+  - **eslint-plugin-simple-import-sort** – автоматично сортує імпорти.
+  - **eslint-plugin-sort-keys-fix** – автоматично сортує ключі об'єктів.
+  - **eslint-plugin-sequelize** – перевіряє використання Sequelize у коді.
+  - **eslint-plugin-unicorn** – набір правил для покращення якості коду.
+- **Prettier** – інструмент для автоматичного форматування коду.
+- **Globals** – набір глобальних змінних для коректної роботи ESLint.
 - **Nodemon** – утиліта, що дозволяє автоматично перезапускати сервер при внесенні змін у код.
 - **Morgan** – middleware для ведення логів HTTP-запитів в Express.
 - **Sequelize CLI** – інструмент для керування міграціями та сидуванням даних у Sequelize.
+- **Jest** – тестова бібліотека для модульного тестування.
+- **Supertest** – бібліотека для тестування HTTP-запитів до сервера.
+- **Vite** – інструмент для збірки проєктів, що забезпечує швидку розробку та оптимізацію коду.
+- **Vite Plugin Env Compatible** – забезпечує сумісність змінних оточення у Vite.
+- **@Vitejs/Plugin-React** – офіційний плагін для підтримки React у Vite.
 
 </details>
 
-## Схеми Баз Даних
+## Схеми баз даних
 
 <details>
   <summary><strong>PostgreSQL</strong></summary>
@@ -95,102 +133,39 @@
 <details>
   <summary><strong>Підготовка</strong></summary>
 
-1. Клонувати репозиторій:
-
 ```bash
-git clone git@github.com:sytnikovzp/weather.git
-```
+# Клонуємо репозиторій
+git clone git@github.com:sytnikovzp/home-accounting.git
 
-2. Перейти до каталогу проекту:
+# Переходимо в директорію проєкту
+cd home-accounting
 
-```bash
-cd weather
-```
-
-3. Перейти до каталогу серверної частини:
-
-```bash
-cd server
-```
-
-4. Встановити залежності:
-
-```bash
-npm i
-```
-
-5. Повернутись до каталогу проєкту:
-
-```bash
-cd ..
-```
-
-6. Перейти до каталогу клієнтської частини:
-
-```bash
-cd client
-```
-
-7. Встановити залежності:
-
-```bash
-npm i
-```
-
-8. Повернутись до каталогу проєкту:
-
-```bash
-cd ..
+# Встановлюємо залежності для серверної та клієнтської частини
+npm --prefix server install
+npm --prefix client install
 ```
 
 </details>
 
 <details>
-  <summary><strong>Налаштування конфігураційних змінних в .env</strong></summary>
+  <summary><strong>Налаштування конфігураційних змінних</strong></summary>
 
-Створіть в кореневій директорії проєкту файл конфігурації `.env` з наступним змістом та вкажіть в них свої параметри `SMTP_USER` та `SMTP_PASSWORD`:
+Створіть файл `.env` використовуючи команду:
 
-```yaml
-#For client
-VITE_PORT=3000
-
-#For server
-ACCOUNTING_SERVER_HOST=localhost
-ACCOUNTING_SERVER_PORT=5000
-
-ACCESS_SECRET=access_secret
-REFRESH_SECRET=refresh_secret
-ACCESS_TOKEN_LIFETIME=15m
-REFRESH_TOKEN_LIFETIME=60d
-
-SALT_ROUNDS=9
-STATIC_PATH=public
-CLIENT_URL=http://localhost:3000
-
-SMTP_HOST="smtp.gmail.com"
-SMTP_PORT=587
-SMTP_USER=*yourmail@gmail.com*
-SMTP_PASSWORD="*your password*"
-
-#For database
-DB_USER=postgres
-DB_PASS=root
-DB_NAME=home_accounting
-DB_NAME_TEST=home_accounting_test
-DB_DIALECT=postgres
-MONGO_PORT=27017
-MONGO_DB_NAME=home_accounting
-MONGO_DB_NAME_TEST=home_accounting_test
+```bash
+cp .env.example .env
 ```
 
-АБО використайте цей bash скрипт для автоматичного створення '.env' файлу в кореневій директорії проєкту та вкажіть свої параметри `SMTP_USER` та `SMTP_PASSWORD`:
+Відредагуйте файл `.env`, вказавши СВОЇ значення для `SMTP_USER` та `SMTP_PASSWORD`. Це потрібно для коректної роботи біблиотеки nodemailer.
+
+Якщо файл `.env.example` відсутній, створіть файл `.env` використовуючи команду:
 
 ```bash
 cat <<EOL > .env
-#For client
+# For client
 VITE_PORT=3000
 
-#For server
+# For server
 ACCOUNTING_SERVER_HOST=localhost
 ACCOUNTING_SERVER_PORT=5000
 
@@ -208,7 +183,7 @@ SMTP_PORT=587
 SMTP_USER=*yourmail@gmail.com*
 SMTP_PASSWORD="*your password*"
 
-#For database
+# For database
 DB_USER=postgres
 DB_PASS=root
 DB_NAME=home_accounting
@@ -225,57 +200,43 @@ EOL
 <details>
   <summary><strong>Ініціалізація баз даних</strong></summary>
 
-1. Перейдіть до каталогу server:
-
 ```bash
 cd server
-```
-
-2. Та виконайте запуск скрипту, який створить базу даних, виконає запуск міграцій та наповнення бази даних (seeders):
-
-```bash
 npm run dbinit
+cd ..
 ```
 
 </details>
 
 <details>
-  <summary><strong>Запуск BackEnd</strong></summary>
-
-1. З кореневого каталогу проєкту перейдіть до каталогу server:
+  <summary><strong>Запуск серверної частини (BackEnd)</strong></summary>
 
 ```bash
-cd server
-```
+# В окремому терміналі переходимо в директорію проєкту
+cd home-accounting
 
-2. Та виконайте запуск скрипту, який запустить сервер:
-
-```bash
-npm start
+# Запускаємо BackEnd
+npm --prefix server start
 ```
 
 </details>
 
 <details>
-  <summary><strong>Запуск FrontEnd</strong></summary>
-
-1. З кореневого каталогу проєкту перейдіть до каталогу client:
+  <summary><strong>Запуск клієнтської частини (FrontEnd)</strong></summary>
 
 ```bash
-cd client
-```
+# В окремому терміналі переходимо в директорію проєкту
+cd home-accounting
 
-2. Та виконайте запуск скрипту, який запустить клієнську частину:
-
-```bash
-npm start
+# Запускаємо FrontEnd
+npm --prefix client start
 ```
 
 </details>
 
 <details>
-  <summary><strong>Завершення роботи проєкту</strong></summary>
-  Для зупинки FrontEnd або BackEnd в відповідному терміналі виконайте команду:
+  <summary><strong>Завершення роботи</strong></summary>
+  Для зупинки серверної або клієнтської частини в відповідному терміналі натисніть:
 
 ```bash
 CTRL + C
