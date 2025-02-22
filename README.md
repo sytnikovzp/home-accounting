@@ -1,9 +1,154 @@
-## Конфігураційні змінні 'ENV'
+# Home Accounting (aka Моя Бухгалтерія)
+
+<p align="center">
+  <img src="./screenshots/9_Expenses_edit.png" alt="Home Accounting" style="max-width: 80%;">
+  <img src="https://img.shields.io/github/last-commit/sytnikovzp/home-accounting" alt="Last Commit">
+</p>
+
+## Опис Додатку
+
+Додаток для відстеження особистих фінансів. Дозволяє контролювати витрати та доходи. **Наразі в розробці**.
 
 <details>
-  <summary><strong>Створіть в кореневій директорії проєкту файл конфігурації `.env`</strong></summary>
+  <summary><strong>Основна функціональність додатку</strong></summary>
 
-... та вкажіть свої параметри `SMTP_USER` та `SMTP_PASSWORD`
+- **Реєстрація та Авторизація**: Користувачі можуть зареєструватися та увійти до системи, використовуючи свої облікові дані (логін/пароль). Всі роутери, що потребують авторизації, є приватними.
+
+- **Адаптивний Дизайн**: Додаток має адаптивний дизайн, що забезпечує комфортне використання на різних пристроях.
+
+- **Прелоадери**: Включені прелоадери для візуалізації процесу завантаження даних з API.
+
+</details>
+
+<details>
+  <summary><strong>Скріншоти додатку</strong></summary>
+
+![Auth](./screenshots/1_Auth.png)
+![ForgotPass](./screenshots/2_Forgot_pass.png)
+![UserList](./screenshots/3_User_list.png)
+![ChangePass](./screenshots/4_Change_pass.png)
+![RoleDetails](./screenshots/5_Role_details.png)
+
+</details>
+
+## Використані технології та біблиотеки
+
+<details>
+  <summary><strong>Серверні технології</strong></summary>
+
+- **Node.js** – середовище виконання JavaScript на сервері.
+- **Express** – веб-фреймворк для створення серверних застосунків. Забезпечує маршрутизацію та обробку запитів.
+- **Sequelize** – ORM (Object-Relational Mapping) для роботи з базою даних PostgreSQL. Дозволяє взаємодіяти з базою даних через моделі, а також керувати міграціями та сидуванням даних.
+- **PostgreSQL** – реляційна база даних, що використовується для зберігання даних застосунку.
+- **bcrypt** – бібліотека для хешування паролів, що використовується для підвищення безпеки даних користувачів.
+- **jsonwebtoken** – бібліотека для роботи з JWT (JSON Web Token), яка використовується для авторизації та створення токенів доступу.
+- **cookie-parser** – middleware для обробки файлів cookie в Express.
+- **cors** – middleware для керування політикою доступу між доменами (CORS).
+- **dotenv** – бібліотека для завантаження змінних оточення з `.env` файлу.
+- **pg** і **pg-hstore** – бібліотеки для взаємодії з PostgreSQL з використанням Sequelize.
+- **yup** – бібліотека для валідації даних на сервері.
+
+</details>
+
+<details>
+  <summary><strong>Клієнтські технології</strong></summary>
+
+- **React** – бібліотека для побудови інтерфейсів користувача. Використовується для створення компонентів і управління станом.
+- **Chart.js** – бібліотека для створення графіків і діаграм. Використовується для відображення погодних даних у вигляді графіків.
+- **React-Chartjs-2** – обгортка для інтеграції Chart.js з React.
+- **react-router-dom** – бібліотека для роботи з маршрутизацією в React. Використовується для організації навігації між сторінками.
+- **date-fns** – бібліотека для роботи з датами, яка використовується для форматування і обробки часу.
+- **Formik** – бібліотека для керування формами в React, що спрощує обробку стану, валідації та обробки подій у формах.
+- **yup** – бібліотека для валідації даних на клієнті.
+- **Vite** – інструмент для збірки проєктів, що забезпечує швидку розробку та збірку клієнтської частини.
+
+</details>
+
+<details>
+  <summary><strong>Dev Dependencies</strong></summary>
+
+- **ESLint** – інструмент для аналізу коду, що допомагає дотримуватися кращих практик програмування.
+- **Nodemon** – утиліта, що дозволяє автоматично перезапускати сервер при внесенні змін у код.
+- **Morgan** – middleware для ведення логів HTTP-запитів в Express.
+- **Sequelize CLI** – інструмент для керування міграціями та сидуванням даних у Sequelize.
+
+</details>
+
+## Схеми Баз Даних
+
+<details>
+  <summary><strong>PostgreSQL</strong></summary>
+  <p align="center">
+  <img src="./screenshots/ER_PostgreSQL.png" alt="PostgreSQL" style="max-width: 80%;">
+  </p>
+</details>
+
+<details>
+  <summary><strong>MongoDB</strong></summary>
+  <p align="center">
+  <img src="./screenshots/ER_MongoDB.png" alt="MongoDB" style="max-width: 80%;">
+  </p>
+</details>
+
+## Розгортання проєкту
+
+<details>
+  <summary><strong>Підготовка</strong></summary>
+
+1. Клонувати репозиторій:
+
+```bash
+git clone git@github.com:sytnikovzp/weather.git
+```
+
+2. Перейти до каталогу проекту:
+
+```bash
+cd weather
+```
+
+3. Перейти до каталогу серверної частини:
+
+```bash
+cd server
+```
+
+4. Встановити залежності:
+
+```bash
+npm i
+```
+
+5. Повернутись до каталогу проєкту:
+
+```bash
+cd ..
+```
+
+6. Перейти до каталогу клієнтської частини:
+
+```bash
+cd client
+```
+
+7. Встановити залежності:
+
+```bash
+npm i
+```
+
+8. Повернутись до каталогу проєкту:
+
+```bash
+cd ..
+```
+
+</details>
+
+<details>
+  <summary><strong>Налаштування конфігураційних змінних в .env</strong></summary>
+
+Створіть в кореневій директорії проєкту файл конфігурації `.env` з наступним змістом та вкажіть в них свої параметри `SMTP_USER` та `SMTP_PASSWORD`:
 
 ```yaml
 #For client
@@ -38,12 +183,7 @@ MONGO_DB_NAME=home_accounting
 MONGO_DB_NAME_TEST=home_accounting_test
 ```
 
-</details>
-
-<details>
-  <summary><strong>АБО для автоматичного створення '.env' файлу запустіть bash скрипт в кореневій директорії проєкту</strong></summary>
-
-... та вкажіть свої параметри `SMTP_USER` та `SMTP_PASSWORD`
+АБО використайте цей bash скрипт для автоматичного створення '.env' файлу в кореневій директорії проєкту та вкажіть свої параметри `SMTP_USER` та `SMTP_PASSWORD`:
 
 ```bash
 cat <<EOL > .env
@@ -78,6 +218,67 @@ MONGO_PORT=27017
 MONGO_DB_NAME=home_accounting
 MONGO_DB_NAME_TEST=home_accounting_test
 EOL
+```
+
+</details>
+
+<details>
+  <summary><strong>Ініціалізація баз даних</strong></summary>
+
+1. Перейдіть до каталогу server:
+
+```bash
+cd server
+```
+
+2. Та виконайте запуск скрипту, який створить базу даних, виконає запуск міграцій та наповнення бази даних (seeders):
+
+```bash
+npm run dbinit
+```
+
+</details>
+
+<details>
+  <summary><strong>Запуск BackEnd</strong></summary>
+
+1. З кореневого каталогу проєкту перейдіть до каталогу server:
+
+```bash
+cd server
+```
+
+2. Та виконайте запуск скрипту, який запустить сервер:
+
+```bash
+npm start
+```
+
+</details>
+
+<details>
+  <summary><strong>Запуск FrontEnd</strong></summary>
+
+1. З кореневого каталогу проєкту перейдіть до каталогу client:
+
+```bash
+cd client
+```
+
+2. Та виконайте запуск скрипту, який запустить клієнську частину:
+
+```bash
+npm start
+```
+
+</details>
+
+<details>
+  <summary><strong>Завершення роботи проєкту</strong></summary>
+  Для зупинки FrontEnd або BackEnd в відповідному терміналі виконайте команду:
+
+```bash
+CTRL + C
 ```
 
 </details>
@@ -871,7 +1072,7 @@ EOL
 
 ---
 
-### Управління Прав Доступу Користувачів
+### Управління Правами Доступу Користувачів
 
 Цей контролер відповідає за управління правами доступу користувачів.
 
@@ -2134,7 +2335,7 @@ EOL
 
 ---
 
-### Статистики Витрат
+### Статистика Витрат
 
 Цей контролер відповідає за надання статистики витрат по критеріям за період.
 
