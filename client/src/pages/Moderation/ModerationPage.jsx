@@ -64,7 +64,7 @@ function ModerationPage() {
         mb={2}
       >
         <Typography component='h2' sx={stylesEntityPageTypography}>
-          Підлягають модерації
+          Модерація контенту
         </Typography>
       </Box>
       <ListTable

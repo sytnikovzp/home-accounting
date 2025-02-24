@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 
@@ -16,39 +14,25 @@ import StoreIcon from '@mui/icons-material/Store';
 
 import NavItem from './NavItem';
 
-import { stylesNavBarBox } from '../../styles';
-
 const navItems = [
   { icon: HomeIcon, label: 'Головна', to: '/' },
   { icon: ShoppingCartIcon, label: 'Витрати', to: '/expenses' },
   { icon: StoreIcon, label: 'Заклади', to: '/establishments' },
-  { icon: DryCleaningIcon, label: 'Товари', to: '/products' },
-  { icon: CategoryIcon, label: 'Категорії', to: '/categories' },
+  { icon: DryCleaningIcon, label: 'Товари та послуги', to: '/products' },
+  { icon: CategoryIcon, label: 'Категорії витрат', to: '/categories' },
   { icon: AttachMoneyIcon, label: 'Валюти', to: '/currencies' },
-  { icon: SquareFootIcon, label: 'Одиниці', to: '/measures' },
-  { icon: GavelIcon, label: 'Модерація', to: '/moderation' },
+  { icon: SquareFootIcon, label: 'Одиниці вимірів', to: '/measures' },
+  { icon: GavelIcon, label: 'Модерація контенту', to: '/moderation' },
   { icon: PeopleIcon, label: 'Користувачі', to: '/users' },
-  { icon: ManageAccountsIcon, label: 'Ролі', to: '/roles' },
+  { icon: ManageAccountsIcon, label: 'Ролі користувачів', to: '/roles' },
 ];
 
-function NavBar({ onClose }) {
-  const handleItemClick = useCallback(() => {
-    if (onClose) {
-      onClose();
-    }
-  }, [onClose]);
-
+function NavBar() {
   return (
-    <Box aria-label='main menu items' component='nav' sx={stylesNavBarBox}>
+    <Box aria-label='main menu items' component='nav'>
       <List>
         {navItems.map(({ to, icon, label }) => (
-          <NavItem
-            key={label}
-            icon={icon}
-            label={label}
-            to={to}
-            onClick={handleItemClick}
-          />
+          <NavItem key={label} icon={icon} label={label} to={to} />
         ))}
       </List>
     </Box>

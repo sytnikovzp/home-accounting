@@ -44,7 +44,7 @@ const MEASURES_TITLES = new Map([
 
 const MODERATION_TITLES = new Map([
   ['view', 'Модерація контенту | Моя бухгалтерія'],
-  ['default', 'Підлягають модерації | Моя бухгалтерія'],
+  ['default', 'Модерація контенту | Моя бухгалтерія'],
 ]);
 
 const PRODUCTS_TITLES = new Map([

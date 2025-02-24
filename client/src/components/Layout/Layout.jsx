@@ -1,31 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid2';
 
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-
 import { pageTitles } from '../../constants';
 import usePageTitle from '../../hooks/usePageTitle';
 
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
-import NavBar from '../Navigation/NavBar';
-import ServiceBlock from '../ServiceBlock/ServiceBlock';
-
-import {
-  stylesLayoutBox,
-  stylesLayoutGridContainer,
-  stylesLayoutNavBarDesktop,
-  stylesLayoutNavBarMobile,
-  stylesLayoutOutlet,
-  stylesLayoutServiceBlock,
-  stylesLayoutXLContainer,
-  stylesLayoutXLGridContainer,
-} from '../../styles';
+import SideBar from '../SideBar/SideBar';
 
 const {
   AUTH_PAGE_TITLES,
@@ -69,10 +54,7 @@ const TITLES_MAP = new Map([
 ]);
 
 function Layout() {
-  const [isNavBarOpen, setIsNavBarOpen] = useState(false);
   const location = useLocation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const currentTitles = useMemo(() => {
     for (const [path, titles] of TITLES_MAP) {
@@ -85,42 +67,47 @@ function Layout() {
 
   usePageTitle(currentTitles);
 
-  useEffect(() => {
-    if (!isMobile) {
-      setIsNavBarOpen(false);
-    }
-  }, [isMobile]);
-
-  const handleToggleNavBar = () => {
-    setIsNavBarOpen((prev) => !prev);
-  };
-
   return (
-    <Box sx={stylesLayoutBox}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Grid
         container
         direction='column'
         rowSpacing={2}
-        sx={stylesLayoutGridContainer}
+        sx={{
+          backgroundImage: 'linear-gradient(to bottom, #e8f5e9, #c8e6c9)',
+          flexGrow: 1,
+        }}
       >
         <Header />
-        <Container maxWidth='xl' sx={stylesLayoutXLContainer}>
-          <Grid container columnSpacing={2} sx={stylesLayoutXLGridContainer}>
-            {!isMobile && (
-              <Grid md={2} sx={stylesLayoutNavBarDesktop}>
-                <NavBar />
-              </Grid>
-            )}
-            {isMobile && isNavBarOpen && (
-              <Grid sx={stylesLayoutNavBarMobile}>
-                <NavBar onClose={handleToggleNavBar} />
-              </Grid>
-            )}
-            <Grid sx={stylesLayoutOutlet}>
-              <Outlet />
+        <Container
+          maxWidth='xl'
+          sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
+        >
+          <Grid
+            container
+            columnSpacing={2}
+            sx={{ flexGrow: 1, flexWrap: 'nowrap' }}
+          >
+            <Grid
+              sx={{
+                display: { md: 'flex', xs: 'block' },
+                flexShrink: 0,
+                maxWidth: 'calc(100% - 190px)',
+              }}
+              xs={4}
+            >
+              <SideBar />
             </Grid>
-            <Grid md='auto' sx={stylesLayoutServiceBlock} xs={12}>
-              <ServiceBlock />
+            <Grid
+              sx={{
+                flexBasis: '0',
+                flexGrow: 1,
+                maxWidth: '100%',
+                minWidth: 0,
+                overflowX: 'auto',
+              }}
+            >
+              <Outlet />
             </Grid>
           </Grid>
         </Container>

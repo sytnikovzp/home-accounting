@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
@@ -10,19 +10,14 @@ import Toolbar from '@mui/material/Toolbar';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
-import NavBar from '../Navigation/NavBar';
-
 import AuthenticatedUserBlock from './AuthenticatedUserBlock';
 import Logo from './Logo';
 
 import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 
 function Header() {
-  const [isNavBarOpen, setIsNavBarOpen] = useState(false);
   const { isAuthenticated } = useAuthUser();
   const navigate = useNavigate();
-
-  const handleToggleNavBar = () => setIsNavBarOpen((prev) => !prev);
 
   const handleNavigateToAuth = useCallback(() => {
     navigate('/auth');
@@ -32,8 +27,7 @@ function Header() {
     <AppBar position='sticky' sx={stylesHeaderAppBar}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters sx={stylesHeaderToolbar}>
-          <Logo isMobile={false} />
-          <Logo isMobile onClick={handleToggleNavBar} />
+          <Logo />
           <Box sx={{ alignItems: 'center', display: 'flex' }}>
             {isAuthenticated ? (
               <AuthenticatedUserBlock />
@@ -50,7 +44,6 @@ function Header() {
         </Toolbar>
       </Container>
       <Divider sx={{ borderWidth: '1px' }} />
-      {isNavBarOpen && <NavBar onClose={handleToggleNavBar} />}
     </AppBar>
   );
 }

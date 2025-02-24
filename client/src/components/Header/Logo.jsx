@@ -3,6 +3,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import accountingLogo from '../../assets/logo.png';
 import {
   stylesLogoBoxDesktop,
@@ -12,13 +15,15 @@ import {
   stylesLogoTypographyMobile,
 } from '../../styles';
 
-function Logo({ isMobile, onClick }) {
+function Logo() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <Box
       component={RouterLink}
       sx={isMobile ? stylesLogoBoxMobile : stylesLogoBoxDesktop}
       to='/'
-      onClick={isMobile ? onClick : null}
     >
       <img alt='Home Accounting' src={accountingLogo} style={stylesLogoIcon} />
       <Typography
