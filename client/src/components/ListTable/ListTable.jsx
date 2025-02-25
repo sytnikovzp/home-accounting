@@ -54,7 +54,7 @@ function ListTable({
 }) {
   const columns = useMemo(() => COLUMNS_CONFIG[linkEntity] || [], [linkEntity]);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isPreloaderVisible = useDelayedPreloader(isFetching);
   const { hasPermission } = useHasPermission();
 

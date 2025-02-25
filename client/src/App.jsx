@@ -156,13 +156,12 @@ function App() {
                 path={path}
               />
             ))}
-            <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ResetPasswordPage />} path='reset-password' />
+            <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ForbiddenPage />} path='forbidden' />
             <Route element={<AboutPage />} path='about' />
             <Route element={<StatisticsPage />} path='statistics' />
             <Route element={<ContactsPage />} path='contacts' />
-            <Route element={<ForbiddenPage />} path='forbidden' />
             <Route
               element={
                 isAuthenticated ? <Navigate replace to='/' /> : <AuthPage />

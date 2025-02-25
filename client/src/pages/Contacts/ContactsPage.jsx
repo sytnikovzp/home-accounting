@@ -13,7 +13,7 @@ function ContactsPage() {
   return (
     <Container maxWidth='md' sx={{ py: 4 }}>
       <Typography gutterBottom align='center' variant='h4'>
-        Контакти
+        Контакти розробника
       </Typography>
       <Typography gutterBottom variant='body1'>
         <strong>Розробник:</strong> Ситніков Олександр

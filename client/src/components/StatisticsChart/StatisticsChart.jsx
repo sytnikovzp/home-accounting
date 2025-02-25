@@ -52,7 +52,7 @@ ChartJS.register(
 function StatisticsChart({ data }) {
   const [chartType, setChartType] = useState('doughnut');
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const chartData = useMemo(() => {
     if (

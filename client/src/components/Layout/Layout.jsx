@@ -13,13 +13,16 @@ import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
 
 const {
+  ABOUT_PAGE_TITLES,
   AUTH_PAGE_TITLES,
   CATEGORIES_TITLES,
   CHANGE_PASSWORD_TITLES,
+  CONTACTS_PAGE_TITLES,
   CURRENCIES_TITLES,
   EDIT_PROFILE_TITLES,
   ESTABLISHMENTS_TITLES,
   EXPENSES_TITLES,
+  FORBIDDEN_PAGE_TITLES,
   HOME_PAGE_TITLES,
   MEASURES_TITLES,
   MODERATION_TITLES,
@@ -30,6 +33,7 @@ const {
   REMOVE_PROFILE_TITLES,
   RESET_PASSWORD_TITLES,
   ROLES_TITLES,
+  STATISTICS_PAGE_TITLES,
   USERS_TITLES,
 } = pageTitles;
 
@@ -39,18 +43,22 @@ const TITLES_MAP = new Map([
   ['/currencies', CURRENCIES_TITLES],
   ['/establishments', ESTABLISHMENTS_TITLES],
   ['/expenses', EXPENSES_TITLES],
+  ['/statistics', STATISTICS_PAGE_TITLES],
   ['/measures', MEASURES_TITLES],
   ['/moderation', MODERATION_TITLES],
   ['/products', PRODUCTS_TITLES],
   ['/roles', ROLES_TITLES],
   ['/users', USERS_TITLES],
-  ['/notification', NOTIFICATION_PAGE_TITLES],
-  ['/reset-password', RESET_PASSWORD_TITLES],
   ['/profile', PROFILE_TITLES],
   ['/edit-profile', EDIT_PROFILE_TITLES],
   ['/permissions', PERMISSIONS_PROFILE_TITLES],
   ['/password', CHANGE_PASSWORD_TITLES],
   ['/remove-profile', REMOVE_PROFILE_TITLES],
+  ['/reset-password', RESET_PASSWORD_TITLES],
+  ['/notification', NOTIFICATION_PAGE_TITLES],
+  ['/forbidden', FORBIDDEN_PAGE_TITLES],
+  ['/about', ABOUT_PAGE_TITLES],
+  ['/contacts', CONTACTS_PAGE_TITLES],
 ]);
 
 function Layout() {

@@ -73,14 +73,6 @@ const USERS_TITLES = new Map([
 
 const HOME_PAGE_TITLES = new Map([['default', 'Моя бухгалтерія']]);
 
-const NOTIFICATION_PAGE_TITLES = new Map([
-  ['default', 'Повідомлення | Моя бухгалтерія'],
-]);
-
-const RESET_PASSWORD_TITLES = new Map([
-  ['default', 'Скидання паролю | Моя бухгалтерія'],
-]);
-
 const PROFILE_TITLES = new Map([
   ['default', 'Деталі профілю | Моя бухгалтерія'],
 ]);
@@ -101,22 +93,44 @@ const REMOVE_PROFILE_TITLES = new Map([
   ['default', 'Видалення профілю | Моя бухгалтерія'],
 ]);
 
-const NOT_FOUND_PAGE_TITLES = new Map([
-  ['default', 'Помилка 404 | Моя бухгалтерія'],
+const NOTIFICATION_PAGE_TITLES = new Map([
+  ['default', 'Повідомлення | Моя бухгалтерія'],
+]);
+
+const RESET_PASSWORD_TITLES = new Map([
+  ['default', 'Скидання паролю | Моя бухгалтерія'],
+]);
+
+const FORBIDDEN_PAGE_TITLES = new Map([
+  ['default', 'Доступ заборонено | Моя бухгалтерія'],
+]);
+
+const ABOUT_PAGE_TITLES = new Map([
+  ['default', 'Про проєкт | Моя бухгалтерія'],
+]);
+
+const CONTACTS_PAGE_TITLES = new Map([
+  ['default', 'Контакти розробника | Моя бухгалтерія'],
+]);
+
+const STATISTICS_PAGE_TITLES = new Map([
+  ['default', 'Статистика витрат | Моя бухгалтерія'],
 ]);
 
 export {
+  ABOUT_PAGE_TITLES,
   AUTH_PAGE_TITLES,
   CATEGORIES_TITLES,
   CHANGE_PASSWORD_TITLES,
+  CONTACTS_PAGE_TITLES,
   CURRENCIES_TITLES,
   EDIT_PROFILE_TITLES,
   ESTABLISHMENTS_TITLES,
   EXPENSES_TITLES,
+  FORBIDDEN_PAGE_TITLES,
   HOME_PAGE_TITLES,
   MEASURES_TITLES,
   MODERATION_TITLES,
-  NOT_FOUND_PAGE_TITLES,
   NOTIFICATION_PAGE_TITLES,
   PERMISSIONS_PROFILE_TITLES,
   PRODUCTS_TITLES,
@@ -124,5 +138,6 @@ export {
   REMOVE_PROFILE_TITLES,
   RESET_PASSWORD_TITLES,
   ROLES_TITLES,
+  STATISTICS_PAGE_TITLES,
   USERS_TITLES,
 };
