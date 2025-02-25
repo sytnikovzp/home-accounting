@@ -65,7 +65,7 @@ class ExpensesService {
       ? [...sortableFields[sort], order]
       : [['uuid', 'date'].includes(sort) ? sort : `Expense.${sort}`, order];
     const foundExpenses = await Expense.findAll({
-      attributes: ['uuid', 'date', 'creator_uuid'],
+      attributes: ['uuid', 'date', 'creator_uuid', 'quantity', 'unit_price'],
       include: [
         { model: Product, attributes: ['title'] },
         { model: Establishment, attributes: ['title'] },
@@ -89,11 +89,14 @@ class ExpensesService {
           date,
           'Product.title': productTitle,
           'Establishment.title': establishmentTitle,
+          quantity,
+          unit_price,
         }) => ({
           uuid,
           date: formatDate(date),
           product: productTitle || '',
           establishment: establishmentTitle || '',
+          totalPrice: (quantity * unit_price).toFixed(2),
         })
       ),
       total,

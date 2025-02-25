@@ -1,7 +1,7 @@
 ### Get list all expenses (default pagination, without sort, period All Time)
 GET http://localhost:5000/api/expenses HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4OTAxNzZmZS00NzgzLTQ5Y2QtOTI3MS03Zjk5OWUzNjY1NDciLCJpYXQiOjE3NDAwOTc0NjIsImV4cCI6MTc0MTM5MzQ2Mn0.DGeeejByXhvwRLcbnyiWSChKD48xdJFP4loPfJK-ekM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4MjM3NTlkOS1kYzg0LTQ2MDctYjQwNC00NWRmM2U3ODZkYzciLCJpYXQiOjE3NDA0ODg5NjcsImV4cCI6MTc0MTc4NDk2N30.60SWgXjgurTGojAyVpzZcf_U7VUViJI5yPHzT6-zQKs
 
 ### Get list all expenses (custom pagination, without sort, period All Time)
 GET http://localhost:5000/api/expenses?page=1&limit=10 HTTP/1.1
@@ -36,9 +36,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 }
 
 ### Get expense by UUID
-GET http://localhost:5000/api/expenses/016e5ca1-d83a-4766-bc39-192110e78496 HTTP/1.1
+GET http://localhost:5000/api/expenses/010b4cd5-0d04-4f02-b82b-a47015c31847 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlNmYwMGEwMS01OGI4LTRiYWUtYWYxNC04MTY2MDEyZTc5MDAiLCJpYXQiOjE3NDAwOTkyOTgsImV4cCI6MTc0MTM5NTI5OH0.Li1MSw7oxrplfLdaEv2BzoaFrJvR7xoEcZjT-YkOHjg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4MjM3NTlkOS1kYzg0LTQ2MDctYjQwNC00NWRmM2U3ODZkYzciLCJpYXQiOjE3NDA0ODg5NjcsImV4cCI6MTc0MTc4NDk2N30.60SWgXjgurTGojAyVpzZcf_U7VUViJI5yPHzT6-zQKs
 
 ### Edit expense by UUID
 PATCH http://localhost:5000/api/expenses/9f6836c1-0018-4360-a5b4-d1705e16998f HTTP/1.1
