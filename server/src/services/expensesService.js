@@ -61,12 +61,37 @@ class ExpensesService {
     const sortableFields = {
       product: [Product, 'title'],
       establishment: [Establishment, 'title'],
+      totalPrice: [
+        sequelize.literal('ROUND("quantity" * "unit_price", 2)'),
+        'totalPrice',
+      ],
     };
-    const orderConfig = sortableFields[sort]
-      ? [...sortableFields[sort], order]
-      : [['uuid', 'date'].includes(sort) ? sort : `Expense.${sort}`, order];
+    let orderConfig = null;
+    if (sort === 'totalPrice') {
+      orderConfig = [
+        sequelize.literal('ROUND("quantity" * "unit_price", 2)'),
+        order,
+      ];
+    } else if (sortableFields[sort]) {
+      orderConfig = [...sortableFields[sort], order];
+    } else {
+      orderConfig = [
+        ['uuid', 'date'].includes(sort) ? sort : `Expense.${sort}`,
+        order,
+      ];
+    }
     const foundExpenses = await Expense.findAll({
-      attributes: ['uuid', 'date', 'creator_uuid', 'quantity', 'unit_price'],
+      attributes: [
+        'uuid',
+        'date',
+        'creator_uuid',
+        'quantity',
+        'unit_price',
+        [
+          sequelize.literal('ROUND("quantity" * "unit_price", 2)'),
+          'totalPrice',
+        ],
+      ],
       include: [
         { model: Product, attributes: ['title'] },
         { model: Establishment, attributes: ['title'] },
@@ -101,14 +126,13 @@ class ExpensesService {
           date,
           'Product.title': productTitle,
           'Establishment.title': establishmentTitle,
-          quantity,
-          unit_price,
+          totalPrice,
         }) => ({
           uuid,
           date: formatDate(date),
           product: productTitle || '',
           establishment: establishmentTitle || '',
-          totalPrice: (quantity * unit_price).toFixed(2),
+          totalPrice,
         })
       ),
       totalCount,
