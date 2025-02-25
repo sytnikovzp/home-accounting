@@ -18,6 +18,7 @@ import CategoriesPage from './pages/Categories/CategoriesPage';
 import CurrenciesPage from './pages/Currencies/CurrenciesPage';
 import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
 import ExpensesPage from './pages/Expenses/ExpensesPage';
+import ForbiddenPage from './pages/ForbiddenPage/ForbiddenPage';
 import HomePage from './pages/Home/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
@@ -34,15 +35,86 @@ import UsersPage from './pages/Users/UsersPage';
 import UserViewPage from './pages/Users/UserViewPage';
 
 const privateRoutes = [
-  { path: 'expenses/*', element: ExpensesPage },
-  { path: 'establishments/*', element: EstablishmentsPage },
-  { path: 'products/*', element: ProductsPage },
-  { path: 'categories/*', element: CategoriesPage },
-  { path: 'currencies/*', element: CurrenciesPage },
-  { path: 'measures/*', element: MeasuresPage },
-  { path: 'moderation/*', element: ModerationPage },
-  { path: 'users/*', element: UsersPage },
-  { path: 'roles/*', element: RolesPage },
+  {
+    path: 'expenses/*',
+    element: ExpensesPage,
+    permissions: [
+      { entity: 'expenses', action: 'add' },
+      { entity: 'expenses', action: 'edit' },
+      { entity: 'expenses', action: 'remove' },
+    ],
+  },
+  {
+    path: 'establishments/*',
+    element: EstablishmentsPage,
+    permissions: [
+      { entity: 'establishments', action: 'add' },
+      { entity: 'establishments', action: 'edit' },
+      { entity: 'establishments', action: 'remove' },
+    ],
+  },
+  {
+    path: 'products/*',
+    element: ProductsPage,
+    permissions: [
+      { entity: 'products', action: 'add' },
+      { entity: 'products', action: 'edit' },
+      { entity: 'products', action: 'remove' },
+    ],
+  },
+  {
+    path: 'categories/*',
+    element: CategoriesPage,
+    permissions: [
+      { entity: 'categories', action: 'add' },
+      { entity: 'categories', action: 'edit' },
+      { entity: 'categories', action: 'remove' },
+    ],
+  },
+  {
+    path: 'currencies/*',
+    element: CurrenciesPage,
+    permissions: [
+      { entity: 'currencies', action: 'add' },
+      { entity: 'currencies', action: 'edit' },
+      { entity: 'currencies', action: 'remove' },
+    ],
+  },
+  {
+    path: 'measures/*',
+    element: MeasuresPage,
+    permissions: [
+      { entity: 'measures', action: 'add' },
+      { entity: 'measures', action: 'edit' },
+      { entity: 'measures', action: 'remove' },
+    ],
+  },
+  {
+    path: 'moderation/*',
+    element: ModerationPage,
+    permissions: [
+      { entity: 'moderation', action: 'category' },
+      { entity: 'moderation', action: 'product' },
+      { entity: 'moderation', action: 'establishment' },
+    ],
+  },
+  {
+    path: 'users/*',
+    element: UsersPage,
+    permissions: [
+      { entity: 'users', action: 'edit' },
+      { entity: 'users', action: 'remove' },
+    ],
+  },
+  {
+    path: 'roles/*',
+    element: RolesPage,
+    permissions: [
+      { entity: 'roles', action: 'add' },
+      { entity: 'roles', action: 'edit' },
+      { entity: 'roles', action: 'remove' },
+    ],
+  },
   { path: 'profile', element: UserViewPage },
   { path: 'edit-profile', element: UserEditPage },
   { path: 'permissions', element: RoleViewPage },
@@ -70,11 +142,11 @@ function App() {
         <Routes>
           <Route element={<Layout />} path='/'>
             <Route index element={<HomePage />} />
-            {privateRoutes.map(({ path, element: Component }) => (
+            {privateRoutes.map(({ path, element: Component, permissions }) => (
               <Route
                 key={path}
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute requiredPermissions={permissions}>
                     <Component />
                   </PrivateRoute>
                 }
@@ -83,6 +155,7 @@ function App() {
             ))}
             <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ResetPasswordPage />} path='reset-password' />
+            <Route element={<ForbiddenPage />} path='forbidden' />
             <Route
               element={
                 isAuthenticated ? <Navigate replace to='/' /> : <AuthPage />

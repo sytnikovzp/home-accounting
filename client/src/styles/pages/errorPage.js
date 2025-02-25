@@ -1,4 +1,4 @@
-export const stylesNotFoundBox = {
+export const stylesErrorPageBox = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

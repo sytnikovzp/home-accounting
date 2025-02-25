@@ -1702,8 +1702,8 @@ CTRL + C
     "title": "Назва закладу"
   },
   "measure": {
-    "uuid": "UUID одиниці виміру",
-    "title": "Назва одиниці виміру"
+    "uuid": "UUID одиниці вимірів",
+    "title": "Назва одиниці вимірів"
   },
   "currency": {
     "uuid": "UUID валюти",
@@ -1761,7 +1761,7 @@ CTRL + C
     "title": "Comfy"
   },
   "measure": {
-    "uuid": "UUID одиниці виміру",
+    "uuid": "UUID одиниці вимірів",
     "title": "шт"
   },
   "currency": {
@@ -1819,7 +1819,7 @@ CTRL + C
     "title": "Епіцентр"
   },
   "measure": {
-    "uuid": "UUID одиниці виміру",
+    "uuid": "UUID одиниці вимірів",
     "title": "шт"
   },
   "currency": {

@@ -4,27 +4,17 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import { errorMessages } from '../../constants';
-
 import { stylesErrorPageBox } from '../../styles';
 
-const { ERROR_MESSAGES } = errorMessages;
-
-function NotFoundPage() {
+function ForbiddenPage() {
   const navigate = useNavigate();
-
-  const randomMessage =
-    ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)];
 
   const handleNavigateToHome = () => navigate('/');
 
   return (
-    <Box sx={stylesErrorPageBox}>
-      <Typography color='#388e3c' fontWeight={700} variant='h2'>
-        Помилка 404
-      </Typography>
-      <Typography color='#2e7d32' fontWeight={500} sx={{ m: 3 }} variant='h4'>
-        {randomMessage}
+    <Box aria-live='assertive' role='alert' sx={stylesErrorPageBox}>
+      <Typography color='#d32f2f' fontWeight={700} mb={2} variant='h5'>
+        Вибачте, ви не маєте доступу до цієї сторінки
       </Typography>
 
       <Button
@@ -39,4 +29,4 @@ function NotFoundPage() {
   );
 }
 
-export default NotFoundPage;
+export default ForbiddenPage;
