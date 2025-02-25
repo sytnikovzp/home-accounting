@@ -15,10 +15,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { columnsConfig } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
+import useHasPermission from '../../hooks/useHasPermission';
 
 import Error from '../../components/Error/Error';
 
-import ActionBlock from './ActionBlock';
+import ActionColumns from './ActionColumns';
 import EmptyRows from './EmptyRows';
 import EntityTableCell from './EntityTableCell';
 import StatusDropdown from './StatusDropdown';
@@ -53,6 +54,7 @@ function ListTable({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isPreloaderVisible = useDelayedPreloader(isFetching);
+  const { hasPermission } = useHasPermission();
 
   const totalCount = fetchError ? 0 : pagination?.totalCount;
 
@@ -132,18 +134,22 @@ function ListTable({
 
               {linkEntity !== 'moderation' && (
                 <>
-                  <TableCell
-                    align='center'
-                    sx={stylesListTableActionsHeadTableCellNotModeration}
-                  >
-                    Редаг.
-                  </TableCell>
-                  <TableCell
-                    align='center'
-                    sx={stylesListTableActionsHeadTableCellNotModeration}
-                  >
-                    Видал.
-                  </TableCell>
+                  {hasPermission(linkEntity, 'edit') && (
+                    <TableCell
+                      align='center'
+                      sx={stylesListTableActionsHeadTableCellNotModeration}
+                    >
+                      Редаг.
+                    </TableCell>
+                  )}
+                  {hasPermission(linkEntity, 'remove') && (
+                    <TableCell
+                      align='center'
+                      sx={stylesListTableActionsHeadTableCellNotModeration}
+                    >
+                      Видал.
+                    </TableCell>
+                  )}
                 </>
               )}
             </TableRow>
@@ -162,13 +168,13 @@ function ListTable({
                 ))}
 
                 {linkEntity === 'moderation' ? (
-                  <ActionBlock
+                  <ActionColumns
                     linkEntity={linkEntity}
                     row={row}
                     onModerate={onModerate}
                   />
                 ) : (
-                  <ActionBlock
+                  <ActionColumns
                     linkEntity={linkEntity}
                     row={row}
                     onEdit={onEdit}

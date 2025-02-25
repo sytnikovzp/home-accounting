@@ -6,7 +6,7 @@ import useHasPermission from '../../hooks/useHasPermission';
 
 import ActionButton from './ActionButton';
 
-function ActionBlock({ row, linkEntity, onEdit, onRemove, onModerate }) {
+function ActionColumns({ row, linkEntity, onEdit, onRemove, onModerate }) {
   const { hasPermission } = useHasPermission();
 
   return (
@@ -36,4 +36,4 @@ function ActionBlock({ row, linkEntity, onEdit, onRemove, onModerate }) {
   );
 }
 
-export default ActionBlock;
+export default ActionColumns;
