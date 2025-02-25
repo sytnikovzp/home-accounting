@@ -15,19 +15,13 @@ class ExpensesController {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc', ago = 'allTime' } = req.query;
       const currentUser = await getCurrentUser(req.user.uuid);
-      const { allExpenses, totalCount, totalSum } = await getAllExpenses(
-        currentUser,
-        ago,
-        limit,
-        offset,
-        sort,
-        order
-      );
+      const { allExpenses, totalCount, totalSumForPeriod } =
+        await getAllExpenses(currentUser, ago, limit, offset, sort, order);
       if (allExpenses.length > 0) {
         res
           .status(200)
           .set('X-Total-Count', totalCount)
-          .set('X-Total-Sum', totalSum)
+          .set('X-Total-Sum', totalSumForPeriod)
           .json(allExpenses);
       } else {
         res.status(401);

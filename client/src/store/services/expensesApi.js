@@ -22,7 +22,8 @@ export const expensesApi = createApi({
       transformResponse: (response, meta) => ({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
-        totalSum: parseInt(meta.response.headers.get('x-total-sum')) || 0,
+        totalSumForPeriod:
+          parseInt(meta.response.headers.get('x-total-sum')) || 0,
       }),
       providesTags: (result) => {
         if (result?.data) {

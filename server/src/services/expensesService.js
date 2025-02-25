@@ -9,6 +9,7 @@ const {
   Establishment,
   Measure,
   Currency,
+  sequelize,
 } = require('../db/dbPostgres/models');
 
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
@@ -82,9 +83,17 @@ class ExpensesService {
     const totalCount = await Expense.count({
       where: { creator_uuid: currentUser.uuid, date: { [Op.gte]: time } },
     });
-    const totalSum = foundExpenses
-      .reduce((sum, { quantity, unit_price }) => sum + quantity * unit_price, 0)
-      .toFixed(2);
+    const totalSumForPeriodResult = await Expense.findAll({
+      attributes: [
+        [
+          sequelize.literal('ROUND(SUM("quantity" * "unit_price"), 2)'),
+          'result',
+        ],
+      ],
+      raw: true,
+      where: { creator_uuid: currentUser.uuid, date: { [Op.gte]: time } },
+    });
+    const totalSumForPeriod = totalSumForPeriodResult[0]?.result || '0.00';
     return {
       allExpenses: foundExpenses.map(
         ({
@@ -103,7 +112,7 @@ class ExpensesService {
         })
       ),
       totalCount,
-      totalSum,
+      totalSumForPeriod,
     };
   }
 

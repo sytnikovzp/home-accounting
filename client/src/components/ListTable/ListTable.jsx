@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -44,7 +45,7 @@ function ListTable({
   rows,
   selectedStatus,
   sortModel,
-  totalSum,
+  totalSumForPeriod,
   onEdit,
   onRemove,
   onModerate,
@@ -209,7 +210,13 @@ function ListTable({
             onStatusChange={onStatusChange}
           />
         )}
-        {linkEntity === 'expenses' ? `Загальна сума: ${totalSum} UAH` : ''}
+        {linkEntity === 'expenses' ? (
+          <Typography sx={{ fontSize: '0.875rem' }} variant='body2'>
+            Загальна сума: {totalSumForPeriod} UAH
+          </Typography>
+        ) : (
+          ''
+        )}
         <TablePagination
           component='div'
           count={totalCount}
