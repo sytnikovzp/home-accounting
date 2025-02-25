@@ -18,5 +18,5 @@ export * from './pages/authPage';
 export * from './pages/deletePages';
 export * from './pages/entityPage';
 export * from './pages/errorPage';
-export * from './pages/homePage';
+export * from './pages/statisticsPage';
 export * from './pages/viewPages';

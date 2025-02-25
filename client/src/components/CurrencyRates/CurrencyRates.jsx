@@ -1,6 +1,8 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import { useFetchNBURatesQuery } from '../../store/services';
@@ -10,7 +12,10 @@ import Preloader from '../Preloader/Preloader';
 
 import CurrencyTable from './CurrencyTable';
 
-import { stylesCurrencyExchangeBox } from '../../styles';
+import {
+  stylesCurrencyExchangeBox,
+  stylesCurrencyExchangeTypography,
+} from '../../styles';
 
 function CurrencyRates() {
   const {
@@ -39,7 +44,8 @@ function CurrencyRates() {
 
   return (
     <Box sx={stylesCurrencyExchangeBox}>
-      <Typography sx={{ mt: 1 }} variant='h6'>
+      <Typography sx={stylesCurrencyExchangeTypography} variant='h6'>
+        <CurrencyExchangeIcon color='text.primary' fontSize='medium' />
         Курси валют НБУ
       </Typography>
       <CurrencyTable rates={rates} />

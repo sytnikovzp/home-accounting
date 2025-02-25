@@ -13,21 +13,24 @@ import ModalWindow from './components/ModalWindow/ModalWindow';
 import Preloader from './components/Preloader/Preloader';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
+import AboutPage from './pages/About/AboutPage';
 import AuthPage from './pages/Auth/AuthPage';
 import CategoriesPage from './pages/Categories/CategoriesPage';
+import ContactsPage from './pages/Contacts/ContactsPage';
 import CurrenciesPage from './pages/Currencies/CurrenciesPage';
 import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
 import ExpensesPage from './pages/Expenses/ExpensesPage';
-import ForbiddenPage from './pages/ForbiddenPage/ForbiddenPage';
+import ForbiddenPage from './pages/Forbidden/ForbiddenPage';
 import HomePage from './pages/Home/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
-import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import NotFoundPage from './pages/NotFound/NotFoundPage';
 import NotificationsPage from './pages/Notifications/NotificationsPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import ResetPasswordPage from './pages/ResetPassword/ResetPasswordPage';
 import RolesPage from './pages/Roles/RolesPage';
 import RoleViewPage from './pages/Roles/RoleViewPage';
+import StatisticsPage from './pages/Statistics/StatisticsPage';
 import UserChangePasswordPage from './pages/Users/UserChangePasswordPage';
 import UserEditPage from './pages/Users/UserEditPage';
 import UserRemovePage from './pages/Users/UserRemovePage';
@@ -155,6 +158,10 @@ function App() {
             ))}
             <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ResetPasswordPage />} path='reset-password' />
+            <Route element={<ForbiddenPage />} path='forbidden' />
+            <Route element={<AboutPage />} path='about' />
+            <Route element={<StatisticsPage />} path='statistics' />
+            <Route element={<ContactsPage />} path='contacts' />
             <Route element={<ForbiddenPage />} path='forbidden' />
             <Route
               element={

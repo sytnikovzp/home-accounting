@@ -5,3 +5,10 @@ export const stylesCurrencyExchangeBox = {
   flexDirection: 'column',
   flexGrow: { md: 0, sm: 1 },
 };
+
+export const stylesCurrencyExchangeTypography = {
+  mt: 1,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 3,
+};

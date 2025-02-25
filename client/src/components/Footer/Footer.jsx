@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import TelegramIcon from '@mui/icons-material/Telegram';
 
 import {
   stylesFooterBox,
@@ -20,6 +21,10 @@ const socialLinks = [
   {
     href: 'https://www.linkedin.com/in/sytnikovzp',
     icon: <LinkedInIcon />,
+  },
+  {
+    href: 'https://t.me/sytnikovzp',
+    icon: <TelegramIcon />,
   },
 ];
 
