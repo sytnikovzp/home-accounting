@@ -1,7 +1,7 @@
 ### Get list all establishments (status approved, default pagination, without sort)
 GET http://localhost:5000/api/establishments HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlNmYwMGEwMS01OGI4LTRiYWUtYWYxNC04MTY2MDEyZTc5MDAiLCJpYXQiOjE3NDAwOTQ1ODIsImV4cCI6MTc0MTM5MDU4Mn0.J5YThSoSXWleNvdowtPHxoBRmFzst7TivWnq4YCU1ho
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4MjM3NTlkOS1kYzg0LTQ2MDctYjQwNC00NWRmM2U3ODZkYzciLCJpYXQiOjE3NDA0ODg5NjcsImV4cCI6MTc0MTc4NDk2N30.60SWgXjgurTGojAyVpzZcf_U7VUViJI5yPHzT6-zQKs
 
 ### Get list all establishments (status approved, custom pagination, without sort)
 GET http://localhost:5000/api/establishments?page=1&limit=10 HTTP/1.1

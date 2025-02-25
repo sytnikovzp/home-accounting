@@ -79,9 +79,12 @@ class ExpensesService {
     if (!foundExpenses.length) {
       throw notFound('Витрати не знайдено');
     }
-    const total = await Expense.count({
+    const totalCount = await Expense.count({
       where: { creator_uuid: currentUser.uuid, date: { [Op.gte]: time } },
     });
+    const totalSum = foundExpenses
+      .reduce((sum, { quantity, unit_price }) => sum + quantity * unit_price, 0)
+      .toFixed(2);
     return {
       allExpenses: foundExpenses.map(
         ({
@@ -99,7 +102,8 @@ class ExpensesService {
           totalPrice: (quantity * unit_price).toFixed(2),
         })
       ),
-      total,
+      totalCount,
+      totalSum,
     };
   }
 

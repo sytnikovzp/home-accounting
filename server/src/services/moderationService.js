@@ -55,7 +55,7 @@ const formatEntityData = (entity) => ({
 class ModerationService {
   static async getPendingItemsFromAllEntities(limit, offset, sort, order) {
     const pendingStatus = 'pending';
-    let total = 0;
+    let totalCount = 0;
     const allItems = [];
     const entityPromises = Object.entries(entityModels).map(
       async ([entity, Model]) => {
@@ -69,7 +69,7 @@ class ModerationService {
       }
     );
     const entityCounts = await Promise.all(entityPromises);
-    total = entityCounts.reduce((acc, count) => acc + count, 0);
+    totalCount = entityCounts.reduce((acc, count) => acc + count, 0);
     allItems.sort((a, b) => {
       switch (order) {
         case 'asc':
@@ -94,7 +94,7 @@ class ModerationService {
     if (!paginatedItems.length) {
       throw notFound('Елементи не знайдено');
     }
-    return { allItems: paginatedItems, total };
+    return { allItems: paginatedItems, totalCount };
   }
 
   static async updateCategoryStatus(uuid, status, currentUser, transaction) {

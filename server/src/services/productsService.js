@@ -49,7 +49,7 @@ class ProductsService {
     if (!foundProducts.length) {
       throw notFound('Товарів не знайдено');
     }
-    const total = await Product.count({ where: { status } });
+    const totalCount = await Product.count({ where: { status } });
     return {
       allProducts: foundProducts.map(
         ({ uuid, title, 'Category.title': categoryTitle }) => ({
@@ -58,7 +58,7 @@ class ProductsService {
           category: categoryTitle || '',
         })
       ),
-      total,
+      totalCount,
     };
   }
 

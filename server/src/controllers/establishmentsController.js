@@ -16,7 +16,7 @@ class EstablishmentsController {
     try {
       const { limit, offset } = req.pagination;
       const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
-      const { allEstablishments, total } = await getAllEstablishments(
+      const { allEstablishments, totalCount } = await getAllEstablishments(
         status,
         limit,
         offset,
@@ -24,7 +24,10 @@ class EstablishmentsController {
         order
       );
       if (allEstablishments.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allEstablishments);
+        res
+          .status(200)
+          .set('X-Total-Count', totalCount)
+          .json(allEstablishments);
       } else {
         res.status(401);
       }

@@ -67,6 +67,7 @@ describe('ExpensesController', () => {
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(200);
       expect(response.headers).toHaveProperty('x-total-count');
+      expect(response.headers).toHaveProperty('x-total-sum');
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeLessThanOrEqual(5);
     });

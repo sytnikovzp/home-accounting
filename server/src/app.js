@@ -35,7 +35,7 @@ app.use('/images', express.static(publicPath));
 app.use(
   cors({
     credentials: true,
-    exposedHeaders: ['X-Total-Count'],
+    exposedHeaders: ['X-Total-Count', 'X-Total-Sum'],
     origin: URL,
   })
 );

@@ -44,6 +44,7 @@ function ListTable({
   rows,
   selectedStatus,
   sortModel,
+  totalSum,
   onEdit,
   onRemove,
   onModerate,
@@ -208,6 +209,7 @@ function ListTable({
             onStatusChange={onStatusChange}
           />
         )}
+        {linkEntity === 'expenses' ? `Загальна сума: ${totalSum} UAH` : ''}
         <TablePagination
           component='div'
           count={totalCount}

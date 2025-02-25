@@ -47,10 +47,10 @@ class UsersService {
       fullName: user.fullName,
       photo: user.photo || '',
     }));
-    const total = await User.countDocuments(query);
+    const totalCount = await User.countDocuments(query);
     return {
       allUsers,
-      total,
+      totalCount,
     };
   }
 

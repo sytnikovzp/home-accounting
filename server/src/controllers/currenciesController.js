@@ -14,14 +14,14 @@ class CurrenciesController {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;
-      const { allCurrencies, total } = await getAllCurrencies(
+      const { allCurrencies, totalCount } = await getAllCurrencies(
         limit,
         offset,
         sort,
         order
       );
       if (allCurrencies.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allCurrencies);
+        res.status(200).set('X-Total-Count', totalCount).json(allCurrencies);
       } else {
         res.status(401);
       }

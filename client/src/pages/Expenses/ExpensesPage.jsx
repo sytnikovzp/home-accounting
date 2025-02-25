@@ -54,6 +54,7 @@ function ExpensesPage() {
 
   const expenses = expensesData?.data ?? [];
   const totalCount = expensesData?.totalCount ?? 0;
+  const totalSum = expensesData?.totalSum ?? 0;
 
   const handleModalOpen = useCallback(
     (mode, uuid = null) => {
@@ -119,6 +120,7 @@ function ExpensesPage() {
         rows={expenses}
         selectedStatus={selectedPeriod}
         sortModel={sortModel}
+        totalSum={totalSum}
         onEdit={handleEdit}
         onRemove={handleRemove}
         onSortModelChange={setSortModel}

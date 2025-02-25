@@ -49,10 +49,10 @@ class EstablishmentsService {
       title: establishment.title,
       logo: establishment.logo || '',
     }));
-    const total = await Establishment.count({ where: { status } });
+    const totalCount = await Establishment.count({ where: { status } });
     return {
       allEstablishments,
-      total,
+      totalCount,
     };
   }
 

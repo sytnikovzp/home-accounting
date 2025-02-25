@@ -33,14 +33,14 @@ class CurrenciesService {
     if (!foundCurrencies.length) {
       throw notFound('Валюти не знайдено');
     }
-    const total = await Currency.count();
+    const totalCount = await Currency.count();
     return {
       allCurrencies: foundCurrencies.map(({ uuid, title, code }) => ({
         uuid,
         title,
         code,
       })),
-      total,
+      totalCount,
     };
   }
 

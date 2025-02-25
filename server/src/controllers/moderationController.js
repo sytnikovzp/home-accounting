@@ -13,14 +13,14 @@ class ModerationController {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;
-      const { allItems, total } = await getPendingItemsFromAllEntities(
+      const { allItems, totalCount } = await getPendingItemsFromAllEntities(
         limit,
         offset,
         sort,
         order
       );
       if (allItems.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allItems);
+        res.status(200).set('X-Total-Count', totalCount).json(allItems);
       } else {
         res.status(401);
       }

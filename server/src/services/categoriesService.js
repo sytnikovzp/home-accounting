@@ -41,10 +41,10 @@ class CategoriesService {
     if (!foundCategories.length) {
       throw notFound('Категорії не знайдено');
     }
-    const total = await Category.count({ where: { status } });
+    const totalCount = await Category.count({ where: { status } });
     return {
       allCategories: foundCategories,
-      total,
+      totalCount,
     };
   }
 

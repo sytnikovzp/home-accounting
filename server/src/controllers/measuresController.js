@@ -14,14 +14,14 @@ class MeasuresController {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;
-      const { allMeasures, total } = await getAllMeasures(
+      const { allMeasures, totalCount } = await getAllMeasures(
         limit,
         offset,
         sort,
         order
       );
       if (allMeasures.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allMeasures);
+        res.status(200).set('X-Total-Count', totalCount).json(allMeasures);
       } else {
         res.status(401);
       }

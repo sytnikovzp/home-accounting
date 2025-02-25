@@ -14,7 +14,7 @@ class UserController {
     try {
       const { limit, offset } = req.pagination;
       const { emailConfirm, sort = 'uuid', order = 'asc' } = req.query;
-      const { allUsers, total } = await getAllUsers(
+      const { allUsers, totalCount } = await getAllUsers(
         emailConfirm,
         limit,
         offset,
@@ -22,7 +22,7 @@ class UserController {
         order
       );
       if (allUsers.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allUsers);
+        res.status(200).set('X-Total-Count', totalCount).json(allUsers);
       } else {
         res.status(401);
       }

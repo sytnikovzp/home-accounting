@@ -31,14 +31,14 @@ class MeasuresService {
     if (!foundMeasures.length) {
       throw notFound('Одиниці вимірів не знайдено');
     }
-    const total = await Measure.count();
+    const totalCount = await Measure.count();
     return {
       allMeasures: foundMeasures.map(({ uuid, title, description }) => ({
         uuid,
         title,
         description,
       })),
-      total,
+      totalCount,
     };
   }
 

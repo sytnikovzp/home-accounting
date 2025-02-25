@@ -14,7 +14,7 @@ class CategoriesController {
     try {
       const { limit, offset } = req.pagination;
       const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
-      const { allCategories, total } = await getAllCategories(
+      const { allCategories, totalCount } = await getAllCategories(
         status,
         limit,
         offset,
@@ -22,7 +22,7 @@ class CategoriesController {
         order
       );
       if (allCategories.length > 0) {
-        res.status(200).set('X-Total-Count', total).json(allCategories);
+        res.status(200).set('X-Total-Count', totalCount).json(allCategories);
       } else {
         res.status(401);
       }

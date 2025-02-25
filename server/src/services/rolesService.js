@@ -38,10 +38,10 @@ class RolesService {
       uuid,
       title,
     }));
-    const total = await Role.countDocuments();
+    const totalCount = await Role.countDocuments();
     return {
       allRoles,
-      total,
+      totalCount,
     };
   }
 
