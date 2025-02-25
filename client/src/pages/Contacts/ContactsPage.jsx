@@ -2,6 +2,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
@@ -15,15 +16,20 @@ function ContactsPage() {
       <Typography gutterBottom align='center' variant='h4'>
         Контакти розробника
       </Typography>
+
       <Typography gutterBottom variant='body1'>
-        <strong>Розробник:</strong> Ситніков Олександр
+        <strong>Розробник:</strong> Ситніков Олександр.
       </Typography>
+
       <Typography gutterBottom variant='body1'>
         Ви можете зв`язатися зі мною за такими каналами:
       </Typography>
-      <List sx={{ pl: 2 }}>
+
+      <List sx={{ maxWidth: '400px', width: '100%' }}>
         <ListItem>
-          <EmailIcon fontSize='large' sx={{ mr: 1 }} />
+          <ListItemIcon>
+            <EmailIcon fontSize='large' />
+          </ListItemIcon>
           <ListItemText
             primary='Email'
             secondary={
@@ -31,9 +37,7 @@ function ContactsPage() {
                 href='mailto:sytnikov.zp@gmail.com'
                 sx={{
                   textDecoration: 'none',
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
+                  '&:hover': { textDecoration: 'underline' },
                 }}
               >
                 sytnikov.zp@gmail.com
@@ -41,8 +45,11 @@ function ContactsPage() {
             }
           />
         </ListItem>
+
         <ListItem>
-          <GitHubIcon fontSize='large' sx={{ mr: 1 }} />
+          <ListItemIcon>
+            <GitHubIcon fontSize='large' />
+          </ListItemIcon>
           <ListItemText
             primary='GitHub'
             secondary={
@@ -51,9 +58,7 @@ function ContactsPage() {
                 rel='noopener'
                 sx={{
                   textDecoration: 'none',
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
+                  '&:hover': { textDecoration: 'underline' },
                 }}
                 target='_blank'
               >
@@ -62,8 +67,11 @@ function ContactsPage() {
             }
           />
         </ListItem>
+
         <ListItem>
-          <TelegramIcon fontSize='large' sx={{ mr: 1 }} />
+          <ListItemIcon>
+            <TelegramIcon fontSize='large' />
+          </ListItemIcon>
           <ListItemText
             primary='Telegram'
             secondary={
@@ -72,9 +80,7 @@ function ContactsPage() {
                 rel='noopener'
                 sx={{
                   textDecoration: 'none',
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
+                  '&:hover': { textDecoration: 'underline' },
                 }}
                 target='_blank'
               >

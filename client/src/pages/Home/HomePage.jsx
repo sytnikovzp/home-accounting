@@ -25,7 +25,7 @@ import {
   stylesHomePageBox,
   stylesHomePageCard,
   stylesHomePageCardActions,
-  stylesHomePageTypography,
+  stylesRedlineTypography,
 } from '../../styles';
 
 const panelData = [
@@ -106,7 +106,7 @@ function HomePage() {
         Огляд функціоналу Home Accounting
       </Typography>
 
-      <Typography gutterBottom sx={stylesHomePageTypography} variant='body1'>
+      <Typography gutterBottom sx={stylesRedlineTypography} variant='body1'>
         <strong>Home Accounting</strong> — це простий та зручний інструмент для
         ведення обліку особистих фінансів. За допомогою цього додатку ви зможете
         ефективно управляти своїми доходами та витратами, створювати звіти,

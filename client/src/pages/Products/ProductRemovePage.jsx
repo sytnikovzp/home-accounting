@@ -12,7 +12,7 @@ import {
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-import { stylesDeletePageTypography } from '../../styles';
+import { stylesRedlineTypography } from '../../styles';
 
 function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -60,7 +60,7 @@ function ProductRemovePage({ handleModalClose }) {
       return <Preloader />;
     }
     return (
-      <Typography sx={stylesDeletePageTypography} variant='body1'>
+      <Typography sx={stylesRedlineTypography} variant='body1'>
         Ви впевнені, що хочете видалити товар/послугу «{title}»? Це призведе до
         видалення всіх витрат, що містять цей товар.
       </Typography>

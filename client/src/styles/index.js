@@ -15,7 +15,6 @@ export * from './components/sideBar';
 export * from './components/statisticsChart';
 export * from './components/viewDetails';
 export * from './pages/authPage';
-export * from './pages/deletePages';
 export * from './pages/entityPage';
 export * from './pages/errorPage';
 export * from './pages/homePage';

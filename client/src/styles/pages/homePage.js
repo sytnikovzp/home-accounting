@@ -1,4 +1,4 @@
-export const stylesHomePageTypography = {
+export const stylesRedlineTypography = {
   textIndent: '2em',
   textAlign: 'justify',
 };

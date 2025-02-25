@@ -16,7 +16,7 @@ import {
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
-import { stylesDeletePageTypography } from '../../styles';
+import { stylesRedlineTypography } from '../../styles';
 
 function UserRemovePage() {
   const { uuid } = useParams();
@@ -102,7 +102,7 @@ function UserRemovePage() {
     }
 
     return (
-      <Typography sx={stylesDeletePageTypography} variant='body1'>
+      <Typography sx={stylesRedlineTypography} variant='body1'>
         {isAuthenticatedUser
           ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
           : `Ви впевнені, що хочете видалити користувача «${fullName}»?`}
