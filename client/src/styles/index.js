@@ -11,6 +11,7 @@ export * from './components/layout';
 export * from './components/listTable';
 export * from './components/modalWindow';
 export * from './components/preloader';
+export * from './components/sideBar';
 export * from './components/statisticsChart';
 export * from './components/viewDetails';
 export * from './pages/authPage';

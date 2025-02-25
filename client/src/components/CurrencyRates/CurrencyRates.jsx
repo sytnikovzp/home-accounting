@@ -30,13 +30,17 @@ function CurrencyRates() {
   }
 
   if (!rates || rates.length === 0) {
-    return <Typography>Немає доступних курсів валют.</Typography>;
+    return (
+      <Box sx={stylesCurrencyExchangeBox}>
+        <Typography sx={{ mt: 3 }}>Немає доступних курсів валют</Typography>
+      </Box>
+    );
   }
 
   return (
     <Box sx={stylesCurrencyExchangeBox}>
       <Typography sx={{ mt: 1 }} variant='h6'>
-        Курси Національного Банку
+        Курси валют НБУ
       </Typography>
       <CurrencyTable rates={rates} />
     </Box>

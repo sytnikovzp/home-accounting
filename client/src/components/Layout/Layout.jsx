@@ -69,16 +69,15 @@ function Layout() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Grid
-        container
-        direction='column'
-        rowSpacing={2}
+      <Header />
+      <Box
         sx={{
-          backgroundImage: 'linear-gradient(to bottom, #e8f5e9, #c8e6c9)',
+          display: 'flex',
           flexGrow: 1,
+          paddingTop: 1,
+          backgroundImage: 'linear-gradient(to bottom, #e8f5e9, #c8e6c9)',
         }}
       >
-        <Header />
         <Container
           maxWidth='xl'
           sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
@@ -88,17 +87,8 @@ function Layout() {
             columnSpacing={2}
             sx={{ flexGrow: 1, flexWrap: 'nowrap' }}
           >
-            <Grid
-              sx={{
-                display: { md: 'flex', xs: 'block' },
-                flexShrink: 0,
-                maxWidth: 'calc(100% - 190px)',
-              }}
-              xs={4}
-            >
-              <SideBar />
-            </Grid>
-            <Grid
+            <SideBar />
+            <Box
               sx={{
                 flexBasis: '0',
                 flexGrow: 1,
@@ -108,13 +98,11 @@ function Layout() {
               }}
             >
               <Outlet />
-            </Grid>
+            </Box>
           </Grid>
         </Container>
-      </Grid>
-      <Grid sx={{ flexShrink: 0 }}>
-        <Footer />
-      </Grid>
+      </Box>
+      <Footer />
     </Box>
   );
 }
