@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import useHasPermission from '../../hooks/useHasPermission';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
@@ -28,6 +29,7 @@ const CURRENCIES_PAGES = [
 
 function CurrenciesPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
+  const { hasPermission } = useHasPermission();
   const navigate = useNavigate();
 
   const itemsPerPage = useItemsPerPage();
@@ -82,14 +84,16 @@ function CurrenciesPage() {
         mb={2}
       >
         <Typography variant='h6'>Валюти</Typography>
-        <Button
-          color='success'
-          size='small'
-          variant='contained'
-          onClick={handleAddClick}
-        >
-          Додати
-        </Button>
+        {hasPermission('currencies', 'add') && (
+          <Button
+            color='success'
+            size='small'
+            variant='contained'
+            onClick={handleAddClick}
+          >
+            Додати
+          </Button>
+        )}
       </Box>
       <ListTable
         fetchError={fetchError}

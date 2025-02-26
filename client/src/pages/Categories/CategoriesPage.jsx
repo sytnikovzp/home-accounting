@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import useHasPermission from '../../hooks/useHasPermission';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
@@ -29,6 +30,7 @@ const CATEGORIES_PAGES = [
 function CategoriesPage() {
   const [sortModel, setSortModel] = useState({ field: 'title', order: 'asc' });
   const [selectedStatus, setSelectedStatus] = useState('approved');
+  const { hasPermission } = useHasPermission();
   const navigate = useNavigate();
 
   const itemsPerPage = useItemsPerPage();
@@ -86,14 +88,16 @@ function CategoriesPage() {
         mb={2}
       >
         <Typography variant='h6'>Категорії витрат</Typography>
-        <Button
-          color='success'
-          size='small'
-          variant='contained'
-          onClick={handleAddClick}
-        >
-          Додати
-        </Button>
+        {hasPermission('categories', 'add') && (
+          <Button
+            color='success'
+            size='small'
+            variant='contained'
+            onClick={handleAddClick}
+          >
+            Додати
+          </Button>
+        )}
       </Box>
       <ListTable
         showStatusDropdown

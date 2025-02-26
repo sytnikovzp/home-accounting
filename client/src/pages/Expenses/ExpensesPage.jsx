@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import useHasPermission from '../../hooks/useHasPermission';
 import useItemsPerPage from '../../hooks/useItemsPerPage';
 import usePagination from '../../hooks/usePagination';
 
@@ -29,6 +30,7 @@ const EXPENSES_PAGES = [
 function ExpensesPage() {
   const [sortModel, setSortModel] = useState({ field: 'date', order: 'desc' });
   const [selectedPeriod, setSelectedPeriod] = useState('allTime');
+  const { hasPermission } = useHasPermission();
   const navigate = useNavigate();
 
   const itemsPerPage = useItemsPerPage();
@@ -87,14 +89,16 @@ function ExpensesPage() {
         mb={2}
       >
         <Typography variant='h6'>Витрати</Typography>
-        <Button
-          color='success'
-          size='small'
-          variant='contained'
-          onClick={handleAddClick}
-        >
-          Додати
-        </Button>
+        {hasPermission('expenses', 'add') && (
+          <Button
+            color='success'
+            size='small'
+            variant='contained'
+            onClick={handleAddClick}
+          >
+            Додати
+          </Button>
+        )}
       </Box>
       <ListTable
         showStatusDropdown
