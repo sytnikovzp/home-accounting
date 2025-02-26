@@ -5,7 +5,7 @@ export const stylesRedlineTypography = {
 
 export const stylesHomePageCard = {
   width: 400,
-  backgroundColor: '#b6d5a1',
+  backgroundColor: '#B6D5A1',
 };
 
 export const stylesHomePageCardActions = {

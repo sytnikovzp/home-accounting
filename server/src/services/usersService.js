@@ -156,7 +156,7 @@ class UsersService {
     foundUser.emailConfirm = 'confirmed';
     await foundUser.save();
     await ConfirmationToken.deleteOne({ token });
-    return null;
+    return true;
   }
 
   static async resendConfirmEmail(uuid) {
@@ -176,7 +176,7 @@ class UsersService {
       foundUser.email,
       `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
     );
-    return null;
+    return true;
   }
 
   static async changePassword(

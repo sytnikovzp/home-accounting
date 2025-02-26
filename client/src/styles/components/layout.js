@@ -7,7 +7,7 @@ export const stylesLayoutBox = {
 export const stylesLayoutBoxContainer = {
   display: 'flex',
   flexGrow: 1,
-  backgroundImage: 'linear-gradient(to bottom, #e8f5e9, #c8e6c9)',
+  backgroundImage: 'linear-gradient(to bottom, #E8F5E9, #C8E6C9)',
 };
 
 export const stylesLayoutXLContainer = {

@@ -366,7 +366,7 @@ CTRL + C
 </details>
 
 <details>
-  <summary><strong>Запит на скидання паролю</strong></summary>
+  <summary><strong>Запит на відновлення паролю</strong></summary>
 
 - **Метод**: POST
 - **URL**: `/api/auth/forgot`
@@ -386,7 +386,7 @@ CTRL + C
 ```json
 {
   "severity": "success",
-  "title": "Скидання паролю...",
+  "title": "Відновлення паролю...",
   "message": "На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями"
 }
 ```
@@ -394,7 +394,7 @@ CTRL + C
 </details>
 
 <details>
-  <summary><strong>Перенаправлення на сторінку для скидання паролю</strong></summary>
+  <summary><strong>Перенаправлення на сторінку для відновлення паролю</strong></summary>
 
 - **Метод**: GET
 - **URL**: `/api/auth/reset-password`
@@ -406,7 +406,7 @@ CTRL + C
 </details>
 
 <details>
-  <summary><strong>Скидання паролю</strong></summary>
+  <summary><strong>Відновлення паролю</strong></summary>
 
 - **Метод**: POST
 - **URL**: `/api/auth/reset?token={uuid_token}`
@@ -427,7 +427,7 @@ CTRL + C
 ```json
 {
   "severity": "success",
-  "title": "Скидання паролю...",
+  "title": "Відновлення паролю...",
   "message": "Ваш пароль успішно змінено"
 }
 ```
@@ -1695,8 +1695,8 @@ CTRL + C
     "title": "Назва товару/послуги"
   },
   "quantity": "Кількість одиниць",
-  "unitPrice": "Ціна за одиницю",
-  "totalPrice": "Загальна ціна за покупку",
+  "unitPrice": "Вартість за одиницю",
+  "totalPrice": "Загальна вартість витрати",
   "establishment": {
     "uuid": "UUID закладу",
     "title": "Назва закладу"
@@ -1710,7 +1710,7 @@ CTRL + C
     "title": "Назва валюти",
     "code": "Міжнародний код валюти"
   },
-  "date": "Дата здійснення покупки",
+  "date": "Дата здійснення витрати",
   "creation": {
     "creatorUuid": "UUID автора",
     "creatorFullName": "Повне ім'я автора",

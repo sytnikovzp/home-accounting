@@ -73,7 +73,7 @@ function ExpenseForm({ isSubmitting, expense = null, onSubmit }) {
     },
     {
       name: 'unitPrice',
-      label: 'Ціна за одиницю',
+      label: 'Вартість за одиницю',
       placeholder: 'Наприклад "80"',
       required: true,
     },

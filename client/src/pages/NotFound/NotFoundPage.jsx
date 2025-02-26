@@ -20,11 +20,11 @@ function NotFoundPage() {
 
   return (
     <Box sx={stylesErrorPageBox}>
-      <Typography color='#ff5252' fontWeight={700} variant='h2'>
+      <Typography color='#FF5252' fontWeight={700} variant='h2'>
         Помилка 404
       </Typography>
 
-      <Typography color='#2e7d32' fontWeight={500} sx={{ m: 3 }} variant='h4'>
+      <Typography color='#2E7D32' fontWeight={500} sx={{ m: 3 }} variant='h4'>
         {randomMessage}
       </Typography>
 

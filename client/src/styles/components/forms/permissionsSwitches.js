@@ -1,5 +1,5 @@
 export const stylesPermissionsSwitchesMainBox = {
-  border: '1px solid #ddd',
+  border: '1px solid #DDD',
   borderRadius: '4px',
   maxHeight: '250px',
   overflowX: 'hidden',
@@ -8,7 +8,7 @@ export const stylesPermissionsSwitchesMainBox = {
 
 export const stylesPermissionsSwitchesListItem = {
   alignItems: 'flex-start',
-  borderBottom: '1px solid #ddd',
+  borderBottom: '1px solid #DDD',
   display: 'flex',
   ml: 1,
 };

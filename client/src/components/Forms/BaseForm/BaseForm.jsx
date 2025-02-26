@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Form, Formik } from 'formik';
 
 import Box from '@mui/material/Box';
@@ -74,21 +75,26 @@ function BaseForm({
     </Form>
   );
 
+  const handleSubmit = useCallback(
+    async (values, actions) => {
+      try {
+        await onSubmit(values, actions);
+      } catch (error) {
+        actions.setSubmitting(false);
+        if (error.response?.data?.message) {
+          actions.setFieldError('general', error.response.data.message);
+        }
+      }
+    },
+    [onSubmit]
+  );
+
   return (
     <Formik
       validateOnMount
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={async (values, actions) => {
-        try {
-          await onSubmit(values, actions);
-        } catch (error) {
-          actions.setSubmitting(false);
-          if (error.response?.data?.message) {
-            actions.setFieldError('general', error.response.data.message);
-          }
-        }
-      }}
+      onSubmit={handleSubmit}
     >
       {renderForm}
     </Formik>

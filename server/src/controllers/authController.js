@@ -69,7 +69,7 @@ class AuthController {
       await forgotPassword(email);
       res.status(200).json({
         severity: 'success',
-        title: 'Скидання паролю...',
+        title: 'Відновлення паролю...',
         message:
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
       });
@@ -99,7 +99,7 @@ class AuthController {
       await resetPassword(token, newPassword, confirmNewPassword);
       res.status(200).json({
         severity: 'success',
-        title: 'Скидання паролю...',
+        title: 'Відновлення паролю...',
         message: 'Ваш пароль успішно змінено',
       });
     } catch (error) {

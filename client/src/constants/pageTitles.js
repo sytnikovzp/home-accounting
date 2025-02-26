@@ -98,7 +98,7 @@ const NOTIFICATION_PAGE_TITLES = new Map([
 ]);
 
 const RESET_PASSWORD_TITLES = new Map([
-  ['default', 'Скидання паролю | Моя бухгалтерія'],
+  ['default', 'Відновлення паролю | Моя бухгалтерія'],
 ]);
 
 const FORBIDDEN_PAGE_TITLES = new Map([

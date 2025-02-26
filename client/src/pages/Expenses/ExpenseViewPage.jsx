@@ -58,7 +58,7 @@ function ExpenseViewPage({ handleModalClose }) {
       },
       {
         icon: AttachMoneyIcon,
-        label: 'Ціна за одиницю',
+        label: 'Вартість за одиницю',
         value: `${unitPrice || '*Немає даних*'} ${currency?.code || '*Немає даних*'}`,
       },
       {

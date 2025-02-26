@@ -63,8 +63,8 @@ export const stylesStatisticsChartBackgroundColor = [
   '#4527A0',
 ];
 
-export const stylesStatisticsChartBorderColor = '#2e7d32';
+export const stylesStatisticsChartBorderColor = '#2E7D32';
 
-export const stylesStatisticsChartHoverBackgroundColor = '#2e7d32';
+export const stylesStatisticsChartHoverBackgroundColor = '#2E7D32';
 
-export const stylesStatisticsChartHoverBorderColor = '#1b5e20';
+export const stylesStatisticsChartHoverBorderColor = '#1B5E20';

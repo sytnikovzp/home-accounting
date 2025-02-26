@@ -111,7 +111,7 @@ describe('AuthController', () => {
         'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями'
       );
       expect(response.body.severity).toBe('success');
-      expect(response.body.title).toBe('Скидання паролю...');
+      expect(response.body.title).toBe('Відновлення паролю...');
     });
 
     it('should return 404 for non-existent user', async () => {

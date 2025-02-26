@@ -55,7 +55,7 @@ function ModalWindow({
             </Box>
           )}
           {error && (
-            <Alert severity={error?.severity || 'error'} sx={{ mb: 1 }}>
+            <Alert severity={error?.severity || 'error'} sx={{ mb: 2 }}>
               <AlertTitle>{error?.title || 'error'}:</AlertTitle>
               {error?.message || 'error'}
             </Alert>

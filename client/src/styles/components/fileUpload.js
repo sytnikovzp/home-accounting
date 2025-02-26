@@ -8,8 +8,8 @@ export const stylesFileUploadMainBox = {
 
 export const stylesFileUploadAvatarBox = {
   alignItems: 'center',
-  backgroundColor: '#f9f9f9',
-  border: '1px solid #ddd',
+  backgroundColor: '#F9F9F9',
+  border: '1px solid #DDD',
   borderRadius: '8px',
   display: 'flex',
   height: '120px',

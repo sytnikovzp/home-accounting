@@ -1,6 +1,6 @@
 export const stylesFooterBox = {
   alignItems: 'center',
-  backgroundColor: '#c8e6c9',
+  backgroundColor: '#C8E6C9',
   borderTop: '1px solid rgba(0, 0, 0, 0.1)',
   color: '#333',
   display: 'flex',

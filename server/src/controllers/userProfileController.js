@@ -40,7 +40,7 @@ class UserProfileController {
         `${URL}/notification?severity=${encodeURIComponent(
           'success'
         )}&title=${encodeURIComponent(
-          'Веріфікація облікового запису...'
+          'Підтвердження email...'
         )}&message=${encodeURIComponent('Ваш email успішно підтверджений')}`
       );
     } catch (error) {
@@ -57,7 +57,7 @@ class UserProfileController {
         `${URL}/notification?severity=${encodeURIComponent(
           'success'
         )}&title=${encodeURIComponent(
-          'Веріфікація облікового запису...'
+          'Підтвердження email...'
         )}&message=${encodeURIComponent(
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями'
         )}`

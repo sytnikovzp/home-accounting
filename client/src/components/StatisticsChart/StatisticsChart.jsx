@@ -83,7 +83,11 @@ function StatisticsChart({ data }) {
   }, [data]);
 
   if (!chartData) {
-    return <Error error={'Немає даних для відображення'} />;
+    return (
+      <Box sx={stylesStatisticsChartBox}>
+        <Error error={'Відсутні дані витрат для відображення за цей період'} />
+      </Box>
+    );
   }
 
   const chartOptions = {

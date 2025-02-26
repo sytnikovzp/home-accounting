@@ -19,7 +19,7 @@ function ForgotPasswordForm({ isSubmitting, onSubmit }) {
       fields={fields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
-      submitButtonText='Запросити зміну паролю'
+      submitButtonText='Відновити пароль'
       validationSchema={FORGOT_PASSWORD_VALIDATION_SCHEME}
       onSubmit={onSubmit}
     />

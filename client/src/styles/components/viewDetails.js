@@ -17,7 +17,7 @@ export const stylesViewDetailRowTypography = {
 };
 
 export const stylesPermissionsListBox = {
-  border: '1px solid #ddd',
+  border: '1px solid #DDD',
   borderRadius: '4px',
   maxHeight: '250px',
   overflowX: 'hidden',
