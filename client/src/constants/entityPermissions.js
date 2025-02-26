@@ -35,6 +35,8 @@ const ENTITY_PERMISSIONS = {
     establishment: 'MODERATION_ESTABLISHMENTS',
   },
   users: {
+    fullView: 'FULL_PROFILE_VIEWER',
+    limitedView: 'LIMITED_PROFILE_VIEWER',
     edit: 'EDIT_USERS',
     remove: 'REMOVE_USERS',
   },

@@ -85,8 +85,8 @@ export const stylesListTableActions = {
 };
 
 export const stylesListTableTableRow = {
+  '&:nth-of-type(odd)': { backgroundColor: 'action.hover' },
   '&:hover': { backgroundColor: 'action.selected' },
-  '&:nth-of-type(2n)': { backgroundColor: 'action.hover' },
 };
 
 export const stylesListTableTableTypography = {

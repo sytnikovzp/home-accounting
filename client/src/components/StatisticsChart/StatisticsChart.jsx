@@ -20,7 +20,7 @@ import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import BarChartIcon from '@mui/icons-material/BarChart';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import RadarIcon from '@mui/icons-material/Radar';
 
@@ -170,7 +170,7 @@ function StatisticsChart({ data }) {
         <Button
           color='default'
           size='small'
-          startIcon={<BarChartIcon />}
+          startIcon={<EqualizerIcon />}
           sx={stylesStatisticsChartButton}
           variant='contained'
           onClick={chartHandlers.bar}

@@ -105,6 +105,8 @@ const privateRoutes = [
     path: 'users/*',
     element: UsersPage,
     permissions: [
+      { entity: 'users', action: 'fullView' },
+      { entity: 'users', action: 'limitedView' },
       { entity: 'users', action: 'edit' },
       { entity: 'users', action: 'remove' },
     ],

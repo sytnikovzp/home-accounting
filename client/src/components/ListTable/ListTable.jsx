@@ -134,26 +134,25 @@ function ListTable({
                 </TableCell>
               )}
 
-              {linkEntity !== 'moderation' && (
-                <>
-                  {hasPermission(linkEntity, 'edit') && (
-                    <TableCell
-                      align='center'
-                      sx={stylesListTableActionsHeadTableCellNotModeration}
-                    >
-                      Редаг.
-                    </TableCell>
-                  )}
-                  {hasPermission(linkEntity, 'remove') && (
-                    <TableCell
-                      align='center'
-                      sx={stylesListTableActionsHeadTableCellNotModeration}
-                    >
-                      Видал.
-                    </TableCell>
-                  )}
-                </>
-              )}
+              {linkEntity !== 'moderation' &&
+                hasPermission(linkEntity, 'edit') && (
+                  <TableCell
+                    align='center'
+                    sx={stylesListTableActionsHeadTableCellNotModeration}
+                  >
+                    Редаг.
+                  </TableCell>
+                )}
+
+              {linkEntity !== 'moderation' &&
+                hasPermission(linkEntity, 'remove') && (
+                  <TableCell
+                    align='center'
+                    sx={stylesListTableActionsHeadTableCellNotModeration}
+                  >
+                    Видал.
+                  </TableCell>
+                )}
             </TableRow>
           </TableHead>
 
@@ -185,12 +184,7 @@ function ListTable({
                 )}
               </TableRow>
             ))}
-            <EmptyRows
-              columns={columns}
-              isMobile={isMobile}
-              pageSize={pageSize}
-              rows={rows}
-            />
+            <EmptyRows columns={columns} pageSize={pageSize} rows={rows} />
           </TableBody>
         </Table>
       </Box>

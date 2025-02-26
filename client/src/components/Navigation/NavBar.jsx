@@ -5,12 +5,12 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CategoryIcon from '@mui/icons-material/Category';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import DryCleaningIcon from '@mui/icons-material/DryCleaning';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import GavelIcon from '@mui/icons-material/Gavel';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PeopleIcon from '@mui/icons-material/People';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import StoreIcon from '@mui/icons-material/Store';
@@ -23,7 +23,7 @@ import NavItem from './NavItem';
 const publicNavItems = [
   { icon: HomeIcon, label: 'Головна', to: '/' },
   {
-    icon: QueryStatsIcon,
+    icon: EqualizerIcon,
     label: 'Демо статистики',
     to: '/statistics',
   },
@@ -34,7 +34,7 @@ const publicNavItems = [
 const privateNavItems = [
   { icon: HomeIcon, label: 'Головна', to: '/' },
   {
-    icon: QueryStatsIcon,
+    icon: EqualizerIcon,
     label: 'Статистика витрат',
     to: '/statistics',
     entity: 'expenses',
@@ -94,7 +94,7 @@ const privateNavItems = [
     label: 'Користувачі',
     to: '/users',
     entity: 'users',
-    permissions: ['edit', 'remove'],
+    permissions: ['fullView', 'limitedView', 'edit', 'remove'],
   },
   {
     icon: ManageAccountsIcon,

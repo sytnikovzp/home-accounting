@@ -8,23 +8,22 @@ import {
   stylesListTableHeightEmptyRow,
 } from '../../styles';
 
-function EmptyRows({ columns, rows, pageSize, isMobile }) {
+function EmptyRows({ columns, rows, pageSize }) {
   const emptyRowsCount = pageSize - rows.length;
 
   const emptyRows = useMemo(
     () =>
       Array.from({ length: emptyRowsCount }, (_, index) => (
         <TableRow key={`empty-row-${index}`} sx={stylesListTableHeightEmptyRow}>
-          {columns.map((_, colIndex) => (
+          {Array.from({ length: columns.length }, (_, colIndex) => (
             <TableCell
               key={`empty-cell-${index}-${colIndex}`}
               sx={stylesListTableBorderEmptyRow}
             />
           ))}
-          {!isMobile && <TableCell sx={stylesListTableBorderEmptyRow} />}
         </TableRow>
       )),
-    [emptyRowsCount, columns, isMobile]
+    [emptyRowsCount, columns]
   );
 
   return <>{emptyRows}</>;

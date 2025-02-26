@@ -18,6 +18,7 @@ function ActionColumns({ row, linkEntity, onEdit, onRemove, onModerate }) {
           onClick={() => onEdit(row)}
         />
       )}
+
       {hasPermission(linkEntity, 'remove') && (
         <ActionButton
           Icon={DeleteIcon}
@@ -25,6 +26,7 @@ function ActionColumns({ row, linkEntity, onEdit, onRemove, onModerate }) {
           onClick={() => onRemove(row)}
         />
       )}
+
       {linkEntity === 'moderation' && (
         <ActionButton
           Icon={VerifiedUserIcon}
