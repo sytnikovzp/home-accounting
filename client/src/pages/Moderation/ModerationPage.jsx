@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import useItemsPerPage from '../../hooks/useItemsPerPage';
@@ -13,8 +14,6 @@ import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
 import ListTable from '../../components/ListTable/ListTable';
 
 import ContentModerationPage from './ContentModerationPage';
-
-import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
 const MODERATIONS_PAGES = [
   { path: ':path/:uuid', Component: ContentModerationPage },
@@ -55,17 +54,14 @@ function ModerationPage() {
   }, [navigate]);
 
   return (
-    <>
+    <Container maxWidth='lg' sx={{ py: 2 }}>
       <Box
         alignItems='center'
         display='flex'
-        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography component='h2' sx={stylesEntityPageTypography}>
-          Модерація контенту
-        </Typography>
+        <Typography variant='h6'>Модерація контенту</Typography>
       </Box>
       <ListTable
         fetchError={fetchError}
@@ -88,7 +84,7 @@ function ModerationPage() {
         entityPages={MODERATIONS_PAGES}
         handleModalClose={handleModalClose}
       />
-    </>
+    </Container>
   );
 }
 

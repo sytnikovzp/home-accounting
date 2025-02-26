@@ -1,11 +1,9 @@
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import { formatItems } from '../../../utils/sharedFunctions';
 import { USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
+import useHasPermission from '../../../hooks/useHasPermission';
 
 import { useFetchAllRolesQuery } from '../../../store/services';
 
@@ -16,16 +14,17 @@ import BaseForm from '../BaseForm/BaseForm';
 import { stylesUserFormPasswordButton } from '../../../styles';
 
 function UserForm({
-  isSubmitting,
   isChanging,
-  onRemove,
-  onUpload,
-  onReset,
+  isSubmitting,
   user = null,
+  onPassword,
+  onRemove,
+  onReset,
   onSubmit,
+  onUpload,
 }) {
-  const navigate = useNavigate();
-  const { uuid, fullName, email, role, photo } = user ?? {};
+  const { hasPermission } = useHasPermission();
+  const { fullName, email, role, photo } = user ?? {};
 
   const { data: rolesData, isLoading: isFetching } = useFetchAllRolesQuery({
     page: 1,
@@ -54,18 +53,14 @@ function UserForm({
       label: 'E-mail',
       placeholder: 'example@gmail.com',
     },
-    {
+    hasPermission('roles', 'assign') && {
       name: 'role',
       label: 'Роль',
       type: 'select',
       options: formatItems(roles, 'title', 'title'),
       placeholder: 'Наприклад "Users"',
     },
-  ];
-
-  const handleChangePassword = useCallback(() => {
-    navigate(`/users/password/${uuid}`);
-  }, [navigate, uuid]);
+  ].filter(Boolean);
 
   if (isFetching) {
     return <Preloader />;
@@ -82,11 +77,7 @@ function UserForm({
         onUpload={onUpload}
       />
       <Box sx={stylesUserFormPasswordButton}>
-        <Button
-          color='success'
-          variant='contained'
-          onClick={handleChangePassword}
-        >
+        <Button color='success' variant='contained' onClick={onPassword}>
           Змінити пароль
         </Button>
         <Button color='error' variant='contained' onClick={onRemove}>

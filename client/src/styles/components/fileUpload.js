@@ -3,7 +3,7 @@ export const stylesFileUploadMainBox = {
   display: 'flex',
   flexDirection: 'column',
   gap: 2,
-  mt: 2,
+  mb: 2,
 };
 
 export const stylesFileUploadAvatarBox = {

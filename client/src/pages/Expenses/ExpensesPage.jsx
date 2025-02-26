@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import useItemsPerPage from '../../hooks/useItemsPerPage';
@@ -17,12 +18,6 @@ import ExpenseAddPage from './ExpenseAddPage';
 import ExpenseEditPage from './ExpenseEditPage';
 import ExpenseRemovePage from './ExpenseRemovePage';
 import ExpenseViewPage from './ExpenseViewPage';
-
-import {
-  stylesEntityPageBox,
-  stylesEntityPageButton,
-  stylesEntityPageTypography,
-} from '../../styles';
 
 const EXPENSES_PAGES = [
   { path: 'add', Component: ExpenseAddPage },
@@ -84,24 +79,21 @@ function ExpensesPage() {
   const handlePeriodChange = (newStatus) => setSelectedPeriod(newStatus);
 
   return (
-    <>
+    <Container maxWidth='lg' sx={{ py: 2 }}>
       <Box
         alignItems='center'
         display='flex'
-        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography component='h2' sx={stylesEntityPageTypography}>
-          Витрати
-        </Typography>
+        <Typography variant='h6'>Витрати</Typography>
         <Button
           color='success'
-          sx={stylesEntityPageButton}
+          size='small'
           variant='contained'
           onClick={handleAddClick}
         >
-          Додати витрату
+          Додати
         </Button>
       </Box>
       <ListTable
@@ -130,7 +122,7 @@ function ExpensesPage() {
         entityPages={EXPENSES_PAGES}
         handleModalClose={handleModalClose}
       />
-    </>
+    </Container>
   );
 }
 

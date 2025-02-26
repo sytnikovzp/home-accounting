@@ -5,7 +5,7 @@ import { stylesRedlineTypography } from '../../styles';
 
 function AboutPage() {
   return (
-    <Container maxWidth='md' sx={{ py: 4 }}>
+    <Container maxWidth='md' sx={{ py: 2 }}>
       <Typography gutterBottom align='center' variant='h4'>
         Про проєкт Home Accounting
       </Typography>
@@ -62,7 +62,7 @@ function AboutPage() {
       </Typography>
 
       <Typography gutterBottom sx={stylesRedlineTypography} variant='body1'>
-        Проєкт постійно вдосконалюється. Якщо у вас є ідеї чи пропозиції,
+        Проєкт постійно вдосконалюється. Якщо у Вас є ідеї чи пропозиції,
         зв`яжіться зі мною!
       </Typography>
     </Container>

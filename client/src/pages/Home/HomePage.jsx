@@ -101,7 +101,7 @@ function HomePage() {
   };
 
   return (
-    <Container maxWidth='md' sx={{ py: 4 }}>
+    <Container maxWidth='md' sx={{ py: 2 }}>
       <Typography gutterBottom align='center' variant='h4'>
         Огляд функціоналу Home Accounting
       </Typography>

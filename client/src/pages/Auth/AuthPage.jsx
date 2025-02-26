@@ -167,7 +167,7 @@ function AuthPage() {
       <Avatar
         sx={{
           height: 50,
-          mb: 2,
+          mb: 1,
           mx: 'auto',
           width: 50,
           bgcolor: getAvatarBgColor,

@@ -13,8 +13,8 @@ import Preloader from '../Preloader/Preloader';
 import CurrencyTable from './CurrencyTable';
 
 import {
-  stylesCurrencyExchangeBox,
-  stylesCurrencyExchangeTypography,
+  stylesCurrencyRatesBox,
+  stylesCurrencyRatesTypography,
 } from '../../styles';
 
 function CurrencyRates() {
@@ -36,15 +36,17 @@ function CurrencyRates() {
 
   if (!rates || rates.length === 0) {
     return (
-      <Box sx={stylesCurrencyExchangeBox}>
-        <Typography sx={{ mt: 3 }}>Немає доступних курсів валют</Typography>
+      <Box sx={stylesCurrencyRatesBox}>
+        <Typography sx={stylesCurrencyRatesTypography}>
+          Недоступні курси валют
+        </Typography>
       </Box>
     );
   }
 
   return (
-    <Box sx={stylesCurrencyExchangeBox}>
-      <Typography sx={stylesCurrencyExchangeTypography} variant='h6'>
+    <Box sx={stylesCurrencyRatesBox}>
+      <Typography sx={stylesCurrencyRatesTypography} variant='h6'>
         <CurrencyExchangeIcon color='text.primary' fontSize='medium' />
         Курси валют НБУ
       </Typography>

@@ -12,7 +12,7 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 
 function ContactsPage() {
   return (
-    <Container maxWidth='md' sx={{ py: 4 }}>
+    <Container maxWidth='md' sx={{ py: 2 }}>
       <Typography gutterBottom align='center' variant='h4'>
         Контакти розробника
       </Typography>

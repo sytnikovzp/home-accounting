@@ -1,8 +1,6 @@
 export const stylesViewDetailRowExtraBox = {
   alignItems: 'flex-end',
   display: 'flex',
-  flexDirection: 'row',
-  gap: '8px',
   justifyContent: 'space-between',
   width: '100%',
 };
@@ -10,7 +8,7 @@ export const stylesViewDetailRowExtraBox = {
 export const stylesViewDetailRowBox = {
   alignItems: 'center',
   display: 'flex',
-  gap: '8px',
+  gap: 1,
 };
 
 export const stylesViewDetailRowTypography = {

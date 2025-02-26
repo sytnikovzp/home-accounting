@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import useItemsPerPage from '../../hooks/useItemsPerPage';
@@ -16,8 +17,6 @@ import UserChangePasswordPage from './UserChangePasswordPage';
 import UserEditPage from './UserEditPage';
 import UserRemovePage from './UserRemovePage';
 import UserViewPage from './UserViewPage';
-
-import { stylesEntityPageBox, stylesEntityPageTypography } from '../../styles';
 
 const USERS_PAGES = [
   { path: 'password/:uuid', Component: UserChangePasswordPage },
@@ -73,17 +72,14 @@ function UsersPage() {
   const handleStatusChange = (newStatus) => setEmailConfirm(newStatus);
 
   return (
-    <>
+    <Container maxWidth='lg' sx={{ py: 2 }}>
       <Box
         alignItems='center'
         display='flex'
-        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography component='h2' sx={stylesEntityPageTypography}>
-          Користувачі
-        </Typography>
+        <Typography variant='h6'>Користувачі</Typography>
       </Box>
       <ListTable
         showStatusDropdown
@@ -107,7 +103,7 @@ function UsersPage() {
         onStatusChange={handleStatusChange}
       />
       <EntityRoutes entityPages={USERS_PAGES} />
-    </>
+    </Container>
   );
 }
 

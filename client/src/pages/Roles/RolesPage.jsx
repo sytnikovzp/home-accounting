@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import useItemsPerPage from '../../hooks/useItemsPerPage';
@@ -17,12 +18,6 @@ import RoleAddPage from './RoleAddPage';
 import RoleEditPage from './RoleEditPage';
 import RoleRemovePage from './RoleRemovePage';
 import RoleViewPage from './RoleViewPage';
-
-import {
-  stylesEntityPageBox,
-  stylesEntityPageButton,
-  stylesEntityPageTypography,
-} from '../../styles';
 
 const ROLES_PAGES = [
   { path: 'add', Component: RoleAddPage },
@@ -79,24 +74,21 @@ function RolesPage() {
   );
 
   return (
-    <>
+    <Container maxWidth='lg' sx={{ py: 2 }}>
       <Box
         alignItems='center'
         display='flex'
-        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography component='h2' sx={stylesEntityPageTypography}>
-          Ролі користувачів
-        </Typography>
+        <Typography variant='h6'>Ролі користувачів</Typography>
         <Button
           color='success'
-          sx={stylesEntityPageButton}
+          size='small'
           variant='contained'
           onClick={handleAddClick}
         >
-          Додати роль
+          Додати
         </Button>
       </Box>
       <ListTable
@@ -121,7 +113,7 @@ function RolesPage() {
         entityPages={ROLES_PAGES}
         handleModalClose={handleModalClose}
       />
-    </>
+    </Container>
   );
 }
 

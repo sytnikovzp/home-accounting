@@ -162,6 +162,14 @@ function UserEditPage() {
     }
   }, [isAuthenticatedUser, navigate, uuid]);
 
+  const handleChangePassword = useCallback(() => {
+    if (isAuthenticatedUser) {
+      navigate(`/password`);
+    } else {
+      navigate(`/users/password/${uuid}`);
+    }
+  }, [isAuthenticatedUser, navigate, uuid]);
+
   const handleModalClose = useCallback(() => {
     if (uuid) {
       navigate('/users');
@@ -203,6 +211,7 @@ function UserEditPage() {
       isChanging={isChangingPhoto}
       isSubmitting={isUserSubmitting || isUserProfileSubmitting}
       user={userData}
+      onPassword={handleChangePassword}
       onRemove={handleRemoveProfile}
       onReset={handleResetPhoto}
       onSubmit={handleSubmitUser}

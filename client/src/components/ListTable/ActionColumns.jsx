@@ -1,6 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import TaskIcon from '@mui/icons-material/Task';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 
 import useHasPermission from '../../hooks/useHasPermission';
 
@@ -25,9 +25,9 @@ function ActionColumns({ row, linkEntity, onEdit, onRemove, onModerate }) {
           onClick={() => onRemove(row)}
         />
       )}
-      {linkEntity === 'moderation' && hasPermission(row.path, 'moderate') && (
+      {linkEntity === 'moderation' && (
         <ActionButton
-          Icon={TaskIcon}
+          Icon={VerifiedUserIcon}
           title='Модерувати'
           onClick={() => onModerate(row)}
         />

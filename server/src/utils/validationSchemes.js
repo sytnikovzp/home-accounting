@@ -63,7 +63,7 @@ const DATE_REQUIRED_SCHEME = yup
   .transform(parseDateString)
   .typeError('Некоректний формат дати')
   .max(new Date(), 'Дата не може бути у майбутньому')
-  .required('Оберіть дату');
+  .required('Це поле є обовʼязкове');
 
 const PAGINATION_SCHEME = yup.object().shape({
   limit: yup.number().min(1).max(500).required(),

@@ -5,8 +5,6 @@ import Button from '@mui/material/Button';
 
 import FormFields from '../FormFields/FormFields';
 
-import { stylesBaseFormButtomBox } from '../../../styles';
-
 function BaseForm({
   fields,
   initialValues,
@@ -34,7 +32,7 @@ function BaseForm({
 
       return (
         <>
-          {renderField('product', { sx: { mb: 2 } })}
+          {renderField('product', { sx: { mb: 1 } })}
           <Box sx={{ display: 'flex', gap: 2 }}>
             {renderField('quantity', { sx: { width: '40%' } })}
             {renderField('measure', { sx: { flex: 1 } })}
@@ -43,8 +41,8 @@ function BaseForm({
             {renderField('unitPrice', { sx: { width: '40%' } })}
             {renderField('currency', { sx: { flex: 1 } })}
           </Box>
-          {renderField('establishment', { sx: { mb: 2 } })}
-          {renderField('date', { sx: { mb: 2 } })}
+          {renderField('establishment', { sx: { mb: 1 } })}
+          {renderField('date', { sx: { mb: 1 } })}
         </>
       );
     }
@@ -61,20 +59,18 @@ function BaseForm({
 
   const renderForm = ({ errors, touched, isValid }) => (
     <Form>
-      <Box sx={{ mt: 2 }}>{renderFields(fields, errors, touched, layout)}</Box>
+      <>{renderFields(fields, errors, touched, layout)}</>
       {customContent}
-      <Box sx={stylesBaseFormButtomBox}>
-        <Button
-          fullWidth
-          color='success'
-          disabled={!isValid || isSubmitting}
-          size='large'
-          type='submit'
-          variant='contained'
-        >
-          {submitButtonText}
-        </Button>
-      </Box>
+      <Button
+        fullWidth
+        color='success'
+        disabled={!isValid || isSubmitting}
+        size='large'
+        type='submit'
+        variant='contained'
+      >
+        {submitButtonText}
+      </Button>
     </Form>
   );
 

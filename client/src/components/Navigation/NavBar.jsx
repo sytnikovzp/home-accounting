@@ -22,6 +22,11 @@ import NavItem from './NavItem';
 
 const publicNavItems = [
   { icon: HomeIcon, label: 'Головна', to: '/' },
+  {
+    icon: QueryStatsIcon,
+    label: 'Демо статистики',
+    to: '/statistics',
+  },
   { icon: InfoIcon, label: 'Про проєкт', to: '/about' },
   { icon: ContactMailIcon, label: 'Контакти', to: '/contacts' },
 ];
@@ -82,7 +87,7 @@ const privateNavItems = [
     label: 'Модерація контенту',
     to: '/moderation',
     entity: 'moderation',
-    permissions: ['moderate'],
+    permissions: ['category', 'product', 'establishment'],
   },
   {
     icon: PeopleIcon,

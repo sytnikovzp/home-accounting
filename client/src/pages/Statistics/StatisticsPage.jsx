@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -21,8 +22,6 @@ import Preloader from '../../components/Preloader/Preloader';
 import StatisticsChart from '../../components/StatisticsChart/StatisticsChart';
 
 import {
-  stylesEntityPageBox,
-  stylesEntityPageTypography,
   stylesStatisticsPageCriteriaSelect,
   stylesStatisticsPagePeriodSelect,
 } from '../../styles';
@@ -66,18 +65,15 @@ function StatisticsPage() {
   }
 
   return (
-    <>
+    <Container maxWidth='lg' sx={{ py: 2 }}>
       <Box
         alignItems='center'
         display='flex'
-        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography component='h2' sx={stylesEntityPageTypography}>
-          Статистика витрат
-        </Typography>
-        <Box display='flex' flexDirection={stylesEntityPageBox} gap={2}>
+        <Typography variant='h6'>Статистика витрат</Typography>
+        <Box display='flex' gap={2}>
           <FormControl size='small' sx={stylesStatisticsPageCriteriaSelect}>
             <InputLabel>Критерій</InputLabel>
             <Select
@@ -104,7 +100,7 @@ function StatisticsPage() {
         </Box>
       </Box>
       <StatisticsChart data={statistics} />
-    </>
+    </Container>
   );
 }
 

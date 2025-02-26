@@ -12,7 +12,12 @@ class RolesController {
     try {
       const { limit, offset } = req.pagination;
       const { sort = 'uuid', order = 'asc' } = req.query;
-      const { allRoles, totalCount } = await getAllRoles(limit, offset, sort, order);
+      const { allRoles, totalCount } = await getAllRoles(
+        limit,
+        offset,
+        sort,
+        order
+      );
       if (allRoles.length > 0) {
         res.status(200).set('X-Total-Count', totalCount).json(allRoles);
       } else {

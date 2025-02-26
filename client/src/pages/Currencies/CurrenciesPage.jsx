@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import useItemsPerPage from '../../hooks/useItemsPerPage';
@@ -17,12 +18,6 @@ import CurrencyAddPage from './CurrencyAddPage';
 import CurrencyEditPage from './CurrencyEditPage';
 import CurrencyRemovePage from './CurrencyRemovePage';
 import CurrencyViewPage from './CurrencyViewPage';
-
-import {
-  stylesEntityPageBox,
-  stylesEntityPageButton,
-  stylesEntityPageTypography,
-} from '../../styles';
 
 const CURRENCIES_PAGES = [
   { path: 'add', Component: CurrencyAddPage },
@@ -79,24 +74,21 @@ function CurrenciesPage() {
   );
 
   return (
-    <>
+    <Container maxWidth='lg' sx={{ py: 2 }}>
       <Box
         alignItems='center'
         display='flex'
-        flexDirection={stylesEntityPageBox}
         justifyContent='space-between'
         mb={2}
       >
-        <Typography component='h2' sx={stylesEntityPageTypography}>
-          Валюти
-        </Typography>
+        <Typography variant='h6'>Валюти</Typography>
         <Button
           color='success'
-          sx={stylesEntityPageButton}
+          size='small'
           variant='contained'
           onClick={handleAddClick}
         >
-          Додати валюту
+          Додати
         </Button>
       </Box>
       <ListTable
@@ -121,7 +113,7 @@ function CurrenciesPage() {
         entityPages={CURRENCIES_PAGES}
         handleModalClose={handleModalClose}
       />
-    </>
+    </Container>
   );
 }
 

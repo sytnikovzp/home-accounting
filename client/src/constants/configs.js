@@ -1,6 +1,6 @@
-const CURRENCY_CODES = ['USD', 'EUR', 'GBP'];
+const CURRENCY_CODES = ['USD', 'EUR', 'GBP', 'CAD', 'PLN'];
 
-const DELAY_VISIBLE_PRELOADER = 500;
+const DELAY_VISIBLE_PRELOADER = 350;
 
 const SERVER = {
   HOST: import.meta.env.ACCOUNTING_SERVER_HOST,

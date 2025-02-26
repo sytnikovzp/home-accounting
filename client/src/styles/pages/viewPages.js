@@ -1,7 +1,7 @@
 export const stylesViewPageBox = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
+  gap: 2,
   mb: 1,
   mt: 1,
 };

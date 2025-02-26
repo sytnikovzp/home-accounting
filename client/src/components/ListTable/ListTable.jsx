@@ -210,12 +210,10 @@ function ListTable({
             onStatusChange={onStatusChange}
           />
         )}
-        {linkEntity === 'expenses' ? (
+        {linkEntity === 'expenses' && (
           <Typography sx={{ fontSize: '0.875rem' }} variant='body2'>
             Загальна сума: {totalSumForPeriod} UAH
           </Typography>
-        ) : (
-          ''
         )}
         <TablePagination
           component='div'

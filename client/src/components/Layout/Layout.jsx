@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid2';
 
 import { pageTitles } from '../../constants';
 import usePageTitle from '../../hooks/usePageTitle';
@@ -11,6 +10,14 @@ import usePageTitle from '../../hooks/usePageTitle';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import SideBar from '../SideBar/SideBar';
+
+import {
+  stylesLayoutBox,
+  stylesLayoutBoxContainer,
+  stylesLayoutOutlet,
+  stylesLayoutSideBar,
+  stylesLayoutXLContainer,
+} from '../../styles';
 
 const {
   ABOUT_PAGE_TITLES,
@@ -76,38 +83,16 @@ function Layout() {
   usePageTitle(currentTitles);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={stylesLayoutBox}>
       <Header />
-      <Box
-        sx={{
-          display: 'flex',
-          flexGrow: 1,
-          paddingTop: 1,
-          backgroundImage: 'linear-gradient(to bottom, #e8f5e9, #c8e6c9)',
-        }}
-      >
-        <Container
-          maxWidth='xl'
-          sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
-        >
-          <Grid
-            container
-            columnSpacing={2}
-            sx={{ flexGrow: 1, flexWrap: 'nowrap' }}
-          >
+      <Box sx={stylesLayoutBoxContainer}>
+        <Container maxWidth='xl' sx={stylesLayoutXLContainer}>
+          <Box sx={stylesLayoutSideBar}>
             <SideBar />
-            <Box
-              sx={{
-                flexBasis: '0',
-                flexGrow: 1,
-                maxWidth: '100%',
-                minWidth: 0,
-                overflowX: 'auto',
-              }}
-            >
-              <Outlet />
-            </Box>
-          </Grid>
+          </Box>
+          <Box sx={stylesLayoutOutlet}>
+            <Outlet />
+          </Box>
         </Container>
       </Box>
       <Footer />

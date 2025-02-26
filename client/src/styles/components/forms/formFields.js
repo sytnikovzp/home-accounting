@@ -2,5 +2,5 @@ export const stylesFormFieldsHeight = {
   '& .MuiFormHelperText-root': {
     minHeight: '20px',
   },
-  mb: 2,
+  mb: 1,
 };
