@@ -1,10 +1,7 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Button from '@mui/material/Button';
-
-import InfoMessage from '../../components/InfoMessage/InfoMessage';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function NotificationsPage() {
   const navigate = useNavigate();
@@ -19,32 +16,11 @@ function NotificationsPage() {
     navigate('/');
   }, [navigate]);
 
-  const actions = useMemo(
-    () => [
-      <Button
-        key='gohome'
-        fullWidth
-        color='success'
-        size='large'
-        variant='contained'
-        onClick={handleModalClose}
-      >
-        На головну
-      </Button>,
-    ],
-    [handleModalClose]
-  );
-
-  const content = useMemo(
-    () => <InfoMessage message={message} severity={severity} />,
-    [message, severity]
-  );
-
   return (
-    <ModalWindow
+    <InfoModal
       isOpen
-      actions={actions}
-      content={content}
+      message={message}
+      severity={severity}
       title={title}
       onClose={handleModalClose}
     />
