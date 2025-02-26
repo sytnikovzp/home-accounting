@@ -12,9 +12,13 @@ function ForbiddenPage() {
   const handleNavigateToHome = () => navigate('/');
 
   return (
-    <Box aria-live='assertive' role='alert' sx={stylesErrorPageBox}>
-      <Typography color='#d32f2f' fontWeight={700} mb={2} variant='h5'>
-        Вибачте, ви не маєте доступу до цієї сторінки
+    <Box sx={stylesErrorPageBox}>
+      <Typography color='#ff5252' fontWeight={700} variant='h2'>
+        Помилка доступу
+      </Typography>
+
+      <Typography color='#2e7d32' fontWeight={500} sx={{ m: 3 }} variant='h4'>
+        Вибачте, але Ви не маєте доступу до цієї сторінки.
       </Typography>
 
       <Button

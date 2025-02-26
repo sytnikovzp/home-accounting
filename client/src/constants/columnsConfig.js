@@ -11,7 +11,7 @@ const COLUMNS_CONFIG = {
     { field: 'date', headerName: 'Дата', align: 'left' },
     { field: 'product', headerName: 'Товар', align: 'left' },
     { field: 'establishment', headerName: 'Заклад', align: 'left' },
-    { field: 'totalPrice', headerName: 'Сума', align: 'left' },
+    { field: 'totalPrice', headerName: 'Сума (UAH)', align: 'left' },
   ],
   measures: [{ field: 'title', headerName: 'Назва одиниці', align: 'left' }],
   moderation: [
