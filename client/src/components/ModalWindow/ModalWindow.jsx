@@ -46,9 +46,7 @@ function ModalWindow({
           {title && (
             <Box id='modal-window-title' mb={2}>
               {typeof title === 'string' ? (
-                <Typography component='h1' variant='h5'>
-                  {title}
-                </Typography>
+                <Typography variant='h6'>{title}</Typography>
               ) : (
                 title
               )}

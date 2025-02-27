@@ -1,18 +1,12 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 import {
   useFetchCategoryByUuidQuery,
   useRemoveCategoryMutation,
 } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
+import ConfirmModal from '../../components/ModalWindow/ConfirmModal';
 
 function CategoryRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -28,7 +22,6 @@ function CategoryRemovePage({ handleModalClose }) {
   const [removeCategory, { isLoading: isRemoving, error: removeError }] =
     useRemoveCategoryMutation();
 
-  const isLoading = isFetching || isRemoving;
   const error = fetchError || removeError;
 
   const handleRemoveCategory = useCallback(async () => {
@@ -38,42 +31,16 @@ function CategoryRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeCategory]);
 
-  const actions = useMemo(
-    () => [
-      <Button
-        key='remove'
-        fullWidth
-        color='error'
-        disabled={isLoading}
-        size='large'
-        variant='contained'
-        onClick={handleRemoveCategory}
-      >
-        Видалити
-      </Button>,
-    ],
-    [isLoading, handleRemoveCategory]
-  );
-
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-    return (
-      <Typography sx={stylesRedlineTypography} variant='body1'>
-        Ви впевнені, що хочете видалити категорію «{title}»?
-      </Typography>
-    );
-  }, [isFetching, title]);
-
   return (
-    <ModalWindow
+    <ConfirmModal
       isOpen
-      actions={actions}
-      content={content}
       error={error?.data}
+      isFetching={isFetching}
+      isLoading={isRemoving}
+      message={`Ви впевнені, що хочете видалити категорію «${title}»?`}
       title='Видалення категорії...'
       onClose={handleModalClose}
+      onConfirm={handleRemoveCategory}
     />
   );
 }

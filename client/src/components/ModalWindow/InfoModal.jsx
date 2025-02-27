@@ -5,10 +5,6 @@ import Button from '@mui/material/Button';
 import ModalWindow from './ModalWindow';
 
 function InfoModal({ isOpen, onClose, title, message, severity = 'info' }) {
-  console.log('title', title);
-  console.log('message', message);
-  console.log('severity', severity);
-
   return (
     <ModalWindow
       actions={
@@ -16,7 +12,6 @@ function InfoModal({ isOpen, onClose, title, message, severity = 'info' }) {
           <Button
             fullWidth
             color='success'
-            size='large'
             variant='contained'
             onClick={onClose}
           >
