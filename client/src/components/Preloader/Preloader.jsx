@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 
-import { stylesPreloaderMargin, stylesPreloaderTitle } from '../../styles';
+import { stylesPreloaderTitle } from '../../styles';
 
 function Preloader({ message = 'Завантаження даних...' }) {
   return (
@@ -11,9 +11,8 @@ function Preloader({ message = 'Завантаження даних...' }) {
       display='flex'
       flexDirection='column'
       justifyContent='center'
-      sx={stylesPreloaderMargin}
     >
-      <Typography style={stylesPreloaderTitle} variant='h5'>
+      <Typography style={stylesPreloaderTitle} variant='h6'>
         {message}
       </Typography>
       <Box width='100%'>

@@ -7,6 +7,7 @@ import {
 } from '../../store/services';
 
 import ConfirmModal from '../../components/ModalWindow/ConfirmModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function CategoryRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -31,10 +32,21 @@ function CategoryRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeCategory]);
 
+  if (error) {
+    return (
+      <InfoModal
+        isOpen
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ConfirmModal
       isOpen
-      error={error?.data}
       isFetching={isFetching}
       isLoading={isRemoving}
       message={`Ви впевнені, що хочете видалити категорію «${title}»?`}

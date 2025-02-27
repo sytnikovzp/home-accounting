@@ -15,7 +15,7 @@ function InfoModal({ isOpen, onClose, title, message, severity = 'info' }) {
             variant='contained'
             onClick={onClose}
           >
-            Ок
+            Закрити
           </Button>
         </Box>
       }

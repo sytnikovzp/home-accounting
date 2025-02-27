@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -14,7 +12,6 @@ import { stylesRedlineTypography } from '../../styles';
 
 function ConfirmModal({
   isOpen,
-  error,
   isFetching,
   isLoading,
   message,
@@ -26,14 +23,6 @@ function ConfirmModal({
     if (isFetching) {
       return <Preloader />;
     }
-    if (error) {
-      return (
-        <Alert severity={error?.severity || 'error'} sx={{ mb: 2 }}>
-          <AlertTitle>{error?.title || 'Помилка'}:</AlertTitle>
-          {error?.message || 'Виникла помилка'}
-        </Alert>
-      );
-    }
     if (message) {
       return (
         <Typography sx={stylesRedlineTypography} variant='body1'>
@@ -42,35 +31,27 @@ function ConfirmModal({
       );
     }
     return null;
-  }, [isFetching, error, message]);
+  }, [isFetching, message]);
 
   return (
     <ModalWindow
       actions={
-        <Box
-          display='flex'
-          flexDirection='column'
-          gap={2}
-          justifyContent='center'
-        >
+        <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
           <Button
-            fullWidth
-            color='warning'
+            color='default'
+            disabled={isLoading || isFetching}
+            variant='text'
+            onClick={onClose}
+          >
+            Скасувати
+          </Button>
+          <Button
+            color='error'
             disabled={isLoading || isFetching}
             variant='contained'
             onClick={onConfirm}
           >
             Видалити
-          </Button>
-
-          <Button
-            fullWidth
-            color='success'
-            disabled={isLoading || isFetching}
-            variant='contained'
-            onClick={onClose}
-          >
-            Скасувати
           </Button>
         </Box>
       }
