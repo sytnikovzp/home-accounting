@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InfoIcon from '@mui/icons-material/Info';
 import PersonIcon from '@mui/icons-material/Person';
@@ -10,12 +8,9 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchCategoryByUuidQuery } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
+import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
-
-import { stylesViewPageBox } from '../../styles';
 
 function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -71,22 +66,23 @@ function CategoryViewPage({ handleModalClose }) {
     ]
   );
 
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
+  if (fetchError) {
     return (
-      <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} />
-      </Box>
+      <InfoModal
+        isOpen
+        message={fetchError.data?.message}
+        severity={fetchError.data?.severity}
+        title={fetchError.data?.title}
+        onClose={handleModalClose}
+      />
     );
-  }, [data, isFetching]);
+  }
 
   return (
-    <ModalWindow
+    <EntityViewModal
       isOpen
-      content={content}
-      error={fetchError?.data}
+      data={data}
+      isFetching={isFetching}
       title='Деталі категорії...'
       onClose={handleModalClose}
     />
