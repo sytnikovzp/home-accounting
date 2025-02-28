@@ -72,7 +72,7 @@ function RoleRemovePage({ handleModalClose }) {
       actions={actions}
       content={content}
       error={error?.data}
-      title='Видалення ролі...'
+      title='Видалення ролі'
       onClose={handleModalClose}
     />
   );

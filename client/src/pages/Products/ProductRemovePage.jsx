@@ -73,7 +73,7 @@ function ProductRemovePage({ handleModalClose }) {
       actions={actions}
       content={content}
       error={error?.data}
-      title='Видалення товару/послуги...'
+      title='Видалення товару/послуги'
       onClose={handleModalClose}
     />
   );

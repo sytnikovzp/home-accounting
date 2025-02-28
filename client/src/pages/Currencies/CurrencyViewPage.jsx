@@ -62,7 +62,7 @@ function CurrencyViewPage({ handleModalClose }) {
       isOpen
       content={content}
       error={fetchError?.data}
-      title='Деталі валюти...'
+      title='Деталі валюти'
       onClose={handleModalClose}
     />
   );

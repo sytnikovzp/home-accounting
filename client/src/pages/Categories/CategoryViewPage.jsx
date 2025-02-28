@@ -83,7 +83,7 @@ function CategoryViewPage({ handleModalClose }) {
       isOpen
       data={data}
       isFetching={isFetching}
-      title='Деталі категорії...'
+      title='Деталі категорії'
       onClose={handleModalClose}
     />
   );

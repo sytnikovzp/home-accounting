@@ -49,7 +49,7 @@ function MeasureEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error?.data}
-      title='Редагування одиниці...'
+      title='Редагування одиниці'
       onClose={handleModalClose}
     />
   );

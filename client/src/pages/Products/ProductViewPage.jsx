@@ -96,7 +96,7 @@ function ProductViewPage({ handleModalClose }) {
       isOpen
       content={content}
       error={fetchError?.data}
-      title='Деталі товару/послуги...'
+      title='Деталі товару/послуги'
       onClose={handleModalClose}
     />
   );

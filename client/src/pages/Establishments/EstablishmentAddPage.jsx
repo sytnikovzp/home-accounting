@@ -34,7 +34,7 @@ function EstablishmentAddPage({ handleModalClose }) {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Додавання закладу...'
+      title='Додавання закладу'
       onClose={handleModalClose}
     />
   );

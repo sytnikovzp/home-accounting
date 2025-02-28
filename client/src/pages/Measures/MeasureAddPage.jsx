@@ -31,7 +31,7 @@ function MeasureAddPage({ handleModalClose }) {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Додавання одиниці...'
+      title='Додавання одиниці'
       onClose={handleModalClose}
     />
   );

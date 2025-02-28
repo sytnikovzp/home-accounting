@@ -1,8 +1,3 @@
-const {
-  configs: {
-    CLIENT: { URL },
-  },
-} = require('../constants');
 const { checkToken } = require('../utils/sharedFunctions');
 
 const {
@@ -36,13 +31,11 @@ class UserProfileController {
       const { token } = req.query;
       await checkToken(token, 'confirm');
       await confirmEmail(token);
-      res.redirect(
-        `${URL}/notification?severity=${encodeURIComponent(
-          'success'
-        )}&title=${encodeURIComponent(
-          'Підтвердження email...'
-        )}&message=${encodeURIComponent('Ваш email успішно підтверджений')}`
-      );
+      res.status(200).json({
+        severity: 'success',
+        title: 'Підтвердження email',
+        message: 'Ваш email успішно підтверджений',
+      });
     } catch (error) {
       console.error('Confirmation email error: ', error.message);
       next(error);
@@ -53,15 +46,12 @@ class UserProfileController {
     try {
       const { uuid } = req.user;
       await resendConfirmEmail(uuid);
-      res.redirect(
-        `${URL}/notification?severity=${encodeURIComponent(
-          'success'
-        )}&title=${encodeURIComponent(
-          'Підтвердження email...'
-        )}&message=${encodeURIComponent(
-          'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями'
-        )}`
-      );
+      res.status(200).json({
+        severity: 'success',
+        title: 'Підтвердження email',
+        message:
+          'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
+      });
     } catch (error) {
       console.error('Resend confirmation email error: ', error.message);
       next(error);

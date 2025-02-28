@@ -50,7 +50,7 @@ function CategoryRemovePage({ handleModalClose }) {
       isFetching={isFetching}
       isLoading={isRemoving}
       message={`Ви впевнені, що хочете видалити категорію «${title}»?`}
-      title='Видалення категорії...'
+      title='Видалення категорії'
       onClose={handleModalClose}
       onConfirm={handleRemoveCategory}
     />

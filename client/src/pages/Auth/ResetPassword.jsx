@@ -50,7 +50,7 @@ function ResetPassword() {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Відновлення паролю...'
+      title='Відновлення паролю'
       onClose={handleModalClose}
     />
   );

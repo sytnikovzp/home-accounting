@@ -34,7 +34,7 @@ function CurrencyAddPage({ handleModalClose }) {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Додавання валюти...'
+      title='Додавання валюти'
       onClose={handleModalClose}
     />
   );

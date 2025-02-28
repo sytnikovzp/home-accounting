@@ -49,7 +49,7 @@ function CurrencyEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error?.data}
-      title='Редагування валюти...'
+      title='Редагування валюти'
       onClose={handleModalClose}
     />
   );

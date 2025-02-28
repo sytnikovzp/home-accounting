@@ -261,7 +261,7 @@ function ContentModerationPage({ handleModalClose }) {
       actions={actions}
       content={content}
       error={fetchError?.data || submitError?.data}
-      title='Модерація контенту...'
+      title='Модерація контенту'
       onClose={handleModalClose}
     />
   );

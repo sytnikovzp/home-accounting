@@ -72,7 +72,7 @@ function ExpenseRemovePage({ handleModalClose }) {
       actions={actions}
       content={content}
       error={error?.data}
-      title='Видалення витрати...'
+      title='Видалення витрати'
       onClose={handleModalClose}
     />
   );

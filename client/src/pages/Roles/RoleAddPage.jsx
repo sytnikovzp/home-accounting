@@ -29,7 +29,7 @@ function RoleAddPage({ handleModalClose }) {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Додавання ролі...'
+      title='Додавання ролі'
       onClose={handleModalClose}
     />
   );

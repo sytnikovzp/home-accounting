@@ -117,7 +117,7 @@ function ExpenseViewPage({ handleModalClose }) {
       isOpen
       content={content}
       error={fetchError?.data}
-      title='Деталі витрати...'
+      title='Деталі витрати'
       onClose={handleModalClose}
     />
   );

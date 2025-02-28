@@ -49,7 +49,7 @@ function ProductEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error?.data}
-      title='Редагування товару/послуги...'
+      title='Редагування товару/послуги'
       onClose={handleModalClose}
     />
   );

@@ -116,7 +116,7 @@ function UserRemovePage() {
       actions={actions}
       content={content}
       error={error?.data}
-      title='Видалення користувача...'
+      title='Видалення користувача'
       onClose={handleModalClose}
     />
   );

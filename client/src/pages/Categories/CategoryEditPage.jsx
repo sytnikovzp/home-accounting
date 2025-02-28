@@ -49,7 +49,7 @@ function CategoryEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error?.data}
-      title='Редагування категорії...'
+      title='Редагування категорії'
       onClose={handleModalClose}
     />
   );

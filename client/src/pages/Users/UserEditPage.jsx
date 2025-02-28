@@ -224,7 +224,7 @@ function UserEditPage() {
       isOpen
       content={content}
       error={error?.data}
-      title='Редагування користувача...'
+      title='Редагування користувача'
       onClose={handleModalClose}
     />
   );

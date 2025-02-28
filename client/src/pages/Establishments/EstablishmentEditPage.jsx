@@ -85,7 +85,7 @@ function EstablishmentEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error?.data}
-      title='Редагування закладу...'
+      title='Редагування закладу'
       onClose={handleModalClose}
     />
   );

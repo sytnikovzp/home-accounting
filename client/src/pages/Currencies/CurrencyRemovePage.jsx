@@ -74,7 +74,7 @@ function CurrencyRemovePage({ handleModalClose }) {
       actions={actions}
       content={content}
       error={error?.data}
-      title='Видалення валюти...'
+      title='Видалення валюти'
       onClose={handleModalClose}
     />
   );

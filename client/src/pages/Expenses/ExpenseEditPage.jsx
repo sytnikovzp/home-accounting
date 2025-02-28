@@ -49,7 +49,7 @@ function ExpenseEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error?.data}
-      title='Редагування витрати...'
+      title='Редагування витрати'
       onClose={handleModalClose}
     />
   );

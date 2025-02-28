@@ -73,7 +73,7 @@ function EstablishmentRemovePage({ handleModalClose }) {
       actions={actions}
       content={content}
       error={error?.data}
-      title='Видалення закладу...'
+      title='Видалення закладу'
       onClose={handleModalClose}
     />
   );

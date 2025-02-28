@@ -49,7 +49,7 @@ function RoleEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error?.data}
-      title='Редагування ролі...'
+      title='Редагування ролі'
       onClose={handleModalClose}
     />
   );

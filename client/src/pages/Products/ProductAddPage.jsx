@@ -31,7 +31,7 @@ function ProductAddPage({ handleModalClose }) {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Додавання товару/послуги...'
+      title='Додавання товару/послуги'
       onClose={handleModalClose}
     />
   );

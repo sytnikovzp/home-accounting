@@ -129,7 +129,7 @@ function EstablishmentViewPage({ handleModalClose }) {
       isOpen
       content={content}
       error={fetchError?.data}
-      title='Деталі закладу...'
+      title='Деталі закладу'
       onClose={handleModalClose}
     />
   );

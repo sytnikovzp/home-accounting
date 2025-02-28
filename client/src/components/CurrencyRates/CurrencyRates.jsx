@@ -27,11 +27,19 @@ function CurrencyRates() {
   const isPreloaderVisible = useDelayedPreloader(isFetching);
 
   if (isPreloaderVisible) {
-    return <Preloader message='Завантаження валют...' />;
+    return (
+      <Box sx={stylesCurrencyRatesBox}>
+        <Preloader message='Завантаження валют...' />
+      </Box>
+    );
   }
 
   if (fetchError) {
-    return <Error error={fetchError} />;
+    return (
+      <Box sx={stylesCurrencyRatesBox}>
+        <Error error={fetchError} />
+      </Box>
+    );
   }
 
   if (!rates || rates.length === 0) {

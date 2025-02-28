@@ -31,7 +31,7 @@ function ExpenseAddPage({ handleModalClose }) {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Додавання витрати...'
+      title='Додавання витрати'
       onClose={handleModalClose}
     />
   );

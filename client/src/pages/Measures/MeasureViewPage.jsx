@@ -62,7 +62,7 @@ function MeasureViewPage({ handleModalClose }) {
       isOpen
       content={content}
       error={fetchError?.data}
-      title='Деталі одиниці...'
+      title='Деталі одиниці'
       onClose={handleModalClose}
     />
   );

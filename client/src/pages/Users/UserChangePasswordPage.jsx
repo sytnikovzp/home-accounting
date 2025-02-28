@@ -75,7 +75,7 @@ function UserChangePasswordPage() {
       isOpen
       content={content}
       error={error?.data}
-      title='Зміна паролю...'
+      title='Зміна паролю'
       onClose={handleModalClose}
     />
   );

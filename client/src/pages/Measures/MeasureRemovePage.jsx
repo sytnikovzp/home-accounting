@@ -73,7 +73,7 @@ function MeasureRemovePage({ handleModalClose }) {
       actions={actions}
       content={content}
       error={error?.data}
-      title='Видалення одиниці...'
+      title='Видалення одиниці'
       onClose={handleModalClose}
     />
   );

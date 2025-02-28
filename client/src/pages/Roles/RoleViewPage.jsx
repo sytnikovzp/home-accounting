@@ -74,7 +74,7 @@ function RoleViewPage() {
       isOpen
       content={content}
       error={fetchError?.data}
-      title='Деталі ролі...'
+      title='Деталі ролі'
       onClose={handleModalClose}
     />
   );

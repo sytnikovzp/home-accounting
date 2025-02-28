@@ -34,7 +34,7 @@ function CategoryAddPage({ handleModalClose }) {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Додавання категорії...'
+      title='Додавання категорії'
       onClose={handleModalClose}
     />
   );

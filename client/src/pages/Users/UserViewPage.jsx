@@ -176,7 +176,7 @@ function UserViewPage() {
       isOpen
       content={content}
       error={error?.data}
-      title='Деталі користувача...'
+      title='Деталі користувача'
       onClose={handleModalClose}
     />
   );

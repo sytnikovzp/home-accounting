@@ -14,6 +14,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 import AboutPage from './pages/About/AboutPage';
 import AuthPage from './pages/Auth/AuthPage';
+import ForgotPassword from './pages/Auth/ForgotPassword';
 import Login from './pages/Auth/Login';
 import Registration from './pages/Auth/Registration';
 import ResetPassword from './pages/Auth/ResetPassword';
@@ -154,6 +155,7 @@ function App() {
             ))}
             <Route element={<Login />} path='login' />
             <Route element={<Registration />} path='registration' />
+            <Route element={<ForgotPassword />} path='forgot-password' />
             <Route element={<ResetPassword />} path='reset-password' />
             <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ForbiddenPage />} path='forbidden' />
