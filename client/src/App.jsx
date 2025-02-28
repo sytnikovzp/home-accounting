@@ -14,6 +14,8 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 import AboutPage from './pages/About/AboutPage';
 import AuthPage from './pages/Auth/AuthPage';
+import Login from './pages/Auth/Login';
+import ResetPassword from './pages/Auth/ResetPassword';
 import CategoriesPage from './pages/Categories/CategoriesPage';
 import ContactsPage from './pages/Contacts/ContactsPage';
 import CurrenciesPage from './pages/Currencies/CurrenciesPage';
@@ -26,7 +28,6 @@ import ModerationPage from './pages/Moderation/ModerationPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import NotificationsPage from './pages/Notifications/NotificationsPage';
 import ProductsPage from './pages/Products/ProductsPage';
-import ResetPasswordPage from './pages/ResetPassword/ResetPasswordPage';
 import RolesPage from './pages/Roles/RolesPage';
 import RoleViewPage from './pages/Roles/RoleViewPage';
 import StatisticsPage from './pages/Statistics/StatisticsPage';
@@ -150,7 +151,8 @@ function App() {
                 path={path}
               />
             ))}
-            <Route element={<ResetPasswordPage />} path='reset-password' />
+            <Route element={<Login />} path='login' />
+            <Route element={<ResetPassword />} path='reset-password' />
             <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ForbiddenPage />} path='forbidden' />
             <Route element={<AboutPage />} path='about' />

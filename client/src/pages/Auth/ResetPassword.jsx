@@ -6,7 +6,7 @@ import { useResetPasswordMutation } from '../../store/services';
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-function ResetPasswordPage() {
+function ResetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -19,7 +19,7 @@ function ResetPasswordPage() {
     navigate('/');
   }, [navigate]);
 
-  const handleSubmitPassword = useCallback(
+  const handleResetPassword = useCallback(
     async (values) => {
       const result = await resetPassword({ token, ...values });
       if (result?.data) {
@@ -39,10 +39,10 @@ function ResetPasswordPage() {
     () => (
       <ChangePasswordForm
         isSubmitting={isSubmitting}
-        onSubmit={handleSubmitPassword}
+        onSubmit={handleResetPassword}
       />
     ),
-    [handleSubmitPassword, isSubmitting]
+    [handleResetPassword, isSubmitting]
   );
 
   return (
@@ -56,4 +56,4 @@ function ResetPasswordPage() {
   );
 }
 
-export default ResetPasswordPage;
+export default ResetPassword;
