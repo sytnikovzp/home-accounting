@@ -36,7 +36,7 @@ function Login() {
       isOpen
       content={content}
       error={submitError?.data}
-      title='Авторизація'
+      title='Авторизація користувача'
       onClose={handleModalClose}
     />
   );
