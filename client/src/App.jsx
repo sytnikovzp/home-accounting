@@ -9,8 +9,7 @@ import {
 import useAuthUser from './hooks/useAuthUser';
 
 import Layout from './components/Layout/Layout';
-import ModalWindow from './components/ModalWindow/ModalWindow';
-import Preloader from './components/Preloader/Preloader';
+import LoadingModal from './components/ModalWindow/LoadingModal';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 import AboutPage from './pages/About/AboutPage';
@@ -131,14 +130,7 @@ function App() {
   const { isAuthenticated, isFetchingUser } = useAuthUser();
 
   if (isFetchingUser) {
-    return (
-      <ModalWindow
-        disableBackdropClick
-        disableCloseButton
-        isOpen
-        content={<Preloader message='Welcome to Home Accounting...' />}
-      />
-    );
+    return <LoadingModal message='Welcome to Home Accounting...' />;
   }
 
   return (

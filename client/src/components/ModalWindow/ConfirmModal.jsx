@@ -19,6 +19,30 @@ function ConfirmModal({
   onClose,
   onConfirm,
 }) {
+  const actions = useMemo(
+    () => (
+      <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
+        <Button
+          color='default'
+          disabled={isLoading || isFetching}
+          variant='text'
+          onClick={onClose}
+        >
+          Скасувати
+        </Button>
+        <Button
+          color='error'
+          disabled={isLoading || isFetching}
+          variant='contained'
+          onClick={onConfirm}
+        >
+          Видалити
+        </Button>
+      </Box>
+    ),
+    [isFetching, isLoading, onClose, onConfirm]
+  );
+
   const content = useMemo(() => {
     if (isFetching) {
       return <Preloader />;
@@ -35,26 +59,7 @@ function ConfirmModal({
 
   return (
     <ModalWindow
-      actions={
-        <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
-          <Button
-            color='default'
-            disabled={isLoading || isFetching}
-            variant='text'
-            onClick={onClose}
-          >
-            Скасувати
-          </Button>
-          <Button
-            color='error'
-            disabled={isLoading || isFetching}
-            variant='contained'
-            onClick={onConfirm}
-          >
-            Видалити
-          </Button>
-        </Box>
-      }
+      actions={actions}
       content={content}
       isOpen={isOpen}
       title={title}
