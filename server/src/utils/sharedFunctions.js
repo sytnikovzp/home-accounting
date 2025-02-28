@@ -170,7 +170,7 @@ const checkToken = async (token, type = 'reset') => {
     throw badRequest('Невідомий тип токена');
   }
   if (!checkedToken) {
-    throw badRequest('Невірний токен або він вже не дійсний');
+    throw badRequest('Невірний токен');
   }
   if (checkedToken.expiresAt < Date.now()) {
     throw badRequest('Термін дії токену закінчився');

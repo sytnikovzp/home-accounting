@@ -33,6 +33,13 @@ function ForgotPassword() {
     [forgotPassword]
   );
 
+  const content = (
+    <ForgotPasswordForm
+      isSubmitting={isSubmitting}
+      onSubmit={handleForgotPassword}
+    />
+  );
+
   if (submitError) {
     return (
       <InfoModal
@@ -56,12 +63,7 @@ function ForgotPassword() {
   ) : (
     <ModalWindow
       isOpen
-      content={
-        <ForgotPasswordForm
-          isSubmitting={isSubmitting}
-          onSubmit={handleForgotPassword}
-        />
-      }
+      content={content}
       title='Відновлення паролю'
       onClose={handleModalClose}
     />
