@@ -1,16 +1,12 @@
 import { HelmetProvider } from 'react-helmet-async';
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import useAuthUser from './hooks/useAuthUser';
 
 import Layout from './components/Layout/Layout';
 import LoadingModal from './components/ModalWindow/LoadingModal';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import PublicRoute from './components/PublicRoute/PublicRoute';
 
 import AboutPage from './pages/About/AboutPage';
 import AuthPage from './pages/Auth/AuthPage';
@@ -37,6 +33,16 @@ import UserEditPage from './pages/Users/UserEditPage';
 import UserRemovePage from './pages/Users/UserRemovePage';
 import UsersPage from './pages/Users/UsersPage';
 import UserViewPage from './pages/Users/UserViewPage';
+
+const publicRoutes = [
+  { path: 'auth', element: AuthPage },
+  { path: 'login', element: Login },
+  { path: 'registration', element: Registration },
+  { path: 'forgot-password', element: ForgotPassword },
+  { path: 'reset-password', element: ResetPassword },
+  { path: 'about', element: AboutPage },
+  { path: 'contacts', element: ContactsPage },
+];
 
 const privateRoutes = [
   {
@@ -121,6 +127,7 @@ const privateRoutes = [
       { entity: 'roles', action: 'remove' },
     ],
   },
+  { path: 'forbidden', element: ForbiddenPage },
   { path: 'profile', element: UserViewPage },
   { path: 'edit-profile', element: UserEditPage },
   { path: 'permissions', element: RoleViewPage },
@@ -129,7 +136,7 @@ const privateRoutes = [
 ];
 
 function App() {
-  const { isAuthenticated, isFetchingUser } = useAuthUser();
+  const { isFetchingUser } = useAuthUser();
 
   if (isFetchingUser) {
     return <LoadingModal message='Welcome to Home Accounting...' />;
@@ -141,6 +148,17 @@ function App() {
         <Routes>
           <Route element={<Layout />} path='/'>
             <Route index element={<HomePage />} />
+            {publicRoutes.map(({ path, element: Component }) => (
+              <Route
+                key={path}
+                element={
+                  <PublicRoute>
+                    <Component />
+                  </PublicRoute>
+                }
+                path={path}
+              />
+            ))}
             {privateRoutes.map(({ path, element: Component, permissions }) => (
               <Route
                 key={path}
@@ -152,20 +170,7 @@ function App() {
                 path={path}
               />
             ))}
-            <Route element={<Login />} path='login' />
-            <Route element={<Registration />} path='registration' />
-            <Route element={<ForgotPassword />} path='forgot-password' />
-            <Route element={<ResetPassword />} path='reset-password' />
-            <Route element={<ForbiddenPage />} path='forbidden' />
-            <Route element={<AboutPage />} path='about' />
             <Route element={<StatisticsPage />} path='statistics' />
-            <Route element={<ContactsPage />} path='contacts' />
-            <Route
-              element={
-                isAuthenticated ? <Navigate replace to='/' /> : <AuthPage />
-              }
-              path='auth/*'
-            />
             <Route element={<NotFoundPage />} path='*' />
           </Route>
         </Routes>
