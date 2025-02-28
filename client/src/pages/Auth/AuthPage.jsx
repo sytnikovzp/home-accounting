@@ -86,7 +86,7 @@ function AuthPage() {
       const result = await action(args);
       if (result?.data) {
         handleNavigateWithPayload(
-          authMode === 'forgotPassword' ? '/notification' : '/',
+          authMode === 'forgotPassword' ? '/' : '/',
           result.data
         );
         handleModalClose();

@@ -28,7 +28,6 @@ import HomePage from './pages/Home/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
-import NotificationsPage from './pages/Notifications/NotificationsPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import RolesPage from './pages/Roles/RolesPage';
 import RoleViewPage from './pages/Roles/RoleViewPage';
@@ -157,7 +156,6 @@ function App() {
             <Route element={<Registration />} path='registration' />
             <Route element={<ForgotPassword />} path='forgot-password' />
             <Route element={<ResetPassword />} path='reset-password' />
-            <Route element={<NotificationsPage />} path='notification' />
             <Route element={<ForbiddenPage />} path='forbidden' />
             <Route element={<AboutPage />} path='about' />
             <Route element={<StatisticsPage />} path='statistics' />

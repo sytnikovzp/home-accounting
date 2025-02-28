@@ -93,10 +93,6 @@ const REMOVE_PROFILE_TITLES = new Map([
   ['default', 'Видалення профілю | Моя бухгалтерія'],
 ]);
 
-const NOTIFICATION_PAGE_TITLES = new Map([
-  ['default', 'Повідомлення | Моя бухгалтерія'],
-]);
-
 const RESET_PASSWORD_TITLES = new Map([
   ['default', 'Відновлення паролю | Моя бухгалтерія'],
 ]);
@@ -131,7 +127,6 @@ export {
   HOME_PAGE_TITLES,
   MEASURES_TITLES,
   MODERATION_TITLES,
-  NOTIFICATION_PAGE_TITLES,
   PERMISSIONS_PROFILE_TITLES,
   PRODUCTS_TITLES,
   PROFILE_TITLES,
