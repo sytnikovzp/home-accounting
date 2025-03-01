@@ -15,7 +15,7 @@ const {
   logout,
   refresh,
   forgotPassword,
-  getResetPasswordPage,
+  redirectToResetPasswordForm,
   resetPassword,
 } = require('../controllers/authController');
 
@@ -26,7 +26,7 @@ authRouter.post('/login', validateLogin, login);
 authRouter.get('/logout', logout);
 authRouter.get('/refresh', refresh);
 authRouter.post('/forgot', validateForgotPassword, forgotPassword);
-authRouter.get('/reset-password', getResetPasswordPage);
+authRouter.get('/redirect', redirectToResetPasswordForm);
 authRouter.post('/reset', validatePassword, resetPassword);
 
 module.exports = authRouter;

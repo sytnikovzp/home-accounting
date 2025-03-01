@@ -154,7 +154,7 @@ class AuthService {
     });
     await mailService.sendResetPasswordMail(
       foundUser.email,
-      `http://${HOST}:${PORT}/api/auth/reset-password?token=${resetToken.token}`
+      `http://${HOST}:${PORT}/api/auth/redirect?token=${resetToken.token}`
     );
   }
 

@@ -39,7 +39,7 @@ const publicRoutes = [
   { path: 'login', element: Login },
   { path: 'registration', element: Registration },
   { path: 'forgot-password', element: ForgotPassword },
-  { path: 'reset-password', element: ResetPassword },
+  { path: 'redirect', element: ResetPassword },
   { path: 'about', element: AboutPage },
   { path: 'contacts', element: ContactsPage },
 ];

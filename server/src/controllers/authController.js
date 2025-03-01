@@ -79,14 +79,13 @@ class AuthController {
     }
   }
 
-  static async getResetPasswordPage(req, res, next) {
+  static async redirectToResetPasswordForm(req, res, next) {
     try {
       const { token } = req.query;
       await checkToken(token, 'reset');
-      res.redirect(`${URL}/reset-password?token=${token}`);
+      res.redirect(`${URL}/redirect?token=${token}`);
     } catch (error) {
       console.error('Error while checking reset token: ', error.message);
-      res.status(400).json({ message: error.message });
       next(error);
     }
   }
