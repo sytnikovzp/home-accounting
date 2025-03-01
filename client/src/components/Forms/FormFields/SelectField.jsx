@@ -6,7 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-function SelectField({ error, label, name, options, required, touched }) {
+function SelectField({ error, label, name, options, required, size, touched }) {
   return (
     <Field name={name}>
       {({ field }) => (
@@ -14,6 +14,7 @@ function SelectField({ error, label, name, options, required, touched }) {
           fullWidth
           error={Boolean(touched && error)}
           required={required}
+          size={size}
         >
           <InputLabel>{label}</InputLabel>
           <Select {...field} label={label}>

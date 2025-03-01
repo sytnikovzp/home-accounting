@@ -17,7 +17,8 @@ function FormFields({
   name,
   label,
   placeholder,
-  required,
+  required = false,
+  size = 'medium',
   type = 'text',
   options = [],
   autoFocus = false,
@@ -33,6 +34,7 @@ function FormFields({
         name={name}
         placeholder={placeholder}
         required={required}
+        size={size}
         touched={touched}
       />
     );
@@ -45,6 +47,7 @@ function FormFields({
         name={name}
         options={options}
         required={required}
+        size={size}
         touched={touched}
       />
     );
@@ -58,6 +61,7 @@ function FormFields({
         options={options}
         placeholder={placeholder}
         required={required}
+        size={size}
         touched={touched}
       />
     );
@@ -70,6 +74,7 @@ function FormFields({
           label={label}
           name={name}
           required={required}
+          size={size}
           touched={touched}
         />
       </LocalizationProvider>
@@ -87,6 +92,7 @@ function FormFields({
       name={name}
       placeholder={placeholder}
       required={required}
+      size={size}
       sx={stylesFormFieldsHeight}
       type={type}
     />

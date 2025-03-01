@@ -7,7 +7,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 
 import { DatePicker } from '@mui/x-date-pickers';
 
-function DateField({ name, label, required, touched, error }) {
+function DateField({ name, label, required, size, touched, error }) {
   return (
     <Field name={name}>
       {({ field, form }) => (
@@ -19,6 +19,7 @@ function DateField({ name, label, required, touched, error }) {
               textField: {
                 fullWidth: true,
                 required,
+                size,
               },
             }}
             value={

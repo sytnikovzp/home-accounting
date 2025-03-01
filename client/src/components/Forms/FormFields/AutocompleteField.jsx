@@ -10,6 +10,7 @@ function AutocompleteField({
   options,
   placeholder,
   required,
+  size,
   touched,
 }) {
   return (
@@ -39,6 +40,7 @@ function AutocompleteField({
                 label={label}
                 placeholder={placeholder}
                 required={required}
+                size={size}
               />
             )}
             value={selectedOption || null}

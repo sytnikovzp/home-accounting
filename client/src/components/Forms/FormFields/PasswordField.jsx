@@ -17,6 +17,7 @@ function PasswordField({
   name,
   placeholder,
   required,
+  size,
   touched,
 }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -51,6 +52,7 @@ function PasswordField({
       name={name}
       placeholder={placeholder}
       required={required}
+      size={size}
       sx={stylesFormFieldsHeight}
       type={isPasswordVisible ? 'text' : 'password'}
     />
