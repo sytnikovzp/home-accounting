@@ -11,8 +11,6 @@ import PublicRoute from './components/PublicRoute/PublicRoute';
 import AboutPage from './pages/About/AboutPage';
 import AuthPage from './pages/Auth/AuthPage';
 import ForgotPassword from './pages/Auth/ForgotPassword';
-import Login from './pages/Auth/Login';
-import Registration from './pages/Auth/Registration';
 import ResetPassword from './pages/Auth/ResetPassword';
 import CategoriesPage from './pages/Categories/CategoriesPage';
 import ContactsPage from './pages/Contacts/ContactsPage';
@@ -36,8 +34,6 @@ import UserViewPage from './pages/Users/UserViewPage';
 
 const publicRoutes = [
   { path: 'auth', element: AuthPage },
-  { path: 'login', element: Login },
-  { path: 'registration', element: Registration },
   { path: 'forgot-password', element: ForgotPassword },
   { path: 'redirect', element: ResetPassword },
   { path: 'about', element: AboutPage },

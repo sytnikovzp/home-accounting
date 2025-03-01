@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
@@ -21,10 +21,16 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 import { stylesAuthPageTitle } from '../../styles';
 
-const titles = {
+const TITLES = {
   login: 'Авторизація',
-  register: 'Реєстрація',
+  registration: 'Реєстрація',
   forgotPassword: 'Відновлення паролю',
+};
+
+const AVATAR_COLORS = {
+  login: 'success.light',
+  registration: 'success.main',
+  forgotPassword: 'warning.main',
 };
 
 function AuthPage() {
@@ -36,8 +42,12 @@ function AuthPage() {
     { isLoading: isLoggingIn, error: loginError, reset: resetLogin },
   ] = useLoginMutation();
   const [
-    register,
-    { isLoading: isRegistering, error: registerError, reset: resetRegister },
+    registration,
+    {
+      isLoading: isRegistration,
+      error: registrationError,
+      reset: resetRegistration,
+    },
   ] = useRegistrationMutation();
   const [
     forgotPassword,
@@ -48,51 +58,34 @@ function AuthPage() {
     },
   ] = useForgotPasswordMutation();
 
-  const error = loginError || registerError || forgotPasswordError;
+  const error = loginError || registrationError || forgotPasswordError;
 
   useEffect(() => {
     if (authMode === 'login') {
-      resetRegister();
+      resetRegistration();
       resetForgotPassword();
     }
-    if (authMode === 'register') {
+    if (authMode === 'registration') {
       resetLogin();
       resetForgotPassword();
     }
     if (authMode === 'forgotPassword') {
       resetLogin();
-      resetRegister();
+      resetRegistration();
     }
-  }, [authMode, resetForgotPassword, resetLogin, resetRegister]);
-
+  }, [authMode, resetForgotPassword, resetLogin, resetRegistration]);
   const handleModalClose = useCallback(() => {
     navigate('/');
   }, [navigate]);
-
-  const handleNavigateWithPayload = useCallback(
-    (path, payload = null) => {
-      if (payload) {
-        const query = new URLSearchParams(payload).toString();
-        navigate(`${path}?${query}`);
-      } else {
-        navigate(path);
-      }
-    },
-    [navigate]
-  );
 
   const handleAuth = useCallback(
     async (action, args) => {
       const result = await action(args);
       if (result?.data) {
-        handleNavigateWithPayload(
-          authMode === 'forgotPassword' ? '/' : '/',
-          result.data
-        );
         handleModalClose();
       }
     },
-    [authMode, handleModalClose, handleNavigateWithPayload]
+    [handleModalClose]
   );
 
   const authForms = {
@@ -113,10 +106,10 @@ function AuthPage() {
         </Button>
       </>
     ),
-    register: (
+    registration: (
       <RegistrationForm
-        isSubmitting={isRegistering}
-        onSubmit={(data) => handleAuth(register, data)}
+        isSubmitting={isRegistration}
+        onSubmit={(data) => handleAuth(registration, data)}
       />
     ),
     forgotPassword: (
@@ -127,40 +120,20 @@ function AuthPage() {
     ),
   };
 
-  const getAvatarBgColor = useMemo(() => {
-    if (authMode === 'login') {
-      return 'success.light';
-    }
-    if (authMode === 'register') {
-      return 'success.main';
-    }
-    return 'warning.main';
-  }, [authMode]);
-
-  const actions = useMemo(() => {
-    if (authMode === 'login') {
-      return (
-        <Button
-          fullWidth
-          color='secondary'
-          variant='text'
-          onClick={() => setAuthMode('register')}
-        >
-          Перейти до реєстрації
-        </Button>
-      );
-    }
-    return (
-      <Button
-        fullWidth
-        color='secondary'
-        variant='text'
-        onClick={() => setAuthMode('login')}
-      >
-        Повернутися до авторизації
-      </Button>
-    );
-  }, [authMode]);
+  const actions = (
+    <Button
+      fullWidth
+      color='secondary'
+      variant='text'
+      onClick={() =>
+        setAuthMode(authMode === 'login' ? 'registration' : 'login')
+      }
+    >
+      {authMode === 'login'
+        ? 'Перейти до реєстрації'
+        : 'Повернутися до авторизації'}
+    </Button>
+  );
 
   const title = (
     <Box alignItems='center' display='flex' flexDirection='column'>
@@ -170,13 +143,13 @@ function AuthPage() {
           mb: 1,
           mx: 'auto',
           width: 50,
-          bgcolor: getAvatarBgColor,
+          bgcolor: AVATAR_COLORS[authMode],
         }}
       >
         <LockOutlinedIcon />
       </Avatar>
       <Typography sx={stylesAuthPageTitle} variant='h6'>
-        {titles[authMode]}
+        {TITLES[authMode]}
       </Typography>
     </Box>
   );

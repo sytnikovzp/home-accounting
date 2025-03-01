@@ -21,8 +21,7 @@ import {
 
 const {
   HOME_PAGE_TITLES,
-  LOGIN_PAGE_TITLES,
-  REGISTRATION_PAGE_TITLES,
+  AUTH_PAGE_TITLES,
   RESET_PASSWORD_TITLES,
   ABOUT_PAGE_TITLES,
   CONTACTS_PAGE_TITLES,
@@ -45,9 +44,7 @@ const {
 } = pageTitles;
 
 const TITLES_MAP = new Map([
-  ['/login', LOGIN_PAGE_TITLES],
-  ['/registration', REGISTRATION_PAGE_TITLES],
-  ['/forgot-password', RESET_PASSWORD_TITLES],
+  ['/auth', AUTH_PAGE_TITLES],
   ['/redirect', RESET_PASSWORD_TITLES],
   ['/about', ABOUT_PAGE_TITLES],
   ['/contacts', CONTACTS_PAGE_TITLES],

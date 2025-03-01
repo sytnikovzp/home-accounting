@@ -1,11 +1,7 @@
 const HOME_PAGE_TITLES = new Map([['default', 'Моя бухгалтерія']]);
 
-const LOGIN_PAGE_TITLES = new Map([
+const AUTH_PAGE_TITLES = new Map([
   ['default', 'Авторизація | Моя бухгалтерія'],
-]);
-
-const REGISTRATION_PAGE_TITLES = new Map([
-  ['default', 'Реєстрація | Моя бухгалтерія'],
 ]);
 
 const RESET_PASSWORD_TITLES = new Map([
@@ -119,6 +115,7 @@ const STATISTICS_PAGE_TITLES = new Map([
 
 export {
   ABOUT_PAGE_TITLES,
+  AUTH_PAGE_TITLES,
   CATEGORIES_TITLES,
   CHANGE_PASSWORD_TITLES,
   CONTACTS_PAGE_TITLES,
@@ -128,13 +125,11 @@ export {
   EXPENSES_TITLES,
   FORBIDDEN_PAGE_TITLES,
   HOME_PAGE_TITLES,
-  LOGIN_PAGE_TITLES,
   MEASURES_TITLES,
   MODERATION_TITLES,
   PERMISSIONS_PROFILE_TITLES,
   PRODUCTS_TITLES,
   PROFILE_TITLES,
-  REGISTRATION_PAGE_TITLES,
   REMOVE_PROFILE_TITLES,
   RESET_PASSWORD_TITLES,
   ROLES_TITLES,
