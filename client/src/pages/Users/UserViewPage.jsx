@@ -82,9 +82,9 @@ function UserViewPage() {
       const result = await resendConfirmEmail(email);
       if (result?.data) {
         setInfoModalData({
+          severity: result.data?.severity,
           title: result.data?.title,
           message: result.data?.message,
-          severity: result.data?.severity,
         });
       }
     }

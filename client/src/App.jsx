@@ -10,7 +10,7 @@ import PublicRoute from './components/PublicRoute/PublicRoute';
 
 import AboutPage from './pages/About/AboutPage';
 import AuthPage from './pages/Auth/AuthPage';
-import ResetPassword from './pages/Auth/ResetPassword';
+import ResetPasswordPage from './pages/Auth/ResetPasswordPage';
 import CategoriesPage from './pages/Categories/CategoriesPage';
 import ContactsPage from './pages/Contacts/ContactsPage';
 import CurrenciesPage from './pages/Currencies/CurrenciesPage';
@@ -21,6 +21,7 @@ import HomePage from './pages/Home/HomePage';
 import MeasuresPage from './pages/Measures/MeasuresPage';
 import ModerationPage from './pages/Moderation/ModerationPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
+import NotificationPage from './pages/Notification/NotificationPage';
 import ProductsPage from './pages/Products/ProductsPage';
 import RolesPage from './pages/Roles/RolesPage';
 import RoleViewPage from './pages/Roles/RoleViewPage';
@@ -33,7 +34,7 @@ import UserViewPage from './pages/Users/UserViewPage';
 
 const publicRoutes = [
   { path: 'auth', element: AuthPage },
-  { path: 'redirect', element: ResetPassword },
+  { path: 'redirect', element: ResetPasswordPage },
   { path: 'about', element: AboutPage },
   { path: 'contacts', element: ContactsPage },
 ];
@@ -165,6 +166,7 @@ function App() {
               />
             ))}
             <Route element={<StatisticsPage />} path='statistics' />
+            <Route element={<NotificationPage />} path='notification' />
             <Route element={<NotFoundPage />} path='*' />
           </Route>
         </Routes>

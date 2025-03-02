@@ -7,12 +7,13 @@ import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/Change
 import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-function ResetPassword() {
+function ResetPasswordPage() {
+  const [infoModalData, setInfoModalData] = useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const token = params.get('token');
-  const [infoModalData, setInfoModalData] = useState(null);
 
   const [resetPassword, { isLoading: isSubmitting, error: submitError }] =
     useResetPasswordMutation();
@@ -27,9 +28,9 @@ function ResetPassword() {
       const result = await resetPassword({ token, ...values });
       if (result?.data) {
         setInfoModalData({
+          severity: result.data?.severity,
           title: result.data?.title,
           message: result.data?.message,
-          severity: result.data?.severity,
         });
       }
     },
@@ -73,4 +74,4 @@ function ResetPassword() {
   );
 }
 
-export default ResetPassword;
+export default ResetPasswordPage;

@@ -50,6 +50,7 @@ class AuthService {
       expiresAt: new Date(Date.now() + CONFIRMATION),
     });
     await mailService.sendConfirmationMail(
+      fullName,
       email,
       `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
     );
@@ -153,6 +154,7 @@ class AuthService {
       expiresAt: new Date(Date.now() + RESET_PASSWORD),
     });
     await mailService.sendResetPasswordMail(
+      foundUser.fullName,
       foundUser.email,
       `http://${HOST}:${PORT}/api/auth/redirect?token=${resetToken.token}`
     );
@@ -175,6 +177,7 @@ class AuthService {
       throw badRequest('Пароль цього користувача не оновлено');
     }
     await PasswordResetToken.deleteOne({ token });
+    return true;
   }
 }
 

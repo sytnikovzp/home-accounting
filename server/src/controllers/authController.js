@@ -74,7 +74,7 @@ class AuthController {
           'На Вашу електронну адресу відправлено повідомлення з подальшими інструкціями',
       });
     } catch (error) {
-      console.error('Password reset error: ', error.message);
+      console.error('Request password reset error: ', error.message);
       next(error);
     }
   }
@@ -82,8 +82,12 @@ class AuthController {
   static async redirectToResetPasswordForm(req, res, next) {
     try {
       const { token } = req.query;
-      await checkToken(token, 'reset');
-      res.redirect(`${URL}/redirect?token=${token}`);
+      const isValid = await checkToken(token, 'reset');
+      if (isValid) {
+        res.redirect(`${URL}/redirect?token=${token}`);
+      } else {
+        res.redirect(`${URL}/notification?error=expired-token`);
+      }
     } catch (error) {
       console.error('Error while checking reset token: ', error.message);
       next(error);
@@ -102,6 +106,11 @@ class AuthController {
         message: 'Ваш пароль успішно змінено',
       });
     } catch (error) {
+      res.status(200).json({
+        severity: 'error',
+        title: 'Сталася помилка',
+        message: 'Це посилання вже не дійсне',
+      });
       console.error('Password reset error: ', error.message);
       next(error);
     }

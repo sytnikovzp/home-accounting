@@ -167,15 +167,12 @@ const checkToken = async (token, type = 'reset') => {
   } else if (type === 'confirm') {
     checkedToken = await ConfirmationToken.findOne({ token });
   } else {
-    throw badRequest('Невідомий тип токена');
+    return false;
   }
-  if (!checkedToken) {
-    throw badRequest('Невірний токен');
+  if (!checkedToken || checkedToken.expiresAt < Date.now()) {
+    return false;
   }
-  if (checkedToken.expiresAt < Date.now()) {
-    throw badRequest('Термін дії токену закінчився');
-  }
-  return checkedToken;
+  return true;
 };
 
 module.exports = {

@@ -15,9 +15,9 @@ const AuthError = require('../errors/authErrors');
 const GeneralError = require('../errors/generalErrors');
 
 const formatError = (title, message) => ({
-  message,
   severity: 'error',
   title,
+  message,
 });
 
 module.exports.authErrorHandler = (err, req, res, next) => {

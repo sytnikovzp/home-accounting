@@ -86,9 +86,9 @@ function AuthPage() {
       if (result?.data) {
         if (authMode === 'forgotPassword') {
           setInfoModalData({
+            severity: result.data?.severity,
             title: result.data?.title,
             message: result.data?.message,
-            severity: result.data?.severity,
           });
         } else {
           handleModalClose();

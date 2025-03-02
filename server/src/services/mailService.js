@@ -39,24 +39,25 @@ class MailService {
     }
   }
 
-  async sendConfirmationMail(email, confirmationLink) {
+  async sendConfirmationMail(fullName, email, confirmationLink) {
     const subject = `Підтвердження акаунту на ${URL}`;
-    const html = emailTemplates.confirmation(URL, confirmationLink);
+    const html = emailTemplates.confirmation(URL, fullName, confirmationLink);
     await this.sendMail(email, subject, html);
   }
 
-  async sendEmailChangeConfirmationMail(email, newConfirmationLink) {
+  async sendEmailChangeConfirmationMail(fullName, email, confirmationLink) {
     const subject = `Підтвердження зміни email-адреси на ${URL}`;
     const html = emailTemplates.emailChangeConfirmation(
       URL,
-      newConfirmationLink
+      fullName,
+      confirmationLink
     );
     await this.sendMail(email, subject, html);
   }
 
-  async sendResetPasswordMail(email, resetPasswordLink) {
+  async sendResetPasswordMail(fullName, email, resetPasswordLink) {
     const subject = `Відновлення паролю на ${URL}`;
-    const html = emailTemplates.resetPassword(URL, resetPasswordLink);
+    const html = emailTemplates.resetPassword(URL, fullName, resetPasswordLink);
     await this.sendMail(email, subject, html);
   }
 }

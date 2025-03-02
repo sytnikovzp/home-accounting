@@ -173,6 +173,7 @@ class UsersService {
       userUuid: foundUser.uuid,
     });
     await mailService.sendConfirmationMail(
+      foundUser.fullName,
       foundUser.email,
       `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
     );
@@ -296,6 +297,7 @@ class UsersService {
         expiresAt: new Date(Date.now() + CONFIRMATION),
       });
       await mailService.sendEmailChangeConfirmationMail(
+        foundUser.fullName,
         newEmail,
         `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
       );
