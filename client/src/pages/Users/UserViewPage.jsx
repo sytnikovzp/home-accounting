@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
@@ -20,6 +20,7 @@ import {
   useResendConfirmEmailMutation,
 } from '../../store/services';
 
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
@@ -37,6 +38,7 @@ function UserViewPage() {
   const { uuid } = useParams();
   const { authenticatedUser } = useAuthUser();
   const navigate = useNavigate();
+  const [infoModalData, setInfoModalData] = useState(null);
 
   const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
@@ -75,9 +77,16 @@ function UserViewPage() {
     }
   }, [uuid, navigate]);
 
-  const handleResendClick = useCallback(() => {
+  const handleResendClick = useCallback(async () => {
     if (email) {
-      resendConfirmEmail(email);
+      const result = await resendConfirmEmail(email);
+      if (result?.data) {
+        setInfoModalData({
+          title: result.data?.title,
+          message: result.data?.message,
+          severity: result.data?.severity,
+        });
+      }
     }
   }, [email, resendConfirmEmail]);
 
@@ -171,7 +180,15 @@ function UserViewPage() {
     );
   }, [data, isFetching]);
 
-  return (
+  return infoModalData ? (
+    <InfoModal
+      isOpen
+      message={infoModalData.message}
+      severity={infoModalData.severity}
+      title={infoModalData.title}
+      onClose={handleModalClose}
+    />
+  ) : (
     <ModalWindow
       isOpen
       content={content}

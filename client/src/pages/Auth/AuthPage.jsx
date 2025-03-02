@@ -17,6 +17,7 @@ import {
 import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm/ForgotPasswordForm';
 import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 import { stylesAuthPageTitle } from '../../styles';
@@ -35,6 +36,7 @@ const AVATAR_COLORS = {
 
 function AuthPage() {
   const [authMode, setAuthMode] = useState('login');
+  const [infoModalData, setInfoModalData] = useState(null);
   const navigate = useNavigate();
 
   const [
@@ -58,7 +60,7 @@ function AuthPage() {
     },
   ] = useForgotPasswordMutation();
 
-  const error = loginError || registrationError || forgotPasswordError;
+  const error = loginError || registrationError;
 
   useEffect(() => {
     if (authMode === 'login') {
@@ -82,10 +84,18 @@ function AuthPage() {
     async (action, args) => {
       const result = await action(args);
       if (result?.data) {
-        handleModalClose();
+        if (authMode === 'forgotPassword') {
+          setInfoModalData({
+            title: result.data?.title,
+            message: result.data?.message,
+            severity: result.data?.severity,
+          });
+        } else {
+          handleModalClose();
+        }
       }
     },
-    [handleModalClose]
+    [authMode, handleModalClose]
   );
 
   const authForms = {
@@ -154,7 +164,27 @@ function AuthPage() {
     </Box>
   );
 
-  return (
+  if (forgotPasswordError) {
+    return (
+      <InfoModal
+        isOpen
+        message={forgotPasswordError.data?.message}
+        severity={forgotPasswordError.data?.severity}
+        title={forgotPasswordError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
+  return infoModalData ? (
+    <InfoModal
+      isOpen
+      message={infoModalData.message}
+      severity={infoModalData.severity}
+      title={infoModalData.title}
+      onClose={handleModalClose}
+    />
+  ) : (
     <ModalWindow
       isOpen
       actions={actions}

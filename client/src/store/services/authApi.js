@@ -26,7 +26,7 @@ export const authApi = createApi({
           saveAccessToken(data.accessToken);
           dispatch(userProfileApi.util.invalidateTags(['UserProfile']));
         } catch (error) {
-          console.warn('Registration failed:', error);
+          console.warn('Registration failed:', error?.error?.data?.message);
         }
       },
     }),
@@ -43,7 +43,7 @@ export const authApi = createApi({
           saveAccessToken(data.accessToken);
           dispatch(userProfileApi.util.invalidateTags(['UserProfile']));
         } catch (error) {
-          console.warn('Login failed:', error);
+          console.warn('Login failed:', error?.error?.data?.message);
         }
       },
     }),
@@ -61,7 +61,7 @@ export const authApi = createApi({
           dispatch(authApi.util.resetApiState());
           dispatch(logout());
         } catch (error) {
-          console.warn('Logout failed:', error);
+          console.warn('Logout failed:', error?.error?.data?.message);
         }
       },
     }),
@@ -76,7 +76,7 @@ export const authApi = createApi({
           const { data } = await queryFulfilled;
           saveAccessToken(data.accessToken);
         } catch (error) {
-          console.warn('Token refresh failed:', error);
+          console.warn('Token refresh failed:', error?.error?.data?.message);
         }
       },
     }),

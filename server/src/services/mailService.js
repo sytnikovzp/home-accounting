@@ -6,6 +6,7 @@ const {
     SMTP: { HOST, PORT, USER, PASSWORD },
   },
 } = require('../constants');
+const emailTemplates = require('../utils/emailTemplates');
 
 class MailService {
   constructor() {
@@ -20,91 +21,43 @@ class MailService {
     });
   }
 
-  async sendConfirmationMail(email, confirmationLink) {
+  async sendMail(email, subject, html) {
     try {
-      await this.transporter.sendMail({
+      const info = await this.transporter.sendMail({
         from: USER,
         to: email,
-        subject: `Підтвердження акаунту на ${URL}`,
+        subject,
         text: '',
-        html: `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #F9F9F9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; border: 1px solid #DDD;">
-            <h1 style="color: #007BFF; text-align: center;">Вітаємо на ${URL}!</h1>
-            <p style="font-size: 16px; text-align: justify; text-indent: 2em;">Дякуємо, що приєдналися до нас. Для завершення реєстрації, будь ласка, підтвердіть Вашу електронну адресу, натиснувши на кнопку нижче:</p>
-            <div style="text-align: center; margin: 20px 0;">
-              <a href="${confirmationLink}" style="background-color: #2E7D32; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px;">Підтвердити email</a>
-            </div>
-            <p style="font-size: 14px; color: #666;">Якщо кнопка не працює, скопіюйте та вставте це посилання у Ваш браузер:</p>
-            <p style="font-size: 14px; word-break: break-word;"><a href="${confirmationLink}" style="color: #007BFF;">${confirmationLink}</a></p>
-            <p style="font-size: 14px; color: #666;">Це посилання буде дійсним протягом 24 годин.</p>
-            <p style="font-size: 14px; color: #666;">Якщо Ви не реєструвалися на нашому сайті, просто ігноруйте це повідомлення.</p>
-            <p style="font-size: 14px; text-align: center; color: #999;">З найкращими побажаннями,<br>Команда ${URL}</p>
-          </div>
-        `,
+        html,
       });
-      console.log(`Email sent to ${email}`);
+      const { response, envelope, messageId } = info;
+      console.info('Sent email:', { response, envelope, messageId });
+      return info;
     } catch (error) {
       console.error(`Failed to send email to ${email}:`, error);
       throw error;
     }
+  }
+
+  async sendConfirmationMail(email, confirmationLink) {
+    const subject = `Підтвердження акаунту на ${URL}`;
+    const html = emailTemplates.confirmation(URL, confirmationLink);
+    await this.sendMail(email, subject, html);
   }
 
   async sendEmailChangeConfirmationMail(email, newConfirmationLink) {
-    try {
-      await this.transporter.sendMail({
-        from: USER,
-        to: email,
-        subject: `Підтвердження зміни email-адреси на ${URL}`,
-        text: '',
-        html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #F9F9F9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; border: 1px solid #DDD;">
-          <h1 style="color: #007BFF; text-align: center;">Підтвердіть зміну email-адреси</h1>
-          <p style="font-size: 16px; text-align: justify; text-indent: 2em;">Ви змінили Вашу електронну адресу на ${URL}. Щоб підтвердити нову електронну адресу, будь ласка, натисніть на кнопку нижче:</p>
-          <div style="text-align: center; margin: 20px 0;">
-            <a href="${newConfirmationLink}" style="background-color: #2E7D32; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px;">Підтвердити новий email</a>
-          </div>
-          <p style="font-size: 14px; color: #666;">Якщо кнопка не працює, скопіюйте та вставте це посилання у Ваш браузер:</p>
-          <p style="font-size: 14px; word-break: break-word;"><a href="${newConfirmationLink}" style="color: #007BFF;">${newConfirmationLink}</a></p>
-          <p style="font-size: 14px; color: #666;">Це посилання буде дійсним протягом 24 годин.</p>
-          <p style="font-size: 14px; color: #666;">Якщо Ви не змінювали електронну адресу, просто ігноруйте це повідомлення.</p>
-          <p style="font-size: 14px; text-align: center; color: #999;">З найкращими побажаннями,<br>Команда ${URL}</p>
-        </div>
-      `,
-      });
-      console.log(`Email sent to ${email}`);
-    } catch (error) {
-      console.error(`Failed to send email to ${email}:`, error);
-      throw error;
-    }
+    const subject = `Підтвердження зміни email-адреси на ${URL}`;
+    const html = emailTemplates.emailChangeConfirmation(
+      URL,
+      newConfirmationLink
+    );
+    await this.sendMail(email, subject, html);
   }
 
   async sendResetPasswordMail(email, resetPasswordLink) {
-    try {
-      await this.transporter.sendMail({
-        from: USER,
-        to: email,
-        subject: `Відновлення паролю на ${URL}`,
-        text: '',
-        html: `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #F9F9F9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; border: 1px solid #DDD;">
-            <h1 style="color: #007BFF; text-align: center;">Підтвердіть відновлення паролю</h1>
-            <p style="font-size: 16px; text-align: justify; text-indent: 2em;">Ви запросили відновлення паролю для Вашого облікового запису на ${URL}. Для відновлення паролю, будь ласка, натисніть на кнопку нижче:</p>
-            <div style="text-align: center; margin: 20px 0;">
-              <a href="${resetPasswordLink}" style="background-color: #2E7D32; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px;">Відновити пароль</a>
-            </div>
-            <p style="font-size: 14px; color: #666;">Якщо кнопка не працює, скопіюйте та вставте це посилання у Ваш браузер:</p>
-            <p style="font-size: 14px; word-break: break-word;"><a href="${resetPasswordLink}" style="color: #007BFF;">${resetPasswordLink}</a></p>
-            <p style="font-size: 14px; color: #666;">Це посилання буде дійсним протягом 1 години.</p>
-            <p style="font-size: 14px; color: #666;">Якщо Ви не запитували відновлення паролю, просто ігноруйте це повідомлення.</p>
-            <p style="font-size: 14px; text-align: center; color: #999;">З найкращими побажаннями,<br>Команда ${URL}</p>
-          </div>
-        `,
-      });
-      console.log(`Email sent to ${email}`);
-    } catch (error) {
-      console.error(`Failed to send email to ${email}:`, error);
-      throw error;
-    }
+    const subject = `Відновлення паролю на ${URL}`;
+    const html = emailTemplates.resetPassword(URL, resetPasswordLink);
+    await this.sendMail(email, subject, html);
   }
 }
 
