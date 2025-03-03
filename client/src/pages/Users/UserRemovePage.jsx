@@ -1,9 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-
 import useAuthUser from '../../hooks/useAuthUser';
 
 import {
@@ -13,10 +10,8 @@ import {
   useRemoveUserProfileMutation,
 } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
+import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function UserRemovePage() {
   const { uuid } = useParams();
@@ -46,7 +41,6 @@ function UserRemovePage() {
   ] = useRemoveUserProfileMutation();
   const [logoutMutation] = useLogoutMutation();
 
-  const isLoading = isFetching || isRemovingUser || isRemovingUserProfile;
   const error = fetchError || removeUserError || removeUserErrorProfile;
 
   const handleModalClose = useCallback(() => {
@@ -79,45 +73,31 @@ function UserRemovePage() {
     handleModalClose,
   ]);
 
-  const actions = useMemo(
-    () => [
-      <Button
-        key='remove'
-        fullWidth
-        color='error'
-        disabled={isLoading}
-        size='large'
-        variant='contained'
-        onClick={handleRemoveUser}
-      >
-        Видалити
-      </Button>,
-    ],
-    [isLoading, handleRemoveUser]
-  );
-
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-
+  if (error) {
     return (
-      <Typography sx={stylesRedlineTypography} variant='body1'>
-        {isAuthenticatedUser
-          ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
-          : `Ви впевнені, що хочете видалити користувача «${fullName}»?`}
-      </Typography>
+      <InfoModal
+        isOpen
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
     );
-  }, [isAuthenticatedUser, isFetching, fullName]);
+  }
+
+  const message = isAuthenticatedUser
+    ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
+    : `Ви впевнені, що хочете видалити користувача «${fullName}»?`;
 
   return (
-    <ModalWindow
+    <DeleteConfirmModal
       isOpen
-      actions={actions}
-      content={content}
-      error={error?.data}
+      isFetching={isFetching}
+      isSubmitting={isRemovingUser || isRemovingUserProfile}
+      message={message}
       title='Видалення користувача'
       onClose={handleModalClose}
+      onSubmit={handleRemoveUser}
     />
   );
 }

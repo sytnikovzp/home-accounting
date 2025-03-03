@@ -6,7 +6,7 @@ import {
   useRemoveCategoryMutation,
 } from '../../store/services';
 
-import ConfirmModal from '../../components/ModalWindow/ConfirmModal';
+import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function CategoryRemovePage({ handleModalClose }) {
@@ -44,15 +44,17 @@ function CategoryRemovePage({ handleModalClose }) {
     );
   }
 
+  const message = `Ви впевнені, що хочете видалити категорію «${title}»?`;
+
   return (
-    <ConfirmModal
+    <DeleteConfirmModal
       isOpen
       isFetching={isFetching}
-      isLoading={isRemoving}
-      message={`Ви впевнені, що хочете видалити категорію «${title}»?`}
+      isSubmitting={isRemoving}
+      message={message}
       title='Видалення категорії'
       onClose={handleModalClose}
-      onConfirm={handleRemoveCategory}
+      onSubmit={handleRemoveCategory}
     />
   );
 }

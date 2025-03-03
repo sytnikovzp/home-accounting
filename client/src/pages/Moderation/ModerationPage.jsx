@@ -50,7 +50,7 @@ function ModerationPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    navigate('/moderation');
+    navigate(-1);
   }, [navigate]);
 
   return (

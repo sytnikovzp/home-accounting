@@ -1,18 +1,13 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 import {
   useFetchCurrencyByUuidQuery,
   useRemoveCurrencyMutation,
 } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
+import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function CurrencyRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -28,7 +23,6 @@ function CurrencyRemovePage({ handleModalClose }) {
   const [removeCurrency, { isLoading: isRemoving, error: removeError }] =
     useRemoveCurrencyMutation();
 
-  const isLoading = isFetching || isRemoving;
   const error = fetchError || removeError;
 
   const handleRemoveCurrency = useCallback(async () => {
@@ -38,44 +32,29 @@ function CurrencyRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeCurrency]);
 
-  const actions = useMemo(
-    () => [
-      <Button
-        key='remove'
-        fullWidth
-        color='error'
-        disabled={isLoading}
-        size='large'
-        variant='contained'
-        onClick={handleRemoveCurrency}
-      >
-        Видалити
-      </Button>,
-    ],
-    [isLoading, handleRemoveCurrency]
-  );
-
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
+  if (error) {
     return (
-      <Typography sx={stylesRedlineTypography} variant='body1'>
-        Ви впевнені, що хочете видалити валюту «{title}»? Зверніть увагу, що
-        видалення цієї валюти призведе до видалення всіх витрат, у яких вона
-        використовується.
-      </Typography>
+      <InfoModal
+        isOpen
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
     );
-  }, [isFetching, title]);
+  }
+
+  const message = `Ви впевнені, що хочете видалити валюту «${title}»?`;
 
   return (
-    <ModalWindow
+    <DeleteConfirmModal
       isOpen
-      actions={actions}
-      content={content}
-      error={error?.data}
+      isFetching={isFetching}
+      isSubmitting={isRemoving}
+      message={message}
       title='Видалення валюти'
       onClose={handleModalClose}
+      onSubmit={handleRemoveCurrency}
     />
   );
 }

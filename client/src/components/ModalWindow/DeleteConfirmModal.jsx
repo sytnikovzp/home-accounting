@@ -4,43 +4,39 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import Preloader from '../../components/Preloader/Preloader';
+import Preloader from '../Preloader/Preloader';
 
 import ModalWindow from './ModalWindow';
 
 import { stylesRedlineTypography } from '../../styles';
 
-function ConfirmModal({
+function DeleteConfirmModal({
   isOpen,
   isFetching,
-  isLoading,
+  isSubmitting,
   message,
   title,
   onClose,
-  onConfirm,
+  onSubmit,
 }) {
   const actions = useMemo(
     () => (
       <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
-        <Button
-          color='default'
-          disabled={isLoading || isFetching}
-          variant='text'
-          onClick={onClose}
-        >
+        <Button color='default' variant='text' onClick={onClose}>
           Скасувати
         </Button>
         <Button
           color='error'
-          disabled={isLoading || isFetching}
+          disabled={isSubmitting || isFetching}
+          type='submit'
           variant='contained'
-          onClick={onConfirm}
+          onClick={onSubmit}
         >
           Видалити
         </Button>
       </Box>
     ),
-    [isFetching, isLoading, onClose, onConfirm]
+    [isFetching, isSubmitting, onClose, onSubmit]
   );
 
   const content = useMemo(() => {
@@ -68,4 +64,4 @@ function ConfirmModal({
   );
 }
 
-export default ConfirmModal;
+export default DeleteConfirmModal;

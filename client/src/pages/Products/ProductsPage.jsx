@@ -60,7 +60,7 @@ function ProductsPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    navigate('/products');
+    navigate(-1);
   }, [navigate]);
 
   const handleAddClick = useCallback(() => {

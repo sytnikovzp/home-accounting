@@ -61,7 +61,7 @@ function ExpensesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    navigate('/expenses');
+    navigate(-1);
   }, [navigate]);
 
   const handleAddClick = useCallback(() => {

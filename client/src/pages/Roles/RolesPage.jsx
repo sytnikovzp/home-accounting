@@ -58,7 +58,7 @@ function RolesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    navigate('/roles');
+    navigate(-1);
   }, [navigate]);
 
   const handleAddClick = useCallback(() => {

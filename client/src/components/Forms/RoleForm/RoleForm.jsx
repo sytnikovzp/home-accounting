@@ -9,7 +9,7 @@ import BaseForm from '../BaseForm/BaseForm';
 import PermissionsSwitches from '../PermissionsSwitches/PermissionsSwitches';
 
 function RoleForm({ isSubmitting, role = null, onSubmit }) {
-  const { uuid, title, description, permissions = [] } = role ?? {};
+  const { title, description, permissions = [] } = role ?? {};
 
   const { data: responseData, isLoading: isFetching } =
     useFetchAllPermissionsQuery();
@@ -70,7 +70,6 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
       fields={fields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
-      submitButtonText={uuid ? 'Зберегти зміни' : 'Додати роль'}
       validationSchema={ROLE_VALIDATION_SCHEME}
       onSubmit={handleSubmit}
     />

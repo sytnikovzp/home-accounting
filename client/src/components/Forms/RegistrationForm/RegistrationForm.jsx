@@ -34,6 +34,7 @@ function RegistrationForm({ isSubmitting, onSubmit }) {
       fields={fields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
+      layout='auth'
       submitButtonText='Зареєструватися та увійти'
       validationSchema={REGISTRATION_VALIDATION_SCHEME}
       onSubmit={onSubmit}

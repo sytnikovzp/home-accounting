@@ -1,18 +1,13 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 import {
   useFetchExpenseByUuidQuery,
   useRemoveExpenseMutation,
 } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
+import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function ExpenseRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -23,12 +18,11 @@ function ExpenseRemovePage({ handleModalClose }) {
     error: fetchError,
   } = useFetchExpenseByUuidQuery(uuid, { skip: !uuid });
 
-  const { product } = expense ?? {};
+  const { product, date, totalPrice } = expense ?? {};
 
   const [removeExpense, { isLoading: isRemoving, error: removeError }] =
     useRemoveExpenseMutation();
 
-  const isLoading = isFetching || isRemoving;
   const error = fetchError || removeError;
 
   const handleRemoveExpense = useCallback(async () => {
@@ -38,42 +32,30 @@ function ExpenseRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeExpense]);
 
-  const actions = useMemo(
-    () => [
-      <Button
-        key='remove'
-        fullWidth
-        color='error'
-        disabled={isLoading}
-        size='large'
-        variant='contained'
-        onClick={handleRemoveExpense}
-      >
-        Видалити
-      </Button>,
-    ],
-    [isLoading, handleRemoveExpense]
-  );
-
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
+  if (error) {
     return (
-      <Typography sx={stylesRedlineTypography} variant='body1'>
-        Ви впевнені, що хочете видалити витрату «{product?.title}»?
-      </Typography>
+      <InfoModal
+        isOpen
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
     );
-  }, [isFetching, product?.title]);
+  }
+
+  const message = `Ви впевнені, що хочете видалити витрату «${product?.title}»
+    на сумму ${totalPrice} UAH за ${date}?`;
 
   return (
-    <ModalWindow
+    <DeleteConfirmModal
       isOpen
-      actions={actions}
-      content={content}
-      error={error?.data}
+      isFetching={isFetching}
+      isSubmitting={isRemoving}
+      message={message}
       title='Видалення витрати'
       onClose={handleModalClose}
+      onSubmit={handleRemoveExpense}
     />
   );
 }

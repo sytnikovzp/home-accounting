@@ -76,6 +76,7 @@ function AuthPage() {
       resetRegistration();
     }
   }, [authMode, resetForgotPassword, resetLogin, resetRegistration]);
+
   const handleModalClose = useCallback(() => {
     navigate('/');
   }, [navigate]);

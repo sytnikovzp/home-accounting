@@ -60,7 +60,7 @@ function CategoriesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    navigate('/categories');
+    navigate(-1);
   }, [navigate]);
 
   const handleAddClick = useCallback(() => {

@@ -19,7 +19,6 @@ import BaseForm from '../BaseForm/BaseForm';
 
 function ExpenseForm({ isSubmitting, expense = null, onSubmit }) {
   const {
-    uuid,
     product,
     quantity,
     unitPrice,
@@ -116,7 +115,6 @@ function ExpenseForm({ isSubmitting, expense = null, onSubmit }) {
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='expense'
-      submitButtonText={uuid ? 'Зберегти зміни' : 'Додати витрату'}
       validationSchema={EXPENSE_VALIDATION_SCHEME}
       onSubmit={onSubmit}
     />

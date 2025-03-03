@@ -1,18 +1,13 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 import {
   useFetchRoleByUuidQuery,
   useRemoveRoleMutation,
 } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
+import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function RoleRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -28,7 +23,6 @@ function RoleRemovePage({ handleModalClose }) {
   const [removeRole, { isLoading: isRemoving, error: removeError }] =
     useRemoveRoleMutation();
 
-  const isLoading = isFetching || isRemoving;
   const error = fetchError || removeError;
 
   const handleRemoveRole = useCallback(async () => {
@@ -38,42 +32,29 @@ function RoleRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeRole]);
 
-  const actions = useMemo(
-    () => [
-      <Button
-        key='remove'
-        fullWidth
-        color='error'
-        disabled={isLoading}
-        size='large'
-        variant='contained'
-        onClick={handleRemoveRole}
-      >
-        Видалити
-      </Button>,
-    ],
-    [isLoading, handleRemoveRole]
-  );
-
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
+  if (error) {
     return (
-      <Typography sx={stylesRedlineTypography} variant='body1'>
-        Ви впевнені, що хочете видалити роль «{title}»?
-      </Typography>
+      <InfoModal
+        isOpen
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
     );
-  }, [isFetching, title]);
+  }
+
+  const message = `Ви впевнені, що хочете видалити роль «${title}»?`;
 
   return (
-    <ModalWindow
+    <DeleteConfirmModal
       isOpen
-      actions={actions}
-      content={content}
-      error={error?.data}
+      isFetching={isFetching}
+      isSubmitting={isRemoving}
+      message={message}
       title='Видалення ролі'
       onClose={handleModalClose}
+      onSubmit={handleRemoveRole}
     />
   );
 }

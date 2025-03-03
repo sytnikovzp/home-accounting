@@ -58,7 +58,7 @@ function CurrenciesPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    navigate('/currencies');
+    navigate(-1);
   }, [navigate]);
 
   const handleAddClick = useCallback(() => {

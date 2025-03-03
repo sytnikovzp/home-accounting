@@ -88,7 +88,6 @@ function UserForm({
         fields={fields}
         initialValues={initialValues}
         isSubmitting={isSubmitting}
-        submitButtonText='Зберегти зміни'
         validationSchema={USER_VALIDATION_SCHEME}
         onSubmit={onSubmit}
       />

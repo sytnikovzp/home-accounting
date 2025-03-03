@@ -60,7 +60,7 @@ function EstablishmentsPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    navigate('/establishments');
+    navigate(-1);
   }, [navigate]);
 
   const handleAddClick = useCallback(() => {

@@ -3,7 +3,7 @@ import { MEASURE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 import BaseForm from '../BaseForm/BaseForm';
 
 function MeasureForm({ isSubmitting, measure = null, onSubmit }) {
-  const { uuid, title, description } = measure ?? {};
+  const { title, description } = measure ?? {};
 
   const initialValues = {
     title: title || '',
@@ -31,7 +31,6 @@ function MeasureForm({ isSubmitting, measure = null, onSubmit }) {
       fields={fields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
-      submitButtonText={uuid ? 'Зберегти зміни' : 'Додати одиницю'}
       validationSchema={MEASURE_VALIDATION_SCHEME}
       onSubmit={onSubmit}
     />

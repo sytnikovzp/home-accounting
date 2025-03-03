@@ -58,7 +58,7 @@ function MeasuresPage() {
   );
 
   const handleModalClose = useCallback(() => {
-    navigate('/measures');
+    navigate(-1);
   }, [navigate]);
 
   const handleAddClick = useCallback(() => {

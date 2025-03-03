@@ -55,7 +55,6 @@ function EstablishmentForm({
         fields={fields}
         initialValues={initialValues}
         isSubmitting={isSubmitting}
-        submitButtonText={uuid ? 'Зберегти зміни' : 'Додати заклад'}
         validationSchema={ESTABLISHMENT_VALIDATION_SCHEME}
         onSubmit={onSubmit}
       />

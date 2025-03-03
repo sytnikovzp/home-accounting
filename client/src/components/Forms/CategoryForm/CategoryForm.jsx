@@ -3,7 +3,7 @@ import { CATEGORY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 import BaseForm from '../BaseForm/BaseForm';
 
 function CategoryForm({ isSubmitting, category = null, onSubmit }) {
-  const { uuid, title } = category ?? {};
+  const { title } = category ?? {};
 
   const initialValues = {
     title: title || '',
@@ -24,7 +24,6 @@ function CategoryForm({ isSubmitting, category = null, onSubmit }) {
       fields={fields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
-      submitButtonText={uuid ? 'Зберегти зміни' : 'Додати категорію'}
       validationSchema={CATEGORY_VALIDATION_SCHEME}
       onSubmit={onSubmit}
     />

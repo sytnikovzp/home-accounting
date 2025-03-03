@@ -7,7 +7,7 @@ import Preloader from '../../Preloader/Preloader';
 import BaseForm from '../BaseForm/BaseForm';
 
 function ProductForm({ isSubmitting, product = null, onSubmit }) {
-  const { uuid, title, category } = product ?? {};
+  const { title, category } = product ?? {};
 
   const { data: categoriesData, isLoading: isFetching } =
     useFetchAllCategoriesQuery({
@@ -49,7 +49,6 @@ function ProductForm({ isSubmitting, product = null, onSubmit }) {
       fields={fields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
-      submitButtonText={uuid ? 'Зберегти зміни' : 'Додати товар'}
       validationSchema={PRODUCT_VALIDATION_SCHEME}
       onSubmit={onSubmit}
     />

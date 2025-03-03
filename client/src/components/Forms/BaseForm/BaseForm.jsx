@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 
 import Box from '@mui/material/Box';
@@ -10,12 +11,18 @@ function BaseForm({
   fields,
   initialValues,
   isSubmitting = true,
-  submitButtonText,
+  submitButtonText = 'Зберегти',
   validationSchema,
   onSubmit,
   layout,
   customContent,
 }) {
+  const navigate = useNavigate();
+
+  const handleCancel = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
   const renderFields = (fields, errors, touched, layout) => {
     if (layout === 'expense') {
       const renderField = (name, wrapperProps = {}) => {
@@ -62,16 +69,23 @@ function BaseForm({
     <Form>
       <>{renderFields(fields, errors, touched, layout)}</>
       {customContent}
-      <Button
-        fullWidth
-        color='success'
-        disabled={!isValid || isSubmitting}
-        size='large'
-        type='submit'
-        variant='contained'
-      >
-        {submitButtonText}
-      </Button>
+      <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
+        {layout !== 'auth' && (
+          <Button color='default' variant='text' onClick={handleCancel}>
+            Скасувати
+          </Button>
+        )}
+        <Button
+          color='success'
+          disabled={!isValid || isSubmitting}
+          fullWidth={layout === 'auth'}
+          size={layout === 'auth' ? 'large' : 'medium'}
+          type='submit'
+          variant='contained'
+        >
+          {submitButtonText}
+        </Button>
+      </Box>
     </Form>
   );
 

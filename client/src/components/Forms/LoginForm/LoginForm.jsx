@@ -28,6 +28,7 @@ function LoginForm({ isSubmitting, onSubmit }) {
       fields={fields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
+      layout='auth'
       submitButtonText='Увійти'
       validationSchema={LOGIN_VALIDATION_SCHEME}
       onSubmit={onSubmit}
