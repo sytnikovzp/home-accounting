@@ -25,6 +25,8 @@ import {
   stylesHomePageBox,
   stylesHomePageCard,
   stylesHomePageCardActions,
+  stylesHomePageGridContainer,
+  stylesHomePageGridPanel,
   stylesRedlineTypography,
 } from '../../styles';
 
@@ -113,9 +115,15 @@ function HomePage() {
         переглядати статистику та багато іншого.
       </Typography>
 
-      <Grid container justifyContent='center' spacing={3}>
+      <Grid
+        container
+        alignItems='flex-start'
+        justifyContent='center'
+        spacing={2}
+        sx={stylesHomePageGridContainer}
+      >
         {panelData.map(({ key, icon, title, items }) => (
-          <Grid key={key} xs={12}>
+          <Grid key={key} sm={6} sx={stylesHomePageGridPanel} xs={12}>
             <Card sx={stylesHomePageCard}>
               <CardActions
                 sx={stylesHomePageCardActions}
