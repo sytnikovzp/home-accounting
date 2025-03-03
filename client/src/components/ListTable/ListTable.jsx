@@ -68,14 +68,28 @@ function ListTable({
     rowsPerPageOptions = [],
   } = pagination || {};
 
-  const handleSortChange = useCallback(
-    (field) => {
+  const handleSortClick = useCallback(
+    (field) => () => {
       const isSameField = sortModel.field === field;
       const newOrder =
         isSameField && sortModel.order === 'asc' ? 'desc' : 'asc';
       onSortModelChange({ field, order: newOrder });
     },
     [onSortModelChange, sortModel]
+  );
+
+  const handlePageChange = useCallback(
+    (event, page) => {
+      onPageChange(page + 1);
+    },
+    [onPageChange]
+  );
+
+  const handleRowsPerPageChange = useCallback(
+    (event) => {
+      onRowsPerPageChange(parseInt(event.target.value));
+    },
+    [onRowsPerPageChange]
   );
 
   return (
@@ -117,7 +131,7 @@ function ListTable({
                         : 'none',
                     width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
                   }}
-                  onClick={() => handleSortChange(field)}
+                  onClick={handleSortClick(field)}
                 >
                   {headerName}
                   {sortModel.field === field &&
@@ -220,10 +234,8 @@ function ListTable({
               flexWrap: isMobile ? 'wrap' : 'nowrap',
             },
           }}
-          onPageChange={(event, page) => onPageChange(page + 1)}
-          onRowsPerPageChange={(event) =>
-            onRowsPerPageChange(parseInt(event.target.value))
-          }
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleRowsPerPageChange}
         />
       </Box>
     </TableContainer>

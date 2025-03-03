@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Field } from 'formik';
 
 import IconButton from '@mui/material/IconButton';
@@ -22,8 +22,15 @@ function PasswordField({
 }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const handleToggleShowPassword = () => setIsPasswordVisible((prev) => !prev);
-  const handleMouseDownPassword = (event) => event.preventDefault();
+  const handleToggleShowPassword = useCallback(
+    () => setIsPasswordVisible((prev) => !prev),
+    []
+  );
+
+  const handleMouseDownPassword = useCallback(
+    (event) => event.preventDefault(),
+    []
+  );
 
   return (
     <Field

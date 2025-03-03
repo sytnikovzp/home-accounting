@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -16,7 +17,9 @@ function NotFoundPage() {
   const randomMessage =
     ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)];
 
-  const handleNavigateToHome = () => navigate('/');
+  const handleNavigateToHome = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
 
   return (
     <Box sx={stylesErrorPageBox}>

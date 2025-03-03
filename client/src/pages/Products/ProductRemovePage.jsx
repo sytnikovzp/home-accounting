@@ -45,7 +45,7 @@ function ProductRemovePage({ handleModalClose }) {
   }
 
   const message = `Ви впевнені, що хочете видалити товар/послугу «${title}»?
-    Це призведе до видалення всіх витрат, що містять цей товар.`;
+    Це призведе до видалення всіх витрат, що містять цей товар/послугу.`;
 
   return (
     <DeleteConfirmModal

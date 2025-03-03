@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -24,10 +24,11 @@ function AuthenticatedUserBlock() {
   const fullName = authenticatedUser?.fullName || 'Невідомий користувач';
   const photo = authenticatedUser?.photo || null;
 
-  const handleToggleUserMenu = (event) =>
-    setIsUserMenuOpen(event.currentTarget);
-
-  const handleCloseUserMenu = () => setIsUserMenuOpen(false);
+  const handleToggleUserMenu = useCallback(
+    (event) => setIsUserMenuOpen(event.currentTarget),
+    []
+  );
+  const handleCloseUserMenu = useCallback(() => setIsUserMenuOpen(false), []);
 
   return (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>

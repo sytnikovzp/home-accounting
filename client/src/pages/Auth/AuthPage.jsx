@@ -99,13 +99,26 @@ function AuthPage() {
     [authMode, handleModalClose]
   );
 
+  const handleSubmit = useCallback(
+    (action) => async (data) => {
+      await handleAuth(action, data);
+    },
+    [handleAuth]
+  );
+
+  const toggleAuthMode = useCallback(() => {
+    setAuthMode((prevMode) => {
+      if (prevMode === 'login') {
+        return 'registration';
+      }
+      return 'login';
+    });
+  }, []);
+
   const authForms = {
     login: (
       <>
-        <LoginForm
-          isSubmitting={isLoggingIn}
-          onSubmit={(data) => handleAuth(login, data)}
-        />
+        <LoginForm isSubmitting={isLoggingIn} onSubmit={handleSubmit(login)} />
         <Button
           fullWidth
           color='secondary'
@@ -120,26 +133,19 @@ function AuthPage() {
     registration: (
       <RegistrationForm
         isSubmitting={isRegistration}
-        onSubmit={(data) => handleAuth(registration, data)}
+        onSubmit={handleSubmit(registration)}
       />
     ),
     forgotPassword: (
       <ForgotPasswordForm
         isSubmitting={isResetting}
-        onSubmit={(data) => handleAuth(forgotPassword, data)}
+        onSubmit={handleSubmit(forgotPassword)}
       />
     ),
   };
 
   const actions = (
-    <Button
-      fullWidth
-      color='secondary'
-      variant='text'
-      onClick={() =>
-        setAuthMode(authMode === 'login' ? 'registration' : 'login')
-      }
-    >
+    <Button fullWidth color='secondary' variant='text' onClick={toggleAuthMode}>
       {authMode === 'login'
         ? 'Перейти до реєстрації'
         : 'Повернутися до авторизації'}

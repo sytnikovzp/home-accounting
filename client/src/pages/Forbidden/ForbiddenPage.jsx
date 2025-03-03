@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -9,7 +10,9 @@ import { stylesErrorPageBox } from '../../styles';
 function ForbiddenPage() {
   const navigate = useNavigate();
 
-  const handleNavigateToHome = () => navigate('/');
+  const handleNavigateToHome = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
 
   return (
     <Box sx={stylesErrorPageBox}>

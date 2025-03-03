@@ -17,14 +17,7 @@ function LoadingModal({ message = 'Завантаження...' }) {
     [message]
   );
 
-  return (
-    <ModalWindow
-      disableBackdropClick
-      disableCloseButton
-      isOpen
-      content={content}
-    />
-  );
+  return <ModalWindow disableCloseButton isOpen content={content} />;
 }
 
 export default LoadingModal;

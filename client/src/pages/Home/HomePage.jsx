@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -94,13 +94,18 @@ const panelData = [
 function HomePage() {
   const [openPanels, setOpenPanels] = useState(new Set());
 
-  const handleToggle = (panel) => {
+  const handleToggle = useCallback((panel) => {
     setOpenPanels((prev) => {
       const newSet = new Set(prev);
       newSet.has(panel) ? newSet.delete(panel) : newSet.add(panel);
       return newSet;
     });
-  };
+  }, []);
+
+  const getToggleHandler = useCallback(
+    (panel) => () => handleToggle(panel),
+    [handleToggle]
+  );
 
   return (
     <Container maxWidth='md' sx={{ py: 2 }}>
@@ -127,7 +132,7 @@ function HomePage() {
             <Card sx={stylesHomePageCard}>
               <CardActions
                 sx={stylesHomePageCardActions}
-                onClick={() => handleToggle(key)}
+                onClick={getToggleHandler(key)}
               >
                 <Box sx={stylesHomePageBox}>
                   {icon}

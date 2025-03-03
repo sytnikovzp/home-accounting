@@ -8,6 +8,18 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { DatePicker } from '@mui/x-date-pickers';
 
 function DateField({ name, label, required, size, touched, error }) {
+  const handleDateChange = (date, field, form) => {
+    form.setFieldTouched(field.name, true);
+    form.setFieldValue(
+      field.name,
+      date ? format(date, 'dd MMMM yyyy', { locale: uk }) : ''
+    );
+  };
+
+  const handleDateChangeWithArgs = (field, form) => (date) => {
+    handleDateChange(date, field, form);
+  };
+
   return (
     <Field name={name}>
       {({ field, form }) => (
@@ -30,13 +42,7 @@ function DateField({ name, label, required, size, touched, error }) {
                 : null
             }
             views={['year', 'month', 'day']}
-            onChange={(date) => {
-              form.setFieldTouched(field.name, true);
-              form.setFieldValue(
-                field.name,
-                date ? format(date, 'dd MMMM yyyy', { locale: uk }) : ''
-              );
-            }}
+            onChange={handleDateChangeWithArgs(field, form)}
           />
           <FormHelperText>{touched && error ? error : ' '}</FormHelperText>
         </FormControl>

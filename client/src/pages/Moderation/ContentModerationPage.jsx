@@ -95,9 +95,15 @@ function ContentModerationPage({ handleModalClose }) {
       if (!moderateEntity) {
         return;
       }
-      await moderateEntity({ [`${path}Uuid`]: uuid, status });
+      await moderateEntity({ [`${path}Uuid`]: uuid, status }).unwrap();
+      handleModalClose();
     },
-    [moderateEntity, path, uuid]
+    [uuid, path, moderateEntity, handleModalClose]
+  );
+
+  const handleModeration = useCallback(
+    (status) => () => handleModerationAction(status),
+    [handleModerationAction]
   );
 
   const handleEditAndApprove = useCallback(() => {
@@ -214,7 +220,7 @@ function ContentModerationPage({ handleModalClose }) {
         disabled={isFetching || isSubmiting}
         size='large'
         variant='contained'
-        onClick={() => handleModerationAction('approved')}
+        onClick={handleModeration('approved')}
       >
         Затвердити
       </Button>,
@@ -236,12 +242,12 @@ function ContentModerationPage({ handleModalClose }) {
         disabled={isFetching || isSubmiting}
         size='large'
         variant='contained'
-        onClick={() => handleModerationAction('rejected')}
+        onClick={handleModeration('rejected')}
       >
         Відхилити
       </Button>,
     ],
-    [handleEditAndApprove, handleModerationAction, isFetching, isSubmiting]
+    [handleEditAndApprove, handleModeration, isFetching, isSubmiting]
   );
 
   const content = useMemo(() => {

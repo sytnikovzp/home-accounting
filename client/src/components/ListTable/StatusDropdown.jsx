@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,11 +19,14 @@ function StatusDropdown({
 }) {
   const options = STATUS_OPTIONS[linkEntity] ?? STATUS_OPTIONS.default;
 
-  const handleStatusChange = (event) => {
-    const newStatus = event.target.value;
-    onStatusChange(newStatus);
-    onPageChange(1);
-  };
+  const handleStatusChange = useCallback(
+    (event) => {
+      const newStatus = event.target.value;
+      onStatusChange(newStatus);
+      onPageChange(1);
+    },
+    [onStatusChange, onPageChange]
+  );
 
   return (
     <FormControl sx={stylesListTableFormControl}>
