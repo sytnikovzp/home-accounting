@@ -44,21 +44,8 @@ function ResetPasswordPage() {
     />
   );
 
-  if (submitError) {
-    return (
-      <InfoModal
-        isOpen
-        message={submitError.data?.message}
-        severity={submitError.data?.severity}
-        title={submitError.data?.title}
-        onClose={handleModalClose}
-      />
-    );
-  }
-
   return infoModalData ? (
     <InfoModal
-      isOpen
       message={infoModalData.message}
       severity={infoModalData.severity}
       title={infoModalData.title}
@@ -68,6 +55,7 @@ function ResetPasswordPage() {
     <ModalWindow
       isOpen
       content={content}
+      error={submitError}
       title='Відновлення паролю'
       onClose={handleModalClose}
     />

@@ -84,7 +84,7 @@ function EstablishmentEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={error}
       title='Редагування закладу'
       onClose={handleModalClose}
     />

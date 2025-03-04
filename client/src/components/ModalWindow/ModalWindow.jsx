@@ -1,5 +1,3 @@
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import IconButton from '@mui/material/IconButton';
@@ -7,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
 import CloseIcon from '@mui/icons-material/Close';
+
+import InfoModal from './InfoModal';
 
 import {
   stylesModalWindowContentBox,
@@ -24,6 +24,17 @@ function ModalWindow({
   error,
   disableBackdropClick = false,
 }) {
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={onClose}
+      />
+    );
+  }
+
   return (
     <Modal
       closeAfterTransition
@@ -51,12 +62,6 @@ function ModalWindow({
                 title
               )}
             </Box>
-          )}
-          {error && (
-            <Alert severity={error?.severity || 'error'} sx={{ mb: 2 }}>
-              <AlertTitle>{error?.title || 'error'}:</AlertTitle>
-              {error?.message || 'error'}
-            </Alert>
           )}
           <Box id='modal-window-description' sx={stylesModalWindowContentBox}>
             {content}

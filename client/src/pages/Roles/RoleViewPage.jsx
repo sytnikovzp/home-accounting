@@ -1,10 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
-
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';
 import InfoIcon from '@mui/icons-material/Info';
@@ -14,12 +10,7 @@ import useAuthUser from '../../hooks/useAuthUser';
 
 import { useFetchRoleByUuidQuery } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
-import PermissionsList from '../../components/ViewDetails/PermissionsList';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
-
-import { stylesViewPageBox } from '../../styles';
+import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 
 function RoleViewPage() {
   const { uuid: paramUuid } = useParams();
@@ -55,25 +46,12 @@ function RoleViewPage() {
     [title, description, createdAt, updatedAt]
   );
 
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-    return (
-      <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} />
-        <Divider />
-        <Typography variant='h6'>Права доступу:</Typography>
-        <PermissionsList permissions={permissions} />
-      </Box>
-    );
-  }, [data, isFetching, permissions]);
-
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      error={fetchError?.data}
+    <EntityViewModal
+      data={data}
+      error={fetchError}
+      isFetching={isFetching}
+      permissions={permissions}
       title='Деталі ролі'
       onClose={handleModalClose}
     />

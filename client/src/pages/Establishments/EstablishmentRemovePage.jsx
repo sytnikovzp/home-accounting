@@ -7,7 +7,6 @@ import {
 } from '../../store/services';
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function EstablishmentRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -32,24 +31,12 @@ function EstablishmentRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeEstablishment]);
 
-  if (error) {
-    return (
-      <InfoModal
-        isOpen
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
-    );
-  }
-
   const message = `Ви впевнені, що хочете видалити заклад «${title}»? 
     Це призведе до видалення всіх витрат, пов'язаних з цим закладом.`;
 
   return (
     <DeleteConfirmModal
-      isOpen
+      error={error}
       isFetching={isFetching}
       isSubmitting={isRemoving}
       message={message}

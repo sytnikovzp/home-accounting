@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';
 import InfoIcon from '@mui/icons-material/Info';
@@ -11,11 +9,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchMeasureByUuidQuery } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
-
-import { stylesViewPageBox } from '../../styles';
+import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 
 function MeasureViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -46,22 +40,11 @@ function MeasureViewPage({ handleModalClose }) {
     [title, description, creatorFullName, creatorUuid, createdAt, updatedAt]
   );
 
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-    return (
-      <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} />
-      </Box>
-    );
-  }, [data, isFetching]);
-
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      error={fetchError?.data}
+    <EntityViewModal
+      data={data}
+      error={fetchError}
+      isFetching={isFetching}
       title='Деталі одиниці'
       onClose={handleModalClose}
     />

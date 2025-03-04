@@ -48,7 +48,7 @@ function MeasureEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={error}
       title='Редагування одиниці'
       onClose={handleModalClose}
     />

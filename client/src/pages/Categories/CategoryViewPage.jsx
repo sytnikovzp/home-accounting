@@ -9,7 +9,6 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { useFetchCategoryByUuidQuery } from '../../store/services';
 
 import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 
 function CategoryViewPage({ handleModalClose }) {
@@ -66,22 +65,10 @@ function CategoryViewPage({ handleModalClose }) {
     ]
   );
 
-  if (fetchError) {
-    return (
-      <InfoModal
-        isOpen
-        message={fetchError.data?.message}
-        severity={fetchError.data?.severity}
-        title={fetchError.data?.title}
-        onClose={handleModalClose}
-      />
-    );
-  }
-
   return (
     <EntityViewModal
-      isOpen
       data={data}
+      error={fetchError}
       isFetching={isFetching}
       title='Деталі категорії'
       onClose={handleModalClose}

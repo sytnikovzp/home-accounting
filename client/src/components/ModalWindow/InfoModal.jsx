@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 
 import ModalWindow from './ModalWindow';
 
-function InfoModal({ isOpen, onClose, title, message, severity = 'info' }) {
+function InfoModal({ message, severity = 'info', title, onClose }) {
   const actions = useMemo(
     () => (
       <Box display='flex' justifyContent='center'>
@@ -25,9 +25,9 @@ function InfoModal({ isOpen, onClose, title, message, severity = 'info' }) {
 
   return (
     <ModalWindow
+      isOpen
       actions={actions}
       content={content}
-      isOpen={isOpen}
       title={title}
       onClose={onClose}
     />

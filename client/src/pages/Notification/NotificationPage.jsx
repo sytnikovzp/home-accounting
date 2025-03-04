@@ -36,7 +36,6 @@ function NotificationPage() {
 
   return infoModalData ? (
     <InfoModal
-      isOpen
       message={infoModalData.message}
       severity={infoModalData.severity}
       title={infoModalData.title}
@@ -44,7 +43,6 @@ function NotificationPage() {
     />
   ) : (
     <InfoModal
-      isOpen
       message={'Невідома помилка'}
       severity={'error'}
       title={'Сталася помилка'}

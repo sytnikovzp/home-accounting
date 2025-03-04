@@ -33,7 +33,7 @@ function EstablishmentAddPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={submitError}
       title='Додавання закладу'
       onClose={handleModalClose}
     />

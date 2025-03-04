@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -15,12 +14,10 @@ import { configs } from '../../constants';
 
 import { useFetchEstablishmentByUuidQuery } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
+import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
-import { stylesViewPageAvatarSize, stylesViewPageBox } from '../../styles';
+import { stylesViewPageAvatarSize } from '../../styles';
 
 const { BASE_URL } = configs;
 
@@ -113,22 +110,11 @@ function EstablishmentViewPage({ handleModalClose }) {
     ]
   );
 
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-    return (
-      <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} />
-      </Box>
-    );
-  }, [data, isFetching]);
-
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      error={fetchError?.data}
+    <EntityViewModal
+      data={data}
+      error={fetchError}
+      isFetching={isFetching}
       title='Деталі закладу'
       onClose={handleModalClose}
     />

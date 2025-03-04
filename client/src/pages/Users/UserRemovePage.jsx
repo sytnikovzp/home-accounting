@@ -11,7 +11,6 @@ import {
 } from '../../store/services';
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function UserRemovePage() {
   const { uuid } = useParams();
@@ -73,25 +72,13 @@ function UserRemovePage() {
     handleModalClose,
   ]);
 
-  if (error) {
-    return (
-      <InfoModal
-        isOpen
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
-    );
-  }
-
   const message = isAuthenticatedUser
     ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
     : `Ви впевнені, що хочете видалити користувача «${fullName}»?`;
 
   return (
     <DeleteConfirmModal
-      isOpen
+      error={error}
       isFetching={isFetching}
       isSubmitting={isRemovingUser || isRemovingUserProfile}
       message={message}

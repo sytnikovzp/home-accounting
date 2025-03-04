@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -20,16 +19,13 @@ import {
   useResendConfirmEmailMutation,
 } from '../../store/services';
 
+import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import {
   stylesUserViewPageEmailButton,
   stylesViewPageAvatarSize,
-  stylesViewPageBox,
 } from '../../styles';
 
 const { BASE_URL } = configs;
@@ -169,30 +165,18 @@ function UserViewPage() {
     ]
   );
 
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-    return (
-      <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} />
-      </Box>
-    );
-  }, [data, isFetching]);
-
   return infoModalData ? (
     <InfoModal
-      isOpen
       message={infoModalData.message}
       severity={infoModalData.severity}
       title={infoModalData.title}
       onClose={handleModalClose}
     />
   ) : (
-    <ModalWindow
-      isOpen
-      content={content}
-      error={error?.data}
+    <EntityViewModal
+      data={data}
+      error={error}
+      isFetching={isFetching}
       title='Деталі користувача'
       onClose={handleModalClose}
     />

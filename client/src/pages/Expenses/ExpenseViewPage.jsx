@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DryCleaningIcon from '@mui/icons-material/DryCleaning';
@@ -14,11 +12,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchExpenseByUuidQuery } from '../../store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
-
-import { stylesViewPageBox } from '../../styles';
+import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 
 function ExpenseViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -101,22 +95,11 @@ function ExpenseViewPage({ handleModalClose }) {
     ]
   );
 
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-    return (
-      <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} />
-      </Box>
-    );
-  }, [data, isFetching]);
-
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      error={fetchError?.data}
+    <EntityViewModal
+      data={data}
+      error={fetchError}
+      isFetching={isFetching}
       title='Деталі витрати'
       onClose={handleModalClose}
     />

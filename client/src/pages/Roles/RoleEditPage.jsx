@@ -48,7 +48,7 @@ function RoleEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={error}
       title='Редагування ролі'
       onClose={handleModalClose}
     />

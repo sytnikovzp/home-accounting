@@ -30,7 +30,7 @@ function MeasureAddPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={submitError}
       title='Додавання одиниці'
       onClose={handleModalClose}
     />

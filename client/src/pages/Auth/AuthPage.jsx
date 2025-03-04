@@ -60,7 +60,7 @@ function AuthPage() {
     },
   ] = useForgotPasswordMutation();
 
-  const error = loginError || registrationError;
+  const error = loginError || registrationError || forgotPasswordError;
 
   useEffect(() => {
     if (authMode === 'login') {
@@ -171,21 +171,8 @@ function AuthPage() {
     </Box>
   );
 
-  if (forgotPasswordError) {
-    return (
-      <InfoModal
-        isOpen
-        message={forgotPasswordError.data?.message}
-        severity={forgotPasswordError.data?.severity}
-        title={forgotPasswordError.data?.title}
-        onClose={handleModalClose}
-      />
-    );
-  }
-
   return infoModalData ? (
     <InfoModal
-      isOpen
       message={infoModalData.message}
       severity={infoModalData.severity}
       title={infoModalData.title}
@@ -196,7 +183,7 @@ function AuthPage() {
       isOpen
       actions={actions}
       content={authForms[authMode]}
-      error={error?.data}
+      error={error}
       title={title}
       onClose={handleModalClose}
     />

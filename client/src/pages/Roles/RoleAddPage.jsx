@@ -28,7 +28,7 @@ function RoleAddPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={submitError}
       title='Додавання ролі'
       onClose={handleModalClose}
     />

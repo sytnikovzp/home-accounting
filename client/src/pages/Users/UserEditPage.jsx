@@ -223,7 +223,7 @@ function UserEditPage() {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={error}
       title='Редагування користувача'
       onClose={handleModalClose}
     />

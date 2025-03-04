@@ -7,7 +7,6 @@ import {
 } from '../../store/services';
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -32,24 +31,12 @@ function ProductRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeProduct]);
 
-  if (error) {
-    return (
-      <InfoModal
-        isOpen
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
-    );
-  }
-
   const message = `Ви впевнені, що хочете видалити товар/послугу «${title}»?
     Це призведе до видалення всіх витрат, що містять цей товар/послугу.`;
 
   return (
     <DeleteConfirmModal
-      isOpen
+      error={error}
       isFetching={isFetching}
       isSubmitting={isRemoving}
       message={message}

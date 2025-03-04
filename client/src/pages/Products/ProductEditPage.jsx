@@ -48,7 +48,7 @@ function ProductEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={error}
       title='Редагування товару/послуги'
       onClose={handleModalClose}
     />

@@ -30,7 +30,7 @@ function ExpenseAddPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={submitError?.data}
+      error={submitError}
       title='Додавання витрати'
       onClose={handleModalClose}
     />

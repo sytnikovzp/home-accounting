@@ -48,7 +48,7 @@ function CurrencyEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={error}
       title='Редагування валюти'
       onClose={handleModalClose}
     />

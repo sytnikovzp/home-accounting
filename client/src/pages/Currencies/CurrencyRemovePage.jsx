@@ -7,7 +7,6 @@ import {
 } from '../../store/services';
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function CurrencyRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -32,23 +31,11 @@ function CurrencyRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeCurrency]);
 
-  if (error) {
-    return (
-      <InfoModal
-        isOpen
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
-    );
-  }
-
   const message = `Ви впевнені, що хочете видалити валюту «${title}»?`;
 
   return (
     <DeleteConfirmModal
-      isOpen
+      error={error}
       isFetching={isFetching}
       isSubmitting={isRemoving}
       message={message}

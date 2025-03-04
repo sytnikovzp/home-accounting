@@ -48,7 +48,7 @@ function CategoryEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      error={error?.data}
+      error={error}
       title='Редагування категорії'
       onClose={handleModalClose}
     />
