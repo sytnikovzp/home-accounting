@@ -8,7 +8,6 @@ import {
 
 import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function MeasureEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -34,9 +33,7 @@ function MeasureEditPage({ handleModalClose }) {
     [editMeasure, handleModalClose, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
+  const content = (
     <MeasureForm
       isSubmitting={isSubmitting}
       measure={measure}
@@ -49,6 +46,7 @@ function MeasureEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error}
+      isFetching={isFetching}
       title='Редагування одиниці'
       onClose={handleModalClose}
     />

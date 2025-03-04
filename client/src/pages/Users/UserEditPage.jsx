@@ -17,7 +17,6 @@ import {
 
 import UserForm from '../../components/Forms/UserForm/UserForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function UserEditPage() {
   const { uuid } = useParams();
@@ -204,9 +203,7 @@ function UserEditPage() {
     ]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
+  const content = (
     <UserForm
       isChanging={isChangingPhoto}
       isSubmitting={isUserSubmitting || isUserProfileSubmitting}
@@ -224,6 +221,7 @@ function UserEditPage() {
       isOpen
       content={content}
       error={error}
+      isFetching={isFetching}
       title='Редагування користувача'
       onClose={handleModalClose}
     />

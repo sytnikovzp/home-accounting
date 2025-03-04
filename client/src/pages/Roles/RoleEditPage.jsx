@@ -8,7 +8,6 @@ import {
 
 import RoleForm from '../../components/Forms/RoleForm/RoleForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function RoleEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -34,9 +33,7 @@ function RoleEditPage({ handleModalClose }) {
     [editRole, handleModalClose, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
+  const content = (
     <RoleForm
       isSubmitting={isSubmitting}
       role={role}
@@ -49,6 +46,7 @@ function RoleEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error}
+      isFetching={isFetching}
       title='Редагування ролі'
       onClose={handleModalClose}
     />

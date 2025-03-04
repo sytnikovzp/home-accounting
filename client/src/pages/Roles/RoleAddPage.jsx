@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { useAddRoleMutation } from '../../store/services';
 
@@ -19,9 +19,8 @@ function RoleAddPage({ handleModalClose }) {
     [addRole, handleModalClose]
   );
 
-  const content = useMemo(
-    () => <RoleForm isSubmitting={isSubmitting} onSubmit={handleSubmitRole} />,
-    [handleSubmitRole, isSubmitting]
+  const content = (
+    <RoleForm isSubmitting={isSubmitting} onSubmit={handleSubmitRole} />
   );
 
   return (

@@ -19,8 +19,8 @@ const COLUMNS_CONFIG = {
     { field: 'title', headerName: 'Назва', align: 'left' },
   ],
   products: [
-    { field: 'category', headerName: 'Категорія', align: 'left' },
     { field: 'title', headerName: 'Назва товару/послуги', align: 'left' },
+    { field: 'category', headerName: 'Категорія', align: 'left' },
   ],
   roles: [{ field: 'title', headerName: 'Назва ролі', align: 'left' }],
   users: [

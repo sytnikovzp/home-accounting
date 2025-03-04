@@ -1,8 +1,4 @@
-import { useMemo } from 'react';
-
 import { Box, Divider, Typography } from '@mui/material';
-
-import Preloader from '../../components/Preloader/Preloader';
 
 import PermissionsList from '../ViewDetails/PermissionsList';
 import ViewDetails from '../ViewDetails/ViewDetails';
@@ -19,29 +15,25 @@ function EntityViewModal({
   title,
   onClose,
 }) {
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-    return (
-      <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} />
-        {permissions && (
-          <>
-            <Divider />
-            <Typography variant='h6'>Права доступу:</Typography>
-            <PermissionsList permissions={permissions} />
-          </>
-        )}
-      </Box>
-    );
-  }, [data, isFetching, permissions]);
+  const content = (
+    <Box sx={stylesViewPageBox}>
+      <ViewDetails data={data} />
+      {permissions && (
+        <>
+          <Divider />
+          <Typography variant='h6'>Права доступу:</Typography>
+          <PermissionsList permissions={permissions} />
+        </>
+      )}
+    </Box>
+  );
 
   return (
     <ModalWindow
       isOpen
       content={content}
       error={error}
+      isFetching={isFetching}
       title={title}
       onClose={onClose}
     />

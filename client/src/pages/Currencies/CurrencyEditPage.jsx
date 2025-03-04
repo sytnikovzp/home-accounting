@@ -8,7 +8,6 @@ import {
 
 import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function CurrencyEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -34,9 +33,7 @@ function CurrencyEditPage({ handleModalClose }) {
     [editCurrency, handleModalClose, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
+  const content = (
     <CurrencyForm
       currency={currency}
       isSubmitting={isSubmitting}
@@ -49,6 +46,7 @@ function CurrencyEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error}
+      isFetching={isFetching}
       title='Редагування валюти'
       onClose={handleModalClose}
     />

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { useAddMeasureMutation } from '../../store/services';
 
@@ -19,11 +19,8 @@ function MeasureAddPage({ handleModalClose }) {
     [addMeasure, handleModalClose]
   );
 
-  const content = useMemo(
-    () => (
-      <MeasureForm isSubmitting={isSubmitting} onSubmit={handleSubmitMeasure} />
-    ),
-    [handleSubmitMeasure, isSubmitting]
+  const content = (
+    <MeasureForm isSubmitting={isSubmitting} onSubmit={handleSubmitMeasure} />
   );
 
   return (

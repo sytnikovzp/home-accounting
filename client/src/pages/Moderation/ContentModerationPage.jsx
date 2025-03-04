@@ -26,7 +26,6 @@ import {
 } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
@@ -211,55 +210,47 @@ function ContentModerationPage({ handleModalClose }) {
     ]
   );
 
-  const actions = useMemo(
-    () => [
-      <Button
-        key='approve'
-        fullWidth
-        color='success'
-        disabled={isFetching || isSubmiting}
-        size='large'
-        variant='contained'
-        onClick={handleModeration('approved')}
-      >
-        Затвердити
-      </Button>,
-      <Button
-        key='edit'
-        fullWidth
-        color='warning'
-        disabled={isFetching || isSubmiting}
-        size='large'
-        variant='contained'
-        onClick={handleEditAndApprove}
-      >
-        Редагувати та затвердити
-      </Button>,
-      <Button
-        key='reject'
-        fullWidth
-        color='error'
-        disabled={isFetching || isSubmiting}
-        size='large'
-        variant='contained'
-        onClick={handleModeration('rejected')}
-      >
-        Відхилити
-      </Button>,
-    ],
-    [handleEditAndApprove, handleModeration, isFetching, isSubmiting]
-  );
+  const actions = [
+    <Button
+      key='approve'
+      fullWidth
+      color='success'
+      disabled={isFetching || isSubmiting}
+      size='large'
+      variant='contained'
+      onClick={handleModeration('approved')}
+    >
+      Затвердити
+    </Button>,
+    <Button
+      key='edit'
+      fullWidth
+      color='warning'
+      disabled={isFetching || isSubmiting}
+      size='large'
+      variant='contained'
+      onClick={handleEditAndApprove}
+    >
+      Редагувати та затвердити
+    </Button>,
+    <Button
+      key='reject'
+      fullWidth
+      color='error'
+      disabled={isFetching || isSubmiting}
+      size='large'
+      variant='contained'
+      onClick={handleModeration('rejected')}
+    >
+      Відхилити
+    </Button>,
+  ];
 
-  const content = useMemo(() => {
-    if (isFetching) {
-      return <Preloader />;
-    }
-    return (
-      <Box sx={stylesViewPageBox}>
-        <ViewDetails data={data} />
-      </Box>
-    );
-  }, [data, isFetching]);
+  const content = (
+    <Box sx={stylesViewPageBox}>
+      <ViewDetails data={data} />
+    </Box>
+  );
 
   return (
     <ModalWindow
@@ -267,6 +258,7 @@ function ContentModerationPage({ handleModalClose }) {
       actions={actions}
       content={content}
       error={fetchError || submitError}
+      isFetching={isFetching}
       title='Модерація контенту'
       onClose={handleModalClose}
     />

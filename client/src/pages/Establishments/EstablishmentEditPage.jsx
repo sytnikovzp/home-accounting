@@ -10,7 +10,6 @@ import {
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -67,9 +66,7 @@ function EstablishmentEditPage({ handleModalClose }) {
     [editEstablishment, handleModalClose, resetResetting, resetUploading, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
+  const content = (
     <EstablishmentForm
       establishment={establishment}
       isChanging={isChangingLogo}
@@ -85,6 +82,7 @@ function EstablishmentEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error}
+      isFetching={isFetching}
       title='Редагування закладу'
       onClose={handleModalClose}
     />

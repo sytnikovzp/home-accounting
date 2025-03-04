@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { useAddCategoryMutation } from '../../store/services';
 
@@ -19,14 +19,8 @@ function CategoryAddPage({ handleModalClose }) {
     [addCategory, handleModalClose]
   );
 
-  const content = useMemo(
-    () => (
-      <CategoryForm
-        isSubmitting={isSubmitting}
-        onSubmit={handleSubmitCategory}
-      />
-    ),
-    [handleSubmitCategory, isSubmitting]
+  const content = (
+    <CategoryForm isSubmitting={isSubmitting} onSubmit={handleSubmitCategory} />
   );
 
   return (

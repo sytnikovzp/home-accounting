@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { useAddCurrencyMutation } from '../../store/services';
 
@@ -19,14 +19,8 @@ function CurrencyAddPage({ handleModalClose }) {
     [addCurrency, handleModalClose]
   );
 
-  const content = useMemo(
-    () => (
-      <CurrencyForm
-        isSubmitting={isSubmitting}
-        onSubmit={handleSubmitCurrency}
-      />
-    ),
-    [handleSubmitCurrency, isSubmitting]
+  const content = (
+    <CurrencyForm isSubmitting={isSubmitting} onSubmit={handleSubmitCurrency} />
   );
 
   return (

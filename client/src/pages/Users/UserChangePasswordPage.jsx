@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import useAuthUser from '../../hooks/useAuthUser';
@@ -60,14 +60,11 @@ function UserChangePasswordPage() {
     ]
   );
 
-  const content = useMemo(
-    () => (
-      <ChangePasswordForm
-        isSubmitting={isChangingPassword}
-        onSubmit={handleSubmitPassword}
-      />
-    ),
-    [handleSubmitPassword, isChangingPassword]
+  const content = (
+    <ChangePasswordForm
+      isSubmitting={isChangingPassword}
+      onSubmit={handleSubmitPassword}
+    />
   );
 
   return (

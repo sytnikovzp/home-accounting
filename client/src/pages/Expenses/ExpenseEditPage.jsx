@@ -8,7 +8,6 @@ import {
 
 import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function ExpenseEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -34,9 +33,7 @@ function ExpenseEditPage({ handleModalClose }) {
     [editExpense, handleModalClose, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
+  const content = (
     <ExpenseForm
       expense={expense}
       isSubmitting={isSubmitting}
@@ -49,6 +46,7 @@ function ExpenseEditPage({ handleModalClose }) {
       isOpen
       content={content}
       error={error}
+      isFetching={isFetching}
       title='Редагування витрати'
       onClose={handleModalClose}
     />
