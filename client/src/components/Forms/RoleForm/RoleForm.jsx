@@ -1,12 +1,14 @@
 import { useCallback, useMemo } from 'react';
 
+import Typography from '@mui/material/Typography';
+
 import { ROLE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import { useFetchAllPermissionsQuery } from '../../../store/services';
 
 import Preloader from '../../Preloader/Preloader';
 import BaseForm from '../BaseForm/BaseForm';
-import PermissionsSwitches from '../PermissionsSwitches/PermissionsSwitches';
+import PermissionsSelector from '../PermissionsSelector/PermissionsSelector';
 
 function RoleForm({ isSubmitting, role = null, onSubmit }) {
   const { title, description, permissions = [] } = role ?? {};
@@ -61,7 +63,12 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
   }
 
   const customContent = (
-    <PermissionsSwitches permissionsList={permissionsList} />
+    <>
+      <Typography gutterBottom variant='h6'>
+        Права доступу:
+      </Typography>
+      <PermissionsSelector permissionsList={permissionsList} />
+    </>
   );
 
   return (

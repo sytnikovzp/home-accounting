@@ -2,20 +2,21 @@ import { useCallback, useMemo } from 'react';
 import { FieldArray, useFormikContext } from 'formik';
 
 import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 
 import {
-  stylesPermissionsSwitchesFontDescription,
-  stylesPermissionsSwitchesFontTitle,
-  stylesPermissionsSwitchesListItem,
-  stylesPermissionsSwitchesMainBox,
+  stylesPermissionsSelectorCheckboxSize,
+  stylesPermissionsSelectorFontDescription,
+  stylesPermissionsSelectorFontTitle,
+  stylesPermissionsSelectorListItem,
+  stylesPermissionsSelectorMainBox,
 } from '../../../styles';
 
-function PermissionsSwitches({ permissionsList }) {
+function PermissionsSelector({ permissionsList }) {
   const { values } = useFormikContext();
   const selectedPermissions = values.permissions;
 
@@ -45,25 +46,26 @@ function PermissionsSwitches({ permissionsList }) {
           <ListItem
             key={uuid}
             disableGutters
-            sx={stylesPermissionsSwitchesListItem}
+            sx={stylesPermissionsSelectorListItem}
           >
             <FormControlLabel
               control={
-                <Switch
+                <Checkbox
                   checked={isCheckedPermissions.has(uuid)}
+                  sx={stylesPermissionsSelectorCheckboxSize}
                   onChange={handleToggle(uuid, arrayHelpers)}
                 />
               }
               label={
                 <>
                   <Typography
-                    sx={stylesPermissionsSwitchesFontTitle}
+                    sx={stylesPermissionsSelectorFontTitle}
                     variant='body1'
                   >
                     {title}
                   </Typography>
                   <Typography
-                    sx={stylesPermissionsSwitchesFontDescription}
+                    sx={stylesPermissionsSelectorFontDescription}
                     variant='body2'
                   >
                     {description || '*Немає даних*'}
@@ -79,13 +81,10 @@ function PermissionsSwitches({ permissionsList }) {
   );
 
   return (
-    <Box sx={stylesPermissionsSwitchesMainBox}>
-      <Typography gutterBottom variant='h6'>
-        Права доступу:
-      </Typography>
+    <Box sx={stylesPermissionsSelectorMainBox}>
       <FieldArray name='permissions' render={renderPermissionsList} />
     </Box>
   );
 }
 
-export default PermissionsSwitches;
+export default PermissionsSelector;
