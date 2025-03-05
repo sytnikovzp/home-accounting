@@ -45,7 +45,7 @@ function FileUpload({ entity, file, isChanging, label, onReset, onUpload }) {
     <Box sx={stylesFileUploadMainBox}>
       <Box sx={stylesFileUploadAvatarBox}>
         {isChanging ? (
-          <CircularProgress />
+          <CircularProgress color='success' />
         ) : (
           <>
             <Avatar

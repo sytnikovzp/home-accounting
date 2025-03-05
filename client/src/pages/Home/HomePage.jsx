@@ -128,7 +128,7 @@ function HomePage() {
         sx={stylesHomePageGridContainer}
       >
         {panelData.map(({ key, icon, title, items }) => (
-          <Grid key={key} sm={6} sx={stylesHomePageGridPanel} xs={12}>
+          <Grid key={key} size={{ xs: 12, sm: 6 }} sx={stylesHomePageGridPanel}>
             <Card sx={stylesHomePageCard}>
               <CardActions
                 sx={stylesHomePageCardActions}

@@ -4,7 +4,6 @@ import List from '@mui/material/List';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CategoryIcon from '@mui/icons-material/Category';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
-import DryCleaningIcon from '@mui/icons-material/DryCleaning';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import GavelIcon from '@mui/icons-material/Gavel';
 import HomeIcon from '@mui/icons-material/Home';
@@ -14,6 +13,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import StoreIcon from '@mui/icons-material/Store';
+import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
 
 import useAuthUser from '../../hooks/useAuthUser';
 import useHasPermission from '../../hooks/useHasPermission';
@@ -55,7 +55,7 @@ const privateNavItems = [
     permissions: ['add', 'edit', 'remove'],
   },
   {
-    icon: DryCleaningIcon,
+    icon: TakeoutDiningIcon,
     label: 'Товари та послуги',
     to: '/products',
     entity: 'products',

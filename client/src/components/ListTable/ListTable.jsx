@@ -97,7 +97,7 @@ function ListTable({
       <Box sx={{ position: 'relative' }}>
         {isPreloaderVisible && (
           <Box sx={stylesListTablePreloader}>
-            <CircularProgress size='3rem' />
+            <CircularProgress color='success' size='3rem' />
           </Box>
         )}
 
