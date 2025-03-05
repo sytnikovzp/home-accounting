@@ -1,18 +1,17 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import {
   useFetchMeasureByUuidQuery,
   useRemoveMeasureMutation,
 } from '../../store/services';
 
-import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
 
 function MeasureRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -37,13 +36,30 @@ function MeasureRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeMeasure]);
 
+  const actions = (
+    <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
+      <Button color='default' variant='text' onClick={handleModalClose}>
+        Скасувати
+      </Button>
+      <Button
+        color='error'
+        disabled={isRemoving || isFetching}
+        type='submit'
+        variant='contained'
+        onClick={handleRemoveMeasure}
+      >
+        Видалити
+      </Button>
+    </Box>
+  );
+
   const content = isFetching ? (
     <Preloader />
   ) : (
-    <Typography sx={stylesRedlineTypography} variant='body1'>
+    <ConfirmMessage>
       Ви впевнені, що хочете видалити одиницю вимірів «{title}»? Це призведе до
       видалення всіх витрат, де вона використовується.
-    </Typography>
+    </ConfirmMessage>
   );
 
   if (error) {
@@ -58,13 +74,12 @@ function MeasureRemovePage({ handleModalClose }) {
   }
 
   return (
-    <DeleteConfirmModal
+    <ModalWindow
+      isOpen
+      actions={actions}
       content={content}
-      isFetching={isFetching}
-      isSubmitting={isRemoving}
       title='Видалення одиниці'
       onClose={handleModalClose}
-      onSubmit={handleRemoveMeasure}
     />
   );
 }

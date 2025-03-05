@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -12,11 +12,10 @@ import {
   useRemoveUserProfileMutation,
 } from '../../store/services';
 
-import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
 
 function UserRemovePage() {
   const { uuid } = useParams();
@@ -46,7 +45,7 @@ function UserRemovePage() {
   ] = useRemoveUserProfileMutation();
   const [logoutMutation] = useLogoutMutation();
 
-  const isSubmitting = isRemovingUser || isRemovingUserProfile;
+  const isRemoving = isRemovingUser || isRemovingUserProfile;
   const error = fetchError || removeUserError || removeUserErrorProfile;
 
   const handleModalClose = useCallback(() => {
@@ -79,14 +78,31 @@ function UserRemovePage() {
     handleModalClose,
   ]);
 
+  const actions = (
+    <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
+      <Button color='default' variant='text' onClick={handleModalClose}>
+        Скасувати
+      </Button>
+      <Button
+        color='error'
+        disabled={isRemoving || isFetching}
+        type='submit'
+        variant='contained'
+        onClick={handleRemoveUser}
+      >
+        Видалити
+      </Button>
+    </Box>
+  );
+
   const content = isFetching ? (
     <Preloader />
   ) : (
-    <Typography sx={stylesRedlineTypography} variant='body1'>
+    <ConfirmMessage>
       {isAuthenticatedUser
         ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
         : `Ви впевнені, що хочете видалити користувача «${fullName}»?`}
-    </Typography>
+    </ConfirmMessage>
   );
 
   if (error) {
@@ -101,13 +117,12 @@ function UserRemovePage() {
   }
 
   return (
-    <DeleteConfirmModal
+    <ModalWindow
+      isOpen
+      actions={actions}
       content={content}
-      isFetching={isFetching}
-      isSubmitting={isSubmitting}
       title='Видалення користувача'
       onClose={handleModalClose}
-      onSubmit={handleRemoveUser}
     />
   );
 }

@@ -1,18 +1,17 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import {
   useFetchRoleByUuidQuery,
   useRemoveRoleMutation,
 } from '../../store/services';
 
-import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
 
 function RoleRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -37,12 +36,29 @@ function RoleRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeRole]);
 
+  const actions = (
+    <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
+      <Button color='default' variant='text' onClick={handleModalClose}>
+        Скасувати
+      </Button>
+      <Button
+        color='error'
+        disabled={isRemoving || isFetching}
+        type='submit'
+        variant='contained'
+        onClick={handleRemoveRole}
+      >
+        Видалити
+      </Button>
+    </Box>
+  );
+
   const content = isFetching ? (
     <Preloader />
   ) : (
-    <Typography sx={stylesRedlineTypography} variant='body1'>
+    <ConfirmMessage>
       Ви впевнені, що хочете видалити роль «{title}»?
-    </Typography>
+    </ConfirmMessage>
   );
 
   if (error) {
@@ -57,13 +73,12 @@ function RoleRemovePage({ handleModalClose }) {
   }
 
   return (
-    <DeleteConfirmModal
+    <ModalWindow
+      isOpen
+      actions={actions}
       content={content}
-      isFetching={isFetching}
-      isSubmitting={isRemoving}
       title='Видалення ролі'
       onClose={handleModalClose}
-      onSubmit={handleRemoveRole}
     />
   );
 }

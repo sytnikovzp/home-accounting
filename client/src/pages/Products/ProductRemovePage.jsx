@@ -1,18 +1,17 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import {
   useFetchProductByUuidQuery,
   useRemoveProductMutation,
 } from '../../store/services';
 
-import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
-
-import { stylesRedlineTypography } from '../../styles';
 
 function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -37,13 +36,30 @@ function ProductRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeProduct]);
 
+  const actions = (
+    <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
+      <Button color='default' variant='text' onClick={handleModalClose}>
+        Скасувати
+      </Button>
+      <Button
+        color='error'
+        disabled={isRemoving || isFetching}
+        type='submit'
+        variant='contained'
+        onClick={handleRemoveProduct}
+      >
+        Видалити
+      </Button>
+    </Box>
+  );
+
   const content = isFetching ? (
     <Preloader />
   ) : (
-    <Typography sx={stylesRedlineTypography} variant='body1'>
+    <ConfirmMessage>
       Ви впевнені, що хочете видалити товар/послугу «{title}»? Це призведе до
-      видалення всіх витрат, що містять цей товар/послугу.
-    </Typography>
+      видалення всіх витрат, що містять цей товар/послугу.{' '}
+    </ConfirmMessage>
   );
 
   if (error) {
@@ -58,13 +74,12 @@ function ProductRemovePage({ handleModalClose }) {
   }
 
   return (
-    <DeleteConfirmModal
+    <ModalWindow
+      isOpen
+      actions={actions}
       content={content}
-      isFetching={isFetching}
-      isSubmitting={isRemoving}
       title='Видалення товару/послуги'
       onClose={handleModalClose}
-      onSubmit={handleRemoveProduct}
     />
   );
 }
