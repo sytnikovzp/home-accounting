@@ -24,13 +24,13 @@ const baseQuery = fetchBaseQuery({
 });
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions);
+  let response = await baseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
+  if (response.error && response.error.status === 401) {
     const token = getAccessToken();
 
     if (!token) {
-      return result;
+      return response;
     }
 
     console.warn('Access token expired. Trying to refresh...');
@@ -50,7 +50,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
           : { ...args, headers: new Headers(args.headers) };
 
       newArgs.headers.set('Authorization', `Bearer ${newToken}`);
-      result = await baseQuery(newArgs, api, extraOptions);
+      response = await baseQuery(newArgs, api, extraOptions);
     } else {
       console.warn('Token refresh failed. Logging out...');
       removeAccessToken();
@@ -58,7 +58,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     }
   }
 
-  return result;
+  return response;
 };
 
 export { baseQuery, baseQueryWithReauth };

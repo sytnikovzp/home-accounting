@@ -1,6 +1,10 @@
 import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+
 import useAuthUser from '../../hooks/useAuthUser';
 
 import {
@@ -9,7 +13,6 @@ import {
 } from '../../store/services';
 
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function UserChangePasswordPage() {
@@ -33,7 +36,8 @@ function UserChangePasswordPage() {
 
   const isChangingPassword =
     isUserPasswordSubmitting || isUserProfilePasswordSubmitting;
-  const error = submitUserPasswordError || submitUserProfilePasswordError;
+  const error =
+    submitUserPasswordError?.data || submitUserProfilePasswordError?.data;
 
   const handleModalClose = useCallback(() => {
     navigate(-1);
@@ -47,8 +51,8 @@ function UserChangePasswordPage() {
       const payload = isAuthenticatedUser
         ? values
         : { userUuid: uuid, ...values };
-      const result = await action(payload);
-      if (result?.data) {
+      const response = await action(payload);
+      if (response?.data) {
         handleModalClose();
       }
     },
@@ -61,31 +65,31 @@ function UserChangePasswordPage() {
     ]
   );
 
-  const content = (
-    <ChangePasswordForm
-      isSubmitting={isChangingPassword}
-      onSubmit={handleSubmitPassword}
-    />
-  );
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Зміна паролю'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Зміна паролю' onClose={handleModalClose}>
+      <ChangePasswordForm
+        isSubmitting={isChangingPassword}
+        onSubmit={handleSubmitPassword}
+      />
+    </ModalWindow>
   );
 }
 

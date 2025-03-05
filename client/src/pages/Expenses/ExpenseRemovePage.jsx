@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import {
   useFetchExpenseByUuidQuery,
@@ -28,8 +30,8 @@ function ExpenseRemovePage({ handleModalClose }) {
   const error = fetchError?.data || removeError?.data;
 
   const handleRemoveExpense = useCallback(async () => {
-    const result = await removeExpense(uuid);
-    if (result?.data) {
+    const response = await removeExpense(uuid);
+    if (response?.data) {
       handleModalClose();
     }
   }, [uuid, handleModalClose, removeExpense]);

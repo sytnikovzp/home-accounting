@@ -17,10 +17,10 @@ export const currenciesApi = createApi({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
+            ...response.data.map(({ uuid }) => ({
               type: 'Currency',
               id: uuid,
             })),
@@ -36,7 +36,7 @@ export const currenciesApi = createApi({
         url: `/currencies/${currencyUuid}`,
         method: 'GET',
       }),
-      providesTags: (result, error, currencyUuid) => [
+      providesTags: (response, error, currencyUuid) => [
         { type: 'Currency', id: currencyUuid },
       ],
     }),
@@ -56,7 +56,7 @@ export const currenciesApi = createApi({
         method: 'PATCH',
         body: { title, code },
       }),
-      invalidatesTags: (result, error, { currencyUuid }) => [
+      invalidatesTags: (response, error, { currencyUuid }) => [
         { type: 'Currency', id: currencyUuid },
       ],
     }),

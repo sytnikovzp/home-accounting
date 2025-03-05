@@ -17,10 +17,10 @@ export const moderationApi = createApi({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
+            ...response.data.map(({ uuid }) => ({
               type: 'Moderation',
               id: uuid,
             })),
@@ -37,7 +37,7 @@ export const moderationApi = createApi({
         method: 'PATCH',
         body: { status },
       }),
-      invalidatesTags: (result, error, { categoryUuid }) => [
+      invalidatesTags: (response, error, { categoryUuid }) => [
         { type: 'Moderation', id: categoryUuid },
       ],
     }),
@@ -48,7 +48,7 @@ export const moderationApi = createApi({
         method: 'PATCH',
         body: { status },
       }),
-      invalidatesTags: (result, error, { productUuid }) => [
+      invalidatesTags: (response, error, { productUuid }) => [
         { type: 'Moderation', id: productUuid },
       ],
     }),
@@ -59,7 +59,7 @@ export const moderationApi = createApi({
         method: 'PATCH',
         body: { status },
       }),
-      invalidatesTags: (result, error, { establishmentUuid }) => [
+      invalidatesTags: (response, error, { establishmentUuid }) => [
         { type: 'Moderation', id: establishmentUuid },
       ],
     }),

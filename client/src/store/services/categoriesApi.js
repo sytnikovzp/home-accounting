@@ -23,10 +23,10 @@ export const categoriesApi = createApi({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
+            ...response.data.map(({ uuid }) => ({
               type: 'Category',
               id: uuid,
             })),
@@ -42,7 +42,7 @@ export const categoriesApi = createApi({
         url: `/categories/${categoryUuid}`,
         method: 'GET',
       }),
-      providesTags: (result, error, categoryUuid) => [
+      providesTags: (response, error, categoryUuid) => [
         { type: 'Category', id: categoryUuid },
       ],
     }),
@@ -62,7 +62,7 @@ export const categoriesApi = createApi({
         method: 'PATCH',
         body: { title },
       }),
-      invalidatesTags: (result, error, { categoryUuid }) => [
+      invalidatesTags: (response, error, { categoryUuid }) => [
         { type: 'Category', id: categoryUuid },
       ],
     }),

@@ -17,10 +17,10 @@ export const measuresApi = createApi({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
+            ...response.data.map(({ uuid }) => ({
               type: 'Measure',
               id: uuid,
             })),
@@ -36,7 +36,7 @@ export const measuresApi = createApi({
         url: `/measures/${measureUuid}`,
         method: 'GET',
       }),
-      providesTags: (result, error, measureUuid) => [
+      providesTags: (response, error, measureUuid) => [
         { type: 'Measure', id: measureUuid },
       ],
     }),
@@ -56,7 +56,7 @@ export const measuresApi = createApi({
         method: 'PATCH',
         body: { title, description },
       }),
-      invalidatesTags: (result, error, { measureUuid }) => [
+      invalidatesTags: (response, error, { measureUuid }) => [
         { type: 'Measure', id: measureUuid },
       ],
     }),

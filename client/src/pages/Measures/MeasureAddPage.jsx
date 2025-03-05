@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import { useAddMeasureMutation } from '../../store/services';
 
@@ -15,8 +17,8 @@ function MeasureAddPage({ handleModalClose }) {
 
   const handleSubmitMeasure = useCallback(
     async (values) => {
-      const result = await addMeasure(values);
-      if (result?.data) {
+      const response = await addMeasure(values);
+      if (response?.data) {
         handleModalClose();
       }
     },

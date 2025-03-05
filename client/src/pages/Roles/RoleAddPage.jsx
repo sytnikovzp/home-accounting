@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import { useAddRoleMutation } from '../../store/services';
 
@@ -15,8 +17,8 @@ function RoleAddPage({ handleModalClose }) {
 
   const handleSubmitRole = useCallback(
     async (values) => {
-      const result = await addRole(values);
-      if (result?.data) {
+      const response = await addRole(values);
+      if (response?.data) {
         handleModalClose();
       }
     },

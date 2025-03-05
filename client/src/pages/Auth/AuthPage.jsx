@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Alert } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -37,7 +37,7 @@ const AVATAR_COLORS = {
 
 function AuthPage() {
   const [authMode, setAuthMode] = useState('login');
-  const [infoModalData, setInfoModalData] = useState(null);
+  const [responseData, setResponseData] = useState(null);
   const navigate = useNavigate();
 
   const [
@@ -85,13 +85,13 @@ function AuthPage() {
 
   const handleAuth = useCallback(
     async (action, args) => {
-      const result = await action(args);
-      if (result?.data) {
+      const response = await action(args);
+      if (response?.data) {
         if (authMode === 'forgotPassword') {
-          setInfoModalData({
-            severity: result.data?.severity,
-            title: result.data?.title,
-            message: result.data?.message,
+          setResponseData({
+            severity: response.data?.severity,
+            title: response.data?.title,
+            message: response.data?.message,
           });
         } else {
           handleModalClose();
@@ -191,9 +191,9 @@ function AuthPage() {
     );
   }
 
-  return infoModalData ? (
-    <ModalWindow isOpen title={infoModalData.title} onClose={handleModalClose}>
-      <Alert severity={infoModalData.severity}>{infoModalData.message}</Alert>
+  return responseData ? (
+    <ModalWindow isOpen title={responseData.title} onClose={handleModalClose}>
+      <Alert severity={responseData.severity}>{responseData.message}</Alert>
       <Box display='flex' justifyContent='center' mt={2}>
         <Button
           fullWidth

@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import {
   useFetchCategoryByUuidQuery,
@@ -28,8 +30,8 @@ function CategoryRemovePage({ handleModalClose }) {
   const error = fetchError?.data || removeError?.data;
 
   const handleRemoveCategory = useCallback(async () => {
-    const result = await removeCategory(uuid);
-    if (result?.data) {
+    const response = await removeCategory(uuid);
+    if (response?.data) {
       handleModalClose();
     }
   }, [uuid, handleModalClose, removeCategory]);

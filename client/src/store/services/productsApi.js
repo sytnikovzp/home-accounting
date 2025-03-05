@@ -23,10 +23,10 @@ export const productsApi = createApi({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
+            ...response.data.map(({ uuid }) => ({
               type: 'Product',
               id: uuid,
             })),
@@ -42,7 +42,7 @@ export const productsApi = createApi({
         url: `/products/${productUuid}`,
         method: 'GET',
       }),
-      providesTags: (result, error, productUuid) => [
+      providesTags: (response, error, productUuid) => [
         { type: 'Product', id: productUuid },
       ],
     }),
@@ -62,7 +62,7 @@ export const productsApi = createApi({
         method: 'PATCH',
         body: { title, category },
       }),
-      invalidatesTags: (result, error, { productUuid }) => [
+      invalidatesTags: (response, error, { productUuid }) => [
         { type: 'Product', id: productUuid },
       ],
     }),

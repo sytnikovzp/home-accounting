@@ -23,10 +23,10 @@ export const usersApi = createApi({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({ type: 'User', id: uuid })),
+            ...response.data.map(({ uuid }) => ({ type: 'User', id: uuid })),
             { type: 'User', id: 'LIST' },
           ];
         }
@@ -39,7 +39,7 @@ export const usersApi = createApi({
         url: `/users/${userUuid}`,
         method: 'GET',
       }),
-      providesTags: (result, error, userUuid) => [
+      providesTags: (response, error, userUuid) => [
         { type: 'User', id: userUuid },
       ],
     }),
@@ -58,7 +58,7 @@ export const usersApi = createApi({
         method: 'PATCH',
         body: { fullName, email, role },
       }),
-      invalidatesTags: (result, error, { userUuid }) => [
+      invalidatesTags: (response, error, { userUuid }) => [
         { type: 'User', id: userUuid },
       ],
     }),
@@ -73,7 +73,7 @@ export const usersApi = createApi({
           body: formData,
         };
       },
-      invalidatesTags: (result, error, { userUuid }) => [
+      invalidatesTags: (response, error, { userUuid }) => [
         { type: 'User', id: userUuid },
       ],
     }),
@@ -83,7 +83,7 @@ export const usersApi = createApi({
         url: `/users/${userUuid}/photo`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, { userUuid }) => [
+      invalidatesTags: (response, error, { userUuid }) => [
         { type: 'User', id: userUuid },
       ],
     }),

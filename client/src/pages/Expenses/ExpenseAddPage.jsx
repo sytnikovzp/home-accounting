@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import { useAddExpenseMutation } from '../../store/services';
 
@@ -15,8 +17,8 @@ function ExpenseAddPage({ handleModalClose }) {
 
   const handleSubmitExpense = useCallback(
     async (values) => {
-      const result = await addExpense(values);
-      if (result?.data) {
+      const response = await addExpense(values);
+      if (response?.data) {
         handleModalClose();
       }
     },

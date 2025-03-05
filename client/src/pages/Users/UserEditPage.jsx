@@ -2,7 +2,9 @@ import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -185,8 +187,8 @@ function UserEditPage() {
       const payload = isAuthenticatedUser
         ? values
         : { userUuid: uuid, ...values };
-      const result = await action(payload);
-      if (result?.data) {
+      const response = await action(payload);
+      if (response?.data) {
         dispatch(usersApi.util.invalidateTags([{ type: 'User', id: 'LIST' }]));
         handleModalClose();
       }

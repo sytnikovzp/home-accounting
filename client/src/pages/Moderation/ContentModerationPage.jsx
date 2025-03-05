@@ -1,7 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -24,7 +26,7 @@ import {
   useModerationProductMutation,
 } from '../../store/services';
 
-import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalActions from '../../components/ModalWindow/ModalActions';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
@@ -81,7 +83,7 @@ function ContentModerationPage({ handleModalClose }) {
     establishment: submitEstablishmentError,
   }[path];
 
-  const error = fetchError || submitError;
+  const error = fetchError?.data || submitError?.data;
 
   const pathMapping = useMemo(
     () => ({
@@ -213,63 +215,63 @@ function ContentModerationPage({ handleModalClose }) {
     ]
   );
 
-  const actions = [
-    <Button
-      key='approve'
-      fullWidth
-      color='success'
-      disabled={isFetching || isSubmiting}
-      size='large'
-      variant='contained'
-      onClick={handleModeration('approved')}
-    >
-      Затвердити
-    </Button>,
-    <Button
-      key='edit'
-      fullWidth
-      color='warning'
-      disabled={isFetching || isSubmiting}
-      size='large'
-      variant='contained'
-      onClick={handleEditAndApprove}
-    >
-      Редагувати та затвердити
-    </Button>,
-    <Button
-      key='reject'
-      fullWidth
-      color='error'
-      disabled={isFetching || isSubmiting}
-      size='large'
-      variant='contained'
-      onClick={handleModeration('rejected')}
-    >
-      Відхилити
-    </Button>,
-  ];
-
-  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      actions={actions}
-      content={content}
-      title='Модерація контенту'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Модерація контенту' onClose={handleModalClose}>
+      {isFetching ? <Preloader /> : <ViewDetails data={data} />}
+      <ModalActions>
+        <Button
+          key='approve'
+          fullWidth
+          color='success'
+          disabled={isFetching || isSubmiting}
+          size='large'
+          variant='contained'
+          onClick={handleModeration('approved')}
+        >
+          Затвердити
+        </Button>
+        <Button
+          key='edit'
+          fullWidth
+          color='warning'
+          disabled={isFetching || isSubmiting}
+          size='large'
+          variant='contained'
+          onClick={handleEditAndApprove}
+        >
+          Редагувати
+        </Button>
+        <Button
+          key='reject'
+          fullWidth
+          color='error'
+          disabled={isFetching || isSubmiting}
+          size='large'
+          variant='contained'
+          onClick={handleModeration('rejected')}
+        >
+          Відхилити
+        </Button>
+      </ModalActions>
+    </ModalWindow>
   );
 }
 

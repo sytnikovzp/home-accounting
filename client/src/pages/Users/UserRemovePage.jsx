@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -55,8 +57,8 @@ function UserRemovePage() {
   const handleRemoveUser = useCallback(async () => {
     const action = isAuthenticatedUser ? removeUserProfile : removeUser;
     const payload = isAuthenticatedUser ? null : uuid;
-    const result = await action(payload);
-    if (result?.data) {
+    const response = await action(payload);
+    if (response?.data) {
       if (isAuthenticatedUser) {
         await logoutMutation();
         navigate('/');
@@ -104,7 +106,7 @@ function UserRemovePage() {
         <ConfirmMessage>
           {isAuthenticatedUser
             ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
-            : `Ви впевнені, що хочете видалити користувача «${userData?.fullName}»?`}{' '}
+            : `Ви впевнені, що хочете видалити користувача «${userData?.fullName}»?`}
         </ConfirmMessage>
       )}
       <ModalActions>

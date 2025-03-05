@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import {
   useChangeEstablishmentLogoMutation,
@@ -62,11 +64,11 @@ function EstablishmentEditPage({ handleModalClose }) {
     async (values) => {
       resetUploading();
       resetResetting();
-      const result = await editEstablishment({
+      const response = await editEstablishment({
         establishmentUuid: uuid,
         ...values,
       });
-      if (result?.data) {
+      if (response?.data) {
         handleModalClose();
       }
     },

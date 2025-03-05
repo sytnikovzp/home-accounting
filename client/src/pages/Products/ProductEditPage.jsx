@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import {
   useEditProductMutation,
@@ -28,8 +30,8 @@ function ProductEditPage({ handleModalClose }) {
 
   const handleSubmitProduct = useCallback(
     async (values) => {
-      const result = await editProduct({ productUuid: uuid, ...values });
-      if (result?.data) {
+      const response = await editProduct({ productUuid: uuid, ...values });
+      if (response?.data) {
         handleModalClose();
       }
     },

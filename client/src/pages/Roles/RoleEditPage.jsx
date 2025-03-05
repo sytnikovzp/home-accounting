@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import {
   useEditRoleMutation,
@@ -28,8 +30,8 @@ function RoleEditPage({ handleModalClose }) {
 
   const handleSubmitRole = useCallback(
     async (values) => {
-      const result = await editRole({ roleUuid: uuid, ...values });
-      if (result?.data) {
+      const response = await editRole({ roleUuid: uuid, ...values });
+      if (response?.data) {
         handleModalClose();
       }
     },

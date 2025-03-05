@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import {
   useEditMeasureMutation,
@@ -28,8 +30,8 @@ function MeasureEditPage({ handleModalClose }) {
 
   const handleSubmitMeasure = useCallback(
     async (values) => {
-      const result = await editMeasure({ measureUuid: uuid, ...values });
-      if (result?.data) {
+      const response = await editMeasure({ measureUuid: uuid, ...values });
+      if (response?.data) {
         handleModalClose();
       }
     },

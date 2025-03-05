@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import { useAddCategoryMutation } from '../../store/services';
 
@@ -15,8 +17,8 @@ function CategoryAddPage({ handleModalClose }) {
 
   const handleSubmitCategory = useCallback(
     async (values) => {
-      const result = await addCategory(values);
-      if (result?.data) {
+      const response = await addCategory(values);
+      if (response?.data) {
         handleModalClose();
       }
     },

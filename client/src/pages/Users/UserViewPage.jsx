@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -19,7 +21,6 @@ import {
   useResendConfirmEmailMutation,
 } from '../../store/services';
 
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
@@ -36,7 +37,7 @@ function UserViewPage() {
   const { uuid } = useParams();
   const { authenticatedUser } = useAuthUser();
   const navigate = useNavigate();
-  const [infoModalData, setInfoModalData] = useState(null);
+  const [responseData, setResponseData] = useState(null);
 
   const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
@@ -46,10 +47,7 @@ function UserViewPage() {
     error: fetchError,
   } = useFetchUserByUuidQuery(uuid, { skip: isAuthenticatedUser });
 
-  const userData = useMemo(
-    () => (isAuthenticatedUser ? authenticatedUser : user),
-    [isAuthenticatedUser, authenticatedUser, user]
-  );
+  const userData = isAuthenticatedUser ? authenticatedUser : user;
 
   const { fullName, role, photo, email, emailConfirm, creation } =
     userData ?? {};
@@ -60,7 +58,7 @@ function UserViewPage() {
     { isLoading: isEmailSubmitting, error: submitEmailError },
   ] = useResendConfirmEmailMutation();
 
-  const error = fetchError || submitEmailError;
+  const error = fetchError?.data || submitEmailError?.data;
 
   const photoPath = useMemo(() => {
     const baseUrl = BASE_URL.replace('/api', '');
@@ -77,12 +75,12 @@ function UserViewPage() {
 
   const handleResendClick = useCallback(async () => {
     if (email) {
-      const result = await resendConfirmEmail(email);
-      if (result?.data) {
-        setInfoModalData({
-          severity: result.data?.severity,
-          title: result.data?.title,
-          message: result.data?.message,
+      const response = await resendConfirmEmail(email);
+      if (response?.data) {
+        setResponseData({
+          severity: response.data?.severity,
+          title: response.data?.title,
+          message: response.data?.message,
         });
       }
     }
@@ -180,33 +178,42 @@ function UserViewPage() {
     ]
   );
 
-  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
-  return infoModalData ? (
-    <InfoModal
-      message={infoModalData.message}
-      severity={infoModalData.severity}
-      title={infoModalData.title}
-      onClose={handleModalClose}
-    />
+  return responseData ? (
+    <ModalWindow isOpen title={responseData.title} onClose={handleModalClose}>
+      <Alert severity={responseData.severity}>{responseData.message}</Alert>
+      <Box display='flex' justifyContent='center' mt={2}>
+        <Button
+          fullWidth
+          color='success'
+          variant='contained'
+          onClick={handleModalClose}
+        >
+          Закрити
+        </Button>
+      </Box>
+    </ModalWindow>
   ) : (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Деталі користувача'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Деталі користувача' onClose={handleModalClose}>
+      {isFetching ? <Preloader /> : <ViewDetails data={data} />}
+    </ModalWindow>
   );
 }
 

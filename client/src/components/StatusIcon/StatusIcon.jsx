@@ -2,15 +2,17 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
-function StatusIcon({ status }) {
-  const icons = {
-    Підтверджений: <CheckCircleIcon color='success' />,
-    Затверджено: <CheckCircleIcon color='success' />,
-    'Очікує підтвердження': <HourglassEmptyIcon color='warning' />,
-    'Очікує модерації': <HourglassEmptyIcon color='warning' />,
-  };
+const statusIcons = {
+  Підтверджений: { icon: CheckCircleIcon, color: 'success' },
+  Затверджено: { icon: CheckCircleIcon, color: 'success' },
+  'Очікує підтвердження': { icon: HourglassEmptyIcon, color: 'warning' },
+  'Очікує модерації': { icon: HourglassEmptyIcon, color: 'warning' },
+};
 
-  return icons[status] || <CancelIcon color='error' />;
+function StatusIcon({ status }) {
+  const { icon: Icon = CancelIcon, color = 'error' } =
+    statusIcons[status] || {};
+  return <Icon color={color} />;
 }
 
 export default StatusIcon;

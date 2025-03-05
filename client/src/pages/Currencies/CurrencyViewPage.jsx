@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';
 import InfoIcon from '@mui/icons-material/Info';
@@ -9,7 +13,6 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchCurrencyByUuidQuery } from '../../store/services';
 
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import ViewDetails from '../../components/ViewDetails/ViewDetails';
@@ -25,6 +28,8 @@ function CurrencyViewPage({ handleModalClose }) {
 
   const { title, code, creation } = currency ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
+
+  const error = fetchError?.data;
 
   const data = useMemo(
     () => [
@@ -43,26 +48,28 @@ function CurrencyViewPage({ handleModalClose }) {
     [title, code, creatorFullName, creatorUuid, createdAt, updatedAt]
   );
 
-  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
-
-  if (fetchError) {
+  if (error) {
     return (
-      <InfoModal
-        message={fetchError.data?.message}
-        severity={fetchError.data?.severity}
-        title={fetchError.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Деталі валюти'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Деталі валюти' onClose={handleModalClose}>
+      {isFetching ? <Preloader /> : <ViewDetails data={data} />}
+    </ModalWindow>
   );
 }
 

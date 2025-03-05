@@ -23,10 +23,10 @@ export const establishmentsApi = createApi({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
+            ...response.data.map(({ uuid }) => ({
               type: 'Establishment',
               id: uuid,
             })),
@@ -42,7 +42,7 @@ export const establishmentsApi = createApi({
         url: `/establishments/${establishmentUuid}`,
         method: 'GET',
       }),
-      providesTags: (result, error, establishmentUuid) => [
+      providesTags: (response, error, establishmentUuid) => [
         { type: 'Establishment', id: establishmentUuid },
       ],
     }),
@@ -62,7 +62,7 @@ export const establishmentsApi = createApi({
         method: 'PATCH',
         body: { title, description, url },
       }),
-      invalidatesTags: (result, error, { establishmentUuid }) => [
+      invalidatesTags: (response, error, { establishmentUuid }) => [
         { type: 'Establishment', id: establishmentUuid },
       ],
     }),
@@ -77,7 +77,7 @@ export const establishmentsApi = createApi({
           body: formData,
         };
       },
-      invalidatesTags: (result, error, { establishmentUuid }) => [
+      invalidatesTags: (response, error, { establishmentUuid }) => [
         { type: 'Establishment', id: establishmentUuid },
       ],
     }),
@@ -87,7 +87,7 @@ export const establishmentsApi = createApi({
         url: `/establishments/${establishmentUuid}/logo`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, { establishmentUuid }) => [
+      invalidatesTags: (response, error, { establishmentUuid }) => [
         { type: 'Establishment', id: establishmentUuid },
       ],
     }),

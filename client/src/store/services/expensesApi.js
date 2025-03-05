@@ -25,10 +25,10 @@ export const expensesApi = createApi({
         totalSumForPeriod:
           parseInt(meta.response.headers.get('x-total-sum')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
+            ...response.data.map(({ uuid }) => ({
               type: 'Expense',
               id: uuid,
             })),
@@ -44,7 +44,7 @@ export const expensesApi = createApi({
         url: `/expenses/${expenseUuid}`,
         method: 'GET',
       }),
-      providesTags: (result, error, expenseUuid) => [
+      providesTags: (response, error, expenseUuid) => [
         { type: 'Expense', id: expenseUuid },
       ],
     }),
@@ -97,7 +97,7 @@ export const expensesApi = createApi({
           date,
         },
       }),
-      invalidatesTags: (result, error, { expenseUuid }) => [
+      invalidatesTags: (response, error, { expenseUuid }) => [
         { type: 'Expense', id: expenseUuid },
       ],
     }),

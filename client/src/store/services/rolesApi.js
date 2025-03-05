@@ -17,10 +17,10 @@ export const rolesApi = createApi({
         data: response,
         totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
       }),
-      providesTags: (result) => {
-        if (result?.data) {
+      providesTags: (response) => {
+        if (response?.data) {
           return [
-            ...result.data.map(({ uuid }) => ({
+            ...response.data.map(({ uuid }) => ({
               type: 'Role',
               id: uuid,
             })),
@@ -36,7 +36,7 @@ export const rolesApi = createApi({
         url: `/roles/${roleUuid}`,
         method: 'GET',
       }),
-      providesTags: (result, error, roleUuid) => [
+      providesTags: (response, error, roleUuid) => [
         { type: 'Role', id: roleUuid },
       ],
     }),
@@ -56,7 +56,7 @@ export const rolesApi = createApi({
         method: 'PATCH',
         body: { title, description, permissions },
       }),
-      invalidatesTags: (result, error, { roleUuid }) => [
+      invalidatesTags: (response, error, { roleUuid }) => [
         { type: 'Role', id: roleUuid },
       ],
     }),

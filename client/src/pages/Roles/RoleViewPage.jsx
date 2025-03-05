@@ -1,6 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';
 import InfoIcon from '@mui/icons-material/Info';
@@ -10,7 +14,6 @@ import useAuthUser from '../../hooks/useAuthUser';
 
 import { useFetchRoleByUuidQuery } from '../../store/services';
 
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 import PermissionsList from '../../components/ViewDetails/PermissionsList';
@@ -32,13 +35,7 @@ function RoleViewPage() {
   const { title, description, permissions, creation } = role ?? {};
   const { createdAt, updatedAt } = creation ?? {};
 
-  const handleModalClose = useCallback(() => {
-    if (paramUuid) {
-      navigate('/roles');
-    } else {
-      navigate(-1);
-    }
-  }, [paramUuid, navigate]);
+  const error = fetchError?.data;
 
   const data = useMemo(
     () => [
@@ -50,33 +47,43 @@ function RoleViewPage() {
     [title, description, createdAt, updatedAt]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <>
-      <ViewDetails data={data} />
-      <PermissionsList permissions={permissions} />
-    </>
-  );
+  const handleModalClose = useCallback(() => {
+    if (paramUuid) {
+      navigate('/roles');
+    } else {
+      navigate(-1);
+    }
+  }, [paramUuid, navigate]);
 
-  if (fetchError) {
+  if (error) {
     return (
-      <InfoModal
-        message={fetchError.data?.message}
-        severity={fetchError.data?.severity}
-        title={fetchError.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Деталі ролі'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Деталі ролі' onClose={handleModalClose}>
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <>
+          <ViewDetails data={data} />
+          <PermissionsList permissions={permissions} />
+        </>
+      )}
+    </ModalWindow>
   );
 }
 

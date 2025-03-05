@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 
-import { Alert, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import { useAddCurrencyMutation } from '../../store/services';
 
@@ -15,8 +17,8 @@ function CurrencyAddPage({ handleModalClose }) {
 
   const handleSubmitCurrency = useCallback(
     async (values) => {
-      const result = await addCurrency(values);
-      if (result?.data) {
+      const response = await addCurrency(values);
+      if (response?.data) {
         handleModalClose();
       }
     },
