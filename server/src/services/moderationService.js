@@ -138,7 +138,7 @@ class ModerationService {
     }
     const foundProduct = await Product.findOne({ where: { uuid } });
     if (!foundProduct) {
-      throw notFound('Товар не знайдено');
+      throw notFound('Товар/послугу не знайдено');
     }
     const canModerationProducts = await checkPermission(
       currentUser,

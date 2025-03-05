@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Box, Button } from '@mui/material';
+import { Alert, Box, Button } from '@mui/material';
 
 import {
   useFetchEstablishmentByUuidQuery,
@@ -9,7 +9,7 @@ import {
 } from '../../store/services';
 
 import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
-import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalActions from '../../components/ModalWindow/ModalActions';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
@@ -22,12 +22,10 @@ function EstablishmentRemovePage({ handleModalClose }) {
     error: fetchError,
   } = useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 
-  const { title } = establishment ?? {};
-
   const [removeEstablishment, { isLoading: isRemoving, error: removeError }] =
     useRemoveEstablishmentMutation();
 
-  const error = fetchError || removeError;
+  const error = fetchError?.data || removeError?.data;
 
   const handleRemoveEstablishment = useCallback(async () => {
     const result = await removeEstablishment(uuid);
@@ -36,51 +34,48 @@ function EstablishmentRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeEstablishment]);
 
-  const actions = (
-    <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
-      <Button color='default' variant='text' onClick={handleModalClose}>
-        Скасувати
-      </Button>
-      <Button
-        color='error'
-        disabled={isRemoving || isFetching}
-        type='submit'
-        variant='contained'
-        onClick={handleRemoveEstablishment}
-      >
-        Видалити
-      </Button>
-    </Box>
-  );
-
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <ConfirmMessage>
-      Ви впевнені, що хочете видалити заклад «{title}»? Це призведе до видалення
-      всіх витрат, пов`язаних з цим закладом.
-    </ConfirmMessage>
-  );
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      actions={actions}
-      content={content}
-      title='Видалення закладу'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Видалення закладу' onClose={handleModalClose}>
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <ConfirmMessage>
+          Ви впевнені, що хочете видалити заклад «{establishment?.title}»? Це
+          призведе до видалення всіх витрат, пов`язаних з цим закладом.
+        </ConfirmMessage>
+      )}
+      <ModalActions>
+        <Button color='default' variant='text' onClick={handleModalClose}>
+          Скасувати
+        </Button>
+        <Button
+          color='error'
+          disabled={isRemoving || isFetching}
+          variant='contained'
+          onClick={handleRemoveEstablishment}
+        >
+          Видалити
+        </Button>
+      </ModalActions>
+    </ModalWindow>
   );
 }
 

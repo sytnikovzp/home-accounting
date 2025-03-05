@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Box, Button } from '@mui/material';
+import { Alert, Box, Button } from '@mui/material';
 
 import {
   useFetchRoleByUuidQuery,
@@ -9,7 +9,7 @@ import {
 } from '../../store/services';
 
 import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
-import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalActions from '../../components/ModalWindow/ModalActions';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
@@ -22,12 +22,10 @@ function RoleRemovePage({ handleModalClose }) {
     error: fetchError,
   } = useFetchRoleByUuidQuery(uuid, { skip: !uuid });
 
-  const { title } = role ?? {};
-
   const [removeRole, { isLoading: isRemoving, error: removeError }] =
     useRemoveRoleMutation();
 
-  const error = fetchError || removeError;
+  const error = fetchError?.data || removeError?.data;
 
   const handleRemoveRole = useCallback(async () => {
     const result = await removeRole(uuid);
@@ -36,50 +34,47 @@ function RoleRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeRole]);
 
-  const actions = (
-    <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
-      <Button color='default' variant='text' onClick={handleModalClose}>
-        Скасувати
-      </Button>
-      <Button
-        color='error'
-        disabled={isRemoving || isFetching}
-        type='submit'
-        variant='contained'
-        onClick={handleRemoveRole}
-      >
-        Видалити
-      </Button>
-    </Box>
-  );
-
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <ConfirmMessage>
-      Ви впевнені, що хочете видалити роль «{title}»?
-    </ConfirmMessage>
-  );
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      actions={actions}
-      content={content}
-      title='Видалення ролі'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Видалення ролі' onClose={handleModalClose}>
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <ConfirmMessage>
+          Ви впевнені, що хочете видалити роль «{role?.title}»?
+        </ConfirmMessage>
+      )}
+      <ModalActions>
+        <Button color='default' variant='text' onClick={handleModalClose}>
+          Скасувати
+        </Button>
+        <Button
+          color='error'
+          disabled={isRemoving || isFetching}
+          variant='contained'
+          onClick={handleRemoveRole}
+        >
+          Видалити
+        </Button>
+      </ModalActions>
+    </ModalWindow>
   );
 }
 

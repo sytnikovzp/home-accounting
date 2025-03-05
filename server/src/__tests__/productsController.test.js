@@ -226,7 +226,7 @@ describe('ProductsController', () => {
         .get('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Товар/послугу не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -322,7 +322,7 @@ describe('ProductsController', () => {
           category: 'Електроніка',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Товар/послугу не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -353,7 +353,7 @@ describe('ProductsController', () => {
         .delete('/api/products/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.moderator.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Товар не знайдено');
+      expect(response.body.message).toBe('Товар/послугу не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });

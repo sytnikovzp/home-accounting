@@ -72,7 +72,7 @@ class ProductsService {
       include: [{ model: Category, attributes: ['uuid', 'title'] }],
     });
     if (!foundProduct) {
-      throw notFound('Товар не знайдено');
+      throw notFound('Товар/послугу не знайдено');
     }
     const productData = {
       ...foundProduct.toJSON(),
@@ -127,7 +127,7 @@ class ProductsService {
     }
     const foundProduct = await Product.findOne({ where: { uuid } });
     if (!foundProduct) {
-      throw notFound('Товар не знайдено');
+      throw notFound('Товар/послугу не знайдено');
     }
     const canEditProducts = await checkPermission(currentUser, 'EDIT_PRODUCTS');
     const canModerationProducts = await checkPermission(
@@ -168,7 +168,7 @@ class ProductsService {
     }
     const foundProduct = await Product.findOne({ where: { uuid } });
     if (!foundProduct) {
-      throw notFound('Товар не знайдено');
+      throw notFound('Товар/послугу не знайдено');
     }
     const canRemoveProducts = await checkPermission(
       currentUser,

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Button } from '@mui/material';
+import { Alert, Box, Button } from '@mui/material';
 
 import {
   useFetchCategoryByUuidQuery,
@@ -9,7 +9,6 @@ import {
 } from '../../store/services';
 
 import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalActions from '../../components/ModalWindow/ModalActions';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
@@ -26,24 +25,35 @@ function CategoryRemovePage({ handleModalClose }) {
   const [removeCategory, { isLoading: isRemoving, error: removeError }] =
     useRemoveCategoryMutation();
 
+  const error = fetchError?.data || removeError?.data;
+
   const handleRemoveCategory = useCallback(async () => {
-    await removeCategory(uuid).unwrap();
-    handleModalClose();
+    const result = await removeCategory(uuid);
+    if (result?.data) {
+      handleModalClose();
+    }
   }, [uuid, handleModalClose, removeCategory]);
 
-  if (fetchError || removeError) {
+  if (error) {
     return (
-      <InfoModal
-        message={fetchError?.data?.message || removeError?.data?.message}
-        severity={fetchError?.data?.severity || removeError?.data?.severity}
-        title={fetchError?.data?.title || removeError?.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow isOpen title='Видалити категорію' onClose={handleModalClose}>
+    <ModalWindow isOpen title='Видалення категорії' onClose={handleModalClose}>
       {isFetching ? (
         <Preloader />
       ) : (

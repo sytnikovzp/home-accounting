@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Alert } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -17,7 +18,7 @@ import {
 import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm/ForgotPasswordForm';
 import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalActions from '../../components/ModalWindow/ModalActions';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 import { stylesAuthPageTitle } from '../../styles';
@@ -60,7 +61,8 @@ function AuthPage() {
     },
   ] = useForgotPasswordMutation();
 
-  const error = loginError || registrationError || forgotPasswordError;
+  const error =
+    loginError?.data || registrationError?.data || forgotPasswordError?.data;
 
   useEffect(() => {
     if (authMode === 'login') {
@@ -173,30 +175,41 @@ function AuthPage() {
 
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return infoModalData ? (
-    <InfoModal
-      message={infoModalData.message}
-      severity={infoModalData.severity}
-      title={infoModalData.title}
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title={infoModalData.title} onClose={handleModalClose}>
+      <Alert severity={infoModalData.severity}>{infoModalData.message}</Alert>
+      <Box display='flex' justifyContent='center' mt={2}>
+        <Button
+          fullWidth
+          color='success'
+          variant='contained'
+          onClick={handleModalClose}
+        >
+          Закрити
+        </Button>
+      </Box>
+    </ModalWindow>
   ) : (
-    <ModalWindow
-      isOpen
-      actions={actions}
-      content={authForms[authMode]}
-      title={title}
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title={title} onClose={handleModalClose}>
+      {authForms[authMode]}
+      <ModalActions>{actions}</ModalActions>
+    </ModalWindow>
   );
 }
 
