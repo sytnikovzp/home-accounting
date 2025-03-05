@@ -1,14 +1,17 @@
 import { useCallback } from 'react';
 
+import { Alert, Box, Button } from '@mui/material';
+
 import { useAddRoleMutation } from '../../store/services';
 
 import RoleForm from '../../components/Forms/RoleForm/RoleForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function RoleAddPage({ handleModalClose }) {
   const [addRole, { isLoading: isSubmitting, error: submitError }] =
     useAddRoleMutation();
+
+  const error = submitError?.data;
 
   const handleSubmitRole = useCallback(
     async (values) => {
@@ -20,28 +23,28 @@ function RoleAddPage({ handleModalClose }) {
     [addRole, handleModalClose]
   );
 
-  const content = (
-    <RoleForm isSubmitting={isSubmitting} onSubmit={handleSubmitRole} />
-  );
-
-  if (submitError) {
+  if (error) {
     return (
-      <InfoModal
-        message={submitError.data?.message}
-        severity={submitError.data?.severity}
-        title={submitError.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Додавання ролі'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Додавання ролі' onClose={handleModalClose}>
+      <RoleForm isSubmitting={isSubmitting} onSubmit={handleSubmitRole} />
+    </ModalWindow>
   );
 }
 

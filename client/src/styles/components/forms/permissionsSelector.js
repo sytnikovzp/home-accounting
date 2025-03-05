@@ -4,6 +4,7 @@ export const stylesPermissionsSelectorMainBox = {
   maxHeight: '250px',
   overflowX: 'hidden',
   overflowY: 'auto',
+  mb: 2,
 };
 
 export const stylesPermissionsSelectorListItem = {

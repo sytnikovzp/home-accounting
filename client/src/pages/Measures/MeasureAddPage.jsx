@@ -1,14 +1,17 @@
 import { useCallback } from 'react';
 
+import { Alert, Box, Button } from '@mui/material';
+
 import { useAddMeasureMutation } from '../../store/services';
 
 import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function MeasureAddPage({ handleModalClose }) {
   const [addMeasure, { isLoading: isSubmitting, error: submitError }] =
     useAddMeasureMutation();
+
+  const error = submitError?.data;
 
   const handleSubmitMeasure = useCallback(
     async (values) => {
@@ -20,28 +23,28 @@ function MeasureAddPage({ handleModalClose }) {
     [addMeasure, handleModalClose]
   );
 
-  const content = (
-    <MeasureForm isSubmitting={isSubmitting} onSubmit={handleSubmitMeasure} />
-  );
-
-  if (submitError) {
+  if (error) {
     return (
-      <InfoModal
-        message={submitError.data?.message}
-        severity={submitError.data?.severity}
-        title={submitError.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Додавання одиниці'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Додавання одиниці' onClose={handleModalClose}>
+      <MeasureForm isSubmitting={isSubmitting} onSubmit={handleSubmitMeasure} />
+    </ModalWindow>
   );
 }
 

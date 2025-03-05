@@ -1,14 +1,17 @@
 import { useCallback } from 'react';
 
+import { Alert, Box, Button } from '@mui/material';
+
 import { useAddEstablishmentMutation } from '../../store/services';
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function EstablishmentAddPage({ handleModalClose }) {
   const [addEstablishment, { isLoading: isSubmitting, error: submitError }] =
     useAddEstablishmentMutation();
+
+  const error = submitError?.data;
 
   const handleSubmitEstablishment = useCallback(
     async (values) => {
@@ -20,31 +23,31 @@ function EstablishmentAddPage({ handleModalClose }) {
     [addEstablishment, handleModalClose]
   );
 
-  const content = (
-    <EstablishmentForm
-      isSubmitting={isSubmitting}
-      onSubmit={handleSubmitEstablishment}
-    />
-  );
-
-  if (submitError) {
+  if (error) {
     return (
-      <InfoModal
-        message={submitError.data?.message}
-        severity={submitError.data?.severity}
-        title={submitError.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Додавання закладу'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Додавання закладу' onClose={handleModalClose}>
+      <EstablishmentForm
+        isSubmitting={isSubmitting}
+        onSubmit={handleSubmitEstablishment}
+      />
+    </ModalWindow>
   );
 }
 

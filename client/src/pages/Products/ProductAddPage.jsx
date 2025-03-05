@@ -1,14 +1,17 @@
 import { useCallback } from 'react';
 
+import { Alert, Box, Button } from '@mui/material';
+
 import { useAddProductMutation } from '../../store/services';
 
 import ProductForm from '../../components/Forms/ProductForm/ProductForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function ProductAddPage({ handleModalClose }) {
   const [addProduct, { isLoading: isSubmitting, error: submitError }] =
     useAddProductMutation();
+
+  const error = submitError?.data;
 
   const handleSubmitProduct = useCallback(
     async (values) => {
@@ -20,28 +23,32 @@ function ProductAddPage({ handleModalClose }) {
     [addProduct, handleModalClose]
   );
 
-  const content = (
-    <ProductForm isSubmitting={isSubmitting} onSubmit={handleSubmitProduct} />
-  );
-
-  if (submitError) {
+  if (error) {
     return (
-      <InfoModal
-        message={submitError.data?.message}
-        severity={submitError.data?.severity}
-        title={submitError.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
     <ModalWindow
       isOpen
-      content={content}
       title='Додавання товару/послуги'
       onClose={handleModalClose}
-    />
+    >
+      <ProductForm isSubmitting={isSubmitting} onSubmit={handleSubmitProduct} />
+    </ModalWindow>
   );
 }
 
