@@ -1,13 +1,14 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Alert, Box, Button } from '@mui/material';
+
 import {
   useEditCurrencyMutation,
   useFetchCurrencyByUuidQuery,
 } from '../../store/services';
 
 import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
@@ -23,7 +24,7 @@ function CurrencyEditPage({ handleModalClose }) {
   const [editCurrency, { isLoading: isSubmitting, error: submitError }] =
     useEditCurrencyMutation();
 
-  const error = fetchError || submitError;
+  const error = fetchError?.data || submitError?.data;
 
   const handleSubmitCurrency = useCallback(
     async (values) => {
@@ -35,34 +36,36 @@ function CurrencyEditPage({ handleModalClose }) {
     [editCurrency, handleModalClose, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <CurrencyForm
-      currency={currency}
-      isSubmitting={isSubmitting}
-      onSubmit={handleSubmitCurrency}
-    />
-  );
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Редагування валюти'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Редагування валюти' onClose={handleModalClose}>
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <CurrencyForm
+          currency={currency}
+          isSubmitting={isSubmitting}
+          onSubmit={handleSubmitCurrency}
+        />
+      )}
+    </ModalWindow>
   );
 }
 

@@ -1,6 +1,8 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
+import { Alert, Box, Button } from '@mui/material';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -16,7 +18,6 @@ import {
 } from '../../store/services';
 
 import UserForm from '../../components/Forms/UserForm/UserForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
@@ -36,10 +37,7 @@ function UserEditPage() {
     skip: isAuthenticatedUser,
   });
 
-  const userData = useMemo(
-    () => (isAuthenticatedUser ? authenticatedUser : user),
-    [isAuthenticatedUser, authenticatedUser, user]
-  );
+  const userData = isAuthenticatedUser ? authenticatedUser : user;
 
   const [
     editUser,
@@ -98,13 +96,13 @@ function UserEditPage() {
     isUserPhotoResetting ||
     isUserProfilePhotoResetting;
   const error =
-    fetchError ||
-    submitUserError ||
-    submitUserProfileError ||
-    uploadUserPhotoError ||
-    uploadUserProfilePhotoError ||
-    resetUserPhotoError ||
-    resetUserProfilePhotoError;
+    fetchError?.data ||
+    submitUserError?.data ||
+    submitUserProfileError?.data ||
+    uploadUserPhotoError?.data ||
+    uploadUserProfilePhotoError?.data ||
+    resetUserPhotoError?.data ||
+    resetUserProfilePhotoError?.data;
 
   const handleUploadPhoto = useCallback(
     async (file) => {
@@ -205,39 +203,45 @@ function UserEditPage() {
     ]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <UserForm
-      isChanging={isChangingPhoto}
-      isSubmitting={isUserSubmitting || isUserProfileSubmitting}
-      user={userData}
-      onPassword={handleChangePassword}
-      onRemove={handleRemoveProfile}
-      onReset={handleResetPhoto}
-      onSubmit={handleSubmitUser}
-      onUpload={handleUploadPhoto}
-    />
-  );
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
     <ModalWindow
       isOpen
-      content={content}
       title='Редагування користувача'
       onClose={handleModalClose}
-    />
+    >
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <UserForm
+          isChanging={isChangingPhoto}
+          isSubmitting={isUserSubmitting || isUserProfileSubmitting}
+          user={userData}
+          onPassword={handleChangePassword}
+          onRemove={handleRemoveProfile}
+          onReset={handleResetPhoto}
+          onSubmit={handleSubmitUser}
+          onUpload={handleUploadPhoto}
+        />
+      )}
+    </ModalWindow>
   );
 }
 

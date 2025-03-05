@@ -247,7 +247,7 @@ describe('ExpensesController', () => {
         .get('/api/expenses/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Витрата не знайдена');
+      expect(response.body.message).toBe('Витрату не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -402,7 +402,7 @@ describe('ExpensesController', () => {
           date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Витрата не знайдена');
+      expect(response.body.message).toBe('Витрату не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -433,7 +433,7 @@ describe('ExpensesController', () => {
         .delete('/api/expenses/83095a11-50b6-4a01-859e-94f7f4b62cc1')
         .set('Authorization', `Bearer ${authData.user.accessToken}`);
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Витрата не знайдена');
+      expect(response.body.message).toBe('Витрату не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });

@@ -1,13 +1,14 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Alert, Box, Button } from '@mui/material';
+
 import {
   useEditCategoryMutation,
   useFetchCategoryByUuidQuery,
 } from '../../store/services';
 
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
@@ -23,7 +24,7 @@ function CategoryEditPage({ handleModalClose }) {
   const [editCategory, { isLoading: isSubmitting, error: submitError }] =
     useEditCategoryMutation();
 
-  const error = fetchError || submitError;
+  const error = fetchError?.data || submitError?.data;
 
   const handleSubmitCategory = useCallback(
     async (values) => {
@@ -35,34 +36,40 @@ function CategoryEditPage({ handleModalClose }) {
     [editCategory, handleModalClose, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <CategoryForm
-      category={category}
-      isSubmitting={isSubmitting}
-      onSubmit={handleSubmitCategory}
-    />
-  );
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
     <ModalWindow
       isOpen
-      content={content}
       title='Редагування категорії'
       onClose={handleModalClose}
-    />
+    >
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <CategoryForm
+          category={category}
+          isSubmitting={isSubmitting}
+          onSubmit={handleSubmitCategory}
+        />
+      )}
+    </ModalWindow>
   );
 }
 

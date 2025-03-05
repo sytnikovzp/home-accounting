@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Alert, Box, Button } from '@mui/material';
+
 import {
   useChangeEstablishmentLogoMutation,
   useEditEstablishmentMutation,
@@ -9,7 +11,6 @@ import {
 } from '../../store/services';
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
@@ -36,7 +37,11 @@ function EstablishmentEditPage({ handleModalClose }) {
   ] = useResetEstablishmentLogoMutation();
 
   const isChangingLogo = isUploading || isResetting;
-  const error = fetchError || submitError || uploadError || resetingError;
+  const error =
+    fetchError?.data ||
+    submitError?.data ||
+    uploadError?.data ||
+    resetingError?.data;
 
   const handleUploadLogo = useCallback(
     async (file) => {
@@ -68,37 +73,39 @@ function EstablishmentEditPage({ handleModalClose }) {
     [editEstablishment, handleModalClose, resetResetting, resetUploading, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <EstablishmentForm
-      establishment={establishment}
-      isChanging={isChangingLogo}
-      isSubmitting={isSubmitting}
-      onReset={handleResetLogo}
-      onSubmit={handleSubmitEstablishment}
-      onUpload={handleUploadLogo}
-    />
-  );
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Редагування закладу'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Редагування закладу' onClose={handleModalClose}>
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <EstablishmentForm
+          establishment={establishment}
+          isChanging={isChangingLogo}
+          isSubmitting={isSubmitting}
+          onReset={handleResetLogo}
+          onSubmit={handleSubmitEstablishment}
+          onUpload={handleUploadLogo}
+        />
+      )}
+    </ModalWindow>
   );
 }
 

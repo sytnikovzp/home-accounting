@@ -161,7 +161,7 @@ class ExpensesService {
       ],
     });
     if (!foundExpense) {
-      throw notFound('Витрата не знайдена');
+      throw notFound('Витрату не знайдено');
     }
     if (foundExpense.creatorUuid !== currentUser.uuid) {
       throw forbidden('Ви не маєте дозволу на перегляд цієї витрати');
@@ -276,7 +276,7 @@ class ExpensesService {
     }
     const foundExpense = await Expense.findOne({ where: { uuid } });
     if (!foundExpense) {
-      throw notFound('Витрата не знайдена');
+      throw notFound('Витрату не знайдено');
     }
     const canEditExpenses =
       currentUser.uuid.toString() === foundExpense.creatorUuid &&
@@ -361,7 +361,7 @@ class ExpensesService {
     }
     const foundExpense = await Expense.findOne({ where: { uuid } });
     if (!foundExpense) {
-      throw notFound('Витрата не знайдена');
+      throw notFound('Витрату не знайдено');
     }
     const canRemoveExpenses =
       currentUser.uuid.toString() === foundExpense.creatorUuid &&

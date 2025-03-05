@@ -69,7 +69,7 @@ function BaseForm({
     <Form>
       <>{renderFields(fields, errors, touched, layout)}</>
       {customContent}
-      <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
+      <Box display='flex' gap={2} justifyContent='flex-end'>
         {layout !== 'auth' && (
           <Button color='default' variant='text' onClick={handleCancel}>
             Скасувати

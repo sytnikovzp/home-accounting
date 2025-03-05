@@ -1,13 +1,14 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Alert, Box, Button } from '@mui/material';
+
 import {
   useEditRoleMutation,
   useFetchRoleByUuidQuery,
 } from '../../store/services';
 
 import RoleForm from '../../components/Forms/RoleForm/RoleForm';
-import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
@@ -23,7 +24,7 @@ function RoleEditPage({ handleModalClose }) {
   const [editRole, { isLoading: isSubmitting, error: submitError }] =
     useEditRoleMutation();
 
-  const error = fetchError || submitError;
+  const error = fetchError?.data || submitError?.data;
 
   const handleSubmitRole = useCallback(
     async (values) => {
@@ -35,34 +36,36 @@ function RoleEditPage({ handleModalClose }) {
     [editRole, handleModalClose, uuid]
   );
 
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <RoleForm
-      isSubmitting={isSubmitting}
-      role={role}
-      onSubmit={handleSubmitRole}
-    />
-  );
-
   if (error) {
     return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={handleModalClose}
-      />
+      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
+        <Alert severity={error.severity}>{error.message}</Alert>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button
+            fullWidth
+            color='success'
+            variant='contained'
+            onClick={handleModalClose}
+          >
+            Закрити
+          </Button>
+        </Box>
+      </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      content={content}
-      title='Редагування ролі'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Редагування ролі' onClose={handleModalClose}>
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <RoleForm
+          isSubmitting={isSubmitting}
+          role={role}
+          onSubmit={handleSubmitRole}
+        />
+      )}
+    </ModalWindow>
   );
 }
 
