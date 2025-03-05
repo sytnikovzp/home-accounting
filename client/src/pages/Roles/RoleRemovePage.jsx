@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Typography } from '@mui/material';
+
 import {
   useFetchRoleByUuidQuery,
   useRemoveRoleMutation,
@@ -8,6 +10,9 @@ import {
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import Preloader from '../../components/Preloader/Preloader';
+
+import { stylesRedlineTypography } from '../../styles';
 
 function RoleRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -32,7 +37,13 @@ function RoleRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeRole]);
 
-  const message = `Ви впевнені, що хочете видалити роль «${title}»?`;
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <Typography sx={stylesRedlineTypography} variant='body1'>
+      Ви впевнені, що хочете видалити роль «{title}»?
+    </Typography>
+  );
 
   if (error) {
     return (
@@ -47,9 +58,9 @@ function RoleRemovePage({ handleModalClose }) {
 
   return (
     <DeleteConfirmModal
+      content={content}
       isFetching={isFetching}
       isSubmitting={isRemoving}
-      message={message}
       title='Видалення ролі'
       onClose={handleModalClose}
       onSubmit={handleRemoveRole}

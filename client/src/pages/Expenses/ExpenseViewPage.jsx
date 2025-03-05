@@ -12,8 +12,10 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchExpenseByUuidQuery } from '../../store/services';
 
-import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 function ExpenseViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -96,6 +98,8 @@ function ExpenseViewPage({ handleModalClose }) {
     ]
   );
 
+  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
+
   if (fetchError) {
     return (
       <InfoModal
@@ -108,9 +112,9 @@ function ExpenseViewPage({ handleModalClose }) {
   }
 
   return (
-    <EntityViewModal
-      data={data}
-      isFetching={isFetching}
+    <ModalWindow
+      isOpen
+      content={content}
       title='Деталі витрати'
       onClose={handleModalClose}
     />

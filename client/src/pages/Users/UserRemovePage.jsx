@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { Typography } from '@mui/material';
+
 import useAuthUser from '../../hooks/useAuthUser';
 
 import {
@@ -12,6 +14,9 @@ import {
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import Preloader from '../../components/Preloader/Preloader';
+
+import { stylesRedlineTypography } from '../../styles';
 
 function UserRemovePage() {
   const { uuid } = useParams();
@@ -74,9 +79,15 @@ function UserRemovePage() {
     handleModalClose,
   ]);
 
-  const message = isAuthenticatedUser
-    ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
-    : `Ви впевнені, що хочете видалити користувача «${fullName}»?`;
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <Typography sx={stylesRedlineTypography} variant='body1'>
+      {isAuthenticatedUser
+        ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
+        : `Ви впевнені, що хочете видалити користувача «${fullName}»?`}
+    </Typography>
+  );
 
   if (error) {
     return (
@@ -91,9 +102,9 @@ function UserRemovePage() {
 
   return (
     <DeleteConfirmModal
+      content={content}
       isFetching={isFetching}
       isSubmitting={isSubmitting}
-      message={message}
       title='Видалення користувача'
       onClose={handleModalClose}
       onSubmit={handleRemoveUser}

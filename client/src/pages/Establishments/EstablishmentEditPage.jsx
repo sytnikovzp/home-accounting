@@ -11,6 +11,7 @@ import {
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
 import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
 
 function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -67,7 +68,9 @@ function EstablishmentEditPage({ handleModalClose }) {
     [editEstablishment, handleModalClose, resetResetting, resetUploading, uuid]
   );
 
-  const content = (
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
     <EstablishmentForm
       establishment={establishment}
       isChanging={isChangingLogo}
@@ -93,7 +96,6 @@ function EstablishmentEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      isFetching={isFetching}
       title='Редагування закладу'
       onClose={handleModalClose}
     />

@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Typography } from '@mui/material';
+
 import {
   useFetchEstablishmentByUuidQuery,
   useRemoveEstablishmentMutation,
@@ -8,6 +10,9 @@ import {
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import Preloader from '../../components/Preloader/Preloader';
+
+import { stylesRedlineTypography } from '../../styles';
 
 function EstablishmentRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -32,8 +37,14 @@ function EstablishmentRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeEstablishment]);
 
-  const message = `Ви впевнені, що хочете видалити заклад «${title}»? 
-    Це призведе до видалення всіх витрат, пов'язаних з цим закладом.`;
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <Typography sx={stylesRedlineTypography} variant='body1'>
+      Ви впевнені, що хочете видалити заклад «{title}»? Це призведе до видалення
+      всіх витрат, пов`язаних з цим закладом.
+    </Typography>
+  );
 
   if (error) {
     return (
@@ -48,9 +59,9 @@ function EstablishmentRemovePage({ handleModalClose }) {
 
   return (
     <DeleteConfirmModal
+      content={content}
       isFetching={isFetching}
       isSubmitting={isRemoving}
-      message={message}
       title='Видалення закладу'
       onClose={handleModalClose}
       onSubmit={handleRemoveEstablishment}

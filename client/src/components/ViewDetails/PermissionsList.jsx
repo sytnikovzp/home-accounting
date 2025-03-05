@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { Divider } from '@mui/material';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -45,9 +46,15 @@ function PermissionsList({ permissions = [] }) {
   }, [permissions]);
 
   return (
-    <Box sx={stylesPermissionsListBox}>
-      {renderedPermissions || renderEmptyState()}
-    </Box>
+    <>
+      <Divider />
+      <Typography gutterBottom sx={{ mt: 2 }} variant='h6'>
+        Права доступу:
+      </Typography>
+      <Box sx={stylesPermissionsListBox}>
+        {renderedPermissions || renderEmptyState()}
+      </Box>
+    </>
   );
 }
 

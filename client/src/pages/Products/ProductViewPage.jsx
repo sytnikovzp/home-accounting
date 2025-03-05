@@ -9,9 +9,11 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchProductByUuidQuery } from '../../store/services';
 
-import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 function ProductViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -75,6 +77,8 @@ function ProductViewPage({ handleModalClose }) {
     ]
   );
 
+  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
+
   if (fetchError) {
     return (
       <InfoModal
@@ -87,9 +91,9 @@ function ProductViewPage({ handleModalClose }) {
   }
 
   return (
-    <EntityViewModal
-      data={data}
-      isFetching={isFetching}
+    <ModalWindow
+      isOpen
+      content={content}
       title='Деталі товару/послуги'
       onClose={handleModalClose}
     />

@@ -1,15 +1,12 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 
 import ModalWindow from './ModalWindow';
-
-import { stylesRedlineTypography } from '../../styles';
 
 function DeleteConfirmModal({
   isFetching,
   isSubmitting,
-  message,
+  content,
   title,
   onClose,
   onSubmit,
@@ -31,18 +28,11 @@ function DeleteConfirmModal({
     </Box>
   );
 
-  const content = (
-    <Typography sx={stylesRedlineTypography} variant='body1'>
-      {message}
-    </Typography>
-  );
-
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      isFetching={isFetching}
       title={title}
       onClose={onClose}
     />

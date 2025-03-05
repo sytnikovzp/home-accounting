@@ -9,8 +9,10 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchMeasureByUuidQuery } from '../../store/services';
 
-import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 function MeasureViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -41,6 +43,8 @@ function MeasureViewPage({ handleModalClose }) {
     [title, description, creatorFullName, creatorUuid, createdAt, updatedAt]
   );
 
+  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
+
   if (fetchError) {
     return (
       <InfoModal
@@ -53,9 +57,9 @@ function MeasureViewPage({ handleModalClose }) {
   }
 
   return (
-    <EntityViewModal
-      data={data}
-      isFetching={isFetching}
+    <ModalWindow
+      isOpen
+      content={content}
       title='Деталі одиниці'
       onClose={handleModalClose}
     />

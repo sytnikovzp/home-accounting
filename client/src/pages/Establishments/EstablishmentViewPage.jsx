@@ -14,9 +14,11 @@ import { configs } from '../../constants';
 
 import { useFetchEstablishmentByUuidQuery } from '../../store/services';
 
-import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import { stylesViewPageAvatarSize } from '../../styles';
 
@@ -116,6 +118,8 @@ function EstablishmentViewPage({ handleModalClose }) {
     ]
   );
 
+  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
+
   if (fetchError) {
     return (
       <InfoModal
@@ -128,9 +132,9 @@ function EstablishmentViewPage({ handleModalClose }) {
   }
 
   return (
-    <EntityViewModal
-      data={data}
-      isFetching={isFetching}
+    <ModalWindow
+      isOpen
+      content={content}
       title='Деталі закладу'
       onClose={handleModalClose}
     />

@@ -6,8 +6,6 @@ import Typography from '@mui/material/Typography';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-import Preloader from '../Preloader/Preloader';
-
 import {
   stylesModalWindowContentBox,
   stylesModalWindowFadeBox,
@@ -16,12 +14,11 @@ import {
 
 function ModalWindow({
   isOpen,
-  isFetching,
   onClose,
-  disableCloseButton = false,
   title,
   content,
   actions,
+  disableCloseButton = false,
   disableBackdropClick = false,
 }) {
   return (
@@ -53,7 +50,7 @@ function ModalWindow({
             </Box>
           )}
           <Box id='modal-window-description' sx={stylesModalWindowContentBox}>
-            {isFetching ? <Preloader /> : content}
+            {content}
           </Box>
           {actions && (
             <Box

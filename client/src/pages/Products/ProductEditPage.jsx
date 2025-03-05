@@ -9,6 +9,7 @@ import {
 import ProductForm from '../../components/Forms/ProductForm/ProductForm';
 import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
 
 function ProductEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -34,7 +35,9 @@ function ProductEditPage({ handleModalClose }) {
     [editProduct, handleModalClose, uuid]
   );
 
-  const content = (
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
     <ProductForm
       isSubmitting={isSubmitting}
       product={product}
@@ -57,7 +60,6 @@ function ProductEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      isFetching={isFetching}
       title='Редагування товару/послуги'
       onClose={handleModalClose}
     />

@@ -9,6 +9,7 @@ import {
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
 
 function CategoryEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -34,7 +35,9 @@ function CategoryEditPage({ handleModalClose }) {
     [editCategory, handleModalClose, uuid]
   );
 
-  const content = (
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
     <CategoryForm
       category={category}
       isSubmitting={isSubmitting}
@@ -57,7 +60,6 @@ function CategoryEditPage({ handleModalClose }) {
     <ModalWindow
       isOpen
       content={content}
-      isFetching={isFetching}
       title='Редагування категорії'
       onClose={handleModalClose}
     />

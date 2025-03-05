@@ -19,9 +19,11 @@ import {
   useResendConfirmEmailMutation,
 } from '../../store/services';
 
-import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import {
   stylesUserViewPageEmailButton,
@@ -178,6 +180,8 @@ function UserViewPage() {
     ]
   );
 
+  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
+
   if (error) {
     return (
       <InfoModal
@@ -197,9 +201,9 @@ function UserViewPage() {
       onClose={handleModalClose}
     />
   ) : (
-    <EntityViewModal
-      data={data}
-      isFetching={isFetching}
+    <ModalWindow
+      isOpen
+      content={content}
       title='Деталі користувача'
       onClose={handleModalClose}
     />

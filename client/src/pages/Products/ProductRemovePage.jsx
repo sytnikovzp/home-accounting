@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Typography } from '@mui/material';
+
 import {
   useFetchProductByUuidQuery,
   useRemoveProductMutation,
@@ -8,6 +10,9 @@ import {
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import Preloader from '../../components/Preloader/Preloader';
+
+import { stylesRedlineTypography } from '../../styles';
 
 function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -32,8 +37,14 @@ function ProductRemovePage({ handleModalClose }) {
     }
   }, [uuid, handleModalClose, removeProduct]);
 
-  const message = `Ви впевнені, що хочете видалити товар/послугу «${title}»?
-    Це призведе до видалення всіх витрат, що містять цей товар/послугу.`;
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <Typography sx={stylesRedlineTypography} variant='body1'>
+      Ви впевнені, що хочете видалити товар/послугу «{title}»? Це призведе до
+      видалення всіх витрат, що містять цей товар/послугу.
+    </Typography>
+  );
 
   if (error) {
     return (
@@ -48,9 +59,9 @@ function ProductRemovePage({ handleModalClose }) {
 
   return (
     <DeleteConfirmModal
+      content={content}
       isFetching={isFetching}
       isSubmitting={isRemoving}
-      message={message}
       title='Видалення товару/послуги'
       onClose={handleModalClose}
       onSubmit={handleRemoveProduct}

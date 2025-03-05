@@ -10,8 +10,11 @@ import useAuthUser from '../../hooks/useAuthUser';
 
 import { useFetchRoleByUuidQuery } from '../../store/services';
 
-import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
+import PermissionsList from '../../components/ViewDetails/PermissionsList';
+import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 function RoleViewPage() {
   const { uuid: paramUuid } = useParams();
@@ -47,6 +50,15 @@ function RoleViewPage() {
     [title, description, createdAt, updatedAt]
   );
 
+  const content = isFetching ? (
+    <Preloader />
+  ) : (
+    <>
+      <ViewDetails data={data} />
+      <PermissionsList permissions={permissions} />
+    </>
+  );
+
   if (fetchError) {
     return (
       <InfoModal
@@ -59,10 +71,9 @@ function RoleViewPage() {
   }
 
   return (
-    <EntityViewModal
-      data={data}
-      isFetching={isFetching}
-      permissions={permissions}
+    <ModalWindow
+      isOpen
+      content={content}
       title='Деталі ролі'
       onClose={handleModalClose}
     />

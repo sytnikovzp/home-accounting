@@ -2,7 +2,6 @@ import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -27,10 +26,11 @@ import {
 
 import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import Preloader from '../../components/Preloader/Preloader';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
-import { stylesViewPageAvatarSize, stylesViewPageBox } from '../../styles';
+import { stylesViewPageAvatarSize } from '../../styles';
 
 const { BASE_URL } = configs;
 
@@ -249,11 +249,7 @@ function ContentModerationPage({ handleModalClose }) {
     </Button>,
   ];
 
-  const content = (
-    <Box sx={stylesViewPageBox}>
-      <ViewDetails data={data} />
-    </Box>
-  );
+  const content = isFetching ? <Preloader /> : <ViewDetails data={data} />;
 
   if (error) {
     return (
@@ -271,7 +267,6 @@ function ContentModerationPage({ handleModalClose }) {
       isOpen
       actions={actions}
       content={content}
-      isFetching={isFetching}
       title='Модерація контенту'
       onClose={handleModalClose}
     />
