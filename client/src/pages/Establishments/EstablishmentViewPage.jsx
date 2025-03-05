@@ -15,6 +15,7 @@ import { configs } from '../../constants';
 import { useFetchEstablishmentByUuidQuery } from '../../store/services';
 
 import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 
 import { stylesViewPageAvatarSize } from '../../styles';
@@ -42,17 +43,22 @@ function EstablishmentViewPage({ handleModalClose }) {
       : `${baseUrl}/images/noLogo.png`;
   }, [logo]);
 
+  const logotype = useMemo(
+    () => (
+      <Avatar
+        alt='Логотип закладу'
+        src={logoPath}
+        sx={stylesViewPageAvatarSize}
+        variant='rounded'
+      />
+    ),
+    [logoPath]
+  );
+
   const data = useMemo(
     () => [
       {
-        extra: (
-          <Avatar
-            alt='Логотип закладу'
-            src={logoPath}
-            sx={stylesViewPageAvatarSize}
-            variant='rounded'
-          />
-        ),
+        extra: logotype,
         icon: InfoIcon,
         label: 'Назва',
         value: title,
@@ -96,8 +102,8 @@ function EstablishmentViewPage({ handleModalClose }) {
       { icon: UpdateIcon, label: 'Редаговано', value: updatedAt },
     ],
     [
+      logotype,
       title,
-      logoPath,
       description,
       url,
       status,
@@ -110,10 +116,20 @@ function EstablishmentViewPage({ handleModalClose }) {
     ]
   );
 
+  if (fetchError) {
+    return (
+      <InfoModal
+        message={fetchError.data?.message}
+        severity={fetchError.data?.severity}
+        title={fetchError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <EntityViewModal
       data={data}
-      error={fetchError}
       isFetching={isFetching}
       title='Деталі закладу'
       onClose={handleModalClose}

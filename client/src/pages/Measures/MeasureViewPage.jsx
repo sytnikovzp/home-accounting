@@ -10,6 +10,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { useFetchMeasureByUuidQuery } from '../../store/services';
 
 import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function MeasureViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -40,10 +41,20 @@ function MeasureViewPage({ handleModalClose }) {
     [title, description, creatorFullName, creatorUuid, createdAt, updatedAt]
   );
 
+  if (fetchError) {
+    return (
+      <InfoModal
+        message={fetchError.data?.message}
+        severity={fetchError.data?.severity}
+        title={fetchError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <EntityViewModal
       data={data}
-      error={fetchError}
       isFetching={isFetching}
       title='Деталі одиниці'
       onClose={handleModalClose}

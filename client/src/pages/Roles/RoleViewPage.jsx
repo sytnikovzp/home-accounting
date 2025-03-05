@@ -11,6 +11,7 @@ import useAuthUser from '../../hooks/useAuthUser';
 import { useFetchRoleByUuidQuery } from '../../store/services';
 
 import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function RoleViewPage() {
   const { uuid: paramUuid } = useParams();
@@ -46,10 +47,20 @@ function RoleViewPage() {
     [title, description, createdAt, updatedAt]
   );
 
+  if (fetchError) {
+    return (
+      <InfoModal
+        message={fetchError.data?.message}
+        severity={fetchError.data?.severity}
+        title={fetchError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <EntityViewModal
       data={data}
-      error={fetchError}
       isFetching={isFetching}
       permissions={permissions}
       title='Деталі ролі'

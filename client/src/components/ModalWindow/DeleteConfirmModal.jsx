@@ -7,7 +7,6 @@ import ModalWindow from './ModalWindow';
 import { stylesRedlineTypography } from '../../styles';
 
 function DeleteConfirmModal({
-  error,
   isFetching,
   isSubmitting,
   message,
@@ -43,7 +42,6 @@ function DeleteConfirmModal({
       isOpen
       actions={actions}
       content={content}
-      error={error}
       isFetching={isFetching}
       title={title}
       onClose={onClose}

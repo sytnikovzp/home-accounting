@@ -7,6 +7,7 @@ import {
 } from '../../store/services';
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function RoleRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -33,9 +34,19 @@ function RoleRemovePage({ handleModalClose }) {
 
   const message = `Ви впевнені, що хочете видалити роль «${title}»?`;
 
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <DeleteConfirmModal
-      error={error}
       isFetching={isFetching}
       isSubmitting={isRemoving}
       message={message}

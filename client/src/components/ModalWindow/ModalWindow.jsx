@@ -8,8 +8,6 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import Preloader from '../Preloader/Preloader';
 
-import InfoModal from './InfoModal';
-
 import {
   stylesModalWindowContentBox,
   stylesModalWindowFadeBox,
@@ -24,20 +22,8 @@ function ModalWindow({
   title,
   content,
   actions,
-  error,
   disableBackdropClick = false,
 }) {
-  if (error) {
-    return (
-      <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
-        onClose={onClose}
-      />
-    );
-  }
-
   return (
     <Modal
       closeAfterTransition

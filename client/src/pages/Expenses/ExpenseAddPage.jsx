@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useAddExpenseMutation } from '../../store/services';
 
 import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function ExpenseAddPage({ handleModalClose }) {
@@ -23,11 +24,21 @@ function ExpenseAddPage({ handleModalClose }) {
     <ExpenseForm isSubmitting={isSubmitting} onSubmit={handleSubmitExpense} />
   );
 
+  if (submitError) {
+    return (
+      <InfoModal
+        message={submitError.data?.message}
+        severity={submitError.data?.severity}
+        title={submitError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={submitError}
       title='Додавання витрати'
       onClose={handleModalClose}
     />

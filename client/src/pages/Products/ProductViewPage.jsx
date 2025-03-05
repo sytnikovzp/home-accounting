@@ -10,6 +10,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { useFetchProductByUuidQuery } from '../../store/services';
 
 import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 
 function ProductViewPage({ handleModalClose }) {
@@ -74,10 +75,20 @@ function ProductViewPage({ handleModalClose }) {
     ]
   );
 
+  if (fetchError) {
+    return (
+      <InfoModal
+        message={fetchError.data?.message}
+        severity={fetchError.data?.severity}
+        title={fetchError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <EntityViewModal
       data={data}
-      error={fetchError}
       isFetching={isFetching}
       title='Деталі товару/послуги'
       onClose={handleModalClose}

@@ -10,6 +10,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { useFetchCurrencyByUuidQuery } from '../../store/services';
 
 import EntityViewModal from '../../components/ModalWindow/EntityViewModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function CurrencyViewPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -40,10 +41,20 @@ function CurrencyViewPage({ handleModalClose }) {
     [title, code, creatorFullName, creatorUuid, createdAt, updatedAt]
   );
 
+  if (fetchError) {
+    return (
+      <InfoModal
+        message={fetchError.data?.message}
+        severity={fetchError.data?.severity}
+        title={fetchError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <EntityViewModal
       data={data}
-      error={fetchError}
       isFetching={isFetching}
       title='Деталі валюти'
       onClose={handleModalClose}

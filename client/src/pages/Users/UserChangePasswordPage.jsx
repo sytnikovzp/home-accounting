@@ -9,6 +9,7 @@ import {
 } from '../../store/services';
 
 import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function UserChangePasswordPage() {
@@ -67,11 +68,21 @@ function UserChangePasswordPage() {
     />
   );
 
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error}
       title='Зміна паролю'
       onClose={handleModalClose}
     />

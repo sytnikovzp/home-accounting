@@ -25,6 +25,7 @@ import {
   useModerationProductMutation,
 } from '../../store/services';
 
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetails from '../../components/ViewDetails/ViewDetails';
@@ -79,6 +80,8 @@ function ContentModerationPage({ handleModalClose }) {
     category: submitCategoryError,
     establishment: submitEstablishmentError,
   }[path];
+
+  const error = fetchError || submitError;
 
   const pathMapping = useMemo(
     () => ({
@@ -252,12 +255,22 @@ function ContentModerationPage({ handleModalClose }) {
     </Box>
   );
 
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ModalWindow
       isOpen
       actions={actions}
       content={content}
-      error={fetchError || submitError}
       isFetching={isFetching}
       title='Модерація контенту'
       onClose={handleModalClose}

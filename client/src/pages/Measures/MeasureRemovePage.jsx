@@ -7,6 +7,7 @@ import {
 } from '../../store/services';
 
 import DeleteConfirmModal from '../../components/ModalWindow/DeleteConfirmModal';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 
 function MeasureRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -34,9 +35,19 @@ function MeasureRemovePage({ handleModalClose }) {
   const message = `Ви впевнені, що хочете видалити одиницю вимірів «${title}»?
     Це призведе до видалення всіх витрат, де вона використовується.`;
 
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <DeleteConfirmModal
-      error={error}
       isFetching={isFetching}
       isSubmitting={isRemoving}
       message={message}

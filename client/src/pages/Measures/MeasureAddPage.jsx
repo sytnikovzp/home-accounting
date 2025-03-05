@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useAddMeasureMutation } from '../../store/services';
 
 import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function MeasureAddPage({ handleModalClose }) {
@@ -23,11 +24,21 @@ function MeasureAddPage({ handleModalClose }) {
     <MeasureForm isSubmitting={isSubmitting} onSubmit={handleSubmitMeasure} />
   );
 
+  if (submitError) {
+    return (
+      <InfoModal
+        message={submitError.data?.message}
+        severity={submitError.data?.severity}
+        title={submitError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={submitError}
       title='Додавання одиниці'
       onClose={handleModalClose}
     />

@@ -86,17 +86,43 @@ function UserViewPage() {
     }
   }, [email, resendConfirmEmail]);
 
+  const showResendButton = !uuid && emailConfirm === 'Очікує підтвердження';
+
+  const resendButton = useMemo(() => {
+    if (!showResendButton) {
+      return null;
+    }
+    return (
+      <Tooltip title='Повторно відправити email'>
+        <Button
+          disabled={isEmailSubmitting}
+          size='small'
+          sx={stylesUserViewPageEmailButton}
+          variant='text'
+          onClick={handleResendClick}
+        >
+          ⟳
+        </Button>
+      </Tooltip>
+    );
+  }, [showResendButton, isEmailSubmitting, handleResendClick]);
+
+  const avatar = useMemo(
+    () => (
+      <Avatar
+        alt='Фото користувача'
+        src={photoPath}
+        sx={stylesViewPageAvatarSize}
+        variant='rounded'
+      />
+    ),
+    [photoPath]
+  );
+
   const data = useMemo(
     () => [
       {
-        extra: (
-          <Avatar
-            alt='Фото користувача'
-            src={photoPath}
-            sx={stylesViewPageAvatarSize}
-            variant='rounded'
-          />
-        ),
+        extra: avatar,
         icon: InfoIcon,
         label: 'Повне ім’я',
         value: fullName,
@@ -122,19 +148,7 @@ function UserViewPage() {
       ...(emailConfirm
         ? [
             {
-              extra: emailConfirm === 'Очікує підтвердження' && (
-                <Tooltip title='Повторно відправити email'>
-                  <Button
-                    disabled={isEmailSubmitting}
-                    size='small'
-                    sx={stylesUserViewPageEmailButton}
-                    variant='text'
-                    onClick={handleResendClick}
-                  >
-                    ⟳
-                  </Button>
-                </Tooltip>
-              ),
+              extra: resendButton,
               icon: () => <StatusIcon status={emailConfirm} />,
               label: 'Обліковий запис',
               value: emailConfirm,
@@ -153,17 +167,27 @@ function UserViewPage() {
       },
     ],
     [
+      avatar,
       fullName,
-      photoPath,
       role,
       email,
       emailConfirm,
-      isEmailSubmitting,
-      handleResendClick,
+      resendButton,
       createdAt,
       updatedAt,
     ]
   );
+
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
 
   return infoModalData ? (
     <InfoModal
@@ -175,7 +199,6 @@ function UserViewPage() {
   ) : (
     <EntityViewModal
       data={data}
-      error={error}
       isFetching={isFetching}
       title='Деталі користувача'
       onClose={handleModalClose}

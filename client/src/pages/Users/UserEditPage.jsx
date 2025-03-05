@@ -16,6 +16,7 @@ import {
 } from '../../store/services';
 
 import UserForm from '../../components/Forms/UserForm/UserForm';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function UserEditPage() {
@@ -216,11 +217,21 @@ function UserEditPage() {
     />
   );
 
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error}
       isFetching={isFetching}
       title='Редагування користувача'
       onClose={handleModalClose}

@@ -171,6 +171,17 @@ function AuthPage() {
     </Box>
   );
 
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return infoModalData ? (
     <InfoModal
       message={infoModalData.message}
@@ -183,7 +194,6 @@ function AuthPage() {
       isOpen
       actions={actions}
       content={authForms[authMode]}
-      error={error}
       title={title}
       onClose={handleModalClose}
     />

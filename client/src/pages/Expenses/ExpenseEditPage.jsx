@@ -7,6 +7,7 @@ import {
 } from '../../store/services';
 
 import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function ExpenseEditPage({ handleModalClose }) {
@@ -41,11 +42,21 @@ function ExpenseEditPage({ handleModalClose }) {
     />
   );
 
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error}
       isFetching={isFetching}
       title='Редагування витрати'
       onClose={handleModalClose}

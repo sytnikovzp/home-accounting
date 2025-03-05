@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useAddEstablishmentMutation } from '../../store/services';
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function EstablishmentAddPage({ handleModalClose }) {
@@ -26,11 +27,21 @@ function EstablishmentAddPage({ handleModalClose }) {
     />
   );
 
+  if (submitError) {
+    return (
+      <InfoModal
+        message={submitError.data?.message}
+        severity={submitError.data?.severity}
+        title={submitError.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={submitError}
       title='Додавання закладу'
       onClose={handleModalClose}
     />

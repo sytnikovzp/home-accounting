@@ -9,6 +9,7 @@ import {
 } from '../../store/services';
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
+import InfoModal from '../../components/ModalWindow/InfoModal';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function EstablishmentEditPage({ handleModalClose }) {
@@ -77,11 +78,21 @@ function EstablishmentEditPage({ handleModalClose }) {
     />
   );
 
+  if (error) {
+    return (
+      <InfoModal
+        message={error.data?.message}
+        severity={error.data?.severity}
+        title={error.data?.title}
+        onClose={handleModalClose}
+      />
+    );
+  }
+
   return (
     <ModalWindow
       isOpen
       content={content}
-      error={error}
       isFetching={isFetching}
       title='Редагування закладу'
       onClose={handleModalClose}
