@@ -2,12 +2,14 @@ import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
 
 import CloseIcon from '@mui/icons-material/Close';
 
+import ModalActions from './ModalActions';
+import ModalBody from './ModalBody';
+import ModalHeader from './ModalHeader';
+
 import {
-  stylesModalWindowContentBox,
   stylesModalWindowFadeBox,
   stylesModalWindowIconButton,
 } from '../../styles';
@@ -16,10 +18,10 @@ function ModalWindow({
   isOpen,
   onClose,
   title,
-  content,
+  children,
   actions,
   disableCloseButton = false,
-  disableBackdropClick = false,
+  disableBackdropClick = true,
 }) {
   return (
     <Modal
@@ -40,29 +42,9 @@ function ModalWindow({
               <CloseIcon />
             </IconButton>
           )}
-          {title && (
-            <Box id='modal-window-title' mb={2}>
-              {typeof title === 'string' ? (
-                <Typography variant='h6'>{title}</Typography>
-              ) : (
-                title
-              )}
-            </Box>
-          )}
-          <Box id='modal-window-description' sx={stylesModalWindowContentBox}>
-            {content}
-          </Box>
-          {actions && (
-            <Box
-              display='flex'
-              flexDirection='column'
-              gap={2}
-              justifyContent='center'
-              mt={2}
-            >
-              {actions}
-            </Box>
-          )}
+          {title && <ModalHeader>{title}</ModalHeader>}
+          <ModalBody>{children}</ModalBody>
+          {actions && <ModalActions>{actions}</ModalActions>}
         </Box>
       </Fade>
     </Modal>

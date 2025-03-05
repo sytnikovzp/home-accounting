@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import useAuthUser from './hooks/useAuthUser';
 
 import Layout from './components/Layout/Layout';
-import LoadingModal from './components/ModalWindow/LoadingModal';
+import ModalWindow from './components/ModalWindow/ModalWindow';
+import Preloader from './components/Preloader/Preloader';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import PublicRoute from './components/PublicRoute/PublicRoute';
 
@@ -134,7 +135,11 @@ function App() {
   const { isFetchingUser } = useAuthUser();
 
   if (isFetchingUser) {
-    return <LoadingModal message='Welcome to Home Accounting...' />;
+    return (
+      <ModalWindow disableCloseButton isOpen>
+        <Preloader message='Welcome to Home Accounting...' />
+      </ModalWindow>
+    );
   }
 
   return (

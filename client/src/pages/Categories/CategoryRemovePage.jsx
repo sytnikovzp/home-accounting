@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 
 import {
   useFetchCategoryByUuidQuery,
@@ -10,6 +10,7 @@ import {
 
 import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
 import InfoModal from '../../components/ModalWindow/InfoModal';
+import ModalActions from '../../components/ModalWindow/ModalActions';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 import Preloader from '../../components/Preloader/Preloader';
 
@@ -22,64 +23,48 @@ function CategoryRemovePage({ handleModalClose }) {
     error: fetchError,
   } = useFetchCategoryByUuidQuery(uuid, { skip: !uuid });
 
-  const { title } = category ?? {};
-
   const [removeCategory, { isLoading: isRemoving, error: removeError }] =
     useRemoveCategoryMutation();
 
-  const error = fetchError || removeError;
-
   const handleRemoveCategory = useCallback(async () => {
-    const result = await removeCategory(uuid);
-    if (result?.data) {
-      handleModalClose();
-    }
+    await removeCategory(uuid).unwrap();
+    handleModalClose();
   }, [uuid, handleModalClose, removeCategory]);
 
-  const actions = (
-    <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
-      <Button color='default' variant='text' onClick={handleModalClose}>
-        Скасувати
-      </Button>
-      <Button
-        color='error'
-        disabled={isRemoving || isFetching}
-        type='submit'
-        variant='contained'
-        onClick={handleRemoveCategory}
-      >
-        Видалити
-      </Button>
-    </Box>
-  );
-
-  const content = isFetching ? (
-    <Preloader />
-  ) : (
-    <ConfirmMessage>
-      Ви впевнені, що хочете видалити категорію «{title}»?
-    </ConfirmMessage>
-  );
-
-  if (error) {
+  if (fetchError || removeError) {
     return (
       <InfoModal
-        message={error.data?.message}
-        severity={error.data?.severity}
-        title={error.data?.title}
+        message={fetchError?.data?.message || removeError?.data?.message}
+        severity={fetchError?.data?.severity || removeError?.data?.severity}
+        title={fetchError?.data?.title || removeError?.data?.title}
         onClose={handleModalClose}
       />
     );
   }
 
   return (
-    <ModalWindow
-      isOpen
-      actions={actions}
-      content={content}
-      title='Видалення категорії'
-      onClose={handleModalClose}
-    />
+    <ModalWindow isOpen title='Видалити категорію' onClose={handleModalClose}>
+      {isFetching ? (
+        <Preloader />
+      ) : (
+        <ConfirmMessage>
+          Ви впевнені, що хочете видалити категорію «{category?.title}»?
+        </ConfirmMessage>
+      )}
+      <ModalActions>
+        <Button color='default' variant='text' onClick={handleModalClose}>
+          Скасувати
+        </Button>
+        <Button
+          color='error'
+          disabled={isRemoving || isFetching}
+          variant='contained'
+          onClick={handleRemoveCategory}
+        >
+          Видалити
+        </Button>
+      </ModalActions>
+    </ModalWindow>
   );
 }
 
