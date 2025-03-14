@@ -5,6 +5,7 @@ node_modules/
 client/node_modules/
 client/.vs_code/
 client/dist/
+client/.env
 
 server/node_modules/
 server/.vs_code/
