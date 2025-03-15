@@ -16,8 +16,11 @@ module.exports = {
     DB_NAME_TEST: process.env.DB_NAME_TEST,
     DB_PASS: process.env.DB_PASS,
     DB_USER: process.env.DB_USER,
+    DB_HOST: process.env.DB_HOST,
+    DB_PORT: process.env.DB_PORT,
     MONGO_DB_NAME: process.env.MONGO_DB_NAME,
     MONGO_DB_NAME_TEST: process.env.MONGO_DB_NAME_TEST,
+    MONGO_HOST: process.env.MONGO_HOST,
     MONGO_PORT: process.env.MONGO_PORT,
   },
   FILES: {

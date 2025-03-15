@@ -1,5 +1,4 @@
 /node_modules/
 /.vs_code/
-/.env
 /sequelize-meta.json
 /sequelize-data.json

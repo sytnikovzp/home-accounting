@@ -1,0 +1,68 @@
+# version: '3.8'
+
+services:
+  backend-dev:
+    build:
+      context: ./server
+    container_name: backend-dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./server:/server
+      - /server/node_modules
+    depends_on:
+      - postgres-dev
+      - mongo-dev
+
+  frontend-dev:
+    build:
+      context: ./client
+    container_name: frontend-dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    depends_on:
+      - backend-dev
+    stdin_open: true
+    tty: true
+
+  postgres-dev:
+    image: postgres:16.8-alpine
+    container_name: postgres-dev
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+      - PGPORT=${DB_PORT}
+    ports:
+      - '12346:5432'
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      interval: 10s
+      retries: 3
+
+  mongo-dev:
+    image: mongo:8.0.5
+    container_name: mongo-dev
+    restart: always
+    ports:
+      - '12345:27017'
+    volumes:
+    - mongo-data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet --host localhost:27017
+      interval: 10s
+      retries: 3
+
+volumes:
+  pg-data:
+  mongo-data:
