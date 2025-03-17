@@ -8,6 +8,7 @@ export * from './components/forms/userForm';
 export * from './components/header';
 export * from './components/layout';
 export * from './components/listTable';
+export * from './components/mobileDrawer';
 export * from './components/modalWindow';
 export * from './components/statisticsChart';
 export * from './components/viewDetails';

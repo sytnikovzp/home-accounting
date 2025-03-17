@@ -25,7 +25,13 @@ function Logo() {
       sx={isMobile ? stylesLogoBoxMobile : stylesLogoBoxDesktop}
       to='/'
     >
-      <img alt='Home Accounting' src={accountingLogo} style={stylesLogoIcon} />
+      {!isMobile && (
+        <img
+          alt='Home Accounting'
+          src={accountingLogo}
+          style={stylesLogoIcon}
+        />
+      )}
       <Typography
         noWrap
         sx={isMobile ? stylesLogoTypographyMobile : stylesLogoTypographyDesktop}

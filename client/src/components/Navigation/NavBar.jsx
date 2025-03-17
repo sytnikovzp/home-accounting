@@ -105,7 +105,7 @@ const privateNavItems = [
   },
 ];
 
-function NavBar() {
+function NavBar({ onClose }) {
   const { isAuthenticated } = useAuthUser();
   const { hasPermission } = useHasPermission();
 
@@ -124,7 +124,13 @@ function NavBar() {
     <Box aria-label='main menu items' component='nav'>
       <List>
         {filteredNavItems.map(({ to, icon, label }) => (
-          <NavItem key={label} icon={icon} label={label} to={to} />
+          <NavItem
+            key={label}
+            icon={icon}
+            label={label}
+            to={to}
+            onClick={onClose}
+          />
         ))}
       </List>
     </Box>
