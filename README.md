@@ -2,6 +2,8 @@
 
 <p align="center">
   <img src="./screenshots/9_Expenses_list.png" alt="Home Accounting" style="max-width: 80%;">
+</p>
+<p align="center">
   <img src="https://img.shields.io/github/last-commit/sytnikovzp/home-accounting" alt="Last Commit">
 </p>
 
