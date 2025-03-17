@@ -1,3 +1,5 @@
-/node_modules/
-/.vs_code/
-/dist/
+node_modules/
+.vs_code/
+dist/
+.DS_Store
+Dockerfile

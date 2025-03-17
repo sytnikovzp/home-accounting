@@ -1,4 +1,6 @@
-/node_modules/
-/.vs_code/
-/sequelize-meta.json
-/sequelize-data.json
+node_modules/
+.vs_code/
+sequelize-meta.json
+sequelize-data.json
+.DS_Store
+Dockerfile

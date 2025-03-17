@@ -2,7 +2,9 @@ ARG VERSION=20-alpine
 
 FROM node:$VERSION
 
-WORKDIR /app
+RUN mkdir -p /app/server && mkdir -p /app/public/images/establishments && mkdir -p /app/public/images/users
+
+WORKDIR /app/server
 
 COPY package.json package-lock.json ./
 
@@ -12,8 +14,4 @@ COPY . .
 
 EXPOSE 5000
 
-# CMD ["npm", "run", "startindocker"]
-
-# CMD ["npm", "start"]
-
-CMD npm run dbinit && npm start
+CMD ["npm", "start"]

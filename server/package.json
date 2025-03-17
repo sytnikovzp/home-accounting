@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./index.js",
-    "startindocker": "nodemon -L ./index.js",
     "dbcreate": "npx sequelize db:create",
     "dbdrop": "npx sequelize db:drop",
     "mig": "npx sequelize db:migrate",

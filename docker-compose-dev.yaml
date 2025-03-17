@@ -10,8 +10,9 @@ services:
     ports:
       - '5000:5000'
     volumes:
-      - ./server:/server
-      - /server/node_modules
+      - ./server:/app/server
+      - ./public:/app/public
+      - /app/server/node_modules
     depends_on:
       - postgres-dev
       - mongo-dev
@@ -25,8 +26,8 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./client:/client
-      - /client/node_modules
+      - ./client:/app/client
+      - /app/client/node_modules
     depends_on:
       - backend-dev
     stdin_open: true
@@ -57,7 +58,7 @@ services:
     ports:
       - '12345:27017'
     volumes:
-    - mongo-data:/data/db
+      - mongo-data:/data/db
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh --quiet --host localhost:27017
       interval: 10s

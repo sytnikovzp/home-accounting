@@ -2,7 +2,9 @@ ARG VERSION=20-alpine
 
 FROM node:$VERSION
 
-WORKDIR /app
+RUN mkdir -p /app/client
+
+WORKDIR /app/client
 
 COPY package.json package-lock.json ./
 
