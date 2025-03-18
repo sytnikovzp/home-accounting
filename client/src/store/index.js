@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { logger } from 'redux-logger';
 
-// import { logger } from 'redux-logger';
 import {
   authApi,
   categoriesApi,
@@ -53,8 +53,8 @@ const store = configureStore({
       rolesApi.middleware,
       statisticsApi.middleware,
       userProfileApi.middleware,
-      usersApi.middleware
-      // logger
+      usersApi.middleware,
+      logger
     ),
 });
 
