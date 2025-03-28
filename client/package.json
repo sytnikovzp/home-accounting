@@ -23,9 +23,9 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.8",
-    "@mui/material": "^6.4.8",
-    "@mui/x-date-pickers": "^7.28.0",
+    "@mui/icons-material": "^7.0.1",
+    "@mui/material": "^7.0.1",
+    "@mui/x-date-pickers": "^7.28.2",
     "@reduxjs/toolkit": "^2.6.1",
     "chart.js": "^4.4.8",
     "chartjs-plugin-datalabels": "^2.2.0",
@@ -36,22 +36,22 @@
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.3.0",
+    "react-router-dom": "^7.4.0",
     "redux-logger": "^3.0.6",
     "yup": "^1.6.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.22.0",
+    "@eslint/js": "^9.23.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.22.0",
+    "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-no-secrets": "^2.2.1",
     "eslint-plugin-optimize-regex": "^1.2.1",
-    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-prettier": "^5.2.5",
     "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -61,7 +61,7 @@
     "eslint-plugin-unicorn": "^56.0.1",
     "globals": "^16.0.0",
     "prettier": "^3.5.3",
-    "vite": "^6.2.2",
+    "vite": "^6.2.3",
     "vite-plugin-env-compatible": "^2.0.1"
   }
 }
