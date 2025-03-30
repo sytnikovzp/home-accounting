@@ -9,7 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import ClearIcon from '@mui/icons-material/Clear';
 
-import { configs } from '../../constants';
+import { API_CONFIG } from '../../constants';
 
 import {
   stylesFileUploadAvatar,
@@ -18,17 +18,15 @@ import {
   stylesFileUploadMainBox,
 } from '../../styles';
 
-const { BASE_URL } = configs;
-
 function FileUpload({ entity, file, isChanging, label, onReset, onUpload }) {
   const avatarPath = useMemo(() => {
     if (file) {
-      return `${BASE_URL.replace('/api', '')}/images/${entity}/${file}`;
+      return `${API_CONFIG.BASE_URL.replace('/api', '')}/images/${entity}/${file}`;
     }
     if (entity === 'users') {
       return null;
     }
-    return `${BASE_URL.replace('/api', '')}/images/noLogo.png`;
+    return `${API_CONFIG.BASE_URL.replace('/api', '')}/images/noLogo.png`;
   }, [file, entity]);
 
   const handleFileChange = useCallback(

@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 
-import { configs } from '../../constants';
+import { API_CONFIG } from '../../constants';
 import { stringAvatar } from '../../utils/sharedFunctions';
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -14,8 +14,6 @@ import UserMenu from './UserMenu/UserMenu';
 import Welcome from './Welcome';
 
 import { stylesAuthenticatedMenu } from '../../styles';
-
-const { BASE_URL } = configs;
 
 function AuthenticatedUserBlock() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -47,7 +45,7 @@ function AuthenticatedUserBlock() {
             {...stringAvatar(fullName)}
             src={
               photo
-                ? `${BASE_URL.replace('/api', '')}/images/users/${photo}`
+                ? `${API_CONFIG.BASE_URL.replace('/api', '')}/images/users/${photo}`
                 : null
             }
           />

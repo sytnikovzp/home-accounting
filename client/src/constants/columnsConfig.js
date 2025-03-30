@@ -1,4 +1,4 @@
-const COLUMNS_CONFIG = {
+export const COLUMNS_CONFIG = {
   categories: [
     { field: 'title', headerName: 'Назва категорії', align: 'left' },
   ],
@@ -28,5 +28,3 @@ const COLUMNS_CONFIG = {
     { field: 'fullName', headerName: 'Повне ім`я', align: 'left' },
   ],
 };
-
-export { COLUMNS_CONFIG };

@@ -1,4 +1,4 @@
-const ENTITY_PERMISSIONS = {
+export const ENTITY_PERMISSIONS = {
   expenses: {
     add: 'ADD_EXPENSES',
     edit: 'EDIT_EXPENSES',
@@ -47,5 +47,3 @@ const ENTITY_PERMISSIONS = {
     assign: 'ASSIGN_ROLES',
   },
 };
-
-export { ENTITY_PERMISSIONS };

@@ -4,7 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-import { pageTitles } from '../../constants';
+import { PAGE_TITLES } from '../../constants';
 import usePageTitle from '../../hooks/usePageTitle';
 
 import Footer from '../Footer/Footer';
@@ -19,51 +19,27 @@ import {
   stylesLayoutXLContainer,
 } from '../../styles';
 
-const {
-  HOME_PAGE_TITLES,
-  AUTH_PAGE_TITLES,
-  RESET_PASSWORD_TITLES,
-  ABOUT_PAGE_TITLES,
-  CONTACTS_PAGE_TITLES,
-  EXPENSES_TITLES,
-  ESTABLISHMENTS_TITLES,
-  PRODUCTS_TITLES,
-  CATEGORIES_TITLES,
-  CURRENCIES_TITLES,
-  MEASURES_TITLES,
-  MODERATION_TITLES,
-  USERS_TITLES,
-  ROLES_TITLES,
-  FORBIDDEN_PAGE_TITLES,
-  PROFILE_TITLES,
-  EDIT_PROFILE_TITLES,
-  PERMISSIONS_PROFILE_TITLES,
-  CHANGE_PASSWORD_TITLES,
-  REMOVE_PROFILE_TITLES,
-  STATISTICS_PAGE_TITLES,
-} = pageTitles;
-
 const TITLES_MAP = new Map([
-  ['/auth', AUTH_PAGE_TITLES],
-  ['/redirect', RESET_PASSWORD_TITLES],
-  ['/about', ABOUT_PAGE_TITLES],
-  ['/contacts', CONTACTS_PAGE_TITLES],
-  ['/expenses', EXPENSES_TITLES],
-  ['/establishments', ESTABLISHMENTS_TITLES],
-  ['/products', PRODUCTS_TITLES],
-  ['/categories', CATEGORIES_TITLES],
-  ['/currencies', CURRENCIES_TITLES],
-  ['/measures', MEASURES_TITLES],
-  ['/moderation', MODERATION_TITLES],
-  ['/users', USERS_TITLES],
-  ['/roles', ROLES_TITLES],
-  ['/forbidden', FORBIDDEN_PAGE_TITLES],
-  ['/profile', PROFILE_TITLES],
-  ['/edit-profile', EDIT_PROFILE_TITLES],
-  ['/permissions', PERMISSIONS_PROFILE_TITLES],
-  ['/password', CHANGE_PASSWORD_TITLES],
-  ['/remove-profile', REMOVE_PROFILE_TITLES],
-  ['/statistics', STATISTICS_PAGE_TITLES],
+  ['/auth', PAGE_TITLES.auth],
+  ['/redirect', PAGE_TITLES.resetPassword],
+  ['/about', PAGE_TITLES.about],
+  ['/contacts', PAGE_TITLES.contacts],
+  ['/expenses', PAGE_TITLES.expenses],
+  ['/establishments', PAGE_TITLES.establishments],
+  ['/products', PAGE_TITLES.products],
+  ['/categories', PAGE_TITLES.categories],
+  ['/currencies', PAGE_TITLES.currencies],
+  ['/measures', PAGE_TITLES.measures],
+  ['/moderation', PAGE_TITLES.moderation],
+  ['/users', PAGE_TITLES.users],
+  ['/roles', PAGE_TITLES.roles],
+  ['/forbidden', PAGE_TITLES.forbidden],
+  ['/profile', PAGE_TITLES.profile],
+  ['/edit-profile', PAGE_TITLES.editProfile],
+  ['/permissions', PAGE_TITLES.permissionsProfile],
+  ['/password', PAGE_TITLES.changePassword],
+  ['/remove-profile', PAGE_TITLES.removeProfile],
+  ['/statistics', PAGE_TITLES.statistics],
 ]);
 
 function Layout() {
@@ -75,7 +51,7 @@ function Layout() {
         return titles;
       }
     }
-    return HOME_PAGE_TITLES;
+    return PAGE_TITLES.home;
   }, [location.pathname]);
 
   usePageTitle(currentTitles);

@@ -1,4 +1,4 @@
-const STATUS_OPTIONS = {
+export const STATUS_OPTIONS = {
   users: [
     { label: 'Всі користувачі', value: 'all' },
     { label: 'Очікують підтвердження', value: 'pending' },
@@ -17,5 +17,3 @@ const STATUS_OPTIONS = {
     { label: 'Відхилено', value: 'rejected' },
   ],
 };
-
-export { STATUS_OPTIONS };

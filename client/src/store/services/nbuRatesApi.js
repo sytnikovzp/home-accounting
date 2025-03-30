@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { configs } from '../../constants';
-
-const { CURRENCY_CODES, NBU_STAT_URL } = configs;
+import { API_CONFIG, APP_SETTINGS } from '../../constants';
 
 export const nbuRatesApi = createApi({
   reducerPath: 'nbuRatesApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: NBU_STAT_URL,
+    baseUrl: API_CONFIG.NBU_STAT_URL,
   }),
   endpoints: (builder) => ({
     fetchNBURates: builder.query({
@@ -16,7 +14,7 @@ export const nbuRatesApi = createApi({
         method: 'GET',
       }),
       transformResponse: (response) =>
-        response.filter(({ cc }) => CURRENCY_CODES.includes(cc)),
+        response.filter(({ cc }) => APP_SETTINGS.CURRENCY_CODES.includes(cc)),
     }),
   }),
 });

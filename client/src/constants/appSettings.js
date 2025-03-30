@@ -1,0 +1,4 @@
+export const APP_SETTINGS = {
+  CURRENCY_CODES: ['USD', 'EUR', 'GBP', 'CAD', 'PLN'],
+  DELAY_VISIBLE_PRELOADER: 350,
+};

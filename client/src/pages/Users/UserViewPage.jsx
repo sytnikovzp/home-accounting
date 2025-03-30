@@ -13,7 +13,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { configs } from '../../constants';
+import { API_CONFIG } from '../../constants';
 import useAuthUser from '../../hooks/useAuthUser';
 
 import {
@@ -30,8 +30,6 @@ import {
   stylesUserViewPageEmailButton,
   stylesViewPageAvatarSize,
 } from '../../styles';
-
-const { BASE_URL } = configs;
 
 function UserViewPage() {
   const { uuid } = useParams();
@@ -61,7 +59,7 @@ function UserViewPage() {
   const error = fetchError?.data || submitEmailError?.data;
 
   const photoPath = useMemo(() => {
-    const baseUrl = BASE_URL.replace('/api', '');
+    const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     return photo ? `${baseUrl}/images/users/${photo}` : null;
   }, [photo]);
 

@@ -15,7 +15,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import PersonIcon from '@mui/icons-material/Person';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { configs } from '../../constants';
+import { API_CONFIG } from '../../constants';
 
 import {
   useFetchCategoryByUuidQuery,
@@ -33,8 +33,6 @@ import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 import { stylesViewPageAvatarSize } from '../../styles';
-
-const { BASE_URL } = configs;
 
 function ContentModerationPage({ handleModalClose }) {
   const { path, uuid } = useParams();
@@ -127,7 +125,7 @@ function ContentModerationPage({ handleModalClose }) {
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
   const logoPath = useMemo(() => {
-    const baseUrl = BASE_URL.replace('/api', '');
+    const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     return logo
       ? `${baseUrl}/images/establishments/${logo}`
       : `${baseUrl}/images/noLogo.png`;

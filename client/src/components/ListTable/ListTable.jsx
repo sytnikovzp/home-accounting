@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { columnsConfig } from '../../constants';
+import { COLUMNS_CONFIG } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useHasPermission from '../../hooks/useHasPermission';
 
@@ -33,8 +33,6 @@ import {
   stylesListTablePreloader,
   stylesListTableTableRow,
 } from '../../styles';
-
-const { COLUMNS_CONFIG } = columnsConfig;
 
 function ListTable({
   showStatusDropdown = false,

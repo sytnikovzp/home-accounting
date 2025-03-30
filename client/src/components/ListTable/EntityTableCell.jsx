@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 
-import { configs } from '../../constants';
+import { API_CONFIG } from '../../constants';
 
 import {
   stylesListTableAvatarBox,
@@ -16,10 +16,8 @@ import {
   stylesListTableTextColor,
 } from '../../styles';
 
-const { BASE_URL } = configs;
-
 const getAvatarPath = (field, value) => {
-  const basePath = `${BASE_URL.replace('/api', '')}/images/`;
+  const basePath = `${API_CONFIG.BASE_URL.replace('/api', '')}/images/`;
   if (!value) {
     return field === 'logo' ? `${basePath}noLogo.png` : null;
   }

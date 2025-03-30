@@ -1,15 +1,7 @@
-import * as columnsConfig from './columnsConfig';
-import * as configs from './configs';
-import * as entityPermissions from './entityPermissions';
-import * as errorMessages from './errorMessages';
-import * as pageTitles from './pageTitles';
-import * as statusOptions from './statusOptions';
-
-export {
-  columnsConfig,
-  configs,
-  entityPermissions,
-  errorMessages,
-  pageTitles,
-  statusOptions,
-};
+export { API_CONFIG } from './apiConfig';
+export { APP_SETTINGS } from './appSettings';
+export { COLUMNS_CONFIG } from './columnsConfig';
+export { ENTITY_PERMISSIONS } from './entityPermissions';
+export { ERROR_MESSAGES } from './errorMessages';
+export { PAGE_TITLES } from './pageTitles';
+export { STATUS_OPTIONS } from './statusOptions';

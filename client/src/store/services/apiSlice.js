@@ -1,6 +1,6 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { configs } from '../../constants';
+import { API_CONFIG } from '../../constants';
 import {
   getAccessToken,
   removeAccessToken,
@@ -9,10 +9,8 @@ import {
 
 import { logout } from '../slices/authUserSlice';
 
-const { BASE_URL } = configs;
-
 const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_URL,
+  baseUrl: API_CONFIG.BASE_URL,
   credentials: 'include',
   prepareHeaders: (headers) => {
     const token = getAccessToken();

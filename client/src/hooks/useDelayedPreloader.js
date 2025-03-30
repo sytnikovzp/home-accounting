@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { configs } from '../constants';
-
-const { DELAY_VISIBLE_PRELOADER } = configs;
+import { APP_SETTINGS } from '../constants';
 
 function useDelayedPreloader(isLoading) {
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
@@ -13,7 +11,7 @@ function useDelayedPreloader(isLoading) {
     if (isLoading) {
       timeout = setTimeout(
         () => setIsPreloaderVisible(true),
-        DELAY_VISIBLE_PRELOADER
+        APP_SETTINGS.DELAY_VISIBLE_PRELOADER
       );
     } else {
       setIsPreloaderVisible(false);
