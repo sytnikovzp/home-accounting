@@ -1,7 +1,5 @@
 const {
-  configs: {
-    CLIENT: { URL },
-  },
+  API_CONFIG: { CLIENT_URL },
 } = require('../constants');
 const {
   setRefreshTokenCookie,
@@ -84,9 +82,9 @@ class AuthController {
       const { token } = req.query;
       const isValid = await checkToken(token, 'reset');
       if (isValid) {
-        res.redirect(`${URL}/redirect?token=${token}`);
+        res.redirect(`${CLIENT_URL}/redirect?token=${token}`);
       } else {
-        res.redirect(`${URL}/notification?error=expired-token`);
+        res.redirect(`${CLIENT_URL}/notification?error=expired-token`);
       }
     } catch (error) {
       console.error('Error while checking reset token: ', error.message);

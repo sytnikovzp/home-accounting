@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
 const { Category } = require('../models');
 
-const { postgresData } = require('../../../constants');
+const { POSTGRES_DATA } = require('../../../constants');
 
 module.exports = {
   async up(queryInterface) {
-    const { products } = await postgresData();
+    const { products } = await POSTGRES_DATA();
     const categories = await Category.findAll({
       attributes: ['uuid', 'title'],
     });

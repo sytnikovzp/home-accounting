@@ -1,7 +1,5 @@
 const {
-  configs: {
-    CLIENT: { URL },
-  },
+  API_CONFIG: { CLIENT_URL },
 } = require('../constants');
 const { checkToken } = require('../utils/sharedFunctions');
 
@@ -36,9 +34,9 @@ class UserProfileController {
       const { token } = req.query;
       await checkToken(token, 'confirm');
       await confirmEmail(token);
-      res.redirect(`${URL}/notification?success=email-confirmed`);
+      res.redirect(`${CLIENT_URL}/notification?success=email-confirmed`);
     } catch (error) {
-      res.redirect(`${URL}/notification?error=expired-token`);
+      res.redirect(`${CLIENT_URL}/notification?error=expired-token`);
       console.error('Confirmation email error: ', error.message);
       next(error);
     }

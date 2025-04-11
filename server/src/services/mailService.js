@@ -1,22 +1,20 @@
 const nodemailer = require('nodemailer');
 
 const {
-  configs: {
-    CLIENT: { URL },
-    SMTP: { HOST, PORT, USER, PASSWORD },
-  },
+  API_CONFIG: { CLIENT_URL },
+  SMTP_CONFIG: { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD },
 } = require('../constants');
 const emailTemplates = require('../utils/emailTemplates');
 
 class MailService {
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: HOST,
-      port: PORT,
-      secure: PORT === 465,
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_PORT === 465,
       auth: {
-        user: USER,
-        pass: PASSWORD,
+        user: SMTP_USER,
+        pass: SMTP_PASSWORD,
       },
     });
   }
@@ -24,7 +22,7 @@ class MailService {
   async sendMail(email, subject, html) {
     try {
       const info = await this.transporter.sendMail({
-        from: USER,
+        from: SMTP_USER,
         to: email,
         subject,
         text: '',
@@ -40,15 +38,19 @@ class MailService {
   }
 
   async sendConfirmationMail(fullName, email, confirmationLink) {
-    const subject = `Підтвердження акаунту на ${URL}`;
-    const html = emailTemplates.confirmation(URL, fullName, confirmationLink);
+    const subject = `Підтвердження акаунту на ${CLIENT_URL}`;
+    const html = emailTemplates.confirmation(
+      CLIENT_URL,
+      fullName,
+      confirmationLink
+    );
     await this.sendMail(email, subject, html);
   }
 
   async sendEmailChangeConfirmationMail(fullName, email, confirmationLink) {
-    const subject = `Підтвердження зміни email-адреси на ${URL}`;
+    const subject = `Підтвердження зміни email-адреси на ${CLIENT_URL}`;
     const html = emailTemplates.emailChangeConfirmation(
-      URL,
+      CLIENT_URL,
       fullName,
       confirmationLink
     );
@@ -56,8 +58,12 @@ class MailService {
   }
 
   async sendResetPasswordMail(fullName, email, resetPasswordLink) {
-    const subject = `Відновлення паролю на ${URL}`;
-    const html = emailTemplates.resetPassword(URL, fullName, resetPasswordLink);
+    const subject = `Відновлення паролю на ${CLIENT_URL}`;
+    const html = emailTemplates.resetPassword(
+      CLIENT_URL,
+      fullName,
+      resetPasswordLink
+    );
     await this.sendMail(email, subject, html);
   }
 }

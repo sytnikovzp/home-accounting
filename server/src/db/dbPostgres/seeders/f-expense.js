@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
 const { Product, Establishment, Measure, Currency } = require('../models');
 
-const { postgresData } = require('../../../constants');
+const { POSTGRES_DATA } = require('../../../constants');
 
 module.exports = {
   async up(queryInterface) {
-    const { expenses } = await postgresData();
+    const { expenses } = await POSTGRES_DATA();
     const [products, establishments, measures, currencies] = await Promise.all([
       Product.findAll({ attributes: ['uuid', 'title'] }),
       Establishment.findAll({ attributes: ['uuid', 'title'] }),

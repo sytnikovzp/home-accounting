@@ -7,11 +7,9 @@ const {
 } = require('../db/dbMongo/models');
 
 const {
-  configs: {
-    SERVER: { HOST, PORT },
-    TOKEN_LIFETIME: { CONFIRMATION, RESET_PASSWORD },
-  },
-  dataMapping: { EMAIL_CONFIRMATION_MAPPING },
+  API_CONFIG: { SERVER_HOST, SERVER_PORT },
+  DATA_MAPPING: { EMAIL_CONFIRMATION_MAPPING },
+  TOKEN_LIFETIME: { CONFIRMATION_TIME, RESET_PASSWORD_TIME },
 } = require('../constants');
 const { unAuthorizedError } = require('../errors/authErrors');
 const { badRequest, notFound } = require('../errors/generalErrors');
@@ -47,12 +45,12 @@ class AuthService {
     }
     const confirmationToken = await ConfirmationToken.create({
       userUuid: user.uuid,
-      expiresAt: new Date(Date.now() + CONFIRMATION),
+      expiresAt: new Date(Date.now() + CONFIRMATION_TIME),
     });
     await mailService.sendConfirmationMail(
       fullName,
       email,
-      `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
+      `http://${SERVER_HOST}:${SERVER_PORT}/api/profile/confirm?token=${confirmationToken.token}`
     );
     const permissions = await Permission.find({
       uuid: { $in: foundRole.permissions },
@@ -151,12 +149,12 @@ class AuthService {
     await PasswordResetToken.deleteMany({ userUuid: foundUser.uuid });
     const resetToken = await PasswordResetToken.create({
       userUuid: foundUser.uuid,
-      expiresAt: new Date(Date.now() + RESET_PASSWORD),
+      expiresAt: new Date(Date.now() + RESET_PASSWORD_TIME),
     });
     await mailService.sendResetPasswordMail(
       foundUser.fullName,
       foundUser.email,
-      `http://${HOST}:${PORT}/api/auth/redirect?token=${resetToken.token}`
+      `http://${SERVER_HOST}:${SERVER_PORT}/api/auth/redirect?token=${resetToken.token}`
     );
   }
 

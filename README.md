@@ -1,4 +1,4 @@
-# Home Accounting
+# Home Accounting (Моя Бухгалтерія)
 
 <p align="center">
   <img src="./screenshots/9_Expenses_list.png" alt="Home Accounting" style="max-width: 80%;">
@@ -282,7 +282,7 @@ cp .env.example .env
 
 Відредагуйте файл `.env`, вказавши СВОЇ значення для `SMTP_USER` та `SMTP_PASSWORD`. Це потрібно для коректної роботи біблиотеки nodemailer.
 
-Якщо файл `.env.example` відсутній, створіть файл `.env` використовуючи команду:
+Якщо файл `.env.example` **відсутній**, створіть файл `.env` використовуючи команду:
 
 ```bash
 cat <<EOL > .env
@@ -290,29 +290,30 @@ cat <<EOL > .env
 VITE_PORT=3000
 
 # For server
+CLIENT_URL=http://localhost:3000
 ACCOUNTING_SERVER_HOST=localhost
 ACCOUNTING_SERVER_PORT=5000
+STATIC_PATH=public
 
-ACCESS_SECRET=access_secret
-REFRESH_SECRET=refresh_secret
+ACCESS_TOKEN_SECRET=access_secret
+REFRESH_TOKEN_SECRET=refresh_secret
 ACCESS_TOKEN_LIFETIME=15m
 REFRESH_TOKEN_LIFETIME=60d
-
-SALT_ROUNDS=9
-STATIC_PATH=public
-CLIENT_URL=http://localhost:3000
+HASH_SALT_ROUNDS=9
 
 SMTP_HOST="smtp.gmail.com"
 SMTP_PORT=587
-SMTP_USER=*yourmail@gmail.com*
-SMTP_PASSWORD="*your password*"
+SMTP_USER=*yourmail@gmail.com* // Enter your SMTP credentials
+SMTP_PASSWORD="*your password*" // Enter your SMTP credentials
 
 # For database
+DB_HOST=localhost
+DB_DIALECT=postgres
 DB_USER=postgres
 DB_PASS=root
 DB_NAME=home_accounting
 DB_NAME_TEST=home_accounting_test
-DB_DIALECT=postgres
+MONGO_HOST=localhost
 MONGO_PORT=27017
 MONGO_DB_NAME=home_accounting
 MONGO_DB_NAME_TEST=home_accounting_test

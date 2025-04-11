@@ -1,7 +1,7 @@
 const { Product, Category } = require('../db/dbPostgres/models');
 
 const {
-  dataMapping: { STATUS_MODERATION_MAPPING },
+  DATA_MAPPING: { STATUS_MODERATION_MAPPING },
 } = require('../constants');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {

@@ -6,11 +6,9 @@ const {
 } = require('../db/dbMongo/models');
 
 const {
-  configs: {
-    SERVER: { HOST, PORT },
-    TOKEN_LIFETIME: { CONFIRMATION },
-  },
-  dataMapping: { EMAIL_CONFIRMATION_MAPPING },
+  API_CONFIG: { SERVER_HOST, SERVER_PORT },
+  DATA_MAPPING: { EMAIL_CONFIRMATION_MAPPING },
+  TOKEN_LIFETIME: { CONFIRMATION_TIME },
 } = require('../constants');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
 const {
@@ -169,13 +167,13 @@ class UsersService {
     }
     await ConfirmationToken.deleteMany({ userUuid: foundUser.uuid });
     const confirmationToken = await ConfirmationToken.create({
-      expiresAt: new Date(Date.now() + CONFIRMATION),
+      expiresAt: new Date(Date.now() + CONFIRMATION_TIME),
       userUuid: foundUser.uuid,
     });
     await mailService.sendConfirmationMail(
       foundUser.fullName,
       foundUser.email,
-      `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
+      `http://${SERVER_HOST}:${SERVER_PORT}/api/profile/confirm?token=${confirmationToken.token}`
     );
     return true;
   }
@@ -294,12 +292,12 @@ class UsersService {
       updateData.tokenVersion = foundUser.tokenVersion + 1;
       const confirmationToken = await ConfirmationToken.create({
         userUuid: foundUser.uuid,
-        expiresAt: new Date(Date.now() + CONFIRMATION),
+        expiresAt: new Date(Date.now() + CONFIRMATION_TIME),
       });
       await mailService.sendEmailChangeConfirmationMail(
         foundUser.fullName,
         newEmail,
-        `http://${HOST}:${PORT}/api/profile/confirm?token=${confirmationToken.token}`
+        `http://${SERVER_HOST}:${SERVER_PORT}/api/profile/confirm?token=${confirmationToken.token}`
       );
     }
     const updatedUser = await User.findOneAndUpdate({ uuid }, updateData, {

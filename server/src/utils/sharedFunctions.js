@@ -12,14 +12,12 @@ const {
 } = require('../db/dbMongo/models');
 
 const {
-  configs: {
-    HASH: { SALT_ROUNDS },
-  },
+  AUTH_CONFIG: { HASH_SALT_ROUNDS },
 } = require('../constants');
 const { notFound, badRequest } = require('../errors/generalErrors');
 
 const hashPassword = function (password) {
-  return bcrypt.hash(password, SALT_ROUNDS);
+  return bcrypt.hash(password, HASH_SALT_ROUNDS);
 };
 
 const confirmPassword = function (password, userPassword) {

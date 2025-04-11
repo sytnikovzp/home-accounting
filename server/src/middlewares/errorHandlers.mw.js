@@ -7,9 +7,7 @@ const {
 } = require('../db/dbPostgres/models');
 
 const {
-  configs: {
-    FILES: { MAX_FILE_SIZE },
-  },
+  UPLOAD_CONFIG: { MAX_FILE_SIZE },
 } = require('../constants');
 const AuthError = require('../errors/authErrors');
 const GeneralError = require('../errors/generalErrors');

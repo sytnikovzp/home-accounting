@@ -1,6 +1,8 @@
 const { Category, Product, Establishment } = require('../db/dbPostgres/models');
 
-const { STATUS_MODERATION_MAPPING } = require('../constants/dataMapping');
+const {
+  DATA_MAPPING: { STATUS_MODERATION_MAPPING },
+} = require('../constants');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
 const {
   isValidUUID,

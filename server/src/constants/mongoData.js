@@ -1,12 +1,8 @@
 const bcrypt = require('bcrypt');
 
-const {
-  configs: {
-    HASH: { SALT_ROUNDS },
-  },
-} = require('../constants');
+const { HASH_SALT_ROUNDS } = require('./authConfig');
 
-module.exports.permissions = [
+module.exports.PERMISSIONS = [
   {
     title: 'ADD_ROLES',
     description: 'Додавання нових ролей користувачів',
@@ -125,7 +121,7 @@ module.exports.permissions = [
   },
 ];
 
-module.exports.roles = (permissionUuids) => [
+module.exports.ROLES = (permissionUuids) => [
   {
     title: 'Administrators',
     description: 'Має повний доступ до керування користувачами та ролями',
@@ -182,12 +178,12 @@ module.exports.roles = (permissionUuids) => [
   },
 ];
 
-module.exports.users = async (roleUuids) => [
+module.exports.USERS = async (roleUuids) => [
   {
     email: 'i.petrenko@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Іван Петренко',
-    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
+    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
     photo: '1730686056955-ivan.petrenko.jpg',
     roleUuid: roleUuids['Administrators'],
   },
@@ -195,7 +191,7 @@ module.exports.users = async (roleUuids) => [
     email: 'o.ivanchuk@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Олександра Іванчук',
-    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
+    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
     photo: '1730686066968-oleksandra.ivanchuk.jpg',
     roleUuid: roleUuids['Moderators'],
   },
@@ -203,7 +199,7 @@ module.exports.users = async (roleUuids) => [
     email: 'a.shevchenko@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Ганна Шевченко',
-    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
+    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
     photo: '1730713464386-hanna.shevchenko.jpg',
     roleUuid: roleUuids['Users'],
   },
@@ -211,7 +207,7 @@ module.exports.users = async (roleUuids) => [
     email: 'e.kovalenko@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Євген Коваленко',
-    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
+    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
     photo: '1730713568386-evgen.kovalenko.jpg',
     roleUuid: roleUuids['Users'],
   },
@@ -219,7 +215,7 @@ module.exports.users = async (roleUuids) => [
     email: 'm.scherbak@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Микола Щербак',
-    password: await bcrypt.hash('Qwerty12', SALT_ROUNDS),
+    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
     photo: '1730743569326-mykola.scherbak.jpg',
     roleUuid: roleUuids['Users'],
   },

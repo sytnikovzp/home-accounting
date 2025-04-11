@@ -4,9 +4,11 @@ const path = require('path');
 const multer = require('multer');
 
 const {
-  configs: {
-    STATIC: { PATH },
-    FILES: { IMAGE_MIMETYPE, IMAGE_EXTENSIONS, MAX_FILE_SIZE },
+  UPLOAD_CONFIG: {
+    STATIC_PATH,
+    IMAGE_EXTENSIONS,
+    IMAGE_MIMETYPE,
+    MAX_FILE_SIZE,
   },
 } = require('../constants');
 
@@ -18,7 +20,7 @@ const createStorage = (subfolder) =>
         '..',
         '..',
         '..',
-        PATH,
+        STATIC_PATH,
         'images',
         subfolder
       );

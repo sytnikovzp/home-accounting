@@ -6,10 +6,8 @@ const express = require('express');
 const morgan = require('morgan');
 
 const {
-  configs: {
-    CLIENT: { URL },
-    STATIC: { PATH },
-  },
+  API_CONFIG: { CLIENT_URL },
+  UPLOAD_CONFIG: { STATIC_PATH },
 } = require('./constants');
 const {
   time: { getTime, showTime },
@@ -28,7 +26,7 @@ const {
 const router = require('./routers');
 
 const app = express();
-const publicPath = path.resolve(__dirname, '..', '..', PATH, 'images');
+const publicPath = path.resolve(__dirname, '..', '..', STATIC_PATH, 'images');
 
 app.use('/images', express.static(publicPath));
 
@@ -36,7 +34,7 @@ app.use(
   cors({
     credentials: true,
     exposedHeaders: ['X-Total-Count', 'X-Total-Sum'],
-    origin: URL,
+    origin: CLIENT_URL,
   })
 );
 

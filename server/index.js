@@ -2,10 +2,8 @@ const { createServer } = require('http');
 
 const app = require('./src/app');
 const {
-  configs: {
-    SERVER: { HOST, PORT },
-    DATABASE: { DB_NAME },
-  },
+  API_CONFIG: { SERVER_HOST, SERVER_PORT },
+  DB_CONFIG: { DB_NAME },
 } = require('./src/constants');
 const { connectMongoDB } = require('./src/db/dbMongo');
 const dbPostgres = require('./src/db/dbPostgres/models');
@@ -41,8 +39,8 @@ const startServer = async () => {
 
   const server = createServer(app);
 
-  server.listen(PORT, HOST, () => {
-    console.log(`Server running at http://${HOST}:${PORT}/api`);
+  server.listen(SERVER_PORT, SERVER_HOST, () => {
+    console.log(`Server running at http://${SERVER_HOST}:${SERVER_PORT}/api`);
   });
 };
 console.log(

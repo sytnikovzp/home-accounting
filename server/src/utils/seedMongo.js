@@ -8,23 +8,23 @@ const {
 } = require('../db/dbMongo/models');
 
 const {
-  mongoData: { roles, users, permissions },
+  MONGO_DATA: { PERMISSIONS, ROLES, USERS },
 } = require('../constants');
 const { getUserDetailsByEmail } = require('../utils/sharedFunctions');
 
 const createPermissions = async () => {
-  const createdPermissions = await Permission.insertMany(permissions);
+  const createdPermissions = await Permission.insertMany(PERMISSIONS);
   return Object.fromEntries(createdPermissions.map((p) => [p.title, p.uuid]));
 };
 
 const createRoles = async (permissionUuids) => {
-  const rolesWithPermissions = await roles(permissionUuids);
+  const rolesWithPermissions = await ROLES(permissionUuids);
   const createdRoles = await Role.insertMany(rolesWithPermissions);
   return Object.fromEntries(createdRoles.map((r) => [r.title, r.uuid]));
 };
 
 const createUsers = async (roleUuids) => {
-  const usersToInsert = await users(roleUuids);
+  const usersToInsert = await USERS(roleUuids);
   await User.create(usersToInsert);
 };
 
