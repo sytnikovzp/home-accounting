@@ -50,7 +50,7 @@ const seedDatabase = async () => {
 
     console.log('MongoDB database seeded successfully');
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error('Error seeding database: ', error);
   } finally {
     await closeMongoDB();
   }

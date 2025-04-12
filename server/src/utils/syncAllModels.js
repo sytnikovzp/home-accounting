@@ -7,7 +7,7 @@ const syncAllModels = async () => {
     console.log('Synchronization of ALL models completed successfully!');
   } catch (error) {
     console.error('==========================================================');
-    console.error(`Can't sync ALL models: `, error.message);
+    console.error('Can`t sync ALL models: ', error.message);
   }
 };
 

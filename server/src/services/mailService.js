@@ -29,10 +29,10 @@ class MailService {
         html,
       });
       const { response, envelope, messageId } = info;
-      console.info('Sent email:', { response, envelope, messageId });
+      console.info('Sent email: ', { response, envelope, messageId });
       return info;
     } catch (error) {
-      console.error(`Failed to send email to ${email}:`, error);
+      console.error(`Failed to send email to ${email}: `, error);
       throw error;
     }
   }

@@ -32,7 +32,7 @@ class TokenService {
       const payload = jwt.verify(token, ACCESS_TOKEN_SECRET);
       return payload;
     } catch (error) {
-      console.error('Access token validation error:', error.message);
+      console.error('Access token validation error: ', error.message);
       return null;
     }
   }
@@ -42,7 +42,7 @@ class TokenService {
       const payload = jwt.verify(token, REFRESH_TOKEN_SECRET);
       return payload;
     } catch (error) {
-      console.error('Refresh token validation error:', error.message);
+      console.error('Refresh token validation error: ', error.message);
       return null;
     }
   }

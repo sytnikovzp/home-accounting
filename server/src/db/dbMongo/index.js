@@ -15,7 +15,7 @@ const connectMongoDB = async () => {
       `Connection to MongoDB database <<< ${config.dbName} >>> is done!`
     );
   } catch (error) {
-    console.error('MongoDB connection error:', error.message);
+    console.error('MongoDB connection error: ', error.message);
     process.exit(1);
   }
 };
@@ -25,7 +25,7 @@ const closeMongoDB = async () => {
     await mongoose.connection.close();
     console.log('MongoDB connection closed');
   } catch (error) {
-    console.error('Error closing MongoDB connection:', error.message);
+    console.error('Error closing MongoDB connection: ', error.message);
   }
 };
 

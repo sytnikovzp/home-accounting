@@ -28,7 +28,7 @@ const connectDatabases = async () => {
     await connectMongoDB();
     await connectPostgresDB();
   } catch (error) {
-    console.error('Error connecting to databases:', error.message);
+    console.error('Error connecting to databases: ', error.message);
     process.exit(1);
   }
 };

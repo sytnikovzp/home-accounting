@@ -31,7 +31,7 @@ module.exports.authHandler = async (req, res, next) => {
     req.user = await processRequest();
     return next();
   } catch (error) {
-    console.error('Authorization middleware error:', error.message);
+    console.error('Authorization middleware error: ', error.message);
     return next(unAuthorizedError());
   }
 };

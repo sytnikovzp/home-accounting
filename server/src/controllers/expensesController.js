@@ -27,7 +27,7 @@ class ExpensesController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get all expenses error:', error.message);
+      console.error('Get all expenses error: ', error.message);
       next(error);
     }
   }
@@ -43,7 +43,7 @@ class ExpensesController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get expense by UUID error:', error.message);
+      console.error('Get expense by UUID error: ', error.message);
       next(error);
     }
   }
@@ -81,7 +81,7 @@ class ExpensesController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Create expense error:', error.message);
+      console.error('Create expense error: ', error.message);
       next(error);
     }
   }
@@ -121,7 +121,7 @@ class ExpensesController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Update expense error:', error.message);
+      console.error('Update expense error: ', error.message);
       next(error);
     }
   }
@@ -145,7 +145,7 @@ class ExpensesController {
       }
     } catch (error) {
       await transaction.rollback();
-      console.error('Delete expense error:', error.message);
+      console.error('Delete expense error: ', error.message);
       next(error);
     }
   }

@@ -11,7 +11,7 @@ const dirname = path.dirname(filename);
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, path.resolve(dirname, '../'));
 
-  console.log('Loaded from .env variables:', env);
+  console.log('Loaded from .env variables: ', env);
 
   return {
     envPrefix: 'ACCOUNTING_',

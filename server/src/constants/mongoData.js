@@ -1,6 +1,4 @@
-const bcrypt = require('bcrypt');
-
-const { HASH_SALT_ROUNDS } = require('./authConfig');
+const { hashPassword } = require('../utils/sharedFunctions');
 
 module.exports.PERMISSIONS = [
   {
@@ -183,7 +181,7 @@ module.exports.USERS = async (roleUuids) => [
     email: 'i.petrenko@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Іван Петренко',
-    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
+    password: await hashPassword('Qwerty12'),
     photo: '1730686056955-ivan.petrenko.jpg',
     roleUuid: roleUuids['Administrators'],
   },
@@ -191,7 +189,7 @@ module.exports.USERS = async (roleUuids) => [
     email: 'o.ivanchuk@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Олександра Іванчук',
-    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
+    password: await hashPassword('Qwerty12'),
     photo: '1730686066968-oleksandra.ivanchuk.jpg',
     roleUuid: roleUuids['Moderators'],
   },
@@ -199,7 +197,7 @@ module.exports.USERS = async (roleUuids) => [
     email: 'a.shevchenko@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Ганна Шевченко',
-    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
+    password: await hashPassword('Qwerty12'),
     photo: '1730713464386-hanna.shevchenko.jpg',
     roleUuid: roleUuids['Users'],
   },
@@ -207,7 +205,7 @@ module.exports.USERS = async (roleUuids) => [
     email: 'e.kovalenko@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Євген Коваленко',
-    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
+    password: await hashPassword('Qwerty12'),
     photo: '1730713568386-evgen.kovalenko.jpg',
     roleUuid: roleUuids['Users'],
   },
@@ -215,7 +213,7 @@ module.exports.USERS = async (roleUuids) => [
     email: 'm.scherbak@gmail.com',
     emailConfirm: 'confirmed',
     fullName: 'Микола Щербак',
-    password: await bcrypt.hash('Qwerty12', HASH_SALT_ROUNDS),
+    password: await hashPassword('Qwerty12'),
     photo: '1730743569326-mykola.scherbak.jpg',
     roleUuid: roleUuids['Users'],
   },
