@@ -9,7 +9,6 @@ import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
 import useAuthUser from '../../hooks/useAuthUser';
-import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import {
   useFetchCostByCategoriesQuery,
@@ -17,8 +16,6 @@ import {
   useFetchCostByProductsQuery,
 } from '../../store/services';
 
-import Error from '../../components/Error/Error';
-import Preloader from '../../components/Preloader/Preloader';
 import StatisticsChart from '../../components/StatisticsChart/StatisticsChart';
 
 import {
@@ -29,7 +26,7 @@ import {
 function StatisticsPage() {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
-  const { isFetchingUser, authenticatedUser, isAuthenticated } = useAuthUser();
+  const { authenticatedUser, isAuthenticated } = useAuthUser();
 
   const creatorUuid = authenticatedUser?.uuid;
 
@@ -40,9 +37,9 @@ function StatisticsPage() {
   };
 
   const {
-    data: statistics,
-    isFetching: isFetchingStatistics,
-    error: fetchStatisticsError,
+    data: statisticsData,
+    isFetching,
+    error: fetchError,
   } = queriesMap[criteria](
     { ago, ...(isAuthenticated && { creatorUuid }) },
     { skip: !ago }
@@ -51,18 +48,6 @@ function StatisticsPage() {
   const handleCriteriaChange = (event) => setCriteria(event.target.value);
 
   const handleAgoChange = (event) => setAgo(event.target.value);
-
-  const isPreloaderVisible = useDelayedPreloader(
-    isFetchingStatistics || isFetchingUser
-  );
-
-  if (isPreloaderVisible) {
-    return <Preloader message='Завантаження даних статистики...' />;
-  }
-
-  if (fetchStatisticsError) {
-    return <Error error={fetchStatisticsError?.data?.message} />;
-  }
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
@@ -99,7 +84,11 @@ function StatisticsPage() {
           </FormControl>
         </Box>
       </Box>
-      <StatisticsChart data={statistics} />
+      <StatisticsChart
+        data={statisticsData}
+        fetchError={fetchError}
+        isFetching={isFetching}
+      />
     </Container>
   );
 }

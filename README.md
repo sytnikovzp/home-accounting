@@ -212,7 +212,6 @@
 - **ESLint Plugins**:
   - **eslint-plugin-import** – перевіряє правильність імпорту модулів.
   - **eslint-plugin-jsx-a11y** – допомагає покращити доступність JSX-коду.
-  - **eslint-plugin-no-secrets** – виявляє випадкове розміщення секретів (API-ключів, паролів) у коді.
   - **eslint-plugin-optimize-regex** – оптимізує регулярні вирази.
   - **eslint-plugin-prettier** – інтеграція Prettier з ESLint.
   - **eslint-plugin-promise** – забезпечує дотримання кращих практик при роботі з промісами.

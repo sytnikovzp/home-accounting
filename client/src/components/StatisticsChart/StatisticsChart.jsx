@@ -15,6 +15,7 @@ import { Bar, Doughnut, Pie, PolarArea } from 'react-chartjs-2';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 
 import { useTheme } from '@mui/material/styles';
@@ -23,6 +24,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import RadarIcon from '@mui/icons-material/Radar';
+
+import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
 import Error from '../../components/Error/Error';
 
@@ -49,9 +52,10 @@ ChartJS.register(
   ChartDataLabels
 );
 
-function StatisticsChart({ data }) {
+function StatisticsChart({ data, fetchError, isFetching }) {
   const [chartType, setChartType] = useState('doughnut');
   const theme = useTheme();
+  const isPreloaderVisible = useDelayedPreloader(isFetching);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const chartData = useMemo(() => {
@@ -81,14 +85,6 @@ function StatisticsChart({ data }) {
       labels: titles,
     };
   }, [data]);
-
-  if (!chartData) {
-    return (
-      <Box sx={stylesStatisticsChartBox}>
-        <Error error={'Відсутні дані витрат для відображення за цей період'} />
-      </Box>
-    );
-  }
 
   const chartOptions = {
     indexAxis: isMobile ? 'x' : 'y',
@@ -144,7 +140,24 @@ function StatisticsChart({ data }) {
 
   return (
     <>
-      <Box sx={stylesStatisticsChartBox}>{renderChart()}</Box>
+      <Box sx={stylesStatisticsChartBox}>
+        {isPreloaderVisible && (
+          <Box display='flex' justifyContent='center'>
+            <CircularProgress color='success' size='3rem' />
+          </Box>
+        )}
+
+        {!isPreloaderVisible && fetchError && (
+          <Error error={fetchError?.data?.message} />
+        )}
+
+        {!isPreloaderVisible && !fetchError && !chartData && (
+          <Error error='Відсутні дані витрат для відображення за цей період' />
+        )}
+
+        {!isPreloaderVisible && !fetchError && chartData && renderChart()}
+      </Box>
+
       <Stack
         direction={stylesStatisticsChartStackDirection}
         justifyContent='center'

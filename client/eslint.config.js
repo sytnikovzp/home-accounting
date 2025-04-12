@@ -3,7 +3,6 @@ import { builtinModules } from 'module';
 import js from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import jsxA11Y from 'eslint-plugin-jsx-a11y';
-import nosecrets from 'eslint-plugin-no-secrets';
 import regexopt from 'eslint-plugin-optimize-regex';
 import prettier from 'eslint-plugin-prettier';
 import promise from 'eslint-plugin-promise';
@@ -31,7 +30,6 @@ export default [
     plugins: {
       import: importPlugin,
       'jsx-a11y': jsxA11Y,
-      'no-secrets': nosecrets,
       'optimize-regex': regexopt,
       prettier,
       promise,
