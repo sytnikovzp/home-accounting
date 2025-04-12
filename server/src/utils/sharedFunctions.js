@@ -95,7 +95,7 @@ const getRecordByTitle = async function (Model, title) {
     where: { title },
   });
   if (!record) {
-    throw notFound(`${Model.name} not found`);
+    throw notFound(`${Model.name} не знайдено`);
   }
   return record;
 };
@@ -110,7 +110,7 @@ const getCurrencyByTitle = async function (Model, title) {
     where: { title },
   });
   if (!record) {
-    throw notFound(`${Model.name} not found`);
+    throw notFound(`${Model.name} не знайдено`);
   }
   return record;
 };

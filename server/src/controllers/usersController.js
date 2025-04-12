@@ -9,7 +9,7 @@ const {
   deleteUser,
 } = require('../services/usersService');
 
-class UserController {
+class UsersController {
   static async getAllUsers(req, res, next) {
     try {
       const { limit, offset } = req.pagination;
@@ -152,4 +152,4 @@ class UserController {
   }
 }
 
-module.exports = UserController;
+module.exports = UsersController;

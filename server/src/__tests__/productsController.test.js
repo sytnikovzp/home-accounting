@@ -166,7 +166,7 @@ describe('ProductsController', () => {
           category: 'Машини',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Category not found');
+      expect(response.body.message).toBe('Category не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });

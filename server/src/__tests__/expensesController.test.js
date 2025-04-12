@@ -137,7 +137,7 @@ describe('ExpensesController', () => {
           date: '12 січня 2025',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Establishment not found');
+      expect(response.body.message).toBe('Establishment не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -156,7 +156,7 @@ describe('ExpensesController', () => {
           date: '12 січня 2025',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Product not found');
+      expect(response.body.message).toBe('Product не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -175,7 +175,7 @@ describe('ExpensesController', () => {
           date: '12 січня 2025',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Measure not found');
+      expect(response.body.message).toBe('Measure не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -194,7 +194,7 @@ describe('ExpensesController', () => {
           date: '12 січня 2025',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Currency not found');
+      expect(response.body.message).toBe('Currency не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -305,7 +305,7 @@ describe('ExpensesController', () => {
           date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Establishment not found');
+      expect(response.body.message).toBe('Establishment не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -324,7 +324,7 @@ describe('ExpensesController', () => {
           date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Product not found');
+      expect(response.body.message).toBe('Product не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -343,7 +343,7 @@ describe('ExpensesController', () => {
           date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Measure not found');
+      expect(response.body.message).toBe('Measure не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
@@ -362,7 +362,7 @@ describe('ExpensesController', () => {
           date: '15 грудня 2024',
         });
       expect(response.status).toBe(404);
-      expect(response.body.message).toBe('Currency not found');
+      expect(response.body.message).toBe('Currency не знайдено');
       expect(response.body.severity).toBe('error');
       expect(response.body.title).toBe('Сталася помилка');
     });
