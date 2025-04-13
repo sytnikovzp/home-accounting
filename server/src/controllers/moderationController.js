@@ -11,8 +11,10 @@ const { getCurrentUser } = require('../services/usersService');
 class ModerationController {
   static async getAllPendingItems(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { sort = 'uuid', order = 'asc' } = req.query;
+      const {
+        pagination: { limit, offset },
+        query: { sort = 'uuid', order = 'asc' },
+      } = req;
       const { allItems, totalCount } = await getPendingItemsFromAllEntities(
         limit,
         offset,
@@ -33,9 +35,12 @@ class ModerationController {
   static async moderationCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { categoryUuid } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { categoryUuid },
+        body: { status },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedCategory = await updateCategoryStatus(
         categoryUuid,
         status,
@@ -59,9 +64,12 @@ class ModerationController {
   static async moderationProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { productUuid } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { productUuid },
+        body: { status },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedProduct = await updateProductStatus(
         productUuid,
         status,
@@ -85,9 +93,12 @@ class ModerationController {
   static async moderationEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { establishmentUuid } = req.params;
-      const { status } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { establishmentUuid },
+        body: { status },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedEstablishment = await updateEstablishmentStatus(
         establishmentUuid,
         status,

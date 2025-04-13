@@ -10,8 +10,10 @@ const { getCurrentUser } = require('../services/usersService');
 class RolesController {
   static async getAllRoles(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { sort = 'uuid', order = 'asc' } = req.query;
+      const {
+        pagination: { limit, offset },
+        query: { sort = 'uuid', order = 'asc' },
+      } = req;
       const { allRoles, totalCount } = await getAllRoles(
         limit,
         offset,
@@ -46,8 +48,11 @@ class RolesController {
 
   static async createRole(req, res, next) {
     try {
-      const { title, description, permissions } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        body: { title, description, permissions },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const newRole = await createRole(
         title,
         description,
@@ -67,9 +72,12 @@ class RolesController {
 
   static async updateRole(req, res, next) {
     try {
-      const { roleUuid } = req.params;
-      const { title, description, permissions } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { roleUuid },
+        body: { title, description, permissions },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedRole = await updateRole(
         roleUuid,
         title,
@@ -90,8 +98,11 @@ class RolesController {
 
   static async deleteRole(req, res, next) {
     try {
-      const { roleUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { roleUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const deletedRole = await deleteRole(roleUuid, currentUser);
       if (deletedRole) {
         res.status(200).json('OK');

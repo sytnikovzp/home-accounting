@@ -12,8 +12,10 @@ const { getCurrentUser } = require('../services/usersService');
 class CurrenciesController {
   static async getAllCurrencies(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { sort = 'uuid', order = 'asc' } = req.query;
+      const {
+        pagination: { limit, offset },
+        query: { sort = 'uuid', order = 'asc' },
+      } = req;
       const { allCurrencies, totalCount } = await getAllCurrencies(
         limit,
         offset,
@@ -49,8 +51,11 @@ class CurrenciesController {
   static async createCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title, code } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        body: { title, code },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const newCurrency = await createCurrency(
         title,
         code,
@@ -74,9 +79,12 @@ class CurrenciesController {
   static async updateCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { currencyUuid } = req.params;
-      const { title, code } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { currencyUuid },
+        body: { title, code },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedCurrency = await updateCurrency(
         currencyUuid,
         title,
@@ -101,8 +109,11 @@ class CurrenciesController {
   static async deleteCurrency(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { currencyUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { currencyUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const deletedCurrency = await deleteCurrency(
         currencyUuid,
         currentUser,

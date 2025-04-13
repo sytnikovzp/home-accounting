@@ -12,8 +12,10 @@ const { getCurrentUser } = require('../services/usersService');
 class ProductsController {
   static async getAllProducts(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
+      const {
+        pagination: { limit, offset },
+        query: { status = 'approved', sort = 'uuid', order = 'asc' },
+      } = req;
       const { allProducts, totalCount } = await getAllProducts(
         status,
         limit,
@@ -50,8 +52,11 @@ class ProductsController {
   static async createProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title, category } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        body: { title, category },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const newProduct = await createProduct(
         title,
         category,
@@ -75,9 +80,12 @@ class ProductsController {
   static async updateProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { productUuid } = req.params;
-      const { title, category } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { productUuid },
+        body: { title, category },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedProduct = await updateProduct(
         productUuid,
         title,
@@ -102,8 +110,11 @@ class ProductsController {
   static async deleteProduct(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { productUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { productUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const deletedProduct = await deleteProduct(
         productUuid,
         currentUser,

@@ -12,8 +12,10 @@ const { getCurrentUser } = require('../services/usersService');
 class MeasuresController {
   static async getAllMeasures(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { sort = 'uuid', order = 'asc' } = req.query;
+      const {
+        pagination: { limit, offset },
+        query: { sort = 'uuid', order = 'asc' },
+      } = req;
       const { allMeasures, totalCount } = await getAllMeasures(
         limit,
         offset,
@@ -49,8 +51,11 @@ class MeasuresController {
   static async createMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title, description } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        body: { title, description },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const newMeasure = await createMeasure(
         title,
         description,
@@ -74,9 +79,12 @@ class MeasuresController {
   static async updateMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { measureUuid } = req.params;
-      const { title, description } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { measureUuid },
+        body: { title, description },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedMeasure = await updateMeasure(
         measureUuid,
         title,
@@ -101,8 +109,11 @@ class MeasuresController {
   static async deleteMeasure(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { measureUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { measureUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const deletedMeasure = await deleteMeasure(
         measureUuid,
         currentUser,

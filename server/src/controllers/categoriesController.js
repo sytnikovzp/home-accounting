@@ -12,8 +12,10 @@ const { getCurrentUser } = require('../services/usersService');
 class CategoriesController {
   static async getAllCategories(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
+      const {
+        pagination: { limit, offset },
+        query: { status = 'approved', sort = 'uuid', order = 'asc' },
+      } = req;
       const { allCategories, totalCount } = await getAllCategories(
         status,
         limit,
@@ -50,8 +52,11 @@ class CategoriesController {
   static async createCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        body: { title },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const newCategory = await createCategory(title, currentUser, transaction);
       if (newCategory) {
         await transaction.commit();
@@ -70,9 +75,12 @@ class CategoriesController {
   static async updateCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { categoryUuid } = req.params;
-      const { title } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { categoryUuid },
+        body: { title },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedCategory = await updateCategory(
         categoryUuid,
         title,
@@ -96,8 +104,11 @@ class CategoriesController {
   static async deleteCategory(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { categoryUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { categoryUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const deletedCategory = await deleteCategory(
         categoryUuid,
         currentUser,

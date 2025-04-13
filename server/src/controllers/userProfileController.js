@@ -17,7 +17,8 @@ const {
 class UserProfileController {
   static async getCurrentUserProfile(req, res, next) {
     try {
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const { uuid } = req.user;
+      const currentUser = await getCurrentUser(uuid);
       if (currentUser) {
         res.status(200).json(currentUser);
       } else {
@@ -60,9 +61,11 @@ class UserProfileController {
 
   static async changePassword(req, res, next) {
     try {
-      const { uuid } = req.user;
-      const { newPassword, confirmNewPassword } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        body: { newPassword, confirmNewPassword },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedUser = await changePassword(
         uuid,
         newPassword,
@@ -82,9 +85,11 @@ class UserProfileController {
 
   static async updateUser(req, res, next) {
     try {
-      const { uuid } = req.user;
-      const { fullName, email, role } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        body: { fullName, email, role },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedUser = await updateUser(
         uuid,
         fullName,
@@ -106,10 +111,10 @@ class UserProfileController {
   static async changeUserPhoto(req, res, next) {
     try {
       const {
-        user: { uuid },
         file: { filename },
+        user: { uuid },
       } = req;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const currentUser = await getCurrentUser(uuid);
       const updatedUser = await changeUserPhoto(uuid, filename, currentUser);
       if (updatedUser) {
         res.status(200).json(updatedUser);
@@ -125,7 +130,7 @@ class UserProfileController {
   static async resetUserPhoto(req, res, next) {
     try {
       const { uuid } = req.user;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const currentUser = await getCurrentUser(uuid);
       const updatedUser = await resetUserPhoto(uuid, currentUser);
       if (updatedUser) {
         res.status(200).json(updatedUser);
@@ -141,7 +146,7 @@ class UserProfileController {
   static async deleteUser(req, res, next) {
     try {
       const { uuid } = req.user;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const currentUser = await getCurrentUser(uuid);
       const deletedUser = await deleteUser(uuid, currentUser);
       if (deletedUser) {
         res.clearCookie('refreshToken');

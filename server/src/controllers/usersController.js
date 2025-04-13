@@ -12,8 +12,10 @@ const {
 class UsersController {
   static async getAllUsers(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { emailConfirm, sort = 'uuid', order = 'asc' } = req.query;
+      const {
+        pagination: { limit, offset },
+        query: { emailConfirm, sort = 'uuid', order = 'asc' },
+      } = req;
       const { allUsers, totalCount } = await getAllUsers(
         emailConfirm,
         limit,
@@ -34,8 +36,11 @@ class UsersController {
 
   static async getUserByUuid(req, res, next) {
     try {
-      const { userUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { userUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const user = await getUserByUuid(userUuid, currentUser);
       if (user) {
         res.status(200).json(user);
@@ -50,9 +55,12 @@ class UsersController {
 
   static async changePassword(req, res, next) {
     try {
-      const { userUuid } = req.params;
-      const { newPassword, confirmNewPassword } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { userUuid },
+        body: { newPassword, confirmNewPassword },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedUser = await changePassword(
         userUuid,
         newPassword,
@@ -72,9 +80,12 @@ class UsersController {
 
   static async updateUser(req, res, next) {
     try {
-      const { userUuid } = req.params;
-      const { fullName, email, role } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { userUuid },
+        body: { fullName, email, role },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedUser = await updateUser(
         userUuid,
         fullName,
@@ -98,8 +109,9 @@ class UsersController {
       const {
         params: { userUuid },
         file: { filename },
+        user: { uuid },
       } = req;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const currentUser = await getCurrentUser(uuid);
       const updatedUser = await changeUserPhoto(
         userUuid,
         filename,
@@ -118,8 +130,11 @@ class UsersController {
 
   static async resetUserPhoto(req, res, next) {
     try {
-      const { userUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { userUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedUser = await resetUserPhoto(userUuid, currentUser);
       if (updatedUser) {
         res.status(200).json(updatedUser);
@@ -134,8 +149,11 @@ class UsersController {
 
   static async deleteUser(req, res, next) {
     try {
-      const { userUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { userUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const deletedUser = await deleteUser(userUuid, currentUser);
       if (deletedUser) {
         if (currentUser.uuid === userUuid) {

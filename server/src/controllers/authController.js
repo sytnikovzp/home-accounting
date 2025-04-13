@@ -94,9 +94,11 @@ class AuthController {
 
   static async resetPassword(req, res, next) {
     try {
-      const { token } = req.query;
+      const {
+        query: { token },
+        body: { newPassword, confirmNewPassword },
+      } = req;
       await checkToken(token, 'reset');
-      const { newPassword, confirmNewPassword } = req.body;
       await resetPassword(token, newPassword, confirmNewPassword);
       res.status(200).json({
         severity: 'success',

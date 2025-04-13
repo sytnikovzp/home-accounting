@@ -14,8 +14,10 @@ const { getCurrentUser } = require('../services/usersService');
 class EstablishmentsController {
   static async getAllEstablishments(req, res, next) {
     try {
-      const { limit, offset } = req.pagination;
-      const { status = 'approved', sort = 'uuid', order = 'asc' } = req.query;
+      const {
+        pagination: { limit, offset },
+        query: { status = 'approved', sort = 'uuid', order = 'asc' },
+      } = req;
       const { allEstablishments, totalCount } = await getAllEstablishments(
         status,
         limit,
@@ -55,8 +57,11 @@ class EstablishmentsController {
   static async createEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { title, description, url } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        body: { title, description, url },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const newEstablishment = await createEstablishment(
         title,
         description,
@@ -81,9 +86,12 @@ class EstablishmentsController {
   static async updateEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { establishmentUuid } = req.params;
-      const { title, description, url } = req.body;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { establishmentUuid },
+        body: { title, description, url },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedEstablishment = await updateEstablishment(
         establishmentUuid,
         title,
@@ -112,8 +120,9 @@ class EstablishmentsController {
       const {
         params: { establishmentUuid },
         file: { filename },
+        user: { uuid },
       } = req;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const currentUser = await getCurrentUser(uuid);
       const updatedLogoEstablishment = await changeEstablishmentLogo(
         establishmentUuid,
         filename,
@@ -137,8 +146,11 @@ class EstablishmentsController {
   static async resetEstablishmentLogo(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { establishmentUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { establishmentUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const updatedEstablishment = await resetEstablishmentLogo(
         establishmentUuid,
         currentUser,
@@ -161,8 +173,11 @@ class EstablishmentsController {
   static async deleteEstablishment(req, res, next) {
     const transaction = await sequelize.transaction();
     try {
-      const { establishmentUuid } = req.params;
-      const currentUser = await getCurrentUser(req.user.uuid);
+      const {
+        params: { establishmentUuid },
+        user: { uuid },
+      } = req;
+      const currentUser = await getCurrentUser(uuid);
       const deletedEstablishment = await deleteEstablishment(
         establishmentUuid,
         currentUser,
