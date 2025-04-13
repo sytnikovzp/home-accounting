@@ -33,7 +33,7 @@ const URL_RESOURCE_NULLABLE_SCHEME = yup
   .url('Введіть коректний URL')
   .nullable();
 
-const EMAIL_VALIDATION_SCHEME = yup
+const EMAIL_SCHEME = yup
   .string('Це має бути рядком')
   .email('Введіть коректний e-mail');
 
@@ -55,18 +55,18 @@ const PAGINATION_SCHEME = yup.object().shape({
 });
 
 const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
-  email: EMAIL_VALIDATION_SCHEME.required('Будь ласка, введіть email'),
   fullName: STRING_SCHEME.required('Будь ласка, введіть повне ім`я'),
+  email: EMAIL_SCHEME.required('Будь ласка, введіть email'),
   password: PASSWORD_REQUIRED_SCHEME,
 });
 
 const LOGIN_VALIDATION_SCHEME = yup.object().shape({
-  email: EMAIL_VALIDATION_SCHEME.required('Будь ласка, введіть email'),
+  email: EMAIL_SCHEME.required('Будь ласка, введіть email'),
   password: PASSWORD_REQUIRED_SCHEME,
 });
 
 const FORGOT_PASSWORD_VALIDATION_SCHEME = yup.object().shape({
-  email: EMAIL_VALIDATION_SCHEME.required('Будь ласка, введіть email'),
+  email: EMAIL_SCHEME.required('Будь ласка, введіть email'),
 });
 
 const PASSWORD_VALIDATION_SCHEME = yup.object().shape({
@@ -75,8 +75,8 @@ const PASSWORD_VALIDATION_SCHEME = yup.object().shape({
 });
 
 const USER_VALIDATION_SCHEME = yup.object().shape({
-  email: EMAIL_VALIDATION_SCHEME.nullable(),
   fullName: STRING_SCHEME.required('Будь ласка, введіть повне ім`я'),
+  email: EMAIL_SCHEME.nullable(),
   role: STRING_SCHEME.nullable(),
   photo: STRING_SCHEME.nullable(),
 });

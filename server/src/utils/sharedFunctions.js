@@ -116,13 +116,13 @@ const getCurrencyByTitle = async function (Model, title) {
 };
 
 const getUserDetailsByEmail = async function (email) {
-  const user = await User.findOne({ email });
-  if (!user) {
+  const foundUser = await User.findOne({ email });
+  if (!foundUser) {
     return null;
   }
   return {
-    fullName: user.fullName,
-    uuid: user.uuid,
+    fullName: foundUser.fullName,
+    uuid: foundUser.uuid,
   };
 };
 

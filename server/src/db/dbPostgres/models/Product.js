@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         validate: {
-          len: [0, 100],
+          len: [1, 100],
         },
       },
       categoryUuid: {

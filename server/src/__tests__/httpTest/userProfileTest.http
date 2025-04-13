@@ -1,7 +1,7 @@
 ### Get current user profile
 GET http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJjMzcwYWI4Yi03ZWUxLTQzYTEtOWU0Mi0yOGU4ZDkxMDY2YTciLCJpYXQiOjE3Mzk5MjA3MTYsImV4cCI6MTc0MTIxNjcxNn0.BqqvzoAED3A35lJB1KKvfJXKrIQaMaEcmb8urcRhk3Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJkMmYwYzI2Yi1kZGRkLTQ0ZjQtOGY4OS1hNmY1YTU2Njg5MTQiLCJpYXQiOjE3NDQ1NDMzMzAsImV4cCI6MTc0NDU0NDIzMH0.hI7n9iKbfx3elKeWRiIUdrsRt8hLJtOrGgTNumUvxMs
 
 // ==============================================================
 
@@ -19,11 +19,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
 ### Edit current user data
 PATCH http://localhost:5000/api/profile HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI0ZTJmMmVlNS03YTFkLTQ3OWQtOGU0YS0wMTdiMTRiNmJlZGMiLCJpYXQiOjE3Mzk5MTgyODgsImV4cCI6MTczOTkxOTE4OH0.SypaIO-4Pe0uaWLeGv-CcPRWRGbRp7MRW2d6T7T_lE4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJkMmYwYzI2Yi1kZGRkLTQ0ZjQtOGY4OS1hNmY1YTU2Njg5MTQiLCJpYXQiOjE3NDQ1NDMzMzAsImV4cCI6MTc0NDU0NDIzMH0.hI7n9iKbfx3elKeWRiIUdrsRt8hLJtOrGgTNumUvxMs
 
 {
   "fullName": "Оновлений користувач"
-  # "email": "nepushkin93@Gmail.com",
+  # "email": "nepushkin93@Gmail.com"
   # "role": "User"
 }
 

@@ -34,17 +34,17 @@ class AuthService {
       throw notFound('Роль для користувача не знайдено');
     }
     const hashedPassword = await hashPassword(password);
-    const user = await User.create({
+    const newUser = await User.create({
       fullName,
       email: emailToLower,
       password: hashedPassword,
       roleUuid: foundRole.uuid,
     });
-    if (!user) {
+    if (!newUser) {
       throw badRequest('Користувач не зареєстрований');
     }
     const confirmationToken = await ConfirmationToken.create({
-      userUuid: user.uuid,
+      userUuid: newUser.uuid,
       expiresAt: new Date(Date.now() + CONFIRMATION_TIME),
     });
     await mailService.sendConfirmationMail(
@@ -55,15 +55,18 @@ class AuthService {
     const permissions = await Permission.find({
       uuid: { $in: foundRole.permissions },
     });
-    const tokens = generateTokens(user);
+    const tokens = generateTokens(newUser);
     return {
       ...tokens,
       user: {
-        uuid: user.uuid,
-        fullName: user.fullName,
-        emailConfirm: mapValue(user.emailConfirm, EMAIL_CONFIRMATION_MAPPING),
+        uuid: newUser.uuid,
+        fullName: newUser.fullName,
+        emailConfirm: mapValue(
+          newUser.emailConfirm,
+          EMAIL_CONFIRMATION_MAPPING
+        ),
         role: foundRole.title || '',
-        photo: user.photo || '',
+        photo: newUser.photo || '',
       },
       permissions: permissions.map((permission) => permission.title),
     };
@@ -141,7 +144,7 @@ class AuthService {
   }
 
   static async forgotPassword(email) {
-    const emailToLower = email.toLowerCase();
+    const emailToLower = emailToLowerCase(email);
     const foundUser = await User.findOne({ email: emailToLower });
     if (!foundUser) {
       throw notFound('Користувача не знайдено');

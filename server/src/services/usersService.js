@@ -17,6 +17,7 @@ const {
   isValidUUID,
   checkPermission,
   mapValue,
+  emailToLowerCase,
 } = require('../utils/sharedFunctions');
 
 const mailService = require('./mailService');
@@ -281,8 +282,11 @@ class UsersService {
       }
       updateData.roleUuid = newRole.uuid;
     }
-    if (email && email.toLowerCase() !== foundUser.email.toLowerCase()) {
-      const newEmail = email.toLowerCase();
+    if (
+      email &&
+      emailToLowerCase(email) !== emailToLowerCase(foundUser.email)
+    ) {
+      const newEmail = emailToLowerCase(email);
       const existingEmail = await User.findOne({ email: newEmail });
       if (existingEmail) {
         throw badRequest('Ця електронна адреса вже використовується');

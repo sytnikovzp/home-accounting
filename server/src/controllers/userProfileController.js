@@ -24,7 +24,7 @@ class UserProfileController {
         res.status(401);
       }
     } catch (error) {
-      console.error('Get user profile error: ', error.message);
+      console.error('Get current user profile error: ', error.message);
       next(error);
     }
   }
