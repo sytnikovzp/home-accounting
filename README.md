@@ -1,7 +1,7 @@
 # Home Accounting (Моя Бухгалтерія)
 
 <p align="center">
-  <img src="./screenshots/9_Expenses_list.png" alt="Home Accounting" style="max-width: 80%;">
+  <img src="./screenshots/10_Expenses_list.png" alt="Home Accounting" style="max-width: 80%;">
 </p>
 <p align="center">
   <img src="https://img.shields.io/github/last-commit/sytnikovzp/home-accounting" alt="Last Commit">
@@ -123,37 +123,35 @@
 <details>
   <summary><strong>Скріншоти додатку</strong></summary>
 
-![MainPage](./screenshots/1_Main_page.png)
-![Auth](./screenshots/2_Auth.png)
-![ForgotPassword](./screenshots/3_Forgot_pass.png)
-![ViewUser](./screenshots/4_View_user.png)
-![ChangeUserPassword](./screenshots/5_Change_pass.png)
-![EditUser](./screenshots/6_Edit_user.png)
-![RoleDetails](./screenshots/7_Role_details.png)
-![RoleEdit](./screenshots/8_Role_edit.png)
-![ExpensesList](./screenshots/9_Expenses_list.png)
-![ExpensesDetails](./screenshots/10_Expenses_details.png)
-![ExpensesEdit](./screenshots/11_Expenses_edit.png)
-![ExpensesRemove](./screenshots/12_Expenses_remove.png)
-![Statistitc](./screenshots/13_Statistics.png)
-![Moderation](./screenshots/14_Moderation.png)
-![EstablishmentsDetails](./screenshots/15_Establishments_details.png)
-![EstablishmentsEdit](./screenshots/16_Establishments_edit.png)
-![Forbidden](./screenshots/17_Forbidden.png)
-![NotFound](./screenshots/18_Not_found.png)
-![MobileStatistics](./screenshots/19_Mobile_statistics.png)
-![MobileMain](./screenshots/20_Mobile_main.png)
-![MobileEstablishments](./screenshots/21_Mobile_establishments.png)
-![TabletMenu](./screenshots/22_Tablet_menu.png)
+![MobileView](./screenshots/1_Mobile_view.png)
+![MainPage](./screenshots/2_Main_page.png)
+![Auth](./screenshots/3_Auth.png)
+![ForgotPassword](./screenshots/4_Forgot_pass.png)
+![ViewUser](./screenshots/5_View_user.png)
+![ChangeUserPassword](./screenshots/6_Change_pass.png)
+![EditUser](./screenshots/7_Edit_user.png)
+![RoleDetails](./screenshots/8_Role_details.png)
+![RoleEdit](./screenshots/9_Role_edit.png)
+![ExpensesList](./screenshots/10_Expenses_list.png)
+![ExpensesDetails](./screenshots/11_Expenses_details.png)
+![ExpensesEdit](./screenshots/12_Expenses_edit.png)
+![ExpensesRemove](./screenshots/13_Expenses_remove.png)
+![Statistitc](./screenshots/14_Statistics.png)
+![Moderation](./screenshots/15_Moderation.png)
+![EstablishmentsDetails](./screenshots/16_Establishments_details.png)
+![EstablishmentsEdit](./screenshots/17_Establishments_edit.png)
+![Forbidden](./screenshots/18_Forbidden.png)
+![NotFound](./screenshots/19_Not_found.png)
+![TabletView](./screenshots/20_Tablet_view.png)
 
 </details>
 
 <details>
   <summary><strong>Скріншоти email листів</strong></summary>
 
-![WelcomeMail](./screenshots/23_Mail_welcome.png)
-![ChangeEmail](./screenshots/24_Mail_confirm_change_email.png)
-![ResetPassword](./screenshots/25_Mail_reset_pass.png)
+![WelcomeMail](./screenshots/21_Mail_welcome.png)
+![ChangeEmail](./screenshots/22_Mail_confirm_change_email.png)
+![ResetPassword](./screenshots/23_Mail_reset_pass.png)
 
 </details>
 
