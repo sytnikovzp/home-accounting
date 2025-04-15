@@ -66,8 +66,10 @@ module.exports = [
       'getter-return': 'error',
       'global-require': 'off',
       'guard-for-in': 'warn',
+      'import/default': 'error',
       'import/exports-last': 'warn',
       'import/first': 'error',
+      'import/named': 'error',
       'import/newline-after-import': ['warn', { count: 1 }],
       'import/no-absolute-path': 'error',
       'import/no-amd': 'error',
@@ -77,6 +79,7 @@ module.exports = [
       'import/no-named-as-default': 'warn',
       'import/no-named-as-default-member': 'warn',
       'import/no-self-import': 'error',
+      'import/no-unresolved': 'error',
       'import/no-useless-path-segments': 'error',
       'import/order': [
         'warn',
@@ -297,7 +300,6 @@ module.exports = [
       'require-atomic-updates': 'error',
       'require-await': 'error',
       'require-yield': 'error',
-      'sort-keys-fix/sort-keys-fix': 'off',
       'sort-vars': [
         'warn',
         {
@@ -313,6 +315,14 @@ module.exports = [
       'wrap-regex': 'off',
       'yield-star-spacing': 'warn',
       yoda: 'error',
+      // 'sort-keys-fix/sort-keys-fix': 'warn',
+    },
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['.js', '.json'],
+        },
+      },
     },
   },
 ];

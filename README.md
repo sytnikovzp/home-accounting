@@ -141,17 +141,19 @@
 ![EstablishmentsEdit](./screenshots/16_Establishments_edit.png)
 ![Forbidden](./screenshots/17_Forbidden.png)
 ![NotFound](./screenshots/18_Not_found.png)
-![ModileMain](./screenshots/19_Mobile_main.png)
-![MobileEstablishments](./screenshots/20_Mobile_establishments.png)
+![MobileStatistics](./screenshots/19_Mobile_statistics.png)
+![MobileMain](./screenshots/20_Mobile_main.png)
+![MobileEstablishments](./screenshots/21_Mobile_establishments.png)
+![TabletMenu](./screenshots/22_Tablet_menu.png)
 
 </details>
 
 <details>
   <summary><strong>Скріншоти email листів</strong></summary>
 
-![WelcomeMail](./screenshots/21_Mail_welcome.png)
-![ChangeEmail](./screenshots/22_Mail_confirm_change_email.png)
-![ResetPassword](./screenshots/23_Mail_reset_pass.png)
+![WelcomeMail](./screenshots/23_Mail_welcome.png)
+![ChangeEmail](./screenshots/24_Mail_confirm_change_email.png)
+![ResetPassword](./screenshots/25_Mail_reset_pass.png)
 
 </details>
 
@@ -187,7 +189,7 @@
 - **React** – бібліотека для побудови інтерфейсів користувача. Використовується для створення компонентів і управління станом.
 - **React DOM** – бібліотека для взаємодії React з DOM.
 - **React Router DOM** – бібліотека для роботи з маршрутизацією в React. Використовується для організації навігації між сторінками.
-- **Redux Toolkit** – набір інструментів для роботи з глобальним станом у Redux.
+- **Redux Toolkit (RTK Query)** – набір інструментів для роботи з глобальним станом у Redux.
 - **React Redux** – офіційна бібліотека для інтеграції Redux з React.
 - **Redux Logger** – middleware для логування дій Redux у консолі.
 - **MUI (Material-UI)** – бібліотека компонентів для React, що реалізує Material Design.

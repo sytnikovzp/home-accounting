@@ -11,15 +11,15 @@ export const stylesHeaderToolbar = {
 
 export const stylesLogoIcon = {
   display: 'flex',
-  height: '36px',
   marginRight: '16px',
+  height: '36px',
   width: '36px',
 };
 
 export const stylesLogoBoxDesktop = {
+  display: { md: 'flex', xs: 'none' },
   alignItems: 'center',
   color: 'inherit',
-  display: { md: 'flex', xs: 'none' },
   textDecoration: 'none',
 };
 
@@ -32,8 +32,8 @@ export const stylesLogoTypographyDesktop = {
 };
 
 export const stylesLogoBoxMobile = {
-  alignItems: 'center',
   display: { md: 'none', xs: 'flex' },
+  alignItems: 'center',
   textDecoration: 'none',
 };
 
@@ -55,14 +55,14 @@ export const stylesHeaderUserAvatar = {
 
 export const stylesAuthenticatedMenu = {
   '&:before': {
+    display: 'block',
     bgcolor: 'background.paper',
     content: '""',
-    display: 'block',
-    height: 10,
     position: 'absolute',
     right: { sm: 25, xs: 22 },
     top: 0,
     transform: 'translateY(-50%) rotate(45deg)',
+    height: 10,
     width: 10,
     zIndex: 0,
   },
@@ -72,7 +72,7 @@ export const stylesAuthenticatedMenu = {
 };
 
 export const stylesWelcomeBox = {
-  alignItems: 'center',
   display: { sm: 'block', xs: 'none' },
+  alignItems: 'center',
   marginRight: 2,
 };

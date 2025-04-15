@@ -4,7 +4,9 @@ const {
   API_CONFIG: { CLIENT_URL },
   SMTP_CONFIG: { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD },
 } = require('../constants');
-const emailTemplates = require('../utils/emailTemplates');
+const {
+  EMAIL_TEMPLATES: { CONFIRMATION, EMAIL_CHANGE_CONFIRMATION, RESET_PASSWORD },
+} = require('../constants');
 
 class MailService {
   constructor() {
@@ -39,17 +41,13 @@ class MailService {
 
   async sendConfirmationMail(fullName, email, confirmationLink) {
     const subject = `Підтвердження акаунту на ${CLIENT_URL}`;
-    const html = emailTemplates.confirmation(
-      CLIENT_URL,
-      fullName,
-      confirmationLink
-    );
+    const html = CONFIRMATION(CLIENT_URL, fullName, confirmationLink);
     await this.sendMail(email, subject, html);
   }
 
   async sendEmailChangeConfirmationMail(fullName, email, confirmationLink) {
     const subject = `Підтвердження зміни email-адреси на ${CLIENT_URL}`;
-    const html = emailTemplates.emailChangeConfirmation(
+    const html = EMAIL_CHANGE_CONFIRMATION(
       CLIENT_URL,
       fullName,
       confirmationLink
@@ -59,11 +57,7 @@ class MailService {
 
   async sendResetPasswordMail(fullName, email, resetPasswordLink) {
     const subject = `Відновлення паролю на ${CLIENT_URL}`;
-    const html = emailTemplates.resetPassword(
-      CLIENT_URL,
-      fullName,
-      resetPasswordLink
-    );
+    const html = RESET_PASSWORD(CLIENT_URL, fullName, resetPasswordLink);
     await this.sendMail(email, subject, html);
   }
 }

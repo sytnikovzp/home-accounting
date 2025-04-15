@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import {
@@ -12,7 +11,6 @@ import {
 
 import ProductForm from '../../components/Forms/ProductForm/ProductForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function ProductEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -40,9 +38,9 @@ function ProductEditPage({ handleModalClose }) {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -51,7 +49,11 @@ function ProductEditPage({ handleModalClose }) {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
@@ -59,18 +61,15 @@ function ProductEditPage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
+      isFetching={isFetching}
       title='Редагування товару/послуги'
       onClose={handleModalClose}
     >
-      {isFetching ? (
-        <Preloader />
-      ) : (
-        <ProductForm
-          isSubmitting={isSubmitting}
-          product={product}
-          onSubmit={handleSubmitProduct}
-        />
-      )}
+      <ProductForm
+        isSubmitting={isSubmitting}
+        product={product}
+        onSubmit={handleSubmitProduct}
+      />
     </ModalWindow>
   );
 }

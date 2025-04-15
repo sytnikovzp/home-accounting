@@ -37,28 +37,28 @@ export const stylesListTableContainer = {
 };
 
 export const stylesListTablePreloader = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   position: 'absolute',
   top: 0,
   left: 0,
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
   backgroundColor: 'rgba(185, 222, 187, 0.3)',
+  height: '100%',
+  width: '100%',
   zIndex: 1,
 };
 
 export const stylesListTableError = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   position: 'absolute',
   top: 0,
   left: 0,
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
   backgroundColor: 'rgba(185, 222, 187, 0.3)',
+  height: '100%',
+  width: '100%',
   zIndex: 3,
 };
 

@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import { useResetPasswordMutation } from '../../store/services';
@@ -43,9 +42,9 @@ function ResetPasswordPage() {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -54,15 +53,19 @@ function ResetPasswordPage() {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
 
   return responseData ? (
-    <ModalWindow isOpen title={responseData.title} onClose={handleModalClose}>
-      <Alert severity={responseData.severity}>{responseData.message}</Alert>
-      <Box display='flex' justifyContent='center' mt={2}>
+    <ModalWindow
+      isOpen
+      actionsOnCenter={
         <Button
           fullWidth
           color='success'
@@ -71,7 +74,11 @@ function ResetPasswordPage() {
         >
           Закрити
         </Button>
-      </Box>
+      }
+      title={responseData.title}
+      onClose={handleModalClose}
+    >
+      <Alert severity={responseData.severity}>{responseData.message}</Alert>
     </ModalWindow>
   ) : (
     <ModalWindow isOpen title='Відновлення паролю' onClose={handleModalClose}>

@@ -5,7 +5,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import CurrencyRates from '../CurrencyRates/CurrencyRates';
-import NavBar from '../Navigation/NavBar';
+
+import NavBar from './NavBar';
 
 import { stylesMobileDrawerBox } from '../../styles';
 

@@ -18,7 +18,7 @@ import { COLUMNS_CONFIG } from '../../constants';
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 import useHasPermission from '../../hooks/useHasPermission';
 
-import Error from '../../components/Error/Error';
+import Error from '../Error/Error';
 
 import ActionColumns from './ActionColumns';
 import EmptyRows from './EmptyRows';
@@ -56,7 +56,7 @@ function ListTable({
   const isPreloaderVisible = useDelayedPreloader(isFetching);
   const { hasPermission } = useHasPermission();
 
-  const totalCount = fetchError ? 0 : pagination?.totalCount;
+  const totalCount = pagination?.totalCount ?? 0;
 
   const {
     currentPage,

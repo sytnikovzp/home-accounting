@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import useAuthUser from '../../hooks/useAuthUser';
@@ -21,7 +20,6 @@ import {
 
 import UserForm from '../../components/Forms/UserForm/UserForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function UserEditPage() {
   const { uuid } = useParams();
@@ -207,9 +205,9 @@ function UserEditPage() {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -218,7 +216,11 @@ function UserEditPage() {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
@@ -226,23 +228,20 @@ function UserEditPage() {
   return (
     <ModalWindow
       isOpen
+      isFetching={isFetching}
       title='Редагування користувача'
       onClose={handleModalClose}
     >
-      {isFetching ? (
-        <Preloader />
-      ) : (
-        <UserForm
-          isChanging={isChangingPhoto}
-          isSubmitting={isUserSubmitting || isUserProfileSubmitting}
-          user={userData}
-          onPassword={handleChangePassword}
-          onRemove={handleRemoveProfile}
-          onReset={handleResetPhoto}
-          onSubmit={handleSubmitUser}
-          onUpload={handleUploadPhoto}
-        />
-      )}
+      <UserForm
+        isChanging={isChangingPhoto}
+        isSubmitting={isUserSubmitting || isUserProfileSubmitting}
+        user={userData}
+        onPassword={handleChangePassword}
+        onRemove={handleRemoveProfile}
+        onReset={handleResetPhoto}
+        onSubmit={handleSubmitUser}
+        onUpload={handleUploadPhoto}
+      />
     </ModalWindow>
   );
 }

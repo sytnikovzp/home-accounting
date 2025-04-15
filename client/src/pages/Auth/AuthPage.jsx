@@ -18,7 +18,6 @@ import {
 import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm/ForgotPasswordForm';
 import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
-import ModalActions from '../../components/ModalWindow/ModalActions';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 import { stylesAuthPageTitle } from '../../styles';
@@ -146,14 +145,6 @@ function AuthPage() {
     ),
   };
 
-  const actions = (
-    <Button fullWidth color='secondary' variant='text' onClick={toggleAuthMode}>
-      {authMode === 'login'
-        ? 'Перейти до реєстрації'
-        : 'Повернутися до авторизації'}
-    </Button>
-  );
-
   const title = (
     <Box alignItems='center' display='flex' flexDirection='column'>
       <Avatar
@@ -175,9 +166,9 @@ function AuthPage() {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -186,15 +177,19 @@ function AuthPage() {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
 
   return responseData ? (
-    <ModalWindow isOpen title={responseData.title} onClose={handleModalClose}>
-      <Alert severity={responseData.severity}>{responseData.message}</Alert>
-      <Box display='flex' justifyContent='center' mt={2}>
+    <ModalWindow
+      isOpen
+      actionsOnCenter={
         <Button
           fullWidth
           color='success'
@@ -203,12 +198,31 @@ function AuthPage() {
         >
           Закрити
         </Button>
-      </Box>
+      }
+      title={responseData.title}
+      onClose={handleModalClose}
+    >
+      <Alert severity={responseData.severity}>{responseData.message}</Alert>
     </ModalWindow>
   ) : (
-    <ModalWindow isOpen title={title} onClose={handleModalClose}>
+    <ModalWindow
+      isOpen
+      actionsOnCenter={
+        <Button
+          fullWidth
+          color='secondary'
+          variant='text'
+          onClick={toggleAuthMode}
+        >
+          {authMode === 'login'
+            ? 'Перейти до реєстрації'
+            : 'Повернутися до авторизації'}
+        </Button>
+      }
+      title={title}
+      onClose={handleModalClose}
+    >
       {authForms[authMode]}
-      <ModalActions>{actions}</ModalActions>
     </ModalWindow>
   );
 }

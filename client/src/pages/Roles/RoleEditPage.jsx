@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import {
@@ -12,7 +11,6 @@ import {
 
 import RoleForm from '../../components/Forms/RoleForm/RoleForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function RoleEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -40,9 +38,9 @@ function RoleEditPage({ handleModalClose }) {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -51,22 +49,27 @@ function RoleEditPage({ handleModalClose }) {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow isOpen title='Редагування ролі' onClose={handleModalClose}>
-      {isFetching ? (
-        <Preloader />
-      ) : (
-        <RoleForm
-          isSubmitting={isSubmitting}
-          role={role}
-          onSubmit={handleSubmitRole}
-        />
-      )}
+    <ModalWindow
+      isOpen
+      isFetching={isFetching}
+      title='Редагування ролі'
+      onClose={handleModalClose}
+    >
+      <RoleForm
+        isSubmitting={isSubmitting}
+        role={role}
+        onSubmit={handleSubmitRole}
+      />
     </ModalWindow>
   );
 }

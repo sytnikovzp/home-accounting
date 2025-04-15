@@ -9,7 +9,7 @@ import {
   stylesViewDetailRowTypography,
 } from '../../styles';
 
-function ViewDetailRow({ icon: Icon, label, value, isLink, linkTo, extra }) {
+function ViewDetailRow({ extra, icon: Icon, isLink, label, linkTo, value }) {
   return (
     <Box sx={stylesViewDetailRowExtraBox}>
       <Box sx={stylesViewDetailRowBox}>

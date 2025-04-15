@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-function NavItem({ to, icon: IconComponent, label, onClick }) {
+function NavItem({ icon: IconComponent, label, to, onClick }) {
   return (
     <ListItem disablePadding>
       <ListItemButton component={RouterLink} to={to} onClick={onClick}>

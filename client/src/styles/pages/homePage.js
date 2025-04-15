@@ -1,6 +1,6 @@
 export const stylesRedlineTypography = {
-  textIndent: '2em',
   textAlign: 'justify',
+  textIndent: '2em',
 };
 
 export const stylesHomePageGridContainer = {
@@ -14,10 +14,10 @@ export const stylesHomePageGridPanel = {
 };
 
 export const stylesHomePageCard = {
-  width: 400,
-  backgroundColor: '#B6D5A1',
   display: 'flex',
   flexDirection: 'column',
+  backgroundColor: '#B6D5A1',
+  width: 400,
 };
 
 export const stylesHomePageCardActions = {

@@ -4,11 +4,11 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { stylesListTableActions } from '../../styles';
 
-function ActionButton({ title, Icon, disabled, onClick }) {
+function ActionButton({ Icon, title, onClick }) {
   return (
     <TableCell align='center' sx={stylesListTableActions}>
       <Tooltip title={title}>
-        <IconButton disabled={disabled} onClick={onClick}>
+        <IconButton onClick={onClick}>
           <Icon />
         </IconButton>
       </Tooltip>

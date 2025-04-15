@@ -6,6 +6,7 @@ require('dotenv').config({
 module.exports.API_CONFIG = require('./apiConfig');
 module.exports.AUTH_CONFIG = require('./authConfig');
 module.exports.DATA_MAPPING = require('./dataMapping');
+module.exports.EMAIL_TEMPLATES = require('./emailTemplates');
 module.exports.DB_CONFIG = require('./dbConfig');
 module.exports.MONGO_DATA = require('./mongoData');
 module.exports.POSTGRES_DATA = require('./postgresData');

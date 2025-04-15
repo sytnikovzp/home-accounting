@@ -1,13 +1,13 @@
 export const stylesViewDetailRowExtraBox = {
-  alignItems: 'flex-end',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'flex-end',
   width: '100%',
 };
 
 export const stylesViewDetailRowBox = {
-  alignItems: 'center',
   display: 'flex',
+  alignItems: 'center',
   gap: 1,
 };
 
@@ -27,8 +27,8 @@ export const stylesPermissionsListBox = {
 };
 
 export const stylesPermissionsListBoxEmpty = {
+  display: 'flex',
   alignItems: 'center',
   color: 'grey.600',
-  display: 'flex',
   p: 1,
 };

@@ -8,6 +8,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import useAuthUser from '../../hooks/useAuthUser';
 
 import {
@@ -27,6 +30,8 @@ function StatisticsPage() {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
   const { authenticatedUser, isAuthenticated } = useAuthUser();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const creatorUuid = authenticatedUser?.uuid;
 
@@ -54,11 +59,12 @@ function StatisticsPage() {
       <Box
         alignItems='center'
         display='flex'
+        flexDirection={isMobile ? 'column' : 'row'}
         justifyContent='space-between'
         mb={2}
       >
         <Typography variant='h6'>Статистика витрат</Typography>
-        <Box display='flex' gap={2}>
+        <Box display='flex' flexDirection={isMobile ? 'column' : 'row'} gap={2}>
           <FormControl size='small' sx={stylesStatisticsPageCriteriaSelect}>
             <InputLabel>Критерій</InputLabel>
             <Select
@@ -88,6 +94,7 @@ function StatisticsPage() {
         data={statisticsData}
         fetchError={fetchError}
         isFetching={isFetching}
+        isMobile={isMobile}
       />
     </Container>
   );

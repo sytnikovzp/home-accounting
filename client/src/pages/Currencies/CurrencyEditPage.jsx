@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import {
@@ -12,7 +11,6 @@ import {
 
 import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function CurrencyEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -40,9 +38,9 @@ function CurrencyEditPage({ handleModalClose }) {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -51,22 +49,27 @@ function CurrencyEditPage({ handleModalClose }) {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow isOpen title='Редагування валюти' onClose={handleModalClose}>
-      {isFetching ? (
-        <Preloader />
-      ) : (
-        <CurrencyForm
-          currency={currency}
-          isSubmitting={isSubmitting}
-          onSubmit={handleSubmitCurrency}
-        />
-      )}
+    <ModalWindow
+      isOpen
+      isFetching={isFetching}
+      title='Редагування валюти'
+      onClose={handleModalClose}
+    >
+      <CurrencyForm
+        currency={currency}
+        isSubmitting={isSubmitting}
+        onSubmit={handleSubmitCurrency}
+      />
     </ModalWindow>
   );
 }

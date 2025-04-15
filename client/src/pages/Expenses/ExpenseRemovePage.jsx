@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import {
@@ -10,10 +9,7 @@ import {
   useRemoveExpenseMutation,
 } from '../../store/services';
 
-import ConfirmMessage from '../../components/ModalWindow/ConfirmMessage';
-import ModalActions from '../../components/ModalWindow/ModalActions';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function ExpenseRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -38,9 +34,9 @@ function ExpenseRemovePage({ handleModalClose }) {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -49,35 +45,39 @@ function ExpenseRemovePage({ handleModalClose }) {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow isOpen title='Видалення витрати' onClose={handleModalClose}>
-      {isFetching ? (
-        <Preloader />
-      ) : (
-        <ConfirmMessage>
-          Ви впевнені, що хочете видалити витрату «{expense?.product?.title}» на
-          сумму {expense?.totalPrice} UAH за {expense?.date}?
-        </ConfirmMessage>
-      )}
-      <ModalActions>
-        <Button color='default' variant='text' onClick={handleModalClose}>
-          Скасувати
-        </Button>
-        <Button
-          color='error'
-          disabled={isRemoving || isFetching}
-          variant='contained'
-          onClick={handleRemoveExpense}
-        >
-          Видалити
-        </Button>
-      </ModalActions>
-    </ModalWindow>
+    <ModalWindow
+      isOpen
+      actionsOnRight={
+        <>
+          <Button color='default' variant='text' onClick={handleModalClose}>
+            Скасувати
+          </Button>
+          <Button
+            color='error'
+            disabled={isRemoving || isFetching}
+            variant='contained'
+            onClick={handleRemoveExpense}
+          >
+            Видалити
+          </Button>
+        </>
+      }
+      confirmMessage={`Ви впевнені, що хочете видалити витрату «${expense?.product?.title}» на
+          сумму ${expense?.totalPrice} UAH за ${expense?.date}?`}
+      isFetching={isFetching}
+      title='Видалення витрати'
+      onClose={handleModalClose}
+    />
   );
 }
 

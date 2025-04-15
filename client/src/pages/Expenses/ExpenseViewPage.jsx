@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -17,7 +16,6 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { useFetchExpenseByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 function ExpenseViewPage({ handleModalClose }) {
@@ -105,9 +103,9 @@ function ExpenseViewPage({ handleModalClose }) {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -116,14 +114,23 @@ function ExpenseViewPage({ handleModalClose }) {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow isOpen title='Деталі витрати' onClose={handleModalClose}>
-      {isFetching ? <Preloader /> : <ViewDetails data={data} />}
+    <ModalWindow
+      isOpen
+      isFetching={isFetching}
+      title='Деталі витрати'
+      onClose={handleModalClose}
+    >
+      <ViewDetails data={data} />
     </ModalWindow>
   );
 }

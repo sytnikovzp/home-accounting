@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
@@ -55,9 +54,9 @@ function NotificationPage() {
   }, [navigate]);
 
   return (
-    <ModalWindow isOpen title={responseData.title} onClose={handleModalClose}>
-      <Alert severity={responseData.severity}>{responseData.message}</Alert>
-      <Box display='flex' justifyContent='center' mt={2}>
+    <ModalWindow
+      isOpen
+      actionsOnCenter={
         <Button
           fullWidth
           color='success'
@@ -66,7 +65,11 @@ function NotificationPage() {
         >
           Закрити
         </Button>
-      </Box>
+      }
+      title={responseData.title}
+      onClose={handleModalClose}
+    >
+      <Alert severity={responseData.severity}>{responseData.message}</Alert>
     </ModalWindow>
   );
 }

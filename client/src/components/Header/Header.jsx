@@ -9,6 +9,9 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import MenuIcon from '@mui/icons-material/Menu';
 
 import useAuthUser from '../../hooks/useAuthUser';
@@ -23,7 +26,9 @@ import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
 function Header() {
   const { isAuthenticated } = useAuthUser();
   const navigate = useNavigate();
+  const theme = useTheme();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
@@ -38,14 +43,14 @@ function Header() {
       <AppBar position='sticky' sx={stylesHeaderAppBar}>
         <Container maxWidth='xl'>
           <Toolbar disableGutters sx={stylesHeaderToolbar}>
-            <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-              <IconButton color='inherit' onClick={toggleDrawer(true)}>
-                <MenuIcon />
-              </IconButton>
+            <Box display='flex'>
+              {isMobile && (
+                <IconButton color='inherit' onClick={toggleDrawer(true)}>
+                  <MenuIcon />
+                </IconButton>
+              )}
+              <Logo isMobile={isMobile} />
             </Box>
-
-            <Logo />
-
             <Box sx={{ alignItems: 'center', display: 'flex' }}>
               {isAuthenticated ? (
                 <AuthenticatedUserBlock />
@@ -63,7 +68,6 @@ function Header() {
         </Container>
         <Divider sx={{ borderWidth: '1px' }} />
       </AppBar>
-
       <MobileDrawer open={isDrawerOpen} onClose={toggleDrawer(false)} />
     </>
   );

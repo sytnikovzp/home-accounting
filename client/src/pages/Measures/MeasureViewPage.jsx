@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -14,7 +13,6 @@ import UpdateIcon from '@mui/icons-material/Update';
 import { useFetchMeasureByUuidQuery } from '../../store/services';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 function MeasureViewPage({ handleModalClose }) {
@@ -50,9 +48,9 @@ function MeasureViewPage({ handleModalClose }) {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -61,14 +59,23 @@ function MeasureViewPage({ handleModalClose }) {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow isOpen title='Деталі одиниці' onClose={handleModalClose}>
-      {isFetching ? <Preloader /> : <ViewDetails data={data} />}
+    <ModalWindow
+      isOpen
+      isFetching={isFetching}
+      title='Деталі одиниці'
+      onClose={handleModalClose}
+    >
+      <ViewDetails data={data} />
     </ModalWindow>
   );
 }

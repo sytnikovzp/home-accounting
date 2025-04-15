@@ -8,7 +8,7 @@ import {
   stylesListTableHeightEmptyRow,
 } from '../../styles';
 
-function EmptyRows({ columns, rows, pageSize }) {
+function EmptyRows({ columns, pageSize, rows }) {
   const emptyRowsCount = pageSize - rows.length;
 
   const emptyRows = useMemo(

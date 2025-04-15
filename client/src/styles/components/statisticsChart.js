@@ -1,9 +1,9 @@
 export const stylesStatisticsChartBox = {
-  alignItems: 'center',
   display: 'flex',
   flexDirection: 'column',
-  height: '60vh',
   justifyContent: 'center',
+  alignItems: 'center',
+  height: { sm: '60vh', xs: '' },
   overflow: 'auto',
 };
 

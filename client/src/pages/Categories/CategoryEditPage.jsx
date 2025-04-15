@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import {
@@ -12,7 +11,6 @@ import {
 
 import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function CategoryEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -40,9 +38,9 @@ function CategoryEditPage({ handleModalClose }) {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -51,7 +49,11 @@ function CategoryEditPage({ handleModalClose }) {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
@@ -59,18 +61,15 @@ function CategoryEditPage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
+      isFetching={isFetching}
       title='Редагування категорії'
       onClose={handleModalClose}
     >
-      {isFetching ? (
-        <Preloader />
-      ) : (
-        <CategoryForm
-          category={category}
-          isSubmitting={isSubmitting}
-          onSubmit={handleSubmitCategory}
-        />
-      )}
+      <CategoryForm
+        category={category}
+        isSubmitting={isSubmitting}
+        onSubmit={handleSubmitCategory}
+      />
     </ModalWindow>
   );
 }

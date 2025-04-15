@@ -1,21 +1,21 @@
 export const stylesFileUploadMainBox = {
-  alignItems: 'center',
   display: 'flex',
   flexDirection: 'column',
-  gap: 2,
+  alignItems: 'center',
   mb: 2,
+  gap: 2,
 };
 
 export const stylesFileUploadAvatarBox = {
+  display: 'flex',
+  justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: '#F9F9F9',
   border: '1px solid #DDD',
   borderRadius: '8px',
-  display: 'flex',
-  height: '120px',
-  justifyContent: 'center',
   overflow: 'hidden',
   position: 'relative',
+  height: '120px',
   width: '120px',
 };
 

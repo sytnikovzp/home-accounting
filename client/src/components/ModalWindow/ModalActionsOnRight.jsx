@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 
-function ModalActions({ children }) {
+function ModalActionsOnRight({ children }) {
   return (
     <Box display='flex' gap={2} justifyContent='flex-end' mt={2}>
       {children}
@@ -8,4 +8,4 @@ function ModalActions({ children }) {
   );
 }
 
-export default ModalActions;
+export default ModalActionsOnRight;

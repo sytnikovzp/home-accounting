@@ -3,9 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-
 import accountingLogo from '../../assets/logo.png';
 import {
   stylesLogoBoxDesktop,
@@ -15,10 +12,7 @@ import {
   stylesLogoTypographyMobile,
 } from '../../styles';
 
-function Logo() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
+function Logo({ isMobile }) {
   return (
     <Box
       component={RouterLink}

@@ -5,7 +5,11 @@ import Modal from '@mui/material/Modal';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-import ModalActions from './ModalActions';
+import Preloader from '../Preloader/Preloader';
+
+import ConfirmMessage from './ConfirmMessage';
+import ModalActionsOnCenter from './ModalActionsOnCenter';
+import ModalActionsOnRight from './ModalActionsOnRight';
 import ModalBody from './ModalBody';
 import ModalHeader from './ModalHeader';
 
@@ -15,14 +19,26 @@ import {
 } from '../../styles';
 
 function ModalWindow({
-  isOpen,
-  onClose,
-  title,
-  children,
-  actions,
   disableCloseButton = false,
   disableBackdropClick = true,
+  isOpen,
+  title,
+  onClose,
+  children,
+  isFetching = false,
+  actionsOnCenter,
+  actionsOnRight,
+  confirmMessage,
 }) {
+  let modalBody = null;
+  if (isFetching) {
+    modalBody = <Preloader />;
+  } else if (confirmMessage) {
+    modalBody = <ConfirmMessage>{confirmMessage}</ConfirmMessage>;
+  } else {
+    modalBody = <ModalBody>{children}</ModalBody>;
+  }
+
   return (
     <Modal
       closeAfterTransition
@@ -43,8 +59,13 @@ function ModalWindow({
             </IconButton>
           )}
           {title && <ModalHeader>{title}</ModalHeader>}
-          <ModalBody>{children}</ModalBody>
-          {actions && <ModalActions>{actions}</ModalActions>}
+          {modalBody}
+          {actionsOnCenter && (
+            <ModalActionsOnCenter>{actionsOnCenter}</ModalActionsOnCenter>
+          )}
+          {actionsOnRight && (
+            <ModalActionsOnRight>{actionsOnRight}</ModalActionsOnRight>
+          )}
         </Box>
       </Fade>
     </Modal>

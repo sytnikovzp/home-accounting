@@ -8,7 +8,7 @@ import useHasPermission from '../../hooks/useHasPermission';
 
 import ActionButton from './ActionButton';
 
-function ActionColumns({ row, linkEntity, onEdit, onRemove, onModerate }) {
+function ActionColumns({ linkEntity, row, onModerate, onEdit, onRemove }) {
   const { hasPermission } = useHasPermission();
 
   const handleEdit = useCallback(() => onEdit(row), [onEdit, row]);

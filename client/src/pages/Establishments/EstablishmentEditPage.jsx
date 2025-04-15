@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import {
@@ -14,7 +13,6 @@ import {
 
 import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import Preloader from '../../components/Preloader/Preloader';
 
 function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();
@@ -77,9 +75,9 @@ function EstablishmentEditPage({ handleModalClose }) {
 
   if (error) {
     return (
-      <ModalWindow isOpen title={error.title} onClose={handleModalClose}>
-        <Alert severity={error.severity}>{error.message}</Alert>
-        <Box display='flex' justifyContent='center' mt={2}>
+      <ModalWindow
+        isOpen
+        actionsOnCenter={
           <Button
             fullWidth
             color='success'
@@ -88,25 +86,30 @@ function EstablishmentEditPage({ handleModalClose }) {
           >
             Закрити
           </Button>
-        </Box>
+        }
+        title={error.title}
+        onClose={handleModalClose}
+      >
+        <Alert severity={error.severity}>{error.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
-    <ModalWindow isOpen title='Редагування закладу' onClose={handleModalClose}>
-      {isFetching ? (
-        <Preloader />
-      ) : (
-        <EstablishmentForm
-          establishment={establishment}
-          isChanging={isChangingLogo}
-          isSubmitting={isSubmitting}
-          onReset={handleResetLogo}
-          onSubmit={handleSubmitEstablishment}
-          onUpload={handleUploadLogo}
-        />
-      )}
+    <ModalWindow
+      isOpen
+      isFetching={isFetching}
+      title='Редагування закладу'
+      onClose={handleModalClose}
+    >
+      <EstablishmentForm
+        establishment={establishment}
+        isChanging={isChangingLogo}
+        isSubmitting={isSubmitting}
+        onReset={handleResetLogo}
+        onSubmit={handleSubmitEstablishment}
+        onUpload={handleUploadLogo}
+      />
     </ModalWindow>
   );
 }

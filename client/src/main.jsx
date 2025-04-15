@@ -8,7 +8,7 @@ import { ukUA } from '@mui/material/locale';
 
 import store from './store';
 
-import App from './App.jsx';
+import App from './App';
 
 const theme = createTheme({}, ukUA);
 

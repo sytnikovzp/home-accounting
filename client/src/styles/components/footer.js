@@ -1,10 +1,10 @@
 export const stylesFooterBox = {
+  display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   backgroundColor: '#C8E6C9',
   borderTop: '1px solid rgba(0, 0, 0, 0.1)',
   color: '#333',
-  display: 'flex',
-  flexDirection: 'column',
   py: 1.5,
 };
 

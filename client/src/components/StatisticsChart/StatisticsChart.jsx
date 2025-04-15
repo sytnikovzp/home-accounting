@@ -18,16 +18,13 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import RadarIcon from '@mui/icons-material/Radar';
 
 import useDelayedPreloader from '../../hooks/useDelayedPreloader';
 
-import Error from '../../components/Error/Error';
+import Error from '../Error/Error';
 
 import {
   stylesStatisticsChartBackgroundColor,
@@ -52,11 +49,9 @@ ChartJS.register(
   ChartDataLabels
 );
 
-function StatisticsChart({ data, fetchError, isFetching }) {
+function StatisticsChart({ data, fetchError, isFetching, isMobile }) {
   const [chartType, setChartType] = useState('doughnut');
-  const theme = useTheme();
   const isPreloaderVisible = useDelayedPreloader(isFetching);
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const chartData = useMemo(() => {
     if (

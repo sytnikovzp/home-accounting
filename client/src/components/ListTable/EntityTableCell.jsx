@@ -24,7 +24,7 @@ const getAvatarPath = (field, value) => {
   return `${basePath}${field === 'logo' ? 'establishments' : 'users'}/${value}`;
 };
 
-function EntityTableCell({ col, row, linkEntity }) {
+function EntityTableCell({ col, linkEntity, row }) {
   const { field, align = 'center' } = col;
   const cellValue = row[field];
 

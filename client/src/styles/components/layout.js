@@ -16,14 +16,14 @@ export const stylesLayoutXLContainer = {
 };
 
 export const stylesLayoutSideBar = {
-  position: 'sticky',
-  top: 64,
+  display: { xs: 'none', md: 'block' },
   alignSelf: 'flex-start',
-  width: 290,
+  position: 'sticky',
+  flexShrink: 0,
+  top: 64,
   minHeight: 'calc(100vh - 128px)',
   overflowY: 'auto',
-  display: { xs: 'none', md: 'block' },
-  flexShrink: 0,
+  width: 290,
 };
 
 export const stylesLayoutOutlet = {
