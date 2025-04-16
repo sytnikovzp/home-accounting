@@ -110,3 +110,10 @@ export const stylesListTableFormControl = {
   maxWidth: 250,
   minWidth: 120,
 };
+
+export const stylesListTableExpensesSum = {
+  fontSize: '0.875rem',
+  width: 200,
+  ml: 'auto',
+  textAlign: 'right',
+};

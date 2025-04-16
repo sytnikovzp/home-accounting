@@ -30,6 +30,7 @@ import {
   stylesListTableActionsHeadTableCellNotModeration,
   stylesListTableContainer,
   stylesListTableError,
+  stylesListTableExpensesSum,
   stylesListTablePreloader,
   stylesListTableTableRow,
 } from '../../styles';
@@ -217,7 +218,7 @@ function ListTable({
           />
         )}
         {linkEntity === 'expenses' && (
-          <Typography sx={{ fontSize: '0.875rem' }} variant='body2'>
+          <Typography sx={stylesListTableExpensesSum} variant='body2'>
             Загальна сума: {totalSumForPeriod} UAH
           </Typography>
         )}

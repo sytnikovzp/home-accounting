@@ -24,7 +24,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let response = await baseQuery(args, api, extraOptions);
 
-  if (response.error && response.error.status === 401) {
+  if (response.error?.status === 401) {
     const token = getAccessToken();
 
     if (!token) {

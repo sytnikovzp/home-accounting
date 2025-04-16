@@ -21,7 +21,7 @@ export const categoriesApi = createApi({
       }),
       transformResponse: (response, meta) => ({
         data: response,
-        totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
+        totalCount: parseInt(meta.response?.headers?.get('x-total-count')) || 0,
       }),
       providesTags: (response) => {
         if (response?.data) {

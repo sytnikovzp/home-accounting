@@ -21,12 +21,15 @@ export const usersApi = createApi({
       }),
       transformResponse: (response, meta) => ({
         data: response,
-        totalCount: parseInt(meta.response.headers.get('x-total-count')) || 0,
+        totalCount: parseInt(meta.response?.headers?.get('x-total-count')) || 0,
       }),
       providesTags: (response) => {
         if (response?.data) {
           return [
-            ...response.data.map(({ uuid }) => ({ type: 'User', id: uuid })),
+            ...response.data.map(({ uuid }) => ({
+              type: 'User',
+              id: uuid,
+            })),
             { type: 'User', id: 'LIST' },
           ];
         }
