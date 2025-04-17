@@ -18,6 +18,8 @@ import UserEditPage from './UserEditPage';
 import UserRemovePage from './UserRemovePage';
 import UserViewPage from './UserViewPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const USERS_PAGES = [
   { path: 'password/:uuid', Component: UserChangePasswordPage },
   { path: 'edit/:uuid', Component: UserEditPage },
@@ -73,12 +75,7 @@ function UsersPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Користувачі</Typography>
       </Box>
       <ListTable

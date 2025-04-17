@@ -21,7 +21,6 @@ export const stylesLayoutSideBar = {
   position: 'sticky',
   flexShrink: 0,
   top: 64,
-  minHeight: 'calc(100vh - 128px)',
   overflowY: 'auto',
   width: 290,
 };

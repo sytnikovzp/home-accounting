@@ -20,6 +20,8 @@ import RoleEditPage from './RoleEditPage';
 import RoleRemovePage from './RoleRemovePage';
 import RoleViewPage from './RoleViewPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const ROLES_PAGES = [
   { path: 'add', Component: RoleAddPage },
   { path: 'edit/:uuid', Component: RoleEditPage },
@@ -77,12 +79,7 @@ function RolesPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Ролі користувачів</Typography>
         {hasPermission('roles', 'add') && (
           <Button

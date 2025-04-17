@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 
 import FormFields from '../FormFields/FormFields';
 
+import { stylesBaseFormButtons } from '../../../styles';
+
 function BaseForm({
   fields,
   initialValues,
@@ -69,7 +71,7 @@ function BaseForm({
     <Form>
       <>{renderFields(fields, errors, touched, layout)}</>
       {customContent}
-      <Box display='flex' gap={2} justifyContent='flex-end'>
+      <Box sx={stylesBaseFormButtons}>
         {layout !== 'auth' && (
           <Button color='default' variant='text' onClick={handleCancel}>
             Скасувати

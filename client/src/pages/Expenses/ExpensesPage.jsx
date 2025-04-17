@@ -20,6 +20,8 @@ import ExpenseEditPage from './ExpenseEditPage';
 import ExpenseRemovePage from './ExpenseRemovePage';
 import ExpenseViewPage from './ExpenseViewPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const EXPENSES_PAGES = [
   { path: 'add', Component: ExpenseAddPage },
   { path: 'edit/:uuid', Component: ExpenseEditPage },
@@ -82,12 +84,7 @@ function ExpensesPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Витрати</Typography>
         {hasPermission('expenses', 'add') && (
           <Button

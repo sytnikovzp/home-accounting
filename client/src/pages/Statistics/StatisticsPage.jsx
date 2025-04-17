@@ -8,9 +8,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-
 import useAuthUser from '../../hooks/useAuthUser';
 
 import {
@@ -22,6 +19,8 @@ import {
 import StatisticsChart from '../../components/StatisticsChart/StatisticsChart';
 
 import {
+  stylesStatisticsPageBox,
+  stylesStatisticsPageBoxCriteria,
   stylesStatisticsPageCriteriaSelect,
   stylesStatisticsPagePeriodSelect,
 } from '../../styles';
@@ -30,8 +29,6 @@ function StatisticsPage() {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
   const { authenticatedUser, isAuthenticated } = useAuthUser();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const creatorUuid = authenticatedUser?.uuid;
 
@@ -56,15 +53,9 @@ function StatisticsPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        flexDirection={isMobile ? 'column' : 'row'}
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesStatisticsPageBox}>
         <Typography variant='h6'>Статистика витрат</Typography>
-        <Box display='flex' flexDirection={isMobile ? 'column' : 'row'} gap={2}>
+        <Box sx={stylesStatisticsPageBoxCriteria}>
           <FormControl size='small' sx={stylesStatisticsPageCriteriaSelect}>
             <InputLabel>Критерій</InputLabel>
             <Select
@@ -94,7 +85,6 @@ function StatisticsPage() {
         data={statisticsData}
         fetchError={fetchError}
         isFetching={isFetching}
-        isMobile={isMobile}
       />
     </Container>
   );

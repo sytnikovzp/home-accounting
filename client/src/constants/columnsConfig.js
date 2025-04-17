@@ -9,7 +9,7 @@ export const COLUMNS_CONFIG = {
   ],
   expenses: [
     { field: 'date', headerName: 'Дата', align: 'left' },
-    { field: 'product', headerName: 'Товар', align: 'left' },
+    { field: 'product', headerName: 'Товар/послуга', align: 'left' },
     { field: 'establishment', headerName: 'Заклад', align: 'left' },
     { field: 'totalPrice', headerName: 'Сума (UAH)', align: 'left' },
   ],

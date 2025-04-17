@@ -15,6 +15,8 @@ import ListTable from '../../components/ListTable/ListTable';
 
 import ContentModerationPage from './ContentModerationPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const MODERATIONS_PAGES = [
   { path: ':path/:uuid', Component: ContentModerationPage },
 ];
@@ -55,12 +57,7 @@ function ModerationPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Модерація контенту</Typography>
       </Box>
       <ListTable

@@ -9,7 +9,9 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 
 import {
   stylesFooterBox,
+  stylesFooterContainer,
   stylesFooterIcon,
+  stylesFooterSocialLinks,
   stylesFooterTypography,
 } from '../../styles';
 
@@ -33,11 +35,11 @@ function Footer() {
 
   return (
     <Box component='footer' sx={stylesFooterBox}>
-      <Container maxWidth='xl' sx={{ textAlign: 'center' }}>
-        <Typography sx={stylesFooterTypography} variant='body1'>
-          Designed by Alexandr Sytnikov © {currentYear}
+      <Container maxWidth='xl' sx={stylesFooterContainer}>
+        <Typography sx={stylesFooterTypography} variant='body2'>
+          Designed by Alexandr Sytnikov © 2024 - {currentYear}
         </Typography>
-        <Box sx={{ mt: 1 }}>
+        <Box sx={stylesFooterSocialLinks}>
           {socialLinks.map(({ href, icon }) => (
             <Link
               key={href}

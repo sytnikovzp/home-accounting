@@ -20,6 +20,8 @@ import MeasureEditPage from './MeasureEditPage';
 import MeasureRemovePage from './MeasureRemovePage';
 import MeasureViewPage from './MeasureViewPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const MEASURES_PAGES = [
   { path: 'add', Component: MeasureAddPage },
   { path: 'edit/:uuid', Component: MeasureEditPage },
@@ -77,12 +79,7 @@ function MeasuresPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Одиниці вимірів</Typography>
         {hasPermission('measures', 'add') && (
           <Button

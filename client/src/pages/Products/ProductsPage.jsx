@@ -20,6 +20,8 @@ import ProductEditPage from './ProductEditPage';
 import ProductRemovePage from './ProductRemovePage';
 import ProductViewPage from './ProductViewPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const PRODUCTS_PAGES = [
   { path: 'add', Component: ProductAddPage },
   { path: 'edit/:uuid', Component: ProductEditPage },
@@ -81,12 +83,7 @@ function ProductsPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Товари та послуги</Typography>
         {hasPermission('products', 'add') && (
           <Button

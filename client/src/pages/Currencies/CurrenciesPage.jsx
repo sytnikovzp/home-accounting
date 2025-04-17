@@ -20,6 +20,8 @@ import CurrencyEditPage from './CurrencyEditPage';
 import CurrencyRemovePage from './CurrencyRemovePage';
 import CurrencyViewPage from './CurrencyViewPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const CURRENCIES_PAGES = [
   { path: 'add', Component: CurrencyAddPage },
   { path: 'edit/:uuid', Component: CurrencyEditPage },
@@ -77,12 +79,7 @@ function CurrenciesPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Валюти</Typography>
         {hasPermission('currencies', 'add') && (
           <Button

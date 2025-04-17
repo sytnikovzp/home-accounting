@@ -20,6 +20,8 @@ import EstablishmentEditPage from './EstablishmentEditPage';
 import EstablishmentRemovePage from './EstablishmentRemovePage';
 import EstablishmentViewPage from './EstablishmentViewPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const ESTABLISHMENTS_PAGES = [
   { path: 'add', Component: EstablishmentAddPage },
   { path: 'edit/:uuid', Component: EstablishmentEditPage },
@@ -81,12 +83,7 @@ function EstablishmentsPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Заклади</Typography>
         {hasPermission('establishments', 'add') && (
           <Button

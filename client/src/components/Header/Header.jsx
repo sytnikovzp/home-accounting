@@ -21,7 +21,11 @@ import MobileDrawer from '../Navigation/MobileDrawer';
 import AuthenticatedUserBlock from './AuthenticatedUserBlock';
 import Logo from './Logo';
 
-import { stylesHeaderAppBar, stylesHeaderToolbar } from '../../styles';
+import {
+  stylesHeaderAppBar,
+  stylesHeaderToolbar,
+  stylesHeaderUserBlockWrapper,
+} from '../../styles';
 
 function Header() {
   const { isAuthenticated } = useAuthUser();
@@ -43,7 +47,7 @@ function Header() {
       <AppBar position='sticky' sx={stylesHeaderAppBar}>
         <Container maxWidth='xl'>
           <Toolbar disableGutters sx={stylesHeaderToolbar}>
-            <Box display='flex'>
+            <Box sx={{ display: 'flex' }}>
               {isMobile && (
                 <IconButton color='inherit' onClick={toggleDrawer(true)}>
                   <MenuIcon />
@@ -51,7 +55,7 @@ function Header() {
               )}
               <Logo isMobile={isMobile} />
             </Box>
-            <Box sx={{ alignItems: 'center', display: 'flex' }}>
+            <Box sx={stylesHeaderUserBlockWrapper}>
               {isAuthenticated ? (
                 <AuthenticatedUserBlock />
               ) : (

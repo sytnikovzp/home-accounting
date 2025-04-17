@@ -43,12 +43,12 @@ function ModalWindow({
     <Modal
       closeAfterTransition
       aria-describedby='modal-window-description'
-      aria-labelledby={title ? 'modal-window-title' : null}
+      {...(title && { 'aria-labelledby': 'modal-window-title' })}
       open={isOpen}
-      onClose={disableBackdropClick ? null : onClose}
+      {...(!disableBackdropClick && { onClose })}
     >
       <Fade in={isOpen}>
-        <Box position='relative' sx={stylesModalWindowFadeBox}>
+        <Box sx={stylesModalWindowFadeBox}>
           {!disableCloseButton && (
             <IconButton
               aria-label='Закрити'

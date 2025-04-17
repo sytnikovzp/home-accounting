@@ -9,6 +9,11 @@ export const stylesHeaderToolbar = {
   py: 0.5,
 };
 
+export const stylesHeaderUserBlockWrapper = {
+  display: 'flex',
+  alignItems: 'center',
+};
+
 export const stylesLogoIcon = {
   display: 'flex',
   marginRight: '16px',
@@ -51,6 +56,11 @@ export const stylesHeaderUserAvatar = {
   cursor: 'pointer',
   height: { sm: 45, xs: 40 },
   width: { sm: 45, xs: 40 },
+};
+
+export const stylesHeaderUserBlock = {
+  display: 'flex',
+  alignItems: 'center',
 };
 
 export const stylesAuthenticatedMenu = {

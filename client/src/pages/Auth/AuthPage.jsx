@@ -20,7 +20,7 @@ import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-import { stylesAuthPageTitle } from '../../styles';
+import { stylesAuthPageBoxTitle, stylesAuthPageTitle } from '../../styles';
 
 const TITLES = {
   login: 'Авторизація',
@@ -146,7 +146,7 @@ function AuthPage() {
   };
 
   const title = (
-    <Box alignItems='center' display='flex' flexDirection='column'>
+    <Box sx={stylesAuthPageBoxTitle}>
       <Avatar
         sx={{
           height: 50,

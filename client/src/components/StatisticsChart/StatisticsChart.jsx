@@ -18,6 +18,9 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import RadarIcon from '@mui/icons-material/Radar';
@@ -33,6 +36,7 @@ import {
   stylesStatisticsChartButton,
   stylesStatisticsChartHoverBackgroundColor,
   stylesStatisticsChartHoverBorderColor,
+  stylesStatisticsChartSpinner,
   stylesStatisticsChartStackButton,
   stylesStatisticsChartStackDirection,
 } from '../../styles';
@@ -49,8 +53,10 @@ ChartJS.register(
   ChartDataLabels
 );
 
-function StatisticsChart({ data, fetchError, isFetching, isMobile }) {
+function StatisticsChart({ data, fetchError, isFetching }) {
   const [chartType, setChartType] = useState('doughnut');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isPreloaderVisible = useDelayedPreloader(isFetching);
 
   const chartData = useMemo(() => {
@@ -109,6 +115,7 @@ function StatisticsChart({ data, fetchError, isFetching, isMobile }) {
       },
     },
     responsive: true,
+    maintainAspectRatio: false,
   };
 
   const chartHandlers = {
@@ -137,7 +144,7 @@ function StatisticsChart({ data, fetchError, isFetching, isMobile }) {
     <>
       <Box sx={stylesStatisticsChartBox}>
         {isPreloaderVisible && (
-          <Box display='flex' justifyContent='center'>
+          <Box sx={stylesStatisticsChartSpinner}>
             <CircularProgress color='success' size='3rem' />
           </Box>
         )}

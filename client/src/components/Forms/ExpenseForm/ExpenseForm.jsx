@@ -57,7 +57,7 @@ function ExpenseForm({ isSubmitting, expense = null, onSubmit }) {
   const fields = [
     {
       name: 'product',
-      label: 'Товар',
+      label: 'Товар/послуга',
       type: 'autocomplete',
       options: groupByFirstLetter([...products], 'title', 'title'),
       placeholder: 'Наприклад "Помідори"',

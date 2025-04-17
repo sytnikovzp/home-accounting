@@ -13,7 +13,7 @@ import useAuthUser from '../../hooks/useAuthUser';
 import UserMenu from './UserMenu/UserMenu';
 import Welcome from './Welcome';
 
-import { stylesAuthenticatedMenu } from '../../styles';
+import { stylesAuthenticatedMenu, stylesHeaderUserBlock } from '../../styles';
 
 function AuthenticatedUserBlock() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -29,7 +29,7 @@ function AuthenticatedUserBlock() {
   const handleCloseUserMenu = useCallback(() => setIsUserMenuOpen(false), []);
 
   return (
-    <Box sx={{ alignItems: 'center', display: 'flex' }}>
+    <Box sx={stylesHeaderUserBlock}>
       <Welcome />
       <Tooltip title='Обліковий запис'>
         <IconButton

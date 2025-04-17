@@ -20,6 +20,8 @@ import CategoryEditPage from './CategoryEditPage';
 import CategoryRemovePage from './CategoryRemovePage';
 import CategoryViewPage from './CategoryViewPage';
 
+import { stylesEntityPagesBox } from '../../styles';
+
 const CATEGORIES_PAGES = [
   { path: 'add', Component: CategoryAddPage },
   { path: 'edit/:uuid', Component: CategoryEditPage },
@@ -81,12 +83,7 @@ function CategoriesPage() {
 
   return (
     <Container maxWidth='lg' sx={{ py: 2 }}>
-      <Box
-        alignItems='center'
-        display='flex'
-        justifyContent='space-between'
-        mb={2}
-      >
+      <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Категорії витрат</Typography>
         {hasPermission('categories', 'add') && (
           <Button

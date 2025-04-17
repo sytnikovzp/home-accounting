@@ -47,7 +47,7 @@ function ExpenseViewPage({ handleModalClose }) {
       {
         icon: DryCleaningIcon,
         isLink: Boolean(product),
-        label: 'Товар',
+        label: 'Товар/послуга',
         linkTo: establishment ? `/products/${product?.uuid}` : '',
         value: product?.title || '*Немає даних*',
       },

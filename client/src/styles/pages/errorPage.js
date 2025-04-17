@@ -3,6 +3,6 @@ export const stylesErrorPageBox = {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '70vh',
+  height: '60vh',
   textAlign: 'center',
 };

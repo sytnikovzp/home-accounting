@@ -10,6 +10,8 @@ import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TelegramIcon from '@mui/icons-material/Telegram';
 
+import { stylesContactsPageList } from '../../styles';
+
 function ContactsPage() {
   return (
     <Container maxWidth='md' sx={{ py: 2 }}>
@@ -25,7 +27,7 @@ function ContactsPage() {
         Ви можете зв`язатися зі мною за такими каналами:
       </Typography>
 
-      <List sx={{ maxWidth: '400px', width: '100%' }}>
+      <List sx={stylesContactsPageList}>
         <ListItem>
           <ListItemIcon>
             <EmailIcon fontSize='large' />

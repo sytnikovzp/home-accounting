@@ -26,3 +26,17 @@ export const stylesModalWindowContentBox = {
   flexDirection: 'column',
   justifyContent: 'center',
 };
+
+export const stylesModalWindowActionsOnCenter = {
+  display: 'flex',
+  gap: 2,
+  justifyContent: 'center',
+  mt: 2,
+};
+
+export const stylesModalWindowActionsOnRight = {
+  display: 'flex',
+  gap: 2,
+  justifyContent: 'flex-end',
+  mt: 2,
+};

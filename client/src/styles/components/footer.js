@@ -8,8 +8,30 @@ export const stylesFooterBox = {
   py: 1.5,
 };
 
+export const stylesFooterContainer = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: {
+    xs: 'center',
+    sm: 'space-between',
+  },
+  flexDirection: {
+    xs: 'column',
+    sm: 'row',
+  },
+  gap: 1,
+  py: 1,
+  textAlign: 'center',
+};
+
 export const stylesFooterTypography = {
   color: '#555',
+};
+
+export const stylesFooterSocialLinks = {
+  display: 'flex',
+  gap: 1,
+  mt: { xs: 1, sm: 0 },
 };
 
 export const stylesFooterIcon = {

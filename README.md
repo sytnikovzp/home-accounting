@@ -126,9 +126,9 @@
 ![MobileView](./screenshots/1_Mobile_view.png)
 ![MainPage](./screenshots/2_Main_page.png)
 ![Auth](./screenshots/3_Auth.png)
-![ForgotPassword](./screenshots/4_Forgot_pass.png)
+![ForgotPassword](./screenshots/4_Forgot_password.png)
 ![ViewUser](./screenshots/5_View_user.png)
-![ChangeUserPassword](./screenshots/6_Change_pass.png)
+![ChangeUserPassword](./screenshots/6_Change_password.png)
 ![EditUser](./screenshots/7_Edit_user.png)
 ![RoleDetails](./screenshots/8_Role_details.png)
 ![RoleEdit](./screenshots/9_Role_edit.png)
@@ -136,22 +136,23 @@
 ![ExpensesDetails](./screenshots/11_Expenses_details.png)
 ![ExpensesEdit](./screenshots/12_Expenses_edit.png)
 ![ExpensesRemove](./screenshots/13_Expenses_remove.png)
-![Statistitc](./screenshots/14_Statistics.png)
-![Moderation](./screenshots/15_Moderation.png)
-![EstablishmentsDetails](./screenshots/16_Establishments_details.png)
-![EstablishmentsEdit](./screenshots/17_Establishments_edit.png)
-![Forbidden](./screenshots/18_Forbidden.png)
-![NotFound](./screenshots/19_Not_found.png)
-![TabletView](./screenshots/20_Tablet_view.png)
+![StatisticsBar](./screenshots/14_Statistics_bar.png)
+![StatisticsDonut](./screenshots/15_Statistics_donut.png)
+![Moderation](./screenshots/16_Moderation.png)
+![EstablishmentsDetails](./screenshots/17_Establishments_details.png)
+![EstablishmentsEdit](./screenshots/18_Establishments_edit.png)
+![Forbidden](./screenshots/19_Forbidden.png)
+![NotFound](./screenshots/20_Not_found.png)
+![TabletView](./screenshots/21_Tablet_view.png)
 
 </details>
 
 <details>
   <summary><strong>Скріншоти email листів</strong></summary>
 
-![WelcomeMail](./screenshots/21_Mail_welcome.png)
-![ChangeEmail](./screenshots/22_Mail_confirm_change_email.png)
-![ResetPassword](./screenshots/23_Mail_reset_pass.png)
+![WelcomeMail](./screenshots/22_Mail_welcome.png)
+![ChangeEmail](./screenshots/23_Mail_confirm_change_email.png)
+![ResetPassword](./screenshots/24_Mail_reset_pass.png)
 
 </details>
 

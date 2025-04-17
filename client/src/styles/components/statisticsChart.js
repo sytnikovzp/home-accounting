@@ -7,6 +7,11 @@ export const stylesStatisticsChartBox = {
   overflow: 'auto',
 };
 
+export const stylesStatisticsChartSpinner = {
+  display: 'flex',
+  justifyContent: 'center',
+};
+
 export const stylesStatisticsChartStackDirection = {
   sm: 'row',
   xs: 'column',
