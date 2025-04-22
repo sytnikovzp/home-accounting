@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -23,12 +22,12 @@ function UserRemovePage() {
   const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
   const {
-    data: user,
+    data: userData,
     isFetching,
     error: fetchError,
   } = useFetchUserByUuidQuery(uuid, { skip: isAuthenticatedUser });
 
-  const userData = isAuthenticatedUser ? authenticatedUser : user;
+  const user = isAuthenticatedUser ? authenticatedUser : userData;
 
   const [removeUser, { isLoading: isRemovingUser, error: removeUserError }] =
     useRemoveUserMutation();
@@ -39,8 +38,13 @@ function UserRemovePage() {
   const [logoutMutation] = useLogoutMutation();
 
   const isRemoving = isRemovingUser || isRemovingUserProfile;
-  const error =
+  const apiError =
     fetchError?.data || removeUserError?.data || removeUserErrorProfile?.data;
+
+  const confirmMessage = isAuthenticatedUser
+    ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
+    : `Ви впевнені, що хочете видалити користувача «${user?.fullName}»? Це призведе до видалення всіх витрат, 
+    що пов'язані з цим користувачем.`;
 
   const handleModalClose = useCallback(() => {
     if (uuid) {
@@ -50,7 +54,7 @@ function UserRemovePage() {
     }
   }, [uuid, navigate]);
 
-  const handleRemoveUser = useCallback(async () => {
+  const handleRemove = useCallback(async () => {
     const action = isAuthenticatedUser ? removeUserProfile : removeUser;
     const payload = isAuthenticatedUser ? null : uuid;
     const response = await action(payload);
@@ -72,24 +76,15 @@ function UserRemovePage() {
     handleModalClose,
   ]);
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -97,29 +92,13 @@ function UserRemovePage() {
   return (
     <ModalWindow
       isOpen
-      actionsOnRight={
-        <>
-          <Button color='default' variant='text' onClick={handleModalClose}>
-            Скасувати
-          </Button>
-          <Button
-            color='error'
-            disabled={isRemoving || isFetching}
-            variant='contained'
-            onClick={handleRemoveUser}
-          >
-            Видалити
-          </Button>
-        </>
-      }
-      confirmMessage={
-        isAuthenticatedUser
-          ? 'Це призведе до видалення Вашого облікового запису та виходу із системи. Ви впевнені, що хочете продовжити?'
-          : `Ви впевнені, що хочете видалити користувача «${userData?.fullName}»?`
-      }
+      showDeleteButtons
+      deleteButtonDisabled={isRemoving || isFetching}
+      deleteConfirmMessage={confirmMessage}
       isFetching={isFetching}
       title='Видалення користувача'
       onClose={handleModalClose}
+      onDelete={handleRemove}
     />
   );
 }

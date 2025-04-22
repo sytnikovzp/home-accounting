@@ -2,7 +2,6 @@ import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -25,17 +24,17 @@ function RoleViewPage() {
   const uuid = paramUuid || authenticatedUser?.role?.uuid;
 
   const {
-    data: role,
+    data: roleData,
     isFetching,
     error: fetchError,
   } = useFetchRoleByUuidQuery(uuid, { skip: !uuid });
 
-  const { title, description, permissions, creation } = role ?? {};
+  const { title, description, permissions, creation } = roleData ?? {};
   const { createdAt, updatedAt } = creation ?? {};
 
-  const error = fetchError?.data;
+  const apiError = fetchError?.data;
 
-  const data = useMemo(
+  const renderDetailsData = useMemo(
     () => [
       { icon: InfoIcon, label: 'Назва', value: title },
       { icon: DescriptionIcon, label: 'Опис', value: description },
@@ -53,24 +52,15 @@ function RoleViewPage() {
     }
   }, [paramUuid, navigate]);
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -83,7 +73,7 @@ function RoleViewPage() {
       onClose={handleModalClose}
     >
       <>
-        <ViewDetails data={data} />
+        <ViewDetails data={renderDetailsData} />
         <PermissionsList permissions={permissions} />
       </>
     </ModalWindow>

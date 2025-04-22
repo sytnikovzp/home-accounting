@@ -78,7 +78,7 @@ function ContentModerationPage({ handleModalClose }) {
     establishment: submitEstablishmentError,
   }[path];
 
-  const error = fetchError?.data || submitError?.data;
+  const apiError = fetchError?.data || submitError?.data;
 
   const pathMapping = useMemo(
     () => ({
@@ -128,7 +128,7 @@ function ContentModerationPage({ handleModalClose }) {
       : `${baseUrl}/images/noLogo.png`;
   }, [logo]);
 
-  const data = useMemo(
+  const renderDetailsData = useMemo(
     () => [
       {
         extra: logo ? (
@@ -210,24 +210,53 @@ function ContentModerationPage({ handleModalClose }) {
     ]
   );
 
-  if (error) {
+  const renderModerationButton = (
+    <>
+      <Button
+        key='approve'
+        fullWidth
+        color='success'
+        disabled={isFetching || isSubmiting}
+        size='large'
+        variant='contained'
+        onClick={handleModeration('approved')}
+      >
+        Затвердити
+      </Button>
+      <Button
+        key='edit'
+        fullWidth
+        color='warning'
+        disabled={isFetching || isSubmiting}
+        size='large'
+        variant='contained'
+        onClick={handleEditAndApprove}
+      >
+        Редагувати
+      </Button>
+      <Button
+        key='reject'
+        fullWidth
+        color='error'
+        disabled={isFetching || isSubmiting}
+        size='large'
+        variant='contained'
+        onClick={handleModeration('rejected')}
+      >
+        Відхилити
+      </Button>
+    </>
+  );
+
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -235,48 +264,12 @@ function ContentModerationPage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
-      actionsOnCenter={
-        <>
-          <Button
-            key='approve'
-            fullWidth
-            color='success'
-            disabled={isFetching || isSubmiting}
-            size='large'
-            variant='contained'
-            onClick={handleModeration('approved')}
-          >
-            Затвердити
-          </Button>
-          <Button
-            key='edit'
-            fullWidth
-            color='warning'
-            disabled={isFetching || isSubmiting}
-            size='large'
-            variant='contained'
-            onClick={handleEditAndApprove}
-          >
-            Редагувати
-          </Button>
-          <Button
-            key='reject'
-            fullWidth
-            color='error'
-            disabled={isFetching || isSubmiting}
-            size='large'
-            variant='contained'
-            onClick={handleModeration('rejected')}
-          >
-            Відхилити
-          </Button>
-        </>
-      }
+      actionsOnCenter={renderModerationButton}
       isFetching={isFetching}
       title='Модерація контенту'
       onClose={handleModalClose}
     >
-      <ViewDetails data={data} />
+      <ViewDetails data={renderDetailsData} />
     </ModalWindow>
   );
 }

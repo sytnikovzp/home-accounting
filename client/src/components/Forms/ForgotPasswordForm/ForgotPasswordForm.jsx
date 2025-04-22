@@ -5,7 +5,7 @@ import BaseForm from '../BaseForm/BaseForm';
 function ForgotPasswordForm({ isSubmitting, onSubmit }) {
   const initialValues = { email: '' };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'email',
       label: 'E-mail',
@@ -16,7 +16,7 @@ function ForgotPasswordForm({ isSubmitting, onSubmit }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='auth'

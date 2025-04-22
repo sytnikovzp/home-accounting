@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -26,17 +25,17 @@ function EstablishmentViewPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: establishment,
+    data: establishmentData,
     isFetching,
     error: fetchError,
   } = useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
 
   const { title, description, url, logo, status, moderation, creation } =
-    establishment ?? {};
+    establishmentData ?? {};
   const { moderatorUuid, moderatorFullName } = moderation ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
-  const error = fetchError?.data;
+  const apiError = fetchError?.data;
 
   const logoPath = useMemo(() => {
     const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
@@ -45,7 +44,7 @@ function EstablishmentViewPage({ handleModalClose }) {
       : `${baseUrl}/images/noLogo.png`;
   }, [logo]);
 
-  const logotype = useMemo(
+  const renderLogotype = useMemo(
     () => (
       <Avatar
         alt='Логотип закладу'
@@ -57,10 +56,10 @@ function EstablishmentViewPage({ handleModalClose }) {
     [logoPath]
   );
 
-  const data = useMemo(
+  const renderDetailsData = useMemo(
     () => [
       {
-        extra: logotype,
+        extra: renderLogotype,
         icon: InfoIcon,
         label: 'Назва',
         value: title,
@@ -104,7 +103,7 @@ function EstablishmentViewPage({ handleModalClose }) {
       { icon: UpdateIcon, label: 'Редаговано', value: updatedAt },
     ],
     [
-      logotype,
+      renderLogotype,
       title,
       description,
       url,
@@ -118,24 +117,15 @@ function EstablishmentViewPage({ handleModalClose }) {
     ]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -147,7 +137,7 @@ function EstablishmentViewPage({ handleModalClose }) {
       title='Деталі закладу'
       onClose={handleModalClose}
     >
-      <ViewDetails data={data} />
+      <ViewDetails data={renderDetailsData} />
     </ModalWindow>
   );
 }

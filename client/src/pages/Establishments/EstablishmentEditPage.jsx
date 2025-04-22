@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import {
   useChangeEstablishmentLogoMutation,
@@ -18,7 +17,7 @@ function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: establishment,
+    data: establishmentData,
     isFetching,
     error: fetchError,
   } = useFetchEstablishmentByUuidQuery(uuid, { skip: !uuid });
@@ -37,7 +36,7 @@ function EstablishmentEditPage({ handleModalClose }) {
   ] = useResetEstablishmentLogoMutation();
 
   const isChangingLogo = isUploading || isResetting;
-  const error =
+  const apiError =
     fetchError?.data ||
     submitError?.data ||
     uploadError?.data ||
@@ -58,7 +57,7 @@ function EstablishmentEditPage({ handleModalClose }) {
     await resetLogo(uuid);
   }, [resetLogo, resetSubmitting, resetUploading, uuid]);
 
-  const handleSubmitEstablishment = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       resetUploading();
       resetResetting();
@@ -73,24 +72,15 @@ function EstablishmentEditPage({ handleModalClose }) {
     [editEstablishment, handleModalClose, resetResetting, resetUploading, uuid]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -103,11 +93,11 @@ function EstablishmentEditPage({ handleModalClose }) {
       onClose={handleModalClose}
     >
       <EstablishmentForm
-        establishment={establishment}
+        establishment={establishmentData}
         isChanging={isChangingLogo}
         isSubmitting={isSubmitting}
         onReset={handleResetLogo}
-        onSubmit={handleSubmitEstablishment}
+        onSubmit={handleSubmit}
         onUpload={handleUploadLogo}
       />
     </ModalWindow>

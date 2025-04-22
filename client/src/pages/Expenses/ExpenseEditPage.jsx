@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import {
   useEditExpenseMutation,
@@ -16,7 +15,7 @@ function ExpenseEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: expense,
+    data: expenseData,
     isFetching,
     error: fetchError,
   } = useFetchExpenseByUuidQuery(uuid, { skip: !uuid });
@@ -24,9 +23,9 @@ function ExpenseEditPage({ handleModalClose }) {
   const [editExpense, { isLoading: isSubmitting, error: submitError }] =
     useEditExpenseMutation();
 
-  const error = fetchError?.data || submitError?.data;
+  const apiError = fetchError?.data || submitError?.data;
 
-  const handleSubmitExpense = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await editExpense({ expenseUuid: uuid, ...values });
       if (response?.data) {
@@ -36,24 +35,15 @@ function ExpenseEditPage({ handleModalClose }) {
     [editExpense, handleModalClose, uuid]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -66,9 +56,9 @@ function ExpenseEditPage({ handleModalClose }) {
       onClose={handleModalClose}
     >
       <ExpenseForm
-        expense={expense}
+        expense={expenseData}
         isSubmitting={isSubmitting}
-        onSubmit={handleSubmitExpense}
+        onSubmit={handleSubmit}
       />
     </ModalWindow>
   );

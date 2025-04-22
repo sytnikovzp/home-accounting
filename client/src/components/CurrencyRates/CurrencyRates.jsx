@@ -19,7 +19,7 @@ import {
 
 function CurrencyRates() {
   const {
-    data: rates,
+    data: ratesData,
     isFetching,
     error: fetchError,
   } = useFetchNBURatesQuery();
@@ -31,10 +31,10 @@ function CurrencyRates() {
   }
 
   if (fetchError) {
-    return <Error error={fetchError} />;
+    return <Error message={fetchError} />;
   }
 
-  if (!rates || rates.length === 0) {
+  if (!ratesData || ratesData.length === 0) {
     return (
       <Box sx={stylesCurrencyRatesBox}>
         <Typography sx={stylesCurrencyRatesTypography}>
@@ -50,7 +50,7 @@ function CurrencyRates() {
         <CurrencyExchangeIcon color='text.primary' fontSize='medium' />
         Курси валют НБУ
       </Typography>
-      <CurrencyTable rates={rates} />
+      <CurrencyTable rates={ratesData} />
     </Box>
   );
 }

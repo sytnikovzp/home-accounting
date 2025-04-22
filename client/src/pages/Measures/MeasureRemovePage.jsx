@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import {
   useFetchMeasureByUuidQuery,
@@ -15,7 +14,7 @@ function MeasureRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: measure,
+    data: measureData,
     isFetching,
     error: fetchError,
   } = useFetchMeasureByUuidQuery(uuid, { skip: !uuid });
@@ -23,33 +22,27 @@ function MeasureRemovePage({ handleModalClose }) {
   const [removeMeasure, { isLoading: isRemoving, error: removeError }] =
     useRemoveMeasureMutation();
 
-  const error = fetchError?.data || removeError?.data;
+  const apiError = fetchError?.data || removeError?.data;
 
-  const handleRemoveMeasure = useCallback(async () => {
+  const confirmMessage = `Ви впевнені, що хочете видалити одиницю вимірів «${measureData?.title}»? Це
+          призведе до видалення всіх витрат, де вона використовується.`;
+
+  const handleRemove = useCallback(async () => {
     const response = await removeMeasure(uuid);
     if (response?.data) {
       handleModalClose();
     }
   }, [uuid, handleModalClose, removeMeasure]);
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -57,26 +50,13 @@ function MeasureRemovePage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
-      actionsOnRight={
-        <>
-          <Button color='default' variant='text' onClick={handleModalClose}>
-            Скасувати
-          </Button>
-          <Button
-            color='error'
-            disabled={isRemoving || isFetching}
-            variant='contained'
-            onClick={handleRemoveMeasure}
-          >
-            Видалити
-          </Button>
-        </>
-      }
-      confirmMessage={`Ви впевнені, що хочете видалити одиницю вимірів «${measure?.title}»? Це
-          призведе до видалення всіх витрат, де вона використовується.`}
+      showDeleteButtons
+      deleteButtonDisabled={isRemoving || isFetching}
+      deleteConfirmMessage={confirmMessage}
       isFetching={isFetching}
       title='Видалення одиниці'
       onClose={handleModalClose}
+      onDelete={handleRemove}
     />
   );
 }

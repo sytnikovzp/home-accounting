@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InfoIcon from '@mui/icons-material/Info';
@@ -19,18 +18,18 @@ function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: category,
+    data: categoryData,
     isFetching,
     error: fetchError,
   } = useFetchCategoryByUuidQuery(uuid, { skip: !uuid });
 
-  const { title, status, moderation, creation } = category ?? {};
+  const { title, status, moderation, creation } = categoryData ?? {};
   const { moderatorUuid, moderatorFullName } = moderation ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
-  const error = fetchError?.data;
+  const apiError = fetchError?.data;
 
-  const data = useMemo(
+  const renderDetailsData = useMemo(
     () => [
       { icon: InfoIcon, label: 'Назва', value: title },
       {
@@ -71,24 +70,15 @@ function CategoryViewPage({ handleModalClose }) {
     ]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -100,7 +90,7 @@ function CategoryViewPage({ handleModalClose }) {
       title='Деталі категорії'
       onClose={handleModalClose}
     >
-      <ViewDetails data={data} />
+      <ViewDetails data={renderDetailsData} />
     </ModalWindow>
   );
 }

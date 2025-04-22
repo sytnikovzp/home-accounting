@@ -9,7 +9,7 @@ function CategoryForm({ isSubmitting, category = null, onSubmit }) {
     title: title || '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'title',
       label: 'Назва категорії',
@@ -21,7 +21,7 @@ function CategoryForm({ isSubmitting, category = null, onSubmit }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={CATEGORY_VALIDATION_SCHEME}

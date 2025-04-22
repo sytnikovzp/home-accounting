@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import { useAddEstablishmentMutation } from '../../store/services';
 
@@ -12,9 +11,9 @@ function EstablishmentAddPage({ handleModalClose }) {
   const [addEstablishment, { isLoading: isSubmitting, error: submitError }] =
     useAddEstablishmentMutation();
 
-  const error = submitError?.data;
+  const apiError = submitError?.data;
 
-  const handleSubmitEstablishment = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await addEstablishment(values);
       if (response?.data) {
@@ -24,34 +23,22 @@ function EstablishmentAddPage({ handleModalClose }) {
     [addEstablishment, handleModalClose]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
     <ModalWindow isOpen title='Додавання закладу' onClose={handleModalClose}>
-      <EstablishmentForm
-        isSubmitting={isSubmitting}
-        onSubmit={handleSubmitEstablishment}
-      />
+      <EstablishmentForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
     </ModalWindow>
   );
 }

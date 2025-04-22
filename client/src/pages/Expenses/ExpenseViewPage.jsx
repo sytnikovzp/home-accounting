@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -22,7 +21,7 @@ function ExpenseViewPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: expense,
+    data: expenseData,
     isFetching,
     error: fetchError,
   } = useFetchExpenseByUuidQuery(uuid, { skip: !uuid });
@@ -37,12 +36,12 @@ function ExpenseViewPage({ handleModalClose }) {
     currency,
     date,
     creation,
-  } = expense ?? {};
+  } = expenseData ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
-  const error = fetchError?.data;
+  const apiError = fetchError?.data;
 
-  const data = useMemo(
+  const renderDetailsData = useMemo(
     () => [
       {
         icon: DryCleaningIcon,
@@ -101,24 +100,15 @@ function ExpenseViewPage({ handleModalClose }) {
     ]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -130,7 +120,7 @@ function ExpenseViewPage({ handleModalClose }) {
       title='Деталі витрати'
       onClose={handleModalClose}
     >
-      <ViewDetails data={data} />
+      <ViewDetails data={renderDetailsData} />
     </ModalWindow>
   );
 }

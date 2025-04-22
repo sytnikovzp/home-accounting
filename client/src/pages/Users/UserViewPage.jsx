@@ -38,15 +38,14 @@ function UserViewPage() {
   const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
   const {
-    data: user,
+    data: userData,
     isFetching,
     error: fetchError,
   } = useFetchUserByUuidQuery(uuid, { skip: isAuthenticatedUser });
 
-  const userData = isAuthenticatedUser ? authenticatedUser : user;
+  const user = isAuthenticatedUser ? authenticatedUser : userData;
 
-  const { fullName, role, photo, email, emailConfirm, creation } =
-    userData ?? {};
+  const { fullName, role, photo, email, emailConfirm, creation } = user ?? {};
   const { createdAt, updatedAt } = creation ?? {};
 
   const [
@@ -54,7 +53,7 @@ function UserViewPage() {
     { isLoading: isEmailSubmitting, error: submitEmailError },
   ] = useResendConfirmEmailMutation();
 
-  const error = fetchError?.data || submitEmailError?.data;
+  const apiError = fetchError?.data || submitEmailError?.data;
 
   const photoPath = useMemo(() => {
     const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
@@ -103,7 +102,7 @@ function UserViewPage() {
     );
   }, [showResendButton, isEmailSubmitting, handleResendClick]);
 
-  const avatar = useMemo(
+  const renderAvatar = useMemo(
     () => (
       <Avatar
         alt='Фото користувача'
@@ -115,10 +114,10 @@ function UserViewPage() {
     [photoPath]
   );
 
-  const data = useMemo(
+  const renderDetailsData = useMemo(
     () => [
       {
-        extra: avatar,
+        extra: renderAvatar,
         icon: InfoIcon,
         label: 'Повне ім’я',
         value: fullName,
@@ -163,7 +162,7 @@ function UserViewPage() {
       },
     ],
     [
-      avatar,
+      renderAvatar,
       fullName,
       role,
       email,
@@ -174,24 +173,15 @@ function UserViewPage() {
     ]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -199,16 +189,7 @@ function UserViewPage() {
   return responseData ? (
     <ModalWindow
       isOpen
-      actionsOnCenter={
-        <Button
-          fullWidth
-          color='success'
-          variant='contained'
-          onClick={handleModalClose}
-        >
-          Закрити
-        </Button>
-      }
+      showCloseButton
       title={responseData.title}
       onClose={handleModalClose}
     >
@@ -221,7 +202,7 @@ function UserViewPage() {
       title='Деталі користувача'
       onClose={handleModalClose}
     >
-      <ViewDetails data={data} />
+      <ViewDetails data={renderDetailsData} />
     </ModalWindow>
   );
 }

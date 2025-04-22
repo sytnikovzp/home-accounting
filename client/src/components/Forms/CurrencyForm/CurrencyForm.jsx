@@ -10,7 +10,7 @@ function CurrencyForm({ isSubmitting, currency = null, onSubmit }) {
     code: code || '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'title',
       label: 'Назва валюти',
@@ -28,7 +28,7 @@ function CurrencyForm({ isSubmitting, currency = null, onSubmit }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={CURRENCY_VALIDATION_SCHEME}

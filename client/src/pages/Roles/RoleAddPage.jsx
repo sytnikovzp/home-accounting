@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import { useAddRoleMutation } from '../../store/services';
 
@@ -12,9 +11,9 @@ function RoleAddPage({ handleModalClose }) {
   const [addRole, { isLoading: isSubmitting, error: submitError }] =
     useAddRoleMutation();
 
-  const error = submitError?.data;
+  const apiError = submitError?.data;
 
-  const handleSubmitRole = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await addRole(values);
       if (response?.data) {
@@ -24,31 +23,22 @@ function RoleAddPage({ handleModalClose }) {
     [addRole, handleModalClose]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
     <ModalWindow isOpen title='Додавання ролі' onClose={handleModalClose}>
-      <RoleForm isSubmitting={isSubmitting} onSubmit={handleSubmitRole} />
+      <RoleForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
     </ModalWindow>
   );
 }

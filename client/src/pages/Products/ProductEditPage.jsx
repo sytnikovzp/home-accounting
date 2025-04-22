@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import {
   useEditProductMutation,
@@ -16,7 +15,7 @@ function ProductEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: product,
+    data: productData,
     isFetching,
     error: fetchError,
   } = useFetchProductByUuidQuery(uuid, { skip: !uuid });
@@ -24,9 +23,9 @@ function ProductEditPage({ handleModalClose }) {
   const [editProduct, { isLoading: isSubmitting, error: submitError }] =
     useEditProductMutation();
 
-  const error = fetchError?.data || submitError?.data;
+  const apiError = fetchError?.data || submitError?.data;
 
-  const handleSubmitProduct = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await editProduct({ productUuid: uuid, ...values });
       if (response?.data) {
@@ -36,24 +35,15 @@ function ProductEditPage({ handleModalClose }) {
     [editProduct, handleModalClose, uuid]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -67,8 +57,8 @@ function ProductEditPage({ handleModalClose }) {
     >
       <ProductForm
         isSubmitting={isSubmitting}
-        product={product}
-        onSubmit={handleSubmitProduct}
+        product={productData}
+        onSubmit={handleSubmit}
       />
     </ModalWindow>
   );

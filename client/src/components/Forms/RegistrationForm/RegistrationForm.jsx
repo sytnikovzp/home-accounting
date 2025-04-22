@@ -9,7 +9,7 @@ function RegistrationForm({ isSubmitting, onSubmit }) {
     password: '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'fullName',
       label: 'Повне ім’я',
@@ -31,7 +31,7 @@ function RegistrationForm({ isSubmitting, onSubmit }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='auth'

@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 
 import { stylesErrorTypography } from '../../styles';
 
-function Error({ error }) {
+function Error({ message }) {
   return (
     <Typography
       align='center'
@@ -10,7 +10,7 @@ function Error({ error }) {
       sx={stylesErrorTypography}
       variant='h6'
     >
-      {error}
+      {message}
     </Typography>
   );
 }

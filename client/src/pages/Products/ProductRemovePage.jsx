@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import {
   useFetchProductByUuidQuery,
@@ -15,7 +14,7 @@ function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: product,
+    data: productData,
     isFetching,
     error: fetchError,
   } = useFetchProductByUuidQuery(uuid, { skip: !uuid });
@@ -23,33 +22,27 @@ function ProductRemovePage({ handleModalClose }) {
   const [removeProduct, { isLoading: isRemoving, error: removeError }] =
     useRemoveProductMutation();
 
-  const error = fetchError?.data || removeError?.data;
+  const apiError = fetchError?.data || removeError?.data;
 
-  const handleRemoveProduct = useCallback(async () => {
+  const confirmMessage = `Ви впевнені, що хочете видалити товар/послугу «${productData?.title}»? Це
+          призведе до видалення всіх витрат, що містять цей товар/послугу.`;
+
+  const handleRemove = useCallback(async () => {
     const response = await removeProduct(uuid);
     if (response?.data) {
       handleModalClose();
     }
   }, [uuid, handleModalClose, removeProduct]);
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -57,26 +50,13 @@ function ProductRemovePage({ handleModalClose }) {
   return (
     <ModalWindow
       isOpen
-      actionsOnRight={
-        <>
-          <Button color='default' variant='text' onClick={handleModalClose}>
-            Скасувати
-          </Button>
-          <Button
-            color='error'
-            disabled={isRemoving || isFetching}
-            variant='contained'
-            onClick={handleRemoveProduct}
-          >
-            Видалити
-          </Button>
-        </>
-      }
-      confirmMessage={`Ви впевнені, що хочете видалити товар/послугу «${product?.title}»? Це
-          призведе до видалення всіх витрат, що містять цей товар/послугу.`}
+      showDeleteButtons
+      deleteButtonDisabled={isRemoving || isFetching}
+      deleteConfirmMessage={confirmMessage}
       isFetching={isFetching}
       title='Видалення товару/послуги'
       onClose={handleModalClose}
+      onDelete={handleRemove}
     />
   );
 }

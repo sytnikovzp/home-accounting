@@ -8,7 +8,7 @@ function ChangePasswordForm({ onSubmit, isSubmitting }) {
     confirmNewPassword: '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'newPassword',
       label: 'Новий пароль',
@@ -28,7 +28,7 @@ function ChangePasswordForm({ onSubmit, isSubmitting }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='auth'

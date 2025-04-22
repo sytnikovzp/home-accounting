@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -30,14 +29,14 @@ function UserEditPage() {
   const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;
 
   const {
-    data: user,
+    data: userData,
     isFetching,
     error: fetchError,
   } = useFetchUserByUuidQuery(uuid, {
     skip: isAuthenticatedUser,
   });
 
-  const userData = isAuthenticatedUser ? authenticatedUser : user;
+  const user = isAuthenticatedUser ? authenticatedUser : userData;
 
   const [
     editUser,
@@ -95,7 +94,7 @@ function UserEditPage() {
     isUserProfilePhotoUploading ||
     isUserPhotoResetting ||
     isUserProfilePhotoResetting;
-  const error =
+  const apiError =
     fetchError?.data ||
     submitUserError?.data ||
     submitUserProfileError?.data ||
@@ -153,7 +152,7 @@ function UserEditPage() {
     dispatch,
   ]);
 
-  const handleRemoveProfile = useCallback(() => {
+  const handleRemove = useCallback(() => {
     if (isAuthenticatedUser) {
       navigate(`/remove-profile`);
     } else {
@@ -177,7 +176,7 @@ function UserEditPage() {
     }
   }, [uuid, navigate]);
 
-  const handleSubmitUser = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       resetUserPhotoUploading();
       resetUserPhotoResetting();
@@ -203,24 +202,15 @@ function UserEditPage() {
     ]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -235,11 +225,11 @@ function UserEditPage() {
       <UserForm
         isChanging={isChangingPhoto}
         isSubmitting={isUserSubmitting || isUserProfileSubmitting}
-        user={userData}
+        user={user}
         onPassword={handleChangePassword}
-        onRemove={handleRemoveProfile}
+        onRemove={handleRemove}
         onReset={handleResetPhoto}
-        onSubmit={handleSubmitUser}
+        onSubmit={handleSubmit}
         onUpload={handleUploadPhoto}
       />
     </ModalWindow>

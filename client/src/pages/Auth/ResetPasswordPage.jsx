@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import { useResetPasswordMutation } from '../../store/services';
 
@@ -19,7 +18,7 @@ function ResetPasswordPage() {
   const [resetPassword, { isLoading: isSubmitting, error: submitError }] =
     useResetPasswordMutation();
 
-  const error = submitError?.data;
+  const apiError = submitError?.data;
 
   const handleModalClose = useCallback(() => {
     setResponseData(null);
@@ -40,24 +39,15 @@ function ResetPasswordPage() {
     [resetPassword, token]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -65,16 +55,7 @@ function ResetPasswordPage() {
   return responseData ? (
     <ModalWindow
       isOpen
-      actionsOnCenter={
-        <Button
-          fullWidth
-          color='success'
-          variant='contained'
-          onClick={handleModalClose}
-        >
-          Закрити
-        </Button>
-      }
+      showCloseButton
       title={responseData.title}
       onClose={handleModalClose}
     >

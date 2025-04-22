@@ -102,7 +102,7 @@ function ListTable({
 
         {fetchError && (
           <Box sx={stylesListTableError}>
-            <Error error={fetchError?.data?.message} />
+            <Error message={fetchError?.data?.message} />
           </Box>
         )}
 

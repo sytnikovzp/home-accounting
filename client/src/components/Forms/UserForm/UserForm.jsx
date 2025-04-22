@@ -40,7 +40,7 @@ function UserForm({
     role: role?.title || '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'fullName',
       label: 'Повне ім’я',
@@ -85,7 +85,7 @@ function UserForm({
         </Button>
       </Box>
       <BaseForm
-        fields={fields}
+        fields={renderFields}
         initialValues={initialValues}
         isSubmitting={isSubmitting}
         validationSchema={USER_VALIDATION_SCHEME}

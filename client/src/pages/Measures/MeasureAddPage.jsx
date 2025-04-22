@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import { useAddMeasureMutation } from '../../store/services';
 
@@ -12,9 +11,9 @@ function MeasureAddPage({ handleModalClose }) {
   const [addMeasure, { isLoading: isSubmitting, error: submitError }] =
     useAddMeasureMutation();
 
-  const error = submitError?.data;
+  const apiError = submitError?.data;
 
-  const handleSubmitMeasure = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await addMeasure(values);
       if (response?.data) {
@@ -24,31 +23,22 @@ function MeasureAddPage({ handleModalClose }) {
     [addMeasure, handleModalClose]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
     <ModalWindow isOpen title='Додавання одиниці' onClose={handleModalClose}>
-      <MeasureForm isSubmitting={isSubmitting} onSubmit={handleSubmitMeasure} />
+      <MeasureForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
     </ModalWindow>
   );
 }

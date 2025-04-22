@@ -19,7 +19,7 @@ function EstablishmentForm({
     url: url || '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'title',
       label: 'Назва закладу',
@@ -52,7 +52,7 @@ function EstablishmentForm({
         />
       )}
       <BaseForm
-        fields={fields}
+        fields={renderFields}
         initialValues={initialValues}
         isSubmitting={isSubmitting}
         validationSchema={ESTABLISHMENT_VALIDATION_SCHEME}

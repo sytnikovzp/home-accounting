@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import { useAddCategoryMutation } from '../../store/services';
 
@@ -12,9 +11,9 @@ function CategoryAddPage({ handleModalClose }) {
   const [addCategory, { isLoading: isSubmitting, error: submitError }] =
     useAddCategoryMutation();
 
-  const error = submitError?.data;
+  const apiError = submitError?.data;
 
-  const handleSubmitCategory = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await addCategory(values);
       if (response?.data) {
@@ -24,34 +23,22 @@ function CategoryAddPage({ handleModalClose }) {
     [addCategory, handleModalClose]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
     <ModalWindow isOpen title='Додавання категорії' onClose={handleModalClose}>
-      <CategoryForm
-        isSubmitting={isSubmitting}
-        onSubmit={handleSubmitCategory}
-      />
+      <CategoryForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
     </ModalWindow>
   );
 }

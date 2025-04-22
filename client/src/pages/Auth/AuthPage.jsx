@@ -60,7 +60,7 @@ function AuthPage() {
     },
   ] = useForgotPasswordMutation();
 
-  const error =
+  const apiError =
     loginError?.data || registrationError?.data || forgotPasswordError?.data;
 
   useEffect(() => {
@@ -116,7 +116,7 @@ function AuthPage() {
     });
   }, []);
 
-  const authForms = {
+  const renderAuthForms = {
     login: (
       <>
         <LoginForm isSubmitting={isLoggingIn} onSubmit={handleSubmit(login)} />
@@ -145,7 +145,7 @@ function AuthPage() {
     ),
   };
 
-  const title = (
+  const renderTitle = (
     <Box sx={stylesAuthPageBoxTitle}>
       <Avatar
         sx={{
@@ -164,24 +164,23 @@ function AuthPage() {
     </Box>
   );
 
-  if (error) {
+  const renderAuthModeButton = (
+    <Button fullWidth color='secondary' variant='text' onClick={toggleAuthMode}>
+      {authMode === 'login'
+        ? 'Перейти до реєстрації'
+        : 'Повернутися до авторизації'}
+    </Button>
+  );
+
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -189,16 +188,7 @@ function AuthPage() {
   return responseData ? (
     <ModalWindow
       isOpen
-      actionsOnCenter={
-        <Button
-          fullWidth
-          color='success'
-          variant='contained'
-          onClick={handleModalClose}
-        >
-          Закрити
-        </Button>
-      }
+      showCloseButton
       title={responseData.title}
       onClose={handleModalClose}
     >
@@ -207,22 +197,11 @@ function AuthPage() {
   ) : (
     <ModalWindow
       isOpen
-      actionsOnCenter={
-        <Button
-          fullWidth
-          color='secondary'
-          variant='text'
-          onClick={toggleAuthMode}
-        >
-          {authMode === 'login'
-            ? 'Перейти до реєстрації'
-            : 'Повернутися до авторизації'}
-        </Button>
-      }
-      title={title}
+      actionsOnCenter={renderAuthModeButton}
+      title={renderTitle}
       onClose={handleModalClose}
     >
-      {authForms[authMode]}
+      {renderAuthForms[authMode]}
     </ModalWindow>
   );
 }

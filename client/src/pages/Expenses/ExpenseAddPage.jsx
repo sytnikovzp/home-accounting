@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import { useAddExpenseMutation } from '../../store/services';
 
@@ -12,9 +11,9 @@ function ExpenseAddPage({ handleModalClose }) {
   const [addExpense, { isLoading: isSubmitting, error: submitError }] =
     useAddExpenseMutation();
 
-  const error = submitError?.data;
+  const apiError = submitError?.data;
 
-  const handleSubmitExpense = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await addExpense(values);
       if (response?.data) {
@@ -24,31 +23,22 @@ function ExpenseAddPage({ handleModalClose }) {
     [addExpense, handleModalClose]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
     <ModalWindow isOpen title='Додавання витрати' onClose={handleModalClose}>
-      <ExpenseForm isSubmitting={isSubmitting} onSubmit={handleSubmitExpense} />
+      <ExpenseForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
     </ModalWindow>
   );
 }

@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CategoryIcon from '@mui/icons-material/Category';
@@ -20,18 +19,18 @@ function ProductViewPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: product,
+    data: productData,
     isFetching,
     error: fetchError,
   } = useFetchProductByUuidQuery(uuid, { skip: !uuid });
 
-  const { title, status, moderation, creation, category } = product ?? {};
+  const { title, status, moderation, creation, category } = productData ?? {};
   const { moderatorUuid, moderatorFullName } = moderation ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
-  const error = fetchError?.data;
+  const apiError = fetchError?.data;
 
-  const data = useMemo(
+  const renderDetailsData = useMemo(
     () => [
       { icon: InfoIcon, label: 'Назва', value: title },
       {
@@ -80,24 +79,15 @@ function ProductViewPage({ handleModalClose }) {
     ]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -109,7 +99,7 @@ function ProductViewPage({ handleModalClose }) {
       title='Деталі товару/послуги'
       onClose={handleModalClose}
     >
-      <ViewDetails data={data} />
+      <ViewDetails data={renderDetailsData} />
     </ModalWindow>
   );
 }

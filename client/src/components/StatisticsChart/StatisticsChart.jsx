@@ -150,11 +150,11 @@ function StatisticsChart({ data, fetchError, isFetching }) {
         )}
 
         {!isPreloaderVisible && fetchError && (
-          <Error error={fetchError?.data?.message} />
+          <Error message={fetchError?.data?.message} />
         )}
 
         {!isPreloaderVisible && !fetchError && !chartData && (
-          <Error error='Відсутні дані витрат для відображення за цей період' />
+          <Error message='Відсутні дані витрат для відображення за цей період' />
         )}
 
         {!isPreloaderVisible && !fetchError && chartData && renderChart()}

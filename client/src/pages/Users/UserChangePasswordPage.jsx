@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import useAuthUser from '../../hooks/useAuthUser';
 
@@ -35,14 +34,14 @@ function UserChangePasswordPage() {
 
   const isChangingPassword =
     isUserPasswordSubmitting || isUserProfilePasswordSubmitting;
-  const error =
+  const apiError =
     submitUserPasswordError?.data || submitUserProfilePasswordError?.data;
 
   const handleModalClose = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  const handleSubmitPassword = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const action = isAuthenticatedUser
         ? changeUserProfilePassword
@@ -64,24 +63,15 @@ function UserChangePasswordPage() {
     ]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -90,7 +80,7 @@ function UserChangePasswordPage() {
     <ModalWindow isOpen title='Зміна паролю' onClose={handleModalClose}>
       <ChangePasswordForm
         isSubmitting={isChangingPassword}
-        onSubmit={handleSubmitPassword}
+        onSubmit={handleSubmit}
       />
     </ModalWindow>
   );

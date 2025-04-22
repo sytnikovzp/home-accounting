@@ -23,7 +23,7 @@ function ProductForm({ isSubmitting, product = null, onSubmit }) {
     category: category?.title || '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'title',
       label: 'Назва товару/послуги',
@@ -46,7 +46,7 @@ function ProductForm({ isSubmitting, product = null, onSubmit }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={PRODUCT_VALIDATION_SCHEME}

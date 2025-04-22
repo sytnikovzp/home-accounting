@@ -8,7 +8,7 @@ function LoginForm({ isSubmitting, onSubmit }) {
     password: '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'email',
       label: 'E-mail',
@@ -25,7 +25,7 @@ function LoginForm({ isSubmitting, onSubmit }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='auth'

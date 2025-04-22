@@ -66,7 +66,7 @@ function ExpensesPage() {
     navigate(-1);
   }, [navigate]);
 
-  const handleAddClick = useCallback(() => {
+  const handleAdd = useCallback(() => {
     handleModalOpen('add');
   }, [handleModalOpen]);
 
@@ -91,7 +91,7 @@ function ExpensesPage() {
             color='success'
             size='small'
             variant='contained'
-            onClick={handleAddClick}
+            onClick={handleAdd}
           >
             Додати
           </Button>

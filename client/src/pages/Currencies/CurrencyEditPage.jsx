@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import {
   useEditCurrencyMutation,
@@ -16,7 +15,7 @@ function CurrencyEditPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: currency,
+    data: currencyData,
     isFetching,
     error: fetchError,
   } = useFetchCurrencyByUuidQuery(uuid, { skip: !uuid });
@@ -24,9 +23,9 @@ function CurrencyEditPage({ handleModalClose }) {
   const [editCurrency, { isLoading: isSubmitting, error: submitError }] =
     useEditCurrencyMutation();
 
-  const error = fetchError?.data || submitError?.data;
+  const apiError = fetchError?.data || submitError?.data;
 
-  const handleSubmitCurrency = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await editCurrency({ currencyUuid: uuid, ...values });
       if (response?.data) {
@@ -36,24 +35,15 @@ function CurrencyEditPage({ handleModalClose }) {
     [editCurrency, handleModalClose, uuid]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -66,9 +56,9 @@ function CurrencyEditPage({ handleModalClose }) {
       onClose={handleModalClose}
     >
       <CurrencyForm
-        currency={currency}
+        currency={currencyData}
         isSubmitting={isSubmitting}
-        onSubmit={handleSubmitCurrency}
+        onSubmit={handleSubmit}
       />
     </ModalWindow>
   );

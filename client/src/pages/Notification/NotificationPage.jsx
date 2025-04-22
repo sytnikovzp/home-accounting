@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
@@ -56,16 +55,7 @@ function NotificationPage() {
   return (
     <ModalWindow
       isOpen
-      actionsOnCenter={
-        <Button
-          fullWidth
-          color='success'
-          variant='contained'
-          onClick={handleModalClose}
-        >
-          Закрити
-        </Button>
-      }
+      showCloseButton
       title={responseData.title}
       onClose={handleModalClose}
     >

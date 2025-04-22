@@ -136,7 +136,7 @@ function App() {
 
   if (isFetchingUser) {
     return (
-      <ModalWindow disableCloseButton isOpen>
+      <ModalWindow hideCloseIcon isOpen>
         <Preloader message='Welcome to Home Accounting...' />
       </ModalWindow>
     );

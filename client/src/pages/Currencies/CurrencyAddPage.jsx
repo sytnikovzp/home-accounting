@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import { useAddCurrencyMutation } from '../../store/services';
 
@@ -12,9 +11,9 @@ function CurrencyAddPage({ handleModalClose }) {
   const [addCurrency, { isLoading: isSubmitting, error: submitError }] =
     useAddCurrencyMutation();
 
-  const error = submitError?.data;
+  const apiError = submitError?.data;
 
-  const handleSubmitCurrency = useCallback(
+  const handleSubmit = useCallback(
     async (values) => {
       const response = await addCurrency(values);
       if (response?.data) {
@@ -24,34 +23,22 @@ function CurrencyAddPage({ handleModalClose }) {
     [addCurrency, handleModalClose]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
 
   return (
     <ModalWindow isOpen title='Додавання валюти' onClose={handleModalClose}>
-      <CurrencyForm
-        isSubmitting={isSubmitting}
-        onSubmit={handleSubmitCurrency}
-      />
+      <CurrencyForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
     </ModalWindow>
   );
 }

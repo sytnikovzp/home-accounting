@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -19,17 +18,17 @@ function MeasureViewPage({ handleModalClose }) {
   const { uuid } = useParams();
 
   const {
-    data: measure,
+    data: measureData,
     isFetching,
     error: fetchError,
   } = useFetchMeasureByUuidQuery(uuid, { skip: !uuid });
 
-  const { title, description, creation } = measure ?? {};
+  const { title, description, creation } = measureData ?? {};
   const { creatorUuid, creatorFullName, createdAt, updatedAt } = creation ?? {};
 
-  const error = fetchError?.data;
+  const apiError = fetchError?.data;
 
-  const data = useMemo(
+  const renderDetailsData = useMemo(
     () => [
       { icon: InfoIcon, label: 'Назва', value: title },
       { icon: DescriptionIcon, label: 'Опис', value: description },
@@ -46,24 +45,15 @@ function MeasureViewPage({ handleModalClose }) {
     [title, description, creatorFullName, creatorUuid, createdAt, updatedAt]
   );
 
-  if (error) {
+  if (apiError) {
     return (
       <ModalWindow
         isOpen
-        actionsOnCenter={
-          <Button
-            fullWidth
-            color='success'
-            variant='contained'
-            onClick={handleModalClose}
-          >
-            Закрити
-          </Button>
-        }
-        title={error.title}
+        showCloseButton
+        title={apiError.title}
         onClose={handleModalClose}
       >
-        <Alert severity={error.severity}>{error.message}</Alert>
+        <Alert severity={apiError.severity}>{apiError.message}</Alert>
       </ModalWindow>
     );
   }
@@ -75,7 +65,7 @@ function MeasureViewPage({ handleModalClose }) {
       title='Деталі одиниці'
       onClose={handleModalClose}
     >
-      <ViewDetails data={data} />
+      <ViewDetails data={renderDetailsData} />
     </ModalWindow>
   );
 }

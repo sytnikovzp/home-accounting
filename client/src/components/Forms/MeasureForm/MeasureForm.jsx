@@ -10,7 +10,7 @@ function MeasureForm({ isSubmitting, measure = null, onSubmit }) {
     description: description || '',
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'title',
       label: 'Назва одиниці вимірів',
@@ -28,7 +28,7 @@ function MeasureForm({ isSubmitting, measure = null, onSubmit }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={MEASURE_VALIDATION_SCHEME}

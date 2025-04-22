@@ -33,7 +33,7 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
     permissions: permissions.map((p) => p.uuid) || [],
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'title',
       label: 'Назва ролі',
@@ -62,7 +62,7 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
     return <Preloader />;
   }
 
-  const customContent = (
+  const renderCustomContent = (
     <>
       <Typography gutterBottom variant='h6'>
         Права доступу:
@@ -73,8 +73,8 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
 
   return (
     <BaseForm
-      customContent={customContent}
-      fields={fields}
+      customContent={renderCustomContent}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={ROLE_VALIDATION_SCHEME}

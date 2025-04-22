@@ -11,6 +11,8 @@ import ConfirmMessage from './ConfirmMessage';
 import ModalActionsOnCenter from './ModalActionsOnCenter';
 import ModalActionsOnRight from './ModalActionsOnRight';
 import ModalBody from './ModalBody';
+import ModalCloseButton from './ModalCloseButton';
+import ModalDeleteButtons from './ModalDeleteButtons';
 import ModalHeader from './ModalHeader';
 
 import {
@@ -19,25 +21,40 @@ import {
 } from '../../styles';
 
 function ModalWindow({
-  disableCloseButton = false,
+  hideCloseIcon = false,
   disableBackdropClick = true,
   isOpen,
   title,
   onClose,
   children,
   isFetching = false,
+  showCloseButton = false,
+  showDeleteButtons = false,
+  onDelete,
+  deleteConfirmMessage,
+  deleteButtonDisabled,
   actionsOnCenter,
-  actionsOnRight,
-  confirmMessage,
 }) {
   let modalBody = null;
   if (isFetching) {
     modalBody = <Preloader />;
-  } else if (confirmMessage) {
-    modalBody = <ConfirmMessage>{confirmMessage}</ConfirmMessage>;
+  } else if (deleteConfirmMessage) {
+    modalBody = <ConfirmMessage>{deleteConfirmMessage}</ConfirmMessage>;
   } else {
     modalBody = <ModalBody>{children}</ModalBody>;
   }
+
+  const centerActions =
+    actionsOnCenter ??
+    (showCloseButton && <ModalCloseButton onClick={onClose} />);
+
+  const rightActions = showDeleteButtons && (
+    <ModalDeleteButtons
+      disabled={deleteButtonDisabled}
+      onCancel={onClose}
+      onConfirm={onDelete}
+    />
+  );
 
   return (
     <Modal
@@ -49,7 +66,7 @@ function ModalWindow({
     >
       <Fade in={isOpen}>
         <Box sx={stylesModalWindowFadeBox}>
-          {!disableCloseButton && (
+          {!hideCloseIcon && (
             <IconButton
               aria-label='Закрити'
               sx={stylesModalWindowIconButton}
@@ -60,11 +77,11 @@ function ModalWindow({
           )}
           {title && <ModalHeader>{title}</ModalHeader>}
           {modalBody}
-          {actionsOnCenter && (
-            <ModalActionsOnCenter>{actionsOnCenter}</ModalActionsOnCenter>
+          {centerActions && (
+            <ModalActionsOnCenter>{centerActions}</ModalActionsOnCenter>
           )}
-          {actionsOnRight && (
-            <ModalActionsOnRight>{actionsOnRight}</ModalActionsOnRight>
+          {rightActions && (
+            <ModalActionsOnRight>{rightActions}</ModalActionsOnRight>
           )}
         </Box>
       </Fade>

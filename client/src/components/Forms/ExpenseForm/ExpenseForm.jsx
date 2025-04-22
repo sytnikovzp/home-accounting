@@ -54,7 +54,7 @@ function ExpenseForm({ isSubmitting, expense = null, onSubmit }) {
     date: date || format(new Date(), 'dd MMMM yyyy', { locale: uk }),
   };
 
-  const fields = [
+  const renderFields = [
     {
       name: 'product',
       label: 'Товар/послуга',
@@ -111,7 +111,7 @@ function ExpenseForm({ isSubmitting, expense = null, onSubmit }) {
 
   return (
     <BaseForm
-      fields={fields}
+      fields={renderFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='expense'

@@ -3,7 +3,7 @@ import { Field } from 'formik';
 
 import TextField from '@mui/material/TextField';
 
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import AutocompleteField from './AutocompleteField';
