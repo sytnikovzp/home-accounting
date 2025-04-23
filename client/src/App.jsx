@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -130,51 +129,42 @@ const privateRoutes = [
 ];
 
 function App() {
-  const [splashFinished, setSplashFinished] = useState(false);
-
   return (
-    <>
-      {splashFinished ? (
-        <HelmetProvider>
-          <Router>
-            <Routes>
-              <Route element={<Layout />} path='/'>
-                <Route index element={<HomePage />} />
-                {publicRoutes.map(({ path, element: Component }) => (
-                  <Route
-                    key={path}
-                    element={
-                      <PublicRoute>
-                        <Component />
-                      </PublicRoute>
-                    }
-                    path={path}
-                  />
-                ))}
-                {privateRoutes.map(
-                  ({ path, element: Component, permissions }) => (
-                    <Route
-                      key={path}
-                      element={
-                        <PrivateRoute requiredPermissions={permissions}>
-                          <Component />
-                        </PrivateRoute>
-                      }
-                      path={path}
-                    />
-                  )
-                )}
-                <Route element={<StatisticsPage />} path='statistics' />
-                <Route element={<NotificationPage />} path='notification' />
-                <Route element={<NotFoundPage />} path='*' />
-              </Route>
-            </Routes>
-          </Router>
-        </HelmetProvider>
-      ) : (
-        <SplashScreen onFinish={() => setSplashFinished(true)} />
-      )}
-    </>
+    <HelmetProvider>
+      <SplashScreen />
+      <Router>
+        <Routes>
+          <Route element={<Layout />} path='/'>
+            <Route index element={<HomePage />} />
+            {publicRoutes.map(({ path, element: Component }) => (
+              <Route
+                key={path}
+                element={
+                  <PublicRoute>
+                    <Component />
+                  </PublicRoute>
+                }
+                path={path}
+              />
+            ))}
+            {privateRoutes.map(({ path, element: Component, permissions }) => (
+              <Route
+                key={path}
+                element={
+                  <PrivateRoute requiredPermissions={permissions}>
+                    <Component />
+                  </PrivateRoute>
+                }
+                path={path}
+              />
+            ))}
+            <Route element={<StatisticsPage />} path='statistics' />
+            <Route element={<NotificationPage />} path='notification' />
+            <Route element={<NotFoundPage />} path='*' />
+          </Route>
+        </Routes>
+      </Router>
+    </HelmetProvider>
   );
 }
 
