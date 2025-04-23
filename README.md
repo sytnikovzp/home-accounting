@@ -1,7 +1,7 @@
-# Home Accounting (Моя Бухгалтерія)
+# Home Accounting
 
 <p align="center">
-  <img src="./screenshots/10_Expenses_list.png" alt="Home Accounting" style="max-width: 80%;">
+  <img src="./screenshots/Demo.gif" alt="Home Accounting" style="max-width: 80%;">
 </p>
 <p align="center">
   <img src="https://img.shields.io/github/last-commit/sytnikovzp/home-accounting" alt="Last Commit">
@@ -127,9 +127,9 @@
 ![MainPage](./screenshots/2_Main_page.png)
 ![Auth](./screenshots/3_Auth.png)
 ![ForgotPassword](./screenshots/4_Forgot_password.png)
-![ViewUser](./screenshots/5_View_user.png)
+![ViewUser](./screenshots/5_User_details.png)
 ![ChangeUserPassword](./screenshots/6_Change_password.png)
-![EditUser](./screenshots/7_Edit_user.png)
+![EditUser](./screenshots/7_User_edit.png)
 ![RoleDetails](./screenshots/8_Role_details.png)
 ![RoleEdit](./screenshots/9_Role_edit.png)
 ![ExpensesList](./screenshots/10_Expenses_list.png)
@@ -143,16 +143,15 @@
 ![EstablishmentsEdit](./screenshots/18_Establishments_edit.png)
 ![Forbidden](./screenshots/19_Forbidden.png)
 ![NotFound](./screenshots/20_Not_found.png)
-![TabletView](./screenshots/21_Tablet_view.png)
 
 </details>
 
 <details>
   <summary><strong>Скріншоти email листів</strong></summary>
 
-![WelcomeMail](./screenshots/22_Mail_welcome.png)
-![ChangeEmail](./screenshots/23_Mail_confirm_change_email.png)
-![ResetPassword](./screenshots/24_Mail_reset_pass.png)
+![WelcomeMail](./screenshots/21_Mail_welcome.png)
+![ChangeEmail](./screenshots/22_Mail_confirm_change_email.png)
+![ResetPassword](./screenshots/23_Mail_reset_pass.png)
 
 </details>
 
@@ -162,46 +161,47 @@
   <summary><strong>Серверні технології</strong></summary>
 
 - **Node.js** – середовище виконання JavaScript на сервері.
-- **Express** – веб-фреймворк для створення серверних застосунків. Забезпечує маршрутизацію та обробку запитів.
-- **PostgreSQL** – реляційна база даних, що використовується для зберігання даних застосунку.
-- **Sequelize** – ORM (Object-Relational Mapping) для роботи з базою даних PostgreSQL. Дозволяє взаємодіяти з базою даних через моделі, а також керувати міграціями та сидуванням даних.
-- **pg** і **pg-hstore** – бібліотеки для взаємодії з PostgreSQL з використанням Sequelize.
-- **MongoDB** – NoSQL база даних, яка використовується для зберігання користувачів, ролей і прав доступу.
-- **Mongoose** – ODM (Object-Document Mapping) для роботи з MongoDB. Дозволяє створювати схеми та моделі для взаємодії з базою даних.
-- **Axios** – бібліотека для виконання HTTP-запитів. Використовується для комунікації з сервером і API НБУ для завантаження курсів валют.
-- **bcrypt** – бібліотека для хешування паролів, що використовується для підвищення безпеки даних користувачів.
-- **jsonwebtoken** – бібліотека для роботи з JWT (JSON Web Token), яка використовується для авторизації та створення токенів доступу.
-- **cookie-parser** – middleware для обробки файлів cookie в Express.
+- **Express** – веб-фреймворк для створення серверних застосунків.
+- **PostgreSQL** – реляційна база даних для зберігання структурованих даних.
+- **MongoDB** – NoSQL база даних для зберігання користувачів, ролей і прав доступу.
+- **Sequelize** – ORM для PostgreSQL. Працює з моделями, міграціями, сидуванням.
+- **pg** / **pg-hstore** – залежності Sequelize для роботи з PostgreSQL.
+- **Mongoose** – ODM для MongoDB. Дозволяє описувати схеми і працювати з моделями.
+- **date-fns** – бібліотека для форматування, обчислення та маніпуляції з датами.
+- **bcrypt** – хешування паролів для зберігання в безпечному вигляді.
+- **jsonwebtoken** – генерація і перевірка JWT токенів для автентифікації.
+- **cookie-parser** – middleware для обробки HTTP cookie.
 - **cors** – middleware для керування політикою доступу між доменами (CORS).
+- **multer** – middleware для обробки завантажених файлів (наприклад, зображень).
+- **nodemailer** – бібліотека для відправки email через SMTP.
+- **axios** – бібліотека для виконання HTTP-запитів.
 - **dotenv** – бібліотека для завантаження змінних оточення з `.env` файлу.
-- **yup** – бібліотека для валідації даних на сервері.
-- **multer** – middleware для обробки завантаження файлів на сервер (наприклад, зображень або документів).
-- **nodemailer** – бібліотека для відправки email-листів через SMTP.
 - **uuid** – бібліотека для генерації унікальних ідентифікаторів (UUID).
-- **date-fns** – бібліотека для роботи з датами, що дозволяє форматувати, парсити та виконувати операції з датами.
+- **yup** – бібліотека для валідації даних на сервері.
 
 </details>
 
 <details>
   <summary><strong>Клієнтські технології</strong></summary>
 
-- **React** – бібліотека для побудови інтерфейсів користувача. Використовується для створення компонентів і управління станом.
+- **React** – бібліотека для побудови інтерфейсів користувача.
 - **React DOM** – бібліотека для взаємодії React з DOM.
-- **React Router DOM** – бібліотека для роботи з маршрутизацією в React. Використовується для організації навігації між сторінками.
-- **Redux Toolkit (RTK Query)** – набір інструментів для роботи з глобальним станом у Redux.
+- **React Router DOM** – бібліотека для роботи з маршрутизацією в React.
+- **React Helmet Async** – бібліотека для роботи з мета-тегами та заголовками сторінок в React.
+- **Redux Toolkit (@reduxjs/toolkit)** – інструменти для роботи з глобальним станом і RTK Query.
 - **React Redux** – офіційна бібліотека для інтеграції Redux з React.
 - **Redux Logger** – middleware для логування дій Redux у консолі.
 - **MUI (Material-UI)** – бібліотека компонентів для React, що реалізує Material Design.
 - **MUI Icons** – набір іконок для Material-UI.
-- **MUI Date Pickers** – набір компонентів для вибору дати та часу.
-- **Emotion (React & Styled)** – бібліотека для роботи зі стилями в React.
+- **MUI X Date Pickers** – набір компонентів для вибору дати та часу в MUI.
+- **Emotion (React & Styled)** – бібліотека для CSS-in-JS стилізації, використовується з MUI.
+- **Date-fns** – бібліотека для роботи з датами, яка використовується для форматування і обробки часу.
+- **Framer Motion** – бібліотека для створення анімацій у React.
 - **Chart.js** – бібліотека для створення графіків і діаграм.
 - **React-Chartjs-2** – обгортка для інтеграції Chart.js з React.
 - **Chart.js Plugin Datalabels** – плагін для Chart.js, що дозволяє відображати підписи на діаграмах.
 - **Formik** – бібліотека для керування формами в React, що спрощує обробку стану, валідації та подій у формах.
-- **Yup** – бібліотека для валідації даних на клієнті.
-- **Date-fns** – бібліотека для роботи з датами, яка використовується для форматування і обробки часу.
-- **React Helmet Async** – бібліотека для роботи з мета-тегами та заголовками сторінок в React.
+- **Yup** – бібліотека для валідації даних (часто використовується з Formik).
 
 </details>
 
