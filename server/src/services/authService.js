@@ -58,7 +58,7 @@ class AuthService {
     const tokens = generateTokens(newUser);
     return {
       ...tokens,
-      user: {
+      authenticatedUser: {
         uuid: newUser.uuid,
         fullName: newUser.fullName,
         emailConfirm: mapValue(
@@ -92,7 +92,7 @@ class AuthService {
     const tokens = generateTokens(foundUser);
     return {
       ...tokens,
-      user: {
+      authenticatedUser: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
         emailConfirm: mapValue(
@@ -129,7 +129,7 @@ class AuthService {
     const tokens = generateTokens(foundUser);
     return {
       ...tokens,
-      user: {
+      authenticatedUser: {
         uuid: foundUser.uuid,
         fullName: foundUser.fullName,
         emailConfirm: mapValue(

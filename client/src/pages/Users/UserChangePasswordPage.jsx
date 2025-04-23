@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
 
-import useAuthUser from '../../hooks/useAuthUser';
+import useAuthentication from '../../hooks/useAuthentication';
 
 import {
   useChangeUserPasswordMutation,
@@ -15,7 +15,7 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function UserChangePasswordPage() {
   const { uuid } = useParams();
-  const { authenticatedUser } = useAuthUser();
+  const { authenticatedUser } = useAuthentication();
   const navigate = useNavigate();
 
   const isAuthenticatedUser = !uuid || uuid === authenticatedUser?.uuid;

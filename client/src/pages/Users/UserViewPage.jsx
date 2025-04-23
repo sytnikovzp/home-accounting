@@ -13,7 +13,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 
 import { API_CONFIG } from '../../constants';
-import useAuthUser from '../../hooks/useAuthUser';
+import useAuthentication from '../../hooks/useAuthentication';
 
 import {
   useFetchUserByUuidQuery,
@@ -31,7 +31,7 @@ import {
 
 function UserViewPage() {
   const { uuid } = useParams();
-  const { authenticatedUser } = useAuthUser();
+  const { authenticatedUser } = useAuthentication();
   const navigate = useNavigate();
   const [responseData, setResponseData] = useState(null);
 

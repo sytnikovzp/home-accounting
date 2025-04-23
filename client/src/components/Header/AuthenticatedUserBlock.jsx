@@ -8,7 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { API_CONFIG } from '../../constants';
 import { stringAvatar } from '../../utils/sharedFunctions';
-import useAuthUser from '../../hooks/useAuthUser';
+import useAuthentication from '../../hooks/useAuthentication';
 
 import UserMenu from './UserMenu/UserMenu';
 import Welcome from './Welcome';
@@ -17,7 +17,7 @@ import { stylesAuthenticatedMenu, stylesHeaderUserBlock } from '../../styles';
 
 function AuthenticatedUserBlock() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { authenticatedUser } = useAuthUser();
+  const { authenticatedUser } = useAuthentication();
 
   const fullName = authenticatedUser?.fullName || 'Невідомий користувач';
   const photo = authenticatedUser?.photo || null;

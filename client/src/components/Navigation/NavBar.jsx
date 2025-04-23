@@ -15,7 +15,7 @@ import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import StoreIcon from '@mui/icons-material/Store';
 import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
 
-import useAuthUser from '../../hooks/useAuthUser';
+import useAuthentication from '../../hooks/useAuthentication';
 import useHasPermission from '../../hooks/useHasPermission';
 
 import NavItem from './NavItem';
@@ -106,7 +106,7 @@ const privateNavItems = [
 ];
 
 function NavBar({ onClose }) {
-  const { isAuthenticated } = useAuthUser();
+  const { isAuthenticated } = useAuthentication();
   const { hasPermission } = useHasPermission();
 
   const filteredNavItems = isAuthenticated

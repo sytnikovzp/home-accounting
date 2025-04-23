@@ -18,10 +18,10 @@ describe('AuthController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(201);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Євген Ступка');
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
       refreshToken = response.body.refreshToken;
     });
 
@@ -47,11 +47,11 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('accessToken');
       expect(response.body).toHaveProperty('refreshToken');
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user).toHaveProperty('emailConfirm');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Євген Ступка');
+      expect(response.body.authenticatedUser).toHaveProperty('emailConfirm');
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
       refreshToken = response.body.refreshToken;
     });
@@ -76,11 +76,11 @@ describe('AuthController', () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('accessToken');
       expect(response.body).toHaveProperty('refreshToken');
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Євген Ступка');
-      expect(response.body.user).toHaveProperty('emailConfirm');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Євген Ступка');
+      expect(response.body.authenticatedUser).toHaveProperty('emailConfirm');
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
     });
 

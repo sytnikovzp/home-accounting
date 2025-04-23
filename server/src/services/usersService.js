@@ -220,7 +220,7 @@ class UsersService {
     const tokens = generateTokens(updatedUser);
     return {
       ...tokens,
-      user: {
+      authenticatedUser: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
         emailConfirm: mapValue(
@@ -316,7 +316,7 @@ class UsersService {
     const tokens = generateTokens(updatedUser);
     return {
       ...tokens,
-      user: {
+      authenticatedUser: {
         uuid: updatedUser.uuid,
         fullName: updatedUser.fullName,
         emailConfirm: mapValue(

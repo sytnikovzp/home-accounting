@@ -4,32 +4,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAccessToken } from '../utils/sharedFunctions';
 
 import { useFetchUserProfileQuery } from '../store/services';
-import { logout } from '../store/slices/authUserSlice';
+import { clearAuthenticationState } from '../store/slices/authenticationSlice';
 
-function useAuthUser() {
+function useAuthentication() {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
-  const { isLoading: isFetchingUser, isError } = useFetchUserProfileQuery(
-    null,
-    {
-      skip: !accessToken,
-    }
-  );
+  const { isFetching, isError } = useFetchUserProfileQuery(null, {
+    skip: !accessToken,
+  });
 
   const authenticatedUser = useSelector(
-    (state) => state.authUser.authenticatedUser
+    (state) => state.authentication.authenticatedUser
   );
   const isAuthenticated = useSelector(
-    (state) => state.authUser.isAuthenticated
+    (state) => state.authentication.isAuthenticated
   );
 
   useEffect(() => {
     if (isError) {
-      dispatch(logout());
+      dispatch(clearAuthenticationState());
     }
   }, [isError, dispatch]);
 
-  return { isFetchingUser, authenticatedUser, isAuthenticated };
+  return { authenticatedUser, isAuthenticated, isFetching };
 }
 
-export default useAuthUser;
+export default useAuthentication;

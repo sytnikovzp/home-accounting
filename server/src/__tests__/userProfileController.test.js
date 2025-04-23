@@ -21,11 +21,11 @@ describe('UserController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Микола Щербак');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
-      authData.user.uuid = response.body.user.uuid;
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Микола Щербак');
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
+      authData.user.uuid = response.body.authenticatedUser.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -79,11 +79,13 @@ describe('UserController', () => {
           fullName: 'Updated User',
         });
       expect(response.status).toBe(200);
-      expect(response.body.user.uuid).toBe(authData.user.uuid);
-      expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.emailConfirm).toBe('Підтверджений');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body.authenticatedUser.uuid).toBe(authData.user.uuid);
+      expect(response.body.authenticatedUser.fullName).toBe('Updated User');
+      expect(response.body.authenticatedUser.emailConfirm).toBe(
+        'Підтверджений'
+      );
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
       if (response.body.accessToken !== authData.user.accessToken) {
@@ -170,11 +172,13 @@ describe('UserController', () => {
           confirmNewPassword: 'Qwerty1234567',
         });
       expect(response.status).toBe(200);
-      expect(response.body.user.uuid).toBe(authData.user.uuid);
-      expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.emailConfirm).toBe('Підтверджений');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body.authenticatedUser.uuid).toBe(authData.user.uuid);
+      expect(response.body.authenticatedUser.fullName).toBe('Updated User');
+      expect(response.body.authenticatedUser.emailConfirm).toBe(
+        'Підтверджений'
+      );
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
       if (response.body.accessToken !== authData.user.accessToken) {

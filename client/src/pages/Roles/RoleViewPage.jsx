@@ -8,7 +8,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import useAuthUser from '../../hooks/useAuthUser';
+import useAuthentication from '../../hooks/useAuthentication';
 
 import { useFetchRoleByUuidQuery } from '../../store/services';
 
@@ -18,7 +18,7 @@ import ViewDetails from '../../components/ViewDetails/ViewDetails';
 
 function RoleViewPage() {
   const { uuid: paramUuid } = useParams();
-  const { authenticatedUser } = useAuthUser();
+  const { authenticatedUser } = useAuthentication();
   const navigate = useNavigate();
 
   const uuid = paramUuid || authenticatedUser?.role?.uuid;

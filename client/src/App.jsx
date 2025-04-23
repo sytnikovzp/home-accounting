@@ -1,7 +1,7 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import useAuthUser from './hooks/useAuthUser';
+import useAuthentication from './hooks/useAuthentication';
 
 import Layout from './components/Layout/Layout';
 import ModalWindow from './components/ModalWindow/ModalWindow';
@@ -132,9 +132,9 @@ const privateRoutes = [
 ];
 
 function App() {
-  const { isFetchingUser } = useAuthUser();
+  const { isFetching } = useAuthentication();
 
-  if (isFetchingUser) {
+  if (isFetching) {
     return (
       <ModalWindow hideCloseIcon isOpen>
         <Preloader message='Welcome to Home Accounting...' />

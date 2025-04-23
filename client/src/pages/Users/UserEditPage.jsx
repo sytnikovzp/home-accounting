@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import Alert from '@mui/material/Alert';
 
-import useAuthUser from '../../hooks/useAuthUser';
+import useAuthentication from '../../hooks/useAuthentication';
 
 import {
   useChangeUserPhotoMutation,
@@ -22,7 +22,7 @@ import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
 function UserEditPage() {
   const { uuid } = useParams();
-  const { authenticatedUser } = useAuthUser();
+  const { authenticatedUser } = useAuthentication();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

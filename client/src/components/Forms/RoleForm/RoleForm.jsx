@@ -13,8 +13,7 @@ import PermissionsSelector from '../PermissionsSelector/PermissionsSelector';
 function RoleForm({ isSubmitting, role = null, onSubmit }) {
   const { title, description, permissions = [] } = role ?? {};
 
-  const { data: responseData, isLoading: isFetching } =
-    useFetchAllPermissionsQuery();
+  const { data: responseData, isFetching } = useFetchAllPermissionsQuery();
 
   const permissionsList = useMemo(() => responseData ?? [], [responseData]);
 

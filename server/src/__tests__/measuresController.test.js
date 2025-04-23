@@ -23,11 +23,11 @@ describe('MeasuresController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Ганна Шевченко');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
-      authData.user.uuid = response.body.user.uuid;
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Ганна Шевченко');
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
+      authData.user.uuid = response.body.authenticatedUser.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -37,11 +37,13 @@ describe('MeasuresController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Олександра Іванчук');
-      expect(response.body.user.role).toBe('Moderators');
-      expect(response.body.user).toHaveProperty('photo');
-      authData.moderator.uuid = response.body.user.uuid;
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe(
+        'Олександра Іванчук'
+      );
+      expect(response.body.authenticatedUser.role).toBe('Moderators');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
+      authData.moderator.uuid = response.body.authenticatedUser.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
 
@@ -51,11 +53,11 @@ describe('MeasuresController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Іван Петренко');
-      expect(response.body.user.role).toBe('Administrators');
-      expect(response.body.user).toHaveProperty('photo');
-      authData.administrator.uuid = response.body.user.uuid;
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Іван Петренко');
+      expect(response.body.authenticatedUser.role).toBe('Administrators');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
+      authData.administrator.uuid = response.body.authenticatedUser.uuid;
       authData.administrator.accessToken = response.body.accessToken;
     });
   });

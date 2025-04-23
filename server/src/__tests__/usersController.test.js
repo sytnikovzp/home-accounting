@@ -23,11 +23,11 @@ describe('UserController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Євген Коваленко');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
-      authData.user.uuid = response.body.user.uuid;
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Євген Коваленко');
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
+      authData.user.uuid = response.body.authenticatedUser.uuid;
       authData.user.accessToken = response.body.accessToken;
     });
 
@@ -37,11 +37,13 @@ describe('UserController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Олександра Іванчук');
-      expect(response.body.user.role).toBe('Moderators');
-      expect(response.body.user).toHaveProperty('photo');
-      authData.moderator.uuid = response.body.user.uuid;
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe(
+        'Олександра Іванчук'
+      );
+      expect(response.body.authenticatedUser.role).toBe('Moderators');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
+      authData.moderator.uuid = response.body.authenticatedUser.uuid;
       authData.moderator.accessToken = response.body.accessToken;
     });
 
@@ -51,11 +53,11 @@ describe('UserController', () => {
         password: 'Qwerty12',
       });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Іван Петренко');
-      expect(response.body.user.role).toBe('Administrators');
-      expect(response.body.user).toHaveProperty('photo');
-      authData.administrator.uuid = response.body.user.uuid;
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Іван Петренко');
+      expect(response.body.authenticatedUser.role).toBe('Administrators');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
+      authData.administrator.uuid = response.body.authenticatedUser.uuid;
       authData.administrator.accessToken = response.body.accessToken;
     });
 
@@ -163,11 +165,13 @@ describe('UserController', () => {
           fullName: 'Updated User',
         });
       expect(response.status).toBe(200);
-      expect(response.body.user.uuid).toBe(authData.user.uuid);
-      expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.emailConfirm).toBe('Підтверджений');
-      expect(response.body.user.role).toBe('Users');
-      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body.authenticatedUser.uuid).toBe(authData.user.uuid);
+      expect(response.body.authenticatedUser.fullName).toBe('Updated User');
+      expect(response.body.authenticatedUser.emailConfirm).toBe(
+        'Підтверджений'
+      );
+      expect(response.body.authenticatedUser.role).toBe('Users');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
       if (response.body.accessToken !== authData.user.accessToken) {
@@ -257,9 +261,9 @@ describe('UserController', () => {
           role: 'Moderators',
         });
       expect(response.status).toBe(200);
-      expect(response.body.user).toHaveProperty('uuid');
-      expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.role).toBe('Moderators');
+      expect(response.body.authenticatedUser).toHaveProperty('uuid');
+      expect(response.body.authenticatedUser.fullName).toBe('Updated User');
+      expect(response.body.authenticatedUser.role).toBe('Moderators');
       if (response.body.accessToken !== authData.user.accessToken) {
         authData.user.accessToken = response.body.accessToken;
       }
@@ -301,11 +305,13 @@ describe('UserController', () => {
           confirmNewPassword: 'Qwerty1234567',
         });
       expect(response.status).toBe(200);
-      expect(response.body.user.uuid).toBe(authData.user.uuid);
-      expect(response.body.user.fullName).toBe('Updated User');
-      expect(response.body.user.emailConfirm).toBe('Очікує підтвердження');
-      expect(response.body.user.role).toBe('Moderators');
-      expect(response.body.user).toHaveProperty('photo');
+      expect(response.body.authenticatedUser.uuid).toBe(authData.user.uuid);
+      expect(response.body.authenticatedUser.fullName).toBe('Updated User');
+      expect(response.body.authenticatedUser.emailConfirm).toBe(
+        'Очікує підтвердження'
+      );
+      expect(response.body.authenticatedUser.role).toBe('Moderators');
+      expect(response.body.authenticatedUser).toHaveProperty('photo');
       expect(response.body).toHaveProperty('permissions');
       expect(Array.isArray(response.body.permissions)).toBe(true);
       if (response.body.accessToken !== authData.user.accessToken) {

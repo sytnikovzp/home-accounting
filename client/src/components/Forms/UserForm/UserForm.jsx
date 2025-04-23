@@ -26,7 +26,7 @@ function UserForm({
   const { hasPermission } = useHasPermission();
   const { fullName, email, role, photo } = user ?? {};
 
-  const { data: rolesData, isLoading: isFetching } = useFetchAllRolesQuery({
+  const { data: rolesData, isFetching } = useFetchAllRolesQuery({
     page: 1,
     limit: 500,
     sort: 'title',

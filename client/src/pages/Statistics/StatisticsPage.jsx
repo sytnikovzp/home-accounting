@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
-import useAuthUser from '../../hooks/useAuthUser';
+import useAuthentication from '../../hooks/useAuthentication';
 
 import {
   useFetchCostByCategoriesQuery,
@@ -28,7 +28,7 @@ import {
 function StatisticsPage() {
   const [ago, setAgo] = useState('allTime');
   const [criteria, setCriteria] = useState('byCategories');
-  const { authenticatedUser, isAuthenticated } = useAuthUser();
+  const { authenticatedUser, isAuthenticated } = useAuthentication();
 
   const creatorUuid = authenticatedUser?.uuid;
 

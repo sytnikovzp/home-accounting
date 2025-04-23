@@ -14,7 +14,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
-import useAuthUser from '../../hooks/useAuthUser';
+import useAuthentication from '../../hooks/useAuthentication';
 
 import MobileDrawer from '../Navigation/MobileDrawer';
 
@@ -28,7 +28,7 @@ import {
 } from '../../styles';
 
 function Header() {
-  const { isAuthenticated } = useAuthUser();
+  const { isAuthenticated } = useAuthentication();
   const navigate = useNavigate();
   const theme = useTheme();
   const [isDrawerOpen, setDrawerOpen] = useState(false);

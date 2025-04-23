@@ -9,12 +9,11 @@ import BaseForm from '../BaseForm/BaseForm';
 function ProductForm({ isSubmitting, product = null, onSubmit }) {
   const { title, category } = product ?? {};
 
-  const { data: categoriesData, isLoading: isFetching } =
-    useFetchAllCategoriesQuery({
-      page: 1,
-      limit: 500,
-      sort: 'title',
-    });
+  const { data: categoriesData, isFetching } = useFetchAllCategoriesQuery({
+    page: 1,
+    limit: 500,
+    sort: 'title',
+  });
 
   const categories = categoriesData?.data ?? [];
 

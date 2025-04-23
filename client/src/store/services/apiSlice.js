@@ -7,7 +7,7 @@ import {
   saveAccessToken,
 } from '../../utils/sharedFunctions';
 
-import { logout } from '../slices/authUserSlice';
+import { clearAuthenticationState } from '../slices/authenticationSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_CONFIG.BASE_URL,
@@ -52,7 +52,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     } else {
       console.warn('Token refresh failed. Logging out...');
       removeAccessToken();
-      api.dispatch(logout());
+      api.dispatch(clearAuthenticationState());
     }
   }
 

@@ -7,7 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PasswordIcon from '@mui/icons-material/Password';
 import PortraitIcon from '@mui/icons-material/Portrait';
 
-import useAuthUser from '../../../hooks/useAuthUser';
+import useAuthentication from '../../../hooks/useAuthentication';
 
 import { useLogoutMutation } from '../../../store/services';
 
@@ -43,7 +43,7 @@ const menuItems = [
 ];
 
 function UserMenu({ closeUserMenu }) {
-  const { authenticatedUser } = useAuthUser();
+  const { authenticatedUser } = useAuthentication();
   const navigate = useNavigate();
 
   const [logoutMutation] = useLogoutMutation();

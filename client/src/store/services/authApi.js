@@ -5,7 +5,7 @@ import {
   saveAccessToken,
 } from '../../utils/sharedFunctions';
 
-import { logout } from '../slices/authUserSlice';
+import { clearAuthenticationState } from '../slices/authenticationSlice';
 
 import { baseQueryWithReauth } from './apiSlice';
 import { userProfileApi } from './userProfileApi';
@@ -26,7 +26,7 @@ export const authApi = createApi({
           saveAccessToken(data.accessToken);
           dispatch(userProfileApi.util.invalidateTags(['UserProfile']));
         } catch (error) {
-          console.warn('Registration failed: ', error?.error?.data?.message);
+          console.warn('Registration failed: ', error.error?.data?.message);
         }
       },
     }),
@@ -43,7 +43,7 @@ export const authApi = createApi({
           saveAccessToken(data.accessToken);
           dispatch(userProfileApi.util.invalidateTags(['UserProfile']));
         } catch (error) {
-          console.warn('Login failed: ', error?.error?.data?.message);
+          console.warn('Login failed: ', error.error?.data?.message);
         }
       },
     }),
@@ -59,9 +59,9 @@ export const authApi = createApi({
           removeAccessToken();
           dispatch(userProfileApi.util.resetApiState());
           dispatch(authApi.util.resetApiState());
-          dispatch(logout());
+          dispatch(clearAuthenticationState());
         } catch (error) {
-          console.warn('Logout failed: ', error?.error?.data?.message);
+          console.warn('Logout failed: ', error.error?.data?.message);
         }
       },
     }),
@@ -76,7 +76,7 @@ export const authApi = createApi({
           const { data } = await queryFulfilled;
           saveAccessToken(data.accessToken);
         } catch (error) {
-          console.warn('Token refresh failed: ', error?.error?.data?.message);
+          console.warn('Token refresh failed: ', error.error?.data?.message);
         }
       },
     }),

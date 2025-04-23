@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 
 import { ENTITY_PERMISSIONS } from '../constants';
 
-import useAuthUser from './useAuthUser';
+import useAuthentication from './useAuthentication';
 
 function useHasPermission() {
-  const { authenticatedUser } = useAuthUser();
+  const { authenticatedUser } = useAuthentication();
 
   const hasPermission = useMemo(() => {
     if (!authenticatedUser?.permissions) {
