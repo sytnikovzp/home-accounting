@@ -1,13 +1,11 @@
+import { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import useAuthentication from './hooks/useAuthentication';
-
 import Layout from './components/Layout/Layout';
-import ModalWindow from './components/ModalWindow/ModalWindow';
-import Preloader from './components/Preloader/Preloader';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import PublicRoute from './components/PublicRoute/PublicRoute';
+import SplashScreen from './components/SplashScreen/SplashScreen';
 
 import AboutPage from './pages/About/AboutPage';
 import AuthPage from './pages/Auth/AuthPage';
@@ -132,51 +130,51 @@ const privateRoutes = [
 ];
 
 function App() {
-  const { isFetching } = useAuthentication();
-
-  if (isFetching) {
-    return (
-      <ModalWindow hideCloseIcon isOpen>
-        <Preloader message='Welcome to Home Accounting...' />
-      </ModalWindow>
-    );
-  }
+  const [splashFinished, setSplashFinished] = useState(false);
 
   return (
-    <HelmetProvider>
-      <Router>
-        <Routes>
-          <Route element={<Layout />} path='/'>
-            <Route index element={<HomePage />} />
-            {publicRoutes.map(({ path, element: Component }) => (
-              <Route
-                key={path}
-                element={
-                  <PublicRoute>
-                    <Component />
-                  </PublicRoute>
-                }
-                path={path}
-              />
-            ))}
-            {privateRoutes.map(({ path, element: Component, permissions }) => (
-              <Route
-                key={path}
-                element={
-                  <PrivateRoute requiredPermissions={permissions}>
-                    <Component />
-                  </PrivateRoute>
-                }
-                path={path}
-              />
-            ))}
-            <Route element={<StatisticsPage />} path='statistics' />
-            <Route element={<NotificationPage />} path='notification' />
-            <Route element={<NotFoundPage />} path='*' />
-          </Route>
-        </Routes>
-      </Router>
-    </HelmetProvider>
+    <>
+      {splashFinished ? (
+        <HelmetProvider>
+          <Router>
+            <Routes>
+              <Route element={<Layout />} path='/'>
+                <Route index element={<HomePage />} />
+                {publicRoutes.map(({ path, element: Component }) => (
+                  <Route
+                    key={path}
+                    element={
+                      <PublicRoute>
+                        <Component />
+                      </PublicRoute>
+                    }
+                    path={path}
+                  />
+                ))}
+                {privateRoutes.map(
+                  ({ path, element: Component, permissions }) => (
+                    <Route
+                      key={path}
+                      element={
+                        <PrivateRoute requiredPermissions={permissions}>
+                          <Component />
+                        </PrivateRoute>
+                      }
+                      path={path}
+                    />
+                  )
+                )}
+                <Route element={<StatisticsPage />} path='statistics' />
+                <Route element={<NotificationPage />} path='notification' />
+                <Route element={<NotFoundPage />} path='*' />
+              </Route>
+            </Routes>
+          </Router>
+        </HelmetProvider>
+      ) : (
+        <SplashScreen onFinish={() => setSplashFinished(true)} />
+      )}
+    </>
   );
 }
 

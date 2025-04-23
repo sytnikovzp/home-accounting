@@ -401,7 +401,7 @@ CTRL + C
 {
   "accessToken": "JWT access токен",
   "refreshToken": "JWT refresh токен",
-  "user": {
+  "authenticatedUser": {
     "uuid": "UUID користувача",
     "fullName": "Микола Щербак",
     "emailConfirm": "Очікує підтвердження",
@@ -437,7 +437,7 @@ CTRL + C
 {
   "accessToken": "JWT access токен",
   "refreshToken": "JWT refresh токен",
-  "user": {
+  "authenticatedUser": {
     "uuid": "UUID користувача",
     "fullName": "Микола Щербак",
     "emailConfirm": "Очікує підтвердження",
@@ -477,7 +477,7 @@ CTRL + C
 {
   "accessToken": "JWT access токен",
   "refreshToken": "JWT refresh токен",
-  "user": {
+  "authenticatedUser": {
     "uuid": "UUID користувача",
     "fullName": "Микола Щербак",
     "emailConfirm": "Очікує підтвердження",
@@ -660,7 +660,7 @@ CTRL + C
 {
   "accessToken": "JWT access токен",
   "refreshToken": "JWT refresh токен",
-  "user": {
+  "authenticatedUser": {
     "uuid": "UUID користувача",
     "fullName": "Євген Коваленко",
     "emailConfirm": "Очікує підтвердження",
@@ -696,7 +696,7 @@ CTRL + C
 {
   "accessToken": "JWT access токен",
   "refreshToken": "JWT refresh токен",
-  "user": {
+  "authenticatedUser": {
     "uuid": "UUID користувача",
     "fullName": "Євген Коваленко",
     "emailConfirm": "Очікує підтвердження",
@@ -887,7 +887,7 @@ CTRL + C
 {
   "accessToken": "JWT access токен",
   "refreshToken": "JWT refresh токен",
-  "user": {
+  "authenticatedUser": {
     "uuid": "UUID користувача",
     "fullName": "Євген Коваленко",
     "emailConfirm": "Очікує підтвердження",
@@ -923,7 +923,7 @@ CTRL + C
 {
   "accessToken": "JWT access токен",
   "refreshToken": "JWT refresh токен",
-  "user": {
+  "authenticatedUser": {
     "uuid": "UUID користувача",
     "fullName": "Євген Коваленко",
     "emailConfirm": "Очікує підтвердження",
