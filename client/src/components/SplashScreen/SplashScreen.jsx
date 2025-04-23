@@ -5,6 +5,9 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import accountingLogo from '../../assets/logo.png';
 
 function SplashScreen() {
@@ -13,11 +16,14 @@ function SplashScreen() {
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   useEffect(() => {
-    const timer1 = setTimeout(() => setStartAnimation(true), 300);
-    const timer2 = setTimeout(() => setShowText(true), 1300);
-    const timer3 = setTimeout(() => setProgress(100), 2500);
-    const timer4 = setTimeout(() => setDone(true), 3000);
+    const timer1 = setTimeout(() => setStartAnimation(true), 500);
+    const timer2 = setTimeout(() => setShowText(true), 1600);
+    const timer3 = setTimeout(() => setProgress(100), 3000);
+    const timer4 = setTimeout(() => setDone(true), 3500);
 
     const progressInterval = setInterval(() => {
       setProgress((prev) => (prev < 95 ? prev + 1 : prev));
@@ -31,6 +37,23 @@ function SplashScreen() {
       clearInterval(progressInterval);
     };
   }, []);
+
+  let logoSize = null;
+  let textWidth = null;
+  let variant = null;
+  let barWidth = null;
+
+  if (isMobile) {
+    logoSize = 70;
+    textWidth = 480;
+    variant = 'h2';
+    barWidth = '80%';
+  } else {
+    logoSize = 100;
+    textWidth = 750;
+    variant = 'h1';
+    barWidth = '60%';
+  }
 
   return (
     <motion.div
@@ -56,22 +79,28 @@ function SplashScreen() {
       >
         <motion.div
           animate={startAnimation ? { scale: 0.5, x: 0 } : { scale: 1, x: 0 }}
-          style={{ display: 'flex', alignItems: 'center' }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexWrap: 'nowrap',
+          }}
           transition={{ duration: 1, ease: 'easeInOut' }}
         >
           <motion.img
             alt='Logo'
             src={accountingLogo}
             style={{
-              width: 100,
-              height: 100,
+              width: logoSize,
+              height: logoSize,
               objectFit: 'contain',
             }}
           />
+
           <motion.div
             animate={
               showText
-                ? { width: 750, opacity: 1, x: 0 }
+                ? { width: textWidth, opacity: 1, x: 0 }
                 : { width: 0, opacity: 0, x: 20 }
             }
             initial={{ width: 0, opacity: 0 }}
@@ -79,15 +108,19 @@ function SplashScreen() {
             transition={{ duration: 1.2, ease: 'easeOut' }}
           >
             <Typography
-              sx={{ ml: 2, whiteSpace: 'nowrap', fontWeight: 500 }}
-              variant='h1'
+              sx={{
+                ml: 2,
+                whiteSpace: 'nowrap',
+                fontWeight: 500,
+              }}
+              variant={variant}
             >
               Home Accounting
             </Typography>
           </motion.div>
         </motion.div>
 
-        <Box sx={{ width: '60%', mt: 6 }}>
+        <Box sx={{ width: barWidth, mt: 6 }}>
           <LinearProgress
             color='success'
             value={progress}
