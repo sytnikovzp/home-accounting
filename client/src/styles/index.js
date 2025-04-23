@@ -12,6 +12,7 @@ export * from './components/listTable';
 export * from './components/mobileDrawer';
 export * from './components/modalWindow';
 export * from './components/preload';
+export * from './components/splashScreen';
 export * from './components/statisticsChart';
 export * from './components/viewDetails';
 export * from './pages/authPage';

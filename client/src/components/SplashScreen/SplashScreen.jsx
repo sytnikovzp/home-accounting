@@ -9,6 +9,11 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import accountingLogo from '../../assets/logo.png';
+import {
+  stylesSplashScreenBox,
+  stylesSplashScreenDiv,
+  stylesSplashScreenTypography,
+} from '../../styles';
 
 function SplashScreen() {
   const [startAnimation, setStartAnimation] = useState(false);
@@ -38,22 +43,12 @@ function SplashScreen() {
     };
   }, []);
 
-  let logoSize = null;
-  let textWidth = null;
-  let variant = null;
-  let barWidth = null;
+  const getResponsiveValue = (mobile, desktop) => (isMobile ? mobile : desktop);
 
-  if (isMobile) {
-    logoSize = 70;
-    textWidth = 480;
-    variant = 'h2';
-    barWidth = '80%';
-  } else {
-    logoSize = 100;
-    textWidth = 750;
-    variant = 'h1';
-    barWidth = '60%';
-  }
+  const logoSize = getResponsiveValue(70, 100);
+  const textWidth = getResponsiveValue(480, 750);
+  const variant = getResponsiveValue('h2', 'h1');
+  const barWidth = getResponsiveValue('80%', '60%');
 
   return (
     <motion.div
@@ -63,28 +58,15 @@ function SplashScreen() {
         pointerEvents: done ? 'none' : 'auto',
         position: 'fixed',
         inset: 0,
+        willChange: 'opacity',
         zIndex: done ? -1 : 9999,
       }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100%',
-          backgroundImage: 'linear-gradient(to bottom, #E8F5E9, #C8E6C9)',
-        }}
-      >
+      <Box sx={stylesSplashScreenBox}>
         <motion.div
           animate={startAnimation ? { scale: 0.5, x: 0 } : { scale: 1, x: 0 }}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexWrap: 'nowrap',
-          }}
+          style={stylesSplashScreenDiv}
           transition={{ duration: 1, ease: 'easeInOut' }}
         >
           <motion.img
@@ -94,6 +76,7 @@ function SplashScreen() {
               width: logoSize,
               height: logoSize,
               objectFit: 'contain',
+              willChange: 'transform',
             }}
           />
 
@@ -104,17 +87,13 @@ function SplashScreen() {
                 : { width: 0, opacity: 0, x: 20 }
             }
             initial={{ width: 0, opacity: 0 }}
-            style={{ overflow: 'hidden' }}
+            style={{
+              overflow: 'hidden',
+              willChange: 'transform, opacity',
+            }}
             transition={{ duration: 1.2, ease: 'easeOut' }}
           >
-            <Typography
-              sx={{
-                ml: 2,
-                whiteSpace: 'nowrap',
-                fontWeight: 500,
-              }}
-              variant={variant}
-            >
+            <Typography sx={stylesSplashScreenTypography} variant={variant}>
               Home Accounting
             </Typography>
           </motion.div>
