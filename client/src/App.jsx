@@ -1,6 +1,8 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import useAuthentication from './hooks/useAuthentication';
+
 import Layout from './components/Layout/Layout';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import PublicRoute from './components/PublicRoute/PublicRoute';
@@ -129,6 +131,12 @@ const privateRoutes = [
 ];
 
 function App() {
+  const { isFetching } = useAuthentication();
+
+  if (isFetching) {
+    return null;
+  }
+
   return (
     <HelmetProvider>
       <SplashScreen />
