@@ -255,6 +255,17 @@
 ## Розгортання проєкту
 
 <details>
+  <summary><strong>Системні вимоги</strong></summary>
+
+- GIT: **2.47** або вище
+- Node.js: **v20.19.1** або вище
+- NPM: **10.8.2** або вище
+- PostgreSQL: **16.4** або вище
+- MongoDB: **7.0.14** або вище
+
+</details>
+
+<details>
   <summary><strong>Підготовка</strong></summary>
 
 ```bash
