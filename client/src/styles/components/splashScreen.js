@@ -9,14 +9,14 @@ export const stylesSplashScreenBox = {
 
 export const stylesSplashScreenDiv = {
   display: 'flex',
+  flexWrap: 'nowrap',
   justifyContent: 'center',
   alignItems: 'center',
-  flexWrap: 'nowrap',
   willChange: 'transform, opacity',
 };
 
 export const stylesSplashScreenTypography = {
   ml: 2,
-  whiteSpace: 'nowrap',
   fontWeight: 500,
+  whiteSpace: 'nowrap',
 };

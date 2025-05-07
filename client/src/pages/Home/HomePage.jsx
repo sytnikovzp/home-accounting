@@ -147,10 +147,10 @@ function HomePage() {
                 <IconButton size='small'>
                   <ExpandMoreIcon
                     sx={{
+                      transition: 'transform 0.3s',
                       transform: openPanels.has(key)
                         ? 'rotate(180deg)'
                         : 'rotate(0deg)',
-                      transition: 'transform 0.3s',
                     }}
                   />
                 </IconButton>

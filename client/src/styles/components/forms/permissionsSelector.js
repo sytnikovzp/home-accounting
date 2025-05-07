@@ -1,17 +1,17 @@
 export const stylesPermissionsSelectorMainBox = {
-  border: '1px solid #DDD',
-  borderRadius: '4px',
-  maxHeight: '250px',
   overflowX: 'hidden',
   overflowY: 'auto',
+  maxHeight: '250px',
   mb: 2,
+  border: '1px solid #DDD',
+  borderRadius: '4px',
 };
 
 export const stylesPermissionsSelectorListItem = {
-  alignItems: 'flex-start',
-  borderBottom: '1px solid #DDD',
   display: 'flex',
+  alignItems: 'flex-start',
   ml: 2,
+  borderBottom: '1px solid #DDD',
 };
 
 export const stylesPermissionsSelectorCheckboxSize = {

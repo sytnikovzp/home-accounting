@@ -16,18 +16,18 @@ export const stylesLayoutXLContainer = {
 };
 
 export const stylesLayoutSideBar = {
-  display: { xs: 'none', md: 'block' },
-  alignSelf: 'flex-start',
   position: 'sticky',
-  flexShrink: 0,
   top: 64,
+  display: { xs: 'none', md: 'block' },
   overflowY: 'auto',
+  flexShrink: 0,
+  alignSelf: 'flex-start',
   width: 290,
 };
 
 export const stylesLayoutOutlet = {
-  flexGrow: 1,
-  maxWidth: '100%',
-  minWidth: 0,
   overflowX: 'auto',
+  flexGrow: 1,
+  minWidth: 0,
+  maxWidth: '100%',
 };

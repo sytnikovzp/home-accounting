@@ -16,46 +16,46 @@ export const stylesHeaderUserBlockWrapper = {
 
 export const stylesLogoIcon = {
   display: 'flex',
-  marginRight: '16px',
-  height: '36px',
   width: '36px',
+  height: '36px',
+  marginRight: '16px',
 };
 
 export const stylesLogoBoxDesktop = {
-  display: { md: 'flex', xs: 'none' },
+  display: { xs: 'none', md: 'flex' },
   alignItems: 'center',
   color: 'inherit',
   textDecoration: 'none',
 };
 
 export const stylesLogoTypographyDesktop = {
-  color: 'white',
+  mr: 2,
   fontFamily: 'Roboto, sans-serif',
   fontWeight: 600,
   letterSpacing: '.3rem',
-  mr: 2,
+  color: 'white',
 };
 
 export const stylesLogoBoxMobile = {
-  display: { md: 'none', xs: 'flex' },
+  display: { xs: 'flex', md: 'none' },
   alignItems: 'center',
   textDecoration: 'none',
 };
 
 export const stylesLogoTypographyMobile = {
   alignSelf: 'center',
-  color: 'white',
   fontFamily: 'Roboto, sans-serif',
   fontWeight: 600,
   letterSpacing: '.05rem',
+  color: 'white',
   textAlign: 'center',
 };
 
 export const stylesHeaderUserAvatar = {
+  width: { xs: 40, sm: 45 },
+  height: { xs: 40, sm: 45 },
   border: '2px solid rgba(56, 142, 60, 0.3)',
   cursor: 'pointer',
-  height: { sm: 45, xs: 40 },
-  width: { sm: 45, xs: 40 },
 };
 
 export const stylesHeaderUserBlock = {
@@ -64,25 +64,25 @@ export const stylesHeaderUserBlock = {
 };
 
 export const stylesAuthenticatedMenu = {
+  overflow: 'visible',
+  mt: 1.5,
+  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
   '&:before': {
+    position: 'absolute',
+    top: 0,
+    right: { xs: 22, sm: 25 },
+    zIndex: 0,
     display: 'block',
+    width: 10,
+    height: 10,
     bgcolor: 'background.paper',
     content: '""',
-    position: 'absolute',
-    right: { sm: 25, xs: 22 },
-    top: 0,
     transform: 'translateY(-50%) rotate(45deg)',
-    height: 10,
-    width: 10,
-    zIndex: 0,
   },
-  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-  mt: 1.5,
-  overflow: 'visible',
 };
 
 export const stylesWelcomeBox = {
-  display: { sm: 'block', xs: 'none' },
+  display: { xs: 'none', sm: 'block' },
   alignItems: 'center',
   marginRight: 2,
 };

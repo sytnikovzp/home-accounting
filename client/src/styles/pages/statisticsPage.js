@@ -18,12 +18,9 @@ export const stylesStatisticsPageBoxCriteria = {
   gap: 2,
 };
 
-export const stylesStatisticsPageCriteriaSelect = {
-  mt: 2,
-  width: 260,
-};
+export const stylesStatisticsPageCriteriaSelect = { width: 260, mt: 2 };
 
 export const stylesStatisticsPagePeriodSelect = {
+  width: { xs: 260, sm: 210 },
   mt: 2,
-  width: { sm: 210, xs: 260 },
 };

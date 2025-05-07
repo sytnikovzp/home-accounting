@@ -17,18 +17,18 @@ export const stylesViewDetailRowTypography = {
 };
 
 export const stylesPermissionsListBox = {
-  border: '1px solid #DDD',
-  borderRadius: '4px',
-  maxHeight: '250px',
   overflowX: 'hidden',
   overflowY: 'auto',
-  paddingLeft: '10px',
+  maxHeight: '250px',
   paddingRight: '10px',
+  paddingLeft: '10px',
+  border: '1px solid #DDD',
+  borderRadius: '4px',
 };
 
 export const stylesPermissionsListBoxEmpty = {
   display: 'flex',
   alignItems: 'center',
-  color: 'grey.600',
   p: 1,
+  color: 'grey.600',
 };

@@ -1,16 +1,16 @@
 export const stylesFooterBox = {
-  backgroundColor: '#C8E6C9',
-  borderTop: '1px solid rgba(0, 0, 0, 0.1)',
-  color: '#333',
-  py: 2,
   mt: 'auto',
+  py: 2,
+  borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#C8E6C9',
+  color: '#333',
 };
 
 export const stylesFooterContainer = {
   display: 'flex',
   flexDirection: { xs: 'column', sm: 'row' },
-  alignItems: 'center',
   justifyContent: 'space-between',
+  alignItems: 'center',
   gap: 1.5,
   textAlign: { xs: 'center', sm: 'left' },
 };
@@ -27,7 +27,7 @@ export const stylesFooterSocialLinks = {
 export const stylesFooterIcon = {
   display: 'flex',
   alignItems: 'center',
-  '&:hover': { color: '#2E7D32' },
   color: '#555',
   transition: 'color 0.3s ease',
+  '&:hover': { color: '#2E7D32' },
 };

@@ -108,9 +108,9 @@ function ListTable({
 
         <Table
           sx={{
-            borderCollapse: 'collapse',
             width: '100%',
             opacity: fetchError ? 0 : 1,
+            borderCollapse: 'collapse',
           }}
         >
           <TableHead>
@@ -120,15 +120,15 @@ function ListTable({
                   key={field}
                   align={align}
                   sx={{
-                    borderBottom: '1px solid #ccc',
-                    color: 'common.white',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
+                    width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
                     borderRight:
                       index < columns.length - 1
                         ? '1px solid darkgreen'
                         : 'none',
-                    width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
+                    borderBottom: '1px solid #ccc',
+                    fontWeight: 'bold',
+                    color: 'common.white',
+                    cursor: 'pointer',
                   }}
                   onClick={handleSortClick(field)}
                 >

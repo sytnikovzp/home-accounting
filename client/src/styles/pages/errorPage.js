@@ -1,8 +1,8 @@
 export const stylesErrorPageBox = {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
   justifyContent: 'center',
+  alignItems: 'center',
   height: '60vh',
   textAlign: 'center',
 };

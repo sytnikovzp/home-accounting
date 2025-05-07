@@ -3,11 +3,13 @@ import { builtinModules } from 'module';
 import js from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import jsxA11Y from 'eslint-plugin-jsx-a11y';
+import muiSxOrder from 'eslint-plugin-mui-sx-order';
 import regexopt from 'eslint-plugin-optimize-regex';
 import prettier from 'eslint-plugin-prettier';
 import promise from 'eslint-plugin-promise';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import reactPerf from 'eslint-plugin-react-perf';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import sortkeys from 'eslint-plugin-sort-keys-fix';
@@ -30,11 +32,13 @@ export default [
     plugins: {
       import: importPlugin,
       'jsx-a11y': jsxA11Y,
+      'mui-sx-order': muiSxOrder,
       'optimize-regex': regexopt,
       prettier,
       promise,
       react,
       'react-hooks': reactHooks,
+      'react-perf': reactPerf,
       'react-refresh': reactRefresh,
       'simple-import-sort': simpleImportSort,
       'sort-keys-fix': sortkeys,
@@ -78,6 +82,7 @@ export default [
       'global-require': 'off',
       'guard-for-in': 'warn',
       'import/default': 'error',
+      'import/exports-last': 'warn',
       'import/extensions': [
         'warn',
         'never',
@@ -100,6 +105,7 @@ export default [
       'import/unambiguous': 'error',
       'init-declarations': ['warn', 'always'],
       'jsx-a11y/alt-text': 'warn',
+      'jsx-a11y/anchor-is-valid': 'warn',
       'jsx-a11y/no-noninteractive-element-to-interactive-role': 'error',
       'lines-between-class-members': [
         'error',
@@ -108,6 +114,7 @@ export default [
       ],
       'max-classes-per-file': ['error', 1],
       'max-nested-callbacks': ['error', 5],
+      'mui-sx-order/sort-sx-keys': 'warn',
       'new-cap': 'off',
       'new-parens': 'error',
       'no-alert': 'error',
@@ -313,6 +320,9 @@ export default [
       'promise/prefer-await-to-then': 'warn',
       'react-hooks/exhaustive-deps': 'warn',
       'react-hooks/rules-of-hooks': 'error',
+      'react-perf/jsx-no-new-array-as-prop': 'warn',
+      'react-perf/jsx-no-new-function-as-prop': 'warn',
+      'react-perf/jsx-no-new-object-as-prop': 'warn',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
@@ -351,6 +361,7 @@ export default [
         },
       ],
       'react/no-access-state-in-setstate': 'error',
+      'react/no-array-index-key': 'warn',
       'react/no-children-prop': 'error',
       'react/no-danger': 'error',
       'react/no-direct-mutation-state': 'error',
@@ -410,6 +421,7 @@ export default [
               '^yup',
               '^@?\\w',
             ],
+            ['^@fortawesome'],
             ['^@mui/material'],
             ['^@mui/x-date-pickers'],
             [
@@ -452,9 +464,6 @@ export default [
       'wrap-regex': 'off',
       'yield-star-spacing': 'warn',
       yoda: 'error',
-      // 'jsx-a11y/anchor-is-valid': 'warn',
-      // 'import/exports-last': 'warn',
-      // 'react/no-array-index-key': 'warn',
       // 'react/jsx-no-bind': ['warn', { allowArrowFunctions: false }],
       // 'sort-keys-fix/sort-keys-fix': 'warn',
     },

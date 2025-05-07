@@ -1,10 +1,10 @@
 export const stylesStatisticsChartBox = {
   display: 'flex',
+  overflow: 'auto',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  height: { sm: '60vh', xs: '' },
-  overflow: 'auto',
+  height: { xs: '', sm: '60vh' },
 };
 
 export const stylesStatisticsChartSpinner = {
@@ -12,22 +12,16 @@ export const stylesStatisticsChartSpinner = {
   justifyContent: 'center',
 };
 
-export const stylesStatisticsChartStackDirection = {
-  sm: 'row',
-  xs: 'column',
-};
+export const stylesStatisticsChartStackDirection = { xs: 'column', sm: 'row' };
 
-export const stylesStatisticsChartStackButton = {
-  mb: 2,
-  mt: 2,
-};
+export const stylesStatisticsChartStackButton = { mt: 2, mb: 2 };
 
 export const stylesStatisticsChartButton = {
+  backgroundImage: 'linear-gradient(to top, #c1e1a6, #a5d6a7)',
+  color: 'black',
   '&:hover': {
     backgroundImage: 'linear-gradient(to top, #a5d6a7, #81c784)',
   },
-  backgroundImage: 'linear-gradient(to top, #c1e1a6, #a5d6a7)',
-  color: 'black',
 };
 
 export const stylesStatisticsChartBackgroundColor = [

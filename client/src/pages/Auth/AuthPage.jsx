@@ -149,10 +149,10 @@ function AuthPage() {
     <Box sx={stylesAuthPageBoxTitle}>
       <Avatar
         sx={{
+          width: 50,
           height: 50,
           mb: 1,
           mx: 'auto',
-          width: 50,
           bgcolor: AVATAR_COLORS[authMode],
         }}
       >

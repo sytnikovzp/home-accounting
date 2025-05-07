@@ -16,8 +16,8 @@ export const stylesHomePageGridPanel = {
 export const stylesHomePageCard = {
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: '#B6D5A1',
   width: 400,
+  backgroundColor: '#B6D5A1',
 };
 
 export const stylesHomePageCardActions = {

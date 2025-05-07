@@ -9,8 +9,8 @@ export const stylesMobileDrawerDrawer = {
 export const stylesMobileDrawerBox = {
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
   width: 300,
+  height: '100%',
 };
 
 export const stylesMobileDrawerBoxIcon = {

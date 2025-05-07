@@ -1,24 +1,24 @@
 export const stylesModalWindowFadeBox = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
   display: 'flex',
   flexDirection: 'column',
-  position: 'absolute',
-  bgcolor: 'background.paper',
-  borderRadius: 2,
-  boxShadow: 24,
-  left: '50%',
+  width: { xs: '90%', sm: 450 },
   maxWidth: 600,
   minHeight: 'auto',
   p: 2,
-  top: '50%',
+  borderRadius: 2,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
   transform: 'translate(-50%, -50%)',
-  width: { sm: 450, xs: '90%' },
 };
 
 export const stylesModalWindowIconButton = {
-  color: (theme) => theme.palette.grey[700],
   position: 'absolute',
-  right: 12,
   top: 12,
+  right: 12,
+  color: (theme) => theme.palette.grey[700],
 };
 
 export const stylesModalWindowContentBox = {
@@ -29,14 +29,14 @@ export const stylesModalWindowContentBox = {
 
 export const stylesModalWindowActionsOnCenter = {
   display: 'flex',
-  gap: 2,
   justifyContent: 'center',
+  gap: 2,
   mt: 2,
 };
 
 export const stylesModalWindowActionsOnRight = {
   display: 'flex',
-  gap: 2,
   justifyContent: 'flex-end',
+  gap: 2,
   mt: 2,
 };

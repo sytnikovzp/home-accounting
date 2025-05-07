@@ -2,16 +2,16 @@ export const stylesCurrencyRatesBox = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  borderTop: '1px solid rgba(0, 0, 0, 0.1)',
   maxWidth: 290,
+  borderTop: '1px solid rgba(0, 0, 0, 0.1)',
 };
 
 export const stylesCurrencyRatesTypography = {
   display: 'flex',
   alignItems: 'center',
+  gap: 3,
   mt: 1,
   ml: 2,
-  gap: 3,
 };
 
 export const stylesCurrencyRatesTableRow = {
