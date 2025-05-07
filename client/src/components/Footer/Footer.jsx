@@ -31,13 +31,18 @@ const socialLinks = [
 ];
 
 function Footer() {
+  const startYear = 2024;
   const currentYear = new Date().getFullYear();
+  const years =
+    startYear === currentYear
+      ? `${startYear}`
+      : `${startYear} - ${currentYear}`;
 
   return (
     <Box component='footer' sx={stylesFooterBox}>
       <Container maxWidth='xl' sx={stylesFooterContainer}>
         <Typography sx={stylesFooterTypography} variant='body2'>
-          Designed by Alexandr Sytnikov © 2024 - {currentYear}
+          © {years} Alexandr Sytnikov. All rights reserved.
         </Typography>
         <Box sx={stylesFooterSocialLinks}>
           {socialLinks.map(({ href, icon }) => (
