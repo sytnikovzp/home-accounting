@@ -6,7 +6,7 @@ export const stylesStatisticsPageBox = {
   },
   justifyContent: 'space-between',
   alignItems: 'center',
-  mb: 2,
+  mb: 5,
 };
 
 export const stylesStatisticsPageBoxCriteria = {

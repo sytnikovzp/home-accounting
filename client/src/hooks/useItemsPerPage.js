@@ -11,8 +11,8 @@ function useItemsPerPage() {
     { items: 6, match: isXs },
     { items: 6, match: isSm },
     { items: 7, match: isMd },
-    { items: 7, match: isLg },
-    { items: 12, match: isXl },
+    { items: 8, match: isLg },
+    { items: 13, match: isXl },
   ];
 
   const matchedBreakpoint = breakpoints.find((bp) => bp.match);

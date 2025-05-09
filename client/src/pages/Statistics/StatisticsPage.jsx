@@ -52,7 +52,7 @@ function StatisticsPage() {
   const handleAgoChange = (event) => setAgo(event.target.value);
 
   return (
-    <Container maxWidth='lg' sx={{ py: 2 }}>
+    <Container maxWidth='lg' sx={{ py: 1 }}>
       <Box sx={stylesStatisticsPageBox}>
         <Typography variant='h6'>Статистика витрат</Typography>
         <Box sx={stylesStatisticsPageBoxCriteria}>

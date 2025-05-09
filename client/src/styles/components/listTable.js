@@ -27,7 +27,6 @@ export const stylesListTableBorderEmptyRow = {
 export const stylesListTableContainer = {
   overflowX: 'auto',
   width: '100%',
-  mb: 2,
   border: '1px solid #ccc',
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',

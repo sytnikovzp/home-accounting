@@ -14,7 +14,7 @@ export const stylesStatisticsChartSpinner = {
 
 export const stylesStatisticsChartStackDirection = { xs: 'column', sm: 'row' };
 
-export const stylesStatisticsChartStackButton = { mt: 2, mb: 2 };
+export const stylesStatisticsChartStackButton = { mt: 5 };
 
 export const stylesStatisticsChartButton = {
   backgroundImage: 'linear-gradient(to top, #c1e1a6, #a5d6a7)',
