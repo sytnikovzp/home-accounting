@@ -10,7 +10,6 @@ module.exports = {
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
         primaryKey: true,
-        unique: true,
       },
       product_uuid: {
         type: Sequelize.UUID,
@@ -71,7 +70,7 @@ module.exports = {
         allowNull: false,
       },
       creator_full_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       created_at: {

@@ -1,5 +1,6 @@
-const { isBefore, parseISO } = require('date-fns');
 const { Model, Sequelize } = require('sequelize');
+
+const { isBeforeCurrentDate } = require('../../../utils/sharedFunctions');
 
 module.exports = (sequelize, DataTypes) => {
   class Expense extends Model {
@@ -77,12 +78,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isDate: true,
-          isBeforeCurrentDate(value) {
-            const currentDate = new Date();
-            if (!isBefore(parseISO(value), currentDate)) {
-              throw new Error('Дата не може бути у майбутньому');
-            }
-          },
+          isBeforeCurrentDate,
         },
       },
       creatorUuid: {
@@ -90,8 +86,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       creatorFullName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          len: [1, 100],
+        },
       },
     },
     {

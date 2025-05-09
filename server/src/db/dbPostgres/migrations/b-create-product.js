@@ -10,10 +10,9 @@ module.exports = {
         defaultValue: Sequelize.literal('uuid_generate_v4()'),
         allowNull: false,
         primaryKey: true,
-        unique: true,
       },
       title: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
         unique: true,
       },
@@ -37,7 +36,7 @@ module.exports = {
         allowNull: true,
       },
       moderator_full_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
       creator_uuid: {
@@ -45,7 +44,7 @@ module.exports = {
         allowNull: false,
       },
       creator_full_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       created_at: {

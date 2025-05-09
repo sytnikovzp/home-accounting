@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
         validate: {
@@ -45,16 +45,22 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       moderatorFullName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: true,
+        validate: {
+          len: [0, 100],
+        },
       },
       creatorUuid: {
         type: DataTypes.UUID,
         allowNull: false,
       },
       creatorFullName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          len: [1, 100],
+        },
       },
     },
     {

@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
         validate: {
@@ -27,17 +27,24 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       description: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(100),
+        allowNull: true,
         validate: {
           len: [0, 100],
         },
       },
       url: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
+        allowNull: true,
         unique: true,
+        validate: {
+          isUrl: true,
+          len: [0, 100],
+        },
       },
       logo: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
+        allowNull: true,
         unique: true,
         validate: {
           len: [0, 100],
@@ -53,16 +60,22 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       moderatorFullName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: true,
+        validate: {
+          len: [0, 100],
+        },
       },
       creatorUuid: {
         type: DataTypes.UUID,
         allowNull: false,
       },
       creatorFullName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          len: [1, 100],
+        },
       },
     },
     {

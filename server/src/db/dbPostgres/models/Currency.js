@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       title: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
         validate: {
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       code: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(3),
         allowNull: false,
         unique: true,
         validate: {
@@ -41,8 +41,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       creatorFullName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          len: [1, 100],
+        },
       },
     },
     {

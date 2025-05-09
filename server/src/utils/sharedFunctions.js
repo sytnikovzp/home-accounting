@@ -1,6 +1,6 @@
 const axios = require('axios');
 const bcrypt = require('bcrypt');
-const { format, parse, isValid } = require('date-fns');
+const { format, parse, isValid, isBefore, parseISO } = require('date-fns');
 const { uk } = require('date-fns/locale');
 
 const {
@@ -29,6 +29,13 @@ const setRefreshTokenCookie = function (res, refreshToken) {
     httpOnly: true,
     maxAge: 60 * 24 * 60 * 60 * 1000,
   });
+};
+
+const isBeforeCurrentDate = (value) => {
+  const currentDate = new Date();
+  if (!isBefore(parseISO(value), currentDate)) {
+    throw new Error('Дата не може бути у майбутньому');
+  }
 };
 
 const formatDateTime = function (date) {
@@ -174,6 +181,7 @@ const checkToken = async (token, type = 'reset') => {
 };
 
 module.exports = {
+  isBeforeCurrentDate,
   checkPermission,
   checkToken,
   convertToUAH,
