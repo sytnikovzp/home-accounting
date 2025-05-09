@@ -4,7 +4,7 @@ import { parseDateString } from './sharedFunctions';
 
 const STRING_SCHEME = yup
   .string('Це має бути рядком')
-  .trim('Введені дані не можуть містити пробіли на початку або в кінці')
+  .transform((value) => (value === null ? value : value.trim()))
   .max(100, 'Введені дані не можуть перевищувати 100 символів');
 
 const PASSWORD_REQUIRED_SCHEME = yup
@@ -30,11 +30,15 @@ const ARRAY_OF_STRING_NULLABLE_SCHEME = yup
 
 const URL_RESOURCE_NULLABLE_SCHEME = yup
   .string('Це має бути рядком')
+  .transform((value) => (value === null ? value : value.trim()))
+  .max(100, 'Введені дані не можуть перевищувати 100 символів')
   .url('Введіть коректний URL')
   .nullable();
 
 const EMAIL_SCHEME = yup
   .string('Це має бути рядком')
+  .transform((value) => (value === null ? value : value.trim()))
+  .max(100, 'Введені дані не можуть перевищувати 100 символів')
   .email('Введіть коректний e-mail');
 
 const STATUS_REQUIRED_SCHEME = yup
@@ -50,8 +54,15 @@ const DATE_REQUIRED_SCHEME = yup
   .required('Будь ласка, оберіть дату');
 
 const PAGINATION_SCHEME = yup.object().shape({
-  limit: yup.number().min(1).max(500).required(),
-  offset: yup.number().min(0).required(),
+  limit: yup
+    .number()
+    .min(1, 'Мінімальне значення — 1')
+    .max(500, 'Максимальне значення — 500')
+    .required('Потрібно вказати limit'),
+  offset: yup
+    .number()
+    .min(0, 'Мінімальне значення — 0')
+    .required('Потрібно вказати offset'),
 });
 
 const REGISTRATION_VALIDATION_SCHEME = yup.object().shape({
