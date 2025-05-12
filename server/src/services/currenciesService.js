@@ -35,11 +35,7 @@ class CurrenciesService {
     }
     const totalCount = await Currency.count();
     return {
-      allCurrencies: foundCurrencies.map(({ uuid, title, code }) => ({
-        uuid,
-        title,
-        code,
-      })),
+      allCurrencies: foundCurrencies,
       totalCount,
     };
   }

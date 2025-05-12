@@ -105,6 +105,21 @@ class ExpensesService {
     if (!foundExpenses.length) {
       throw notFound('Витрати не знайдено');
     }
+    const allExpenses = foundExpenses.map(
+      ({
+        uuid,
+        date,
+        'Product.title': productTitle,
+        'Establishment.title': establishmentTitle,
+        totalPrice,
+      }) => ({
+        uuid,
+        date: formatDate(date),
+        product: productTitle || '',
+        establishment: establishmentTitle || '',
+        totalPrice,
+      })
+    );
     const totalCount = await Expense.count({
       where: { creator_uuid: currentUser.uuid, date: { [Op.gte]: time } },
     });
@@ -120,21 +135,7 @@ class ExpensesService {
     });
     const totalSumForPeriod = totalSumForPeriodResult[0]?.result || '0.00';
     return {
-      allExpenses: foundExpenses.map(
-        ({
-          uuid,
-          date,
-          'Product.title': productTitle,
-          'Establishment.title': establishmentTitle,
-          totalPrice,
-        }) => ({
-          uuid,
-          date: formatDate(date),
-          product: productTitle || '',
-          establishment: establishmentTitle || '',
-          totalPrice,
-        })
-      ),
+      allExpenses,
       totalCount,
       totalSumForPeriod,
     };

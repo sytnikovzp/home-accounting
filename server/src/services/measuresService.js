@@ -33,11 +33,7 @@ class MeasuresService {
     }
     const totalCount = await Measure.count();
     return {
-      allMeasures: foundMeasures.map(({ uuid, title, description }) => ({
-        uuid,
-        title,
-        description,
-      })),
+      allMeasures: foundMeasures,
       totalCount,
     };
   }
