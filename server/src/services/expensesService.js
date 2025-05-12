@@ -167,7 +167,7 @@ class ExpensesService {
     if (foundExpense.creatorUuid !== currentUser.uuid) {
       throw forbidden('Ви не маєте дозволу на перегляд цієї витрати');
     }
-    return formatExpenseData(foundExpense.toJSON());
+    return formatExpenseData(foundExpense);
   }
 
   static async createExpense(

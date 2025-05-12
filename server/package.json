@@ -38,7 +38,7 @@
   "description": "",
   "dependencies": {
     "axios": "^1.9.0",
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
@@ -70,6 +70,6 @@
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
     "sequelize-cli": "^6.6.3",
-    "supertest": "^7.1.0"
+    "supertest": "^7.1.1"
   }
 }

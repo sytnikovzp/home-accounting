@@ -64,7 +64,7 @@ class EstablishmentsService {
     if (!foundEstablishment) {
       throw notFound('Заклад не знайдено');
     }
-    return formatEstablishmentData(foundEstablishment.toJSON());
+    return formatEstablishmentData(foundEstablishment);
   }
 
   static async createEstablishment(
