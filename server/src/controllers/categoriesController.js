@@ -36,10 +36,12 @@ class CategoriesController {
 
   static async getCategoryByUuid(req, res, next) {
     try {
-      const { categoryUuid } = req.params;
-      const category = await getCategoryByUuid(categoryUuid);
-      if (category) {
-        res.status(200).json(category);
+      const {
+        params: { categoryUuid },
+      } = req;
+      const categoryByUuid = await getCategoryByUuid(categoryUuid);
+      if (categoryByUuid) {
+        res.status(200).json(categoryByUuid);
       } else {
         res.status(401);
       }

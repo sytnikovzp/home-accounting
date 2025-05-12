@@ -36,10 +36,12 @@ class ProductsController {
 
   static async getProductByUuid(req, res, next) {
     try {
-      const { productUuid } = req.params;
-      const product = await getProductByUuid(productUuid);
-      if (product) {
-        res.status(200).json(product);
+      const {
+        params: { productUuid },
+      } = req;
+      const productByUuid = await getProductByUuid(productUuid);
+      if (productByUuid) {
+        res.status(200).json(productByUuid);
       } else {
         res.status(401);
       }

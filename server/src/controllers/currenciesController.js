@@ -35,10 +35,12 @@ class CurrenciesController {
 
   static async getCurrencyByUuid(req, res, next) {
     try {
-      const { currencyUuid } = req.params;
-      const currency = await getCurrencyByUuid(currencyUuid);
-      if (currency) {
-        res.status(200).json(currency);
+      const {
+        params: { currencyUuid },
+      } = req;
+      const currencyByUuid = await getCurrencyByUuid(currencyUuid);
+      if (currencyByUuid) {
+        res.status(200).json(currencyByUuid);
       } else {
         res.status(401);
       }

@@ -33,10 +33,12 @@ class RolesController {
 
   static async getRoleByUuid(req, res, next) {
     try {
-      const { roleUuid } = req.params;
-      const role = await getRoleByUuid(roleUuid);
-      if (role) {
-        res.status(200).json(role);
+      const {
+        params: { roleUuid },
+      } = req;
+      const roleByUuid = await getRoleByUuid(roleUuid);
+      if (roleByUuid) {
+        res.status(200).json(roleByUuid);
       } else {
         res.status(401);
       }

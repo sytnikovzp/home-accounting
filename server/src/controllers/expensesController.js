@@ -42,9 +42,9 @@ class ExpensesController {
         user: { uuid },
       } = req;
       const currentUser = await getCurrentUser(uuid);
-      const expense = await getExpenseByUuid(expenseUuid, currentUser);
-      if (expense) {
-        res.status(200).json(expense);
+      const expenseByUuid = await getExpenseByUuid(expenseUuid, currentUser);
+      if (expenseByUuid) {
+        res.status(200).json(expenseByUuid);
       } else {
         res.status(401);
       }

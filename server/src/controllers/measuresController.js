@@ -35,10 +35,12 @@ class MeasuresController {
 
   static async getMeasureByUuid(req, res, next) {
     try {
-      const { measureUuid } = req.params;
-      const measure = await getMeasureByUuid(measureUuid);
-      if (measure) {
-        res.status(200).json(measure);
+      const {
+        params: { measureUuid },
+      } = req;
+      const measureByUuid = await getMeasureByUuid(measureUuid);
+      if (measureByUuid) {
+        res.status(200).json(measureByUuid);
       } else {
         res.status(401);
       }

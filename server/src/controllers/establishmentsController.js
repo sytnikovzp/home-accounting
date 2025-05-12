@@ -41,10 +41,13 @@ class EstablishmentsController {
 
   static async getEstablishmentByUuid(req, res, next) {
     try {
-      const { establishmentUuid } = req.params;
-      const establishment = await getEstablishmentByUuid(establishmentUuid);
-      if (establishment) {
-        res.status(200).json(establishment);
+      const {
+        params: { establishmentUuid },
+      } = req;
+      const establishmentByUuid =
+        await getEstablishmentByUuid(establishmentUuid);
+      if (establishmentByUuid) {
+        res.status(200).json(establishmentByUuid);
       } else {
         res.status(401);
       }

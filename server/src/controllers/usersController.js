@@ -41,9 +41,9 @@ class UsersController {
         user: { uuid },
       } = req;
       const currentUser = await getCurrentUser(uuid);
-      const user = await getUserByUuid(userUuid, currentUser);
-      if (user) {
-        res.status(200).json(user);
+      const userByUuid = await getUserByUuid(userUuid, currentUser);
+      if (userByUuid) {
+        res.status(200).json(userByUuid);
       } else {
         res.status(401);
       }
