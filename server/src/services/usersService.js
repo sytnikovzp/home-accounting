@@ -168,8 +168,8 @@ class UsersService {
     }
     await ConfirmationToken.deleteMany({ userUuid: foundUser.uuid });
     const confirmationToken = await ConfirmationToken.create({
-      expiresAt: new Date(Date.now() + CONFIRMATION_TIME),
       userUuid: foundUser.uuid,
+      expiresAt: new Date(Date.now() + CONFIRMATION_TIME),
     });
     await mailService.sendConfirmationMail(
       foundUser.fullName,

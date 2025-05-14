@@ -44,9 +44,7 @@ class CurrenciesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundCurrency = await Currency.findOne({
-      where: { uuid },
-    });
+    const foundCurrency = await Currency.findByPk(uuid);
     if (!foundCurrency) {
       throw notFound('Валюту не знайдено');
     }
@@ -89,7 +87,7 @@ class CurrenciesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundCurrency = await Currency.findOne({ where: { uuid } });
+    const foundCurrency = await Currency.findByPk(uuid);
     if (!foundCurrency) {
       throw notFound('Валюту не знайдено');
     }
@@ -132,7 +130,7 @@ class CurrenciesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundCurrency = await Currency.findOne({ where: { uuid } });
+    const foundCurrency = await Currency.findByPk(uuid);
     if (!foundCurrency) {
       throw notFound('Валюту не знайдено');
     }

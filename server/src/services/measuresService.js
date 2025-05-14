@@ -42,16 +42,19 @@ class MeasuresService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundMeasure = await Measure.findOne({
-      where: { uuid },
-    });
+    const foundMeasure = await Measure.findByPk(uuid);
     if (!foundMeasure) {
       throw notFound('Одиницю вимірів не знайдено');
     }
     return formatMeasureData(foundMeasure);
   }
 
-  static async createMeasure(title, description, currentUser, transaction) {
+  static async createMeasure(
+    title,
+    descriptionValue,
+    currentUser,
+    transaction
+  ) {
     if (await Measure.findOne({ where: { title } })) {
       throw badRequest('Ця одиниця вимірів вже існує');
     }
@@ -62,7 +65,7 @@ class MeasuresService {
     const newMeasure = await Measure.create(
       {
         title,
-        description: description || null,
+        description: descriptionValue || null,
         creatorUuid: currentUser.uuid,
         creatorFullName: currentUser.fullName,
       },
@@ -77,14 +80,14 @@ class MeasuresService {
   static async updateMeasure(
     uuid,
     title,
-    description,
+    descriptionValue,
     currentUser,
     transaction
   ) {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundMeasure = await Measure.findOne({ where: { uuid } });
+    const foundMeasure = await Measure.findByPk(uuid);
     if (!foundMeasure) {
       throw notFound('Одиницю вимірів не знайдено');
     }
@@ -101,7 +104,7 @@ class MeasuresService {
       }
     }
     const [affectedRows, [updatedMeasure]] = await Measure.update(
-      { title, description: description || null },
+      { title, description: descriptionValue || null },
       { where: { uuid }, returning: true, transaction }
     );
     if (!affectedRows) {
@@ -114,7 +117,7 @@ class MeasuresService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundMeasure = await Measure.findOne({ where: { uuid } });
+    const foundMeasure = await Measure.findByPk(uuid);
     if (!foundMeasure) {
       throw notFound('Одиницю вимірів не знайдено');
     }

@@ -52,7 +52,7 @@ class CategoriesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundCategory = await Category.findOne({ where: { uuid } });
+    const foundCategory = await Category.findByPk(uuid);
     if (!foundCategory) {
       throw notFound('Категорію не знайдено');
     }
@@ -97,7 +97,7 @@ class CategoriesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundCategory = await Category.findOne({ where: { uuid } });
+    const foundCategory = await Category.findByPk(uuid);
     if (!foundCategory) {
       throw notFound('Категорію не знайдено');
     }
@@ -139,7 +139,7 @@ class CategoriesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundCategory = await Category.findOne({ where: { uuid } });
+    const foundCategory = await Category.findByPk(uuid);
     if (!foundCategory) {
       throw notFound('Категорію не знайдено');
     }

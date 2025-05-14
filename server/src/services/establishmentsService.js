@@ -60,7 +60,7 @@ class EstablishmentsService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundEstablishment = await Establishment.findOne({ where: { uuid } });
+    const foundEstablishment = await Establishment.findByPk(uuid);
     if (!foundEstablishment) {
       throw notFound('Заклад не знайдено');
     }
@@ -69,15 +69,15 @@ class EstablishmentsService {
 
   static async createEstablishment(
     title,
-    description,
-    url,
+    descriptionValue,
+    urlValue,
     currentUser,
     transaction
   ) {
     if (await Establishment.findOne({ where: { title } })) {
       throw badRequest('Цей заклад вже існує');
     }
-    if (await Establishment.findOne({ where: { url } })) {
+    if (await Establishment.findOne({ where: { url: urlValue } })) {
       throw badRequest('Цей URL вже використовується');
     }
     const canAddEstablishments = await checkPermission(
@@ -94,8 +94,8 @@ class EstablishmentsService {
     const newEstablishment = await Establishment.create(
       {
         title,
-        description: description || null,
-        url: url || null,
+        description: descriptionValue || null,
+        url: urlValue || null,
         status: canModerationEstablishments ? 'approved' : 'pending',
         moderatorUuid: canModerationEstablishments ? currentUser.uuid : null,
         moderatorFullName: canModerationEstablishments
@@ -115,15 +115,15 @@ class EstablishmentsService {
   static async updateEstablishment(
     uuid,
     title,
-    description,
-    url,
+    descriptionValue,
+    urlValue,
     currentUser,
     transaction
   ) {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundEstablishment = await Establishment.findOne({ where: { uuid } });
+    const foundEstablishment = await Establishment.findByPk(uuid);
     if (!foundEstablishment) {
       throw notFound('Заклад не знайдено');
     }
@@ -146,8 +146,10 @@ class EstablishmentsService {
         throw badRequest('Цей заклад вже існує');
       }
     }
-    if (url && url !== foundEstablishment.url) {
-      const duplicateUrl = await Establishment.findOne({ where: { url } });
+    if (urlValue && urlValue !== foundEstablishment.url) {
+      const duplicateUrl = await Establishment.findOne({
+        where: { url: urlValue },
+      });
       if (duplicateUrl) {
         throw badRequest('Цей URL вже використовується');
       }
@@ -155,8 +157,8 @@ class EstablishmentsService {
     const [affectedRows, [updatedEstablishment]] = await Establishment.update(
       {
         title,
-        description: description || null,
-        url: url || null,
+        description: descriptionValue || null,
+        url: urlValue || null,
         status: canModerationEstablishments ? 'approved' : 'pending',
         moderatorUuid: canModerationEstablishments ? currentUser.uuid : null,
         moderatorFullName: canModerationEstablishments
@@ -180,7 +182,7 @@ class EstablishmentsService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundEstablishment = await Establishment.findOne({ where: { uuid } });
+    const foundEstablishment = await Establishment.findByPk(uuid);
     if (!foundEstablishment) {
       throw notFound('Заклад не знайдено');
     }
@@ -222,7 +224,7 @@ class EstablishmentsService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundEstablishment = await Establishment.findOne({ where: { uuid } });
+    const foundEstablishment = await Establishment.findByPk(uuid);
     if (!foundEstablishment) {
       throw notFound('Заклад не знайдено');
     }
@@ -261,7 +263,7 @@ class EstablishmentsService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundEstablishment = await Establishment.findOne({ where: { uuid } });
+    const foundEstablishment = await Establishment.findByPk(uuid);
     if (!foundEstablishment) {
       throw notFound('Заклад не знайдено');
     }

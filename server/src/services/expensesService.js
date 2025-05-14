@@ -1,6 +1,4 @@
 /* eslint-disable camelcase */
-const { parse, isValid } = require('date-fns');
-const { uk } = require('date-fns/locale');
 const { Op } = require('sequelize');
 
 const {
@@ -22,6 +20,7 @@ const {
   getRecordByTitle,
   formatDateTime,
   convertToUAH,
+  parseAndValidateDate,
 } = require('../utils/sharedFunctions');
 
 const formatExpenseData = (expense) => ({
@@ -171,12 +170,12 @@ class ExpensesService {
   }
 
   static async createExpense(
-    product,
+    productValue,
     quantityValue,
     priceValue,
-    establishment,
-    measure,
-    currency,
+    establishmentValue,
+    measureValue,
+    currencyValue,
     dateValue,
     currentUser,
     transaction
@@ -195,10 +194,10 @@ class ExpensesService {
       foundCurrency,
       uahCurrency,
     ] = await Promise.all([
-      getRecordByTitle(Product, product),
-      getRecordByTitle(Establishment, establishment),
-      getRecordByTitle(Measure, measure),
-      getCurrencyByTitle(Currency, currency),
+      getRecordByTitle(Product, productValue),
+      getRecordByTitle(Establishment, establishmentValue),
+      getRecordByTitle(Measure, measureValue),
+      getCurrencyByTitle(Currency, currencyValue),
       getCurrencyByTitle(Currency, 'Українська гривня'),
     ]);
     if (
@@ -215,12 +214,7 @@ class ExpensesService {
     if (foundCurrency.code !== 'UAH') {
       unitPrice = await convertToUAH(unitPrice, foundCurrency.code);
     }
-    const date = dateValue
-      ? parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk })
-      : null;
-    if (dateValue && !isValid(date)) {
-      throw badRequest('Невірний формат дати');
-    }
+    const date = parseAndValidateDate(dateValue);
     const newExpense = await Expense.create(
       {
         productUuid: foundProduct.uuid,
@@ -262,12 +256,12 @@ class ExpensesService {
 
   static async updateExpense(
     uuid,
-    product,
+    productValue,
     quantityValue,
     priceValue,
-    establishment,
-    measure,
-    currency,
+    establishmentValue,
+    measureValue,
+    currencyValue,
     dateValue,
     currentUser,
     transaction
@@ -275,7 +269,7 @@ class ExpensesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundExpense = await Expense.findOne({ where: { uuid } });
+    const foundExpense = await Expense.findByPk(uuid);
     if (!foundExpense) {
       throw notFound('Витрату не знайдено');
     }
@@ -292,10 +286,10 @@ class ExpensesService {
       foundCurrency,
       uahCurrency,
     ] = await Promise.all([
-      getRecordByTitle(Product, product),
-      getRecordByTitle(Establishment, establishment),
-      getRecordByTitle(Measure, measure),
-      getCurrencyByTitle(Currency, currency),
+      getRecordByTitle(Product, productValue),
+      getRecordByTitle(Establishment, establishmentValue),
+      getRecordByTitle(Measure, measureValue),
+      getCurrencyByTitle(Currency, currencyValue),
       getCurrencyByTitle(Currency, 'Українська гривня'),
     ]);
     if (
@@ -312,13 +306,7 @@ class ExpensesService {
     if (foundCurrency.code !== 'UAH') {
       unitPrice = await convertToUAH(unitPrice, foundCurrency.code);
     }
-    let { date } = foundExpense;
-    if (dateValue) {
-      date = parse(dateValue, 'dd MMMM yyyy', new Date(), { locale: uk });
-      if (!isValid(date)) {
-        throw badRequest('Невірний формат дати');
-      }
-    }
+    const date = parseAndValidateDate(dateValue);
     const [affectedRows, [updatedExpense]] = await Expense.update(
       {
         productUuid: foundProduct.uuid,
@@ -360,7 +348,7 @@ class ExpensesService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundExpense = await Expense.findOne({ where: { uuid } });
+    const foundExpense = await Expense.findByPk(uuid);
     if (!foundExpense) {
       throw notFound('Витрату не знайдено');
     }

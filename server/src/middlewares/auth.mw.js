@@ -7,7 +7,9 @@ const { validateAccessToken } = require('../services/tokenService');
 module.exports.authHandler = async (req, res, next) => {
   try {
     const processRequest = async () => {
-      const authHeader = req.headers.authorization;
+      const {
+        headers: { authorization: authHeader },
+      } = req;
       if (!authHeader) {
         return next(unAuthorizedError());
       }

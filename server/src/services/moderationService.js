@@ -106,7 +106,7 @@ class ModerationService {
     if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
     }
-    const foundCategory = await Category.findOne({ where: { uuid } });
+    const foundCategory = await Category.findByPk(uuid);
     if (!foundCategory) {
       throw notFound('Категорію не знайдено');
     }
@@ -138,7 +138,7 @@ class ModerationService {
     if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
     }
-    const foundProduct = await Product.findOne({ where: { uuid } });
+    const foundProduct = await Product.findByPk(uuid);
     if (!foundProduct) {
       throw notFound('Товар/послугу не знайдено');
     }
@@ -175,7 +175,7 @@ class ModerationService {
     if (!['approved', 'rejected'].includes(status)) {
       throw badRequest('Недопустимий статус');
     }
-    const foundEstablishment = await Establishment.findOne({ where: { uuid } });
+    const foundEstablishment = await Establishment.findByPk(uuid);
     if (!foundEstablishment) {
       throw notFound('Заклад не знайдено');
     }

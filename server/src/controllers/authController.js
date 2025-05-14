@@ -17,7 +17,9 @@ const {
 class AuthController {
   static async registration(req, res, next) {
     try {
-      const { fullName, email, password } = req.body;
+      const {
+        body: { fullName, email, password },
+      } = req;
       const authData = await registration(fullName, email, password);
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(201).json(authData);
@@ -29,7 +31,9 @@ class AuthController {
 
   static async login(req, res, next) {
     try {
-      const { email, password } = req.body;
+      const {
+        body: { email, password },
+      } = req;
       const authData = await login(email, password);
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(200).json(authData);
@@ -51,7 +55,9 @@ class AuthController {
 
   static async refresh(req, res, next) {
     try {
-      const { refreshToken } = req.cookies;
+      const {
+        cookies: { refreshToken },
+      } = req;
       const authData = await refresh(refreshToken);
       setRefreshTokenCookie(res, authData.refreshToken);
       res.status(200).json(authData);
@@ -63,7 +69,9 @@ class AuthController {
 
   static async forgotPassword(req, res, next) {
     try {
-      const { email } = req.body;
+      const {
+        body: { email },
+      } = req;
       await forgotPassword(email);
       res.status(200).json({
         severity: 'success',
@@ -79,7 +87,9 @@ class AuthController {
 
   static async redirectToResetPasswordForm(req, res, next) {
     try {
-      const { token } = req.query;
+      const {
+        query: { token },
+      } = req;
       const isValid = await checkToken(token, 'reset');
       if (isValid) {
         res.redirect(`${CLIENT_URL}/redirect?token=${token}`);

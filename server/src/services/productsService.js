@@ -67,8 +67,7 @@ class ProductsService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundProduct = await Product.findOne({
-      where: { uuid },
+    const foundProduct = await Product.findByPk(uuid, {
       attributes: { exclude: ['categoryUuid'] },
       include: [{ model: Category, attributes: ['uuid', 'title'] }],
     });
@@ -89,7 +88,7 @@ class ProductsService {
     };
   }
 
-  static async createProduct(title, category, currentUser, transaction) {
+  static async createProduct(title, categoryValue, currentUser, transaction) {
     if (await Product.findOne({ where: { title } })) {
       throw badRequest('Цей товар вже існує');
     }
@@ -101,8 +100,8 @@ class ProductsService {
     if (!canAddProducts) {
       throw forbidden('Ви не маєте дозволу на додавання товарів');
     }
-    const categoryRecord = category
-      ? await getRecordByTitle(Category, category)
+    const categoryRecord = categoryValue
+      ? await getRecordByTitle(Category, categoryValue)
       : null;
     const newProduct = await Product.create(
       {
@@ -122,11 +121,17 @@ class ProductsService {
     return formatProductData(newProduct);
   }
 
-  static async updateProduct(uuid, title, category, currentUser, transaction) {
+  static async updateProduct(
+    uuid,
+    title,
+    categoryValue,
+    currentUser,
+    transaction
+  ) {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundProduct = await Product.findOne({ where: { uuid } });
+    const foundProduct = await Product.findByPk(uuid);
     if (!foundProduct) {
       throw notFound('Товар/послугу не знайдено');
     }
@@ -144,8 +149,8 @@ class ProductsService {
         throw badRequest('Цей товар вже існує');
       }
     }
-    const categoryRecord = category
-      ? await getRecordByTitle(Category, category)
+    const categoryRecord = categoryValue
+      ? await getRecordByTitle(Category, categoryValue)
       : null;
     const [affectedRows, [updatedProduct]] = await Product.update(
       {
@@ -167,7 +172,7 @@ class ProductsService {
     if (!isValidUUID(uuid)) {
       throw badRequest('Невірний формат UUID');
     }
-    const foundProduct = await Product.findOne({ where: { uuid } });
+    const foundProduct = await Product.findByPk(uuid);
     if (!foundProduct) {
       throw notFound('Товар/послугу не знайдено');
     }

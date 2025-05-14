@@ -17,7 +17,9 @@ const {
 class UserProfileController {
   static async getCurrentUserProfile(req, res, next) {
     try {
-      const { uuid } = req.user;
+      const {
+        user: { uuid },
+      } = req;
       const currentUser = await getCurrentUser(uuid);
       if (currentUser) {
         res.status(200).json(currentUser);
@@ -32,7 +34,9 @@ class UserProfileController {
 
   static async confirmEmail(req, res, next) {
     try {
-      const { token } = req.query;
+      const {
+        query: { token },
+      } = req;
       await checkToken(token, 'confirm');
       await confirmEmail(token);
       res.redirect(`${CLIENT_URL}/notification?success=email-confirmed`);
@@ -45,7 +49,9 @@ class UserProfileController {
 
   static async resendConfirmEmail(req, res, next) {
     try {
-      const { uuid } = req.user;
+      const {
+        user: { uuid },
+      } = req;
       await resendConfirmEmail(uuid);
       res.status(200).json({
         severity: 'success',
@@ -129,7 +135,9 @@ class UserProfileController {
 
   static async resetUserPhoto(req, res, next) {
     try {
-      const { uuid } = req.user;
+      const {
+        user: { uuid },
+      } = req;
       const currentUser = await getCurrentUser(uuid);
       const updatedUser = await resetUserPhoto(uuid, currentUser);
       if (updatedUser) {
@@ -145,7 +153,9 @@ class UserProfileController {
 
   static async deleteUser(req, res, next) {
     try {
-      const { uuid } = req.user;
+      const {
+        user: { uuid },
+      } = req;
       const currentUser = await getCurrentUser(uuid);
       const deletedUser = await deleteUser(uuid, currentUser);
       if (deletedUser) {

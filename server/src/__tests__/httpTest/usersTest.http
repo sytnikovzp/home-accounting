@@ -33,14 +33,10 @@ GET http://localhost:5000/api/users?emailConfirm=pending HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI1Yzk0NWU1NC1hYjQwLTRiMjQtYWNlMi0zNTZhNTk3MjE3MzAiLCJpYXQiOjE3Mzk3NzY5MzgsImV4cCI6MTczOTc3NzgzOH0.dfOFbv92ChU8cVoM2w_cdpsRbGiEiGNpF16JGB8BPYw
 
-// ==============================================================
-
 ### Get user by UUID
 GET http://localhost:5000/api/users/5cbd9feb-35a6-4215-82af-d1105748138a HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiI4OTAxNzZmZS00NzgzLTQ5Y2QtOTI3MS03Zjk5OWUzNjY1NDciLCJpYXQiOjE3NDAxMDI0MDYsImV4cCI6MTc0MTM5ODQwNn0.j0RI07SKNXpRVSHsbzT5Q03jbfLl5e9qiurNGnO6ZT0
-
-// ==============================================================
 
 ### Edit user by UUID
 PATCH http://localhost:5000/api/users/5cbd9feb-35a6-4215-82af-d1105748138a HTTP/1.1
@@ -53,8 +49,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iO
   # "role": "User"
 }
 
-// ==============================================================
-
 ### Change user password by UUID
 PATCH http://localhost:5000/api/users/143d91db-0e97-4fed-91f7-00f96add76ab/password HTTP/1.1
 Content-Type: application/json
@@ -64,8 +58,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjBkMmNmM
   "newPassword": "Qwerty1234567",
   "confirmNewPassword": "Qwerty1234567"
 }
-
-// ==============================================================
 
 ### Change user photo by UUID
 PATCH http://localhost:5000/api/users/9966d850-d128-435b-8e78-5c15f9fd4aee/photo HTTP/1.1
@@ -88,8 +80,6 @@ Content-Type: image/png
 DELETE  http://localhost:5000/api/users/9966d850-d128-435b-8e78-5c15f9fd4aee/photo HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOTk2NmQ4NTAtZDEyOC00MzViLThlNzgtNWMxNWY5ZmQ0YWVlIiwidG9rZW5WZXJzaW9uIjowLCJpYXQiOjE3MzgyNTIyMDcsImV4cCI6MTczOTU0ODIwN30.m4sKDlEldWKRFMw06X0zTQCjaQClTF5UhGlPI6ByzIg
-
-// ==============================================================
 
 ### Remove user by UUID
 DELETE http://localhost:5000/api/users/143d91db-0e97-4fed-91f7-00f96add76ab HTTP/1.1

@@ -55,7 +55,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlNmYwMGEwMS01OGI4LTRiYWUtYWYxNC04MTY2MDEyZTc5MDAiLCJpYXQiOjE3NDAwOTQ1ODIsImV4cCI6MTc0MTM5MDU4Mn0.J5YThSoSXWleNvdowtPHxoBRmFzst7TivWnq4YCU1ho
 
 ### Edit establishment by UUID
-PATCH http://localhost:5000/api/establishments/2b5c992b-4959-4194-80aa-c0208ad1f043 HTTP/1.1
+PATCH http://localhost:5000/api/establishments/0a029473-56c3-4357-b48e-f5f5b00d7e94 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcnNpb24iOjAsInV1aWQiOiJlNmYwMGEwMS01OGI4LTRiYWUtYWYxNC04MTY2MDEyZTc5MDAiLCJpYXQiOjE3NDAwOTQ1ODIsImV4cCI6MTc0MTM5MDU4Mn0.J5YThSoSXWleNvdowtPHxoBRmFzst7TivWnq4YCU1ho
 
