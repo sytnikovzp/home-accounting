@@ -177,10 +177,14 @@ const convertToUAH = async (amount, currencyCode) => {
 
 const parseDateString = (value, originalValue) => {
   if (typeof originalValue === 'string') {
-    const parsedDate = parse(originalValue, 'dd MMMM yyyy', new Date(), {
+    const trimmed = originalValue.trim();
+    if (trimmed === '') {
+      return null;
+    }
+    const parsedDate = parse(trimmed, 'dd MMMM yyyy', new Date(), {
       locale: uk,
     });
-    return isValid(parsedDate) ? parsedDate : new Date('');
+    return isValid(parsedDate) ? parsedDate : null;
   }
   return originalValue;
 };
