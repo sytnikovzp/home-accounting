@@ -4166,7 +4166,7 @@ const postgresData = async () => {
         establishment: 'DiaNet',
         measure: 'абонплата',
         currency: 'Українська гривня',
-        date: new Date('2025-05-15'),
+        date: new Date('2025-05-14'),
         creator_uuid: userDetails.uuid,
         creator_full_name: userDetails.fullName,
         created_at: now,

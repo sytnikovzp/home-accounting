@@ -1,7 +1,7 @@
 const {
   API_CONFIG: { CLIENT_URL },
 } = require('../constants');
-const { checkToken } = require('../utils/sharedFunctions');
+const { checkToken } = require('../utils/authHelpers');
 
 const {
   getCurrentUser,

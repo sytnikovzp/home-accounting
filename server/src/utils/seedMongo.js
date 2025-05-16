@@ -10,7 +10,7 @@ const {
 const {
   MONGO_DATA: { PERMISSIONS, ROLES, USERS },
 } = require('../constants');
-const { getUserDetailsByEmail } = require('../utils/sharedFunctions');
+const { getUserDetailsByEmail } = require('../utils/dbHelpers');
 
 const createPermissions = async () => {
   const createdPermissions = await Permission.insertMany(PERMISSIONS);

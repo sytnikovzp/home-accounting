@@ -1,6 +1,6 @@
 const yup = require('yup');
 
-const { parseDateString, stripTime } = require('./sharedFunctions');
+const { parseDateString, stripTime } = require('./dateHelpers');
 
 const STRING_SCHEME = yup
   .string('Це має бути рядком')

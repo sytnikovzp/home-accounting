@@ -1,11 +1,9 @@
 const { Role, User, Permission } = require('../db/dbMongo/models');
 
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
-const {
-  formatDateTime,
-  isValidUUID,
-  checkPermission,
-} = require('../utils/sharedFunctions');
+const { checkPermission } = require('../utils/authHelpers');
+const { formatDateTime } = require('../utils/dateHelpers');
+const { isValidUUID } = require('../utils/validators');
 
 const formatRoleData = (role, permissions = []) => ({
   uuid: role.uuid,

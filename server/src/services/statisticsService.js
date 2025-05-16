@@ -9,7 +9,8 @@ const {
 } = require('../db/dbPostgres/models');
 
 const { badRequest } = require('../errors/generalErrors');
-const { getTime, isValidUUID } = require('../utils/sharedFunctions');
+const { getTime } = require('../utils/dateHelpers');
+const { isValidUUID } = require('../utils/validators');
 
 class StatisticsService {
   static async getCostByCategories(ago, creatorUuid) {

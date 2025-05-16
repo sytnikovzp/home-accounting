@@ -4,12 +4,10 @@ const {
   DATA_MAPPING: { STATUS_MODERATION_MAPPING },
 } = require('../constants');
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
-const {
-  formatDateTime,
-  isValidUUID,
-  checkPermission,
-  mapValue,
-} = require('../utils/sharedFunctions');
+const { checkPermission } = require('../utils/authHelpers');
+const { formatDateTime } = require('../utils/dateHelpers');
+const { mapValue } = require('../utils/stringUtils');
+const { isValidUUID } = require('../utils/validators');
 
 const formatCategoryData = (category) => ({
   uuid: category.uuid,

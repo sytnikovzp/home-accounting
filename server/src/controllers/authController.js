@@ -1,10 +1,8 @@
 const {
   API_CONFIG: { CLIENT_URL },
 } = require('../constants');
-const {
-  setRefreshTokenCookie,
-  checkToken,
-} = require('../utils/sharedFunctions');
+const { checkToken } = require('../utils/authHelpers');
+const { setRefreshTokenCookie } = require('../utils/cookieHelpers');
 
 const {
   registration,

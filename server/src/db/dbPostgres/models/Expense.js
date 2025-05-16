@@ -1,6 +1,6 @@
 const { Model, Sequelize } = require('sequelize');
 
-const { isBeforeCurrentDate } = require('../../../utils/sharedFunctions');
+const { isBeforeCurrentDate } = require('../../../utils/dateHelpers');
 
 module.exports = (sequelize, DataTypes) => {
   class Expense extends Model {

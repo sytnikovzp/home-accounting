@@ -11,17 +11,16 @@ const {
 } = require('../db/dbPostgres/models');
 
 const { notFound, badRequest, forbidden } = require('../errors/generalErrors');
+const { checkPermission } = require('../utils/authHelpers');
+const { convertToUAH } = require('../utils/currencyHelpers');
 const {
   formatDate,
-  isValidUUID,
-  checkPermission,
   getTime,
-  getCurrencyByTitle,
-  getRecordByTitle,
   formatDateTime,
-  convertToUAH,
   parseAndValidateDate,
-} = require('../utils/sharedFunctions');
+} = require('../utils/dateHelpers');
+const { getCurrencyByTitle, getRecordByTitle } = require('../utils/dbHelpers');
+const { isValidUUID } = require('../utils/validators');
 
 const formatExpenseData = (expense) => ({
   uuid: expense.uuid,

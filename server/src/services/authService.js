@@ -13,12 +13,8 @@ const {
 } = require('../constants');
 const { unAuthorizedError } = require('../errors/authErrors');
 const { badRequest, notFound } = require('../errors/generalErrors');
-const {
-  hashPassword,
-  confirmPassword,
-  emailToLowerCase,
-  mapValue,
-} = require('../utils/sharedFunctions');
+const { hashPassword, confirmPassword } = require('../utils/authHelpers');
+const { emailToLowerCase, mapValue } = require('../utils/stringUtils');
 
 const mailService = require('./mailService');
 const { generateTokens, validateRefreshToken } = require('./tokenService');

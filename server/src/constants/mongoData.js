@@ -1,4 +1,4 @@
-const { hashPassword } = require('../utils/sharedFunctions');
+const { hashPassword } = require('../utils/authHelpers');
 
 module.exports.PERMISSIONS = [
   {

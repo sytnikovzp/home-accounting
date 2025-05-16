@@ -11,14 +11,10 @@ const {
   TOKEN_LIFETIME: { CONFIRMATION_TIME },
 } = require('../constants');
 const { badRequest, notFound, forbidden } = require('../errors/generalErrors');
-const {
-  hashPassword,
-  formatDateTime,
-  isValidUUID,
-  checkPermission,
-  mapValue,
-  emailToLowerCase,
-} = require('../utils/sharedFunctions');
+const { hashPassword, checkPermission } = require('../utils/authHelpers');
+const { formatDateTime } = require('../utils/dateHelpers');
+const { mapValue, emailToLowerCase } = require('../utils/stringUtils');
+const { isValidUUID } = require('../utils/validators');
 
 const mailService = require('./mailService');
 const { generateTokens } = require('./tokenService');
