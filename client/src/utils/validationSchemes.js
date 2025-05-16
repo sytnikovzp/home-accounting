@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import { parseDateString, stripTime } from './sharedFunctions';
+import { parseDateString, stripTime } from './dateHelpers';
 
 const STRING_SCHEME = yup
   .string('Це має бути рядком')

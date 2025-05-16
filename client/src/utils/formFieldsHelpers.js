@@ -1,4 +1,4 @@
-import { formatItems, groupByFirstLetter } from './sharedFunctions';
+import { formatItems, groupByFirstLetter } from './selectHelpers';
 
 const getCategoryField = (options) => ({
   name: 'category',

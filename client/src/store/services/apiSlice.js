@@ -5,7 +5,7 @@ import {
   getAccessToken,
   removeAccessToken,
   saveAccessToken,
-} from '../../utils/sharedFunctions';
+} from '../../utils/authHelpers';
 
 import { clearAuthenticationState } from '../slices/authenticationSlice';
 

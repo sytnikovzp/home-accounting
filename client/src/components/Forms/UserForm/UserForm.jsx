@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-import { formatItems } from '../../../utils/sharedFunctions';
+import { formatItems } from '../../../utils/selectHelpers';
 import { USER_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 import useHasPermission from '../../../hooks/useHasPermission';
 

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { FORM_RENDER_FIELDS } from '../../../constants';
 import { getCategoryField } from '../../../utils/formFieldsHelpers';
-import { groupByFirstLetter } from '../../../utils/sharedFunctions';
+import { groupByFirstLetter } from '../../../utils/selectHelpers';
 import { PRODUCT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import { useFetchAllCategoriesQuery } from '../../../store/services';

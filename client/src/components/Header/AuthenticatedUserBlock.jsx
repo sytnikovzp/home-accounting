@@ -7,7 +7,7 @@ import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 
 import { API_CONFIG } from '../../constants';
-import { stringAvatar } from '../../utils/sharedFunctions';
+import { stringAvatar } from '../../utils/stringHelpers';
 import useAuthentication from '../../hooks/useAuthentication';
 
 import UserMenu from './UserMenu/UserMenu';

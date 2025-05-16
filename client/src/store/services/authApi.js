@@ -1,9 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import {
-  removeAccessToken,
-  saveAccessToken,
-} from '../../utils/sharedFunctions';
+import { removeAccessToken, saveAccessToken } from '../../utils/authHelpers';
 
 import { clearAuthenticationState } from '../slices/authenticationSlice';
 

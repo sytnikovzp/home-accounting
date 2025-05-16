@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { uuidPattern } from '../utils/sharedFunctions';
+const uuidPattern = /[\dA-Fa-f-]{36}/;
 
 function usePageTitle(pageTitles) {
   const location = useLocation();

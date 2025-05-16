@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getAccessToken } from '../utils/sharedFunctions';
+import { getAccessToken } from '../utils/authHelpers';
 
 import { useFetchUserProfileQuery } from '../store/services';
 import { clearAuthenticationState } from '../store/slices/authenticationSlice';
