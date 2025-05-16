@@ -1,10 +1,8 @@
+import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale/uk';
 
-import {
-  formatItems,
-  groupByFirstLetter,
-} from '../../../utils/sharedFunctions';
+import { getExpenseFormFields } from '../../../utils/formFieldsHelpers';
 import { EXPENSE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import {
@@ -28,86 +26,72 @@ function ExpenseForm({ isSubmitting, expense = null, onSubmit }) {
     date,
   } = expense ?? {};
 
-  const queries = [
-    useFetchAllMeasuresQuery({ page: 1, limit: 500, sort: 'description' }),
-    useFetchAllCurrenciesQuery({ page: 1, limit: 500, sort: 'title' }),
-    useFetchAllEstablishmentsQuery({ page: 1, limit: 500, sort: 'title' }),
-    useFetchAllProductsQuery({ page: 1, limit: 500, sort: 'title' }),
-  ];
+  const initialValues = useMemo(
+    () => ({
+      product: product?.title || '',
+      quantity: quantity || '',
+      unitPrice: unitPrice || '',
+      establishment: establishment?.title || '',
+      measure: measure?.title || '',
+      currency: currency?.title || 'Українська гривня',
+      date: date || format(new Date(), 'dd MMMM yyyy', { locale: uk }),
+    }),
+    [
+      currency?.title,
+      date,
+      establishment?.title,
+      measure?.title,
+      product?.title,
+      quantity,
+      unitPrice,
+    ]
+  );
 
-  const currencies = queries[1].data?.data ?? [];
-  const establishments = queries[2].data?.data ?? [];
-  const measures = queries[0].data?.data ?? [];
-  const products = queries[3].data?.data ?? [];
+  const measuresQuery = useFetchAllMeasuresQuery({
+    page: 1,
+    limit: 500,
+    sort: 'description',
+  });
+  const currenciesQuery = useFetchAllCurrenciesQuery({
+    page: 1,
+    limit: 500,
+    sort: 'title',
+  });
+  const establishmentsQuery = useFetchAllEstablishmentsQuery({
+    page: 1,
+    limit: 500,
+    sort: 'title',
+  });
+  const productsQuery = useFetchAllProductsQuery({
+    page: 1,
+    limit: 500,
+    sort: 'title',
+  });
 
-  if (queries.some((query) => query.isLoading)) {
+  const renderFields = useMemo(
+    () =>
+      getExpenseFormFields({
+        products: productsQuery.data?.data ?? [],
+        establishments: establishmentsQuery.data?.data ?? [],
+        measures: measuresQuery.data?.data ?? [],
+        currencies: currenciesQuery.data?.data ?? [],
+      }),
+    [
+      productsQuery.data,
+      establishmentsQuery.data,
+      measuresQuery.data,
+      currenciesQuery.data,
+    ]
+  );
+
+  if (
+    measuresQuery.isLoading ||
+    currenciesQuery.isLoading ||
+    establishmentsQuery.isLoading ||
+    productsQuery.isLoading
+  ) {
     return <Preloader />;
   }
-
-  const initialValues = {
-    product: product?.title || '',
-    quantity: quantity || '',
-    unitPrice: unitPrice || '',
-    establishment: establishment?.title || '',
-    measure: measure?.title || '',
-    currency: currency?.title || 'Українська гривня',
-    date: date || format(new Date(), 'dd MMMM yyyy', { locale: uk }),
-  };
-
-  const renderFields = [
-    {
-      name: 'product',
-      label: 'Товар/послуга',
-      type: 'autocomplete',
-      options: groupByFirstLetter([...products], 'title', 'title'),
-      placeholder: 'Наприклад "Помідори"',
-      required: true,
-      autoFocus: true,
-    },
-    {
-      name: 'quantity',
-      label: 'Кількість',
-      placeholder: 'Наприклад "1"',
-      required: true,
-    },
-    {
-      name: 'unitPrice',
-      label: 'Вартість за одиницю',
-      placeholder: 'Наприклад "80"',
-      required: true,
-    },
-    {
-      name: 'establishment',
-      label: 'Заклад',
-      type: 'autocomplete',
-      options: groupByFirstLetter([...establishments], 'title', 'title'),
-      placeholder: 'Наприклад "АТБ"',
-      required: true,
-    },
-    {
-      name: 'measure',
-      label: 'Одиниця вимірів',
-      type: 'select',
-      options: formatItems(measures, 'title', 'description'),
-      placeholder: 'Наприклад "кг"',
-      required: true,
-    },
-    {
-      name: 'currency',
-      label: 'Валюта',
-      type: 'autocomplete',
-      options: groupByFirstLetter([...currencies], 'title', 'title'),
-      placeholder: 'Наприклад "Українська гривня"',
-      required: true,
-    },
-    {
-      name: 'date',
-      type: 'date',
-      label: 'Дата витрати',
-      placeholder: 'Наприклад "02 лютого 2025"',
-      required: true,
-    },
-  ];
 
   return (
     <BaseForm

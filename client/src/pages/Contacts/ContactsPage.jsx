@@ -10,11 +10,15 @@ import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TelegramIcon from '@mui/icons-material/Telegram';
 
-import { stylesContactsPageList } from '../../styles';
+import {
+  stylesContactsPageLink,
+  stylesContactsPageList,
+  stylesEntityContainerSx,
+} from '../../styles';
 
 function ContactsPage() {
   return (
-    <Container maxWidth='md' sx={{ py: 2 }}>
+    <Container maxWidth='md' sx={stylesEntityContainerSx}>
       <Typography gutterBottom align='center' variant='h4'>
         Контакти розробника
       </Typography>
@@ -37,10 +41,7 @@ function ContactsPage() {
             secondary={
               <Link
                 href='mailto:sytnikov.zp@gmail.com'
-                sx={{
-                  textDecoration: 'none',
-                  '&:hover': { textDecoration: 'underline' },
-                }}
+                sx={stylesContactsPageLink}
               >
                 sytnikov.zp@gmail.com
               </Link>
@@ -58,10 +59,7 @@ function ContactsPage() {
               <Link
                 href='https://github.com/sytnikovzp'
                 rel='noopener'
-                sx={{
-                  textDecoration: 'none',
-                  '&:hover': { textDecoration: 'underline' },
-                }}
+                sx={stylesContactsPageLink}
                 target='_blank'
               >
                 github.com/sytnikovzp
@@ -80,10 +78,7 @@ function ContactsPage() {
               <Link
                 href='https://t.me/sytnikovzp'
                 rel='noopener'
-                sx={{
-                  textDecoration: 'none',
-                  '&:hover': { textDecoration: 'underline' },
-                }}
+                sx={stylesContactsPageLink}
                 target='_blank'
               >
                 @sytnikovzp

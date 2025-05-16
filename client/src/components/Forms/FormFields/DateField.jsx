@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { format, parse } from 'date-fns';
 import { uk } from 'date-fns/locale/uk';
 import { Field } from 'formik';
@@ -20,6 +21,19 @@ function DateField({ name, label, required, size, touched, error }) {
     handleDateChange(date, field, form);
   };
 
+  const slotProps = useMemo(
+    () => ({
+      textField: {
+        fullWidth: true,
+        required,
+        size,
+      },
+    }),
+    [required, size]
+  );
+
+  const views = useMemo(() => ['year', 'month', 'day'], []);
+
   return (
     <Field name={name}>
       {({ field, form }) => (
@@ -27,13 +41,7 @@ function DateField({ name, label, required, size, touched, error }) {
           <DatePicker
             label={label}
             maxDate={new Date()}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                required,
-                size,
-              },
-            }}
+            slotProps={slotProps}
             value={
               field.value
                 ? parse(field.value, 'dd MMMM yyyy', new Date(), {
@@ -41,7 +49,7 @@ function DateField({ name, label, required, size, touched, error }) {
                   })
                 : null
             }
-            views={['year', 'month', 'day']}
+            views={views}
             onChange={handleDateChangeWithArgs(field, form)}
           />
           <FormHelperText>{touched && error ? error : ' '}</FormHelperText>

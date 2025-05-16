@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -19,6 +19,7 @@ import {
 import StatisticsChart from '../../components/StatisticsChart/StatisticsChart';
 
 import {
+  stylesEntityStatContainerSx,
   stylesStatisticsPageBox,
   stylesStatisticsPageBoxCriteria,
   stylesStatisticsPageCriteriaSelect,
@@ -47,12 +48,16 @@ function StatisticsPage() {
     { skip: !ago }
   );
 
-  const handleCriteriaChange = (event) => setCriteria(event.target.value);
+  const handleCriteriaChange = useCallback((event) => {
+    setCriteria(event.target.value);
+  }, []);
 
-  const handleAgoChange = (event) => setAgo(event.target.value);
+  const handleAgoChange = useCallback((event) => {
+    setAgo(event.target.value);
+  }, []);
 
   return (
-    <Container maxWidth='lg' sx={{ py: 1 }}>
+    <Container maxWidth='lg' sx={stylesEntityStatContainerSx}>
       <Box sx={stylesStatisticsPageBox}>
         <Typography variant='h6'>Статистика витрат</Typography>
         <Box sx={stylesStatisticsPageBoxCriteria}>

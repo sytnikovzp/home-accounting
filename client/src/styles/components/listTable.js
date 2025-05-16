@@ -1,35 +1,13 @@
-export const stylesListTableCell = {
-  height: '55px',
-  padding: '8px 16px',
-  borderRight: '1px solid #ccc',
-  borderBottom: '1px solid #ccc',
-};
-
-export const stylesListTableAvatarBox = {
-  display: 'flex',
-  justifyContent: 'center',
-};
-
-export const stylesListTableAvatarSize = { width: 40, height: 40 };
-
-export const stylesListTableTextColor = {
-  color: 'common.black',
-};
-
-export const stylesListTableHeightEmptyRow = {
-  height: 57,
-};
-
-export const stylesListTableBorderEmptyRow = {
-  borderBottom: 'none',
-};
-
 export const stylesListTableContainer = {
   overflowX: 'auto',
   width: '100%',
   border: '1px solid #ccc',
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+};
+
+export const stylesListTableContainerBox = {
+  position: 'relative',
 };
 
 export const stylesListTablePreloader = {
@@ -58,6 +36,10 @@ export const stylesListTableError = {
   backgroundColor: 'rgba(185, 222, 187, 0.3)',
 };
 
+export const stylesListTableTableHeadTableRow = {
+  backgroundColor: 'success.main',
+};
+
 export const stylesListTableActionsHeadTableCellModeration = {
   width: '120px',
   borderBottom: '1px solid #ccc',
@@ -83,22 +65,6 @@ export const stylesListTableActions = {
 export const stylesListTableTableRow = {
   '&:nth-of-type(odd)': { backgroundColor: 'action.hover' },
   '&:hover': { backgroundColor: 'action.selected' },
-};
-
-export const stylesListTableTableTypography = {
-  overflow: 'hidden',
-  padding: '5px 10px',
-  borderRadius: '5px',
-  boxShadow: '0 3px 4px rgba(0, 0, 0, 0.1)',
-  fontSize: '0.875rem',
-  color: 'common.black',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  transition: 'all 0.3s ease-in-out',
-  '&:hover': {
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-    transform: 'translateY(-2px)',
-  },
 };
 
 export const stylesListTableFormControl = {

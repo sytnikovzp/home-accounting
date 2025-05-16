@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -20,7 +20,7 @@ import ProductEditPage from './ProductEditPage';
 import ProductRemovePage from './ProductRemovePage';
 import ProductViewPage from './ProductViewPage';
 
-import { stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
 
 const PRODUCTS_PAGES = [
   { path: 'add', Component: ProductAddPage },
@@ -79,10 +79,32 @@ function ProductsPage() {
     [handleModalOpen]
   );
 
-  const handleStatusChange = (newStatus) => setSelectedStatus(newStatus);
+  const handleStatusChange = useCallback(
+    (newStatus) => setSelectedStatus(newStatus),
+    []
+  );
+
+  const paginationConfig = useMemo(
+    () => ({
+      currentPage,
+      onPageChange: handlePageChange,
+      onRowsPerPageChange: handleRowsPerPageChange,
+      pageSize,
+      rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+      totalCount,
+    }),
+    [
+      currentPage,
+      handlePageChange,
+      handleRowsPerPageChange,
+      pageSize,
+      itemsPerPage,
+      totalCount,
+    ]
+  );
 
   return (
-    <Container maxWidth='lg' sx={{ py: 2 }}>
+    <Container maxWidth='lg' sx={stylesEntityContainerSx}>
       <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Товари та послуги</Typography>
         {hasPermission('products', 'add') && (
@@ -101,14 +123,7 @@ function ProductsPage() {
         fetchError={fetchError}
         isFetching={isFetching}
         linkEntity='products'
-        pagination={{
-          currentPage,
-          onPageChange: handlePageChange,
-          onRowsPerPageChange: handleRowsPerPageChange,
-          pageSize,
-          rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
-          totalCount,
-        }}
+        pagination={paginationConfig}
         rows={products}
         selectedStatus={selectedStatus}
         sortModel={sortModel}

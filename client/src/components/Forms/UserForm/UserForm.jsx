@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -34,11 +36,14 @@ function UserForm({
 
   const roles = rolesData?.data ?? [];
 
-  const initialValues = {
-    fullName: fullName || '',
-    email: email || '',
-    role: role?.title || '',
-  };
+  const initialValues = useMemo(
+    () => ({
+      fullName: fullName || '',
+      email: email || '',
+      role: role?.title || '',
+    }),
+    [fullName, email, role]
+  );
 
   const renderFields = [
     {

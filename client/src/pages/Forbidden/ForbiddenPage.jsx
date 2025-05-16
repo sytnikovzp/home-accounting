@@ -5,7 +5,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import { stylesErrorPageBox } from '../../styles';
+import {
+  stylesErrorPageBox,
+  stylesErrorPageButton,
+  stylesErrorPageTypography,
+} from '../../styles';
 
 function ForbiddenPage() {
   const navigate = useNavigate();
@@ -20,13 +24,18 @@ function ForbiddenPage() {
         Помилка доступу
       </Typography>
 
-      <Typography color='#2E7D32' fontWeight={500} sx={{ m: 3 }} variant='h4'>
+      <Typography
+        color='#2E7D32'
+        fontWeight={500}
+        sx={stylesErrorPageTypography}
+        variant='h4'
+      >
         Вибачте, але Ви не маєте доступу до цієї сторінки.
       </Typography>
 
       <Button
         color='success'
-        sx={{ m: 3 }}
+        sx={stylesErrorPageButton}
         variant='contained'
         onClick={handleNavigateToHome}
       >

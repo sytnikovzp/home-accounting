@@ -9,11 +9,12 @@ import Typography from '@mui/material/Typography';
 import { API_CONFIG } from '../../constants';
 
 import {
-  stylesListTableAvatarBox,
-  stylesListTableAvatarSize,
-  stylesListTableCell,
-  stylesListTableTableTypography,
-  stylesListTableTextColor,
+  stylesEntityTableCellAvatarBox,
+  stylesEntityTableCellAvatarSize,
+  stylesEntityTableCellCell,
+  stylesEntityTableCellRouterLink,
+  stylesEntityTableCellTextColor,
+  stylesEntityTableCellTypography,
 } from '../../styles';
 
 const getAvatarPath = (field, value) => {
@@ -35,12 +36,12 @@ function EntityTableCell({ col, linkEntity, row }) {
 
   if (field === 'logo' || field === 'photo') {
     return (
-      <TableCell align={align} sx={stylesListTableCell}>
-        <Box sx={stylesListTableAvatarBox}>
+      <TableCell align={align} sx={stylesEntityTableCellCell}>
+        <Box sx={stylesEntityTableCellAvatarBox}>
           <Avatar
             alt={field === 'logo' ? 'Логотип закладу' : 'Фото користувача'}
             src={avatarPath}
-            sx={stylesListTableAvatarSize}
+            sx={stylesEntityTableCellAvatarSize}
             variant='rounded'
           />
         </Box>
@@ -50,8 +51,8 @@ function EntityTableCell({ col, linkEntity, row }) {
 
   if (field === 'title' && linkEntity === 'moderation') {
     return (
-      <TableCell align={align} sx={stylesListTableCell}>
-        <Typography sx={stylesListTableTextColor} variant='body1'>
+      <TableCell align={align} sx={stylesEntityTableCellCell}>
+        <Typography sx={stylesEntityTableCellTextColor} variant='body1'>
           {cellValue}
         </Typography>
       </TableCell>
@@ -61,22 +62,22 @@ function EntityTableCell({ col, linkEntity, row }) {
   const isLinkedField = ['title', 'product', 'fullName'].includes(field);
 
   return (
-    <TableCell align={align} sx={stylesListTableCell}>
+    <TableCell align={align} sx={stylesEntityTableCellCell}>
       {isLinkedField ? (
         <RouterLink
-          style={{ textDecoration: 'none' }}
+          style={stylesEntityTableCellRouterLink}
           to={`/${linkEntity}/${row.uuid}`}
         >
           <Typography
             component='span'
-            sx={stylesListTableTableTypography}
+            sx={stylesEntityTableCellTypography}
             variant='body1'
           >
             {cellValue}
           </Typography>
         </RouterLink>
       ) : (
-        <Typography sx={stylesListTableTextColor} variant='body1'>
+        <Typography sx={stylesEntityTableCellTextColor} variant='body1'>
           {cellValue}
         </Typography>
       )}

@@ -6,7 +6,10 @@ export const stylesViewPageBox = {
   mb: 1,
 };
 
-export const stylesViewPageAvatarSize = { width: 50, height: 50 };
+export const stylesViewPageAvatarSize = {
+  width: 50,
+  height: 50,
+};
 
 export const stylesUserViewPageEmailButton = {
   minWidth: 'auto',

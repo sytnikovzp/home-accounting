@@ -41,6 +41,12 @@ const isBeforeCurrentDate = (value) => {
   }
 };
 
+const stripTime = (date) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
 const formatDateTime = function (date) {
   if (!date) {
     return null;
@@ -216,6 +222,7 @@ module.exports = {
   getCurrencyByTitle,
   getRecordByTitle,
   getTime,
+  stripTime,
   getUserDetailsByEmail,
   hashPassword,
   isValidUUID,

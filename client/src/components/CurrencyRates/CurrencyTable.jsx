@@ -8,15 +8,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import {
-  stylesCurrencyRatesTableCell,
-  stylesCurrencyRatesTableRow,
+  stylesCurrencyTableTableCell,
+  stylesCurrencyTableTableContainer,
+  stylesCurrencyTableTableRow,
 } from '../../styles';
 
 function CurrencyTable({ rates }) {
   const memoizedRates = useMemo(() => rates, [rates]);
 
   return (
-    <TableContainer sx={{ margin: '0 auto' }}>
+    <TableContainer sx={stylesCurrencyTableTableContainer}>
       <Table>
         <TableHead>
           <TableRow>
@@ -29,14 +30,14 @@ function CurrencyTable({ rates }) {
         </TableHead>
         <TableBody>
           {memoizedRates.map(({ cc, txt, rate }) => (
-            <TableRow key={cc} sx={stylesCurrencyRatesTableRow}>
-              <TableCell align='center' sx={stylesCurrencyRatesTableCell}>
+            <TableRow key={cc} sx={stylesCurrencyTableTableRow}>
+              <TableCell align='center' sx={stylesCurrencyTableTableCell}>
                 {cc}
               </TableCell>
-              <TableCell align='center' sx={stylesCurrencyRatesTableCell}>
+              <TableCell align='center' sx={stylesCurrencyTableTableCell}>
                 {txt}
               </TableCell>
-              <TableCell align='center' sx={stylesCurrencyRatesTableCell}>
+              <TableCell align='center' sx={stylesCurrencyTableTableCell}>
                 {rate.toFixed(2)}
               </TableCell>
             </TableRow>

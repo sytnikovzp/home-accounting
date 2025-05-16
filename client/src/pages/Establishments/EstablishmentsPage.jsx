@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -20,7 +20,7 @@ import EstablishmentEditPage from './EstablishmentEditPage';
 import EstablishmentRemovePage from './EstablishmentRemovePage';
 import EstablishmentViewPage from './EstablishmentViewPage';
 
-import { stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
 
 const ESTABLISHMENTS_PAGES = [
   { path: 'add', Component: EstablishmentAddPage },
@@ -79,10 +79,32 @@ function EstablishmentsPage() {
     [handleModalOpen]
   );
 
-  const handleStatusChange = (newStatus) => setSelectedStatus(newStatus);
+  const handleStatusChange = useCallback(
+    (newStatus) => setSelectedStatus(newStatus),
+    []
+  );
+
+  const paginationConfig = useMemo(
+    () => ({
+      currentPage,
+      onPageChange: handlePageChange,
+      onRowsPerPageChange: handleRowsPerPageChange,
+      pageSize,
+      rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+      totalCount,
+    }),
+    [
+      currentPage,
+      handlePageChange,
+      handleRowsPerPageChange,
+      pageSize,
+      itemsPerPage,
+      totalCount,
+    ]
+  );
 
   return (
-    <Container maxWidth='lg' sx={{ py: 2 }}>
+    <Container maxWidth='lg' sx={stylesEntityContainerSx}>
       <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Заклади</Typography>
         {hasPermission('establishments', 'add') && (
@@ -101,14 +123,7 @@ function EstablishmentsPage() {
         fetchError={fetchError}
         isFetching={isFetching}
         linkEntity='establishments'
-        pagination={{
-          currentPage,
-          onPageChange: handlePageChange,
-          onRowsPerPageChange: handleRowsPerPageChange,
-          pageSize,
-          rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
-          totalCount,
-        }}
+        pagination={paginationConfig}
         rows={establishments}
         selectedStatus={selectedStatus}
         sortModel={sortModel}

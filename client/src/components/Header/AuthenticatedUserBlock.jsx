@@ -13,7 +13,20 @@ import useAuthentication from '../../hooks/useAuthentication';
 import UserMenu from './UserMenu/UserMenu';
 import Welcome from './Welcome';
 
-import { stylesAuthenticatedMenu, stylesHeaderUserBlock } from '../../styles';
+import {
+  stylesAuthenticatedUserBlockBox,
+  stylesAuthenticatedUserBlockIconButton,
+  stylesAuthenticatedUserBlockMenu,
+  stylesAuthenticatedUserBlockMenuAnchor,
+  stylesAuthenticatedUserBlockMenuTransform,
+} from '../../styles';
+
+const slotPropsPaper = {
+  paper: {
+    elevation: 0,
+    sx: stylesAuthenticatedUserBlockMenu,
+  },
+};
 
 function AuthenticatedUserBlock() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -29,7 +42,7 @@ function AuthenticatedUserBlock() {
   const handleCloseUserMenu = useCallback(() => setIsUserMenuOpen(false), []);
 
   return (
-    <Box sx={stylesHeaderUserBlock}>
+    <Box sx={stylesAuthenticatedUserBlockBox}>
       <Welcome />
       <Tooltip title='Обліковий запис'>
         <IconButton
@@ -37,7 +50,7 @@ function AuthenticatedUserBlock() {
           aria-expanded={isUserMenuOpen ? 'true' : null}
           aria-haspopup='true'
           size='small'
-          sx={{ ml: 2 }}
+          sx={stylesAuthenticatedUserBlockIconButton}
           onClick={handleToggleUserMenu}
         >
           <Avatar
@@ -53,11 +66,11 @@ function AuthenticatedUserBlock() {
       </Tooltip>
       <Menu
         anchorEl={isUserMenuOpen}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        anchorOrigin={stylesAuthenticatedUserBlockMenuAnchor}
         id='account-menu'
         open={Boolean(isUserMenuOpen)}
-        slotProps={{ paper: { elevation: 0, sx: stylesAuthenticatedMenu } }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        slotProps={slotPropsPaper}
+        transformOrigin={stylesAuthenticatedUserBlockMenuTransform}
         onClose={handleCloseUserMenu}
       >
         <UserMenu closeUserMenu={handleCloseUserMenu} />

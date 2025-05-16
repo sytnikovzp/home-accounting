@@ -1,3 +1,7 @@
+import { useMemo } from 'react';
+
+import { FORM_RENDER_FIELDS } from '../../../constants';
+import { getCategoryField } from '../../../utils/formFieldsHelpers';
 import { groupByFirstLetter } from '../../../utils/sharedFunctions';
 import { PRODUCT_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
@@ -15,29 +19,31 @@ function ProductForm({ isSubmitting, product = null, onSubmit }) {
     sort: 'title',
   });
 
-  const categories = categoriesData?.data ?? [];
+  const initialValues = useMemo(
+    () => ({
+      title: title || '',
+      category: category?.title || '',
+    }),
+    [title, category?.title]
+  );
 
-  const initialValues = {
-    title: title || '',
-    category: category?.title || '',
-  };
+  const categories = useMemo(
+    () => categoriesData?.data ?? [],
+    [categoriesData?.data]
+  );
 
-  const renderFields = [
-    {
-      name: 'title',
-      label: 'Назва товару/послуги',
-      placeholder: 'Наприклад "Футболка"',
-      required: true,
-      autoFocus: true,
-    },
-    {
-      name: 'category',
-      label: 'Категорія товару/послуги',
-      type: 'autocomplete',
-      options: groupByFirstLetter([...categories], 'title', 'title'),
-      placeholder: 'Наприклад "Одяг"',
-    },
-  ];
+  const groupedOptions = useMemo(
+    () => groupByFirstLetter(categories, 'title', 'title'),
+    [categories]
+  );
+
+  const renderFields = useMemo(
+    () => [
+      ...FORM_RENDER_FIELDS.productFields,
+      getCategoryField(groupedOptions),
+    ],
+    [groupedOptions]
+  );
 
   if (isFetching) {
     return <Preloader />;

@@ -5,6 +5,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
+import { stylesNavItemText } from '../../styles';
+
 function NavItem({ icon: IconComponent, label, to, onClick }) {
   return (
     <ListItem disablePadding>
@@ -12,7 +14,7 @@ function NavItem({ icon: IconComponent, label, to, onClick }) {
         <ListItemIcon>
           <IconComponent />
         </ListItemIcon>
-        <ListItemText primary={label} sx={{ color: 'text.primary' }} />
+        <ListItemText primary={label} sx={stylesNavItemText} />
       </ListItemButton>
     </ListItem>
   );

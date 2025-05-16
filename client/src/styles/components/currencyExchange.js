@@ -13,11 +13,3 @@ export const stylesCurrencyRatesTypography = {
   mt: 1,
   ml: 2,
 };
-
-export const stylesCurrencyRatesTableRow = {
-  height: '40px',
-};
-
-export const stylesCurrencyRatesTableCell = {
-  padding: '4px',
-};

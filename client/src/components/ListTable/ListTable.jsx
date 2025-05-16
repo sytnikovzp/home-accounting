@@ -29,9 +29,11 @@ import {
   stylesListTableActionsHeadTableCellModeration,
   stylesListTableActionsHeadTableCellNotModeration,
   stylesListTableContainer,
+  stylesListTableContainerBox,
   stylesListTableError,
   stylesListTableExpensesSum,
   stylesListTablePreloader,
+  stylesListTableTableHeadTableRow,
   stylesListTableTableRow,
 } from '../../styles';
 
@@ -64,7 +66,7 @@ function ListTable({
     onPageChange,
     onRowsPerPageChange,
     pageSize,
-    rowsPerPageOptions = [],
+    rowsPerPageOptions,
   } = pagination || {};
 
   const handleSortClick = useCallback(
@@ -91,9 +93,36 @@ function ListTable({
     [onRowsPerPageChange]
   );
 
+  const tableSx = useMemo(
+    () => ({
+      width: '100%',
+      opacity: fetchError ? 0 : 1,
+      borderCollapse: 'collapse',
+    }),
+    [fetchError]
+  );
+
+  const getTableCellSx = (field, index) => ({
+    width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
+    borderRight: index < columns.length - 1 ? '1px solid darkgreen' : 'none',
+    borderBottom: '1px solid #ccc',
+    fontWeight: 'bold',
+    color: 'common.white',
+    cursor: 'pointer',
+  });
+
+  const tablePaginationSx = useMemo(
+    () => ({
+      '& .MuiTablePagination-toolbar': {
+        flexWrap: isMobile ? 'wrap' : 'nowrap',
+      },
+    }),
+    [isMobile]
+  );
+
   return (
     <TableContainer sx={stylesListTableContainer}>
-      <Box sx={{ position: 'relative' }}>
+      <Box sx={stylesListTableContainerBox}>
         {isPreloaderVisible && (
           <Box sx={stylesListTablePreloader}>
             <CircularProgress color='success' size='3rem' />
@@ -106,30 +135,14 @@ function ListTable({
           </Box>
         )}
 
-        <Table
-          sx={{
-            width: '100%',
-            opacity: fetchError ? 0 : 1,
-            borderCollapse: 'collapse',
-          }}
-        >
+        <Table sx={tableSx}>
           <TableHead>
-            <TableRow sx={{ backgroundColor: 'success.main' }}>
+            <TableRow sx={stylesListTableTableHeadTableRow}>
               {columns.map(({ field, align = 'center', headerName }, index) => (
                 <TableCell
                   key={field}
                   align={align}
-                  sx={{
-                    width: ['logo', 'photo'].includes(field) ? '90px' : 'auto',
-                    borderRight:
-                      index < columns.length - 1
-                        ? '1px solid darkgreen'
-                        : 'none',
-                    borderBottom: '1px solid #ccc',
-                    fontWeight: 'bold',
-                    color: 'common.white',
-                    cursor: 'pointer',
-                  }}
+                  sx={getTableCellSx(field, index)}
                   onClick={handleSortClick(field)}
                 >
                   {headerName}
@@ -228,11 +241,7 @@ function ListTable({
           page={currentPage - 1}
           rowsPerPage={pageSize}
           rowsPerPageOptions={rowsPerPageOptions}
-          sx={{
-            '& .MuiTablePagination-toolbar': {
-              flexWrap: isMobile ? 'wrap' : 'nowrap',
-            },
-          }}
+          sx={tablePaginationSx}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleRowsPerPageChange}
         />

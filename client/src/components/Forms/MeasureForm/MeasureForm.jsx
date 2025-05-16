@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+
+import { FORM_RENDER_FIELDS } from '../../../constants';
 import { MEASURE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
@@ -5,30 +8,17 @@ import BaseForm from '../BaseForm/BaseForm';
 function MeasureForm({ isSubmitting, measure = null, onSubmit }) {
   const { title, description } = measure ?? {};
 
-  const initialValues = {
-    title: title || '',
-    description: description || '',
-  };
-
-  const renderFields = [
-    {
-      name: 'title',
-      label: 'Назва одиниці вимірів',
-      placeholder: 'Наприклад "кг"',
-      required: true,
-      autoFocus: true,
-    },
-    {
-      name: 'description',
-      label: 'Опис',
-      placeholder: 'Наприклад "кілограм"',
-      required: true,
-    },
-  ];
+  const initialValues = useMemo(
+    () => ({
+      title: title || '',
+      description: description || '',
+    }),
+    [title, description]
+  );
 
   return (
     <BaseForm
-      fields={renderFields}
+      fields={FORM_RENDER_FIELDS.measureFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={MEASURE_VALIDATION_SCHEME}

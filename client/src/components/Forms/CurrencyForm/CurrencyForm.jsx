@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+
+import { FORM_RENDER_FIELDS } from '../../../constants';
 import { CURRENCY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
@@ -5,30 +8,17 @@ import BaseForm from '../BaseForm/BaseForm';
 function CurrencyForm({ isSubmitting, currency = null, onSubmit }) {
   const { title, code } = currency ?? {};
 
-  const initialValues = {
-    title: title || '',
-    code: code || '',
-  };
-
-  const renderFields = [
-    {
-      name: 'title',
-      label: 'Назва валюти',
-      placeholder: 'Наприклад "Австралійський долар"',
-      required: true,
-      autoFocus: true,
-    },
-    {
-      name: 'code',
-      label: 'Міжнародний код валюти',
-      placeholder: 'Наприклад "AUD"',
-      required: true,
-    },
-  ];
+  const initialValues = useMemo(
+    () => ({
+      title: title || '',
+      code: code || '',
+    }),
+    [code, title]
+  );
 
   return (
     <BaseForm
-      fields={renderFields}
+      fields={FORM_RENDER_FIELDS.currencyFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={CURRENCY_VALIDATION_SCHEME}

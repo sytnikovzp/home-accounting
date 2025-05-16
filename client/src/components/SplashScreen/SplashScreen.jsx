@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import Box from '@mui/material/Box';
@@ -43,55 +43,95 @@ function SplashScreen() {
     };
   }, []);
 
-  const getResponsiveValue = (mobile, desktop) => (isMobile ? mobile : desktop);
+  const logoSize = useMemo(() => (isMobile ? 70 : 100), [isMobile]);
+  const textWidth = useMemo(() => (isMobile ? 480 : 750), [isMobile]);
+  const variant = useMemo(() => (isMobile ? 'h2' : 'h1'), [isMobile]);
+  const barWidth = useMemo(() => (isMobile ? '80%' : '60%'), [isMobile]);
 
-  const logoSize = getResponsiveValue(70, 100);
-  const textWidth = getResponsiveValue(480, 750);
-  const variant = getResponsiveValue('h2', 'h1');
-  const barWidth = getResponsiveValue('80%', '60%');
+  const containerAnimate = useMemo(() => ({ opacity: done ? 0 : 1 }), [done]);
+
+  const containerInitial = useMemo(() => ({ opacity: 1 }), []);
+
+  const containerStyle = useMemo(
+    () => ({
+      pointerEvents: done ? 'none' : 'auto',
+      position: 'fixed',
+      inset: 0,
+      willChange: 'opacity',
+      zIndex: done ? -1 : 9999,
+    }),
+    [done]
+  );
+
+  const imageStyle = useMemo(
+    () => ({
+      width: logoSize,
+      height: logoSize,
+      objectFit: 'contain',
+      willChange: 'transform',
+    }),
+    [logoSize]
+  );
+
+  const textWrapperStyle = useMemo(
+    () => ({
+      overflow: 'hidden',
+      willChange: 'transform, opacity',
+    }),
+    []
+  );
+
+  const textAnimation = useMemo(() => {
+    if (showText) {
+      return { width: textWidth, opacity: 1, x: 0 };
+    }
+    return { width: 0, opacity: 0, x: 20 };
+  }, [showText, textWidth]);
+
+  const textInitial = useMemo(() => ({ width: 0, opacity: 0 }), []);
+
+  const containerTransition = useMemo(
+    () => ({ duration: 0.3, ease: 'easeInOut' }),
+    []
+  );
+
+  const scaleTransition = useMemo(
+    () => ({ duration: 1, ease: 'easeInOut' }),
+    []
+  );
+
+  const textTransition = useMemo(
+    () => ({ duration: 1.2, ease: 'easeOut' }),
+    []
+  );
+
+  const barBoxStyle = useMemo(() => ({ width: barWidth, mt: 6 }), [barWidth]);
+
+  const scaleAnimation = useMemo(
+    () => (startAnimation ? { scale: 0.5, x: 0 } : { scale: 1, x: 0 }),
+    [startAnimation]
+  );
 
   return (
     <motion.div
-      animate={{ opacity: done ? 0 : 1 }}
-      initial={{ opacity: 1 }}
-      style={{
-        pointerEvents: done ? 'none' : 'auto',
-        position: 'fixed',
-        inset: 0,
-        willChange: 'opacity',
-        zIndex: done ? -1 : 9999,
-      }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      animate={containerAnimate}
+      initial={containerInitial}
+      style={containerStyle}
+      transition={containerTransition}
     >
       <Box sx={stylesSplashScreenBox}>
         <motion.div
-          animate={startAnimation ? { scale: 0.5, x: 0 } : { scale: 1, x: 0 }}
+          animate={scaleAnimation}
           style={stylesSplashScreenDiv}
-          transition={{ duration: 1, ease: 'easeInOut' }}
+          transition={scaleTransition}
         >
-          <motion.img
-            alt='Logo'
-            src={accountingLogo}
-            style={{
-              width: logoSize,
-              height: logoSize,
-              objectFit: 'contain',
-              willChange: 'transform',
-            }}
-          />
+          <motion.img alt='Logo' src={accountingLogo} style={imageStyle} />
 
           <motion.div
-            animate={
-              showText
-                ? { width: textWidth, opacity: 1, x: 0 }
-                : { width: 0, opacity: 0, x: 20 }
-            }
-            initial={{ width: 0, opacity: 0 }}
-            style={{
-              overflow: 'hidden',
-              willChange: 'transform, opacity',
-            }}
-            transition={{ duration: 1.2, ease: 'easeOut' }}
+            animate={textAnimation}
+            initial={textInitial}
+            style={textWrapperStyle}
+            transition={textTransition}
           >
             <Typography sx={stylesSplashScreenTypography} variant={variant}>
               Home Accounting
@@ -99,7 +139,7 @@ function SplashScreen() {
           </motion.div>
         </motion.div>
 
-        <Box sx={{ width: barWidth, mt: 6 }}>
+        <Box sx={barBoxStyle}>
           <LinearProgress
             color='success'
             value={progress}

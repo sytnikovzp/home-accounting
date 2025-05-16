@@ -8,6 +8,11 @@ export const stylesHomePageGridContainer = {
   flexWrap: 'wrap',
 };
 
+export const stylesHomePageGridSize = {
+  xs: 12,
+  sm: 6,
+};
+
 export const stylesHomePageGridPanel = {
   display: 'flex',
   justifyContent: 'center',

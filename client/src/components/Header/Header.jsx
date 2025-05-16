@@ -23,7 +23,9 @@ import Logo from './Logo';
 
 import {
   stylesHeaderAppBar,
+  stylesHeaderDivider,
   stylesHeaderToolbar,
+  stylesHeaderToolbarBox,
   stylesHeaderUserBlockWrapper,
 } from '../../styles';
 
@@ -47,7 +49,7 @@ function Header() {
       <AppBar position='sticky' sx={stylesHeaderAppBar}>
         <Container maxWidth='xl'>
           <Toolbar disableGutters sx={stylesHeaderToolbar}>
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={stylesHeaderToolbarBox}>
               {isMobile && (
                 <IconButton color='inherit' onClick={toggleDrawer(true)}>
                   <MenuIcon />
@@ -70,7 +72,7 @@ function Header() {
             </Box>
           </Toolbar>
         </Container>
-        <Divider sx={{ borderWidth: '1px' }} />
+        <Divider sx={stylesHeaderDivider} />
       </AppBar>
       <MobileDrawer open={isDrawerOpen} onClose={toggleDrawer(false)} />
     </>

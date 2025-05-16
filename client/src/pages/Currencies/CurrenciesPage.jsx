@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -20,7 +20,7 @@ import CurrencyEditPage from './CurrencyEditPage';
 import CurrencyRemovePage from './CurrencyRemovePage';
 import CurrencyViewPage from './CurrencyViewPage';
 
-import { stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
 
 const CURRENCIES_PAGES = [
   { path: 'add', Component: CurrencyAddPage },
@@ -77,8 +77,27 @@ function CurrenciesPage() {
     [handleModalOpen]
   );
 
+  const paginationConfig = useMemo(
+    () => ({
+      currentPage,
+      onPageChange: handlePageChange,
+      onRowsPerPageChange: handleRowsPerPageChange,
+      pageSize,
+      rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+      totalCount,
+    }),
+    [
+      currentPage,
+      handlePageChange,
+      handleRowsPerPageChange,
+      pageSize,
+      itemsPerPage,
+      totalCount,
+    ]
+  );
+
   return (
-    <Container maxWidth='lg' sx={{ py: 2 }}>
+    <Container maxWidth='lg' sx={stylesEntityContainerSx}>
       <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Валюти</Typography>
         {hasPermission('currencies', 'add') && (
@@ -96,14 +115,7 @@ function CurrenciesPage() {
         fetchError={fetchError}
         isFetching={isFetching}
         linkEntity='currencies'
-        pagination={{
-          currentPage,
-          onPageChange: handlePageChange,
-          onRowsPerPageChange: handleRowsPerPageChange,
-          pageSize,
-          rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
-          totalCount,
-        }}
+        pagination={paginationConfig}
         rows={currencies}
         sortModel={sortModel}
         onEdit={handleEdit}

@@ -1,31 +1,22 @@
+import { useMemo } from 'react';
+
+import { FORM_RENDER_FIELDS } from '../../../constants';
 import { LOGIN_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
 function LoginForm({ isSubmitting, onSubmit }) {
-  const initialValues = {
-    email: '',
-    password: '',
-  };
-
-  const renderFields = [
-    {
-      name: 'email',
-      label: 'E-mail',
-      placeholder: 'example@gmail.com',
-      autoFocus: true,
-    },
-    {
-      name: 'password',
-      label: 'Пароль',
-      placeholder: 'Qwerty12',
-      type: 'password',
-    },
-  ];
+  const initialValues = useMemo(
+    () => ({
+      email: '',
+      password: '',
+    }),
+    []
+  );
 
   return (
     <BaseForm
-      fields={renderFields}
+      fields={FORM_RENDER_FIELDS.loginFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='auth'

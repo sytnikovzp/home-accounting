@@ -7,7 +7,10 @@ import Button from '@mui/material/Button';
 
 import FormFields from '../FormFields/FormFields';
 
-import { stylesBaseFormButtons } from '../../../styles';
+import {
+  stylesBaseFormButtons,
+  stylesBaseFormExpenseForm,
+} from '../../../styles';
 
 function BaseForm({
   fields,
@@ -43,11 +46,11 @@ function BaseForm({
       return (
         <>
           {renderField('product', { sx: { mb: 1 } })}
-          <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={stylesBaseFormExpenseForm}>
             {renderField('quantity', { sx: { width: '40%' } })}
             {renderField('measure', { sx: { flex: 1 } })}
           </Box>
-          <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={stylesBaseFormExpenseForm}>
             {renderField('unitPrice', { sx: { width: '40%' } })}
             {renderField('currency', { sx: { flex: 1 } })}
           </Box>

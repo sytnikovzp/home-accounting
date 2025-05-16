@@ -1,11 +1,15 @@
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { stylesRedlineTypography } from '../../styles';
+import {
+  stylesAboutPageTypography,
+  stylesEntityContainerSx,
+  stylesRedlineTypography,
+} from '../../styles';
 
 function AboutPage() {
   return (
-    <Container maxWidth='md' sx={{ py: 2 }}>
+    <Container maxWidth='md' sx={stylesEntityContainerSx}>
       <Typography gutterBottom align='center' variant='h4'>
         Про проєкт Home Accounting
       </Typography>
@@ -38,7 +42,7 @@ function AboutPage() {
         </Typography>
       </Typography>
 
-      <Typography gutterBottom sx={{ mt: 2 }} variant='h6'>
+      <Typography gutterBottom sx={stylesAboutPageTypography} variant='h6'>
         Технології проєкту:
       </Typography>
 
@@ -57,7 +61,7 @@ function AboutPage() {
         керуванням дозволами.
       </Typography>
 
-      <Typography gutterBottom sx={{ mt: 2 }} variant='h6'>
+      <Typography gutterBottom sx={stylesAboutPageTypography} variant='h6'>
         Контакти та подальший розвиток:
       </Typography>
 

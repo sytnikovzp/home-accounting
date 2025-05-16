@@ -1,22 +1,21 @@
+import { useMemo } from 'react';
+
+import { FORM_RENDER_FIELDS } from '../../../constants';
 import { FORGOT_PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
 function ForgotPasswordForm({ isSubmitting, onSubmit }) {
-  const initialValues = { email: '' };
-
-  const renderFields = [
-    {
-      name: 'email',
-      label: 'E-mail',
-      placeholder: 'example@gmail.com',
-      autoFocus: true,
-    },
-  ];
+  const initialValues = useMemo(
+    () => ({
+      email: '',
+    }),
+    []
+  );
 
   return (
     <BaseForm
-      fields={renderFields}
+      fields={FORM_RENDER_FIELDS.forgotPasswordFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='auth'

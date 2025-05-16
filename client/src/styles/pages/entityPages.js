@@ -4,3 +4,11 @@ export const stylesEntityPagesBox = {
   alignItems: 'center',
   mb: 1,
 };
+
+export const stylesEntityContainerSx = {
+  py: 2,
+};
+
+export const stylesEntityStatContainerSx = {
+  py: 1,
+};

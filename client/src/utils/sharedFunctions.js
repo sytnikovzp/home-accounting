@@ -84,6 +84,12 @@ const parseDateString = (value, originalValue) => {
   return originalValue;
 };
 
+const stripTime = (date) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
 export {
   formatItems,
   getAccessToken,
@@ -92,5 +98,6 @@ export {
   removeAccessToken,
   saveAccessToken,
   stringAvatar,
+  stripTime,
   uuidPattern,
 };

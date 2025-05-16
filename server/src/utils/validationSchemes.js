@@ -1,6 +1,6 @@
 const yup = require('yup');
 
-const { parseDateString } = require('./sharedFunctions');
+const { parseDateString, stripTime } = require('./sharedFunctions');
 
 const STRING_SCHEME = yup
   .string('Це має бути рядком')
@@ -50,7 +50,7 @@ const DATE_REQUIRED_SCHEME = yup
   .date()
   .transform(parseDateString)
   .typeError('Некоректний формат дати')
-  .max(new Date(), 'Дата не може бути у майбутньому')
+  .max(stripTime(new Date()), 'Дата не може бути у майбутньому')
   .required('Будь ласка, оберіть дату');
 
 const PAGINATION_SCHEME = yup.object().shape({

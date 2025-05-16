@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -20,7 +20,7 @@ import CategoryEditPage from './CategoryEditPage';
 import CategoryRemovePage from './CategoryRemovePage';
 import CategoryViewPage from './CategoryViewPage';
 
-import { stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
 
 const CATEGORIES_PAGES = [
   { path: 'add', Component: CategoryAddPage },
@@ -79,10 +79,32 @@ function CategoriesPage() {
     [handleModalOpen]
   );
 
-  const handleStatusChange = (newStatus) => setSelectedStatus(newStatus);
+  const handleStatusChange = useCallback(
+    (newStatus) => setSelectedStatus(newStatus),
+    []
+  );
+
+  const paginationConfig = useMemo(
+    () => ({
+      currentPage,
+      onPageChange: handlePageChange,
+      onRowsPerPageChange: handleRowsPerPageChange,
+      pageSize,
+      rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+      totalCount,
+    }),
+    [
+      currentPage,
+      handlePageChange,
+      handleRowsPerPageChange,
+      pageSize,
+      itemsPerPage,
+      totalCount,
+    ]
+  );
 
   return (
-    <Container maxWidth='lg' sx={{ py: 2 }}>
+    <Container maxWidth='lg' sx={stylesEntityContainerSx}>
       <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Категорії витрат</Typography>
         {hasPermission('categories', 'add') && (
@@ -101,14 +123,7 @@ function CategoriesPage() {
         fetchError={fetchError}
         isFetching={isFetching}
         linkEntity='categories'
-        pagination={{
-          currentPage,
-          onPageChange: handlePageChange,
-          onRowsPerPageChange: handleRowsPerPageChange,
-          pageSize,
-          rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
-          totalCount,
-        }}
+        pagination={paginationConfig}
         rows={categories}
         selectedStatus={selectedStatus}
         sortModel={sortModel}

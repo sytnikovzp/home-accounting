@@ -67,8 +67,12 @@ function UserMenu({ closeUserMenu }) {
 
   return (
     <>
-      {menuItems.map((item, index) => (
-        <UserMenuItem key={index} {...item} onAction={handleMenuItemClick} />
+      {menuItems.map((item) => (
+        <UserMenuItem
+          key={item.label}
+          {...item}
+          onAction={handleMenuItemClick}
+        />
       ))}
     </>
   );

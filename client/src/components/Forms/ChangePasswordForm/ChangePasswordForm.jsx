@@ -1,34 +1,22 @@
+import { useMemo } from 'react';
+
+import { FORM_RENDER_FIELDS } from '../../../constants';
 import { PASSWORD_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
 
 function ChangePasswordForm({ onSubmit, isSubmitting }) {
-  const initialValues = {
-    newPassword: '',
-    confirmNewPassword: '',
-  };
-
-  const renderFields = [
-    {
-      name: 'newPassword',
-      label: 'Новий пароль',
-      placeholder: 'Qwerty12',
-      type: 'password',
-      required: true,
-      autoFocus: true,
-    },
-    {
-      name: 'confirmNewPassword',
-      label: 'Повтор нового паролю',
-      placeholder: 'Qwerty12',
-      type: 'password',
-      required: true,
-    },
-  ];
+  const initialValues = useMemo(
+    () => ({
+      newPassword: '',
+      confirmNewPassword: '',
+    }),
+    []
+  );
 
   return (
     <BaseForm
-      fields={renderFields}
+      fields={FORM_RENDER_FIELDS.changePasswordFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       layout='auth'

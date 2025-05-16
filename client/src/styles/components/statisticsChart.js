@@ -12,9 +12,14 @@ export const stylesStatisticsChartSpinner = {
   justifyContent: 'center',
 };
 
-export const stylesStatisticsChartStackDirection = { xs: 'column', sm: 'row' };
+export const stylesStatisticsChartStackDirection = {
+  xs: 'column',
+  sm: 'row',
+};
 
-export const stylesStatisticsChartStackButton = { mt: 5 };
+export const stylesStatisticsChartStackButton = {
+  mt: 5,
+};
 
 export const stylesStatisticsChartButton = {
   backgroundImage: 'linear-gradient(to top, #c1e1a6, #a5d6a7)',

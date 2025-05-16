@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+
+import { FORM_RENDER_FIELDS } from '../../../constants';
 import { CATEGORY_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import BaseForm from '../BaseForm/BaseForm';
@@ -5,23 +8,16 @@ import BaseForm from '../BaseForm/BaseForm';
 function CategoryForm({ isSubmitting, category = null, onSubmit }) {
   const { title } = category ?? {};
 
-  const initialValues = {
-    title: title || '',
-  };
-
-  const renderFields = [
-    {
-      name: 'title',
-      label: 'Назва категорії',
-      placeholder: 'Наприклад "Електроніка"',
-      required: true,
-      autoFocus: true,
-    },
-  ];
+  const initialValues = useMemo(
+    () => ({
+      title: title || '',
+    }),
+    [title]
+  );
 
   return (
     <BaseForm
-      fields={renderFields}
+      fields={FORM_RENDER_FIELDS.categoryFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={CATEGORY_VALIDATION_SCHEME}

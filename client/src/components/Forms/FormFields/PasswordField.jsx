@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Field } from 'formik';
 
 import IconButton from '@mui/material/IconButton';
@@ -32,6 +32,26 @@ function PasswordField({
     []
   );
 
+  const inputProps = useMemo(
+    () => ({
+      endAdornment: (
+        <InputAdornment position='end'>
+          <IconButton
+            aria-label={
+              isPasswordVisible ? 'Приховати пароль' : 'Показати пароль'
+            }
+            edge='end'
+            onClick={handleToggleShowPassword}
+            onMouseDown={handleMouseDownPassword}
+          >
+            {isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          </IconButton>
+        </InputAdornment>
+      ),
+    }),
+    [handleToggleShowPassword, handleMouseDownPassword, isPasswordVisible]
+  );
+
   return (
     <Field
       fullWidth
@@ -39,22 +59,7 @@ function PasswordField({
       autoFocus={autoFocus}
       error={Boolean(touched && error)}
       helperText={touched && error ? error : ' '}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position='end'>
-            <IconButton
-              aria-label={
-                isPasswordVisible ? 'Приховати пароль' : 'Показати пароль'
-              }
-              edge='end'
-              onClick={handleToggleShowPassword}
-              onMouseDown={handleMouseDownPassword}
-            >
-              {isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
+      InputProps={inputProps}
       label={label}
       name={name}
       placeholder={placeholder}

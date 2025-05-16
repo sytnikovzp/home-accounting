@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
@@ -20,7 +20,11 @@ import LoginForm from '../../components/Forms/LoginForm/LoginForm';
 import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
 import ModalWindow from '../../components/ModalWindow/ModalWindow';
 
-import { stylesAuthPageBoxTitle, stylesAuthPageTitle } from '../../styles';
+import {
+  stylesAuthPageBoxTitle,
+  stylesAuthPageButton,
+  stylesAuthPageTitle,
+} from '../../styles';
 
 const TITLES = {
   login: 'Авторизація',
@@ -116,6 +120,10 @@ function AuthPage() {
     });
   }, []);
 
+  const handleForgotPasswordClick = useCallback(() => {
+    setAuthMode('forgotPassword');
+  }, []);
+
   const renderAuthForms = {
     login: (
       <>
@@ -123,9 +131,9 @@ function AuthPage() {
         <Button
           fullWidth
           color='secondary'
-          sx={{ mt: 2 }}
+          sx={stylesAuthPageButton}
           variant='text'
-          onClick={() => setAuthMode('forgotPassword')}
+          onClick={handleForgotPasswordClick}
         >
           Забули пароль?
         </Button>
@@ -145,17 +153,20 @@ function AuthPage() {
     ),
   };
 
+  const avatarSx = useMemo(
+    () => ({
+      width: 50,
+      height: 50,
+      mb: 1,
+      mx: 'auto',
+      bgcolor: AVATAR_COLORS[authMode],
+    }),
+    [authMode]
+  );
+
   const renderTitle = (
     <Box sx={stylesAuthPageBoxTitle}>
-      <Avatar
-        sx={{
-          width: 50,
-          height: 50,
-          mb: 1,
-          mx: 'auto',
-          bgcolor: AVATAR_COLORS[authMode],
-        }}
-      >
+      <Avatar sx={avatarSx}>
         <LockOutlinedIcon />
       </Avatar>
       <Typography sx={stylesAuthPageTitle} variant='h6'>

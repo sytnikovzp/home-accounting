@@ -12,9 +12,9 @@ function ViewDetails({ data }) {
   return (
     <Box sx={stylesViewPageBox}>
       {data.map(
-        ({ icon, label, value, isLink = false, linkTo = '', extra }, index) => (
+        ({ icon, label, value, isLink = false, linkTo = '', extra }) => (
           <ViewDetailRow
-            key={index}
+            key={label}
             extra={extra}
             icon={icon}
             isLink={isLink}

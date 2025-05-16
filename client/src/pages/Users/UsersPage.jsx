@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -18,7 +18,7 @@ import UserEditPage from './UserEditPage';
 import UserRemovePage from './UserRemovePage';
 import UserViewPage from './UserViewPage';
 
-import { stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
 
 const USERS_PAGES = [
   { path: 'password/:uuid', Component: UserChangePasswordPage },
@@ -71,10 +71,31 @@ function UsersPage() {
     [handleModalOpen]
   );
 
-  const handleStatusChange = (newStatus) => setEmailConfirm(newStatus);
+  const handleStatusChange = useCallback((newStatus) => {
+    setEmailConfirm(newStatus);
+  }, []);
+
+  const paginationConfig = useMemo(
+    () => ({
+      currentPage,
+      onPageChange: handlePageChange,
+      onRowsPerPageChange: handleRowsPerPageChange,
+      pageSize,
+      rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+      totalCount,
+    }),
+    [
+      currentPage,
+      handlePageChange,
+      handleRowsPerPageChange,
+      pageSize,
+      itemsPerPage,
+      totalCount,
+    ]
+  );
 
   return (
-    <Container maxWidth='lg' sx={{ py: 2 }}>
+    <Container maxWidth='lg' sx={stylesEntityContainerSx}>
       <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Користувачі</Typography>
       </Box>
@@ -83,14 +104,7 @@ function UsersPage() {
         fetchError={fetchError}
         isFetching={isFetching}
         linkEntity='users'
-        pagination={{
-          currentPage,
-          onPageChange: handlePageChange,
-          onRowsPerPageChange: handleRowsPerPageChange,
-          pageSize,
-          rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
-          totalCount,
-        }}
+        pagination={paginationConfig}
         rows={users}
         selectedStatus={emailConfirm}
         sortModel={sortModel}

@@ -13,12 +13,18 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {
   stylesPermissionsListBox,
   stylesPermissionsListBoxEmpty,
+  stylesPermissionsListIcon,
+  stylesPermissionsListTypography,
 } from '../../styles';
 
 function PermissionsList({ permissions = [] }) {
   const renderEmptyState = () => (
     <Box sx={stylesPermissionsListBoxEmpty}>
-      <LockOpenIcon color='disabled' fontSize='large' sx={{ mr: 12 }} />
+      <LockOpenIcon
+        color='disabled'
+        fontSize='large'
+        sx={stylesPermissionsListIcon}
+      />
       <Typography>*Права доступу відсутні*</Typography>
     </Box>
   );
@@ -48,7 +54,11 @@ function PermissionsList({ permissions = [] }) {
   return (
     <>
       <Divider />
-      <Typography gutterBottom sx={{ mt: 2 }} variant='h6'>
+      <Typography
+        gutterBottom
+        sx={stylesPermissionsListTypography}
+        variant='h6'
+      >
         Права доступу:
       </Typography>
       <Box sx={stylesPermissionsListBox}>

@@ -7,7 +7,11 @@ import Typography from '@mui/material/Typography';
 
 import { ERROR_MESSAGES } from '../../constants';
 
-import { stylesErrorPageBox } from '../../styles';
+import {
+  stylesErrorPageBox,
+  stylesErrorPageButton,
+  stylesErrorPageTypography,
+} from '../../styles';
 
 function NotFoundPage() {
   const navigate = useNavigate();
@@ -25,13 +29,18 @@ function NotFoundPage() {
         Помилка 404
       </Typography>
 
-      <Typography color='#2E7D32' fontWeight={500} sx={{ m: 3 }} variant='h4'>
+      <Typography
+        color='#2E7D32'
+        fontWeight={500}
+        sx={stylesErrorPageTypography}
+        variant='h4'
+      >
         {randomMessage}
       </Typography>
 
       <Button
         color='success'
-        sx={{ m: 3 }}
+        sx={stylesErrorPageButton}
         variant='contained'
         onClick={handleNavigateToHome}
       >

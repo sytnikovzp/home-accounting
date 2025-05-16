@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -20,7 +20,7 @@ import ExpenseEditPage from './ExpenseEditPage';
 import ExpenseRemovePage from './ExpenseRemovePage';
 import ExpenseViewPage from './ExpenseViewPage';
 
-import { stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
 
 const EXPENSES_PAGES = [
   { path: 'add', Component: ExpenseAddPage },
@@ -80,10 +80,32 @@ function ExpensesPage() {
     [handleModalOpen]
   );
 
-  const handlePeriodChange = (newStatus) => setSelectedPeriod(newStatus);
+  const handlePeriodChange = useCallback(
+    (newStatus) => setSelectedPeriod(newStatus),
+    []
+  );
+
+  const paginationConfig = useMemo(
+    () => ({
+      currentPage,
+      onPageChange: handlePageChange,
+      onRowsPerPageChange: handleRowsPerPageChange,
+      pageSize,
+      rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
+      totalCount,
+    }),
+    [
+      currentPage,
+      handlePageChange,
+      handleRowsPerPageChange,
+      pageSize,
+      itemsPerPage,
+      totalCount,
+    ]
+  );
 
   return (
-    <Container maxWidth='lg' sx={{ py: 2 }}>
+    <Container maxWidth='lg' sx={stylesEntityContainerSx}>
       <Box sx={stylesEntityPagesBox}>
         <Typography variant='h6'>Витрати</Typography>
         {hasPermission('expenses', 'add') && (
@@ -102,14 +124,7 @@ function ExpensesPage() {
         fetchError={fetchError}
         isFetching={isFetching}
         linkEntity='expenses'
-        pagination={{
-          currentPage,
-          onPageChange: handlePageChange,
-          onRowsPerPageChange: handleRowsPerPageChange,
-          pageSize,
-          rowsPerPageOptions: [itemsPerPage, 15, 20, 25],
-          totalCount,
-        }}
+        pagination={paginationConfig}
         rows={expenses}
         selectedStatus={selectedPeriod}
         sortModel={sortModel}

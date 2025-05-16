@@ -4,8 +4,8 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
 import {
-  stylesListTableBorderEmptyRow,
-  stylesListTableHeightEmptyRow,
+  stylesEmptyRowsBorderEmptyRow,
+  stylesEmptyRowsHeightEmptyRow,
 } from '../../styles';
 
 function EmptyRows({ columns, pageSize, rows }) {
@@ -14,11 +14,11 @@ function EmptyRows({ columns, pageSize, rows }) {
   const emptyRows = useMemo(
     () =>
       Array.from({ length: emptyRowsCount }, (_, index) => (
-        <TableRow key={`empty-row-${index}`} sx={stylesListTableHeightEmptyRow}>
+        <TableRow key={`empty-row-${index}`} sx={stylesEmptyRowsHeightEmptyRow}>
           {Array.from({ length: columns.length }, (_, colIndex) => (
             <TableCell
               key={`empty-cell-${index}-${colIndex}`}
-              sx={stylesListTableBorderEmptyRow}
+              sx={stylesEmptyRowsBorderEmptyRow}
             />
           ))}
         </TableRow>

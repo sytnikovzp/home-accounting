@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 
 import Typography from '@mui/material/Typography';
 
+import { FORM_RENDER_FIELDS } from '../../../constants';
 import { ROLE_VALIDATION_SCHEME } from '../../../utils/validationSchemes';
 
 import { useFetchAllPermissionsQuery } from '../../../store/services';
@@ -26,26 +27,14 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
     [permissionsList]
   );
 
-  const initialValues = {
-    title: title || '',
-    description: description || '',
-    permissions: permissions.map((p) => p.uuid) || [],
-  };
-
-  const renderFields = [
-    {
-      name: 'title',
-      label: 'Назва ролі',
-      placeholder: 'Наприклад "Admin"',
-      required: true,
-      autoFocus: true,
-    },
-    {
-      name: 'description',
-      label: 'Опис',
-      placeholder: 'Наприклад "Адміністратори"',
-    },
-  ];
+  const initialValues = useMemo(
+    () => ({
+      title: title || '',
+      description: description || '',
+      permissions: permissions.map((p) => p.uuid) || [],
+    }),
+    [title, description, permissions]
+  );
 
   const handleSubmit = useCallback(
     (values) => {
@@ -73,7 +62,7 @@ function RoleForm({ isSubmitting, role = null, onSubmit }) {
   return (
     <BaseForm
       customContent={renderCustomContent}
-      fields={renderFields}
+      fields={FORM_RENDER_FIELDS.roleFields}
       initialValues={initialValues}
       isSubmitting={isSubmitting}
       validationSchema={ROLE_VALIDATION_SCHEME}
