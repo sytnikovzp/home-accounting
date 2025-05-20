@@ -220,15 +220,7 @@ export default [
           property: 'import',
         },
       ],
-      'no-restricted-syntax': [
-        'error',
-        'WithStatement',
-        // {
-        //   selector: "LogicalExpression[operator='||']",
-        //   message:
-        //     'Используйте ?? вместо || для проверки на null или undefined.',
-        // },
-      ],
+      'no-restricted-syntax': ['error', 'WithStatement'],
       'no-return-assign': 'error',
       'no-return-await': 'error',
       'no-script-url': 'error',
