@@ -12,22 +12,22 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { API_CONFIG } from '../../constants';
-import useAuthentication from '../../hooks/useAuthentication';
+import { API_CONFIG } from '@/src/constants';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
 import {
   useFetchUserByUuidQuery,
   useResendConfirmEmailMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import StatusIcon from '@/src/components/StatusIcon/StatusIcon';
+import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
 
 import {
   stylesUserViewPageEmailButton,
   stylesViewPageAvatarSize,
-} from '../../styles';
+} from '@/src/styles';
 
 function UserViewPage() {
   const { uuid } = useParams();

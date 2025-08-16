@@ -6,10 +6,10 @@ import Alert from '@mui/material/Alert';
 import {
   useEditExpenseMutation,
   useFetchExpenseByUuidQuery,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ExpenseForm from '@/src/components/_forms/ExpenseForm/ExpenseForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function ExpenseEditPage({ handleModalClose }) {
   const { uuid } = useParams();

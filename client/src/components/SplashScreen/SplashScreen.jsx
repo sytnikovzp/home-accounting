@@ -8,12 +8,13 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import accountingLogo from '../../assets/logo.png';
+import { API_CONFIG } from '@/src/constants';
+
 import {
   stylesSplashScreenBox,
   stylesSplashScreenDiv,
   stylesSplashScreenTypography,
-} from '../../styles';
+} from '@/src/styles';
 
 function SplashScreen() {
   const [startAnimation, setStartAnimation] = useState(false);
@@ -125,7 +126,11 @@ function SplashScreen() {
           style={stylesSplashScreenDiv}
           transition={scaleTransition}
         >
-          <motion.img alt='Logo' src={accountingLogo} style={imageStyle} />
+          <motion.img
+            alt='Logo'
+            src={`${API_CONFIG.BASE_URL.replace('/api', '')}/images/logo.png`}
+            style={imageStyle}
+          />
 
           <motion.div
             animate={textAnimation}

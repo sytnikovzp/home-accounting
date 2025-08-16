@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
 
-import { useAddCurrencyMutation } from '../../store/services';
+import { useAddCurrencyMutation } from '@/src/store/services';
 
-import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import CurrencyForm from '@/src/components/_forms/CurrencyForm/CurrencyForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function CurrencyAddPage({ handleModalClose }) {
   const [addCurrency, { isLoading: isSubmitting, error: submitError }] =

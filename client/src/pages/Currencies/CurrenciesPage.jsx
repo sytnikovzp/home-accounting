@@ -6,21 +6,21 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useHasPermission from '../../hooks/useHasPermission';
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useHasPermission from '@/src/hooks/useHasPermission';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllCurrenciesQuery } from '../../store/services';
+import { useFetchAllCurrenciesQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import CurrencyAddPage from './CurrencyAddPage';
-import CurrencyEditPage from './CurrencyEditPage';
-import CurrencyRemovePage from './CurrencyRemovePage';
-import CurrencyViewPage from './CurrencyViewPage';
+import CurrencyAddPage from '@/src/pages/Currencies/CurrencyAddPage';
+import CurrencyEditPage from '@/src/pages/Currencies/CurrencyEditPage';
+import CurrencyRemovePage from '@/src/pages/Currencies/CurrencyRemovePage';
+import CurrencyViewPage from '@/src/pages/Currencies/CurrencyViewPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const CURRENCIES_PAGES = [
   { path: 'add', Component: CurrencyAddPage },

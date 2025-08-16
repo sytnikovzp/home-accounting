@@ -6,9 +6,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ukUA } from '@mui/material/locale';
 
-import store from './store';
+import store from '@/src/store';
 
-import App from './App';
+import App from '@/src/App';
 
 const theme = createTheme({}, ukUA);
 

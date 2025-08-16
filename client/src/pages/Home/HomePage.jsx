@@ -21,7 +21,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SmartphoneIcon from '@mui/icons-material/Smartphone';
 
-import { PANEL_DATA } from '../../constants';
+import { PANEL_DATA } from '@/src/constants';
 
 import {
   stylesEntityContainerSx,
@@ -32,7 +32,7 @@ import {
   stylesHomePageGridPanel,
   stylesHomePageGridSize,
   stylesRedlineTypography,
-} from '../../styles';
+} from '@/src/styles';
 
 const iconMap = {
   account: <AccountBoxIcon />,

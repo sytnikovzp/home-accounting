@@ -9,14 +9,14 @@ import Tooltip from '@mui/material/Tooltip';
 
 import ClearIcon from '@mui/icons-material/Clear';
 
-import { API_CONFIG } from '../../constants';
+import { API_CONFIG } from '@/src/constants';
 
 import {
   stylesFileUploadAvatar,
   stylesFileUploadAvatarBox,
   stylesFileUploadIconButton,
   stylesFileUploadMainBox,
-} from '../../styles';
+} from '@/src/styles';
 
 function FileUpload({ entity, file, isChanging, label, onReset, onUpload }) {
   const avatarPath = useMemo(() => {

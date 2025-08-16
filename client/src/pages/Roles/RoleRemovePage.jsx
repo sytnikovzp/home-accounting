@@ -6,9 +6,9 @@ import Alert from '@mui/material/Alert';
 import {
   useFetchRoleByUuidQuery,
   useRemoveRoleMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function RoleRemovePage({ handleModalClose }) {
   const { uuid } = useParams();

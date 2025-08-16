@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 
-import { stylesErrorTypography } from '../../styles';
+import { stylesErrorTypography } from '@/src/styles';
 
 function Error({ message }) {
   return (

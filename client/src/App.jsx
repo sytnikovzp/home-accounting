@@ -1,36 +1,36 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import useAuthentication from './hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
-import Layout from './components/Layout/Layout';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import PublicRoute from './components/PublicRoute/PublicRoute';
-import SplashScreen from './components/SplashScreen/SplashScreen';
+import Layout from '@/src/components/Layout/Layout';
+import PrivateRoute from '@/src/components/PrivateRoute/PrivateRoute';
+import PublicRoute from '@/src/components/PublicRoute/PublicRoute';
+import SplashScreen from '@/src/components/SplashScreen/SplashScreen';
 
-import AboutPage from './pages/About/AboutPage';
-import AuthPage from './pages/Auth/AuthPage';
-import ResetPasswordPage from './pages/Auth/ResetPasswordPage';
-import CategoriesPage from './pages/Categories/CategoriesPage';
-import ContactsPage from './pages/Contacts/ContactsPage';
-import CurrenciesPage from './pages/Currencies/CurrenciesPage';
-import EstablishmentsPage from './pages/Establishments/EstablishmentsPage';
-import ExpensesPage from './pages/Expenses/ExpensesPage';
-import ForbiddenPage from './pages/Forbidden/ForbiddenPage';
-import HomePage from './pages/Home/HomePage';
-import MeasuresPage from './pages/Measures/MeasuresPage';
-import ModerationPage from './pages/Moderation/ModerationPage';
-import NotFoundPage from './pages/NotFound/NotFoundPage';
-import NotificationPage from './pages/Notification/NotificationPage';
-import ProductsPage from './pages/Products/ProductsPage';
-import RolesPage from './pages/Roles/RolesPage';
-import RoleViewPage from './pages/Roles/RoleViewPage';
-import StatisticsPage from './pages/Statistics/StatisticsPage';
-import UserChangePasswordPage from './pages/Users/UserChangePasswordPage';
-import UserEditPage from './pages/Users/UserEditPage';
-import UserRemovePage from './pages/Users/UserRemovePage';
-import UsersPage from './pages/Users/UsersPage';
-import UserViewPage from './pages/Users/UserViewPage';
+import AboutPage from '@/src/pages/About/AboutPage';
+import AuthPage from '@/src/pages/Auth/AuthPage';
+import ResetPasswordPage from '@/src/pages/Auth/ResetPasswordPage';
+import CategoriesPage from '@/src/pages/Categories/CategoriesPage';
+import ContactsPage from '@/src/pages/Contacts/ContactsPage';
+import CurrenciesPage from '@/src/pages/Currencies/CurrenciesPage';
+import EstablishmentsPage from '@/src/pages/Establishments/EstablishmentsPage';
+import ExpensesPage from '@/src/pages/Expenses/ExpensesPage';
+import ForbiddenPage from '@/src/pages/Forbidden/ForbiddenPage';
+import HomePage from '@/src/pages/Home/HomePage';
+import MeasuresPage from '@/src/pages/Measures/MeasuresPage';
+import ModerationPage from '@/src/pages/Moderation/ModerationPage';
+import NotFoundPage from '@/src/pages/NotFound/NotFoundPage';
+import NotificationPage from '@/src/pages/Notification/NotificationPage';
+import ProductsPage from '@/src/pages/Products/ProductsPage';
+import RolesPage from '@/src/pages/Roles/RolesPage';
+import RoleViewPage from '@/src/pages/Roles/RoleViewPage';
+import StatisticsPage from '@/src/pages/Statistics/StatisticsPage';
+import UserChangePasswordPage from '@/src/pages/Users/UserChangePasswordPage';
+import UserEditPage from '@/src/pages/Users/UserEditPage';
+import UserRemovePage from '@/src/pages/Users/UserRemovePage';
+import UsersPage from '@/src/pages/Users/UsersPage';
+import UserViewPage from '@/src/pages/Users/UserViewPage';
 
 const publicRoutes = [
   { path: 'auth', element: AuthPage },

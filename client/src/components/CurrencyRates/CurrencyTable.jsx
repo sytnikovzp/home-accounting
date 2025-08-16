@@ -11,7 +11,7 @@ import {
   stylesCurrencyTableTableCell,
   stylesCurrencyTableTableContainer,
   stylesCurrencyTableTableRow,
-} from '../../styles';
+} from '@/src/styles';
 
 function CurrencyTable({ rates }) {
   const memoizedRates = useMemo(() => rates, [rates]);

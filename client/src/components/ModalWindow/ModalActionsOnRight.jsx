@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 
-import { stylesModalWindowActionsOnRight } from '../../styles';
+import { stylesModalWindowActionsOnRight } from '@/src/styles';
 
 function ModalActionsOnRight({ children }) {
   return <Box sx={stylesModalWindowActionsOnRight}>{children}</Box>;

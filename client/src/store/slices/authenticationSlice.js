@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { authApi, userProfileApi } from '../services';
+import { authApi, userProfileApi } from '@/src/store/services';
 
 const initialState = {
   authenticatedUser: null,

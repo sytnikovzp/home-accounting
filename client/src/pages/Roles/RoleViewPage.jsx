@@ -8,13 +8,13 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import InfoIcon from '@mui/icons-material/Info';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import useAuthentication from '../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
-import { useFetchRoleByUuidQuery } from '../../store/services';
+import { useFetchRoleByUuidQuery } from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import PermissionsList from '../../components/ViewDetails/PermissionsList';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import PermissionsList from '@/src/components/ViewDetails/PermissionsList';
+import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
 
 function RoleViewPage() {
   const { uuid: paramUuid } = useParams();

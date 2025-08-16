@@ -5,17 +5,17 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllPendingItemsQuery } from '../../store/services';
+import { useFetchAllPendingItemsQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import ContentModerationPage from './ContentModerationPage';
+import ContentModerationPage from '@/src/pages/Moderation/ContentModerationPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const MODERATIONS_PAGES = [
   { path: ':path/:uuid', Component: ContentModerationPage },

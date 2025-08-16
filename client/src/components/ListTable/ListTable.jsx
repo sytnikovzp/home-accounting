@@ -14,16 +14,15 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { COLUMNS_CONFIG } from '../../constants';
-import useDelayedPreloader from '../../hooks/useDelayedPreloader';
-import useHasPermission from '../../hooks/useHasPermission';
+import { COLUMNS_CONFIG } from '@/src/constants';
+import useDelayedPreloader from '@/src/hooks/useDelayedPreloader';
+import useHasPermission from '@/src/hooks/useHasPermission';
 
-import Error from '../Error/Error';
-
-import ActionColumns from './ActionColumns';
-import EmptyRows from './EmptyRows';
-import EntityTableCell from './EntityTableCell';
-import StatusDropdown from './StatusDropdown';
+import Error from '@/src/components/Error/Error';
+import ActionColumns from '@/src/components/ListTable/ActionColumns';
+import EmptyRows from '@/src/components/ListTable/EmptyRows';
+import EntityTableCell from '@/src/components/ListTable/EntityTableCell';
+import StatusDropdown from '@/src/components/ListTable/StatusDropdown';
 
 import {
   stylesListTableActionsHeadTableCellModeration,
@@ -35,7 +34,7 @@ import {
   stylesListTablePreloader,
   stylesListTableTableHeadTableRow,
   stylesListTableTableRow,
-} from '../../styles';
+} from '@/src/styles';
 
 function ListTable({
   showStatusDropdown = false,

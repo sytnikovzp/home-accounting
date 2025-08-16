@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
 
-import { useAddMeasureMutation } from '../../store/services';
+import { useAddMeasureMutation } from '@/src/store/services';
 
-import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import MeasureForm from '@/src/components/_forms/MeasureForm/MeasureForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function MeasureAddPage({ handleModalClose }) {
   const [addMeasure, { isLoading: isSubmitting, error: submitError }] =

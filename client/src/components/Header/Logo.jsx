@@ -3,14 +3,15 @@ import { Link as RouterLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import accountingLogo from '../../assets/logo.png';
+import { API_CONFIG } from '@/src/constants';
+
 import {
   stylesLogoBoxDesktop,
   stylesLogoBoxMobile,
   stylesLogoIcon,
   stylesLogoTypographyDesktop,
   stylesLogoTypographyMobile,
-} from '../../styles';
+} from '@/src/styles';
 
 function Logo({ isMobile }) {
   return (
@@ -22,7 +23,7 @@ function Logo({ isMobile }) {
       {!isMobile && (
         <img
           alt='Home Accounting'
-          src={accountingLogo}
+          src={`${API_CONFIG.BASE_URL.replace('/api', '')}/images/logo.png`}
           style={stylesLogoIcon}
         />
       )}

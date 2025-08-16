@@ -6,10 +6,10 @@ import Alert from '@mui/material/Alert';
 import {
   useEditCurrencyMutation,
   useFetchCurrencyByUuidQuery,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import CurrencyForm from '../../components/Forms/CurrencyForm/CurrencyForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import CurrencyForm from '@/src/components/_forms/CurrencyForm/CurrencyForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function CurrencyEditPage({ handleModalClose }) {
   const { uuid } = useParams();

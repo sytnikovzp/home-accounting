@@ -6,10 +6,10 @@ import Alert from '@mui/material/Alert';
 import {
   useEditProductMutation,
   useFetchProductByUuidQuery,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ProductForm from '../../components/Forms/ProductForm/ProductForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ProductForm from '@/src/components/_forms/ProductForm/ProductForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function ProductEditPage({ handleModalClose }) {
   const { uuid } = useParams();

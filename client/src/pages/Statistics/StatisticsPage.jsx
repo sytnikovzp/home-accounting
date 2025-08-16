@@ -8,15 +8,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
-import useAuthentication from '../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
 import {
   useFetchCostByCategoriesQuery,
   useFetchCostByEstablishmentsQuery,
   useFetchCostByProductsQuery,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import StatisticsChart from '../../components/StatisticsChart/StatisticsChart';
+import StatisticsChart from '@/src/components/StatisticsChart/StatisticsChart';
 
 import {
   stylesEntityStatContainerSx,
@@ -24,7 +24,7 @@ import {
   stylesStatisticsPageBoxCriteria,
   stylesStatisticsPageCriteriaSelect,
   stylesStatisticsPagePeriodSelect,
-} from '../../styles';
+} from '@/src/styles';
 
 function StatisticsPage() {
   const [ago, setAgo] = useState('allTime');

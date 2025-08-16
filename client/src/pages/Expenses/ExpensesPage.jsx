@@ -6,21 +6,21 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useHasPermission from '../../hooks/useHasPermission';
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useHasPermission from '@/src/hooks/useHasPermission';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllExpensesQuery } from '../../store/services';
+import { useFetchAllExpensesQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import ExpenseAddPage from './ExpenseAddPage';
-import ExpenseEditPage from './ExpenseEditPage';
-import ExpenseRemovePage from './ExpenseRemovePage';
-import ExpenseViewPage from './ExpenseViewPage';
+import ExpenseAddPage from '@/src/pages/Expenses/ExpenseAddPage';
+import ExpenseEditPage from '@/src/pages/Expenses/ExpenseEditPage';
+import ExpenseRemovePage from '@/src/pages/Expenses/ExpenseRemovePage';
+import ExpenseViewPage from '@/src/pages/Expenses/ExpenseViewPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const EXPENSES_PAGES = [
   { path: 'add', Component: ExpenseAddPage },

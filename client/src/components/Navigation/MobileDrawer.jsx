@@ -4,15 +4,14 @@ import IconButton from '@mui/material/IconButton';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import CurrencyRates from '../CurrencyRates/CurrencyRates';
-
-import NavBar from './NavBar';
+import CurrencyRates from '@/src/components/CurrencyRates/CurrencyRates';
+import NavBar from '@/src/components/Navigation/NavBar';
 
 import {
   stylesMobileDrawerBox,
   stylesMobileDrawerBoxIcon,
   stylesMobileDrawerDrawer,
-} from '../../styles';
+} from '@/src/styles';
 
 function MobileDrawer({ open, onClose }) {
   return (

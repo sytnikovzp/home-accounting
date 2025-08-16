@@ -2,7 +2,7 @@ import IconButton from '@mui/material/IconButton';
 import TableCell from '@mui/material/TableCell';
 import Tooltip from '@mui/material/Tooltip';
 
-import { stylesListTableActions } from '../../styles';
+import { stylesListTableActions } from '@/src/styles';
 
 function ActionButton({ Icon, title, onClick }) {
   return (

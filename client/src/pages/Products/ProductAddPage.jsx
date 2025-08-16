@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
 
-import { useAddProductMutation } from '../../store/services';
+import { useAddProductMutation } from '@/src/store/services';
 
-import ProductForm from '../../components/Forms/ProductForm/ProductForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ProductForm from '@/src/components/_forms/ProductForm/ProductForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function ProductAddPage({ handleModalClose }) {
   const [addProduct, { isLoading: isSubmitting, error: submitError }] =

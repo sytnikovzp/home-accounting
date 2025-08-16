@@ -6,21 +6,21 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useHasPermission from '../../hooks/useHasPermission';
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useHasPermission from '@/src/hooks/useHasPermission';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllRolesQuery } from '../../store/services';
+import { useFetchAllRolesQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import RoleAddPage from './RoleAddPage';
-import RoleEditPage from './RoleEditPage';
-import RoleRemovePage from './RoleRemovePage';
-import RoleViewPage from './RoleViewPage';
+import RoleAddPage from '@/src/pages/Roles/RoleAddPage';
+import RoleEditPage from '@/src/pages/Roles/RoleEditPage';
+import RoleRemovePage from '@/src/pages/Roles/RoleRemovePage';
+import RoleViewPage from '@/src/pages/Roles/RoleViewPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const ROLES_PAGES = [
   { path: 'add', Component: RoleAddPage },

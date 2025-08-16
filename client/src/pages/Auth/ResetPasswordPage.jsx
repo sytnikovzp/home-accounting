@@ -3,10 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
 
-import { useResetPasswordMutation } from '../../store/services';
+import { useResetPasswordMutation } from '@/src/store/services';
 
-import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ChangePasswordForm from '@/src/components/_forms/ChangePasswordForm/ChangePasswordForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function ResetPasswordPage() {
   const [responseData, setResponseData] = useState(null);

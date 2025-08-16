@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
 
-import { useAddExpenseMutation } from '../../store/services';
+import { useAddExpenseMutation } from '@/src/store/services';
 
-import ExpenseForm from '../../components/Forms/ExpenseForm/ExpenseForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ExpenseForm from '@/src/components/_forms/ExpenseForm/ExpenseForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function ExpenseAddPage({ handleModalClose }) {
   const [addExpense, { isLoading: isSubmitting, error: submitError }] =

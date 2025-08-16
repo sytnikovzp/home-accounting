@@ -3,15 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
 
-import useAuthentication from '../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
 import {
   useChangeUserPasswordMutation,
   useChangeUserProfilePasswordMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ChangePasswordForm from '../../components/Forms/ChangePasswordForm/ChangePasswordForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ChangePasswordForm from '@/src/components/_forms/ChangePasswordForm/ChangePasswordForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function UserChangePasswordPage() {
   const { uuid } = useParams();

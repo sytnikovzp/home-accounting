@@ -6,7 +6,7 @@ import TableRow from '@mui/material/TableRow';
 import {
   stylesEmptyRowsBorderEmptyRow,
   stylesEmptyRowsHeightEmptyRow,
-} from '../../styles';
+} from '@/src/styles';
 
 function EmptyRows({ columns, pageSize, rows }) {
   const emptyRowsCount = pageSize - rows.length;

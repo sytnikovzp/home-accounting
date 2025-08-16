@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { baseQueryWithReauth } from './apiSlice';
+import { baseQueryWithReauth } from '@/src/store/services/apiSlice';
 
 export const statisticsApi = createApi({
   reducerPath: 'statisticsApi',

@@ -1,13 +1,13 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import ValueWithLink from './ValueWithLink';
+import ValueWithLink from '@/src/components/ViewDetails/ValueWithLink';
 
 import {
   stylesViewDetailRowBox,
   stylesViewDetailRowExtraBox,
   stylesViewDetailRowTypography,
-} from '../../styles';
+} from '@/src/styles';
 
 function ViewDetailRow({ extra, icon: Icon, isLink, label, linkTo, value }) {
   return (

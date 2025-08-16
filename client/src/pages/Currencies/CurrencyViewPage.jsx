@@ -9,10 +9,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import PersonIcon from '@mui/icons-material/Person';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { useFetchCurrencyByUuidQuery } from '../../store/services';
+import { useFetchCurrencyByUuidQuery } from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
 
 function CurrencyViewPage({ handleModalClose }) {
   const { uuid } = useParams();

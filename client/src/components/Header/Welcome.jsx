@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import useAuthentication from '../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
-import { stylesWelcomeBox } from '../../styles';
+import { stylesWelcomeBox } from '@/src/styles';
 
 function Welcome() {
   const { authenticatedUser } = useAuthentication();

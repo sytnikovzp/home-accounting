@@ -6,12 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 
-import { API_CONFIG } from '../../constants';
-import { stringAvatar } from '../../utils/stringHelpers';
-import useAuthentication from '../../hooks/useAuthentication';
+import { API_CONFIG } from '@/src/constants';
+import { stringAvatar } from '@/src/utils/stringHelpers';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
-import UserMenu from './UserMenu/UserMenu';
-import Welcome from './Welcome';
+import UserMenu from '@/src/components/Header/UserMenu/UserMenu';
+import Welcome from '@/src/components/Header/Welcome';
 
 import {
   stylesAuthenticatedUserBlockBox,
@@ -19,7 +19,7 @@ import {
   stylesAuthenticatedUserBlockMenu,
   stylesAuthenticatedUserBlockMenuAnchor,
   stylesAuthenticatedUserBlockMenuTransform,
-} from '../../styles';
+} from '@/src/styles';
 
 const slotPropsPaper = {
   paper: {

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function NotificationPage() {
   const navigate = useNavigate();

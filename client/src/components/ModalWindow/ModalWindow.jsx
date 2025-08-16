@@ -5,20 +5,19 @@ import Modal from '@mui/material/Modal';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-import Preloader from '../Preloader/Preloader';
-
-import ConfirmMessage from './ConfirmMessage';
-import ModalActionsOnCenter from './ModalActionsOnCenter';
-import ModalActionsOnRight from './ModalActionsOnRight';
-import ModalBody from './ModalBody';
-import ModalCloseButton from './ModalCloseButton';
-import ModalDeleteButtons from './ModalDeleteButtons';
-import ModalHeader from './ModalHeader';
+import ConfirmMessage from '@/src/components/ModalWindow/ConfirmMessage';
+import ModalActionsOnCenter from '@/src/components/ModalWindow/ModalActionsOnCenter';
+import ModalActionsOnRight from '@/src/components/ModalWindow/ModalActionsOnRight';
+import ModalBody from '@/src/components/ModalWindow/ModalBody';
+import ModalCloseButton from '@/src/components/ModalWindow/ModalCloseButton';
+import ModalDeleteButtons from '@/src/components/ModalWindow/ModalDeleteButtons';
+import ModalHeader from '@/src/components/ModalWindow/ModalHeader';
+import Preloader from '@/src/components/Preloader/Preloader';
 
 import {
   stylesModalWindowFadeBox,
   stylesModalWindowIconButton,
-} from '../../styles';
+} from '@/src/styles';
 
 function ModalWindow({
   hideCloseIcon = false,

@@ -13,18 +13,18 @@ import {
   useForgotPasswordMutation,
   useLoginMutation,
   useRegistrationMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ForgotPasswordForm from '../../components/Forms/ForgotPasswordForm/ForgotPasswordForm';
-import LoginForm from '../../components/Forms/LoginForm/LoginForm';
-import RegistrationForm from '../../components/Forms/RegistrationForm/RegistrationForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ForgotPasswordForm from '@/src/components/_forms/ForgotPasswordForm/ForgotPasswordForm';
+import LoginForm from '@/src/components/_forms/LoginForm/LoginForm';
+import RegistrationForm from '@/src/components/_forms/RegistrationForm/RegistrationForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 import {
   stylesAuthPageBoxTitle,
   stylesAuthPageButton,
   stylesAuthPageTitle,
-} from '../../styles';
+} from '@/src/styles';
 
 const TITLES = {
   login: 'Авторизація',

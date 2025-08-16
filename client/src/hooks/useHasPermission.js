@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 
-import { ENTITY_PERMISSIONS } from '../constants';
-
-import useAuthentication from './useAuthentication';
+import { ENTITY_PERMISSIONS } from '@/src/constants';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
 function useHasPermission() {
   const { authenticatedUser } = useAuthentication();

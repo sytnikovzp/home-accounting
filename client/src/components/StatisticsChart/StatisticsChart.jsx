@@ -25,9 +25,9 @@ import EqualizerIcon from '@mui/icons-material/Equalizer';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import RadarIcon from '@mui/icons-material/Radar';
 
-import useDelayedPreloader from '../../hooks/useDelayedPreloader';
+import useDelayedPreloader from '@/src/hooks/useDelayedPreloader';
 
-import Error from '../Error/Error';
+import Error from '@/src/components/Error/Error';
 
 import {
   stylesStatisticsChartBackgroundColor,
@@ -39,7 +39,7 @@ import {
   stylesStatisticsChartSpinner,
   stylesStatisticsChartStackButton,
   stylesStatisticsChartStackDirection,
-} from '../../styles';
+} from '@/src/styles';
 
 ChartJS.register(
   CategoryScale,

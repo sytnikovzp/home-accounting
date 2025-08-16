@@ -15,10 +15,10 @@ import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import StoreIcon from '@mui/icons-material/Store';
 import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
 
-import useAuthentication from '../../hooks/useAuthentication';
-import useHasPermission from '../../hooks/useHasPermission';
+import useAuthentication from '@/src/hooks/useAuthentication';
+import useHasPermission from '@/src/hooks/useHasPermission';
 
-import NavItem from './NavItem';
+import NavItem from '@/src/components/Navigation/NavItem';
 
 const publicNavItems = [
   { icon: HomeIcon, label: 'Головна', to: '/' },

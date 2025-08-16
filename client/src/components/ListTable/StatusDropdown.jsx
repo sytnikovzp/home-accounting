@@ -5,9 +5,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-import { STATUS_OPTIONS } from '../../constants';
+import { STATUS_OPTIONS } from '@/src/constants';
 
-import { stylesListTableFormControl } from '../../styles';
+import { stylesListTableFormControl } from '@/src/styles';
 
 function StatusDropdown({
   linkEntity,

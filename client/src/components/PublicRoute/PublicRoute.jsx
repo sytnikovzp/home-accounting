@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-import useAuthentication from '../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
 function PublicRoute({ children }) {
   const { isAuthenticated } = useAuthentication();

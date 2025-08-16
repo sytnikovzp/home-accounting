@@ -4,12 +4,12 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-import { PAGE_TITLES } from '../../constants';
-import usePageTitle from '../../hooks/usePageTitle';
+import { PAGE_TITLES } from '@/src/constants';
+import usePageTitle from '@/src/hooks/usePageTitle';
 
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
-import SideBar from '../SideBar/SideBar';
+import Footer from '@/src/components/Footer/Footer';
+import Header from '@/src/components/Header/Header';
+import SideBar from '@/src/components/SideBar/SideBar';
 
 import {
   stylesLayoutBox,
@@ -17,7 +17,7 @@ import {
   stylesLayoutOutlet,
   stylesLayoutSideBar,
   stylesLayoutXLContainer,
-} from '../../styles';
+} from '@/src/styles';
 
 const TITLES_MAP = new Map([
   ['/auth', PAGE_TITLES.auth],

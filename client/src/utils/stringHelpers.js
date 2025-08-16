@@ -1,4 +1,4 @@
-import { stylesHeaderUserAvatar } from '../styles';
+import { stylesHeaderUserAvatar } from '@/src/styles';
 
 const stringToColor = (string) => {
   let hash = 0;

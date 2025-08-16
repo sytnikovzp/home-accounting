@@ -16,8 +16,8 @@ import {
   statisticsApi,
   userProfileApi,
   usersApi,
-} from './services';
-import authenticationReducer from './slices/authenticationSlice';
+} from '@/src/store/services';
+import authenticationReducer from '@/src/store/slices/authenticationSlice';
 
 const store = configureStore({
   reducer: {

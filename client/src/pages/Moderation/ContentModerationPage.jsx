@@ -14,7 +14,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import PersonIcon from '@mui/icons-material/Person';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { API_CONFIG } from '../../constants';
+import { API_CONFIG } from '@/src/constants';
 
 import {
   useFetchCategoryByUuidQuery,
@@ -23,13 +23,13 @@ import {
   useModerationCategoryMutation,
   useModerationEstablishmentMutation,
   useModerationProductMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import StatusIcon from '@/src/components/StatusIcon/StatusIcon';
+import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
 
-import { stylesViewPageAvatarSize } from '../../styles';
+import { stylesViewPageAvatarSize } from '@/src/styles';
 
 function ContentModerationPage({ handleModalClose }) {
   const { path, uuid } = useParams();

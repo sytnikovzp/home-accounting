@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 
-import useAuthentication from '../../hooks/useAuthentication';
-import useHasPermission from '../../hooks/useHasPermission';
+import useAuthentication from '@/src/hooks/useAuthentication';
+import useHasPermission from '@/src/hooks/useHasPermission';
 
 function PrivateRoute({ children, requiredPermissions = [] }) {
   const { isAuthenticated } = useAuthentication();

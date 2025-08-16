@@ -5,20 +5,20 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllUsersQuery } from '../../store/services';
+import { useFetchAllUsersQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import UserChangePasswordPage from './UserChangePasswordPage';
-import UserEditPage from './UserEditPage';
-import UserRemovePage from './UserRemovePage';
-import UserViewPage from './UserViewPage';
+import UserChangePasswordPage from '@/src/pages/Users/UserChangePasswordPage';
+import UserEditPage from '@/src/pages/Users/UserEditPage';
+import UserRemovePage from '@/src/pages/Users/UserRemovePage';
+import UserViewPage from '@/src/pages/Users/UserViewPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const USERS_PAGES = [
   { path: 'password/:uuid', Component: UserChangePasswordPage },

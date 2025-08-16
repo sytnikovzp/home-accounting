@@ -7,6 +7,7 @@
     "start": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "lintsumm": "eslint . -f summary",
     "fixlint": "eslint --fix .",
     "preview": "vite preview"
   },
@@ -47,7 +48,9 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^5.0.0",
     "eslint": "^9.33.0",
+    "eslint-formatter-summary": "^2.0.2",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-mui-path-imports": "^0.0.15",

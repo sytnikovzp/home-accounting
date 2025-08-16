@@ -1,11 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { removeAccessToken, saveAccessToken } from '../../utils/authHelpers';
+import { removeAccessToken, saveAccessToken } from '@/src/utils/authHelpers';
 
-import { clearAuthenticationState } from '../slices/authenticationSlice';
-
-import { baseQueryWithReauth } from './apiSlice';
-import { userProfileApi } from './userProfileApi';
+import { baseQueryWithReauth } from '@/src/store/services/apiSlice';
+import { userProfileApi } from '@/src/store/services/userProfileApi';
+import { clearAuthenticationState } from '@/src/store/slices/authenticationSlice';
 
 export const authApi = createApi({
   reducerPath: 'authApi',

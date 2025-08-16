@@ -11,15 +11,15 @@ import LinkIcon from '@mui/icons-material/Link';
 import PersonIcon from '@mui/icons-material/Person';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { API_CONFIG } from '../../constants';
+import { API_CONFIG } from '@/src/constants';
 
-import { useFetchEstablishmentByUuidQuery } from '../../store/services';
+import { useFetchEstablishmentByUuidQuery } from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import StatusIcon from '@/src/components/StatusIcon/StatusIcon';
+import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
 
-import { stylesViewPageAvatarSize } from '../../styles';
+import { stylesViewPageAvatarSize } from '@/src/styles';
 
 function EstablishmentViewPage({ handleModalClose }) {
   const { uuid } = useParams();

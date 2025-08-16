@@ -12,10 +12,10 @@ import ShopIcon from '@mui/icons-material/Shop';
 import StoreIcon from '@mui/icons-material/Store';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { useFetchExpenseByUuidQuery } from '../../store/services';
+import { useFetchExpenseByUuidQuery } from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
 
 function ExpenseViewPage({ handleModalClose }) {
   const { uuid } = useParams();

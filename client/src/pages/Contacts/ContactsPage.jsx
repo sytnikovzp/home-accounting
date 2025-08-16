@@ -14,7 +14,7 @@ import {
   stylesContactsPageLink,
   stylesContactsPageList,
   stylesEntityContainerSx,
-} from '../../styles';
+} from '@/src/styles';
 
 function ContactsPage() {
   return (

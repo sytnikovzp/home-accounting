@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import Alert from '@mui/material/Alert';
 
-import useAuthentication from '../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
 import {
   useChangeUserPhotoMutation,
@@ -15,10 +15,10 @@ import {
   useResetUserPhotoMutation,
   useResetUserProfilePhotoMutation,
   usersApi,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import UserForm from '../../components/Forms/UserForm/UserForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import UserForm from '@/src/components/_forms/UserForm/UserForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function UserEditPage() {
   const { uuid } = useParams();

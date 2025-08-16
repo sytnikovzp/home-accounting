@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
 
-import { useAddCategoryMutation } from '../../store/services';
+import { useAddCategoryMutation } from '@/src/store/services';
 
-import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import CategoryForm from '@/src/components/_forms/CategoryForm/CategoryForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function CategoryAddPage({ handleModalClose }) {
   const [addCategory, { isLoading: isSubmitting, error: submitError }] =

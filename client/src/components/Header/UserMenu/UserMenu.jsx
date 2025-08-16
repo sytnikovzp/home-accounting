@@ -7,11 +7,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PasswordIcon from '@mui/icons-material/Password';
 import PortraitIcon from '@mui/icons-material/Portrait';
 
-import useAuthentication from '../../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
-import { useLogoutMutation } from '../../../store/services';
+import { useLogoutMutation } from '@/src/store/services';
 
-import UserMenuItem from './UserMenuItem';
+import UserMenuItem from '@/src/components/Header/UserMenu/UserMenuItem';
 
 const menuItems = [
   {

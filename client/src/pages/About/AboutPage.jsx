@@ -5,7 +5,7 @@ import {
   stylesAboutPageTypography,
   stylesEntityContainerSx,
   stylesRedlineTypography,
-} from '../../styles';
+} from '@/src/styles';
 
 function AboutPage() {
   return (

@@ -6,9 +6,9 @@ import Alert from '@mui/material/Alert';
 import {
   useFetchMeasureByUuidQuery,
   useRemoveMeasureMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function MeasureRemovePage({ handleModalClose }) {
   const { uuid } = useParams();

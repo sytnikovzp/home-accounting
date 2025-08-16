@@ -14,12 +14,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
-import useAuthentication from '../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
-import MobileDrawer from '../Navigation/MobileDrawer';
-
-import AuthenticatedUserBlock from './AuthenticatedUserBlock';
-import Logo from './Logo';
+import AuthenticatedUserBlock from '@/src/components/Header/AuthenticatedUserBlock';
+import Logo from '@/src/components/Header/Logo';
+import MobileDrawer from '@/src/components/Navigation/MobileDrawer';
 
 import {
   stylesHeaderAppBar,
@@ -27,7 +26,7 @@ import {
   stylesHeaderToolbar,
   stylesHeaderToolbarBox,
   stylesHeaderUserBlockWrapper,
-} from '../../styles';
+} from '@/src/styles';
 
 function Header() {
   const { isAuthenticated } = useAuthentication();

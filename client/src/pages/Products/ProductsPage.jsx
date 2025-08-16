@@ -6,21 +6,21 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useHasPermission from '../../hooks/useHasPermission';
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useHasPermission from '@/src/hooks/useHasPermission';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllProductsQuery } from '../../store/services';
+import { useFetchAllProductsQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import ProductAddPage from './ProductAddPage';
-import ProductEditPage from './ProductEditPage';
-import ProductRemovePage from './ProductRemovePage';
-import ProductViewPage from './ProductViewPage';
+import ProductAddPage from '@/src/pages/Products/ProductAddPage';
+import ProductEditPage from '@/src/pages/Products/ProductEditPage';
+import ProductRemovePage from '@/src/pages/Products/ProductRemovePage';
+import ProductViewPage from '@/src/pages/Products/ProductViewPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const PRODUCTS_PAGES = [
   { path: 'add', Component: ProductAddPage },

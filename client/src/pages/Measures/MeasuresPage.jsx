@@ -6,21 +6,21 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useHasPermission from '../../hooks/useHasPermission';
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useHasPermission from '@/src/hooks/useHasPermission';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllMeasuresQuery } from '../../store/services';
+import { useFetchAllMeasuresQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import MeasureAddPage from './MeasureAddPage';
-import MeasureEditPage from './MeasureEditPage';
-import MeasureRemovePage from './MeasureRemovePage';
-import MeasureViewPage from './MeasureViewPage';
+import MeasureAddPage from '@/src/pages/Measures/MeasureAddPage';
+import MeasureEditPage from '@/src/pages/Measures/MeasureEditPage';
+import MeasureRemovePage from '@/src/pages/Measures/MeasureRemovePage';
+import MeasureViewPage from '@/src/pages/Measures/MeasureViewPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const MEASURES_PAGES = [
   { path: 'add', Component: MeasureAddPage },

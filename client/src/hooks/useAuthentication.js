@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getAccessToken } from '../utils/authHelpers';
+import { getAccessToken } from '@/src/utils/authHelpers';
 
-import { useFetchUserProfileQuery } from '../store/services';
-import { clearAuthenticationState } from '../store/slices/authenticationSlice';
+import { useFetchUserProfileQuery } from '@/src/store/services';
+import { clearAuthenticationState } from '@/src/store/slices/authenticationSlice';
 
 function useAuthentication() {
   const dispatch = useDispatch();

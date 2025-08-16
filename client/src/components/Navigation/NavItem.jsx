@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-import { stylesNavItemText } from '../../styles';
+import { stylesNavItemText } from '@/src/styles';
 
 function NavItem({ icon: IconComponent, label, to, onClick }) {
   return (

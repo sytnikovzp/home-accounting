@@ -3,19 +3,18 @@ import Typography from '@mui/material/Typography';
 
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
-import useDelayedPreloader from '../../hooks/useDelayedPreloader';
+import useDelayedPreloader from '@/src/hooks/useDelayedPreloader';
 
-import { useFetchNBURatesQuery } from '../../store/services';
+import { useFetchNBURatesQuery } from '@/src/store/services';
 
-import Error from '../Error/Error';
-import Preloader from '../Preloader/Preloader';
-
-import CurrencyTable from './CurrencyTable';
+import CurrencyTable from '@/src/components/CurrencyRates/CurrencyTable';
+import Error from '@/src/components/Error/Error';
+import Preloader from '@/src/components/Preloader/Preloader';
 
 import {
   stylesCurrencyRatesBox,
   stylesCurrencyRatesTypography,
-} from '../../styles';
+} from '@/src/styles';
 
 function CurrencyRates() {
   const {

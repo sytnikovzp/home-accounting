@@ -8,10 +8,10 @@ import {
   useEditEstablishmentMutation,
   useFetchEstablishmentByUuidQuery,
   useResetEstablishmentLogoMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import EstablishmentForm from '../../components/Forms/EstablishmentForm/EstablishmentForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import EstablishmentForm from '@/src/components/_forms/EstablishmentForm/EstablishmentForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();

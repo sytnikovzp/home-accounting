@@ -4,9 +4,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 
-import useHasPermission from '../../hooks/useHasPermission';
+import useHasPermission from '@/src/hooks/useHasPermission';
 
-import ActionButton from './ActionButton';
+import ActionButton from '@/src/components/ListTable/ActionButton';
 
 function ActionColumns({ linkEntity, row, onModerate, onEdit, onRemove }) {
   const { hasPermission } = useHasPermission();

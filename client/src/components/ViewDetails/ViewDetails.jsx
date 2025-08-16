@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 
-import ViewDetailRow from './ViewDetailRow';
+import ViewDetailRow from '@/src/components/ViewDetails/ViewDetailRow';
 
-import { stylesViewPageBox } from '../../styles';
+import { stylesViewPageBox } from '@/src/styles';
 
 function ViewDetails({ data }) {
   if (!data || data.length === 0) {

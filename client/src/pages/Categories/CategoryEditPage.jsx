@@ -6,10 +6,10 @@ import Alert from '@mui/material/Alert';
 import {
   useEditCategoryMutation,
   useFetchCategoryByUuidQuery,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import CategoryForm from '../../components/Forms/CategoryForm/CategoryForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import CategoryForm from '@/src/components/_forms/CategoryForm/CategoryForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function CategoryEditPage({ handleModalClose }) {
   const { uuid } = useParams();

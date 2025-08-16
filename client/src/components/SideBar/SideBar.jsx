@@ -1,5 +1,5 @@
-import CurrencyRates from '../CurrencyRates/CurrencyRates';
-import NavBar from '../Navigation/NavBar';
+import CurrencyRates from '@/src/components/CurrencyRates/CurrencyRates';
+import NavBar from '@/src/components/Navigation/NavBar';
 
 function SideBar() {
   return (

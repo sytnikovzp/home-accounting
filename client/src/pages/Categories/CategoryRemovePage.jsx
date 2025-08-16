@@ -6,9 +6,9 @@ import Alert from '@mui/material/Alert';
 import {
   useFetchCategoryByUuidQuery,
   useRemoveCategoryMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function CategoryRemovePage({ handleModalClose }) {
   const { uuid } = useParams();

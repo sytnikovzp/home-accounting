@@ -6,21 +6,21 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useHasPermission from '../../hooks/useHasPermission';
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useHasPermission from '@/src/hooks/useHasPermission';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllEstablishmentsQuery } from '../../store/services';
+import { useFetchAllEstablishmentsQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import EstablishmentAddPage from './EstablishmentAddPage';
-import EstablishmentEditPage from './EstablishmentEditPage';
-import EstablishmentRemovePage from './EstablishmentRemovePage';
-import EstablishmentViewPage from './EstablishmentViewPage';
+import EstablishmentAddPage from '@/src/pages/Establishments/EstablishmentAddPage';
+import EstablishmentEditPage from '@/src/pages/Establishments/EstablishmentEditPage';
+import EstablishmentRemovePage from '@/src/pages/Establishments/EstablishmentRemovePage';
+import EstablishmentViewPage from '@/src/pages/Establishments/EstablishmentViewPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const ESTABLISHMENTS_PAGES = [
   { path: 'add', Component: EstablishmentAddPage },

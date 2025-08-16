@@ -1,13 +1,13 @@
-import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 
-import { API_CONFIG } from '../../constants';
+import { API_CONFIG } from '@/src/constants';
 import {
   getAccessToken,
   removeAccessToken,
   saveAccessToken,
-} from '../../utils/authHelpers';
+} from '@/src/utils/authHelpers';
 
-import { clearAuthenticationState } from '../slices/authenticationSlice';
+import { clearAuthenticationState } from '@/src/store/slices/authenticationSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_CONFIG.BASE_URL,
@@ -42,6 +42,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     if (refreshResult.data) {
       const newToken = refreshResult.data.accessToken;
       saveAccessToken(newToken);
+
       const newArgs =
         typeof args === 'string'
           ? { url: args, method: 'GET', headers: new Headers() }

@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 
 import Alert from '@mui/material/Alert';
 
-import { useAddRoleMutation } from '../../store/services';
+import { useAddRoleMutation } from '@/src/store/services';
 
-import RoleForm from '../../components/Forms/RoleForm/RoleForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import RoleForm from '@/src/components/_forms/RoleForm/RoleForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function RoleAddPage({ handleModalClose }) {
   const [addRole, { isLoading: isSubmitting, error: submitError }] =

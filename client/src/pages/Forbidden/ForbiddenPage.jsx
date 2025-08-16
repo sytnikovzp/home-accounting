@@ -9,7 +9,7 @@ import {
   stylesErrorPageBox,
   stylesErrorPageButton,
   stylesErrorPageTypography,
-} from '../../styles';
+} from '@/src/styles';
 
 function ForbiddenPage() {
   const navigate = useNavigate();

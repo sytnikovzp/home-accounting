@@ -6,21 +6,21 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import useHasPermission from '../../hooks/useHasPermission';
-import useItemsPerPage from '../../hooks/useItemsPerPage';
-import usePagination from '../../hooks/usePagination';
+import useHasPermission from '@/src/hooks/useHasPermission';
+import useItemsPerPage from '@/src/hooks/useItemsPerPage';
+import usePagination from '@/src/hooks/usePagination';
 
-import { useFetchAllCategoriesQuery } from '../../store/services';
+import { useFetchAllCategoriesQuery } from '@/src/store/services';
 
-import EntityRoutes from '../../components/EntityRoutes/EntityRoutes';
-import ListTable from '../../components/ListTable/ListTable';
+import EntityRoutes from '@/src/components/EntityRoutes/EntityRoutes';
+import ListTable from '@/src/components/ListTable/ListTable';
 
-import CategoryAddPage from './CategoryAddPage';
-import CategoryEditPage from './CategoryEditPage';
-import CategoryRemovePage from './CategoryRemovePage';
-import CategoryViewPage from './CategoryViewPage';
+import CategoryAddPage from '@/src/pages/Categories/CategoryAddPage';
+import CategoryEditPage from '@/src/pages/Categories/CategoryEditPage';
+import CategoryRemovePage from '@/src/pages/Categories/CategoryRemovePage';
+import CategoryViewPage from '@/src/pages/Categories/CategoryViewPage';
 
-import { stylesEntityContainerSx, stylesEntityPagesBox } from '../../styles';
+import { stylesEntityContainerSx, stylesEntityPagesBox } from '@/src/styles';
 
 const CATEGORIES_PAGES = [
   { path: 'add', Component: CategoryAddPage },

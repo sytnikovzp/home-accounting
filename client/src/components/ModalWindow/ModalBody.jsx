@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 
-import { stylesModalWindowContentBox } from '../../styles';
+import { stylesModalWindowContentBox } from '@/src/styles';
 
 function ModalBody({ children }) {
   return (

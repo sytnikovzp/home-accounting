@@ -9,11 +9,11 @@ import InfoIcon from '@mui/icons-material/Info';
 import PersonIcon from '@mui/icons-material/Person';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import { useFetchProductByUuidQuery } from '../../store/services';
+import { useFetchProductByUuidQuery } from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
-import StatusIcon from '../../components/StatusIcon/StatusIcon';
-import ViewDetails from '../../components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import StatusIcon from '@/src/components/StatusIcon/StatusIcon';
+import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
 
 function ProductViewPage({ handleModalClose }) {
   const { uuid } = useParams();

@@ -15,7 +15,7 @@ import {
   stylesPermissionsListBoxEmpty,
   stylesPermissionsListIcon,
   stylesPermissionsListTypography,
-} from '../../styles';
+} from '@/src/styles';
 
 function PermissionsList({ permissions = [] }) {
   const renderEmptyState = () => (

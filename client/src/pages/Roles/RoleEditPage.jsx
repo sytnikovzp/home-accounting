@@ -6,10 +6,10 @@ import Alert from '@mui/material/Alert';
 import {
   useEditRoleMutation,
   useFetchRoleByUuidQuery,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import RoleForm from '../../components/Forms/RoleForm/RoleForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import RoleForm from '@/src/components/_forms/RoleForm/RoleForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function RoleEditPage({ handleModalClose }) {
   const { uuid } = useParams();

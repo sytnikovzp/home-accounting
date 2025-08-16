@@ -3,16 +3,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '@mui/material/Alert';
 
-import useAuthentication from '../../hooks/useAuthentication';
+import useAuthentication from '@/src/hooks/useAuthentication';
 
 import {
   useFetchUserByUuidQuery,
   useLogoutMutation,
   useRemoveUserMutation,
   useRemoveUserProfileMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function UserRemovePage() {
   const { uuid } = useParams();

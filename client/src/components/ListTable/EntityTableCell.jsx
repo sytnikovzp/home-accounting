@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 
-import { API_CONFIG } from '../../constants';
+import { API_CONFIG } from '@/src/constants';
 
 import {
   stylesEntityTableCellAvatarBox,
@@ -15,7 +15,7 @@ import {
   stylesEntityTableCellRouterLink,
   stylesEntityTableCellTextColor,
   stylesEntityTableCellTypography,
-} from '../../styles';
+} from '@/src/styles';
 
 const getAvatarPath = (field, value) => {
   const basePath = `${API_CONFIG.BASE_URL.replace('/api', '')}/images/`;

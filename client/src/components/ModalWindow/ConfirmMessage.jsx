@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 
-import { stylesRedlineTypography } from '../../styles';
+import { stylesRedlineTypography } from '@/src/styles';
 
 function ConfirmMessage({ children }) {
   return (

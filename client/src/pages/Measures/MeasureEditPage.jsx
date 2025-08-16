@@ -6,10 +6,10 @@ import Alert from '@mui/material/Alert';
 import {
   useEditMeasureMutation,
   useFetchMeasureByUuidQuery,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import MeasureForm from '../../components/Forms/MeasureForm/MeasureForm';
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import MeasureForm from '@/src/components/_forms/MeasureForm/MeasureForm';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function MeasureEditPage({ handleModalClose }) {
   const { uuid } = useParams();

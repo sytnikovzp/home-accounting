@@ -6,9 +6,9 @@ import Alert from '@mui/material/Alert';
 import {
   useFetchCurrencyByUuidQuery,
   useRemoveCurrencyMutation,
-} from '../../store/services';
+} from '@/src/store/services';
 
-import ModalWindow from '../../components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
 
 function CurrencyRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
