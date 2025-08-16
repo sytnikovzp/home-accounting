@@ -4,8 +4,8 @@ import Alert from '@mui/material/Alert';
 
 import { useAddMeasureMutation } from '@/src/store/services';
 
-import MeasureForm from '@/src/components/_forms/MeasureForm/MeasureForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import MeasureForm from '@/src/components/forms/MeasureForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function MeasureAddPage({ handleModalClose }) {
   const [addMeasure, { isLoading: isSubmitting, error: submitError }] =

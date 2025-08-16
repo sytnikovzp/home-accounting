@@ -12,9 +12,9 @@ import useAuthentication from '@/src/hooks/useAuthentication';
 
 import { useFetchRoleByUuidQuery } from '@/src/store/services';
 
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow';
+import ViewDetails from '@/src/components/ViewDetails';
 import PermissionsList from '@/src/components/ViewDetails/PermissionsList';
-import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
 
 function RoleViewPage() {
   const { uuid: paramUuid } = useParams();

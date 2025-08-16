@@ -8,8 +8,8 @@ import {
   useFetchExpenseByUuidQuery,
 } from '@/src/store/services';
 
-import ExpenseForm from '@/src/components/_forms/ExpenseForm/ExpenseForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ExpenseForm from '@/src/components/forms/ExpenseForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function ExpenseEditPage({ handleModalClose }) {
   const { uuid } = useParams();

@@ -17,8 +17,8 @@ import {
   usersApi,
 } from '@/src/store/services';
 
-import UserForm from '@/src/components/_forms/UserForm/UserForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import UserForm from '@/src/components/forms/UserForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function UserEditPage() {
   const { uuid } = useParams();

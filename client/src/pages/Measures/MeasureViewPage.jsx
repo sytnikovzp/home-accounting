@@ -11,8 +11,8 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchMeasureByUuidQuery } from '@/src/store/services';
 
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
-import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow';
+import ViewDetails from '@/src/components/ViewDetails';
 
 function MeasureViewPage({ handleModalClose }) {
   const { uuid } = useParams();

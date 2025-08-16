@@ -8,7 +8,7 @@ import {
   useRemoveProductMutation,
 } from '@/src/store/services';
 
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function ProductRemovePage({ handleModalClose }) {
   const { uuid } = useParams();

@@ -8,7 +8,7 @@ import {
   useRemoveMeasureMutation,
 } from '@/src/store/services';
 
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function MeasureRemovePage({ handleModalClose }) {
   const { uuid } = useParams();

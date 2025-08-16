@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import CurrencyRates from '@/src/components/CurrencyRates/CurrencyRates';
+import CurrencyRates from '@/src/components/CurrencyRates';
 import NavBar from '@/src/components/Navigation/NavBar';
 
 import {

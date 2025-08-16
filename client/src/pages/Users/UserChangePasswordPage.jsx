@@ -10,8 +10,8 @@ import {
   useChangeUserProfilePasswordMutation,
 } from '@/src/store/services';
 
-import ChangePasswordForm from '@/src/components/_forms/ChangePasswordForm/ChangePasswordForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ChangePasswordForm from '@/src/components/forms/ChangePasswordForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function UserChangePasswordPage() {
   const { uuid } = useParams();

@@ -10,8 +10,8 @@ import {
   useResetEstablishmentLogoMutation,
 } from '@/src/store/services';
 
-import EstablishmentForm from '@/src/components/_forms/EstablishmentForm/EstablishmentForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import EstablishmentForm from '@/src/components/forms/EstablishmentForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function EstablishmentEditPage({ handleModalClose }) {
   const { uuid } = useParams();

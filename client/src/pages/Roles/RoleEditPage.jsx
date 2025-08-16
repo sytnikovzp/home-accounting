@@ -8,8 +8,8 @@ import {
   useFetchRoleByUuidQuery,
 } from '@/src/store/services';
 
-import RoleForm from '@/src/components/_forms/RoleForm/RoleForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import RoleForm from '@/src/components/forms/RoleForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function RoleEditPage({ handleModalClose }) {
   const { uuid } = useParams();

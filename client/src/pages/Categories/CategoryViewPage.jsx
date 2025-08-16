@@ -10,9 +10,9 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import { useFetchCategoryByUuidQuery } from '@/src/store/services';
 
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
-import StatusIcon from '@/src/components/StatusIcon/StatusIcon';
-import ViewDetails from '@/src/components/ViewDetails/ViewDetails';
+import ModalWindow from '@/src/components/ModalWindow';
+import StatusIcon from '@/src/components/StatusIcon';
+import ViewDetails from '@/src/components/ViewDetails';
 
 function CategoryViewPage({ handleModalClose }) {
   const { uuid } = useParams();

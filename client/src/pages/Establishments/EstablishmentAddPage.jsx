@@ -4,8 +4,8 @@ import Alert from '@mui/material/Alert';
 
 import { useAddEstablishmentMutation } from '@/src/store/services';
 
-import EstablishmentForm from '@/src/components/_forms/EstablishmentForm/EstablishmentForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import EstablishmentForm from '@/src/components/forms/EstablishmentForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function EstablishmentAddPage({ handleModalClose }) {
   const [addEstablishment, { isLoading: isSubmitting, error: submitError }] =

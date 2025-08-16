@@ -8,8 +8,8 @@ import {
   useFetchCategoryByUuidQuery,
 } from '@/src/store/services';
 
-import CategoryForm from '@/src/components/_forms/CategoryForm/CategoryForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import CategoryForm from '@/src/components/forms/CategoryForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function CategoryEditPage({ handleModalClose }) {
   const { uuid } = useParams();

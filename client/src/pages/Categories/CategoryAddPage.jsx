@@ -4,8 +4,8 @@ import Alert from '@mui/material/Alert';
 
 import { useAddCategoryMutation } from '@/src/store/services';
 
-import CategoryForm from '@/src/components/_forms/CategoryForm/CategoryForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import CategoryForm from '@/src/components/forms/CategoryForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function CategoryAddPage({ handleModalClose }) {
   const [addCategory, { isLoading: isSubmitting, error: submitError }] =

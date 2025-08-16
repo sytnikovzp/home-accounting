@@ -10,7 +10,7 @@ import { API_CONFIG } from '@/src/constants';
 import { stringAvatar } from '@/src/utils/stringHelpers';
 import useAuthentication from '@/src/hooks/useAuthentication';
 
-import UserMenu from '@/src/components/Header/UserMenu/UserMenu';
+import UserMenu from '@/src/components/Header/UserMenu';
 import Welcome from '@/src/components/Header/Welcome';
 
 import {

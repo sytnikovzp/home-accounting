@@ -8,8 +8,8 @@ import {
   useFetchMeasureByUuidQuery,
 } from '@/src/store/services';
 
-import MeasureForm from '@/src/components/_forms/MeasureForm/MeasureForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import MeasureForm from '@/src/components/forms/MeasureForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function MeasureEditPage({ handleModalClose }) {
   const { uuid } = useParams();

@@ -8,8 +8,8 @@ import {
   useFetchCurrencyByUuidQuery,
 } from '@/src/store/services';
 
-import CurrencyForm from '@/src/components/_forms/CurrencyForm/CurrencyForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import CurrencyForm from '@/src/components/forms/CurrencyForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function CurrencyEditPage({ handleModalClose }) {
   const { uuid } = useParams();

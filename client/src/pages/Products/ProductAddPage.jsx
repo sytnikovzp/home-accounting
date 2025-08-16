@@ -4,8 +4,8 @@ import Alert from '@mui/material/Alert';
 
 import { useAddProductMutation } from '@/src/store/services';
 
-import ProductForm from '@/src/components/_forms/ProductForm/ProductForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ProductForm from '@/src/components/forms/ProductForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function ProductAddPage({ handleModalClose }) {
   const [addProduct, { isLoading: isSubmitting, error: submitError }] =

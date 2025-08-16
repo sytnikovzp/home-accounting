@@ -8,7 +8,7 @@ import {
   useRemoveCategoryMutation,
 } from '@/src/store/services';
 
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function CategoryRemovePage({ handleModalClose }) {
   const { uuid } = useParams();

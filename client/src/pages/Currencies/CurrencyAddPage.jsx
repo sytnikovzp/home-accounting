@@ -4,8 +4,8 @@ import Alert from '@mui/material/Alert';
 
 import { useAddCurrencyMutation } from '@/src/store/services';
 
-import CurrencyForm from '@/src/components/_forms/CurrencyForm/CurrencyForm';
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import CurrencyForm from '@/src/components/forms/CurrencyForm';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function CurrencyAddPage({ handleModalClose }) {
   const [addCurrency, { isLoading: isSubmitting, error: submitError }] =

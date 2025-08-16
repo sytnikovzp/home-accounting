@@ -8,7 +8,7 @@ import {
   useRemoveExpenseMutation,
 } from '@/src/store/services';
 
-import ModalWindow from '@/src/components/ModalWindow/ModalWindow';
+import ModalWindow from '@/src/components/ModalWindow';
 
 function ExpenseRemovePage({ handleModalClose }) {
   const { uuid } = useParams();
