@@ -15,6 +15,7 @@
     "cljson": "node ./src/utils/clearSequelizeJson.js",
     "seedmongo": "node ./src/utils/seedMongo.js",
     "lint": "eslint .",
+    "lintsumm": "eslint . -f summary",
     "fixlint": "eslint --fix .",
     "syncmodel": "node ./src/utils/syncModel.js",
     "syncallmodels": "node ./src/utils/syncAllModels.js",
@@ -58,6 +59,7 @@
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "eslint": "^9.33.0",
+    "eslint-formatter-summary": "^2.0.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-optimize-regex": "^1.2.1",
