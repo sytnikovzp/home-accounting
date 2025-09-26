@@ -44,7 +44,7 @@ function StatisticsPage() {
     isFetching,
     error: fetchError,
   } = queriesMap[criteria](
-    { ago, ...(isAuthenticated && { creatorUuid }) },
+    { ago, criteria, ...(isAuthenticated && { creatorUuid }) },
     { skip: !ago }
   );
 
