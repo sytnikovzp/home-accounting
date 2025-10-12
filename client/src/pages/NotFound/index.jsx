@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -16,8 +16,15 @@ import {
 function NotFoundPage() {
   const navigate = useNavigate();
 
-  const randomMessage =
-    ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)];
+  const [randomMessage, setRandomMessage] = useState(ERROR_MESSAGES[0]);
+
+  useEffect(() => {
+    const idx = Math.floor(Math.random() * ERROR_MESSAGES.length);
+    const t = setTimeout(() => {
+      setRandomMessage(ERROR_MESSAGES[idx]);
+    }, 0);
+    return () => clearTimeout(t);
+  }, []);
 
   const handleNavigateToHome = useCallback(() => {
     navigate('/');
