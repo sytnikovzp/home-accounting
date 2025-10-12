@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import Box from '@mui/material/Box';
@@ -16,7 +16,13 @@ import {
   stylesSplashScreenTypography,
 } from '@/src/styles';
 
-function SplashScreen() {
+function SplashScreen({ onDone }) {
+  const onDoneRef = useRef(onDone);
+
+  useEffect(() => {
+    onDoneRef.current = onDone;
+  }, [onDone]);
+
   const [startAnimation, setStartAnimation] = useState(false);
   const [showText, setShowText] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -29,7 +35,12 @@ function SplashScreen() {
     const timer1 = setTimeout(() => setStartAnimation(true), 500);
     const timer2 = setTimeout(() => setShowText(true), 1600);
     const timer3 = setTimeout(() => setProgress(100), 3000);
-    const timer4 = setTimeout(() => setDone(true), 3500);
+    const timer4 = setTimeout(() => {
+      setDone(true);
+      if (typeof onDoneRef.current === 'function') {
+        onDoneRef.current();
+      }
+    }, 3500);
 
     const progressInterval = setInterval(() => {
       setProgress((prev) => (prev < 95 ? prev + 1 : prev));

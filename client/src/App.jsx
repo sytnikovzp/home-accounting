@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -132,14 +133,29 @@ const privateRoutes = [
 
 function App() {
   const { isFetching } = useAuthentication();
+  const [bootstrapped, setBootstrapped] = useState(false);
+  const [splashDone, setSplashDone] = useState(false);
 
-  if (isFetching) {
-    return null;
+  const handleSplashDone = useCallback(() => setSplashDone(true), []);
+
+  useEffect(() => {
+    let t = null;
+    if (!isFetching && splashDone && !bootstrapped) {
+      t = setTimeout(() => setBootstrapped(true), 0);
+    }
+    return () => {
+      if (t) {
+        clearTimeout(t);
+      }
+    };
+  }, [isFetching, splashDone, bootstrapped]);
+
+  if (!bootstrapped && (isFetching || !splashDone)) {
+    return <SplashScreen onDone={handleSplashDone} />;
   }
 
   return (
     <HelmetProvider>
-      <SplashScreen />
       <Router>
         <Routes>
           <Route element={<Layout />} path='/'>
