@@ -6,18 +6,26 @@ function useDelayedPreloader(isLoading) {
   const [isPreloaderVisible, setIsPreloaderVisible] = useState(false);
 
   useEffect(() => {
-    let timeout = null;
+    let showTimeout = null;
+    let hideTimeout = null;
 
     if (isLoading) {
-      timeout = setTimeout(
+      showTimeout = setTimeout(
         () => setIsPreloaderVisible(true),
         APP_SETTINGS.DELAY_VISIBLE_PRELOADER
       );
     } else {
-      setIsPreloaderVisible(false);
+      hideTimeout = setTimeout(() => setIsPreloaderVisible(false), 0);
     }
 
-    return () => clearTimeout(timeout);
+    return () => {
+      if (showTimeout) {
+        clearTimeout(showTimeout);
+      }
+      if (hideTimeout) {
+        clearTimeout(hideTimeout);
+      }
+    };
   }, [isLoading]);
 
   return isPreloaderVisible;
