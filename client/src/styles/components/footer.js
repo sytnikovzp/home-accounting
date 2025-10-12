@@ -8,11 +8,17 @@ export const stylesFooterBox = {
 
 export const stylesFooterContainer = {
   display: 'flex',
-  flexDirection: { xs: 'column', sm: 'row' },
+  flexDirection: {
+    xs: 'column',
+    sm: 'row',
+  },
   justifyContent: 'space-between',
   alignItems: 'center',
   gap: 1.5,
-  textAlign: { xs: 'center', sm: 'left' },
+  textAlign: {
+    xs: 'center',
+    sm: 'left',
+  },
 };
 
 export const stylesFooterTypography = {

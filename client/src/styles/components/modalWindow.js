@@ -4,7 +4,10 @@ export const stylesModalWindowFadeBox = {
   left: '50%',
   display: 'flex',
   flexDirection: 'column',
-  width: { xs: '90%', sm: 450 },
+  width: {
+    xs: '90%',
+    sm: 450,
+  },
   maxWidth: 600,
   minHeight: 'auto',
   p: 2,

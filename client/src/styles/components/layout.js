@@ -18,7 +18,10 @@ export const stylesLayoutXLContainer = {
 export const stylesLayoutSideBar = {
   position: 'sticky',
   top: 64,
-  display: { xs: 'none', md: 'block' },
+  display: {
+    xs: 'none',
+    md: 'block',
+  },
   overflowY: 'auto',
   flexShrink: 0,
   alignSelf: 'flex-start',

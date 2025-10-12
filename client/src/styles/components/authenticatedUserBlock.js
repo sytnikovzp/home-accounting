@@ -10,7 +10,10 @@ export const stylesAuthenticatedUserBlockMenu = {
   '&:before': {
     position: 'absolute',
     top: 0,
-    right: { xs: 22, sm: 25 },
+    right: {
+      xs: 22,
+      sm: 25,
+    },
     zIndex: 0,
     display: 'block',
     width: 10,

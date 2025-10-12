@@ -4,7 +4,10 @@ export const stylesStatisticsChartBox = {
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  height: { xs: '', sm: '60vh' },
+  height: {
+    xs: '',
+    sm: '60vh',
+  },
 };
 
 export const stylesStatisticsChartSpinner = {

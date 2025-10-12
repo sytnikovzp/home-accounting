@@ -6,7 +6,10 @@ export const stylesLogoIcon = {
 };
 
 export const stylesLogoBoxDesktop = {
-  display: { xs: 'none', md: 'flex' },
+  display: {
+    xs: 'none',
+    md: 'flex',
+  },
   alignItems: 'center',
   color: 'inherit',
   textDecoration: 'none',
@@ -20,7 +23,10 @@ export const stylesLogoTypographyDesktop = {
 };
 
 export const stylesLogoBoxMobile = {
-  display: { xs: 'flex', md: 'none' },
+  display: {
+    xs: 'flex',
+    md: 'none',
+  },
   alignItems: 'center',
   textDecoration: 'none',
 };

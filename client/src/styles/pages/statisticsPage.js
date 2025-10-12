@@ -24,6 +24,9 @@ export const stylesStatisticsPageCriteriaSelect = {
 };
 
 export const stylesStatisticsPagePeriodSelect = {
-  width: { xs: 260, sm: 210 },
+  width: {
+    xs: 260,
+    sm: 210,
+  },
   mt: 2,
 };

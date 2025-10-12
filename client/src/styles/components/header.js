@@ -19,8 +19,14 @@ export const stylesHeaderUserBlockWrapper = {
 };
 
 export const stylesHeaderUserAvatar = {
-  width: { xs: 40, sm: 45 },
-  height: { xs: 40, sm: 45 },
+  width: {
+    xs: 40,
+    sm: 45,
+  },
+  height: {
+    xs: 40,
+    sm: 45,
+  },
   border: '2px solid rgba(56, 142, 60, 0.3)',
   cursor: 'pointer',
 };
